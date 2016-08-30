@@ -24,7 +24,7 @@ class LogLevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isValidLevelValidatesValidLevels()
     {
-        $validLevels = array(0, 1, 2, 3, 4, 5, 6, 7);
+        $validLevels = [0, 1, 2, 3, 4, 5, 6, 7];
         foreach ($validLevels as $validLevel) {
             $this->assertTrue(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($validLevel));
         }
@@ -35,7 +35,7 @@ class LogLevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isValidLevelDoesNotValidateInvalidLevels()
     {
-        $invalidLevels = array(-1, 8, 1.5, 'string', array(), new \stdClass(), false, null);
+        $invalidLevels = [-1, 8, 1.5, 'string', [], new \stdClass(), false, null];
         foreach ($invalidLevels as $invalidLevel) {
             $this->assertFalse(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($invalidLevel));
         }
@@ -46,16 +46,16 @@ class LogLevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider()
     {
-        return array(
-            'negative integer' => array(-1),
-            'higher level than expected' => array(8),
-            'float' => array(1.5),
-            'string' => array('string'),
-            'array' => array(array()),
-            'object' => array(new \stdClass()),
-            'boolean FALSE' => array(false),
-            'NULL' => array(null)
-        );
+        return [
+            'negative integer' => [-1],
+            'higher level than expected' => [8],
+            'float' => [1.5],
+            'string' => ['string'],
+            'array' => [[]],
+            'object' => [new \stdClass()],
+            'boolean FALSE' => [false],
+            'NULL' => [null]
+        ];
     }
 
     /**

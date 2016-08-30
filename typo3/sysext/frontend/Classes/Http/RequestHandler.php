@@ -87,7 +87,7 @@ class RequestHandler implements RequestHandlerInterface
         // Hook to preprocess the current request:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
-                $hookParameters = array();
+                $hookParameters = [];
                 GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
             }
             unset($hookFunction);
@@ -276,11 +276,11 @@ class RequestHandler implements RequestHandlerInterface
             $response->getBody()->write($this->controller->content);
         }
         // Debugging Output
-        if (isset($GLOBALS['error']) && is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debugOutput'))) {
+        if (isset($GLOBALS['error']) && is_object($GLOBALS['error']) && @is_callable([$GLOBALS['error'], 'debugOutput'])) {
             $GLOBALS['error']->debugOutput();
         }
         if (TYPO3_DLOG) {
-            GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => true));
+            GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
         }
         return $response;
     }
@@ -317,7 +317,7 @@ class RequestHandler implements RequestHandlerInterface
             if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
                 @ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
             }
-            ob_start(array(GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler'));
+            ob_start([GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler']);
         }
     }
 

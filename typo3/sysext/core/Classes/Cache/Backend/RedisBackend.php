@@ -122,7 +122,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param array $options Configuration options
      * @throws \TYPO3\CMS\Core\Cache\Exception if php redis module is not loaded
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('redis')) {
             throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "redis" must be installed and loaded in order to use the redis backend.', 1279462933);
@@ -268,7 +268,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!$this->canBeUsedInStringContext($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" which can\'t be converted to string.', 1377006651);
@@ -290,7 +290,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             }
             $this->redis->setex(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier, $expiration, $data);
             $addTags = $tags;
-            $removeTags = array();
+            $removeTags = [];
             $existingTags = $this->redis->sMembers(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier);
             if (!empty($existingTags)) {
                 $addTags = array_diff($tags, $existingTags);
@@ -403,7 +403,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         if (!$this->canBeUsedInStringContext($tag)) {
             throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" which can\'t be converted to string.', 1377006655);
         }
-        $foundIdentifiers = array();
+        $foundIdentifiers = [];
         if ($this->connected) {
             $foundIdentifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);
         }
@@ -444,7 +444,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         if ($this->connected) {
             $identifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);
             if (!empty($identifiers)) {
-                $this->removeIdentifierEntriesAndRelations($identifiers, array($tag));
+                $this->removeIdentifierEntriesAndRelations($identifiers, [$tag]);
             }
         }
     }
@@ -494,8 +494,8 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         // Set a temporary entry which holds all identifiers that need to be removed from
         // the tag to identifiers sets
         $uniqueTempKey = 'temp:' . StringUtility::getUniqueId();
-        $prefixedKeysToDelete = array($uniqueTempKey);
-        $prefixedIdentifierToTagsKeysToDelete = array();
+        $prefixedKeysToDelete = [$uniqueTempKey];
+        $prefixedIdentifierToTagsKeysToDelete = [];
         foreach ($identifiers as $identifier) {
             $prefixedKeysToDelete[] = self::IDENTIFIER_DATA_PREFIX . $identifier;
             $prefixedIdentifierToTagsKeysToDelete[] = self::IDENTIFIER_TAGS_PREFIX . $identifier;

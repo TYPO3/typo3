@@ -102,54 +102,54 @@ class CrawlerHook
                 case 1:
                     // RECORDS:
                     // Parameters:
-                    $params = array(
+                    $params = [
                         'indexConfigUid' => $cfgRec['uid'],
-                        'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                        'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                         'url' => 'Records (start)'
-                    );
+                    ];
                     //
                     $pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
                     break;
                 case 2:
                     // FILES:
                     // Parameters:
-                    $params = array(
+                    $params = [
                         'indexConfigUid' => $cfgRec['uid'],
                         // General
-                        'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                        'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                         // General
                         'url' => $cfgRec['filepath'],
                         // Partly general... (for URL and file types)
                         'depth' => 0
-                    );
+                    ];
                     $pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
                     break;
                 case 3:
                     // External URL:
                     // Parameters:
-                    $params = array(
+                    $params = [
                         'indexConfigUid' => $cfgRec['uid'],
                         // General
-                        'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                        'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                         // General
                         'url' => $cfgRec['externalUrl'],
                         // Partly general... (for URL and file types)
                         'depth' => 0
-                    );
+                    ];
                     $pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
                     break;
                 case 4:
                     // Page tree
                     // Parameters:
-                    $params = array(
+                    $params = [
                         'indexConfigUid' => $cfgRec['uid'],
                         // General
-                        'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                        'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                         // General
                         'url' => (int)$cfgRec['alternative_source_pid'],
                         // Partly general... (for URL and file types and page tree (root))
                         'depth' => 0
-                    );
+                    ];
                     $pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
                     break;
                 case 5:
@@ -161,13 +161,13 @@ class CrawlerHook
                         $hookObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
                         if (is_object($hookObj)) {
                             // Parameters:
-                            $params = array(
+                            $params = [
                                 'indexConfigUid' => $cfgRec['uid'],
                                 // General
-                                'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . '/CUSTOM]'),
+                                'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . '/CUSTOM]'],
                                 // General
                                 'url' => $hookObj->initMessage($message)
-                            );
+                            ];
                             $pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
                         }
                     }
@@ -245,7 +245,7 @@ class CrawlerHook
                     );
             }
         }
-        return array('log' => $params);
+        return ['log' => $params];
     }
 
     /**
@@ -262,9 +262,9 @@ class CrawlerHook
         if ($cfgRec['table2index'] && isset($GLOBALS['TCA'][$cfgRec['table2index']])) {
             // Init session data array if not already:
             if (!is_array($session_data)) {
-                $session_data = array(
+                $session_data = [
                     'uid' => 0
-                );
+                ];
             }
             // Init:
             $pid = (int)$cfgRec['alternative_source_pid'] ?: $cfgRec['pid'];
@@ -341,7 +341,7 @@ class CrawlerHook
                 // If dir, read content and create new pending items for log:
                 // Select files and directories in path:
                 $extList = implode(',', GeneralUtility::trimExplode(',', $cfgRec['extensions'], true));
-                $fileArr = array();
+                $fileArr = [];
                 $files = GeneralUtility::getAllFilesAndFoldersInPath($fileArr, $readpath, $extList, 0, 0);
                 $directoryList = GeneralUtility::get_dirs($readpath);
                 if (is_array($directoryList) && $params['depth'] < $cfgRec['depth']) {
@@ -357,12 +357,12 @@ class CrawlerHook
                     $this->instanceCounter++;
                     if ($path !== $params['url']) {
                         // Parameters:
-                        $nparams = array(
+                        $nparams = [
                             'indexConfigUid' => $cfgRec['uid'],
                             'url' => $path,
-                            'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                            'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                             'depth' => $params['depth'] + 1
-                        );
+                        ];
                         $pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid'], $GLOBALS['EXEC_TIME'] + $this->instanceCounter * $this->secondsPerExternalUrl);
                     }
                 }
@@ -383,9 +383,9 @@ class CrawlerHook
     {
         // Init session data array if not already:
         if (!is_array($session_data)) {
-            $session_data = array(
-                'urlLog' => array($params['url'])
-            );
+            $session_data = [
+                'urlLog' => [$params['url']]
+            ];
         }
         // Index the URL:
         $rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
@@ -398,12 +398,12 @@ class CrawlerHook
                         $this->instanceCounter++;
                         $session_data['urlLog'][] = $url;
                         // Parameters:
-                        $nparams = array(
+                        $nparams = [
                             'indexConfigUid' => $cfgRec['uid'],
                             'url' => $url,
-                            'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                            'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                             'depth' => $params['depth'] + 1
-                        );
+                        ];
                         $pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid'], $GLOBALS['EXEC_TIME'] + $this->instanceCounter * $this->secondsPerExternalUrl);
                     }
                 }
@@ -427,14 +427,14 @@ class CrawlerHook
         // Get array of URLs from page:
         $pageRow = BackendUtility::getRecord('pages', $pageUid);
         $res = $pObj->getUrlsForPageRow($pageRow);
-        $duplicateTrack = array();
+        $duplicateTrack = [];
         // Registry for duplicates
-        $downloadUrls = array();
+        $downloadUrls = [];
         // Dummy.
         // Submit URLs:
         if (!empty($res)) {
             foreach ($res as $paramSetKey => $vv) {
-                $urlList = $pObj->urlListFromUrlArray($vv, $pageRow, $GLOBALS['EXEC_TIME'], 30, 1, 0, $duplicateTrack, $downloadUrls, array('tx_indexedsearch_reindex'));
+                $urlList = $pObj->urlListFromUrlArray($vv, $pageRow, $GLOBALS['EXEC_TIME'], 30, 1, 0, $duplicateTrack, $downloadUrls, ['tx_indexedsearch_reindex']);
             }
         }
         // Add subpages to log now:
@@ -454,12 +454,12 @@ class CrawlerHook
                 $url = 'pages:' . $row['uid'] . ': ' . $row['title'];
                 $session_data['urlLog'][] = $url;
                 // Parameters:
-                $nparams = array(
+                $nparams = [
                     'indexConfigUid' => $cfgRec['uid'],
                     'url' => $row['uid'],
-                    'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+                    'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']'],
                     'depth' => $params['depth'] + 1
-                );
+                ];
                 $pObj->addQueueEntry_callBack(
                     $cfgRec['set_id'],
                     $nparams,
@@ -604,7 +604,7 @@ class CrawlerHook
         }
         $baseHref = rtrim($baseHref, '/');
         // Get URLs on this page:
-        $subUrls = array();
+        $subUrls = [];
         $list = $indexerObj->extractHyperLinks($indexerObj->indexExternalUrl_content);
         // Traverse links:
         foreach ($list as $count => $linkInfo) {
@@ -674,7 +674,7 @@ class CrawlerHook
         // This generates the constants/config + hierarchy info for the template.
         $tmpl->runThroughTemplates($rootLine, 0);
         // Root line uids
-        $rootline_uids = array();
+        $rootline_uids = [];
         foreach ($tmpl->rootLine as $rlkey => $rldat) {
             $rootline_uids[$rlkey] = $rldat['uid'];
         }
@@ -735,12 +735,12 @@ class CrawlerHook
      */
     public function addQueueEntryForHook($cfgRec, $title)
     {
-        $nparams = array(
+        $nparams = [
             'indexConfigUid' => $cfgRec['uid'],
             // This must ALWAYS be the cfgRec uid!
             'url' => $title,
-            'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']')
-        );
+            'procInstructions' => ['[Index Cfg UID#' . $cfgRec['uid'] . ']']
+        ];
         $this->pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid']);
     }
 
@@ -768,14 +768,14 @@ class CrawlerHook
         }
 
         $pHashesToDelete = array_map('intval', array_column($oldPhashRows, 'phash'));
-        $tables = array(
+        $tables = [
             'index_debug',
             'index_fulltext',
             'index_grlist',
             'index_phash',
             'index_rel',
             'index_section',
-        );
+        ];
         foreach ($tables as $table) {
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->delete($table)

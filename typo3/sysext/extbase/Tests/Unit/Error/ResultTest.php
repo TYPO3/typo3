@@ -41,11 +41,11 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function dataTypes()
     {
-        return array(
-            array('Error', 'Errors'),
-            array('Warning', 'Warnings'),
-            array('Notice', 'Notices')
-        );
+        return [
+            ['Error', 'Errors'],
+            ['Warning', 'Warnings'],
+            ['Notice', 'Notices']
+        ];
     }
 
     /**
@@ -69,7 +69,7 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->{$addMethodName}($message);
         $getterMethodName = 'get' . $dataTypeInPlural;
-        $this->assertEquals(array($message), $this->result->{$getterMethodName}());
+        $this->assertEquals([$message], $this->result->{$getterMethodName}());
     }
 
     /**
@@ -84,7 +84,7 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->forProperty('foo')->{$addMethodName}($message);
         $getterMethodName = 'get' . $dataTypeInPlural;
-        $this->assertEquals(array(), $this->result->{$getterMethodName}());
+        $this->assertEquals([], $this->result->{$getterMethodName}());
     }
 
     /**
@@ -196,12 +196,12 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->result->{$addMethodName}($message4);
         $this->result->{$addMethodName}($message5);
         $getMethodName = 'getFlattened' . $dataTypeInPlural;
-        $expected = array(
-            '' => array($message4, $message5),
-            'foo' => array($message3),
-            'foo.bar' => array($message1),
-            'foo.baz' => array($message2)
-        );
+        $expected = [
+            '' => [$message4, $message5],
+            'foo' => [$message3],
+            'foo.bar' => [$message1],
+            'foo.baz' => [$message2]
+        ];
         $this->assertEquals($expected, $this->result->{$getMethodName}());
     }
 
@@ -219,10 +219,10 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->result->forProperty('foo.bar')->{$addMethodName}($message1);
         $this->result->forProperty('foo.baz')->{$addMethodName}($message2);
         $getMethodName = 'getFlattened' . $dataTypeInPlural;
-        $expected = array(
-            'foo.bar' => array($message1),
-            'foo.baz' => array($message2)
-        );
+        $expected = [
+            'foo.bar' => [$message1],
+            'foo.baz' => [$message2]
+        ];
         $this->assertEquals($expected, $this->result->{$getMethodName}());
     }
 
@@ -251,11 +251,11 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $otherResult->forProperty('foo')->addError($error2);
         $otherResult->addError($error3);
         $this->result->merge($otherResult);
-        $this->assertSame(array($notice1), $this->result->getNotices(), 'Notices are not merged correctly without recursion');
-        $this->assertSame(array($notice3), $this->result->forProperty('foo')->getNotices(), 'Original sub-notices are overridden.');
-        $this->assertSame(array($notice2), $this->result->forProperty('foo')->forProperty('bar')->getNotices(), 'Sub-notices are not copied.');
-        $this->assertSame(array($warning2, $warning3, $warning1), $this->result->getWarnings());
-        $this->assertSame(array($error3), $this->result->getErrors());
-        $this->assertSame(array($error1, $error2), $this->result->forProperty('foo')->getErrors());
+        $this->assertSame([$notice1], $this->result->getNotices(), 'Notices are not merged correctly without recursion');
+        $this->assertSame([$notice3], $this->result->forProperty('foo')->getNotices(), 'Original sub-notices are overridden.');
+        $this->assertSame([$notice2], $this->result->forProperty('foo')->forProperty('bar')->getNotices(), 'Sub-notices are not copied.');
+        $this->assertSame([$warning2, $warning3, $warning1], $this->result->getWarnings());
+        $this->assertSame([$error3], $this->result->getErrors());
+        $this->assertSame([$error1, $error2], $this->result->forProperty('foo')->getErrors());
     }
 }

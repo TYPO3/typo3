@@ -220,7 +220,7 @@ class CreateFolderController extends AbstractModule
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
             $pageContent .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('online_media')) . '" method="post" name="editform2">';
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
-            $fileExtList = array();
+            $fileExtList = [];
             $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
             foreach ($onlineMediaFileExt as $fileExt) {
                 if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
@@ -259,7 +259,7 @@ class CreateFolderController extends AbstractModule
 
             $pageContent .= '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform3">';
             // Create a list of allowed file extensions with the nice format "*.jpg, *.gif" etc.
-            $fileExtList = array();
+            $fileExtList = [];
             $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
             foreach ($textFileExt as $fileExt) {
                 if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {

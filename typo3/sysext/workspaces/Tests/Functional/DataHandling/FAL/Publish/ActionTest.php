@@ -153,9 +153,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array(self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast),
-            )
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast],
+            ]
         );
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 

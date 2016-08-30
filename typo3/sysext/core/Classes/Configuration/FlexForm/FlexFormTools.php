@@ -34,14 +34,14 @@ class FlexFormTools
      *
      * @var array
      */
-    public $traverseFlexFormXMLData_DS = array();
+    public $traverseFlexFormXMLData_DS = [];
 
     /**
      * Contains data array when traversing flexform
      *
      * @var array
      */
-    public $traverseFlexFormXMLData_Data = array();
+    public $traverseFlexFormXMLData_Data = [];
 
     /**
      * Options for array2xml() for flexform.
@@ -49,8 +49,8 @@ class FlexFormTools
      *
      * @var array
      */
-    public $flexArray2Xml_options = array(
-        'parentTagMap' => array(
+    public $flexArray2Xml_options = [
+        'parentTagMap' => [
             'data' => 'sheet',
             'sheet' => 'language',
             'language' => 'field',
@@ -59,9 +59,9 @@ class FlexFormTools
             'field:el' => 'el',
             'el:_IS_NUM' => 'section',
             'section' => 'itemType'
-        ),
+        ],
         'disableTypeAttrib' => 2
-    );
+    ];
 
     /**
      * Reference to object called
@@ -75,7 +75,7 @@ class FlexFormTools
      *
      * @var array
      */
-    public $cleanFlexFormXML = array();
+    public $cleanFlexFormXML = [];
 
     /**
      * Handler for Flex Forms
@@ -106,14 +106,14 @@ class FlexFormTools
             if (is_array($dataStructArray['sheets'])) {
                 $sKeys = array_keys($dataStructArray['sheets']);
             } else {
-                $sKeys = array('sDEF');
+                $sKeys = ['sDEF'];
             }
             // Traverse languages:
             foreach ($sKeys as $sheet) {
                 list($dataStruct, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sheet);
                 // Render sheet:
                 if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
-                    $PA['vKeys'] = array('DEF');
+                    $PA['vKeys'] = ['DEF'];
                     $PA['lKey'] = 'lDEF';
                     $PA['callBackMethod_value'] = $callBackMethod_value;
                     $PA['table'] = $table;
@@ -153,7 +153,7 @@ class FlexFormTools
                             $cc = 0;
                             if (is_array($editData[$key]['el'])) {
                                 if ($this->reNumberIndexesOfSectionData) {
-                                    $temp = array();
+                                    $temp = [];
                                     $c3 = 0;
                                     foreach ($editData[$key]['el'] as $v3) {
                                         $temp[++$c3] = $v3;
@@ -167,7 +167,7 @@ class FlexFormTools
                                         $theDat = $v3[$theType];
                                         $newSectionEl = $value['el'][$theType];
                                         if (is_array($newSectionEl)) {
-                                            $this->traverseFlexFormXMLData_recurse(array($theType => $newSectionEl), array($theType => $theDat), $PA, $path . '/' . $key . '/el/' . $cc);
+                                            $this->traverseFlexFormXMLData_recurse([$theType => $newSectionEl], [$theType => $theDat], $PA, $path . '/' . $key . '/el/' . $cc);
                                         }
                                     }
                                 }
@@ -184,7 +184,7 @@ class FlexFormTools
                             $vKey = 'v' . $vKey;
                             // Call back
                             if ($PA['callBackMethod_value'] && is_array($editData) && is_array($editData[$key])) {
-                                $this->executeCallBackMethod($PA['callBackMethod_value'], array($value, $editData[$key][$vKey], $PA, $path . '/' . $key . '/' . $vKey, $this));
+                                $this->executeCallBackMethod($PA['callBackMethod_value'], [$value, $editData[$key][$vKey], $PA, $path . '/' . $key . '/' . $vKey, $this]);
                             }
                         }
                     }
@@ -202,7 +202,7 @@ class FlexFormTools
      */
     protected function executeCallBackMethod($methodName, array $parameterArray)
     {
-        return call_user_func_array(array($this->callBackObj, $methodName), $parameterArray);
+        return call_user_func_array([$this->callBackObj, $methodName], $parameterArray);
     }
 
     /***********************************
@@ -222,7 +222,7 @@ class FlexFormTools
     public function cleanFlexFormXML($table, $field, $row)
     {
         // New structure:
-        $this->cleanFlexFormXML = array();
+        $this->cleanFlexFormXML = [];
         // Create and call iterator object:
         $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
         $flexObj->reNumberIndexesOfSectionData = true;
@@ -297,7 +297,7 @@ class FlexFormTools
                     return true;
                 }
                 if (!isset($array[$key])) {
-                    $array[$key] = array();
+                    $array[$key] = [];
                 }
                 return $this->setArrayValueByPath($pathArray, $array[$key], $value);
             }

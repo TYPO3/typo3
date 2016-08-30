@@ -55,7 +55,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
         $mock = $this->getMockBuilder(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $mock->checkPid = true;
         $mock->checkPid_value = null;

@@ -32,7 +32,7 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\IndexedSearch\Indexer::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
     }
 
@@ -55,9 +55,9 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $temporaryFileName = tempnam(PATH_site . 'typo3temp/var/tests/', 't3unit-');
         $this->testFilesToDelete[] = $temporaryFileName;
         $html = 'test <a href="testfile">test</a> test';
-        $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = array(
+        $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = [
             \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $temporaryFileName,
-        );
+        ];
         $result = $this->subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
         $this->assertEquals($temporaryFileName, $result[0]['localPath']);

@@ -50,7 +50,7 @@ class BitmapIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup()
     {
-        $this->subject->prepareIconMarkup($this->icon, array('source' => 'fileadmin/foo.png'));
+        $this->subject->prepareIconMarkup($this->icon, ['source' => 'fileadmin/foo.png']);
         $this->assertEquals('<img src="fileadmin/foo.png" width="16" height="16" />', $this->icon->getMarkup());
     }
 
@@ -59,7 +59,7 @@ class BitmapIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup()
     {
-        $this->subject->prepareIconMarkup($this->icon, array('source' => '/fileadmin/foo.png'));
+        $this->subject->prepareIconMarkup($this->icon, ['source' => '/fileadmin/foo.png']);
         $this->assertEquals('<img src="/fileadmin/foo.png" width="16" height="16" />', $this->icon->getMarkup());
     }
 
@@ -68,7 +68,7 @@ class BitmapIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareIconMarkupEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup()
     {
-        $this->subject->prepareIconMarkup($this->icon, array('source' => 'EXT:core/Resources/Public/Images/foo.png'));
+        $this->subject->prepareIconMarkup($this->icon, ['source' => 'EXT:core/Resources/Public/Images/foo.png']);
         $this->assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.png" width="16" height="16" />', $this->icon->getMarkup());
     }
 }

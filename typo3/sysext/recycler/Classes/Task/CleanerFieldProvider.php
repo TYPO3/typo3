@@ -39,19 +39,19 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
             $taskInfo['RecyclerCleanerPeriod'] = $task->getPeriod();
         }
 
-        $additionalFields['period'] = array(
+        $additionalFields['period'] = [
             'code' => '<input type="text" class="form-control" name="tx_scheduler[RecyclerCleanerPeriod]" value="' . $taskInfo['RecyclerCleanerPeriod'] . '">',
             'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskPeriod',
             'cshKey' => '',
             'cshLabel' => 'task_recyclerCleaner_selectedPeriod'
-        );
+        ];
 
-        $additionalFields['tca'] = array(
+        $additionalFields['tca'] = [
             'code' => $this->getTcaSelectHtml($taskInfo['RecyclerCleanerTCA']),
             'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskTCA',
             'cshKey' => '',
             'cshLabel' => 'task_recyclerCleaner_selectedTables'
-        );
+        ];
 
         return $additionalFields;
     }
@@ -62,14 +62,14 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      * @param array $selectedTables
      * @return string
      */
-    protected function getTcaSelectHtml($selectedTables = array())
+    protected function getTcaSelectHtml($selectedTables = [])
     {
         if (!is_array($selectedTables)) {
-            $selectedTables = array();
+            $selectedTables = [];
         }
         $tcaSelectHtml = '<select name="tx_scheduler[RecyclerCleanerTCA][]" multiple="multiple" class="form-control" size="10">';
 
-        $options = array();
+        $options = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             if (!$tableConf['ctrl']['adminOnly'] && !empty($tableConf['ctrl']['delete'])) {
                 $selected = in_array($table, $selectedTables, true) ? ' selected="selected"' : '';

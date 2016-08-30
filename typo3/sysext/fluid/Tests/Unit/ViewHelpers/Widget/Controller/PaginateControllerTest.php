@@ -57,7 +57,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, array('dummy'), array('someType'));
+        $this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, ['dummy'], ['someType']);
         $this->querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $this->query->_set('querySettings', $this->querySettings);
         $this->persistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
@@ -66,7 +66,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         $this->query->_set('dataMapper', $this->dataMapper);
         $this->controller = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
-            array('dummy'), array(), '', false);
+            ['dummy'], [], '', false);
         $this->controller->_set('view', $this->createMock(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface::class));
     }
 
@@ -166,7 +166,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function acceptArrayAsObjects()
     {
-        $objects = array();
+        $objects = [];
         $this->controller->_set('objects', $objects);
         $this->controller->indexAction();
         $this->assertSame($objects, $this->controller->_get('objects'));
@@ -194,7 +194,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
-        $expectedPortion = array();
+        $expectedPortion = [];
         for ($j = 0; $j <= 9; $j++) {
             $expectedPortion[] = $objects->toArray()[$j];
         }
@@ -213,7 +213,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
-        $expectedPortion = array();
+        $expectedPortion = [];
         for ($j = 10; $j <= 19; $j++) {
             $expectedPortion[] = $objects->toArray()[$j];
         }
@@ -225,13 +225,13 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareObjectsSliceReturnsCorrectPortionForArrayAndFirstPage()
     {
-        $objects = array();
+        $objects = [];
         for ($i = 0; $i <= 25; $i++) {
             $item = new \stdClass;
             $objects[] = $item;
         }
         $this->controller->_set('objects', $objects);
-        $expectedPortion = array();
+        $expectedPortion = [];
         for ($j = 0; $j <= 9; $j++) {
             $expectedPortion = array_slice($objects, 0, 10);
         }
@@ -244,13 +244,13 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function prepareObjectsSliceReturnsCorrectPortionForArrayAndSecondPage()
     {
         $this->controller->_set('currentPage', 2);
-        $objects = array();
+        $objects = [];
         for ($i = 0; $i <= 55; $i++) {
             $item = new \stdClass;
             $objects[] = $item;
         }
         $this->controller->_set('objects', $objects);
-        $expectedPortion = array();
+        $expectedPortion = [];
         for ($j = 10; $j <= 19; $j++) {
             $expectedPortion = array_slice($objects, 10, 10);
         }

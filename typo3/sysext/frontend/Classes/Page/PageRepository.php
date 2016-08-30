@@ -41,7 +41,7 @@ class PageRepository
     /**
      * @var array
      */
-    public $urltypes = array('', 'http://', 'ftp://', 'mailto:', 'https://');
+    public $urltypes = ['', 'http://', 'ftp://', 'mailto:', 'https://'];
 
     /**
      * This is not the final clauses. There will normally be conditions for the
@@ -88,7 +88,7 @@ class PageRepository
     /**
      * @var array
      */
-    public $workspaceCache = array();
+    public $workspaceCache = [];
 
     /**
      * Error string set by getRootLine()
@@ -107,42 +107,42 @@ class PageRepository
     /**
      * @var array
      */
-    protected $cache_getRootLine = array();
+    protected $cache_getRootLine = [];
 
     /**
      * @var array
      */
-    protected $cache_getPage = array();
+    protected $cache_getPage = [];
 
     /**
      * @var array
      */
-    protected $cache_getPage_noCheck = array();
+    protected $cache_getPage_noCheck = [];
 
     /**
      * @var array
      */
-    protected $cache_getPageIdFromAlias = array();
+    protected $cache_getPageIdFromAlias = [];
 
     /**
      * @var array
      */
-    protected $cache_getMountPointInfo = array();
+    protected $cache_getMountPointInfo = [];
 
     /**
      * @var array
      */
-    protected $tableNamesAllowedOnRootLevel = array(
+    protected $tableNamesAllowedOnRootLevel = [
         'sys_file_metadata',
         'sys_category',
-    );
+    ];
 
     /**
      * Computed properties that are added to database rows.
      *
      * @var array
      */
-    protected $computedPropertyNames = array(
+    protected $computedPropertyNames = [
         '_LOCALIZED_UID',
         '_MP_PARAM',
         '_ORIG_uid',
@@ -150,7 +150,7 @@ class PageRepository
         '_PAGES_OVERLAY',
         '_PAGES_OVERLAY_UID',
         '_PAGES_OVERLAY_LANGUAGE',
-    );
+    ];
 
     /**
      * Named constants for "magic numbers" of the field doktype
@@ -205,7 +205,7 @@ class PageRepository
             // add starttime / endtime, and check for hidden/deleted
             // Filter out new/deleted place-holder pages in case we are NOT in a
             // versioning preview (that means we are online!)
-            $this->where_hid_del = $this->enableFields('pages', $show_hidden, array('fe_group' => true), true);
+            $this->where_hid_del = $this->enableFields('pages', $show_hidden, ['fe_group' => true], true);
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageRepository::class]['init'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageRepository::class]['init'] as $classRef) {
@@ -260,7 +260,7 @@ class PageRepository
         if (is_array($this->cache_getPage[$uid][$cacheKey])) {
             return $this->cache_getPage[$uid][$cacheKey];
         }
-        $result = array();
+        $result = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->select('*')
@@ -309,7 +309,7 @@ class PageRepository
             ->execute()
             ->fetch();
 
-        $result = array();
+        $result = [];
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
@@ -400,9 +400,9 @@ class PageRepository
      */
     public function getPageOverlay($pageInput, $lUid = -1)
     {
-        $rows = $this->getPagesOverlay(array($pageInput), $lUid);
+        $rows = $this->getPagesOverlay([$pageInput], $lUid);
         // Always an array in return
-        return isset($rows[0]) ? $rows[0] : array();
+        return isset($rows[0]) ? $rows[0] : [];
     }
 
     /**
@@ -419,7 +419,7 @@ class PageRepository
     public function getPagesOverlay(array $pagesInput, $lUid = -1)
     {
         if (empty($pagesInput)) {
-            return array();
+            return [];
         }
         // Initialize:
         if ($lUid < 0) {
@@ -441,7 +441,7 @@ class PageRepository
         // If language UID is different from zero, do overlay:
         if ($lUid) {
             $fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'], true);
-            $page_ids = array();
+            $page_ids = [];
 
             $origPage = reset($pagesInput);
             if (is_array($origPage)) {
@@ -479,7 +479,7 @@ class PageRepository
                     )
                     ->execute();
 
-                $overlays = array();
+                $overlays = [];
                 while ($row = $result->fetch()) {
                     $this->versionOL('pages_language_overlay', $row);
                     if (is_array($row)) {
@@ -496,7 +496,7 @@ class PageRepository
             }
         }
         // Create output:
-        $pagesOutput = array();
+        $pagesOutput = [];
         foreach ($pagesInput as $key => $origPage) {
             if (is_array($origPage)) {
                 $pagesOutput[$key] = $origPage;
@@ -935,10 +935,10 @@ class PageRepository
                 if (substr($this->error_getRootLine, -7) === 'uid -1.') {
                     $this->error_getRootLine_failPid = -1;
                 }
-                return array();
+                return [];
             /** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
             } elseif ($ex->getCode() === 1343589451) {
-                return array();
+                return [];
             }
             throw $ex;
         }
@@ -1004,7 +1004,7 @@ class PageRepository
      * @return mixed Returns FALSE if no mount point was found, "-1" if there should have been one, but no connection to it, otherwise an array with information about mount pid and modes.
      * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
      */
-    public function getMountPointInfo($pageId, $pageRec = false, $prevMountPids = array(), $firstPageUid = 0)
+    public function getMountPointInfo($pageId, $pageRec = false, $prevMountPids = [], $firstPageUid = 0)
     {
         $result = false;
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
@@ -1059,13 +1059,13 @@ class PageRepository
                     $prevMountPids[] = $mount_pid;
                     $recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
                     // Return mount point information:
-                    $result = $recursiveMountPid ?: array(
+                    $result = $recursiveMountPid ?: [
                         'mount_pid' => $mount_pid,
                         'overlay' => $pageRec['mount_pid_ol'],
                         'MPvar' => $mount_pid . '-' . $firstPageUid,
                         'mount_point_rec' => $pageRec,
                         'mount_pid_rec' => $mountRec
-                    );
+                    ];
                 } else {
                     // Means, there SHOULD have been a mount point, but there was none!
                     $result = -1;
@@ -1268,7 +1268,7 @@ class PageRepository
      */
     public static function storeHash($hash, $data, $ident, $lifetime = 0)
     {
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), (int)$lifetime);
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], (int)$lifetime);
     }
 
     /**
@@ -1799,7 +1799,7 @@ class PageRepository
              * We just catch the exception here
              * Reasoning: There is nothing an editor or even admin could do
              */
-            return array();
+            return [];
         } catch (\InvalidArgumentException $e) {
             /**
              * The storage does not exist anymore
@@ -1807,7 +1807,7 @@ class PageRepository
              */
             $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
             GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-            return array();
+            return [];
         }
 
         $localizedId = null;
@@ -1879,7 +1879,7 @@ class PageRepository
                 $checkValue = '';
             }
 
-            if ($checkValue === array() || !is_array($checkValue) && trim($checkValue) === '') {
+            if ($checkValue === [] || !is_array($checkValue) && trim($checkValue) === '') {
                 $shouldFieldBeOverlaid = false;
             }
         }

@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Compatibility Mode for TYPO3 CMS 7.x',
     'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to v8 yet.',
     'category' => 'be',
@@ -11,15 +11,15 @@ $EM_CONF[$_EXTKEY] = array(
     'author_email' => '',
     'author_company' => '',
     'version' => '8.3.0',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '8.3.0-8.3.99',
-        ),
-        'conflicts' => array(
+        ],
+        'conflicts' => [
             'compatibility6' => '0.0.0',
-        ),
-        'suggests' => array(
+        ],
+        'suggests' => [
             'indexed_search'
-        ),
-    ),
-);
+        ],
+    ],
+];

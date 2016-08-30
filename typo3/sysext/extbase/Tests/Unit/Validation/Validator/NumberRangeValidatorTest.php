@@ -33,10 +33,10 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange()
     {
-        $options = array('minimum' => 0, 'maximum' => 1000);
+        $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(array('dummy'))
-            ->setConstructorArgs(array($options))
+            ->setMethods(['dummy'])
+            ->setConstructorArgs([$options])
             ->getMock();
         $this->assertFalse($validator->validate(10.5)->hasErrors());
     }
@@ -46,10 +46,10 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function numberRangeValidatorReturnsErrorForANumberOutOfRange()
     {
-        $options = array('minimum' => 0, 'maximum' => 1000);
+        $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(array('translateErrorMessage'))
-            ->setConstructorArgs(array($options))
+            ->setMethods(['translateErrorMessage'])
+            ->setConstructorArgs([$options])
             ->getMock();
         $this->assertTrue($validator->validate(1000.1)->hasErrors());
     }
@@ -59,10 +59,10 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange()
     {
-        $options = array('minimum' => 1000, 'maximum' => 0);
+        $options = ['minimum' => 1000, 'maximum' => 0];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(array('dummy'))
-            ->setConstructorArgs(array($options))
+            ->setMethods(['dummy'])
+            ->setConstructorArgs([$options])
             ->getMock();
         $this->assertFalse($validator->validate(100)->hasErrors());
     }
@@ -72,10 +72,10 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function numberRangeValidatorReturnsErrorForAString()
     {
-        $options = array('minimum' => 0, 'maximum' => 1000);
+        $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(array('translateErrorMessage'))
-            ->setConstructorArgs(array($options))
+            ->setMethods(['translateErrorMessage'])
+            ->setConstructorArgs([$options])
             ->getMock();
         $this->assertTrue($validator->validate('not a number')->hasErrors());
     }

@@ -29,13 +29,13 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider()
     {
-        return array(
-            'negativeValue' => array(0, -10),
-            'normalValue' => array(30, 30),
-            'veryHighValue' => array(2000000000, PHP_INT_MAX),
-            'zeroValue' => array(0, 0),
-            'anotherNormalValue' => array(12309, 12309)
-        );
+        return [
+            'negativeValue' => [0, -10],
+            'normalValue' => [30, 30],
+            'veryHighValue' => [2000000000, PHP_INT_MAX],
+            'zeroValue' => [0, 0],
+            'anotherNormalValue' => [12309, 12309]
+        ];
     }
 
     /**
@@ -84,15 +84,15 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function functionCanBeInterpretedAsIntegerValidDataProvider()
     {
-        return array(
-            'int' => array(32425),
-            'negative int' => array(-32425),
-            'largest int' => array(PHP_INT_MAX),
-            'int as string' => array('32425'),
-            'negative int as string' => array('-32425'),
-            'zero' => array(0),
-            'zero as string' => array('0')
-        );
+        return [
+            'int' => [32425],
+            'negative int' => [-32425],
+            'largest int' => [PHP_INT_MAX],
+            'int as string' => ['32425'],
+            'negative int as string' => ['-32425'],
+            'zero' => [0],
+            'zero as string' => ['0']
+        ];
     }
 
     /**
@@ -117,31 +117,31 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $objectWithNonNumericalStringRepresentation->setString('foo');
         $objectWithEmptyStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
         $objectWithEmptyStringRepresentation->setString('');
-        return array(
-            'int as string with leading zero' => array('01234'),
-            'positive int as string with plus modifier' => array('+1234'),
-            'negative int as string with leading zero' => array('-01234'),
-            'largest int plus one' => array(PHP_INT_MAX + 1),
-            'string' => array('testInt'),
-            'empty string' => array(''),
-            'int in string' => array('5 times of testInt'),
-            'int as string with space after' => array('5 '),
-            'int as string with space before' => array(' 5'),
-            'int as string with many spaces before' => array('     5'),
-            'float' => array(3.14159),
-            'float as string' => array('3.14159'),
-            'float as string only a dot' => array('10.'),
-            'float as string trailing zero would evaluate to int 10' => array('10.0'),
-            'float as string trailing zeros	 would evaluate to int 10' => array('10.00'),
-            'null' => array(null),
-            'empty array' => array(array()),
-            'int in array' => array(array(32425)),
-            'int as string in array' => array(array('32425')),
-            'object without string representation' => array(new \stdClass()),
-            'object with numerical string representation' => array($objectWithNumericalStringRepresentation),
-            'object without numerical string representation' => array($objectWithNonNumericalStringRepresentation),
-            'object with empty string representation' => array($objectWithEmptyStringRepresentation)
-        );
+        return [
+            'int as string with leading zero' => ['01234'],
+            'positive int as string with plus modifier' => ['+1234'],
+            'negative int as string with leading zero' => ['-01234'],
+            'largest int plus one' => [PHP_INT_MAX + 1],
+            'string' => ['testInt'],
+            'empty string' => [''],
+            'int in string' => ['5 times of testInt'],
+            'int as string with space after' => ['5 '],
+            'int as string with space before' => [' 5'],
+            'int as string with many spaces before' => ['     5'],
+            'float' => [3.14159],
+            'float as string' => ['3.14159'],
+            'float as string only a dot' => ['10.'],
+            'float as string trailing zero would evaluate to int 10' => ['10.0'],
+            'float as string trailing zeros	 would evaluate to int 10' => ['10.00'],
+            'null' => [null],
+            'empty array' => [[]],
+            'int in array' => [[32425]],
+            'int as string in array' => [['32425']],
+            'object without string representation' => [new \stdClass()],
+            'object with numerical string representation' => [$objectWithNumericalStringRepresentation],
+            'object without numerical string representation' => [$objectWithNonNumericalStringRepresentation],
+            'object with empty string representation' => [$objectWithEmptyStringRepresentation]
+        ];
     }
 
     /**
@@ -165,18 +165,18 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         // testcases for Integer apply for float as well
         $intTestcases = $this->functionCanBeInterpretedAsIntegerValidDataProvider();
-        $floatTestcases = array(
-            'zero as float' => array((float) 0),
-            'negative float' => array((float) -7.5),
-            'negative float as string with exp #1' => array('-7.5e3'),
-            'negative float as string with exp #2' => array('-7.5e03'),
-            'negative float as string with exp #3' => array('-7.5e-3'),
-            'float' => array(3.14159),
-            'float as string' => array('3.14159'),
-            'float as string only a dot' => array('10.'),
-            'float as string trailing zero' => array('10.0'),
-            'float as string trailing zeros' => array('10.00'),
-        );
+        $floatTestcases = [
+            'zero as float' => [(float) 0],
+            'negative float' => [(float) -7.5],
+            'negative float as string with exp #1' => ['-7.5e3'],
+            'negative float as string with exp #2' => ['-7.5e03'],
+            'negative float as string with exp #3' => ['-7.5e-3'],
+            'float' => [3.14159],
+            'float as string' => ['3.14159'],
+            'float as string only a dot' => ['10.'],
+            'float as string trailing zero' => ['10.0'],
+            'float as string trailing zeros' => ['10.00'],
+        ];
         return array_merge($intTestcases, $floatTestcases);
     }
 
@@ -202,27 +202,27 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $objectWithNonNumericalStringRepresentation->setString('foo');
         $objectWithEmptyStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
         $objectWithEmptyStringRepresentation->setString('');
-        return array(
+        return [
             // 'int as string with leading zero' => array('01234'),
             // 'positive int as string with plus modifier' => array('+1234'),
             // 'negative int as string with leading zero' => array('-01234'),
             // 'largest int plus one' => array(PHP_INT_MAX + 1),
-            'string' => array('testInt'),
-            'empty string' => array(''),
-            'int in string' => array('5 times of testInt'),
-            'int as string with space after' => array('5 '),
-            'int as string with space before' => array(' 5'),
-            'int as string with many spaces before' => array('     5'),
-            'null' => array(null),
-            'empty array' => array(array()),
-            'int in array' => array(array(32425)),
-            'int as string in array' => array(array('32425')),
-            'negative float as string with invalid chars in exponent' => array('-7.5eX3'),
-            'object without string representation' => array(new \stdClass()),
-            'object with numerical string representation' => array($objectWithNumericalStringRepresentation),
-            'object without numerical string representation' => array($objectWithNonNumericalStringRepresentation),
-            'object with empty string representation' => array($objectWithEmptyStringRepresentation)
-        );
+            'string' => ['testInt'],
+            'empty string' => [''],
+            'int in string' => ['5 times of testInt'],
+            'int as string with space after' => ['5 '],
+            'int as string with space before' => [' 5'],
+            'int as string with many spaces before' => ['     5'],
+            'null' => [null],
+            'empty array' => [[]],
+            'int in array' => [[32425]],
+            'int as string in array' => [['32425']],
+            'negative float as string with invalid chars in exponent' => ['-7.5eX3'],
+            'object without string representation' => [new \stdClass()],
+            'object with numerical string representation' => [$objectWithNumericalStringRepresentation],
+            'object without numerical string representation' => [$objectWithNonNumericalStringRepresentation],
+            'object with empty string representation' => [$objectWithEmptyStringRepresentation]
+        ];
     }
 
     /**
@@ -244,21 +244,21 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function calculateWithPriorityToAdditionAndSubtractionDataProvider()
     {
-        return array(
-            'add' => array(9, '6 + 3'),
-            'substract with positive result' => array(3, '6 - 3'),
-            'substract with negative result' => array(-3, '3 - 6'),
-            'multiply' => array(6, '2 * 3'),
-            'divide' => array(2.5, '5 / 2'),
-            'modulus' => array(1, '5 % 2'),
-            'power' => array(8, '2 ^ 3'),
-            'three operands with non integer result' => array(6.5, '5 + 3 / 2'),
-            'three operands with power' => array(14, '5 + 3 ^ 2'),
-            'three operads with modulus' => array(4, '5 % 2 + 3'),
-            'four operands' => array(3, '2 + 6 / 2 - 2'),
-            'division by zero when dividing' => array('ERROR: dividing by zero', '2 / 0'),
-            'division by zero with modulus' => array('ERROR: dividing by zero', '2 % 0')
-        );
+        return [
+            'add' => [9, '6 + 3'],
+            'substract with positive result' => [3, '6 - 3'],
+            'substract with negative result' => [-3, '3 - 6'],
+            'multiply' => [6, '2 * 3'],
+            'divide' => [2.5, '5 / 2'],
+            'modulus' => [1, '5 % 2'],
+            'power' => [8, '2 ^ 3'],
+            'three operands with non integer result' => [6.5, '5 + 3 / 2'],
+            'three operands with power' => [14, '5 + 3 ^ 2'],
+            'three operads with modulus' => [4, '5 % 2 + 3'],
+            'four operands' => [3, '2 + 6 / 2 - 2'],
+            'division by zero when dividing' => ['ERROR: dividing by zero', '2 / 0'],
+            'division by zero with modulus' => ['ERROR: dividing by zero', '2 % 0']
+        ];
     }
 
     /**
@@ -280,13 +280,13 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function calculateWithParenthesesDataProvider()
     {
-        return array(
-            'starts with parenthesis' => array(18, '(6 + 3) * 2'),
-            'ends with parenthesis' => array(6, '2 * (6 - 3)'),
-            'multiple parentheses' => array(-6, '(3 - 6) * (4 - 2)'),
-            'nested parentheses' => array(22, '2 * (3 + 2 + (3 * 2))'),
-            'parenthesis with division' => array(15, '5 / 2 * (3 * 2)')
-        );
+        return [
+            'starts with parenthesis' => [18, '(6 + 3) * 2'],
+            'ends with parenthesis' => [6, '2 * (6 - 3)'],
+            'multiple parentheses' => [-6, '(3 - 6) * (4 - 2)'],
+            'nested parentheses' => [22, '2 * (3 + 2 + (3 * 2))'],
+            'parenthesis with division' => [15, '5 / 2 * (3 * 2)']
+        ];
     }
 
     /**
@@ -338,15 +338,15 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isIntegerInRangeRejectsOtherDataTypesDataProvider()
     {
-        return array(
-            'negative integer' => array(-1),
-            'float' => array(1.5),
-            'string' => array('string'),
-            'array' => array(array()),
-            'object' => array(new \stdClass()),
-            'boolean FALSE' => array(false),
-            'NULL' => array(null)
-        );
+        return [
+            'negative integer' => [-1],
+            'float' => [1.5],
+            'string' => ['string'],
+            'array' => [[]],
+            'object' => [new \stdClass()],
+            'boolean FALSE' => [false],
+            'NULL' => [null]
+        ];
     }
 
     /**

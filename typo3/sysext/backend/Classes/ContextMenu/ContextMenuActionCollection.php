@@ -27,7 +27,7 @@ class ContextMenuActionCollection extends \ArrayObject
     public function toArray()
     {
         $iterator = $this->getIterator();
-        $arrayRepresentation = array();
+        $arrayRepresentation = [];
         while ($iterator->valid()) {
             $arrayRepresentation[] = $iterator->current()->toArray();
             $iterator->next();

@@ -28,27 +28,27 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function sortBySeveritySortsGivenStatusObjects()
     {
         $errorMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\ErrorStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $warningMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\WarningStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $okMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\OkStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $infoMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\InfoStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $noticeMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\NoticeStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $statusUtility = new StatusUtility();
-        $return = $statusUtility->sortBySeverity(array($noticeMock, $infoMock, $okMock, $warningMock, $errorMock));
-        $this->assertSame(array($errorMock), $return['error']);
-        $this->assertSame(array($warningMock), $return['warning']);
-        $this->assertSame(array($okMock), $return['ok']);
-        $this->assertSame(array($infoMock), $return['information']);
-        $this->assertSame(array($noticeMock), $return['notice']);
+        $return = $statusUtility->sortBySeverity([$noticeMock, $infoMock, $okMock, $warningMock, $errorMock]);
+        $this->assertSame([$errorMock], $return['error']);
+        $this->assertSame([$warningMock], $return['warning']);
+        $this->assertSame([$okMock], $return['ok']);
+        $this->assertSame([$infoMock], $return['information']);
+        $this->assertSame([$noticeMock], $return['notice']);
     }
 
     /**
@@ -59,7 +59,7 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366919442);
         $statusUtility = new StatusUtility();
-        $statusUtility->filterBySeverity(array(new \stdClass()));
+        $statusUtility->filterBySeverity([new \stdClass()]);
     }
 
     /**
@@ -68,13 +68,13 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function filterBySeverityReturnsSpecificSeverityOnly()
     {
         $errorMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\ErrorStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $warningMock = $this->getMockBuilder(\TYPO3\CMS\Install\Status\WarningStatus::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $statusUtility = new StatusUtility();
-        $return = $statusUtility->filterBySeverity(array($errorMock, $warningMock), 'error');
-        $this->assertSame(array($errorMock), $return);
+        $return = $statusUtility->filterBySeverity([$errorMock, $warningMock], 'error');
+        $this->assertSame([$errorMock], $return);
     }
 }

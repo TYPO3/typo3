@@ -28,7 +28,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
      */
     public function generate()
     {
-        $NOconf = array();
+        $NOconf = [];
         $splitCount = count($this->menuArr);
         if ($splitCount) {
             list($NOconf) = $this->procesItemStates($splitCount);
@@ -58,14 +58,14 @@ class TextMenuContentObject extends AbstractMenuContentObject
         $this->WMresult = '';
         $this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
         $this->WMmenuItems = count($this->result);
-        $this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
+        $this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
         $this->extProc_init();
         foreach ($this->result as $key => $val) {
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
             $GLOBALS['TSFE']->register['count_MENUOBJ']++;
             // Initialize the cObj with the page record of the menu item
             $this->WMcObj->start($this->menuArr[$key], 'pages');
-            $this->I = array();
+            $this->I = [];
             $this->I['key'] = $key;
             $this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
             $this->I['val'] = $val;
@@ -78,7 +78,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             if ($this->mconf['accessKey']) {
                 $this->I['accessKey'] = $this->accessKey($this->I['title']);
             } else {
-                $this->I['accessKey'] = array();
+                $this->I['accessKey'] = [];
             }
             // Make link tag
             $this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
@@ -114,19 +114,19 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // ATagBeforeWrap processing:
             if ($this->I['val']['ATagBeforeWrap']) {
                 $wrapPartsBefore = explode('|', $this->I['val']['linkWrap']);
-                $wrapPartsAfter = array('', '');
+                $wrapPartsAfter = ['', ''];
             } else {
-                $wrapPartsBefore = array('', '');
+                $wrapPartsBefore = ['', ''];
                 $wrapPartsAfter = explode('|', $this->I['val']['linkWrap']);
             }
             if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.'])) {
                 $stdWrap2 = isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|';
                 $wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ? $this->I['val']['stdWrap2'] : '|', $stdWrap2);
             } else {
-                $wrapPartsStdWrap = array('', '');
+                $wrapPartsStdWrap = ['', ''];
             }
             // Make before, middle and after parts
-            $this->I['parts'] = array();
+            $this->I['parts'] = [];
             $this->I['parts']['before'] = $this->getBeforeAfter('before');
             $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
             // stdWrap for doNotShowLink

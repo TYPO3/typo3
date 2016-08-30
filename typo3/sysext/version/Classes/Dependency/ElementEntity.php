@@ -91,7 +91,7 @@ class ElementEntity
      * @param array $data (optional)
      * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
      */
-    public function __construct($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
+    public function __construct($table, $id, array $data = [], \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
     {
         $this->table = $table;
         $this->id = (int)$id;
@@ -222,7 +222,7 @@ class ElementEntity
     public function getChildren()
     {
         if (!isset($this->children)) {
-            $this->children = array();
+            $this->children = [];
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_refindex');
@@ -240,12 +240,12 @@ class ElementEntity
 
             while ($row = $result->fetch()) {
                 if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
-                    $arguments = array(
+                    $arguments = [
                         'table' => $row['ref_table'],
                         'id' => $row['ref_uid'],
                         'field' => $row['field'],
                         'scope' => self::REFERENCES_ChildOf
-                    );
+                    ];
 
                     $callbackResponse = $this->dependency->executeEventCallback(
                         self::EVENT_CreateChildReference,
@@ -275,7 +275,7 @@ class ElementEntity
     public function getParents()
     {
         if (!isset($this->parents)) {
-            $this->parents = array();
+            $this->parents = [];
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_refindex');
@@ -293,12 +293,12 @@ class ElementEntity
                 ->execute();
 
             while ($row = $result->fetch()) {
-                $arguments = array(
+                $arguments = [
                     'table' => $row['tablename'],
                     'id' => $row['recuid'],
                     'field' => $row['field'],
                     'scope' => self::REFERENCES_ParentOf
-                );
+                ];
                 $callbackResponse = $this->dependency->executeEventCallback(
                     self::EVENT_CreateParentReference,
                     $this,
@@ -364,11 +364,11 @@ class ElementEntity
     public function getNestedChildren()
     {
         if (!isset($this->nestedChildren)) {
-            $this->nestedChildren = array();
+            $this->nestedChildren = [];
             $children = $this->getChildren();
             /** @var $child \TYPO3\CMS\Version\Dependency\ReferenceEntity */
             foreach ($children as $child) {
-                $this->nestedChildren = array_merge($this->nestedChildren, array($child->getElement()->__toString() => $child->getElement()), $child->getElement()->getNestedChildren());
+                $this->nestedChildren = array_merge($this->nestedChildren, [$child->getElement()->__toString() => $child->getElement()], $child->getElement()->getNestedChildren());
             }
         }
         return $this->nestedChildren;

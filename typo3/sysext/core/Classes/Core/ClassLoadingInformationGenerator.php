@@ -69,8 +69,8 @@ class ClassLoadingInformationGenerator
      */
     public function buildClassLoadingInformationForPackage(PackageInterface $package, $useRelativePaths = false)
     {
-        $classMap = array();
-        $psr4 = array();
+        $classMap = [];
+        $psr4 = [];
         $packagePath = $package->getPackagePath();
         $manifest = $package->getValueFromComposerManifest();
 
@@ -105,7 +105,7 @@ class ClassLoadingInformationGenerator
             }
         }
 
-        return array('classMap' => $classMap, 'psr-4' => $psr4);
+        return ['classMap' => $classMap, 'psr-4' => $psr4];
     }
 
     /**
@@ -146,7 +146,7 @@ class ClassLoadingInformationGenerator
      */
     protected function createClassMap($classesPath, $useRelativePaths = false, $ignorePotentialTestClasses = false, $namespace = null)
     {
-        $classMap = array();
+        $classMap = [];
         $blacklistExpression = null;
         if ($ignorePotentialTestClasses) {
             $blacklistPathPrefix = realpath($classesPath);
@@ -200,7 +200,7 @@ class ClassLoadingInformationGenerator
             }
         }
 
-        return array('aliasToClassNameMapping' => $aliasToClassNameMapping, 'classNameToAliasMapping' => $classNameToAliasMapping);
+        return ['aliasToClassNameMapping' => $aliasToClassNameMapping, 'classNameToAliasMapping' => $classNameToAliasMapping];
     }
 
     /**
@@ -220,8 +220,8 @@ class ClassLoadingInformationGenerator
 return array(
 
 EOF;
-        $classMap = array();
-        $psr4 = array();
+        $classMap = [];
+        $psr4 = [];
         foreach ($this->activeExtensionPackages as $package) {
             $classLoadingInformation = $this->buildClassLoadingInformationForPackage($package, true);
             $classMap = array_merge($classMap, $classLoadingInformation['classMap']);
@@ -240,7 +240,7 @@ EOF;
         }
         $psr4File .= ");\n";
 
-        return array('classMapFile' => $classMapFile, 'psr-4File' => $psr4File);
+        return ['classMapFile' => $classMapFile, 'psr-4File' => $psr4File];
     }
 
     /**
@@ -289,17 +289,17 @@ EOF;
      */
     public function buildClassAliasMapFile()
     {
-        $aliasToClassNameMapping = array();
-        $classNameToAliasMapping = array();
+        $aliasToClassNameMapping = [];
+        $classNameToAliasMapping = [];
         foreach ($this->activeExtensionPackages as $package) {
             $aliasMappingForPackage = $this->buildClassAliasMapForPackage($package);
             $aliasToClassNameMapping = array_merge($aliasToClassNameMapping, $aliasMappingForPackage['aliasToClassNameMapping']);
             $classNameToAliasMapping = array_merge($classNameToAliasMapping, $aliasMappingForPackage['classNameToAliasMapping']);
         }
-        $exportArray = array(
+        $exportArray = [
             'aliasToClassNameMapping' => $aliasToClassNameMapping,
             'classNameToAliasMapping' => $classNameToAliasMapping
-        );
+        ];
         $fileContent = '<?php' . chr(10) . 'return ';
         $fileContent .= var_export($exportArray, true);
         $fileContent .= ";\n";

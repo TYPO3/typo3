@@ -37,7 +37,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function prepareSubject($driver, array $configuration)
     {
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, ['getFieldInfoCache'], [], '', false);
 
         $subject->conf = $configuration;
 
@@ -46,7 +46,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
         // Inject SqlParser - Its logic is tested with the tests, too.
-        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
+        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, ['dummy'], [], '', false);
         $sqlParser->_set('databaseConnection', $subject);
         $sqlParser->_set('sqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Adodb::class, $subject));
         $sqlParser->_set('nativeSqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Mysql::class, $subject));
@@ -54,10 +54,10 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         // Mock away schema migration service from install tool
         $installerSqlMock = $this->getMockBuilder(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class)
-            ->setMethods(array('getFieldDefinitions_fileContent'))
+            ->setMethods(['getFieldDefinitions_fileContent'])
             ->disableOriginalConstructor()
             ->getMock();
-        $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
+        $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue([]));
         $subject->_set('installerSql', $installerSqlMock);
 
         $subject->initialize();

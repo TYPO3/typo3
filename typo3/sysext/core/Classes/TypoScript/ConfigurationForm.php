@@ -25,7 +25,7 @@ class ConfigurationForm extends ExtendedTemplateService
     /**
      * @var array
      */
-    public $categories = array();
+    public $categories = [];
 
     /**
      * @var bool
@@ -45,12 +45,12 @@ class ConfigurationForm extends ExtendedTemplateService
     /**
      * @var array
      */
-    public $ext_incomingValues = array();
+    public $ext_incomingValues = [];
 
     /**
      * @var array
      */
-    protected $ext_realValues = array();
+    protected $ext_realValues = [];
 
     /**
      * @param string $configTemplate
@@ -60,7 +60,7 @@ class ConfigurationForm extends ExtendedTemplateService
     {
         // Do not log time-performance information
         $this->tt_track = 0;
-        $this->constants = array($configTemplate, '');
+        $this->constants = [$configTemplate, ''];
         // The editable constants are returned in an array.
         $theConstants = $this->generateConfig_constants();
         return $theConstants;
@@ -76,7 +76,7 @@ class ConfigurationForm extends ExtendedTemplateService
     public function ext_setValueArray($theConstants, $valueArray)
     {
         $temp = $this->flatSetup;
-        $this->flatSetup = array();
+        $this->flatSetup = [];
         $this->flattenSetup($valueArray, '', '');
         $this->objReg = $this->ext_realValues = $this->flatSetup;
         $this->flatSetup = $temp;
@@ -86,7 +86,7 @@ class ConfigurationForm extends ExtendedTemplateService
             }
         }
         // Reset the default pool of categories.
-        $this->categories = array();
+        $this->categories = [];
         // The returned constants are sorted in categories, that goes into the $this->categories array
         $this->ext_categorizeEditableConstants($theConstants);
         return $theConstants;
@@ -180,13 +180,13 @@ class ConfigurationForm extends ExtendedTemplateService
         $fN = 'data[' . $params['name'] . ']';
         $idName = str_replace('.', '-', $params['name']);
         $fV = ($params['value'] = isset($this->ext_realValues[$params['name']]) ? $this->ext_realValues[$params['name']] : $params['default_value']);
-        $reg = array();
+        $reg = [];
         // Values entered from the constantsedit cannot be constants!
         if (preg_match('/^\\{[\\$][a-zA-Z0-9\\.]*\\}$/', trim($fV), $reg)) {
             $fV = '';
         }
         $fV = htmlspecialchars($fV);
-        return array($fN, $fV, $params, $idName);
+        return [$fN, $fV, $params, $idName];
     }
 
     /**

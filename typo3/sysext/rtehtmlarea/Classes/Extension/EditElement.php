@@ -47,9 +47,9 @@ class EditElement extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'editelement' => 'EditElement'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

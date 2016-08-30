@@ -19,11 +19,11 @@ class EqualsValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'field' => array('', 'The field to be compared', 'string', true),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'field' => ['', 'The field to be compared', 'string', true],
+    ];
 
     /**
      * Constant for localisation

@@ -57,12 +57,12 @@ class RsaEncryptionEncoder implements SingletonInterface
             $pageRenderer->addJsInlineCode('TYPO3RsaEncryptionPublicKeyUrl', $code);
             $javascriptPath = ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
             if (!$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['debug']) {
-                $files = array('RsaEncryptionWithLib.min.js');
+                $files = ['RsaEncryptionWithLib.min.js'];
             } else {
-                $files = array(
+                $files = [
                     'RsaLibrary.js',
                     'RsaEncryption.js',
-                );
+                ];
             }
             foreach ($files as $file) {
                 $pageRenderer->addJsFile($javascriptPath . $file);

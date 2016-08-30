@@ -24,7 +24,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
     /**
      * @var array
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * Set up
@@ -54,18 +54,18 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $mockCacheManager->registerCache($cache);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
-            'cache' => array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = [
+            'cache' => [
                 'frontend' => \TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class,
                 'backend' => \TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class,
-            )
-        );
+            ]
+        ];
         /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $subject->selectedBackends = array(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class);
+        $subject->selectedBackends = [\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class];
         $subject->execute();
     }
 
@@ -80,18 +80,18 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $mockCacheManager->registerCache($cache);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
-            'cache' => array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = [
+            'cache' => [
                 'frontend' => \TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class,
                 'backend' => \TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class,
-            )
-        );
+            ]
+        ];
         /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $subject->selectedBackends = array(\TYPO3\CMS\Core\Cache\Backend\NullBackend::class);
+        $subject->selectedBackends = [\TYPO3\CMS\Core\Cache\Backend\NullBackend::class];
         $subject->execute();
     }
 }

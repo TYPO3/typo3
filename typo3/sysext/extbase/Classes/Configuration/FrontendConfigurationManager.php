@@ -58,7 +58,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     protected function getPluginConfiguration($extensionName, $pluginName = null)
     {
         $setup = $this->getTypoScriptSetup();
-        $pluginConfiguration = array();
+        $pluginConfiguration = [];
         if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
             $pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
         }
@@ -89,7 +89,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     {
         $switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
         if (!is_array($switchableControllerActions)) {
-            $switchableControllerActions = array();
+            $switchableControllerActions = [];
         }
         return $switchableControllerActions;
     }
@@ -121,7 +121,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     {
         $pages = $this->contentObject->data['pages'];
         if (is_string($pages) && $pages !== '') {
-            $list = array();
+            $list = [];
             if ($this->contentObject->data['recursive'] > 0) {
                 $explodedPages = GeneralUtility::trimExplode(',', $pages);
                 foreach ($explodedPages as $pid) {
@@ -134,11 +134,11 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
             if (!empty($list)) {
                 $pages = $pages . ',' . implode(',', $list);
             }
-            ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, array(
-                'persistence' => array(
+            ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, [
+                'persistence' => [
                     'storagePid' => $pages
-                )
-            ));
+                ]
+            ]);
         }
         return $frameworkConfiguration;
     }
@@ -177,7 +177,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
             if ($flexFormConfiguration !== '') {
                 $flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);
             } else {
-                $flexFormConfiguration = array();
+                $flexFormConfiguration = [];
             }
         }
         if (is_array($flexFormConfiguration) && !empty($flexFormConfiguration)) {
@@ -225,7 +225,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         // As "," is the flexForm field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
         // The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
         $switchableControllerActionPartsFromFlexForm = GeneralUtility::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), true);
-        $newSwitchableControllerActionsFromFlexForm = array();
+        $newSwitchableControllerActionsFromFlexForm = [];
         foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
             list($controller, $action) = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
             if (empty($controller) || empty($action)) {

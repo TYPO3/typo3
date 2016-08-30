@@ -41,14 +41,14 @@ class Logger implements \Psr\Log\LoggerInterface
      *
      * @var array
      */
-    protected $writers = array();
+    protected $writers = [];
 
     /**
      * Processors used by this logger
      *
      * @var array
      */
-    protected $processors = array();
+    protected $processors = [];
 
     /**
      * Constructor.
@@ -108,7 +108,7 @@ class Logger implements \Psr\Log\LoggerInterface
         // than $minimumLevel and add $writer to each severity level
         for ($logLevelWhichTriggersWriter = LogLevel::EMERGENCY; $logLevelWhichTriggersWriter <= $minimumLevel; $logLevelWhichTriggersWriter++) {
             if (!isset($this->writers[$logLevelWhichTriggersWriter])) {
-                $this->writers[$logLevelWhichTriggersWriter] = array();
+                $this->writers[$logLevelWhichTriggersWriter] = [];
             }
             $this->writers[$logLevelWhichTriggersWriter][] = $writer;
         }
@@ -142,7 +142,7 @@ class Logger implements \Psr\Log\LoggerInterface
         // than $minimumLevel and add $processor to each severity level
         for ($logLevelWhichTriggersProcessor = LogLevel::EMERGENCY; $logLevelWhichTriggersProcessor <= $minimumLevel; $logLevelWhichTriggersProcessor++) {
             if (!isset($this->processors[$logLevelWhichTriggersProcessor])) {
-                $this->processors[$logLevelWhichTriggersProcessor] = array();
+                $this->processors[$logLevelWhichTriggersProcessor] = [];
             }
             $this->processors[$logLevelWhichTriggersProcessor][] = $processor;
         }
@@ -169,7 +169,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return mixed
      */
-    public function log($level, $message, array $data = array())
+    public function log($level, $message, array $data = [])
     {
         $level = LogLevel::normalizeLevel($level);
         LogLevel::validateLevel($level);
@@ -226,7 +226,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function emergency($message, array $data = array())
+    public function emergency($message, array $data = [])
     {
         return $this->log(LogLevel::EMERGENCY, $message, $data);
     }
@@ -238,7 +238,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function alert($message, array $data = array())
+    public function alert($message, array $data = [])
     {
         return $this->log(LogLevel::ALERT, $message, $data);
     }
@@ -250,7 +250,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function critical($message, array $data = array())
+    public function critical($message, array $data = [])
     {
         return $this->log(LogLevel::CRITICAL, $message, $data);
     }
@@ -262,7 +262,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function error($message, array $data = array())
+    public function error($message, array $data = [])
     {
         return $this->log(LogLevel::ERROR, $message, $data);
     }
@@ -274,7 +274,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function warning($message, array $data = array())
+    public function warning($message, array $data = [])
     {
         return $this->log(LogLevel::WARNING, $message, $data);
     }
@@ -286,7 +286,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function notice($message, array $data = array())
+    public function notice($message, array $data = [])
     {
         return $this->log(LogLevel::NOTICE, $message, $data);
     }
@@ -298,7 +298,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function info($message, array $data = array())
+    public function info($message, array $data = [])
     {
         return $this->log(LogLevel::INFO, $message, $data);
     }
@@ -310,7 +310,7 @@ class Logger implements \Psr\Log\LoggerInterface
      * @param array $data Additional data to log
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public function debug($message, array $data = array())
+    public function debug($message, array $data = [])
     {
         return $this->log(LogLevel::DEBUG, $message, $data);
     }

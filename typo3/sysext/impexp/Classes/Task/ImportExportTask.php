@@ -88,12 +88,12 @@ class ImportExportTask implements TaskInterface
         if ($id > 0) {
             $url = BackendUtility::getModuleUrl(
                 'xMOD_tximpexp',
-                array(
+                [
                     'tx_impexp[action]' => 'export',
                     'preset[load]' => 1,
                     'preset[select]' => $id,
                     'returnUrl' => $this->moduleUrl
-                )
+                ]
             );
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
         } else {
@@ -111,7 +111,7 @@ class ImportExportTask implements TaskInterface
                     $configuration = unserialize($presetCfg['preset_data'], ['allowed_classes' => false]);
                     $title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
                     $icon = 'EXT:impexp/Resources/Public/Images/export.gif';
-                    $description = array();
+                    $description = [];
                     // Is public?
                     if ($presetCfg['public']) {
                         $description[] = $lang->getLL('task.public') . ': ' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:yes');
@@ -147,13 +147,13 @@ class ImportExportTask implements TaskInterface
                         $description[] = '<br />' . $metaInformation;
                     }
                     // Collect all preset information
-                    $lines[$key] = array(
+                    $lines[$key] = [
                         'uid' => 'impexp' . $key,
                         'icon' => $icon,
                         'title' => $title,
                         'descriptionHtml' => implode('<br />', $description),
                         'link' => BackendUtility::getModuleUrl('user_task') . '&SET[function]=impexp.TYPO3\\CMS\\Impexp\\Task\\ImportExportTask&display=' . $presetCfg['uid']
-                    );
+                    ];
                 }
                 // Render preset list
                 $content .= $this->taskObject->renderListMenu($lines);

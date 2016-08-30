@@ -43,12 +43,12 @@ class RequestBootstrap
         }
 
         // Populating $_POST
-        $_POST = array();
+        $_POST = [];
         // Populating $_COOKIE
-        $_COOKIE = array();
+        $_COOKIE = [];
 
         // Setting up the server environment
-        $_SERVER = array();
+        $_SERVER = [];
         $_SERVER['DOCUMENT_ROOT'] = $requestArguments['documentRoot'];
         $_SERVER['HTTP_USER_AGENT'] = 'TYPO3 Functional Test Request';
         $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = isset($requestUrlParts['host']) ? $requestUrlParts['host'] : 'localhost';
@@ -90,7 +90,7 @@ class RequestBootstrap
     {
         global $TT, $TSFE, $TYPO3_CONF_VARS, $BE_USER, $TYPO3_MISC;
 
-        $result = array('status' => 'failure', 'content' => null, 'error' => null);
+        $result = ['status' => 'failure', 'content' => null, 'error' => null];
 
         ob_start();
         try {

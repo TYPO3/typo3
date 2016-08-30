@@ -53,7 +53,7 @@ class LocallangXmlParser extends AbstractXmlParser
         } catch (InvalidXmlFileException $e) {
             $parsedTarget = $this->getParsedTargetData($this->sourcePath);
         }
-        $LOCAL_LANG = array();
+        $LOCAL_LANG = [];
         $LOCAL_LANG[$languageKey] = $parsedSource;
         ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG[$languageKey], $parsedTarget);
         return $LOCAL_LANG;
@@ -74,7 +74,7 @@ class LocallangXmlParser extends AbstractXmlParser
         if ($element === 'source' || $this->languageKey === 'default') {
             $parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
         } else {
-            $parsedData = array();
+            $parsedData = [];
         }
         if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof \SimpleXMLElement) {
             $parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
@@ -97,7 +97,7 @@ class LocallangXmlParser extends AbstractXmlParser
      */
     protected function getParsedDataForElement(\SimpleXMLElement $bodyOfFileTag, $element)
     {
-        $parsedData = array();
+        $parsedData = [];
         $children = $bodyOfFileTag->children();
         if ($children->count() === 0) {
             // Check for externally-referenced resource:
@@ -110,9 +110,9 @@ class LocallangXmlParser extends AbstractXmlParser
         /** @var \SimpleXMLElement $translationElement */
         foreach ($children as $translationElement) {
             if ($translationElement->getName() === 'label') {
-                $parsedData[(string)$translationElement['index']][0] = array(
+                $parsedData[(string)$translationElement['index']][0] = [
                     $element => (string)$translationElement
-                );
+                ];
             }
         }
         return $parsedData;

@@ -32,7 +32,7 @@ class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [];
         $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
@@ -44,11 +44,11 @@ class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getStatusReturnsXclassStatusObjectWithSeverityNoticeIfXclassExists()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array(
-            'foo' => array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [
+            'foo' => [
                 'className' => 'bar',
-            )
-        );
+            ]
+        ];
         $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];

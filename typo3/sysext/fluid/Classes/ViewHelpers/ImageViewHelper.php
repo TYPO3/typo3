@@ -126,7 +126,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
             if ($crop === null) {
                 $crop = $image instanceof FileReference ? $image->getProperty('crop') : null;
             }
-            $processingInstructions = array(
+            $processingInstructions = [
                 'width' => $width,
                 'height' => $height,
                 'minWidth' => $minWidth,
@@ -134,7 +134,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
                 'maxWidth' => $maxWidth,
                 'maxHeight' => $maxHeight,
                 'crop' => $crop,
-            );
+            ];
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
             $imageUri = $this->imageService->getImageUri($processedImage, $absolute);
 

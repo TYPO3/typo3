@@ -94,9 +94,9 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
         $action = 'checkDependencies';
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');
-        $uri = $uriBuilder->uriFor($action, array(
+        $uri = $uriBuilder->uriFor($action, [
             'extension' => (int)$extension->getUid()
-        ), 'Download');
+        ], 'Download');
         $this->tag->addAttribute('data-href', $uri);
 
         $automaticInstallation = $this->configurationUtility->getCurrentConfiguration('extensionmanager')['automaticInstallation']['value'];

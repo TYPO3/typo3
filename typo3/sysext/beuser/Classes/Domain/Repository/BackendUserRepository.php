@@ -42,16 +42,16 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
      */
     public function findDemanded(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand)
     {
-        $constraints = array();
+        $constraints = [];
         $query = $this->createQuery();
         // Find invisible as well, but not deleted
         $constraints[] = $query->equals('deleted', 0);
-        $query->setOrderings(array('userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+        $query->setOrderings(['userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
         // Username
         if ($demand->getUserName() !== '') {
-            $searchConstraints = array();
+            $searchConstraints = [];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-            foreach (array('userName', 'uid', 'realName') as $field) {
+            foreach (['userName', 'uid', 'realName'] as $field) {
                 $searchConstraints[] = $query->like(
                     $field, '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
                 );
@@ -104,7 +104,7 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
      */
     public function findOnline()
     {
-        $uids = array();
+        $uids = [];
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
 

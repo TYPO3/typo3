@@ -56,7 +56,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     /**
      * @var array An array holding the clean property values. Set right after reconstitution of the object
      */
-    private $_cleanProperties = array();
+    private $_cleanProperties = [];
 
     /**
      * Getter for uid.
@@ -177,7 +177,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
         if ($propertyName !== null) {
             $this->_memorizePropertyCleanState($propertyName);
         } else {
-            $this->_cleanProperties = array();
+            $this->_cleanProperties = [];
             $properties = get_object_vars($this);
             foreach ($properties as $propertyName => $propertyValue) {
                 if ($propertyName[0] === '_') {

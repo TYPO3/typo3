@@ -39,9 +39,9 @@ class ParentPageTcaTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'parentPageRow' => array(),
+            'parentPageRow' => [],
         ];
-        $expected = array('foo');
+        $expected = ['foo'];
         $GLOBALS['TCA']['pages'] = $expected;
         $result = $this->subject->addData($input);
         $this->assertEquals($expected, $result['vanillaParentPageTca']);

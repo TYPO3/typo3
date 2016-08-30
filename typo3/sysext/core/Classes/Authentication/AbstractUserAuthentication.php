@@ -105,14 +105,14 @@ abstract class AbstractUserAuthentication
      * Enable field columns of user table
      * @var array
      */
-    public $enablecolumns = array(
+    public $enablecolumns = [
         'rootLevel' => '',
         // Boolean: If TRUE, 'AND pid=0' will be a part of the query...
         'disabled' => '',
         'starttime' => '',
         'endtime' => '',
         'deleted' => ''
-    );
+    ];
 
     /**
      * @var bool
@@ -332,7 +332,7 @@ abstract class AbstractUserAuthentication
      * "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
      * @var array
      */
-    public $svConfig = array();
+    public $svConfig = [];
 
     /**
      * Write messages to the devlog
@@ -447,9 +447,9 @@ abstract class AbstractUserAuthentication
         // Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName) {
-                $_params = array(
+                $_params = [
                     'pObj' => &$this
-                );
+                ];
                 GeneralUtility::callUserFunction($funcName, $_params, $this);
             }
         }
@@ -517,7 +517,7 @@ abstract class AbstractUserAuthentication
         }
         if ($cookieDomain) {
             if ($cookieDomain[0] == '/') {
-                $match = array();
+                $match = [];
                 $matchCnt = @preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if ($matchCnt === false) {
                     GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
@@ -574,7 +574,7 @@ abstract class AbstractUserAuthentication
     public function checkAuthentication()
     {
         // No user for now - will be searched by service below
-        $tempuserArr = array();
+        $tempuserArr = [];
         $tempuser = false;
         // User is not authenticated by default
         $authenticated = false;
@@ -596,7 +596,7 @@ abstract class AbstractUserAuthentication
         if ($loginData['status'] === 'logout') {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
-                $this->writelog(255, 2, 0, 2, 'User %s logged out', array($this->user['username']), '', 0, 0);
+                $this->writelog(255, 2, 0, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
             }
             // Logout written to log
             if ($this->writeDevLog) {
@@ -638,7 +638,7 @@ abstract class AbstractUserAuthentication
         }
         if ($this->writeDevLog) {
             if ($haveSession) {
-                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, 0);
+                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, 0);
             } else {
                 GeneralUtility::devLog('No user session found.', AbstractUserAuthentication::class, 2);
             }
@@ -661,7 +661,7 @@ abstract class AbstractUserAuthentication
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
                     if ($this->writeDevLog) {
-                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, 0);
+                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, 0);
                     }
                     // User found, just stop to search for more if not configured to go on
                     if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
@@ -691,7 +691,7 @@ abstract class AbstractUserAuthentication
             // User is authenticated because we found a user session
             $authenticated = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class);
+                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class);
             }
         }
         // Re-auth user when 'auth'-service option is set
@@ -756,7 +756,7 @@ abstract class AbstractUserAuthentication
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 if ($this->writeDevLog && is_array($this->user)) {
-                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, -1);
+                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, -1);
                 }
             } elseif ($haveSession) {
                 $this->user = $authInfo['userSession'];
@@ -766,7 +766,7 @@ abstract class AbstractUserAuthentication
             }
             // User logged in - write that to the log!
             if ($this->writeStdLog && $activeLogin) {
-                $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', array($tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')), '', '', '', -1, '', $tempuser['uid']);
+                $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', [$tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')], '', '', '', -1, '', $tempuser['uid']);
             }
             if ($this->writeDevLog && $activeLogin) {
                 GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', AbstractUserAuthentication::class, -1);
@@ -780,13 +780,13 @@ abstract class AbstractUserAuthentication
                 GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class, 2);
             }
             if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, 2);
             }
         }
         // If there were a login failure, check to see if a warning email should be sent:
         if ($this->loginFailure && $activeLogin) {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(array('warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax)), AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(['warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax]), AbstractUserAuthentication::class, -1);
             }
 
             // Hook to implement login failure tracking methods
@@ -794,7 +794,7 @@ abstract class AbstractUserAuthentication
                 !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'])
                 && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'])
             ) {
-                $_params = array();
+                $_params = [];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] as $_funcRef) {
                     GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                 }
@@ -891,7 +891,7 @@ abstract class AbstractUserAuthentication
      */
     public function getNewSessionRecord($tempuser)
     {
-        return array(
+        return [
             'ses_id' => $this->id,
             'ses_name' => $this->name,
             'ses_iplock' => $tempuser['disableIPlock'] ? '[DISABLED]' : $this->ipLockClause_remoteIPNumber($this->lockIP),
@@ -899,7 +899,7 @@ abstract class AbstractUserAuthentication
             'ses_userid' => $tempuser[$this->userid_column],
             'ses_tstamp' => $GLOBALS['EXEC_TIME'],
             'ses_data' => ''
-        );
+        ];
     }
 
     /**
@@ -965,7 +965,7 @@ abstract class AbstractUserAuthentication
         BackendUtility::lockRecords();
         // Hook for pre-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'])) {
-            $_params = array();
+            $_params = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] as $_funcRef) {
                 if ($_funcRef) {
                     GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -981,7 +981,7 @@ abstract class AbstractUserAuthentication
         $this->user = null;
         // Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
-            $_params = array();
+            $_params = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $_funcRef) {
                 if ($_funcRef) {
                     GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -1170,18 +1170,18 @@ abstract class AbstractUserAuthentication
     protected function ipLockClause()
     {
         GeneralUtility::logDeprecatedFunction();
-        $statementClause = array(
+        $statementClause = [
             'where' => '',
-            'parameters' => array()
-        );
+            'parameters' => []
+        ];
         if ($this->lockIP) {
             $statementClause['where'] = 'AND (
 				' . $this->session_table . '.ses_iplock = :ses_iplock
 				OR ' . $this->session_table . '.ses_iplock=\'[DISABLED]\'
 				)';
-            $statementClause['parameters'] = array(
+            $statementClause['parameters'] = [
                 ':ses_iplock' => $this->ipLockClause_remoteIPNumber($this->lockIP)
-            );
+            ];
         }
         return $statementClause;
     }
@@ -1380,7 +1380,7 @@ abstract class AbstractUserAuthentication
      */
     public function getLoginFormData()
     {
-        $loginData = array();
+        $loginData = [];
         $loginData['status'] = GeneralUtility::_GP($this->formfield_status);
         if ($this->getMethodEnabled) {
             $loginData['uname'] = GeneralUtility::_GP($this->formfield_uname);
@@ -1451,7 +1451,7 @@ abstract class AbstractUserAuthentication
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
         $expressionBuilder = $queryBuilder->expr();
-        $authInfo = array();
+        $authInfo = [];
         $authInfo['loginType'] = $this->loginType;
         $authInfo['refInfo'] = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $authInfo['HTTP_HOST'] = GeneralUtility::getIndpEnv('HTTP_HOST');

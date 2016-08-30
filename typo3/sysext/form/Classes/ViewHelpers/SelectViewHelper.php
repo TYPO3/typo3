@@ -27,9 +27,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
     protected function getOptions()
     {
         if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
-            return array();
+            return [];
         }
-        $options = array();
+        $options = [];
         $optionsArgument = $this->arguments['options'];
         foreach ($optionsArgument as $key => $value) {
             if (is_string($key)) {
@@ -61,7 +61,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
      */
     protected function getOption($key, $value)
     {
-        $option = array();
+        $option = [];
         if (is_object($value) || is_array($value)) {
             if ($this->hasArgument('optionValueField')) {
                 $key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);

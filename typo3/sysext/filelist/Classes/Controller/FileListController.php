@@ -44,12 +44,12 @@ class FileListController extends ActionController
     /**
      * @var array
      */
-    public $MOD_MENU = array();
+    public $MOD_MENU = [];
 
     /**
      * @var array
      */
-    public $MOD_SETTINGS = array();
+    public $MOD_SETTINGS = [];
 
     /**
      * Document template object
@@ -263,13 +263,13 @@ class FileListController extends ActionController
         // If array, then it's a selector box menu
         // If empty string it's just a variable, that will be saved.
         // Values NOT in this array will not be saved in the settings-array for the module.
-        $this->MOD_MENU = array(
+        $this->MOD_MENU = [
             'sort' => '',
             'reverse' => '',
             'displayThumbs' => '',
             'clipBoard' => '',
             'bigControlPanel' => ''
-        );
+        ];
         // CLEANSE SETTINGS
         $this->MOD_SETTINGS = BackendUtility::getModuleData(
             $this->MOD_MENU,
@@ -365,14 +365,14 @@ class FileListController extends ActionController
                 $items = $this->filelist->clipObj->cleanUpCBC(GeneralUtility::_POST('CBC'), '_FILE', 1);
                 if (!empty($items)) {
                     // Make command array:
-                    $FILE = array();
+                    $FILE = [];
                     foreach ($items as $v) {
-                        $FILE['delete'][] = array('data' => $v);
+                        $FILE['delete'][] = ['data' => $v];
                     }
                     // Init file processing object for deleting and pass the cmd array.
                     /** @var ExtendedFileUtility $fileProcessor */
                     $fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-                    $fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+                    $fileProcessor->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
                     $fileProcessor->setActionPermissions();
                     $fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
                     $fileProcessor->start($FILE);
@@ -519,7 +519,7 @@ class FileListController extends ActionController
             }
         } else {
             $name = key(ListUtility::resolveSpecialFolderNames(
-                array($name => $this->folderObject)
+                [$name => $this->folderObject]
             ));
         }
         return $name;
@@ -563,10 +563,10 @@ class FileListController extends ActionController
 
         // Refresh page
         $refreshLink = GeneralUtility::linkThisScript(
-            array(
+            [
                 'target' => rawurlencode($this->folderObject->getCombinedIdentifier()),
                 'imagemode' => $this->filelist->thumbs
-            )
+            ]
         );
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref($refreshLink)
@@ -606,10 +606,10 @@ class FileListController extends ActionController
             $uploadButton = $buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl(
                     'file_upload',
-                    array(
+                    [
                         'target' => $this->folderObject->getCombinedIdentifier(),
                         'returnUrl' => $this->filelist->listURL(),
-                    )
+                    ]
                 ))
                 ->setClasses('t3js-drag-uploader-trigger')
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload'))
@@ -625,10 +625,10 @@ class FileListController extends ActionController
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl(
                     'file_newfolder',
-                    array(
+                    [
                         'target' => $this->folderObject->getCombinedIdentifier(),
                         'returnUrl' => $this->filelist->listURL(),
-                    )
+                    ]
                 ))
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.new'))
                 ->setIcon($iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
@@ -640,7 +640,7 @@ class FileListController extends ActionController
             $elFromTable = $this->filelist->clipObj->elFromTable('_FILE');
             if (!empty($elFromTable)) {
                 $addPasteButton = true;
-                $elToConfirm = array();
+                $elToConfirm = [];
                 foreach ($elFromTable as $key => $element) {
                     $clipBoardElement = $resourceFactory->retrieveFileOrFolderObject($element);
                     if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement,

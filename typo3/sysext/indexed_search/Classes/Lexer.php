@@ -46,13 +46,13 @@ class Lexer
      *
      * @var array
      */
-    public $lexerConf = array(
+    public $lexerConf = [
         //Characters: . - _ : / '
-        'printjoins' => array(46, 45, 95, 58, 47, 39),
+        'printjoins' => [46, 45, 95, 58, 47, 39],
         'casesensitive' => false,
         // Set, if case sensitive indexing is wanted.
-        'removeChars' => array(45)
-    );
+        'removeChars' => [45]
+    ];
 
     /**
      * Constructor: Initializes the charset class
@@ -82,7 +82,7 @@ class Lexer
         $len = 0;
         $start = 0;
         $pos = 0;
-        $words = array();
+        $words = [];
         $this->debugString = '';
         while (1) {
             list($start, $len) = $this->get_word($wordString, $pos);
@@ -166,7 +166,7 @@ class Lexer
         $len = 0;
         // If return is TRUE, a word was found starting at this position, so returning position and length:
         if ($this->utf8_is_letter($str, $len, $pos)) {
-            return array($pos, $len);
+            return [$pos, $len];
         }
         // If the return value was FALSE it means a sequence of non-word chars were found (or blank string) - so we will start another search for the word:
         $pos += $len;
@@ -175,7 +175,7 @@ class Lexer
             return false;
         }
         $this->utf8_is_letter($str, $len, $pos);
-        return array($pos, $len);
+        return [$pos, $len];
     }
 
     /**
@@ -265,17 +265,17 @@ class Lexer
     {
         // Numeric?
         if ($cp >= 48 && $cp <= 57) {
-            return array('num');
+            return ['num'];
         }
         // LOOKING for Alpha chars (Latin, Cyrillic, Greek, Hebrew and Arabic):
         if ($cp >= 65 && $cp <= 90 || $cp >= 97 && $cp <= 122 || $cp >= 192 && $cp <= 255 && $cp != 215 && $cp != 247 || $cp >= 256 && $cp < 640 || ($cp == 902 || $cp >= 904 && $cp < 1024) || ($cp >= 1024 && $cp < 1154 || $cp >= 1162 && $cp < 1328) || ($cp >= 1424 && $cp < 1456 || $cp >= 1488 && $cp < 1523) || ($cp >= 1569 && $cp <= 1624 || $cp >= 1646 && $cp <= 1747) || $cp >= 7680 && $cp < 8192) {
-            return array('alpha');
+            return ['alpha'];
         }
         // Looking for CJK (Chinese / Japanese / Korean)
         // Ranges are not certain - deducted from the translation tables in typo3/sysext/core/Resources/Private/Charsets/csconvtbl/
         // Verified with http://www.unicode.org/charts/ (16/2) - may still not be complete.
         if ($cp >= 12352 && $cp <= 12543 || $cp >= 12592 && $cp <= 12687 || $cp >= 13312 && $cp <= 19903 || $cp >= 19968 && $cp <= 40879 || $cp >= 44032 && $cp <= 55215 || $cp >= 131072 && $cp <= 195103) {
-            return array('cjk');
+            return ['cjk'];
         }
     }
 

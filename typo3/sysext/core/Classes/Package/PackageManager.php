@@ -54,12 +54,12 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $packageAliasMap = array();
+    protected $packageAliasMap = [];
 
     /**
      * @var array
      */
-    protected $runtimeActivatedPackages = array();
+    protected $runtimeActivatedPackages = [];
 
     /**
      * Absolute path leading to the various package directories
@@ -71,13 +71,13 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Array of available packages, indexed by package key
      * @var PackageInterface[]
      */
-    protected $packages = array();
+    protected $packages = [];
 
     /**
      * A map between ComposerName and PackageKey, only available when scanAvailablePackages is run
      * @var array
      */
-    protected $composerNameToPackageKeyMap = array();
+    protected $composerNameToPackageKeyMap = [];
 
     /**
      * List of active packages as package key => package object
@@ -94,7 +94,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Package states configuration as stored in the PackageStates.php file
      * @var array
      */
-    protected $packageStatesConfiguration = array();
+    protected $packageStatesConfiguration = [];
 
     /**
      * Constructor
@@ -172,13 +172,13 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             // Package objects get their own cache entry, so PHP does not have to parse the serialized string
             $packageObjectsCacheEntryIdentifier = StringUtility::getUniqueId('PackageObjects_');
             // Build cache file
-            $packageCache = array(
+            $packageCache = [
                 'packageStatesConfiguration' => $this->packageStatesConfiguration,
                 'packageAliasMap' => $this->packageAliasMap,
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
                 'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
                 'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
-            );
+            ];
             $this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
             $this->coreCache->set(
                 $cacheEntryIdentifier,
@@ -222,9 +222,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected function loadPackageStates()
     {
         $forcePackageStatesRewrite = false;
-        $this->packageStatesConfiguration = @include($this->packageStatesPathAndFilename) ?: array();
+        $this->packageStatesConfiguration = @include($this->packageStatesPathAndFilename) ?: [];
         if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 4) {
-            $this->packageStatesConfiguration = array();
+            $this->packageStatesConfiguration = [];
         } elseif ($this->packageStatesConfiguration['version'] === 4) {
             // Convert to v5 format which only includes a list of active packages.
             // Deprecated since version 8, will be removed in version 9.
@@ -239,7 +239,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             $this->packageStatesConfiguration['version'] = 5;
             $forcePackageStatesRewrite = true;
         }
-        if ($this->packageStatesConfiguration !== array()) {
+        if ($this->packageStatesConfiguration !== []) {
             $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false, $forcePackageStatesRewrite);
         } else {
             throw new Exception\PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
@@ -725,7 +725,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         if (!isset($this->packages[$packageKey])) {
             return null;
         }
-        $suggestedPackageKeys = array();
+        $suggestedPackageKeys = [];
         $suggestedPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(MetaData::CONSTRAINT_TYPE_SUGGESTS);
         foreach ($suggestedPackageConstraints as $constraint) {
             if ($constraint instanceof MetaData\PackageConstraint) {
@@ -985,7 +985,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * @return array|NULL An array of direct or indirect dependant packages
      * @throws Exception\InvalidPackageKeyException
      */
-    protected function getDependencyArrayForPackage($packageKey, array &$dependentPackageKeys = array(), array $trace = array())
+    protected function getDependencyArrayForPackage($packageKey, array &$dependentPackageKeys = [], array $trace = [])
     {
         if (!isset($this->packages[$packageKey])) {
             return null;

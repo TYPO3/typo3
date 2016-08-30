@@ -28,78 +28,78 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function repositoryAndModelClassNames()
     {
-        return array(
-            array(
+        return [
+            [
                 'Tx_BlogExample_Domain_Repository_BlogRepository',
                 'Tx_BlogExample_Domain_Model_Blog',
                 'Tx_BlogExample_Domain_Validator_BlogValidator'
-            ),
-            array(
+            ],
+            [
                 ' _Domain_Repository_Content_PageRepository',
                 ' _Domain_Model_Content_Page',
                 ' _Domain_Validator_Content_PageValidator'
-            ),
-            array(
+            ],
+            [
                 'Tx_RepositoryExample_Domain_Repository_SomeModelRepository',
                 'Tx_RepositoryExample_Domain_Model_SomeModel',
                 'Tx_RepositoryExample_Domain_Validator_SomeModelValidator'
-            ),
-            array(
+            ],
+            [
                 'Tx_RepositoryExample_Domain_Repository_RepositoryRepository',
                 'Tx_RepositoryExample_Domain_Model_Repository',
                 'Tx_RepositoryExample_Domain_Validator_RepositoryValidator'
-            ),
-            array(
+            ],
+            [
                 'Tx_Repository_Domain_Repository_RepositoryRepository',
                 'Tx_Repository_Domain_Model_Repository',
                 'Tx_Repository_Domain_Validator_RepositoryValidator'
-            ),
-            array(
+            ],
+            [
                 'Tx_ModelCollection_Domain_Repository_ModelRepository',
                 'Tx_ModelCollection_Domain_Model_Model',
                 'Tx_ModelCollection_Domain_Validator_ModelValidator'
-            ),
-            array(
+            ],
+            [
                 'Tx_Model_Domain_Repository_ModelRepository',
                 'Tx_Model_Domain_Model_Model',
                 'Tx_Model_Domain_Validator_ModelValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\EXT\\Domain\\Repository\\BlogRepository',
                 'VENDOR\\EXT\\Domain\\Model\\Blog',
                 'VENDOR\\EXT\\Domain\\Validator\\BlogValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\EXT\\Domain\\Repository\\_PageRepository',
                 'VENDOR\\EXT\\Domain\\Model\\_Page',
                 'VENDOR\\EXT\\Domain\\Validator\\_PageValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\Repository\\Domain\\Repository\\SomeModelRepository',
                 'VENDOR\\Repository\\Domain\\Model\\SomeModel',
                 'VENDOR\\Repository\\Domain\\Validator\\SomeModelValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\EXT\\Domain\\Repository\\RepositoryRepository',
                 'VENDOR\\EXT\\Domain\\Model\\Repository',
                 'VENDOR\\EXT\\Domain\\Validator\\RepositoryValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\Repository\\Domain\\Repository\\RepositoryRepository',
                 'VENDOR\\Repository\\Domain\\Model\\Repository',
                 'VENDOR\\Repository\\Domain\\Validator\\RepositoryValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\ModelCollection\\Domain\\Repository\\ModelRepository',
                 'VENDOR\\ModelCollection\\Domain\\Model\\Model',
                 'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator'
-            ),
-            array(
+            ],
+            [
                 'VENDOR\\Model\\Domain\\Repository\\ModelRepository',
                 'VENDOR\\Model\\Domain\\Model\\Model',
                 'VENDOR\\Model\\Domain\\Validator\\ModelValidator'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -148,90 +148,90 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function controllerObjectNamesAndMatches()
     {
-        return array(
-            array(
+        return [
+            [
                 'TYPO3\\CMS\\Ext\\Controller\\FooController',
-                array(
+                [
                     'vendorName' => 'TYPO3\\CMS',
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'TYPO3\\CMS\\Ext\\Command\\FooCommandController',
-                array(
+                [
                     'vendorName' => 'TYPO3\\CMS',
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
-                array(
+                [
                     'vendorName' => 'TYPO3\\CMS',
                     'extensionName' => 'Fluid',
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Paginate',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'VENDOR\\Ext\\Controller\\FooController',
-                array(
+                [
                     'vendorName' => 'VENDOR',
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'VENDOR\\Ext\\Command\\FooCommandController',
-                array(
+                [
                     'vendorName' => 'VENDOR',
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'VENDOR\\Ext\\ViewHelpers\\Widget\\Controller\\FooController',
-                array(
+                [
                     'vendorName' => 'VENDOR',
                     'extensionName' => 'Ext',
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Foo',
-                )
-            ),
+                ]
+            ],
             // Oldschool
-            array(
+            [
                 'Tx_Ext_Controller_FooController',
-                array(
+                [
                     'vendorName' => null,
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'Tx_Ext_Command_FooCommandController',
-                array(
+                [
                     'vendorName' => null,
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController',
-                array(
+                [
                     'vendorName' => null,
                     'extensionName' => 'Fluid',
                     'subpackageKey' => 'ViewHelpers_Widget',
                     'controllerName' => 'Paginate',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -245,12 +245,12 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $matches = \TYPO3\CMS\Core\Utility\ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
 
-        $actualMatches = array(
+        $actualMatches = [
             'vendorName' => $matches['vendorName'],
             'extensionName' => $matches['extensionName'],
             'subpackageKey' => $matches['subpackageKey'],
             'controllerName' => $matches['controllerName'],
-        );
+        ];
 
         $this->assertSame($expectedMatches, $actualMatches);
     }

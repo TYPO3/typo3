@@ -37,7 +37,7 @@ class StandaloneViewTest extends UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var StandaloneView|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -109,11 +109,11 @@ class StandaloneViewTest extends UnitTestCase
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->view = $this->getAccessibleMock(
             \TYPO3\CMS\Fluid\View\StandaloneView::class,
-            array('testFileExistence', 'buildParserConfiguration', 'getOrParseAndStoreTemplate'), array(), '', false
+            ['testFileExistence', 'buildParserConfiguration', 'getOrParseAndStoreTemplate'], [], '', false
         );
         $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
+        $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback([$this, 'objectManagerCallback']));
         $this->mockRequest = $this->createMock(Request::class);
         $this->mockUriBuilder = $this->createMock(UriBuilder::class);
         $this->mockContentObject = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);

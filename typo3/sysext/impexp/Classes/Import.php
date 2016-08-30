@@ -41,7 +41,7 @@ class Import extends ImportExport
      *
      * @var array
      */
-    public $suggestedInsertUids = array();
+    public $suggestedInsertUids = [];
 
     /**
      * Disable logging when importing
@@ -57,28 +57,28 @@ class Import extends ImportExport
      *
      * @var array
      */
-    public $import_newId = array();
+    public $import_newId = [];
 
     /**
      * Page id map for page tree (import)
      *
      * @var array
      */
-    public $import_newId_pids = array();
+    public $import_newId_pids = [];
 
     /**
      * Internal data accumulation for writing records during import
      *
      * @var array
      */
-    public $import_data = array();
+    public $import_data = [];
 
     /**
      * Array of current registered storage objects
      *
      * @var ResourceStorage[]
      */
-    protected $storageObjects = array();
+    protected $storageObjects = [];
 
     /**
      * @var NULL|string
@@ -88,22 +88,22 @@ class Import extends ImportExport
     /**
      * @var array
      */
-    protected $unlinkFiles = array();
+    protected $unlinkFiles = [];
 
     /**
      * @var array
      */
-    protected $alternativeFileName = array();
+    protected $alternativeFileName = [];
 
     /**
      * @var array
      */
-    protected $alternativeFilePath = array();
+    protected $alternativeFilePath = [];
 
     /**
      * @var array
      */
-    protected $filePathMap = array();
+    protected $filePathMap = [];
 
     /**************************
      * Initialize
@@ -135,13 +135,13 @@ class Import extends ImportExport
         $this->doesImport = 1;
         // Initialize:
         // These vars MUST last for the whole section not being cleared. They are used by the method setRelations() which are called at the end of the import session.
-        $this->import_mapId = array();
-        $this->import_newId = array();
-        $this->import_newId_pids = array();
+        $this->import_mapId = [];
+        $this->import_newId = [];
+        $this->import_newId_pids = [];
         // Temporary files stack initialized:
-        $this->unlinkFiles = array();
-        $this->alternativeFileName = array();
-        $this->alternativeFilePath = array();
+        $this->unlinkFiles = [];
+        $this->alternativeFileName = [];
+        $this->alternativeFilePath = [];
 
         $this->initializeStorageObjects();
     }
@@ -197,7 +197,7 @@ class Import extends ImportExport
         if (!isset($this->dat['header']['records']['sys_file_storage'])) {
             return;
         }
-        $sysFileStorageUidsToBeResetToDefaultStorage = array();
+        $sysFileStorageUidsToBeResetToDefaultStorage = [];
         foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
             $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
             // continue with Local, writable and online storage only
@@ -229,7 +229,7 @@ class Import extends ImportExport
         // Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
         $tce->reverseOrder = 1;
         $tce->isImporting = true;
-        $tce->start($this->import_data, array());
+        $tce->start($this->import_data, []);
         $tce->process_datamap();
         $this->addToMapId($tce->substNEWwithIDs);
 
@@ -281,10 +281,10 @@ class Import extends ImportExport
      */
     public function checkImportPrerequisites()
     {
-        $messages = array();
+        $messages = [];
 
         // Check #1: Extension dependencies
-        $extKeysToInstall = array();
+        $extKeysToInstall = [];
         foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
             if (!empty($extKey) && !ExtensionManagementUtility::isLoaded($extKey)) {
                 $extKeysToInstall[] = $extKey;
@@ -355,7 +355,7 @@ class Import extends ImportExport
 
         $defaultStorage = ResourceFactory::getInstance()->getDefaultStorage();
 
-        $sanitizedFolderMappings = array();
+        $sanitizedFolderMappings = [];
 
         foreach ($this->dat['header']['records']['sys_file'] as $sysFileUid => $_) {
             $fileRecord = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
@@ -596,7 +596,7 @@ class Import extends ImportExport
             $this->addGeneralErrorsByTable('pages');
             // $pageRecords is a copy of the pages array in the imported file. Records here are unset one by one when the addSingle function is called.
             $pageRecords = $this->dat['header']['records']['pages'];
-            $this->import_data = array();
+            $this->import_data = [];
             // First add page tree if any
             if (is_array($this->dat['header']['pagetree'])) {
                 $pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
@@ -618,16 +618,16 @@ class Import extends ImportExport
             // Now write to database:
             $tce = $this->getNewTCE();
             $tce->isImporting = true;
-            $this->callHook('before_writeRecordsPages', array(
+            $this->callHook('before_writeRecordsPages', [
                 'tce' => &$tce,
                 'data' => &$this->import_data
-            ));
+            ]);
             $tce->suggestedInsertUids = $this->suggestedInsertUids;
-            $tce->start($this->import_data, array());
+            $tce->start($this->import_data, []);
             $tce->process_datamap();
-            $this->callHook('after_writeRecordsPages', array(
+            $this->callHook('after_writeRecordsPages', [
                 'tce' => &$tce
-            ));
+            ]);
             // post-processing: Registering new ids (end all tcemain sessions with this)
             $this->addToMapId($tce->substNEWwithIDs);
             // In case of an update, order pages from the page tree correctly:
@@ -647,7 +647,7 @@ class Import extends ImportExport
      */
     public function writeRecords_pages_order()
     {
-        $cmd_data = array();
+        $cmd_data = [];
         // Get uid-pid relations and traverse them in order to map to possible new IDs
         $pidsFromTree = $this->flatInversePageTree_pid($this->dat['header']['pagetree']);
         foreach ($pidsFromTree as $origPid => $newPid) {
@@ -666,15 +666,15 @@ class Import extends ImportExport
         // Execute the move commands if any:
         if (!empty($cmd_data)) {
             $tce = $this->getNewTCE();
-            $this->callHook('before_writeRecordsPagesOrder', array(
+            $this->callHook('before_writeRecordsPagesOrder', [
                 'tce' => &$tce,
                 'data' => &$cmd_data
-            ));
-            $tce->start(array(), $cmd_data);
+            ]);
+            $tce->start([], $cmd_data);
             $tce->process_cmdmap();
-            $this->callHook('after_writeRecordsPagesOrder', array(
+            $this->callHook('after_writeRecordsPagesOrder', [
                 'tce' => &$tce
-            ));
+            ]);
         }
     }
 
@@ -687,7 +687,7 @@ class Import extends ImportExport
      * @return array Array with uid-pid pairs for all pages in the page tree.
      * @see ImportExport::flatInversePageTree()
      */
-    public function flatInversePageTree_pid($idH, $a = array(), $pid = -1)
+    public function flatInversePageTree_pid($idH, $a = [], $pid = -1)
     {
         if (is_array($idH)) {
             $idH = array_reverse($idH);
@@ -711,7 +711,7 @@ class Import extends ImportExport
     public function writeRecords_records($pid)
     {
         // Write the rest of the records
-        $this->import_data = array();
+        $this->import_data = [];
         if (is_array($this->dat['header']['records'])) {
             foreach ($this->dat['header']['records'] as $table => $recs) {
                 $this->addGeneralErrorsByTable($table);
@@ -740,19 +740,19 @@ class Import extends ImportExport
         }
         // Now write to database:
         $tce = $this->getNewTCE();
-        $this->callHook('before_writeRecordsRecords', array(
+        $this->callHook('before_writeRecordsRecords', [
             'tce' => &$tce,
             'data' => &$this->import_data
-        ));
+        ]);
         $tce->suggestedInsertUids = $this->suggestedInsertUids;
         // Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
         $tce->reverseOrder = 1;
         $tce->isImporting = true;
-        $tce->start($this->import_data, array());
+        $tce->start($this->import_data, []);
         $tce->process_datamap();
-        $this->callHook('after_writeRecordsRecords', array(
+        $this->callHook('after_writeRecordsRecords', [
             'tce' => &$tce
-        ));
+        ]);
         // post-processing: Removing files and registering new ids (end all tcemain sessions with this)
         $this->addToMapId($tce->substNEWwithIDs);
         // In case of an update, order pages from the page tree correctly:
@@ -772,11 +772,11 @@ class Import extends ImportExport
      */
     public function writeRecords_records_order($mainPid)
     {
-        $cmd_data = array();
+        $cmd_data = [];
         if (is_array($this->dat['header']['pagetree'])) {
             $pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
         } else {
-            $pagesFromTree = array();
+            $pagesFromTree = [];
         }
         if (is_array($this->dat['header']['pid_lookup'])) {
             foreach ($this->dat['header']['pid_lookup'] as $pid => $recList) {
@@ -801,15 +801,15 @@ class Import extends ImportExport
         // Execute the move commands if any:
         if (!empty($cmd_data)) {
             $tce = $this->getNewTCE();
-            $this->callHook('before_writeRecordsRecordsOrder', array(
+            $this->callHook('before_writeRecordsRecordsOrder', [
                 'tce' => &$tce,
                 'data' => &$cmd_data
-            ));
-            $tce->start(array(), $cmd_data);
+            ]);
+            $tce->start([], $cmd_data);
             $tce->process_cmdmap();
-            $this->callHook('after_writeRecordsRecordsOrder', array(
+            $this->callHook('after_writeRecordsRecordsOrder', [
                 'tce' => &$tce
-            ));
+            ]);
         }
     }
 
@@ -858,7 +858,7 @@ class Import extends ImportExport
             } else {
                 $ID = StringUtility::getUniqueId('NEW');
             }
-            $this->import_newId[$table . ':' . $ID] = array('table' => $table, 'uid' => $uid);
+            $this->import_newId[$table . ':' . $ID] = ['table' => $table, 'uid' => $uid];
             if ($table == 'pages') {
                 $this->import_newId_pids[$uid] = $ID;
             }
@@ -978,7 +978,7 @@ class Import extends ImportExport
                 $this->error('Error: ' . $fileName . ' was not in temp-path. Not removed!');
             }
         }
-        $this->unlinkFiles = array();
+        $this->unlinkFiles = [];
     }
 
     /***************************
@@ -995,7 +995,7 @@ class Import extends ImportExport
      */
     public function setRelations()
     {
-        $updateData = array();
+        $updateData = [];
         // import_newId contains a register of all records that was in the import memorys "records" key
         foreach ($this->import_newId as $nId => $dat) {
             $table = $dat['table'];
@@ -1022,7 +1022,7 @@ class Import extends ImportExport
                                 break;
                             case 'file':
                                 if (is_array($config['newValueFiles']) && !empty($config['newValueFiles'])) {
-                                    $valArr = array();
+                                    $valArr = [];
                                     foreach ($config['newValueFiles'] as $fI) {
                                         $valArr[] = $this->import_addFileNameToBeCopied($fI);
                                     }
@@ -1041,15 +1041,15 @@ class Import extends ImportExport
         if (!empty($updateData)) {
             $tce = $this->getNewTCE();
             $tce->isImporting = true;
-            $this->callHook('before_setRelation', array(
+            $this->callHook('before_setRelation', [
                 'tce' => &$tce,
                 'data' => &$updateData
-            ));
-            $tce->start($updateData, array());
+            ]);
+            $tce->start($updateData, []);
             $tce->process_datamap();
-            $this->callHook('after_setRelations', array(
+            $this->callHook('after_setRelations', [
                 'tce' => &$tce
-            ));
+            ]);
         }
     }
 
@@ -1062,7 +1062,7 @@ class Import extends ImportExport
      */
     public function setRelations_db($itemArray, $itemConfig)
     {
-        $valArray = array();
+        $valArray = [];
         foreach ($itemArray as $relDat) {
             if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
                 // Since non FAL file relation type group internal_type file_reference are handled as reference to
@@ -1147,7 +1147,7 @@ class Import extends ImportExport
      */
     public function setFlexFormRelations()
     {
-        $updateData = array();
+        $updateData = [];
         // import_newId contains a register of all records that was in the import memorys "records" key
         foreach ($this->import_newId as $nId => $dat) {
             $table = $dat['table'];
@@ -1184,10 +1184,10 @@ class Import extends ImportExport
                                 $iteratorObj->callBackObj = $this;
                                 $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData(
                                     $currentValueArray['data'],
-                                    array(),
-                                    array(),
+                                    [],
+                                    [],
                                     $dataStructArray,
-                                    array($table, $thisNewUid, $field, $config),
+                                    [$table, $thisNewUid, $field, $config],
                                     'remapListedDBRecords_flexFormCallBack'
                                 );
                                 // The return value is set as an array which means it will be processed by tcemain for file and DB references!
@@ -1203,15 +1203,15 @@ class Import extends ImportExport
         if (!empty($updateData)) {
             $tce = $this->getNewTCE();
             $tce->isImporting = true;
-            $this->callHook('before_setFlexFormRelations', array(
+            $this->callHook('before_setFlexFormRelations', [
                 'tce' => &$tce,
                 'data' => &$updateData
-            ));
-            $tce->start($updateData, array());
+            ]);
+            $tce->start($updateData, []);
             $tce->process_datamap();
-            $this->callHook('after_setFlexFormRelations', array(
+            $this->callHook('after_setFlexFormRelations', [
                 'tce' => &$tce
-            ));
+            ]);
         }
     }
 
@@ -1240,13 +1240,13 @@ class Import extends ImportExport
             $dataValue = implode(',', $valArray);
         }
         if (is_array($config['flexFormRels']['file'][$path])) {
-            $valArr = array();
+            $valArr = [];
             foreach ($config['flexFormRels']['file'][$path] as $fI) {
                 $valArr[] = $this->import_addFileNameToBeCopied($fI);
             }
             $dataValue = implode(',', $valArr);
         }
-        return array('value' => $dataValue);
+        return ['value' => $dataValue];
     }
 
     /**************************
@@ -1261,7 +1261,7 @@ class Import extends ImportExport
     public function processSoftReferences()
     {
         // Initialize:
-        $inData = array();
+        $inData = [];
         // Traverse records:
         if (is_array($this->dat['header']['records'])) {
             foreach ($this->dat['header']['records'] as $table => $recs) {
@@ -1270,7 +1270,7 @@ class Import extends ImportExport
                     if (isset($GLOBALS['TCA'][$table]) && is_array($thisRec['softrefs'])) {
                         // First traversal is to collect softref configuration and split them up based on fields.
                         // This could probably also have been done with the "records" key instead of the header.
-                        $fieldsIndex = array();
+                        $fieldsIndex = [];
                         foreach ($thisRec['softrefs'] as $softrefDef) {
                             // If a substitution token is set:
                             if ($softrefDef['field'] && is_array($softrefDef['subst']) && $softrefDef['subst']['tokenID']) {
@@ -1294,7 +1294,7 @@ class Import extends ImportExport
                                         /** @var $iteratorObj DataHandler */
                                         $iteratorObj = GeneralUtility::makeInstance(DataHandler::class);
                                         $iteratorObj->callBackObj = $this;
-                                        $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $uid, $field, $softRefCfgs), 'processSoftReferences_flexFormCallBack');
+                                        $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $uid, $field, $softRefCfgs], 'processSoftReferences_flexFormCallBack');
                                         // The return value is set as an array which means it will be processed by tcemain for file and DB references!
                                         if (is_array($currentValueArray['data'])) {
                                             $inData[$table][$thisNewUid][$field] = $currentValueArray;
@@ -1316,16 +1316,16 @@ class Import extends ImportExport
         // Now write to database:
         $tce = $this->getNewTCE();
         $tce->isImporting = true;
-        $this->callHook('before_processSoftReferences', array(
+        $this->callHook('before_processSoftReferences', [
             'tce' => $tce,
             'data' => &$inData
-        ));
+        ]);
         $tce->enableLogging = true;
-        $tce->start($inData, array());
+        $tce->start($inData, []);
         $tce->process_datamap();
-        $this->callHook('after_processSoftReferences', array(
+        $this->callHook('after_processSoftReferences', [
             'tce' => $tce
-        ));
+        ]);
     }
 
     /**
@@ -1346,7 +1346,7 @@ class Import extends ImportExport
         list($table, $origUid, $field, $softRefCfgs) = $pParams;
         if (is_array($softRefCfgs)) {
             // First, find all soft reference configurations for this structure path (they are listed flat in the header):
-            $thisSoftRefCfgList = array();
+            $thisSoftRefCfgList = [];
             foreach ($softRefCfgs as $sK => $sV) {
                 if ($sV['structurePath'] === $path) {
                     $thisSoftRefCfgList[$sK] = $sV;
@@ -1362,7 +1362,7 @@ class Import extends ImportExport
             }
         }
         // Return
-        return array('value' => $dataValue);
+        return ['value' => $dataValue];
     }
 
     /**

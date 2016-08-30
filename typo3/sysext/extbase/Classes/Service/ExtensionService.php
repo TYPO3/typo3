@@ -40,7 +40,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      * Cache of result for getTargetPidByPlugin()
      * @var array
      */
-    protected $targetPidPluginCache = array();
+    protected $targetPidPluginCache = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -103,7 +103,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
         if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'])) {
             return null;
         }
-        $pluginNames = array();
+        $pluginNames = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'] as $pluginName => $pluginConfiguration) {
             if (!is_array($pluginConfiguration['controllers'])) {
                 continue;
@@ -232,7 +232,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
     {
         $targetPageType = 0;
         $settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, $extensionName);
-        $formatToPageTypeMapping = isset($settings['view']['formatToPageTypeMapping']) ? $settings['view']['formatToPageTypeMapping'] : array();
+        $formatToPageTypeMapping = isset($settings['view']['formatToPageTypeMapping']) ? $settings['view']['formatToPageTypeMapping'] : [];
         if (is_array($formatToPageTypeMapping) && array_key_exists($format, $formatToPageTypeMapping)) {
             $targetPageType = (int)$formatToPageTypeMapping[$format];
         }

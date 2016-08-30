@@ -26,21 +26,21 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var Extension[string][string]
      */
-    protected $extensionStorage = array();
+    protected $extensionStorage = [];
 
     /**
      * Storage for extensions to be installed
      *
      * @var array
      */
-    protected $extensionInstallStorage = array();
+    protected $extensionInstallStorage = [];
 
     /**
      * Storage for extensions to be copied
      *
      * @var array
      */
-    protected $extensionCopyStorage = array();
+    protected $extensionCopyStorage = [];
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
@@ -67,11 +67,11 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function addExtensionToQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download')
     {
-        if (!is_string($stack) || !in_array($stack, array('download', 'update'))) {
+        if (!is_string($stack) || !in_array($stack, ['download', 'update'])) {
             throw new ExtensionManagerException('Stack has to be either "download" or "update"', 1342432103);
         }
         if (!isset($this->extensionStorage[$stack])) {
-            $this->extensionStorage[$stack] = array();
+            $this->extensionStorage[$stack] = [];
         }
         if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage[$stack])) {
             if ($this->extensionStorage[$stack][$extension->getExtensionKey()] !== $extension) {
@@ -103,7 +103,7 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function removeExtensionFromQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download')
     {
-        if (!is_string($stack) || !in_array($stack, array('download', 'update'))) {
+        if (!is_string($stack) || !in_array($stack, ['download', 'update'])) {
             throw new ExtensionManagerException('Stack has to be either "download" or "update"', 1342432104);
         }
         if (array_key_exists($stack, $this->extensionStorage) && is_array($this->extensionStorage[$stack])) {

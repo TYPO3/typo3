@@ -34,10 +34,10 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
         $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)->getMock();
         $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
-            ->setConstructorArgs(array($GLOBALS['TYPO3_CONF_VARS'], 1, 1))
+            ->setConstructorArgs([$GLOBALS['TYPO3_CONF_VARS'], 1, 1])
             ->getMock();
         $GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
-        $GLOBALS['TSFE']->page = array();
+        $GLOBALS['TSFE']->page = [];
     }
 
     ////////////////////////////////
@@ -62,7 +62,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->prepareSectionIndexTest();
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(null));
         $result = $this->subject->_call('sectionIndex', 'field');
-        $this->assertEquals($result, array());
+        $this->assertEquals($result, []);
     }
 
     /**
@@ -74,7 +74,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->id = 10;
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(null))->with(10);
         $result = $this->subject->_call('sectionIndex', 'field');
-        $this->assertEquals($result, array());
+        $this->assertEquals($result, []);
     }
 
     /**
@@ -85,7 +85,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1337334849);
         $this->prepareSectionIndexTest();
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
+        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
         $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(0));
         $this->subject->_call('sectionIndex', 'field');
     }
@@ -98,10 +98,10 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->prepareSectionIndexTest();
         $this->subject->mconf['sectionIndex.']['type'] = 'all';
         $GLOBALS['TSFE']->sys_language_contentOL = 1;
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array('_PAGES_OVERLAY_LANGUAGE' => 1)));
+        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
         $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
-        $GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue(array('uid' => 0, 'header' => 'NOT_OVERLAID')), $this->returnValue(false)));
-        $this->subject->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(array('uid' => 0, 'header' => 'OVERLAID')));
+        $GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue(['uid' => 0, 'header' => 'NOT_OVERLAID']), $this->returnValue(false)));
+        $this->subject->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(['uid' => 0, 'header' => 'OVERLAID']));
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertEquals($result[0]['title'], 'OVERLAID');
     }
@@ -111,40 +111,40 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sectionIndexFiltersDataProvider()
     {
-        return array(
-            'unfiltered fields' => array(
+        return [
+            'unfiltered fields' => [
                 1,
-                array(
+                [
                     'sectionIndex' => 1,
                     'header' => 'foo',
                     'header_layout' => 1
-                )
-            ),
-            'with unset section index' => array(
+                ]
+            ],
+            'with unset section index' => [
                 0,
-                array(
+                [
                     'sectionIndex' => 0,
                     'header' => 'foo',
                     'header_layout' => 1
-                )
-            ),
-            'with unset header' => array(
+                ]
+            ],
+            'with unset header' => [
                 0,
-                array(
+                [
                     'sectionIndex' => 1,
                     'header' => '',
                     'header_layout' => 1
-                )
-            ),
-            'with header layout 100' => array(
+                ]
+            ],
+            'with header layout 100' => [
                 0,
-                array(
+                [
                     'sectionIndex' => 1,
                     'header' => 'foo',
                     'header_layout' => 100
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -157,7 +157,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->prepareSectionIndexTest();
         $this->subject->mconf['sectionIndex.']['type'] = 'header';
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
+        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
         $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
         $GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue($dataRow), $this->returnValue(false)));
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -169,28 +169,28 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sectionIndexQueriesWithDifferentColPosDataProvider()
     {
-        return array(
-            'no configuration' => array(
-                array(),
+        return [
+            'no configuration' => [
+                [],
                 'colPos=0'
-            ),
-            'with useColPos 2' => array(
-                array('useColPos' => 2),
+            ],
+            'with useColPos 2' => [
+                ['useColPos' => 2],
                 'colPos=2'
-            ),
-            'with useColPos -1' => array(
-                array('useColPos' => -1),
+            ],
+            'with useColPos -1' => [
+                ['useColPos' => -1],
                 ''
-            ),
-            'with stdWrap useColPos' => array(
-                array(
-                    'useColPos.' => array(
+            ],
+            'with stdWrap useColPos' => [
+                [
+                    'useColPos.' => [
                         'wrap' => '2|'
-                    )
-                ),
+                    ]
+                ],
                 'colPos=2'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -202,14 +202,14 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function sectionIndexQueriesWithDifferentColPos($configuration, $whereClausePrefix)
     {
         $this->prepareSectionIndexTest();
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
+        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
         $this->subject->mconf['sectionIndex.'] = $configuration;
-        $queryConfiguration = array(
+        $queryConfiguration = [
             'pidInList' => 12,
             'orderBy' => 'field',
             'languageField' => 'sys_language_uid',
             'where' => $whereClausePrefix
-        );
+        ];
         $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->with('tt_content', $queryConfiguration)->will($this->returnValue(1));
         $this->subject->_call('sectionIndex', 'field', 12);
     }
@@ -222,33 +222,33 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function ifsubHasToCheckExcludeUidListDataProvider()
     {
-        return array(
-            'none excluded' => array(
-                array(12, 34, 56),
+        return [
+            'none excluded' => [
+                [12, 34, 56],
                 '1, 23, 456',
                 true
-            ),
-            'one excluded' => array(
-                array(1, 234, 567),
+            ],
+            'one excluded' => [
+                [1, 234, 567],
                 '1, 23, 456',
                 true
-            ),
-            'three excluded' => array(
-                array(1, 23, 456),
+            ],
+            'three excluded' => [
+                [1, 23, 456],
                 '1, 23, 456',
                 false
-            ),
-            'empty excludeList' => array(
-                array(1, 123, 45),
+            ],
+            'empty excludeList' => [
+                [1, 123, 45],
                 '',
                 true
-            ),
-            'empty menu' => array(
-                array(),
+            ],
+            'empty menu' => [
+                [],
                 '1, 23, 456',
                 false
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -260,18 +260,18 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function ifsubHasToCheckExcludeUidList($menuItems, $excludeUidList, $expectedResult)
     {
-        $menu = array();
+        $menu = [];
         foreach ($menuItems as $page) {
-            $menu[] = array('uid' => $page);
+            $menu[] = ['uid' => $page];
         }
 
         $this->prepareSectionIndexTest();
         $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)->getMock();
 
         $this->subject->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
-        $this->subject->menuArr = array(
-            0 => array('uid' => 1)
-        );
+        $this->subject->menuArr = [
+            0 => ['uid' => 1]
+        ];
         $this->subject->conf['excludeUidList'] = $excludeUidList;
 
         $this->assertEquals($expectedResult, $this->subject->isItemState('IFSUB', 0));

@@ -31,7 +31,7 @@ class Result
     /**
      * @var array<\TYPO3\CMS\Extbase\Error\Error>
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Caches the existence of errors
@@ -42,7 +42,7 @@ class Result
     /**
      * @var array<\TYPO3\CMS\Extbase\Error\Warning>
      */
-    protected $warnings = array();
+    protected $warnings = [];
 
     /**
      * Caches the existence of warning
@@ -53,7 +53,7 @@ class Result
     /**
      * @var array<\TYPO3\CMS\Extbase\Error\Notice>
      */
-    protected $notices = array();
+    protected $notices = [];
 
     /**
      * Caches the existence of notices
@@ -66,7 +66,7 @@ class Result
      *
      * @var array<\TYPO3\CMS\Extbase\Error\Result>
      */
-    protected $propertyResults = array();
+    protected $propertyResults = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Error\Result
@@ -310,15 +310,15 @@ class Result
      */
     public function clear()
     {
-        $this->errors = array();
-        $this->notices = array();
-        $this->warnings = array();
+        $this->errors = [];
+        $this->notices = [];
+        $this->warnings = [];
 
         $this->warningsExist = false;
         $this->noticesExist = false;
         $this->errorsExist = false;
 
-        $this->propertyResults = array();
+        $this->propertyResults = [];
     }
 
     /**
@@ -384,8 +384,8 @@ class Result
      */
     public function getFlattenedErrors()
     {
-        $result = array();
-        $this->flattenTree('errors', $result, array());
+        $result = [];
+        $this->flattenTree('errors', $result, []);
         return $result;
     }
 
@@ -399,8 +399,8 @@ class Result
      */
     public function getFlattenedWarnings()
     {
-        $result = array();
-        $this->flattenTree('warnings', $result, array());
+        $result = [];
+        $this->flattenTree('warnings', $result, []);
         return $result;
     }
 
@@ -414,8 +414,8 @@ class Result
      */
     public function getFlattenedNotices()
     {
-        $result = array();
-        $this->flattenTree('notices', $result, array());
+        $result = [];
+        $this->flattenTree('notices', $result, []);
         return $result;
     }
 

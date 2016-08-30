@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage',
         'label' => 'name',
         'tstamp' => 'tstamp',
@@ -10,113 +10,113 @@ return array(
         'delete' => 'deleted',
         'rootLevel' => true,
         'versioningWS_alwaysAllowLiveEdit' => true, // Only have LIVE records of file storages
-        'enablecolumns' => array(),
+        'enablecolumns' => [],
         'requestUpdate' => 'driver',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_file_storage'
-        ),
+        ],
         'searchFields' => 'name,description'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'name,description,driver,processingfolder,configuration,auto_extract_metadata'
-    ),
-    'columns' => array(
-        'name' => array(
+    ],
+    'columns' => [
+        'name' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'required'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 5
-            )
-        ),
-        'is_browsable' => array(
+            ]
+        ],
+        'is_browsable' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_browsable',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 1
-            )
-        ),
-        'is_default' => array(
+            ]
+        ],
+        'is_default' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_default',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0,
                 'eval' => 'maximumRecordsChecked',
-                'validation' => array(
+                'validation' => [
                     'maximumRecordsChecked' => 1
-                )
-            )
-        ),
-        'is_public' => array(
+                ]
+            ]
+        ],
+        'is_public' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_public',
-            'config' => array(
+            'config' => [
                 'default' => true,
                 'type' => 'user',
                 'userFunc' => \TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService::class . '->renderIsPublic',
-            )
-        ),
-        'is_writable' => array(
+            ]
+        ],
+        'is_writable' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_writable',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 1
-            )
-        ),
-        'is_online' => array(
+            ]
+        ],
+        'is_online' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_online',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 1
-            )
-        ),
-        'auto_extract_metadata' => array(
+            ]
+        ],
+        'auto_extract_metadata' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.auto_extract_metadata',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 1
-            )
-        ),
-        'processingfolder' => array(
+            ]
+        ],
+        'processingfolder' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'placeholder' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder.placeholder',
                 'size' => 20
-            )
-        ),
-        'driver' => array(
+            ]
+        ],
+        'driver' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.driver',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(),
+                'items' => [],
                 'default' => 'Local',
                 'onChange' => 'reload'
-            )
-        ),
-        'configuration' => array(
+            ]
+        ],
+        'configuration' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.configuration',
-            'config' => array(
+            'config' => [
                 'type' => 'flex',
                 'ds_pointerField' => 'driver',
-                'ds' => array()
-            ),
-        )
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'name, description, --div--;Configuration, driver, configuration, is_default, auto_extract_metadata, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
-    ),
-    'palettes' => array(
-        'capabilities' => array(
+                'ds' => []
+            ],
+        ]
+    ],
+    'types' => [
+        '0' => ['showitem' => 'name, description, --div--;Configuration, driver, configuration, is_default, auto_extract_metadata, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online']
+    ],
+    'palettes' => [
+        'capabilities' => [
             'showitem' => 'is_browsable, is_public, is_writable',
-        ),
-    ),
-);
+        ],
+    ],
+];

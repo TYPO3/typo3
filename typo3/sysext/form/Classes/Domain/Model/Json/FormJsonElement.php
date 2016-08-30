@@ -31,19 +31,19 @@ class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonEle
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(),
+    public $configuration = [
+        'attributes' => [],
         'prefix' => 'tx_form',
         'confirmation' => true,
-        'postProcessor' => array()
-    );
+        'postProcessor' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -67,7 +67,7 @@ class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonEle
         'enctype',
         'method',
         'novalidate'
-    );
+    ];
 
     /**
      * Set all the parameters for this object
@@ -109,7 +109,7 @@ class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonEle
             $postProcessors = $parameters['postProcessor.'];
             foreach ($postProcessors as $key => $postProcessorName) {
                 if ((int)$key && strpos($key, '.') === false) {
-                    $postProcessorConfiguration = array();
+                    $postProcessorConfiguration = [];
                     if (isset($postProcessors[$key . '.'])) {
                         $postProcessorConfiguration = $postProcessors[$key . '.'];
                     }
@@ -117,12 +117,12 @@ class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonEle
                 }
             }
         } else {
-            $this->configuration['postProcessor'] = array(
-                'mail' => array(
+            $this->configuration['postProcessor'] = [
+                'mail' => [
                     'recipientEmail' => '',
                     'senderEmail' => ''
-                )
-            );
+                ]
+            ];
         }
     }
 

@@ -26,7 +26,7 @@ class CmsVariableProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getByPathDelegatesToObjectAccess()
     {
         $instance = new CmsVariableProvider();
-        $instance->setSource(array('foo' => 'bar'));
+        $instance->setSource(['foo' => 'bar']);
         $this->assertEquals('bar', $instance->getByPath('foo'));
     }
 }

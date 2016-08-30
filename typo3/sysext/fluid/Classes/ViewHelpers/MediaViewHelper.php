@@ -67,7 +67,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
         $this->registerArgument('file', 'object', 'File', true);
-        $this->registerArgument('additionalConfig', 'string', 'This array can hold additional configuration that is passed though to the Renderer object', false, array());
+        $this->registerArgument('additionalConfig', 'string', 'This array can hold additional configuration that is passed though to the Renderer object', false, []);
         $this->registerArgument('width', 'string', 'This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('height', 'string', 'This can be a numeric value representing the fixed height in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
     }
@@ -86,7 +86,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $height = $this->arguments['height'];
 
         // get Resource Object (non ExtBase version)
-        if (is_callable(array($file, 'getOriginalResource'))) {
+        if (is_callable([$file, 'getOriginalResource'])) {
             // We have a domain model, so we need to fetch the FAL resource object from there
             $file = $file->getOriginalResource();
         }
@@ -117,11 +117,11 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
     protected function renderImage(FileInterface $image, $width, $height)
     {
         $crop = $image instanceof FileReference ? $image->getProperty('crop') : null;
-        $processingInstructions = array(
+        $processingInstructions = [
             'width' => $width,
             'height' => $height,
             'crop' => $crop,
-        );
+        ];
         $imageService = $this->getImageService();
         $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
         $imageUri = $imageService->getImageUri($processedImage);

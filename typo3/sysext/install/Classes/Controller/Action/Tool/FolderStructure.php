@@ -33,7 +33,7 @@ class FolderStructure extends Action\AbstractAction
         $folderStructureFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
 
-        $fixedStatusObjects = array();
+        $fixedStatusObjects = [];
         if (isset($this->postValues['set']['fix'])) {
             $fixedStatusObjects = $structureFacade->fix();
         }

@@ -57,14 +57,14 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      */
     public function modMenu()
     {
-        return array(
+        return [
             'ts_analyzer_checkSetup' => '1',
             'ts_analyzer_checkConst' => '1',
             'ts_analyzer_checkLinenum' => '1',
             'ts_analyzer_checkComments' => '1',
             'ts_analyzer_checkCrop' => '1',
             'ts_analyzer_checkSyntax' => '1'
-        );
+        ];
     }
 
     /**
@@ -122,7 +122,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $templateService->clearList_const_temp = array_flip($templateService->clearList_const);
         $templateService->clearList_setup_temp = array_flip($templateService->clearList_setup);
         $pointer = count($templateService->hierarchyInfo);
-        $hierarchyInfo = $templateService->ext_process_hierarchyInfo(array(), $pointer);
+        $hierarchyInfo = $templateService->ext_process_hierarchyInfo([], $pointer);
         $assigns['hierarchy'] = implode(array_reverse($templateService->ext_getTemplateHierarchyArr(
             $hierarchyInfo,
             '',
@@ -130,10 +130,10 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
             1
         )), '');
 
-        $urlParameters = array(
+        $urlParameters = [
             'id' => $GLOBALS['SOBE']->id,
             'template' => 'all'
-        );
+        ];
         $assigns['moduleLink'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 
         $assigns['template'] = $template = GeneralUtility::_GET('template');
@@ -181,7 +181,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                     $assigns['constants'][] = [
                         'title' => $templateService->hierarchyInfo[$key]['title'],
                         'content' => $templateService->ext_outputTS(
-                            array($val),
+                            [$val],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
@@ -206,7 +206,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                     $assigns['setups'][] = [
                         'title' => $templateService->hierarchyInfo[$key]['title'],
                         'content' => $templateService->ext_outputTS(
-                            array($val),
+                            [$val],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],

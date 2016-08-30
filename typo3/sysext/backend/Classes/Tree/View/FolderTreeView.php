@@ -133,11 +133,11 @@ class FolderTreeView extends AbstractTreeView
     public function PMiconATagWrap($icon, $cmd, $isExpand = true)
     {
         if (empty($this->scope)) {
-            $this->scope = array(
+            $this->scope = [
                 'class' => get_class($this),
                 'script' => $this->thisScript,
                 'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs
-            );
+            ];
         }
 
         if ($this->thisScript) {
@@ -270,7 +270,7 @@ class FolderTreeView extends AbstractTreeView
         // Get stored tree structure AND updating it if needed according to incoming PM GET var.
         $this->initializePositionSaving();
         // Init done:
-        $treeItems = array();
+        $treeItems = [];
         // Traverse mounts:
         foreach ($this->storages as $storageObject) {
             $this->getBrowseableTreeForStorage($storageObject);
@@ -290,19 +290,19 @@ class FolderTreeView extends AbstractTreeView
     {
         // If there are filemounts, show each, otherwise just the rootlevel folder
         $fileMounts = $storageObject->getFileMounts();
-        $rootLevelFolders = array();
+        $rootLevelFolders = [];
         if (!empty($fileMounts)) {
             foreach ($fileMounts as $fileMountInfo) {
-                $rootLevelFolders[] = array(
+                $rootLevelFolders[] = [
                     'folder' => $fileMountInfo['folder'],
                     'name' => $fileMountInfo['title']
-                );
+                ];
             }
         } elseif ($this->BE_USER->isAdmin()) {
-            $rootLevelFolders[] = array(
+            $rootLevelFolders[] = [
                 'folder' => $storageObject->getRootLevelFolder(),
                 'name' => $storageObject->getName()
-            );
+            ];
         }
         // Clean the tree
         $this->reset();
@@ -332,23 +332,23 @@ class FolderTreeView extends AbstractTreeView
                 $rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
             }
             // Preparing rootRec for the mount
-            $icon = $this->iconFactory->getIconForResource($rootLevelFolder, Icon::SIZE_SMALL, null, array('mount-root' => true));
+            $icon = $this->iconFactory->getIconForResource($rootLevelFolder, Icon::SIZE_SMALL, null, ['mount-root' => true]);
             $firstHtml .= $this->wrapIcon($icon, $rootLevelFolder);
-            $row = array(
+            $row = [
                 'uid' => $folderHashSpecUID,
                 'title' => $rootLevelFolderName,
                 'path' => $rootLevelFolder->getCombinedIdentifier(),
                 'folder' => $rootLevelFolder
-            );
+            ];
             // Add the storage root to ->tree
-            $this->tree[] = array(
+            $this->tree[] = [
                 'HTML' => $firstHtml,
                 'row' => $row,
                 'bank' => $this->bank,
                 // hasSub is TRUE when the root of the storage is expanded
                 'hasSub' => $isOpen && $storageObject->isBrowsable(),
                 'invertedDepth' => 1000,
-            );
+            ];
             // If the mount is expanded, go down:
             if ($isOpen && $storageObject->isBrowsable()) {
                 // Set depth:
@@ -374,7 +374,7 @@ class FolderTreeView extends AbstractTreeView
         // This generates the directory tree
         /* array of \TYPO3\CMS\Core\Resource\Folder */
         if ($folderObject instanceof InaccessibleFolder) {
-            $subFolders = array();
+            $subFolders = [];
         } else {
             $subFolders = $folderObject->getSubfolders();
             $subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
@@ -389,19 +389,19 @@ class FolderTreeView extends AbstractTreeView
         foreach ($subFolders as $subFolderName => $subFolder) {
             $subFolderCounter++;
             // Reserve space.
-            $this->tree[] = array();
+            $this->tree[] = [];
             // Get the key for this space
             end($this->tree);
             $isLocked = $subFolder instanceof InaccessibleFolder;
             $treeKey = key($this->tree);
             $specUID = GeneralUtility::md5int($subFolder->getCombinedIdentifier());
             $this->specUIDmap[$specUID] = $subFolder->getCombinedIdentifier();
-            $row = array(
+            $row = [
                 'uid' => $specUID,
                 'path' => $subFolder->getCombinedIdentifier(),
                 'title' => $subFolderName,
                 'folder' => $subFolder
-            );
+            ];
             // Make a recursive call to the next level
             if (!$isLocked && $depth > 1 && $this->expandNext($specUID)) {
                 $nextCount = $this->getFolderTree($subFolder, $depth - 1, $type);
@@ -422,12 +422,12 @@ class FolderTreeView extends AbstractTreeView
                     $row['_title'] = '<strong>' . $subFolderName . '</strong>';
                 }
                 $icon = '<span title="' . htmlspecialchars($subFolderName) . '">'
-                    . $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, null, array('folder-open' => (bool)$isOpen))
+                    . $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, null, ['folder-open' => (bool)$isOpen])
                     . '</span>';
                 $HTML .= $this->wrapIcon($icon, $subFolder);
             }
             // Finally, add the row/HTML content to the ->tree array in the reserved key.
-            $this->tree[$treeKey] = array(
+            $this->tree[$treeKey] = [
                 'row' => $row,
                 'HTML' => $HTML,
                 'hasSub' => $nextCount && $this->expandNext($specUID),
@@ -435,7 +435,7 @@ class FolderTreeView extends AbstractTreeView
                 'isLast' => false,
                 'invertedDepth' => $depth,
                 'bank' => $this->bank
-            );
+            ];
         }
         if ($subFolderCounter > 0) {
             $this->tree[$treeKey]['isLast'] = true;
@@ -488,7 +488,7 @@ class FolderTreeView extends AbstractTreeView
         }
         // We need to count the opened <ul>'s every time we dig into another level,
         // so we know how many we have to close when all children are done rendering
-        $closeDepth = array();
+        $closeDepth = [];
         foreach ($treeItems as $treeItem) {
             /** @var $folderObject Folder */
             $folderObject = $treeItem['row']['folder'];
@@ -608,9 +608,9 @@ class FolderTreeView extends AbstractTreeView
     protected function getShortHashNumberForStorage(ResourceStorage $storageObject = null, Folder $startingPointFolder = null)
     {
         if (!$this->storageHashNumbers) {
-            $this->storageHashNumbers = array();
+            $this->storageHashNumbers = [];
             // Mapping md5-hash to shorter number:
-            $hashMap = array();
+            $hashMap = [];
             foreach ($this->storages as $storageUid => $storage) {
                 $fileMounts = $storage->getFileMounts();
                 if (!empty($fileMounts)) {
@@ -660,12 +660,12 @@ class FolderTreeView extends AbstractTreeView
         list($mountKey, $doExpand, $folderIdentifier) = explode('_', $PM, 3);
         // In case the folder identifier contains "_", we just need to get the fourth/last parameter
         list($folderIdentifier, $treeName) = GeneralUtility::revExplode('_', $folderIdentifier, 2);
-        return array(
+        return [
             $mountKey,
             $doExpand,
             $folderIdentifier,
             $treeName
-        );
+        ];
     }
 
     /**
@@ -680,12 +680,12 @@ class FolderTreeView extends AbstractTreeView
      */
     protected function generateExpandCollapseParameter($mountKey = null, $doExpand = false, Folder $folderObject = null, $treeName = null)
     {
-        $parts = array(
+        $parts = [
             $mountKey !== null ? $mountKey : $this->bank,
             $doExpand == 1 ? 1 : 0,
             $folderObject !== null ? GeneralUtility::md5int($folderObject->getCombinedIdentifier()) : '',
             $treeName !== null ? $treeName : $this->treeName
-        );
+        ];
         return implode('_', $parts);
     }
 

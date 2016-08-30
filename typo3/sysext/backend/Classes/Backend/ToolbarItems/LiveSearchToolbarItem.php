@@ -74,7 +74,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array('class' => 'dropdown');
+        return ['class' => 'dropdown'];
     }
 
     /**

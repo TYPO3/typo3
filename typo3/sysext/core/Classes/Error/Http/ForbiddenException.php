@@ -22,7 +22,7 @@ class ForbiddenException extends AbstractClientErrorException
     /**
      * @var array HTTP Status Header lines
      */
-    protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_403);
+    protected $statusHeaders = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_403];
 
     /**
      * @var string Title of the message

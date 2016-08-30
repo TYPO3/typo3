@@ -50,7 +50,7 @@ class CheckFlexFormValue
      */
     protected function removeSwitchableControllerActionsRecursive(array $a)
     {
-        $r = array();
+        $r = [];
 
         foreach ($a as $k => $v) {
             if ($k === 'switchableControllerActions') {

@@ -36,26 +36,26 @@ class MassActionHandler extends AbstractHandler
      */
     public function getMassStageActions($parameter)
     {
-        $actions = array();
+        $actions = [];
         $currentWorkspace = $this->getCurrentWorkspace();
         $massActionsEnabled = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.enableMassActions') !== '0';
         // in case we're working within "All Workspaces" we can't provide Mass Actions
         if ($currentWorkspace != \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
             $publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
             if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
-                $actions[] = array('action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish'));
+                $actions[] = ['action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish')];
                 if ($GLOBALS['BE_USER']->workspaceSwapAccess()) {
-                    $actions[] = array('action' => 'swap', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_swap'));
+                    $actions[] = ['action' => 'swap', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_swap')];
                 }
             }
             if ($currentWorkspace !== \TYPO3\CMS\Workspaces\Service\WorkspaceService::LIVE_WORKSPACE_ID) {
-                $actions[] = array('action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard'));
+                $actions[] = ['action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard')];
             }
         }
-        $result = array(
+        $result = [
             'total' => count($actions),
             'data' => $actions
-        );
+        ];
         return $result;
     }
 
@@ -67,12 +67,12 @@ class MassActionHandler extends AbstractHandler
      */
     public function publishWorkspace(\stdClass $parameters)
     {
-        $result = array(
+        $result = [
             'init' => false,
             'total' => 0,
             'processed' => 0,
             'error' => false
-        );
+        ];
         try {
             if ($parameters->init) {
                 $language = $this->validateLanguageParameter($parameters);
@@ -96,12 +96,12 @@ class MassActionHandler extends AbstractHandler
      */
     public function flushWorkspace(\stdClass $parameters)
     {
-        $result = array(
+        $result = [
             'init' => false,
             'total' => 0,
             'processed' => 0,
             'error' => false
-        );
+        ];
         try {
             if ($parameters->init) {
                 $language = $this->validateLanguageParameter($parameters);
@@ -174,7 +174,7 @@ class MassActionHandler extends AbstractHandler
     {
         $processData = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction');
         $recordsProcessed = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_processed');
-        $limitedCmd = array();
+        $limitedCmd = [];
         $numRecs = 0;
         foreach ($processData as $table => $recs) {
             foreach ($recs as $key => $value) {
@@ -196,7 +196,7 @@ class MassActionHandler extends AbstractHandler
             /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
             $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             // Execute the commands:
-            $tce->start(array(), $limitedCmd);
+            $tce->start([], $limitedCmd);
             $tce->process_cmdmap();
             $errors = $tce->errorLog;
             if (!empty($errors)) {

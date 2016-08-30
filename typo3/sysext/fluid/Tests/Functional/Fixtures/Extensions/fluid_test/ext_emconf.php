@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
   'title' => 'Extension skeleton for TYPO3 7',
   'description' => 'Description for ext',
   'category' => 'Example Extensions',
@@ -18,30 +18,30 @@ $EM_CONF[$_EXTKEY] = array(
   'lockType' => '',
   'version' => '0.0.2',
   'constraints' =>
-  array(
+  [
     'depends' =>
-    array(
+    [
       'typo3' => '7.5.0-7.99.99',
-    ),
+    ],
     'conflicts' =>
-    array(
-    ),
+    [
+    ],
     'suggests' =>
-    array(
-    ),
-  ),
+    [
+    ],
+  ],
   'autoload' =>
-  array(
+  [
     'psr-4' =>
-    array(
+    [
       'TYPO3Fluid\\FluidTest\\' => 'Classes',
-    ),
-  ),
+    ],
+  ],
   'autoload-dev' =>
-  array(
+  [
     'psr-4' =>
-    array(
+    [
       'TYPO3Fluid\\FluidTest\\Tests\\' => 'Tests',
-    ),
-  ),
-);
+    ],
+  ],
+];

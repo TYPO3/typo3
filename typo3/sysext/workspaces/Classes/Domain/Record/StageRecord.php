@@ -282,7 +282,7 @@ class StageRecord extends AbstractRecord
     public function getResponsiblePersons()
     {
         if (!isset($this->responsiblePersons)) {
-            $this->responsiblePersons = array();
+            $this->responsiblePersons = [];
             if (!empty($this->record['responsible_persons'])) {
                 $this->responsiblePersons = $this->getStagesService()->resolveBackendUserIds($this->record['responsible_persons']);
             }

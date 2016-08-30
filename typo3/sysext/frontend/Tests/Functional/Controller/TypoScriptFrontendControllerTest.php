@@ -38,8 +38,8 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         $GLOBALS['TSFE']->gr_list = '';
         $this->tsFrontendController = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
@@ -95,26 +95,26 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         GeneralUtility::flushInternalRuntimeCaches();
 
         $_SERVER['HTTP_HOST'] = $currentDomain;
-        $domainRecords = array(
-            'typo3.org' => array(
+        $domainRecords = [
+            'typo3.org' => [
                 'uid' => '1',
                 'pid' => '1',
                 'domainName' => 'typo3.org',
                 'forced' => 0,
-            ),
-            'foo.bar' => array(
+            ],
+            'foo.bar' => [
                 'uid' => '2',
                 'pid' => '1',
                 'domainName' => 'foo.bar',
                 'forced' => 0,
-            ),
-            'example.com' => array(
+            ],
+            'example.com' => [
                 'uid' => '3',
                 'pid' => '1',
                 'domainName' => 'example.com',
                 'forced' => 0,
-            ),
-        );
+            ],
+        ];
 
         foreach ($domainRecords as $domainRecord) {
             (new ConnectionPool())->getConnectionForTable('sys_domain')->insert(
@@ -124,9 +124,9 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         }
 
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
-        $expectedResult = array(
+        $expectedResult = [
             $domainRecords[$currentDomain]['pid'] => $domainRecords[$currentDomain],
-        );
+        ];
 
         $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
         $this->assertEquals($expectedResult, $actualResult);
@@ -142,26 +142,26 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         GeneralUtility::flushInternalRuntimeCaches();
 
         $_SERVER['HTTP_HOST'] = $currentDomain;
-        $domainRecords = array(
-            'typo3.org' => array(
+        $domainRecords = [
+            'typo3.org' => [
                 'uid' => '1',
                 'pid' => '1',
                 'domainName' => 'typo3.org',
                 'forced' => 0,
-            ),
-            'foo.bar' => array(
+            ],
+            'foo.bar' => [
                 'uid' => '2',
                 'pid' => '1',
                 'domainName' => 'foo.bar',
                 'forced' => 1,
-            ),
-            'example.com' => array(
+            ],
+            'example.com' => [
                 'uid' => '3',
                 'pid' => '1',
                 'domainName' => 'example.com',
                 'forced' => 0,
-            ),
-        );
+            ],
+        ];
 
         foreach ($domainRecords as $domainRecord) {
             (new ConnectionPool())->getConnectionForTable('sys_domain')->insert(
@@ -171,9 +171,9 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         }
 
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
-        $expectedResult = array(
+        $expectedResult = [
             $domainRecords[$currentDomain]['pid'] => $domainRecords['foo.bar'],
-        );
+        ];
         $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
 
         $this->assertEquals($expectedResult, $actualResult);
@@ -194,16 +194,16 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function getSysDomainCacheDataProvider()
     {
-        return array(
-            'typo3.org' => array(
+        return [
+            'typo3.org' => [
                 'typo3.org',
-            ),
-            'foo.bar' => array(
+            ],
+            'foo.bar' => [
                 'foo.bar',
-            ),
-            'example.com' => array(
+            ],
+            'example.com' => [
                 'example.com',
-            ),
-        );
+            ],
+        ];
     }
 }

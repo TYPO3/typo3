@@ -42,24 +42,24 @@ class PhpErrorCodeViewHelperTest extends ViewHelperBaseTestcase
      */
     public function errorCodesDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'errorCode' => E_ERROR,
                 'expectedString' => 'E_ERROR',
-            ),
-            array(
+            ],
+            [
                 'errorCode' => E_ALL,
                 'expectedString' => 'E_ALL',
-            ),
-            array(
+            ],
+            [
                 'errorCode' => E_ERROR ^ E_WARNING ^ E_PARSE,
                 'expectedString' => 'E_ERROR | E_WARNING | E_PARSE',
-            ),
-            array(
+            ],
+            [
                 'errorCode' => E_RECOVERABLE_ERROR ^ E_USER_DEPRECATED,
                 'expectedString' => 'E_RECOVERABLE_ERROR | E_USER_DEPRECATED',
-            )
-        );
+            ]
+        ];
     }
 
     /**

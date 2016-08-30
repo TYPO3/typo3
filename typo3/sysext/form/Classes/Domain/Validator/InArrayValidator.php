@@ -22,14 +22,14 @@ class InArrayValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'array' => array('', 'The array values from the wizard configuration (array = test1,test2)', 'string', false),
-        'array.' => array('', 'The array values from the documented configuration', 'array', false),
-        'strict' => array('', 'Compare types', 'boolean', false),
-        'ignorecase' => array('', 'Ignore cases', 'boolean', false)
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'array' => ['', 'The array values from the wizard configuration (array = test1,test2)', 'string', false],
+        'array.' => ['', 'The array values from the documented configuration', 'array', false],
+        'strict' => ['', 'Compare types', 'boolean', false],
+        'ignorecase' => ['', 'Ignore cases', 'boolean', false]
+    ];
 
     /**
      * @var CharsetConverter
@@ -77,7 +77,7 @@ class InArrayValidator extends AbstractValidator
          * In both cases, the operations will be processed on an array.
          */
         if (is_string($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         /**
@@ -92,7 +92,7 @@ class InArrayValidator extends AbstractValidator
          *   }
          * In this case there is already an array but the "options" key differs.
          */
-        $allowedOptionsArray = array();
+        $allowedOptionsArray = [];
         if (!empty($this->options['array']) && is_string($this->options['array'])) {
             $allowedOptionsArray = GeneralUtility::trimExplode(',', $this->options['array'], true);
         } elseif (!empty($this->options['array.']) && is_array($this->options['array.'])) {

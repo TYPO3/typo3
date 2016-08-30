@@ -66,12 +66,12 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $errorSymbols = array(
+        $errorSymbols = [
             '0' => '',
             '1' => 'status-dialog-warning',
             '2' => 'status-dialog-error',
             '3' => 'status-dialog-error'
-        );
+        ];
         if ($errorSymbols[$arguments['errorNumber']]) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             return $iconFactory->getIcon($errorSymbols[$arguments['errorNumber']], Icon::SIZE_SMALL)->render();

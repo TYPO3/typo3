@@ -36,9 +36,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     {
         parent::createContents();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array($this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']),
-            )
+            [
+                self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
+            ]
         );
         $this->assertAssertionDataSet('createContents');
 
@@ -122,9 +122,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     {
         parent::deleteLocalizedContentAndDeleteContent();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array(self::VALUE_ContentIdThird, self::VALUE_ContentIdThirdLocalized),
-            )
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdThird, self::VALUE_ContentIdThirdLocalized],
+            ]
         );
         $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
 
@@ -204,9 +204,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array(self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond),
-            )
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond],
+            ]
         );
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
@@ -271,10 +271,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     {
         parent::copyPage();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Page => array($this->recordIds['newPageId']),
-                self::TABLE_Content => array($this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']),
-            )
+            [
+                self::TABLE_Page => [$this->recordIds['newPageId']],
+                self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
+            ]
         );
         $this->assertAssertionDataSet('copyPage');
 
@@ -340,9 +340,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     {
         parent::movePageToDifferentPageAndChangeSorting();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Page => array(self::VALUE_PageId, self::VALUE_PageIdTarget),
-            )
+            [
+                self::TABLE_Page => [self::VALUE_PageId, self::VALUE_PageIdTarget],
+            ]
         );
         $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
 
@@ -367,9 +367,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Page => array(self::VALUE_PageIdTarget, $this->recordIds['newPageId']),
-            )
+            [
+                self::TABLE_Page => [self::VALUE_PageIdTarget, $this->recordIds['newPageId']],
+            ]
         );
         $this->assertAssertionDataSet('movePageToDifferentPageNCreatePageAfterMovedPage');
 

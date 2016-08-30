@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Form',
     'description' => 'Form Library, Plugin and Wizard',
     'category' => 'plugin',
@@ -11,11 +11,11 @@ $EM_CONF[$_EXTKEY] = array(
     'author_email' => 'patrick@patrickbroens.nl, ralf.zimmermann@tritum.de',
     'author_company' => '',
     'version' => '8.3.0',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '8.3.0-8.3.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

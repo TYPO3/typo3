@@ -58,9 +58,9 @@ class ToggleExtensionInstallationStateViewHelper extends Link\ActionViewHelper
 
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $action = 'toggleExtensionInstallationState';
-        $uri = $uriBuilder->reset()->uriFor($action, array(
+        $uri = $uriBuilder->reset()->uriFor($action, [
             'extensionKey' => $extension['key']
-        ), 'Action');
+        ], 'Action');
         $this->tag->addAttribute('href', $uri);
         $label = $extension['installed'] ? 'deactivate' : 'activate';
         $this->tag->addAttribute('title', LocalizationUtility::translate('extensionList.' . $label, 'extensionmanager'));

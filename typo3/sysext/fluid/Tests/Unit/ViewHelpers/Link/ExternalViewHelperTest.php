@@ -28,7 +28,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
@@ -38,7 +38,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
     public function renderCorrectlySetsTagNameAndAttributesAndContent()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
+            ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
@@ -63,7 +63,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
     public function renderAddsHttpPrefixIfSpecifiedUriDoesNotContainScheme()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
+            ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
@@ -88,7 +88,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
     public function renderAddsSpecifiedSchemeIfUriDoesNotContainScheme()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
+            ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'ftp://some-domain.tld');
@@ -114,7 +114,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
     public function renderDoesNotAddEmptyScheme()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
+            ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'some-domain.tld');

@@ -135,7 +135,7 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
             $data = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($data);
         } elseif (is_string($data) || is_numeric($data)) {
             $currentValue = (string)$data;
-            $data = array($data);
+            $data = [$data];
         }
         $this->contentObjectRenderer->start($data, $table);
         if ($currentValue !== null) {

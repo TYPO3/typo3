@@ -210,27 +210,27 @@ class InternalLinktype extends AbstractLinktype
             switch ($errorType['page']) {
                 case self::DELETED:
                     $errorPage = str_replace(
-                        array(
+                        [
                             '###title###',
                             '###uid###'
-                        ),
-                        array(
+                        ],
+                        [
                             $errorParams['page']['title'],
                             $errorParams['page']['uid']
-                        ),
+                        ],
                         $lang->getLL('list.report.pagedeleted')
                     );
                     break;
                 case self::HIDDEN:
                     $errorPage = str_replace(
-                        array(
+                        [
                             '###title###',
                             '###uid###'
-                        ),
-                        array(
+                        ],
+                        [
                             $errorParams['page']['title'],
                             $errorParams['page']['uid']
-                        ),
+                        ],
                         $lang->getLL('list.report.pagenotvisible')
                     );
                     break;
@@ -246,44 +246,44 @@ class InternalLinktype extends AbstractLinktype
             switch ($errorType['content']) {
                 case self::DELETED:
                     $errorContent = str_replace(
-                        array(
+                        [
                             '###title###',
                             '###uid###'
-                        ),
-                        array(
+                        ],
+                        [
                             $errorParams['content']['title'],
                             $errorParams['content']['uid']
-                        ),
+                        ],
                         $lang->getLL('list.report.contentdeleted')
                     );
                     break;
                 case self::HIDDEN:
                     $errorContent = str_replace(
-                        array(
+                        [
                             '###title###',
                             '###uid###'
-                        ),
-                        array(
+                        ],
+                        [
                             $errorParams['content']['title'],
                             $errorParams['content']['uid']
-                        ),
+                        ],
                         $lang->getLL('list.report.contentnotvisible')
                     );
                     break;
                 case self::MOVED:
                     $errorContent = str_replace(
-                        array(
+                        [
                             '###title###',
                             '###uid###',
                             '###wrongpage###',
                             '###rightpage###'
-                        ),
-                        array(
+                        ],
+                        [
                             $errorParams['content']['title'],
                             $errorParams['content']['uid'],
                             $errorParams['content']['wrongPage'],
                             $errorParams['content']['rightPage']
-                        ),
+                        ],
                         $lang->getLL('list.report.contentmoved')
                     );
                     break;

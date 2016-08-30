@@ -40,7 +40,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(CleanerTask::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -61,7 +61,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getTcaTablesCanBeSet()
     {
-        $tables = array('pages', 'tt_content');
+        $tables = ['pages', 'tt_content'];
         $this->subject->setTcaTables($tables);
 
         $this->assertEquals($tables, $this->subject->getTcaTables());
@@ -77,7 +77,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask $subject */
         $subject = $this->getMockBuilder(CleanerTask::class)
-            ->setMethods(array('getPeriodAsTimestamp'))
+            ->setMethods(['getPeriodAsTimestamp'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setTcaTables(['pages']);

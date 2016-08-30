@@ -73,14 +73,14 @@ class LinkNode extends AbstractNode implements NodeInterface
             $status->setMessage(
                 'This node is not handled for Windows OS and should be checked manually.'
             );
-            return array($status);
+            return [$status];
         }
 
         if (!$this->exists()) {
             $status = new Status\ErrorStatus();
             $status->setTitle($this->getRelativePathBelowSiteRoot() . ' should be a link, but it does not exist');
             $status->setMessage('Links cannot be fixed by this system');
-            return array($status);
+            return [$status];
         }
 
         if (!$this->isLink()) {
@@ -98,7 +98,7 @@ class LinkNode extends AbstractNode implements NodeInterface
                     ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
                 );
             }
-            return array($status);
+            return [$status];
         }
 
         if (!$this->isTargetCorrect()) {
@@ -107,7 +107,7 @@ class LinkNode extends AbstractNode implements NodeInterface
             $status->setMessage(
                 'Link target should be ' . $this->getTarget() . ' but is ' . $this->getCurrentTarget()
             );
-            return array($status);
+            return [$status];
         }
 
         $status = new Status\OkStatus();
@@ -117,7 +117,7 @@ class LinkNode extends AbstractNode implements NodeInterface
         }
         $status->setTitle($this->getRelativePathBelowSiteRoot());
         $status->setMessage($message);
-        return array($status);
+        return [$status];
     }
 
     /**
@@ -129,7 +129,7 @@ class LinkNode extends AbstractNode implements NodeInterface
      */
     public function fix()
     {
-        return array();
+        return [];
     }
 
     /**

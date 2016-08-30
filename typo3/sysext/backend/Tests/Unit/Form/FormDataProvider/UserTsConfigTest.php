@@ -37,10 +37,10 @@ class UserTsConfigTest extends UnitTestCase
      */
     public function addDataSetsUserTypoScriptInResult()
     {
-        $expected = array('foo');
+        $expected = ['foo'];
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->userTS = $expected;
-        $result = $this->subject->addData(array());
+        $result = $this->subject->addData([]);
         $this->assertEquals($expected, $result['userTsConfig']);
     }
 }

@@ -40,5 +40,5 @@ class Entity2 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var array
      */
-    public $someReferenceArray = array();
+    public $someReferenceArray = [];
 }

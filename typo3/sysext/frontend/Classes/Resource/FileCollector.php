@@ -38,7 +38,7 @@ class FileCollector implements \Countable
      *
      * @var array
      */
-    protected $files = array();
+    protected $files = [];
 
     /**
      * The file repository
@@ -66,7 +66,7 @@ class FileCollector implements \Countable
      *
      * @param array $fileUids
      */
-    public function addFiles(array $fileUids = array())
+    public function addFiles(array $fileUids = [])
     {
         if (!empty($fileUids)) {
             foreach ($fileUids as $fileUid) {
@@ -76,7 +76,7 @@ class FileCollector implements \Countable
                     $this->getLogger()->warning(
                         'The file with uid  "' . $fileUid
                         . '" could not be found and won\'t be included in frontend output',
-                        array('exception' => $e)
+                        ['exception' => $e]
                     );
                 }
             }
@@ -110,7 +110,7 @@ class FileCollector implements \Countable
      * @param array $fileReferenceUids
      * @return void
      */
-    public function addFileReferences(array $fileReferenceUids = array())
+    public function addFileReferences(array $fileReferenceUids = [])
     {
         foreach ($fileReferenceUids as $fileReferenceUid) {
             $fileObject = $this->getFileRepository()->findFileReferenceByUid($fileReferenceUid);
@@ -124,7 +124,7 @@ class FileCollector implements \Countable
      * @param array $fileCollectionUids The file collections uids
      * @return void
      */
-    public function addFilesFromFileCollections(array $fileCollectionUids = array())
+    public function addFilesFromFileCollections(array $fileCollectionUids = [])
     {
         foreach ($fileCollectionUids as $fileCollectionUid) {
             $this->addFilesFromFileCollection($fileCollectionUid);
@@ -153,7 +153,7 @@ class FileCollector implements \Countable
                 $this->getLogger()->warning(
                     'The file-collection with uid  "' . $fileCollectionUid
                     . '" could not be found or contents could not be loaded and won\'t be included in frontend output.',
-                    array('exception' => $e)
+                    ['exception' => $e]
                 );
             }
         }
@@ -166,7 +166,7 @@ class FileCollector implements \Countable
      * @param bool $recursive Add files recursive from given folders
      * @return void
      */
-    public function addFilesFromFolders(array $folderIdentifiers = array(), $recursive = false)
+    public function addFilesFromFolders(array $folderIdentifiers = [], $recursive = false)
     {
         foreach ($folderIdentifiers as $folderIdentifier) {
             $this->addFilesFromFolder($folderIdentifier, $recursive);
@@ -192,7 +192,7 @@ class FileCollector implements \Countable
                 $this->getLogger()->warning(
                     'The folder with identifier  "' . $folderIdentifier
                     . '" could not be found and won\'t be included in frontend output',
-                    array('exception' => $e)
+                    ['exception' => $e]
                 );
             }
         }

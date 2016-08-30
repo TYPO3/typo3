@@ -31,7 +31,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, array('dummy'));
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, ['dummy']);
     }
 
     /**
@@ -42,11 +42,11 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fileDenyPatternMatchesPhpExtensionDataProvider()
     {
         $fileName = $this->getUniqueId('filename');
-        $data = array();
+        $data = [];
         $phpExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'php,php3,php4,php5,php6,phpsh,phtml', true);
         foreach ($phpExtensions as $extension) {
-            $data[] = array($fileName . '.' . $extension);
-            $data[] = array($fileName . '.' . $extension . '.txt');
+            $data[] = [$fileName . '.' . $extension];
+            $data[] = [$fileName . '.' . $extension . '.txt'];
         }
         return $data;
     }
@@ -165,13 +165,13 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider()
     {
-        return array(
-            'PARSETIME_START' => array('PARSETIME_START'),
-            'EXEC_TIME' => array('EXEC_TIME'),
-            'ACCESS_TIME' => array('ACCESS_TIME'),
-            'SIM_EXEC_TIME' => array('SIM_EXEC_TIME'),
-            'SIM_ACCESS_TIME' => array('SIM_ACCESS_TIME')
-        );
+        return [
+            'PARSETIME_START' => ['PARSETIME_START'],
+            'EXEC_TIME' => ['EXEC_TIME'],
+            'ACCESS_TIME' => ['ACCESS_TIME'],
+            'SIM_EXEC_TIME' => ['SIM_EXEC_TIME'],
+            'SIM_ACCESS_TIME' => ['SIM_ACCESS_TIME']
+        ];
     }
 
     /**

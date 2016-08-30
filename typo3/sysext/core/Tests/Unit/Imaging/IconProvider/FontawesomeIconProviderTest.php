@@ -50,7 +50,7 @@ class FontawesomeIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareIconMarkupWithNameReturnsInstanceOfIconWithCorrectMarkup()
     {
-        $this->subject->prepareIconMarkup($this->icon, array('name' => 'times'));
+        $this->subject->prepareIconMarkup($this->icon, ['name' => 'times']);
         $this->assertEquals('<span class="icon-unify"><i class="fa fa-times"></i></span>', $this->icon->getMarkup());
     }
 

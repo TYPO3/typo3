@@ -24,7 +24,7 @@ class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('integer');
+    protected $sourceTypes = ['integer'];
 
     /**
      * @var string

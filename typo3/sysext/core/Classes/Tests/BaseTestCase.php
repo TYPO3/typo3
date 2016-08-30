@@ -56,7 +56,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @throws \InvalidArgumentException
      */
     protected function getAccessibleMock(
-        $originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '',
+        $originalClassName, $methods = [], array $arguments = [], $mockClassName = '',
         $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true
     ) {
         if ($originalClassName === '') {
@@ -102,8 +102,8 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      */
     protected function getAccessibleMockForAbstractClass(
-        $originalClassName, array $arguments = array(), $mockClassName = '',
-        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = array()
+        $originalClassName, array $arguments = [], $mockClassName = '',
+        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = []
     ) {
         if ($originalClassName === '') {
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1384268260);

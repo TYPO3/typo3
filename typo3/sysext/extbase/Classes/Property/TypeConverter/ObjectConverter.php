@@ -40,7 +40,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
     /**
      * @var array
      */
-    protected $sourceTypes = array('array');
+    protected $sourceTypes = ['array'];
 
     /**
      * @var string
@@ -151,7 +151,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         $object = $this->buildObject($convertedChildProperties, $targetType);
         foreach ($convertedChildProperties as $propertyName => $propertyValue) {
@@ -218,7 +218,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
         $specificObjectType = $this->objectContainer->getImplementationClassName($objectType);
         if ($this->reflectionService->hasMethod($specificObjectType, '__construct')) {
             $constructorSignature = $this->reflectionService->getMethodParameters($specificObjectType, '__construct');
-            $constructorArguments = array();
+            $constructorArguments = [];
             foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
                 if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {
                     $constructorArguments[] = $possibleConstructorArgumentValues[$constructorArgumentName];
@@ -229,7 +229,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
                     throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Missing constructor argument "' . $constructorArgumentName . '" for object of type "' . $objectType . '".', 1268734872);
                 }
             }
-            return call_user_func_array(array($this->objectManager, 'get'), array_merge(array($objectType), $constructorArguments));
+            return call_user_func_array([$this->objectManager, 'get'], array_merge([$objectType], $constructorArguments));
         } else {
             return $this->objectManager->get($objectType);
         }

@@ -34,23 +34,23 @@ class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function stringProvider()
     {
-        return array(
-            '\tsome text ' => array("\tsome text ", 'some text'),
-            'some text   ' => array('some text   ', 'some text'),
-            'some text^M' => array('some text
-', 'some text'),
-        );
+        return [
+            '\tsome text ' => ["\tsome text ", 'some text'],
+            'some text   ' => ['some text   ', 'some text'],
+            'some text^M' => ['some text
+', 'some text'],
+        ];
     }
 
     public function stringProviderForCharacterList()
     {
-        return array(
-            '$some text;' => array('$some text;', 'some text', '$;'),
-            '$some text ' => array('$some text ', 'some text', '$ '),
-            '^Msome text ' => array('
+        return [
+            '$some text;' => ['$some text;', 'some text', '$;'],
+            '$some text ' => ['$some text ', 'some text', '$ '],
+            '^Msome text ' => ['
 some text ', 'some text', '
- '),
-        );
+ '],
+        ];
     }
 
     /**

@@ -46,7 +46,7 @@ class BackendController
     /**
      * @var array
      */
-    protected $cssFiles = array();
+    protected $cssFiles = [];
 
     /**
      * @var string
@@ -56,12 +56,12 @@ class BackendController
     /**
      * @var array
      */
-    protected $jsFiles = array();
+    protected $jsFiles = [];
 
     /**
      * @var array
      */
-    protected $toolbarItems = array();
+    protected $toolbarItems = [];
 
     /**
      * @var int
@@ -114,7 +114,7 @@ class BackendController
         $this->pageRenderer->addExtDirectCode();
         // Add default BE javascript
         $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
-        $this->jsFiles = array(
+        $this->jsFiles = [
             'locallang' => $this->getLocalLangFileName(),
             'md5' => $backendRelPath . 'Resources/Public/JavaScript/md5.js',
             'modulemenu' => $backendRelPath . 'Resources/Public/JavaScript/modulemenu.js',
@@ -125,7 +125,7 @@ class BackendController
             'iframepanel' => $backendRelPath . 'Resources/Public/JavaScript/iframepanel.js',
             'backendcontentiframe' => $backendRelPath . 'Resources/Public/JavaScript/extjs/backendcontentiframe.js',
             'viewportConfiguration' => $backendRelPath . 'Resources/Public/JavaScript/extjs/viewportConfiguration.js',
-        );
+        ];
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');
 			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('logout')) . ');
@@ -207,7 +207,7 @@ class BackendController
      */
     protected function initializeToolbarItems()
     {
-        $toolbarItemInstances = array();
+        $toolbarItemInstances = [];
         $classNameRegistry = $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'];
         foreach ($classNameRegistry as $className) {
             $toolbarItemInstance = GeneralUtility::makeInstance($className);
@@ -334,7 +334,7 @@ class BackendController
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
         // Renders the module page
         $this->content = $this->getDocumentTemplate()->render($title, $view->render());
-        $hookConfiguration = array('content' => &$this->content);
+        $hookConfiguration = ['content' => &$this->content];
         $this->executeHook('renderPostProcess', $hookConfiguration);
     }
 
@@ -348,7 +348,7 @@ class BackendController
         if (!is_array($GLOBALS['TBE_MODULES']['_navigationComponents'])) {
             return;
         }
-        $loadedComponents = array();
+        $loadedComponents = [];
         foreach ($GLOBALS['TBE_MODULES']['_navigationComponents'] as $module => $info) {
             if (in_array($info['componentId'], $loadedComponents)) {
                 continue;
@@ -395,17 +395,17 @@ class BackendController
      */
     protected function renderToolbar()
     {
-        $toolbar = array();
+        $toolbar = [];
         foreach ($this->toolbarItems as $toolbarItem) {
             /** @var \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface $toolbarItem */
             if ($toolbarItem->checkAccess()) {
                 $hasDropDown = (bool)$toolbarItem->hasDropDown();
                 $additionalAttributes = (array)$toolbarItem->getAdditionalAttributes();
 
-                $liAttributes = array();
+                $liAttributes = [];
 
                 // Merge class: Add dropdown class if hasDropDown, add classes from additonal attributes
-                $classes = array();
+                $classes = [];
                 if ($hasDropDown) {
                     $classes[] = 'dropdown';
                 }
@@ -424,7 +424,7 @@ class BackendController
                 $className = get_class($toolbarItem);
                 $className = GeneralUtility::underscoredToLowerCamelCase($className);
                 $className = GeneralUtility::camelCaseToLowerCaseUnderscored($className);
-                $className = str_replace(array('_', '\\'), '-', $className);
+                $className = str_replace(['_', '\\'], '-', $className);
                 $liAttributes[] = 'id="' . $className . '"';
 
                 $toolbar[] = '<li ' . implode(' ', $liAttributes) . '>';
@@ -475,7 +475,7 @@ class BackendController
     protected function generateLocalLang()
     {
         $lang = $this->getLanguageService();
-        $coreLabels = array(
+        $coreLabels = [
             'waitTitle' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logging_in'),
             'refresh_login_failed' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed'),
             'refresh_login_failed_message' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed_message'),
@@ -493,9 +493,9 @@ class BackendController
             'refresh_login_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logout_button'),
             'refresh_login_refresh_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_refresh_button'),
             'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:csh_tooltip_loading')
-        );
-        $labels = array(
-            'fileUpload' => array(
+        ];
+        $labels = [
+            'fileUpload' => [
                 'windowTitle',
                 'buttonSelectFiles',
                 'buttonCancelAll',
@@ -526,8 +526,8 @@ class BackendController
                 'allErrorMessageText',
                 'allError401',
                 'allError2038'
-            ),
-            'liveSearch' => array(
+            ],
+            'liveSearch' => [
                 'title',
                 'helpTitle',
                 'emptyText',
@@ -537,15 +537,15 @@ class BackendController
                 'helpDescription',
                 'helpDescriptionPages',
                 'helpDescriptionContent'
-            ),
-            'viewPort' => array(
+            ],
+            'viewPort' => [
                 'tooltipModuleMenuSplit',
                 'tooltipNavigationContainerSplitDrag',
                 'tooltipNavigationContainerSplitClick',
                 'tooltipDebugPanelSplitDrag'
-            )
-        );
-        $generatedLabels = array();
+            ]
+        ];
+        $generatedLabels = [];
         $generatedLabels['core'] = $coreLabels;
         // First loop over all categories (fileUpload, liveSearch, ..)
         foreach ($labels as $categoryName => $categoryLabels) {
@@ -567,7 +567,7 @@ class BackendController
     {
         $beUser = $this->getBackendUser();
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
+        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         // If another page module was specified, replace the default Page module with the new one
@@ -576,7 +576,7 @@ class BackendController
         if (!$beUser->check('modules', $pageModule)) {
             $pageModule = '';
         }
-        $t3Configuration = array(
+        $t3Configuration = [
             'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
             'username' => htmlspecialchars($beUser->user['username']),
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
@@ -587,11 +587,11 @@ class BackendController
             'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 45,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
             'debugInWindow' => $beUser->uc['debugInWindow'] ? 1 : 0,
-            'ContextHelpWindows' => array(
+            'ContextHelpWindows' => [
                 'width' => 600,
                 'height' => 400
-            )
-        );
+            ]
+        ];
         $this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 
@@ -795,7 +795,7 @@ class BackendController
      * @param array $hookConfiguration Additional configuration passed to hook functions
      * @return void
      */
-    protected function executeHook($identifier, array $hookConfiguration = array())
+    protected function executeHook($identifier, array $hookConfiguration = [])
     {
         $options = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
         if (isset($options[$identifier]) && is_array($options[$identifier])) {
@@ -814,7 +814,7 @@ class BackendController
     protected function generateModuleMenu()
     {
         // get all modules except the user modules for the side menu
-        $moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user', 'help'));
+        $moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
 
         $view = $this->getFluidTemplateObject($this->templatePath . 'ModuleMenu/Main.html');
         $view->assign('modules', $moduleStorage);

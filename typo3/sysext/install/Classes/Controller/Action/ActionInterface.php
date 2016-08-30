@@ -71,5 +71,5 @@ interface ActionInterface
      *
      * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $messages
      */
-    public function setMessages(array $messages = array());
+    public function setMessages(array $messages = []);
 }

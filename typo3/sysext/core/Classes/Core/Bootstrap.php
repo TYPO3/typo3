@@ -53,7 +53,7 @@ class Bootstrap
     /**
      * @var array List of early instances
      */
-    protected $earlyInstances = array();
+    protected $earlyInstances = [];
 
     /**
      * @var string Path to install tool
@@ -64,7 +64,7 @@ class Bootstrap
      * A list of all registered request handlers, see the Application class / entry points for the registration
      * @var \TYPO3\CMS\Core\Http\RequestHandlerInterface[]|\TYPO3\CMS\Core\Console\RequestHandlerInterface[]
      */
-    protected $availableRequestHandlers = array();
+    protected $availableRequestHandlers = [];
 
     /**
      * The Response object when using Request/Response logic
@@ -273,7 +273,7 @@ class Bootstrap
      */
     protected function resolveRequestHandler($request)
     {
-        $suitableRequestHandlers = array();
+        $suitableRequestHandlers = [];
         foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
             /** @var \TYPO3\CMS\Core\Http\RequestHandlerInterface|\TYPO3\CMS\Core\Console\RequestHandlerInterface $requestHandler */
             $requestHandler = GeneralUtility::makeInstance($requestHandlerClassName, $this);
@@ -574,11 +574,11 @@ class Bootstrap
      */
     protected function setCacheHashOptions()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] = [
             'cachedParametersWhiteList' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashOnlyForParameters'], true),
             'excludedParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'], true),
             'requireCacheHashPresenceParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'], true)
-        );
+        ];
         if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty']) === '*') {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludeAllEmptyParameters'] = true;
         } else {
@@ -661,7 +661,7 @@ class Bootstrap
             // Register an error handler for the given errorHandlerError
             $errorHandler = GeneralUtility::makeInstance($errorHandlerClassName, $errorHandlerErrors);
             $errorHandler->setExceptionalErrors($exceptionalErrors);
-            if (is_callable(array($errorHandler, 'setDebugMode'))) {
+            if (is_callable([$errorHandler, 'setDebugMode'])) {
                 $errorHandler->setDebugMode($displayErrors === 1);
             }
         }
@@ -988,7 +988,7 @@ class Bootstrap
 
         /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
         $codeCache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
-        $routesFromPackages = array();
+        $routesFromPackages = [];
         if ($codeCache->has($cacheIdentifier)) {
             // substr is necessary, because the php frontend wraps php code around the cache value
             $routesFromPackages = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));

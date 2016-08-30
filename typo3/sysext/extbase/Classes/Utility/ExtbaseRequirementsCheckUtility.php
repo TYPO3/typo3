@@ -27,9 +27,9 @@ class ExtbaseRequirementsCheckUtility implements \TYPO3\CMS\Reports\StatusProvid
      */
     public function getStatus()
     {
-        $reports = array(
+        $reports = [
             'dbalExtensionIsInstalled' => $this->checkIfDbalExtensionIsInstalled()
-        );
+        ];
         return $reports;
     }
 

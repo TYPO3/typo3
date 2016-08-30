@@ -51,16 +51,16 @@ class Clickmenu
      */
     public function main(&$backRef, $menuItems, $table, $uid)
     {
-        $localItems = array();
+        $localItems = [];
         // Show import/export on second level menu OR root level.
         if ($backRef->cmLevel && GeneralUtility::_GP('subname') == 'moreoptions' || $table === 'pages' && $uid == 0) {
             $LL = $this->includeLL();
-            $urlParameters = array(
-                'tx_impexp' => array(
+            $urlParameters = [
+                'tx_impexp' => [
                     'action' => 'export'
-                ),
+                ],
                 'id' => ($table == 'pages' ? $uid : $backRef->rec['pid'])
-            );
+            ];
             if ($table == 'pages') {
                 $urlParameters['tx_impexp']['pagetree']['id'] = $uid;
                 $urlParameters['tx_impexp']['pagetree']['levels'] = 0;
@@ -80,13 +80,13 @@ class Clickmenu
                 $backendUser = $this->getBackendUser();
                 $isEnabledForNonAdmin = $backendUser->getTSConfig('options.impexp.enableImportForNonAdminUser');
                 if ($backendUser->isAdmin() || !empty($isEnabledForNonAdmin['value'])) {
-                    $urlParameters = array(
+                    $urlParameters = [
                         'id' => $uid,
                         'table' => $table,
-                        'tx_impexp' => array(
+                        'tx_impexp' => [
                             'action' => 'import'
-                        ),
-                    );
+                        ],
+                    ];
                     $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
                     $localItems[] = $backRef->linkItem(
                         htmlspecialchars($this->getLanguageService()->getLLL('import', $LL)),

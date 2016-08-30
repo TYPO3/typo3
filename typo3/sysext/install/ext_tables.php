@@ -16,12 +16,12 @@ if (TYPO3_MODE === 'BE') {
         'extinstall',
         '',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
             'access' => 'admin',
             'name' => 'system_extinstall',
             'icon' => 'EXT:install/Resources/Public/Icons/module-install.svg',
             'labels' => 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf'
-        )
+        ]
     );
 }

@@ -42,7 +42,7 @@ abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Core\Tests\UnitTestC
      * @param array $options
      * @return mixed
      */
-    protected function getValidator($options = array())
+    protected function getValidator($options = [])
     {
         $validator = new $this->validatorClassName($options);
         return $validator;

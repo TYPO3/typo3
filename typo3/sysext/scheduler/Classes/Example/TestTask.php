@@ -60,8 +60,8 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             try {
                 /** @var $mailer \TYPO3\CMS\Core\Mail\MailMessage */
                 $mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mailer->setFrom(array($this->email => 'SCHEDULER TEST-TASK'));
-                $mailer->setReplyTo(array($this->email => 'SCHEDULER TEST-TASK'));
+                $mailer->setFrom([$this->email => 'SCHEDULER TEST-TASK']);
+                $mailer->setReplyTo([$this->email => 'SCHEDULER TEST-TASK']);
                 $mailer->setSubject('SCHEDULER TEST-TASK');
                 $mailer->setBody($mailBody);
                 $mailer->setTo($this->email);

@@ -22,7 +22,7 @@ class UnauthorizedException extends AbstractClientErrorException
     /**
      * @var array HTTP Status Header lines
      */
-    protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401);
+    protected $statusHeaders = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401];
 
     /**
      * @var string Title of the message

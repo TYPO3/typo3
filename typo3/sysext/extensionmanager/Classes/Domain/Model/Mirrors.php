@@ -24,7 +24,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var array
      */
-    protected $mirrors = array();
+    protected $mirrors = [];
 
     /**
      * Keeps currently select mirror.

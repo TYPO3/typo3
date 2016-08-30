@@ -62,21 +62,21 @@ class GeneralUtility
      *
      * @var array<\TYPO3\CMS\Core\SingletonInterface>
      */
-    protected static $singletonInstances = array();
+    protected static $singletonInstances = [];
 
     /**
      * Instances returned by makeInstance, using the class names as array keys
      *
      * @var array<array><object>
      */
-    protected static $nonSingletonInstances = array();
+    protected static $nonSingletonInstances = [];
 
     /**
      * Cache for makeInstance with given class name and final class names to reduce number of self::getClassName() calls
      *
      * @var array Given class name => final class name
      */
-    protected static $finalClassNameCache = array();
+    protected static $finalClassNameCache = [];
 
     /**
      * The application context
@@ -90,7 +90,7 @@ class GeneralUtility
      *
      * @var array<string>
      */
-    protected static $idnaStringCache = array();
+    protected static $idnaStringCache = [];
 
     /**
      * IDNA converter
@@ -104,13 +104,13 @@ class GeneralUtility
      * NOTICE: This is a duplicate of the SAME array in SystemEnvironmentBuilder
      * @var array
      */
-    protected static $supportedCgiServerApis = array(
+    protected static $supportedCgiServerApis = [
         'fpm-fcgi',
         'cgi',
         'isapi',
         'cgi-fcgi',
         'srv', // HHVM with fastcgi
-    );
+    ];
 
     /**
      * @var array
@@ -166,8 +166,8 @@ class GeneralUtility
      */
     public static function _GPmerged($parameter)
     {
-        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : array();
-        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : array();
+        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
+        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
         $mergedParameters = $getParameter;
         ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
         return $mergedParameters;
@@ -222,7 +222,7 @@ class GeneralUtility
         if ($key != '') {
             if (strpos($key, '|') !== false) {
                 $pieces = explode('|', $key);
-                $newGet = array();
+                $newGet = [];
                 $pointer = &$newGet;
                 foreach ($pieces as $piece) {
                     $pointer = &$pointer[$piece];
@@ -671,7 +671,7 @@ class GeneralUtility
     public static function expandList($list)
     {
         $items = explode(',', $list);
-        $list = array();
+        $list = [];
         foreach ($items as $item) {
             $range = explode('-', $item);
             if (isset($range[1])) {
@@ -787,7 +787,7 @@ class GeneralUtility
      */
     public static function split_fileref($fileNameWithPath)
     {
-        $reg = array();
+        $reg = [];
         if (preg_match('/(.*\\/)(.*)$/', $fileNameWithPath, $reg)) {
             $info['path'] = $reg[1];
             $info['file'] = $reg[2];
@@ -852,10 +852,10 @@ class GeneralUtility
      */
     public static function formatSize($sizeInBytes, $labels = '', $base = 0)
     {
-        $defaultFormats = array(
-            'iec' => array('base' => 1024, 'labels' => array(' ', ' Ki', ' Mi', ' Gi', ' Ti', ' Pi', ' Ei', ' Zi', ' Yi')),
-            'si' => array('base' => 1000, 'labels' => array(' ', ' k', ' M', ' G', ' T', ' P', ' E', ' Z', ' Y')),
-        );
+        $defaultFormats = [
+            'iec' => ['base' => 1024, 'labels' => [' ', ' Ki', ' Mi', ' Gi', ' Ti', ' Pi', ' Ei', ' Zi', ' Yi']],
+            'si' => ['base' => 1000, 'labels' => [' ', ' k', ' M', ' G', ' T', ' P', ' E', ' Z', ' Y']],
+        ];
         // Set labels and base:
         if (empty($labels)) {
             $labels = 'iec';
@@ -915,12 +915,12 @@ class GeneralUtility
      */
     public static function splitCalc($string, $operators)
     {
-        $res = array();
+        $res = [];
         $sign = '+';
         while ($string) {
             $valueLen = strcspn($string, $operators);
             $value = substr($string, 0, $valueLen);
-            $res[] = array($sign, trim($value));
+            $res[] = [$sign, trim($value)];
             $sign = substr($string, $valueLen, 1);
             $string = substr($string, $valueLen + 1);
         }
@@ -1083,7 +1083,7 @@ class GeneralUtility
             return self::$idnaStringCache[$value];
         } else {
             if (!self::$idnaConverter) {
-                self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(array('idn_version' => 2008));
+                self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(['idn_version' => 2008]);
             }
             self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
             return self::$idnaStringCache[$value];
@@ -1262,12 +1262,12 @@ class GeneralUtility
         if ($count === 2) {
             $position = strrpos($string, strrev($delimiter));
             if ($position !== false) {
-                return array(substr($string, 0, $position), substr($string, $position + strlen($delimiter)));
+                return [substr($string, 0, $position), substr($string, $position + strlen($delimiter))];
             } else {
-                return array($string);
+                return [$string];
             }
         } elseif ($count <= 1) {
-            return array($string);
+            return [$string];
         } else {
             $explodedValues = explode($delimiter, strrev($string), $count);
             $explodedValues = array_map('strrev', $explodedValues);
@@ -1291,7 +1291,7 @@ class GeneralUtility
     {
         $result = explode($delim, $string);
         if ($removeEmptyValues) {
-            $temp = array();
+            $temp = [];
             foreach ($result as $value) {
                 if (trim($value) !== '') {
                     $temp[] = $value;
@@ -1345,7 +1345,7 @@ class GeneralUtility
      */
     public static function explodeUrl2Array($string, $multidim = false)
     {
-        $output = array();
+        $output = [];
         if ($multidim) {
             parse_str($string, $output);
         } else {
@@ -1372,7 +1372,7 @@ class GeneralUtility
     public static function compileSelectedGetVarsFromArray($varList, array $getArray, $GPvarAlt = true)
     {
         $keys = self::trimExplode(',', $varList, true);
-        $outArr = array();
+        $outArr = [];
         foreach ($keys as $v) {
             if (isset($getArray[$v])) {
                 $outArr[$v] = $getArray[$v];
@@ -1393,7 +1393,7 @@ class GeneralUtility
      */
     public static function csvValues(array $row, $delim = ',', $quote = '"')
     {
-        $out = array();
+        $out = [];
         foreach ($row as $value) {
             $out[] = str_replace($quote, $quote . $quote, $value);
         }
@@ -1410,7 +1410,7 @@ class GeneralUtility
      */
     public static function removeDotsFromTS(array $ts)
     {
-        $out = array();
+        $out = [];
         foreach ($ts as $key => $value) {
             if (is_array($value)) {
                 $key = rtrim($key, '.');
@@ -1441,7 +1441,7 @@ class GeneralUtility
         // Attribute name is stored here
         $name = '';
         $valuemode = false;
-        $attributes = array();
+        $attributes = [];
         foreach ($components as $key => $val) {
             // Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
             if ($val != '=') {
@@ -1476,7 +1476,7 @@ class GeneralUtility
         $tag_tmp = trim(preg_replace('/^<[^[:space:]]*/', '', trim($tag)));
         // Removes any > in the end of the string
         $tag_tmp = trim(rtrim($tag_tmp, '>'));
-        $value = array();
+        $value = [];
         // Compared with empty string instead , 030102
         while ($tag_tmp !== '') {
             $firstChar = $tag_tmp[0];
@@ -1510,7 +1510,7 @@ class GeneralUtility
     public static function implodeAttributes(array $arr, $xhtmlSafe = false, $dontOmitBlankAttribs = false)
     {
         if ($xhtmlSafe) {
-            $newArr = array();
+            $newArr = [];
             foreach ($arr as $p => $v) {
                 if (!isset($newArr[strtolower($p)])) {
                     $newArr[strtolower($p)] = htmlspecialchars($v);
@@ -1518,7 +1518,7 @@ class GeneralUtility
             }
             $arr = $newArr;
         }
-        $list = array();
+        $list = [];
         foreach ($arr as $p => $v) {
             if ((string)$v !== '' || $dontOmitBlankAttribs) {
                 $list[] = $p . '="' . $v . '"';
@@ -1546,7 +1546,7 @@ class GeneralUtility
             // remove nl from the beginning
             $string = ltrim($string, LF);
             // re-ident to one tab using the first line as reference
-            $match = array();
+            $match = [];
             if (preg_match('/^(\\t+)/', $string, $match)) {
                 $string = str_replace($match[1], TAB, $string);
             }
@@ -1567,13 +1567,13 @@ class GeneralUtility
      * @param array $parserOptions Options that will be passed to PHP's xml_parser_set_option()
      * @return mixed The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
      */
-    public static function xml2tree($string, $depth = 999, $parserOptions = array())
+    public static function xml2tree($string, $depth = 999, $parserOptions = [])
     {
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $parser = xml_parser_create();
-        $vals = array();
-        $index = array();
+        $vals = [];
+        $index = [];
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
         foreach ($parserOptions as $option => $value) {
@@ -1585,10 +1585,10 @@ class GeneralUtility
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
         }
         xml_parser_free($parser);
-        $stack = array(array());
+        $stack = [[]];
         $stacktop = 0;
         $startPoint = 0;
-        $tagi = array();
+        $tagi = [];
         foreach ($vals as $key => $val) {
             $type = $val['type'];
             // open tag:
@@ -1597,7 +1597,7 @@ class GeneralUtility
                 if ($depth == $stacktop) {
                     $startPoint = $key;
                 }
-                $tagi = array('tag' => $val['tag']);
+                $tagi = ['tag' => $val['tag']];
                 if (isset($val['attributes'])) {
                     $tagi['attrs'] = $val['attributes'];
                 }
@@ -1641,7 +1641,7 @@ class GeneralUtility
      * @see xml2array(),array2xml()
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
      */
-    public static function array2xml_cs(array $array, $docTag = 'phparray', array $options = array(), $charset = '')
+    public static function array2xml_cs(array $array, $docTag = 'phparray', array $options = [], $charset = '')
     {
         static::logDeprecatedFunction();
         // Set default charset unless explicitly specified
@@ -1670,7 +1670,7 @@ class GeneralUtility
      * @return string An XML string made from the input content in the array.
      * @see xml2array()
      */
-    public static function array2xml(array $array, $NSprefix = '', $level = 0, $docTag = 'phparray', $spaceInd = 0, array $options = array(), array $stackData = array())
+    public static function array2xml(array $array, $NSprefix = '', $level = 0, $docTag = 'phparray', $spaceInd = 0, array $options = [], array $stackData = [])
     {
         // The list of byte values which will trigger binary-safe storage. If any value has one of these char values in it, it will be encoded in base64
         $binaryChars = chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5) . chr(6) . chr(7) . chr(8) . chr(11) . chr(12) . chr(14) . chr(15) . chr(16) . chr(17) . chr(18) . chr(19) . chr(20) . chr(21) . chr(22) . chr(23) . chr(24) . chr(25) . chr(26) . chr(27) . chr(28) . chr(29) . chr(30) . chr(31);
@@ -1731,11 +1731,11 @@ class GeneralUtility
                 if (empty($v)) {
                     $content = '';
                 } else {
-                    $content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, array(
+                    $content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, [
                             'parentTagName' => $tagName,
                             'grandParentTagName' => $stackData['parentTagName'],
                             'path' => ($clearStackPath ? '' : $stackData['path'] . '/' . $tagName)
-                        )) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
+                        ]) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
                 }
                 // Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
                 if ((int)$options['disableTypeAttrib'] != 2) {
@@ -1789,7 +1789,7 @@ class GeneralUtility
      */
     public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
     {
-        static $firstLevelCache = array();
+        static $firstLevelCache = [];
         $identifier = md5($string . $NSprefix . ($reportDocTag ? '1' : '0'));
         // Look up in first level cache
         if (!empty($firstLevelCache[$identifier])) {
@@ -1818,12 +1818,12 @@ class GeneralUtility
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         // Create parser:
         $parser = xml_parser_create();
-        $vals = array();
-        $index = array();
+        $vals = [];
+        $index = [];
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
         // Default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
-        $match = array();
+        $match = [];
         preg_match('/^[[:space:]]*<\\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
         $theCharset = $match[1] ?: 'utf-8';
         // us-ascii / utf-8 / iso-8859-1
@@ -1837,9 +1837,9 @@ class GeneralUtility
         }
         xml_parser_free($parser);
         // Init vars:
-        $stack = array(array());
+        $stack = [[]];
         $stacktop = 0;
-        $current = array();
+        $current = [];
         $tagName = '';
         $documentTag = '';
         // Traverse the parsed XML structure:
@@ -1864,9 +1864,9 @@ class GeneralUtility
                 case 'open':
                     // If open tag it means there is an array stored in sub-elements. Therefore increase the stackpointer and reset the accumulation array:
                     // Setting blank place holder
-                    $current[$tagName] = array();
+                    $current[$tagName] = [];
                     $stack[$stacktop++] = $current;
-                    $current = array();
+                    $current = [];
                     break;
                 case 'close':
                     // If the tag is "close" then it is an array which is closing and we decrease the stack pointer.
@@ -1900,7 +1900,7 @@ class GeneralUtility
                                 break;
                             case 'array':
                                 // MUST be an empty array since it is processed as a value; Empty arrays would end up here because they would have no tags inside...
-                                $current[$tagName] = array();
+                                $current[$tagName] = [];
                                 break;
                         }
                     }
@@ -1968,7 +1968,7 @@ class GeneralUtility
     public static function xmlGetHeaderAttribs($xmlData)
     {
         self::logDeprecatedFunction();
-        $match = array();
+        $match = [];
         if (preg_match('/^\\s*<\\?xml([^>]*)\\?\\>/', $xmlData, $match)) {
             return self::get_tag_attributes($match[1]);
         }
@@ -1987,16 +1987,16 @@ class GeneralUtility
             $fakeThis = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] as $hookMethod) {
                 try {
-                    $parameters = array('script' => $script);
+                    $parameters = ['script' => $script];
                     $script = static::callUserFunction($hookMethod, $parameters, $fakeThis);
                 } catch (\Exception $e) {
                     $errorMessage = 'Error minifying java script: ' . $e->getMessage();
                     $error .= $errorMessage;
-                    static::devLog($errorMessage, \TYPO3\CMS\Core\Utility\GeneralUtility::class, 2, array(
+                    static::devLog($errorMessage, \TYPO3\CMS\Core\Utility\GeneralUtility::class, 2, [
                         'JavaScript' => $script,
                         'Stack trace' => $e->getTrace(),
                         'hook' => $hookMethod
-                    ));
+                    ]);
                 }
             }
         }
@@ -2417,7 +2417,7 @@ class GeneralUtility
         if ($path) {
             if (is_dir($path)) {
                 $dir = scandir($path);
-                $dirs = array();
+                $dirs = [];
                 foreach ($dir as $entry) {
                     if (is_dir($path . '/' . $entry) && $entry != '..' && $entry != '.') {
                         $dirs[] = $entry;
@@ -2447,7 +2447,7 @@ class GeneralUtility
         $excludePattern = (string)$excludePattern;
         $path = rtrim($path, '/');
         if (!@is_dir($path)) {
-            return array();
+            return [];
         }
 
         $rawFileList = scandir($path);
@@ -2457,7 +2457,7 @@ class GeneralUtility
 
         $pathPrefix = $path . '/';
         $extensionList = ',' . $extensionList . ',';
-        $files = array();
+        $files = [];
         foreach ($rawFileList as $entry) {
             $completePathToEntry = $pathPrefix . $entry;
             if (!@is_file($completePathToEntry)) {
@@ -2484,7 +2484,7 @@ class GeneralUtility
         }
 
         $valuePathPrefix = $prependPath ? $pathPrefix : '';
-        $foundFiles = array();
+        $foundFiles = [];
         foreach ($files as $key => $value) {
             // Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
             $foundFiles[md5($pathPrefix . ${$valueName})] = $valuePathPrefix . ${$valueName};
@@ -2549,7 +2549,7 @@ class GeneralUtility
      */
     public static function fixWindowsFilePath($theFile)
     {
-        return str_replace(array('\\', '//'), '/', $theFile);
+        return str_replace(['\\', '//'], '/', $theFile);
     }
 
     /**
@@ -2565,7 +2565,7 @@ class GeneralUtility
             return $pathStr;
         }
         $parts = explode('/', $pathStr);
-        $output = array();
+        $output = [];
         $c = 0;
         foreach ($parts as $part) {
             if ($part === '..') {
@@ -2731,7 +2731,7 @@ class GeneralUtility
      * @param array $getParams Array of GET parameters to include
      * @return string
      */
-    public static function linkThisScript(array $getParams = array())
+    public static function linkThisScript(array $getParams = [])
     {
         $parts = self::getIndpEnv('SCRIPT_NAME');
         $params = self::_GET();
@@ -2754,10 +2754,10 @@ class GeneralUtility
      * @param array $getParams Array of key/value pairs for get parameters to add/overrule with. Can be multidimensional.
      * @return string Output URL with added getParams.
      */
-    public static function linkThisUrl($url, array $getParams = array())
+    public static function linkThisUrl($url, array $getParams = [])
     {
         $parts = parse_url($url);
-        $getP = array();
+        $getP = [];
         if ($parts['query']) {
             parse_str($parts['query'], $getP);
         }
@@ -2960,7 +2960,7 @@ class GeneralUtility
                 $SFN = self::getIndpEnv('SCRIPT_FILENAME');
                 $SN_A = explode('/', strrev(self::getIndpEnv('SCRIPT_NAME')));
                 $SFN_A = explode('/', strrev($SFN));
-                $acc = array();
+                $acc = [];
                 foreach ($SN_A as $kk => $vv) {
                     if ((string)$SFN_A[$kk] === (string)$vv) {
                         $acc[] = $vv;
@@ -3029,9 +3029,9 @@ class GeneralUtility
                 }
                 break;
             case '_ARRAY':
-                $out = array();
+                $out = [];
                 // Here, list ALL possible keys to this function for debug display.
-                $envTestVars = array(
+                $envTestVars = [
                     'HTTP_HOST',
                     'TYPO3_HOST_ONLY',
                     'TYPO3_PORT',
@@ -3054,7 +3054,7 @@ class GeneralUtility
                     'REMOTE_HOST',
                     'HTTP_USER_AGENT',
                     'HTTP_ACCEPT_LANGUAGE'
-                );
+                ];
                 foreach ($envTestVars as $v) {
                     $out[$v] = self::getIndpEnv($v);
                 }
@@ -3162,7 +3162,7 @@ class GeneralUtility
         if (!$useragent) {
             $useragent = self::getIndpEnv('HTTP_USER_AGENT');
         }
-        $bInfo = array();
+        $bInfo = [];
         // Which browser?
         if (strpos($useragent, 'Konqueror') !== false) {
             $bInfo['BROWSER'] = 'konqu';
@@ -3541,7 +3541,7 @@ class GeneralUtility
     public static function stdAuthCode($uid_or_record, $fields = '', $codeLength = 8)
     {
         if (is_array($uid_or_record)) {
-            $recCopy_temp = array();
+            $recCopy_temp = [];
             if ($fields) {
                 $fieldArr = self::trimExplode(',', $fields, true);
                 foreach ($fieldArr as $k => $v) {
@@ -3667,7 +3667,7 @@ class GeneralUtility
             // Default sheet
             $sheet = 'sDEF';
         }
-        return array($dataStruct, $sheet, $singleSheet);
+        return [$dataStruct, $sheet, $singleSheet];
     }
 
     /**
@@ -3680,7 +3680,7 @@ class GeneralUtility
     public static function resolveAllSheetsInDS(array $dataStructArray)
     {
         if (is_array($dataStructArray['sheets'])) {
-            $out = array('sheets' => array());
+            $out = ['sheets' => []];
             foreach ($dataStructArray['sheets'] as $sheetId => $sDat) {
                 list($ds, $aS) = self::resolveSheetDefInDS($dataStructArray, $sheetId);
                 if ($sheetId == $aS) {
@@ -3689,7 +3689,7 @@ class GeneralUtility
             }
         } else {
             list($ds) = self::resolveSheetDefInDS($dataStructArray);
-            $out = array('sheets' => array('sDEF' => $ds));
+            $out = ['sheets' => ['sDEF' => $ds]];
         }
         return $out;
     }
@@ -3711,14 +3711,14 @@ class GeneralUtility
         $content = false;
         // Check if we're using a closure and invoke it directly.
         if (is_object($funcName) && is_a($funcName, 'Closure')) {
-            return call_user_func_array($funcName, array(&$params, &$ref));
+            return call_user_func_array($funcName, [&$params, &$ref]);
         }
         // Check persistent object and if found, call directly and exit.
         if (isset($GLOBALS['T3_VAR']['callUserFunction'][$funcName]) && is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName])) {
-            return call_user_func_array(array(
+            return call_user_func_array([
                 &$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'],
                 $GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']
-            ), array(&$params, &$ref));
+            ], [&$params, &$ref]);
         }
         // Check file-reference prefix; if found, require_once() the file (should be library of code)
         if (strpos($funcName, ':') !== false) {
@@ -3761,13 +3761,13 @@ class GeneralUtility
                 if (method_exists($classObj, $parts[1])) {
                     // If persistent object should be created, set reference:
                     if ($storePersistentObject) {
-                        $GLOBALS['T3_VAR']['callUserFunction'][$funcName] = array(
+                        $GLOBALS['T3_VAR']['callUserFunction'][$funcName] = [
                             'method' => $parts[1],
                             'obj' => &$classObj
-                        );
+                        ];
                     }
                     // Call method:
-                    $content = call_user_func_array(array(&$classObj, $parts[1]), array(&$params, &$ref));
+                    $content = call_user_func_array([&$classObj, $parts[1]], [&$params, &$ref]);
                 } else {
                     $errorMsg = 'No method name \'' . $parts[1] . '\' in class ' . $parts[0];
                     if ($errorMode == 2) {
@@ -3787,7 +3787,7 @@ class GeneralUtility
         } else {
             // Function
             if (function_exists($funcRef)) {
-                $content = call_user_func_array($funcRef, array(&$params, &$ref));
+                $content = call_user_func_array($funcRef, [&$params, &$ref]);
             } else {
                 $errorMsg = 'No function named: ' . $funcRef;
                 if ($errorMode == 2) {
@@ -4010,7 +4010,7 @@ class GeneralUtility
      */
     public static function resetSingletonInstances(array $newSingletonInstances)
     {
-        static::$singletonInstances = array();
+        static::$singletonInstances = [];
         foreach ($newSingletonInstances as $className => $instance) {
             static::setSingletonInstance($className, $instance);
         }
@@ -4055,7 +4055,7 @@ class GeneralUtility
             throw new \InvalidArgumentException('$instance must not be an instance of TYPO3\\CMS\\Core\\SingletonInterface. ' . 'For setting singletons, please use setSingletonInstance.', 1288969325);
         }
         if (!isset(self::$nonSingletonInstances[$className])) {
-            self::$nonSingletonInstances[$className] = array();
+            self::$nonSingletonInstances[$className] = [];
         }
         self::$nonSingletonInstances[$className][] = $instance;
     }
@@ -4092,8 +4092,8 @@ class GeneralUtility
      */
     public static function purgeInstances()
     {
-        self::$singletonInstances = array();
-        self::$nonSingletonInstances = array();
+        self::$singletonInstances = [];
+        self::$nonSingletonInstances = [];
     }
 
     /**
@@ -4119,17 +4119,17 @@ class GeneralUtility
      * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
      * @return object|string[] The service object or an array with error infos.
      */
-    public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array())
+    public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = [])
     {
         $error = false;
         if (!is_array($excludeServiceKeys)) {
             $excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, true);
         }
-        $requestInfo = array(
+        $requestInfo = [
             'requestedServiceType' => $serviceType,
             'requestedServiceSubType' => $serviceSubType,
             'requestedExcludeServiceKeys' => $excludeServiceKeys
-        );
+        ];
         while ($info = ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
             // provide information about requested service to service object
             $info = array_merge($info, $requestInfo);
@@ -4143,7 +4143,7 @@ class GeneralUtility
             } else {
                 $obj = self::makeInstance($info['className']);
                 if (is_object($obj)) {
-                    if (!@is_callable(array($obj, 'init'))) {
+                    if (!@is_callable([$obj, 'init'])) {
                         // use silent logging??? I don't think so.
                         die('Broken service:' . DebugUtility::viewArray($info));
                     }
@@ -4261,7 +4261,7 @@ class GeneralUtility
         }
         // Init custom logging
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
-            $params = array('initLog' => true);
+            $params = ['initLog' => true];
             $fakeThis = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
                 self::callUserFunction($hookMethod, $params, $fakeThis);
@@ -4307,7 +4307,7 @@ class GeneralUtility
         }
         // Do custom logging
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
-            $params = array('msg' => $msg, 'extKey' => $extKey, 'backTrace' => debug_backtrace(), 'severity' => $severity);
+            $params = ['msg' => $msg, 'extKey' => $extKey, 'backTrace' => debug_backtrace(), 'severity' => $severity];
             $fakeThis = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
                 self::callUserFunction($hookMethod, $params, $fakeThis);
@@ -4347,7 +4347,7 @@ class GeneralUtility
             } elseif ($type == 'error_log') {
                 error_log($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
             } elseif ($type == 'syslog') {
-                $priority = array(LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERR, LOG_CRIT);
+                $priority = [LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERR, LOG_CRIT];
                 syslog($priority[(int)$severity], $msgLine);
             }
         }
@@ -4370,7 +4370,7 @@ class GeneralUtility
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
-            $params = array('msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar);
+            $params = ['msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar];
             $fakeThis = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] as $hookMethod) {
                 self::callUserFunction($hookMethod, $params, $fakeThis);
@@ -4392,7 +4392,7 @@ class GeneralUtility
         // Legacy values (no strict comparison, $log can be boolean, string or int)
         $log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
         if ($log === true || $log == '1') {
-            $log = array('file');
+            $log = ['file'];
         } else {
             $log = self::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'], true);
         }
@@ -4464,7 +4464,7 @@ class GeneralUtility
      * @param int $valueLength Long string values are shortened to this length. Default: 20
      * @return string Output string with key names and their value as string
      */
-    public static function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20)
+    public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
     {
         $str = '';
         if (!is_array($valueList)) {
@@ -4543,7 +4543,7 @@ class GeneralUtility
     {
         return strtr(
             json_encode((string)$value, JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_TAG),
-            array(
+            [
                 '"' => '\'',
                 '\\\\' => '\\u005C',
                 ' ' => '\\u0020',
@@ -4551,7 +4551,7 @@ class GeneralUtility
                 '\\t' => '\\u0009',
                 '\\n' => '\\u000A',
                 '\\r' => '\\u000D'
-            )
+            ]
         );
     }
 

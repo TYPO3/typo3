@@ -48,7 +48,7 @@ class ListOfFieldsContainer extends AbstractContainer
         $fieldsByShowitem = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
         $fieldsByShowitem = GeneralUtility::trimExplode(',', $fieldsByShowitem, true);
 
-        $finalFieldsList = array();
+        $finalFieldsList = [];
         foreach ($fieldListToRender as $fieldName) {
             $found = false;
             foreach ($fieldsByShowitem as $fieldByShowitem) {

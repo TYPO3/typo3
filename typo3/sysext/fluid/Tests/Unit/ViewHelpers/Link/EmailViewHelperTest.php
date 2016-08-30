@@ -40,7 +40,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->viewHelper = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper::class))
-            ->setMethods(array('renderChildren'))
+            ->setMethods(['renderChildren'])
             ->getMock();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
@@ -51,7 +51,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
     public function renderCorrectlySetsTagNameAndAttributesAndContent()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
+            ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'mailto:some@email.tld');
@@ -74,7 +74,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
     public function renderSetsTagContentToEmailIfRenderChildrenReturnNull()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
+            ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');
         $this->viewHelper->_set('tag', $mockTagBuilder);
@@ -152,7 +152,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
         ];
         $GLOBALS['TSFE'] = $tsfe;
         $viewHelper = $this->getMockBuilder(EmailViewHelper::class)
-            ->setMethods(array('isFrontendAvailable', 'renderChildren'))
+            ->setMethods(['isFrontendAvailable', 'renderChildren'])
             ->getMock();
         $viewHelper->expects($this->once())->method('isFrontendAvailable')->willReturn(true);
         $viewHelper->expects($this->once())->method('renderChildren')->willReturn(null);

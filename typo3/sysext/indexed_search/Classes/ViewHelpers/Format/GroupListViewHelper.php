@@ -56,7 +56,7 @@ class GroupListViewHelper extends AbstractViewHelper
     {
         $groups = $arguments['groups'];
 
-        $str = array();
+        $str = [];
         foreach ($groups as $row) {
             $str[] = $row['gr_list'] === '0,-1' ? 'NL' : $row['gr_list'];
         }

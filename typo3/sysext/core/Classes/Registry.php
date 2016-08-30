@@ -32,12 +32,12 @@ class Registry implements SingletonInterface
     /**
      * @var array
      */
-    protected $entries = array();
+    protected $entries = [];
 
     /**
      * @var array
      */
-    protected $loadedNamespaces = array();
+    protected $loadedNamespaces = [];
 
     /**
      * Returns a persistent entry.

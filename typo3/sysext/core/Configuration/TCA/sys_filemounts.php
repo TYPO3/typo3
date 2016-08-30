@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'title',
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
@@ -11,85 +11,85 @@ return array(
         'rootLevel' => 1,
         'requestUpdate' => 'base',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_filemounts'
-        ),
+        ],
         'useColumnsForDefaultValues' => 'path,base',
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'title,path'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'title,hidden,path,base,description'
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 30,
                 'eval' => 'required,trim'
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 30,
                 'max' => '2000',
-            )
-        ),
-        'base' => array(
+            ]
+        ],
+        'base' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.baseStorage',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_file_storage',
                 'allowNonIdValues' => true,
-                'items' => array(
-                    array('', 0)
-                ),
+                'items' => [
+                    ['', 0]
+                ],
                 'size' => 1,
                 'maxitems' => 1,
                 'eval' => 'required',
-                'range' => array(
+                'range' => [
                     'lower' => 1,
-                )
-            )
-        ),
-        'path' => array(
+                ]
+            ]
+        ],
+        'path' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.folder',
             'displayCond' => 'FIELD:base:>:0',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(),
+                'items' => [],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Core\\Resource\\Service\\UserFileMountService->renderTceformsSelectDropdown',
-            )
-        ),
-        'read_only' => array(
+            ]
+        ],
+        'read_only' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.read_only',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            ),
-        ),
-    ),
-    'types' => array(
-        '0' => array('showitem' => '--palette--;;mount, description, base, path, read_only')
-    ),
-    'palettes' => array(
-        'mount' => array(
+            ],
+        ],
+    ],
+    'types' => [
+        '0' => ['showitem' => '--palette--;;mount, description, base, path, read_only']
+    ],
+    'palettes' => [
+        'mount' => [
             'showitem' => 'title,hidden',
-        ),
-    ),
-);
+        ],
+    ],
+];

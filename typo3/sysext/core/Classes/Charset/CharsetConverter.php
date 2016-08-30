@@ -81,52 +81,52 @@ class CharsetConverter implements SingletonInterface
      *
      * @var array
      */
-    public $parsedCharsets = array();
+    public $parsedCharsets = [];
 
     /**
      * An array where case folding data will be stored (cached)
      *
      * @var array
      */
-    public $caseFolding = array();
+    public $caseFolding = [];
 
     /**
      * An array where charset-to-ASCII mappings are stored (cached)
      *
      * @var array
      */
-    public $toASCII = array();
+    public $toASCII = [];
 
     /**
      * This tells the converter which charsets has two bytes per char:
      *
      * @var array
      */
-    public $twoByteSets = array(
+    public $twoByteSets = [
         'ucs-2' => 1
-    );
+    ];
 
     /**
      * This tells the converter which charsets has four bytes per char:
      *
      * @var array
      */
-    public $fourByteSets = array(
+    public $fourByteSets = [
         'ucs-4' => 1, // 4-byte Unicode
         'utf-32' => 1
-    );
+    ];
 
     /**
      * This tells the converter which charsets use a scheme like the Extended Unix Code:
      *
      * @var array
      */
-    public $eucBasedSets = array(
+    public $eucBasedSets = [
         'gb2312' => 1, // Chinese, simplified.
         'big5' => 1, // Chinese, traditional.
         'euc-kr' => 1, // Korean
         'shift_jis' => 1
-    );
+    ];
 
     /**
      * @link http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
@@ -134,7 +134,7 @@ class CharsetConverter implements SingletonInterface
      *
      * @var array
      */
-    public $synonyms = array(
+    public $synonyms = [
         'us' => 'ascii',
         'us-ascii' => 'ascii',
         'cp819' => 'iso-8859-1',
@@ -217,7 +217,7 @@ class CharsetConverter implements SingletonInterface
         'utf32' => 'utf-32',
         'ucs2' => 'ucs-2',
         'ucs4' => 'ucs-4'
-    );
+    ];
 
     /**
      * TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
@@ -226,7 +226,7 @@ class CharsetConverter implements SingletonInterface
      * @var array
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use Locales
      */
-    public $charSetArray = array(
+    public $charSetArray = [
         'af' => '',
         'ar' => 'iso-8859-6',
         'ba' => 'iso-8859-2',
@@ -293,7 +293,7 @@ class CharsetConverter implements SingletonInterface
         'vi' => 'utf-8',
         'vn' => 'utf-8',
         'zh' => 'big5'
-    );
+    ];
 
     /**
      * Normalize - changes input character set to lowercase letters.
@@ -603,7 +603,7 @@ class CharsetConverter implements SingletonInterface
 
         // Do conversion:
         $strLen = strlen($str);
-        $outArr = array();
+        $outArr = [];
         // Traverse each char in UTF-8 string.
         for ($a = 0; $a < $strLen; $a++) {
             $chr = substr($str, $a, 1);
@@ -762,7 +762,7 @@ class CharsetConverter implements SingletonInterface
                     // Parse conversion table into lines:
                     $lines = GeneralUtility::trimExplode(LF, file_get_contents($charsetConvTableFile), true);
                     // Initialize the internal variable holding the conv. table:
-                    $this->parsedCharsets[$charset] = array('local' => array(), 'utf8' => array());
+                    $this->parsedCharsets[$charset] = ['local' => [], 'utf8' => []];
                     // traverse the lines:
                     $detectedType = '';
                     foreach ($lines as $value) {
@@ -776,7 +776,7 @@ class CharsetConverter implements SingletonInterface
                             if ($detectedType === 'ms-token') {
                                 list($hexbyte, $utf8) = preg_split('/[=:]/', $value, 3);
                             } elseif ($detectedType === 'whitespaced') {
-                                $regA = array();
+                                $regA = [];
                                 preg_match('/[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+/', $value, $regA);
                                 $hexbyte = $regA[1];
                                 $utf8 = 'U+' . $regA[2];
@@ -850,20 +850,20 @@ class CharsetConverter implements SingletonInterface
         }
         // key = utf8 char (single codepoint), value = utf8 string (codepoint sequence)
         // Note: we use the UTF-8 characters here and not the Unicode numbers to avoid conversion roundtrip in utf8_strtolower/-upper)
-        $this->caseFolding['utf-8'] = array();
+        $this->caseFolding['utf-8'] = [];
         $utf8CaseFolding = &$this->caseFolding['utf-8'];
         // a shorthand
-        $utf8CaseFolding['toUpper'] = array();
-        $utf8CaseFolding['toLower'] = array();
-        $utf8CaseFolding['toTitle'] = array();
+        $utf8CaseFolding['toUpper'] = [];
+        $utf8CaseFolding['toLower'] = [];
+        $utf8CaseFolding['toTitle'] = [];
         // Array of temp. decompositions
-        $decomposition = array();
+        $decomposition = [];
         // Array of chars that are marks (eg. composing accents)
-        $mark = array();
+        $mark = [];
         // Array of chars that are numbers (eg. digits)
-        $number = array();
+        $number = [];
         // Array of chars to be omitted (eg. Russian hard sign)
-        $omit = array();
+        $omit = [];
         while (!feof($fh)) {
             $line = fgets($fh, 4096);
             // Has a lot of info
@@ -896,16 +896,16 @@ class CharsetConverter implements SingletonInterface
                     }
             }
             // Accented Latin letters without "official" decomposition
-            $match = array();
+            $match = [];
             if (preg_match('/^LATIN (SMALL|CAPITAL) LETTER ([A-Z]) WITH/', $name, $match) && !$decomp) {
                 $c = ord($match[2]);
                 if ($match[1] === 'SMALL') {
                     $c += 32;
                 }
-                $decomposition['U+' . $char] = array(dechex($c));
+                $decomposition['U+' . $char] = [dechex($c)];
                 continue;
             }
-            $match = array();
+            $match = [];
             if (preg_match('/(<.*>)? *(.+)/', $decomp, $match)) {
                 switch ($match[1]) {
                     case '<circle>':
@@ -991,7 +991,7 @@ class CharsetConverter implements SingletonInterface
         }
         // Decompose and remove marks; inspired by unac (Loic Dachary <loic@senga.org>)
         foreach ($decomposition as $from => $to) {
-            $code_decomp = array();
+            $code_decomp = [];
             while ($code_value = array_shift($to)) {
                 // Do recursive decomposition
                 if (isset($decomposition['U+' . $code_value])) {
@@ -1010,10 +1010,10 @@ class CharsetConverter implements SingletonInterface
             }
         }
         // Create ascii only mapping
-        $this->toASCII['utf-8'] = array();
+        $this->toASCII['utf-8'] = [];
         $ascii = &$this->toASCII['utf-8'];
         foreach ($decomposition as $from => $to) {
-            $code_decomp = array();
+            $code_decomp = [];
             while ($code_value = array_shift($to)) {
                 $ord = hexdec($code_value);
                 if ($ord > 127) {

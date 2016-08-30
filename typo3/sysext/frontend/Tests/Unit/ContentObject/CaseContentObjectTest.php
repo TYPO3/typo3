@@ -38,24 +38,24 @@ class CaseContentObjectTest extends UnitTestCase
     {
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
-        $tsfe->config = array();
-        $tsfe->page = array();
+        $tsfe->config = [];
+        $tsfe->page = [];
         $tsfe->sys_page = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(array('getRawRecord'))
+            ->setMethods(['getRawRecord'])
             ->getMock();
         $GLOBALS['TSFE'] = $tsfe;
 
         $contentObjectRenderer = new ContentObjectRenderer();
-        $contentObjectRenderer->setContentObjectClassMap(array(
+        $contentObjectRenderer->setContentObjectClassMap([
             'CASE' => CaseContentObject::class,
             'TEXT' => TextContentObject::class,
-        ));
+        ]);
         $this->subject = new CaseContentObject($contentObjectRenderer);
     }
 
@@ -64,9 +64,9 @@ class CaseContentObjectTest extends UnitTestCase
      */
     public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet()
     {
-        $conf = array(
+        $conf = [
             'key' => 'not existing'
-        );
+        ];
         $this->assertSame('', $this->subject->render($conf));
     }
 
@@ -75,13 +75,13 @@ class CaseContentObjectTest extends UnitTestCase
      */
     public function renderReturnsContentFromDefaultObjectIfKeyDoesNotExist()
     {
-        $conf = array(
+        $conf = [
             'key' => 'not existing',
             'default' => 'TEXT',
-            'default.' => array(
+            'default.' => [
                 'value' => 'expected value'
-            ),
-        );
+            ],
+        ];
         $this->assertSame('expected value', $this->subject->render($conf));
     }
 }

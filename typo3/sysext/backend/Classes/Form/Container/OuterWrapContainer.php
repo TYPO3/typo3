@@ -129,13 +129,13 @@ class OuterWrapContainer extends AbstractContainer
             ]);
         }
 
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'pageTitle' => $pageTitle,
             'childHtml' => $childHtml,
             'icon' => $icon,
             'tableTitle' => $tableTitle,
             'newOrUid' => $newOrUid
-        ));
+        ]);
         $result['html'] = $view->render();
         return $result;
     }

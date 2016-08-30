@@ -8,24 +8,24 @@ defined('TYPO3_MODE') or die();
  * NOTE: The 'default' entry in the $GLOBALS['PAGES_TYPES'] array is the 'base' for all
  * types, and for every type the entries simply overrides the entries in the 'default' type!
  */
-$GLOBALS['PAGES_TYPES'] = array(
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION => array(
+$GLOBALS['PAGES_TYPES'] = [
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION => [
         'allowedTables' => '*'
-    ),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
+    ],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => [
         //  Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like.
         // In CMS context it's NOT a viewable page. Can contain any element.
         'allowedTables' => '*'
-    ),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
+    ],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => [
         // Doktype 255 is a recycle-bin.
         'allowedTables' => '*'
-    ),
-    'default' => array(
+    ],
+    'default' => [
         'allowedTables' => 'pages,sys_category,sys_file_reference,sys_file_collection',
         'onlyAllowedTables' => false
-    ),
-);
+    ],
+];
 
 /**
  * $TBE_MODULES contains the structure of the backend modules as they are
@@ -35,48 +35,48 @@ $GLOBALS['PAGES_TYPES'] = array(
  * For information about adding modules to TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-$GLOBALS['TBE_MODULES'] = array(
+$GLOBALS['TBE_MODULES'] = [
     'web' => 'list',
     'file' => '',
     'user' => '',
     'tools' => '',
     'system' => '',
     'help' => '',
-    '_configuration' => array(
-        'web' => array(
+    '_configuration' => [
+        'web' => [
             'labels' => 'LLL:EXT:lang/locallang_mod_web.xlf',
             'name' => 'web',
             'iconIdentifier' => 'module-web'
-        ),
-        'file' => array(
+        ],
+        'file' => [
             'labels' => 'LLL:EXT:lang/locallang_mod_file.xlf',
             'navigationFrameModule' => 'file_navframe',
             'name' => 'file',
             'workspaces' => 'online,custom',
             'iconIdentifier' => 'module-file'
-        ),
-        'user' => array(
+        ],
+        'user' => [
             'labels' => 'LLL:EXT:lang/locallang_mod_usertools.xlf',
             'name' => 'user',
             'iconIdentifier' => 'status-user-backend'
-        ),
-        'tools' => array(
+        ],
+        'tools' => [
             'labels' => 'LLL:EXT:lang/locallang_mod_admintools.xlf',
             'name' => 'tools',
             'iconIdentifier' => 'module-tools'
-        ),
-        'system' => array(
+        ],
+        'system' => [
             'labels' => 'LLL:EXT:lang/locallang_mod_system.xlf',
             'name' => 'system',
             'iconIdentifier' => 'module-system'
-        ),
-        'help' => array(
+        ],
+        'help' => [
             'labels' => 'LLL:EXT:lang/locallang_mod_help.xlf',
             'name' => 'help',
             'iconIdentifier' => 'module-help'
-        )
-    )
-);
+        ]
+    ]
+];
 
 // Register the page tree core navigation component
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'typo3-pagetree');

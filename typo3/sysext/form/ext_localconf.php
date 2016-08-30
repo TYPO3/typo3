@@ -16,11 +16,11 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['mailform'] =
         \TYPO3\CMS\Form\Hooks\PageLayoutView\MailformPreviewRenderer::class;
 
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1440772316] = array(
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1440772316] = [
         'nodeName' => 'formwizard',
         'priority' => 40,
         'class'    => \TYPO3\CMS\Form\View\Wizard\Element\FormWizardElement::class,
-    );
+    ];
 }
 
 // Extbase handling
@@ -31,8 +31,8 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'TYPO3.CMS.Form',
     'Form',
-    array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess'),
-    array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess')
+    ['Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess'],
+    ['Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess']
 );
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)

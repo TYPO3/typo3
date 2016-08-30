@@ -29,9 +29,9 @@ class ExtbaseObjectCacheFeature extends Configuration\AbstractFeature implements
     /**
      * @var array List of preset classes
      */
-    protected $presetRegistry = array(
+    protected $presetRegistry = [
         DatabasePreset::class,
         ApcPreset::class,
         ApcuPreset::class,
-    );
+    ];
 }

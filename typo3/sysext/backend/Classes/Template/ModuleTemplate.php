@@ -449,13 +449,13 @@ class ModuleTemplate
         $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapsible ? 'Collapse.html' : 'Tabs.html');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'id' => 'DTM-' . GeneralUtility::shortMD5($domId),
             'items' => $menuItems,
             'defaultTabIndex' => $defaultTabIndex,
             'wrapContent' => $wrapContent,
             'storeLastActiveTab' => $storeLastActiveTab,
-        ));
+        ]);
         return $view->render();
     }
 
@@ -569,7 +569,7 @@ class ModuleTemplate
         $getParams = GeneralUtility::_GET();
         $storeArray = array_merge(
             GeneralUtility::compileSelectedGetVarsFromArray($gvList, $getParams),
-            array('SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS))
+            ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]
         );
         return GeneralUtility::implodeArrayForUrl('', $storeArray);
     }
@@ -670,12 +670,12 @@ class ModuleTemplate
      */
     public function redirectUrls($thisLocation = '')
     {
-        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript(array(
+        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript([
             'CB' => '',
             'SET' => '',
             'cmd' => '',
             'popViewId' => ''
-        ));
+        ]);
         $out = '
 	var T3_RETURN_URL = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))))) . ';
 	var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode($thisLocation))) . '

@@ -37,7 +37,7 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array
      */
-    protected $databaseRow = array();
+    protected $databaseRow = [];
 
     /**
      * @throws \PHPUnit_Framework_Exception
@@ -52,12 +52,12 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->storageMock->expects($this->any())->method('getProcessingFolder')->willReturn($this->folderMock);
 
-        $this->databaseRow = array(
+        $this->databaseRow = [
             'uid' => '1234567',
             'identifier' => 'dummy.txt',
             'name' => $this->getUniqueId('dummy_'),
             'storage' => $this->storageMock->getUid(),
-        );
+        ];
     }
 
     /**
@@ -80,7 +80,7 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if ($originalFile === null) {
             $originalFile = $this->getFileFixture();
         }
-        return new ProcessedFile($originalFile, 'dummy', array(), $dbRow ?: $this->databaseRow);
+        return new ProcessedFile($originalFile, 'dummy', [], $dbRow ?: $this->databaseRow);
     }
 
     /**

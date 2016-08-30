@@ -27,7 +27,7 @@ abstract class AbstractProcessor implements ProcessorInterface
      * @param array $options Configuration options - depends on the actual processor
      * @throws \TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $optionKey => $optionValue) {
             $methodName = 'set' . ucfirst($optionKey);

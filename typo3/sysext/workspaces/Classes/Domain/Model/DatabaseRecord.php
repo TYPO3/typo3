@@ -143,7 +143,7 @@ class DatabaseRecord
      */
     public function getIdentifier()
     {
-        return implode(':', array($this->getTable(), $this->getUid()));
+        return implode(':', [$this->getTable(), $this->getUid()]);
     }
 
     /**

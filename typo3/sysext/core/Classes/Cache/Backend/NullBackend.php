@@ -32,7 +32,7 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
      * @return void
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
     }
 
@@ -91,7 +91,7 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
      */
     public function findIdentifiersByTag($tag)
     {
-        return array();
+        return [];
     }
 
     /**

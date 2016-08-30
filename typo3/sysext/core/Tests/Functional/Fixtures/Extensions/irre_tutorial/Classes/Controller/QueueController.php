@@ -35,12 +35,12 @@ class QueueController extends AbstractController
      */
     public function indexAction()
     {
-        $calls = array();
-        $calls[] = array('Content', 'list');
+        $calls = [];
+        $calls[] = ['Content', 'list'];
         $contents = $this->contentRepository->findAll();
         foreach ($contents as $content) {
             $uid = $content->getUid();
-            $calls[] = array('Content', 'show', array('content' => (string)$uid));
+            $calls[] = ['Content', 'show', ['content' => (string)$uid]];
         }
         $this->getQueueService()->set($calls);
         $this->forward('process');

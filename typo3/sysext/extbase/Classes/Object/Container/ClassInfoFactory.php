@@ -29,7 +29,7 @@ class ClassInfoFactory
     public function buildClassInfoFromClassName($className)
     {
         if ($className === 'DateTime') {
-            return new \TYPO3\CMS\Extbase\Object\Container\ClassInfo($className, array(), array(), false, false, array());
+            return new \TYPO3\CMS\Extbase\Object\Container\ClassInfo($className, [], [], false, false, []);
         }
         try {
             $reflectedClass = new \ReflectionClass($className);
@@ -54,12 +54,12 @@ class ClassInfoFactory
     {
         $reflectionMethod = $reflectedClass->getConstructor();
         if (!is_object($reflectionMethod)) {
-            return array();
+            return [];
         }
-        $result = array();
+        $result = [];
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             /* @var $reflectionParameter \ReflectionParameter */
-            $info = array();
+            $info = [];
             $info['name'] = $reflectionParameter->getName();
             if ($reflectionParameter->getClass()) {
                 $info['dependency'] = $reflectionParameter->getClass()->getName();
@@ -84,7 +84,7 @@ class ClassInfoFactory
      */
     private function getInjectMethods(\ReflectionClass $reflectedClass)
     {
-        $result = array();
+        $result = [];
         $reflectionMethods = $reflectedClass->getMethods();
         if (is_array($reflectionMethods)) {
             foreach ($reflectionMethods as $reflectionMethod) {
@@ -110,7 +110,7 @@ class ClassInfoFactory
      */
     private function getInjectProperties(\ReflectionClass $reflectedClass)
     {
-        $result = array();
+        $result = [];
         $reflectionProperties = $reflectedClass->getProperties();
         if (is_array($reflectionProperties)) {
             foreach ($reflectionProperties as $reflectionProperty) {

@@ -26,7 +26,7 @@ class NodeFactory
      *
      * @var array
      */
-    protected $nodeTypes = array(
+    protected $nodeTypes = [
         'flex' => Container\FlexFormEntryContainer::class,
         'flexFormContainerContainer' => Container\FlexFormContainerContainer::class,
         'flexFormElementContainer' => Container\FlexFormElementContainer::class,
@@ -64,7 +64,7 @@ class NodeFactory
         'text' => Element\TextElement::class,
         'unknown' => Element\UnknownElement::class,
         'user' => Element\UserElement::class,
-    );
+    ];
 
     /**
      * Node resolver classes
@@ -72,7 +72,7 @@ class NodeFactory
      *
      * @var array
      */
-    protected $nodeResolver = array();
+    protected $nodeResolver = [];
 
     /**
      * Set up factory. Initialize additionally registered nodes.
@@ -147,7 +147,7 @@ class NodeFactory
         // List of additional or override nodes
         $registeredTypeOverrides = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'];
         // Sanitize input array
-        $registeredPrioritiesForNodeNames = array();
+        $registeredPrioritiesForNodeNames = [];
         foreach ($registeredTypeOverrides as $override) {
             if (!isset($override['nodeName']) || !isset($override['class']) || !isset($override['priority'])) {
                 throw new Exception(
@@ -170,7 +170,7 @@ class NodeFactory
             $registeredPrioritiesForNodeNames[$override['nodeName']][$override['priority']] = '';
         }
         // Add element with highest priority to registry
-        $highestPriority = array();
+        $highestPriority = [];
         foreach ($registeredTypeOverrides as $override) {
             if (!isset($highestPriority[$override['nodeName']]) || $override['priority'] > $highestPriority[$override['nodeName']]) {
                 $highestPriority[$override['nodeName']] = $override['priority'];
@@ -189,7 +189,7 @@ class NodeFactory
     {
         // List of node resolver
         $registeredNodeResolvers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'];
-        $resolversByType = array();
+        $resolversByType = [];
         foreach ($registeredNodeResolvers as $nodeResolver) {
             if (!isset($nodeResolver['nodeName']) || !isset($nodeResolver['class']) || !isset($nodeResolver['priority'])) {
                 throw new Exception(
@@ -211,7 +211,7 @@ class NodeFactory
             }
             $resolversByType[$nodeResolver['nodeName']][$nodeResolver['priority']] = $nodeResolver['class'];
         }
-        $sortedResolversByType = array();
+        $sortedResolversByType = [];
         foreach ($resolversByType as $nodeName => $prioritiesAndClasses) {
             krsort($prioritiesAndClasses);
             $sortedResolversByType[$nodeName] = $prioritiesAndClasses;

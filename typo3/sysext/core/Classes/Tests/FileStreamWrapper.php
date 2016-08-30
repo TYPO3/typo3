@@ -79,7 +79,7 @@ class FileStreamWrapper
      *
      * @var array
      */
-    protected static $overlayPaths = array();
+    protected static $overlayPaths = [];
 
     /**
      * The first part of each (absolute) path that shall be ignored
@@ -106,7 +106,7 @@ class FileStreamWrapper
      */
     public static function destroy()
     {
-        self::$overlayPaths = array();
+        self::$overlayPaths = [];
         self::$rootPath = '';
         if (self::$registered) {
             self::restore();

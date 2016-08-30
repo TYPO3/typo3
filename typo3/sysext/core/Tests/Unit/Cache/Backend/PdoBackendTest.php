@@ -104,7 +104,7 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $entryIdentifier = 'MyIdentifier';
-        $backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+        $backend->set($entryIdentifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
         $this->assertEquals($entryIdentifier, $retrieved[0]);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
@@ -119,10 +119,10 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $entryIdentifier = 'MyIdentifier';
-        $backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-        $backend->set($entryIdentifier, $data, array('UnitTestTag%tag3'));
+        $backend->set($entryIdentifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
+        $backend->set($entryIdentifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
-        $this->assertEquals(array(), $retrieved);
+        $this->assertEquals([], $retrieved);
     }
 
     /**
@@ -133,10 +133,10 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data1 = 'data1';
         $entryIdentifier = $this->getUniqueId('test');
-        $backend->set($entryIdentifier, $data1, array(), 1);
+        $backend->set($entryIdentifier, $data1, [], 1);
         $data2 = 'data2';
         $GLOBALS['EXEC_TIME'] += 2;
-        $backend->set($entryIdentifier, $data2, array(), 10);
+        $backend->set($entryIdentifier, $data2, [], 10);
         $this->assertEquals($data2, $backend->get($entryIdentifier));
     }
 
@@ -167,9 +167,9 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
-        $backend->set('PdoBackendTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-        $backend->set('PdoBackendTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-        $backend->set('PdoBackendTest3', $data, array('UnitTestTag%test'));
+        $backend->set('PdoBackendTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('PdoBackendTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('PdoBackendTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
         $this->assertTrue($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
         $this->assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
@@ -220,7 +220,7 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendPDORemovalTest';
-        $backend->set($entryIdentifier, $data, array(), 1);
+        $backend->set($entryIdentifier, $data, [], 1);
         $this->assertTrue($backend->has($entryIdentifier));
         $GLOBALS['EXEC_TIME'] += 2;
         $backend->collectGarbage();
@@ -235,10 +235,10 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendPDORemovalTest';
-        $backend->set($entryIdentifier . 'A', $data, array(), null);
-        $backend->set($entryIdentifier . 'B', $data, array(), 10);
-        $backend->set($entryIdentifier . 'C', $data, array(), 1);
-        $backend->set($entryIdentifier . 'D', $data, array(), 1);
+        $backend->set($entryIdentifier . 'A', $data, [], null);
+        $backend->set($entryIdentifier . 'B', $data, [], 10);
+        $backend->set($entryIdentifier . 'C', $data, [], 1);
+        $backend->set($entryIdentifier . 'D', $data, [], 1);
         $this->assertTrue($backend->has($entryIdentifier . 'A'));
         $this->assertTrue($backend->has($entryIdentifier . 'B'));
         $this->assertTrue($backend->has($entryIdentifier . 'C'));

@@ -38,7 +38,7 @@ class ExtDirectRouter
         $rawPostData = file_get_contents('php://input');
         $postParameters = $request->getParsedBody();
         $namespace = isset($request->getParsedBody()['namespace']) ? $request->getParsedBody()['namespace'] : $request->getQueryParams()['namespace'];
-        $extResponse = array();
+        $extResponse = [];
         $extRequest = null;
         $isValidRequest = true;
         if (!empty($postParameters['extAction'])) {
@@ -49,30 +49,30 @@ class ExtDirectRouter
             $extRequest->method = $postParameters['extMethod'];
             $extRequest->tid = $postParameters['extTID'];
             unset($_POST['securityToken']);
-            $extRequest->data = array($_POST + $_FILES);
+            $extRequest->data = [$_POST + $_FILES];
             $extRequest->data[] = $postParameters['securityToken'];
         } elseif (!empty($rawPostData)) {
             $extRequest = json_decode($rawPostData);
         } else {
-            $extResponse[] = array(
+            $extResponse[] = [
                 'type' => 'exception',
                 'message' => 'Something went wrong with an ExtDirect call!',
                 'code' => 'router'
-            );
+            ];
             $isValidRequest = false;
         }
         if (!is_array($extRequest)) {
-            $extRequest = array($extRequest);
+            $extRequest = [$extRequest];
         }
         if ($isValidRequest) {
             $validToken = false;
             $firstCall = true;
             foreach ($extRequest as $index => $singleRequest) {
-                $extResponse[$index] = array(
+                $extResponse[$index] = [
                     'tid' => $singleRequest->tid,
                     'action' => $singleRequest->action,
                     'method' => $singleRequest->method
-                );
+                ];
                 $token = is_array($singleRequest->data) ? array_pop($singleRequest->data) : null;
                 if ($firstCall) {
                     $firstCall = false;
@@ -96,9 +96,9 @@ class ExtDirectRouter
         if ($isForm && $isUpload) {
             $extResponse = json_encode($extResponse);
             $extResponse = preg_replace('/&quot;/', '\\&quot;', $extResponse);
-            $extResponse = array(
+            $extResponse = [
                 '<html><body><textarea>' . $extResponse . '</textarea></body></html>'
-            );
+            ];
         } else {
             $extResponse = json_encode($extResponse);
         }
@@ -129,13 +129,13 @@ class ExtDirectRouter
             $callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
             $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
             if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
-                $GLOBALS['BE_USER']->modAccess(array(
+                $GLOBALS['BE_USER']->modAccess([
                     'name' => $configuration['moduleName'],
                     'access' => $configuration['accessLevel']
-                ), true);
+                ], true);
             }
         }
         $endpointObject = GeneralUtility::getUserObj($callbackClass);
-        return call_user_func_array(array($endpointObject, $singleRequest->method), is_array($singleRequest->data) ? $singleRequest->data : array());
+        return call_user_func_array([$endpointObject, $singleRequest->method], is_array($singleRequest->data) ? $singleRequest->data : []);
     }
 }

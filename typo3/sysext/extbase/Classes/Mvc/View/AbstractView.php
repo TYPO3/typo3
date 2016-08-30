@@ -33,7 +33,7 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      * @var array
      * @see assign()
      */
-    protected $variables = array();
+    protected $variables = [];
 
     /**
      * Sets the current controller context

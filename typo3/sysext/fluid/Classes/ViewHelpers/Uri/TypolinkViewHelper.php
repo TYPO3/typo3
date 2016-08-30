@@ -86,9 +86,9 @@ class TypolinkViewHelper extends AbstractViewHelper
         if ($parameter) {
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $content = $contentObject->typoLink_URL(
-                array(
+                [
                     'parameter' => self::createTypolinkParameterFromArguments($parameter, $additionalParams),
-                )
+                ]
             );
         }
 

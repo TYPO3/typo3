@@ -29,9 +29,9 @@ class AbstractWriterTest extends UnitTestCase
         $this->expectException(InvalidLogWriterConfigurationException::class);
         $this->expectExceptionCode(1321696152);
 
-        $invalidConfiguration = array(
+        $invalidConfiguration = [
             'foo' => 'bar'
-        );
-        $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, array($invalidConfiguration));
+        ];
+        $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, [$invalidConfiguration]);
     }
 }

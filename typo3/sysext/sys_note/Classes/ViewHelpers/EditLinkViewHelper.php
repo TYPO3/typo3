@@ -57,10 +57,10 @@ class EditLinkViewHelper extends AbstractViewHelper
     {
         return BackendUtility::getModuleUrl(
             'record_edit',
-            array(
+            [
                 'edit[sys_note][' . $arguments['id'] . ']' => 'edit',
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            )
+            ]
         );
     }
 }

@@ -38,7 +38,7 @@ class Content
      *
      * @var array
      */
-    protected $typoscript = array();
+    protected $typoscript = [];
 
     /**
      * The plain bodytext

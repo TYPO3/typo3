@@ -25,15 +25,15 @@ class ApplicationContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function allowedContexts()
     {
-        return array(
-            array('Production'),
-            array('Testing'),
-            array('Development'),
+        return [
+            ['Production'],
+            ['Testing'],
+            ['Development'],
 
-            array('Development/MyLocalComputer'),
-            array('Development/MyLocalComputer/Foo'),
-            array('Production/SpecialDeployment/LiveSystem'),
-        );
+            ['Development/MyLocalComputer'],
+            ['Development/MyLocalComputer/Foo'],
+            ['Production/SpecialDeployment/LiveSystem'],
+        ];
     }
 
     /**
@@ -53,12 +53,12 @@ class ApplicationContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function forbiddenContexts()
     {
-        return array(
-            array('MySpecialContexz'),
-            array('Testing123'),
-            array('DevelopmentStuff'),
-            array('DevelopmentStuff/FooBar'),
-        );
+        return [
+            ['MySpecialContexz'],
+            ['Testing123'],
+            ['DevelopmentStuff'],
+            ['DevelopmentStuff/FooBar'],
+        ];
     }
 
     /**
@@ -80,52 +80,52 @@ class ApplicationContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isMethods()
     {
-        return array(
-            'Development' => array(
+        return [
+            'Development' => [
                 'contextName' => 'Development',
                 'isDevelopment' => true,
                 'isProduction' => false,
                 'isTesting' => false,
                 'parentContext' => null
-            ),
-            'Development/YourSpecialContext' => array(
+            ],
+            'Development/YourSpecialContext' => [
                 'contextName' => 'Development/YourSpecialContext',
                 'isDevelopment' => true,
                 'isProduction' => false,
                 'isTesting' => false,
                 'parentContext' => 'Development'
-            ),
+            ],
 
-            'Production' => array(
+            'Production' => [
                 'contextName' => 'Production',
                 'isDevelopment' => false,
                 'isProduction' => true,
                 'isTesting' => false,
                 'parentContext' => null
-            ),
-            'Production/MySpecialContext' => array(
+            ],
+            'Production/MySpecialContext' => [
                 'contextName' => 'Production/MySpecialContext',
                 'isDevelopment' => false,
                 'isProduction' => true,
                 'isTesting' => false,
                 'parentContext' => 'Production'
-            ),
+            ],
 
-            'Testing' => array(
+            'Testing' => [
                 'contextName' => 'Testing',
                 'isDevelopment' => false,
                 'isProduction' => false,
                 'isTesting' => true,
                 'parentContext' => null
-            ),
-            'Testing/MySpecialContext' => array(
+            ],
+            'Testing/MySpecialContext' => [
                 'contextName' => 'Testing/MySpecialContext',
                 'isDevelopment' => false,
                 'isProduction' => false,
                 'isTesting' => true,
                 'parentContext' => 'Testing'
-            )
-        );
+            ]
+        ];
     }
 
     /**

@@ -65,9 +65,9 @@ class ExtDirectServer extends AbstractHandler
     {
         $integrity = $this->createIntegrityService($this->getAffectedElements($parameters));
         $integrity->check();
-        $response = array(
+        $response = [
             'result' => $integrity->getStatusRepresentation()
-        );
+        ];
         return $response;
     }
 
@@ -98,14 +98,14 @@ class ExtDirectServer extends AbstractHandler
     public function getStageActions(\stdClass $parameter)
     {
         $currentWorkspace = $this->getCurrentWorkspace();
-        $stages = array();
+        $stages = [];
         if ($currentWorkspace != WorkspaceService::SELECT_ALL_WORKSPACES) {
             $stages = $this->getStagesService()->getStagesForWSUser();
         }
-        $data = array(
+        $data = [
             'total' => count($stages),
             'data' => $stages
-        );
+        ];
         return $data;
     }
 
@@ -117,8 +117,8 @@ class ExtDirectServer extends AbstractHandler
      */
     public function getRowDetails($parameter)
     {
-        $diffReturnArray = array();
-        $liveReturnArray = array();
+        $diffReturnArray = [];
+        $liveReturnArray = [];
         $diffUtility = $this->getDifferenceHandler();
         /** @var $parseObj RteHtmlParser */
         $parseObj = GeneralUtility::makeInstance(RteHtmlParser::class);
@@ -181,16 +181,16 @@ class ExtDirectServer extends AbstractHandler
                         continue;
                     }
 
-                    $diffReturnArray[] = array(
+                    $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $fileReferenceDifferences['differences']
-                    );
-                    $liveReturnArray[] = array(
+                    ];
+                    $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $fileReferenceDifferences['live']
-                    );
+                    ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human readable values before diff
                     $liveRecord[$fieldName] = BackendUtility::getProcessedValue(
@@ -215,27 +215,27 @@ class ExtDirectServer extends AbstractHandler
                     if ($configuration['type'] == 'group' && $configuration['internal_type'] == 'file') {
                         $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
                         $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
-                        $diffReturnArray[] = array(
+                        $diffReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $versionThumb
-                        );
-                        $liveReturnArray[] = array(
+                        ];
+                        $liveReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $liveThumb
-                        );
+                        ];
                     } else {
-                        $diffReturnArray[] = array(
+                        $diffReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
-                        );
-                        $liveReturnArray[] = array(
+                        ];
+                        $liveReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $parseObj->TS_images_rte($liveRecord[$fieldName])
-                        );
+                        ];
                     }
                 }
             }
@@ -267,10 +267,10 @@ class ExtDirectServer extends AbstractHandler
             $nextStage = current($nextStage);
         }
 
-        return array(
+        return [
             'total' => 1,
-            'data' => array(
-                array(
+            'data' => [
+                [
                     // these parts contain HTML (don't escape)
                     'diff' => $diffReturnArray,
                     'live_record' => $liveReturnArray,
@@ -293,9 +293,9 @@ class ExtDirectServer extends AbstractHandler
                         'data' => $history,
                         'total' => count($history)
                     ]
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -310,10 +310,10 @@ class ExtDirectServer extends AbstractHandler
     {
         $randomValue = uniqid('file');
 
-        $liveValues = array();
-        $versionValues = array();
-        $candidates = array();
-        $substitutes = array();
+        $liveValues = [];
+        $versionValues = [];
+        $candidates = [];
+        $substitutes = [];
 
         // Process live references
         foreach ($liveFileReferences as $identifier => $liveFileReference) {
@@ -347,7 +347,7 @@ class ExtDirectServer extends AbstractHandler
             if ($useThumbnails) {
                 $thumbnailFile = $fileReference->getOriginalFile()->process(
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    array('width' => 40, 'height' => 40)
+                    ['width' => 40, 'height' => 40]
                 );
                 $thumbnailMarkup = '<img src="' . $thumbnailFile->getPublicUrl(true) . '" />';
                 $substitutes[$identifierWithRandomValue] = $thumbnailMarkup;
@@ -360,10 +360,10 @@ class ExtDirectServer extends AbstractHandler
         $liveInformation = str_replace(array_keys($substitutes), array_values($substitutes), trim($liveInformation));
         $differences = str_replace(array_keys($substitutes), array_values($substitutes), trim($differences));
 
-        return array(
+        return [
             'live' => $liveInformation,
             'differences' => $differences
-        );
+        ];
     }
 
     /**
@@ -375,7 +375,7 @@ class ExtDirectServer extends AbstractHandler
      */
     public function getCommentsForRecord($uid, $table)
     {
-        $sysLogReturnArray = array();
+        $sysLogReturnArray = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
 
         $result = $queryBuilder
@@ -394,7 +394,7 @@ class ExtDirectServer extends AbstractHandler
         $avatar = GeneralUtility::makeInstance(Avatar::class);
 
         while ($sysLogRow = $result->fetch()) {
-            $sysLogEntry = array();
+            $sysLogEntry = [];
             $data = unserialize($sysLogRow['log_data']);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
             $sysLogEntry['stage_title'] = htmlspecialchars($this->getStagesService()->getStageTitle($data['stage']));
@@ -416,27 +416,27 @@ class ExtDirectServer extends AbstractHandler
     public function getSystemLanguages()
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $systemLanguages = array(
-            array(
+        $systemLanguages = [
+            [
                 'uid' => 'all',
                 'title' => LocalizationUtility::translate('language.allLanguages', 'workspaces'),
                 'icon' => $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()
-            )
-        );
+            ]
+        ];
         foreach ($this->getGridDataService()->getSystemLanguages() as $id => $systemLanguage) {
             if ($id < 0) {
                 continue;
             }
-            $systemLanguages[] = array(
+            $systemLanguages[] = [
                 'uid' => $id,
                 'title' => htmlspecialchars($systemLanguage['title']),
                 'icon' => $iconFactory->getIcon($systemLanguage['flagIcon'], Icon::SIZE_SMALL)->render()
-            );
+            ];
         }
-        $result = array(
+        $result = [
             'total' => count($systemLanguages),
             'data' => $systemLanguages
-        );
+        ];
         return $result;
     }
 

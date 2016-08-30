@@ -108,7 +108,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend->setCache($cache);
         $data = 'Some data';
         $entryIdentifier = 'MyIdentifier';
-        $backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+        $backend->set($entryIdentifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
         $this->assertEquals($entryIdentifier, $retrieved[0]);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
@@ -150,9 +150,9 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
         $backend->setCache($cache);
         $data = 'some data' . microtime();
-        $backend->set('TransientMemoryBackendTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-        $backend->set('TransientMemoryBackendTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-        $backend->set('TransientMemoryBackendTest3', $data, array('UnitTestTag%test'));
+        $backend->set('TransientMemoryBackendTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('TransientMemoryBackendTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('TransientMemoryBackendTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
         $this->assertTrue($backend->has('TransientMemoryBackendTest1'), 'TransientMemoryBackendTest1');
         $this->assertFalse($backend->has('TransientMemoryBackendTest2'), 'TransientMemoryBackendTest2');

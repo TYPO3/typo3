@@ -28,12 +28,12 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
     /**
      * @var array
      */
-    protected $configuration = array();
+    protected $configuration = [];
 
     /**
      * @param array $configuration
      */
-    public function __construct(array $configuration = array())
+    public function __construct(array $configuration = [])
     {
         $this->configuration = $configuration;
     }
@@ -49,7 +49,7 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      * @return string
      * @throws \Exception
      */
-    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = array())
+    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = [])
     {
         if (!empty($this->configuration['ignoreCodes.'])) {
             if (in_array($exception->getCode(), array_map('intval', $this->configuration['ignoreCodes.']), true)) {
@@ -71,7 +71,7 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      */
     protected function logException(\Exception $exception, $errorMessage, $code)
     {
-        $this->getLogger()->alert(sprintf($errorMessage, $code), array('exception' => $exception));
+        $this->getLogger()->alert(sprintf($errorMessage, $code), ['exception' => $exception]);
     }
 
     /**

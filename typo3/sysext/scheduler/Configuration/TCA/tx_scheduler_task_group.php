@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'groupName',
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group',
@@ -8,48 +8,48 @@ return array(
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-tx_scheduler_task_group'
-        ),
+        ],
         'adminOnly' => true, // Only admin users can edit
         'rootLevel' => 1,
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
+        ],
         'searchFields' => 'groupName'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'hidden,groupName'
-    ),
-    'columns' => array(
-        'groupName' => array(
+    ],
+    'columns' => [
+        'groupName' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group.groupName',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 35,
                 'max' => 80,
                 'eval' => 'required,unique,trim',
                 'softref' => 'substitute'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text'
-            ),
-        ),
-        'hidden' => array(
+            ],
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        )
-    ),
-    'types' => array(
-        '1' => array(
+            ]
+        ]
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'hidden, groupName, description',
-        ),
-    ),
-);
+        ],
+    ],
+];

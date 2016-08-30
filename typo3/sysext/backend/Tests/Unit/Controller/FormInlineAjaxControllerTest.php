@@ -30,9 +30,9 @@ class FormInlineAjaxControllerTest extends UnitTestCase
      */
     public function checkInlineFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue()
     {
-        $selectorData = array();
+        $selectorData = [];
         $fileData['extension'] = 'png';
-        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', false);
+        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
         $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
         $this->assertTrue($mayUploadFile);
     }
@@ -46,7 +46,7 @@ class FormInlineAjaxControllerTest extends UnitTestCase
     {
         $selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
         $fileData['extension'] = 'php';
-        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', false);
+        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
         $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
         $this->assertFalse($mayUploadFile);
     }
@@ -59,7 +59,7 @@ class FormInlineAjaxControllerTest extends UnitTestCase
     {
         $selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
         $fileData['extension'] = 'png';
-        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', false);
+        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
         $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
         $this->assertTrue($mayUploadFile);
     }

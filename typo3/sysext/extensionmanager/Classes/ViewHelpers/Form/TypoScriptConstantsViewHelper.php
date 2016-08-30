@@ -26,7 +26,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * @var array
      */
-    public $viewHelperMapping = array(
+    public $viewHelperMapping = [
         'int' => 'renderIntegerField',
         'int+' => 'renderPositiveIntegerField',
         'integer' => 'renderIntegerField',
@@ -40,7 +40,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         'string' => 'renderTextField',
         'input' => 'renderTextField',  // only for backwards compatibility, many extensions depend on that
         'default' => 'renderTextField' // only for backwards compatibility, many extensions depend on that
-    );
+    ];
 
     /**
      * @var string
@@ -271,11 +271,11 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     protected function renderUserFunction(ConfigurationItem $configuration)
     {
         $userFunction = $configuration->getGeneric();
-        $userFunctionParams = array(
+        $userFunctionParams = [
             'fieldName' => $this->getName($configuration),
             'fieldValue' => $configuration->getValue(),
             'propertyName' => $configuration->getName()
-        );
+        ];
         return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
     }
 
@@ -298,7 +298,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
      */
     protected function renderHiddenFieldForEmptyValue($configuration)
     {
-        $hiddenFieldNames = array();
+        $hiddenFieldNames = [];
         if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
             $hiddenFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'renderedHiddenFields');
         }

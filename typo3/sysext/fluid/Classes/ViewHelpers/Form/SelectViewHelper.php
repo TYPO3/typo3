@@ -110,7 +110,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->tag->addAttribute('name', $name);
         $options = $this->getOptions();
         if (empty($options)) {
-            $options = array('' => '');
+            $options = ['' => ''];
         }
         $this->tag->setContent($this->renderOptionTags($options));
         $this->addAdditionalIdentityPropertiesIfNeeded();
@@ -160,9 +160,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     protected function getOptions()
     {
         if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
-            return array();
+            return [];
         }
-        $options = array();
+        $options = [];
         $optionsArgument = $this->arguments['options'];
         foreach ($optionsArgument as $key => $value) {
             if (is_object($value) || is_array($value)) {
@@ -241,7 +241,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         if (!is_array($value) && !$value instanceof \Traversable) {
             return $this->getOptionValueScalar($value);
         }
-        $selectedValues = array();
+        $selectedValues = [];
         foreach ($value as $selectedValueElement) {
             $selectedValues[] = $this->getOptionValueScalar($selectedValueElement);
         }

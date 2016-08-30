@@ -31,13 +31,13 @@ class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function validDataProvider()
     {
-        return array(
-            '1,00 -> 100' => array('1,00', '100'),
-            '1E+49 -> 149' => array('1E+49', '149'),
-            '100 -> 100' => array('100', '100'),
-            '00000 -> 00000' => array('00000', '00000'),
-            'ABCD -> ""' => array('ABCD', ''),
-        );
+        return [
+            '1,00 -> 100' => ['1,00', '100'],
+            '1E+49 -> 149' => ['1E+49', '149'],
+            '100 -> 100' => ['100', '100'],
+            '00000 -> 00000' => ['00000', '00000'],
+            'ABCD -> ""' => ['ABCD', ''],
+        ];
     }
 
     /**

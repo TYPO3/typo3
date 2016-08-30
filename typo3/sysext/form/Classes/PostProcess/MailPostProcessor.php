@@ -76,7 +76,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
     /**
      * @var array
      */
-    protected $dirtyHeaders = array();
+    protected $dirtyHeaders = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
@@ -192,7 +192,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
         }
         $fromName = $this->sanitizeHeaderString($fromName);
         if (!empty($fromName)) {
-            $from = array($fromEmail => $fromName);
+            $from = [$fromEmail => $fromName];
         } else {
             $from = $fromEmail;
         }
@@ -209,14 +209,14 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
     {
         if (!is_string($emails)) {
             // No valid addresses - empty list
-            return array();
+            return [];
         }
 
         /** @var $addressParser Rfc822AddressesParser */
         $addressParser = GeneralUtility::makeInstance(Rfc822AddressesParser::class, $emails);
         $addresses = $addressParser->parseAddressList();
 
-        $validEmails = array();
+        $validEmails = [];
         foreach ($addresses as $address) {
             $fullAddress = $address->mailbox . '@' . $address->host;
             if (GeneralUtility::validEmail($fullAddress)) {
@@ -489,10 +489,10 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
         $view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 
-        $viewParts = array(
+        $viewParts = [
             'templateRootPaths' => $typoScript['view']['templateRootPaths'],
             'partialRootPaths' => $typoScript['view']['partialRootPaths'],
-        );
+        ];
         /* Extend all template root paths to $templateRootPaths/PostProcessor/Mail/$themeName  */
         foreach ($typoScript['view']['templateRootPaths'] as &$path) {
             if (substr($path, -1) !== '/') {
@@ -511,9 +511,9 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
         $view->setTemplateRootPaths($typoScript['view']['templateRootPaths']);
         $view->setPartialRootPaths($typoScript['view']['partialRootPaths']);
         $view->setTemplate($templateName);
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'model' => $this->form
-        ));
+        ]);
         return $view;
     }
 

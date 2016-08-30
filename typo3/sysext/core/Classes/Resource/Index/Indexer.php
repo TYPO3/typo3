@@ -29,12 +29,12 @@ class Indexer
     /**
      * @var array
      */
-    protected $filesToUpdate = array();
+    protected $filesToUpdate = [];
 
     /**
      * @var int[]
      */
-    protected $identifiedFileUids = array();
+    protected $identifiedFileUids = [];
 
     /**
      * @var ResourceStorage
@@ -120,9 +120,9 @@ class Indexer
      */
     public function extractMetaData(File $fileObject)
     {
-        $newMetaData = array(
+        $newMetaData = [
             0 => $fileObject->_getMetaData()
-        );
+        ];
 
         // Loop through available extractors and fetch metadata for the given file.
         foreach ($this->getExtractionServices() as $service) {
@@ -135,7 +135,7 @@ class Indexer
         ksort($newMetaData);
 
         // Merge the collected metadata.
-        $metaData = array();
+        $metaData = [];
         foreach ($newMetaData as $data) {
             $metaData = array_merge($metaData, $data);
         }
@@ -206,7 +206,7 @@ class Indexer
                 continue;
             }
             // Get the modification time for file-identifier from the storage
-            $modificationTime = $this->storage->getFileInfoByIdentifier($fileIdentifier, array('mtime'));
+            $modificationTime = $this->storage->getFileInfoByIdentifier($fileIdentifier, ['mtime']);
             // Look if the the modification time in FS is higher than the one in database (key needed on timestamps)
             $indexRecord = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($this->storage->getUid(), $fileIdentifier);
 
@@ -241,9 +241,9 @@ class Indexer
                         // check if file is missing then we assume it's moved/renamed
                         if (!$this->storage->hasFile($fileIndexEntry['identifier'])) {
                             $fileObject = $this->getResourceFactory()->getFileObject($fileIndexEntry['uid'], $fileIndexEntry);
-                            $fileObject->updateProperties(array(
+                            $fileObject->updateProperties([
                                 'identifier' => $identifier
-                            ));
+                            ]);
                             $this->updateIndexEntry($fileObject);
                             $this->identifiedFileUids[] = $fileObject->getUid();
                             break;
@@ -276,10 +276,10 @@ class Indexer
         if ($fileObject->getType() == File::FILETYPE_IMAGE && $this->storage->getDriverType() === 'Local') {
             $rawFileLocation = $fileObject->getForLocalProcessing(false);
             $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $rawFileLocation);
-            $metaData = array(
+            $metaData = [
                 'width' => $imageInfo->getWidth(),
                 'height' => $imageInfo->getHeight(),
-            );
+            ];
             $this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
             $fileObject->_updateMetaDataProperties($metaData);
         }
@@ -353,15 +353,15 @@ class Indexer
      */
     protected function transformFromDriverFileInfoArrayToFileObjectFormat(array $fileInfo)
     {
-        $mappingInfo = array(
+        $mappingInfo = [
             // 'driverKey' => 'fileProperty' Key is from the driver, value is for the property in the file
             'size' => 'size',
             'atime' => null,
             'mtime' => 'modification_date',
             'ctime' => 'creation_date',
             'mimetype' => 'mime_type'
-        );
-        $mappedFileInfo = array();
+        ];
+        $mappedFileInfo = [];
         foreach ($fileInfo as $key => $value) {
             if (array_key_exists($key, $mappingInfo)) {
                 if ($mappingInfo[$key] !== null) {

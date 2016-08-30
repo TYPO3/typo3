@@ -148,12 +148,12 @@ class ElementBrowserFolderTreeView extends FolderTreeView
     public function PMiconATagWrap($icon, $cmd, $isExpand = true)
     {
         if (empty($this->scope)) {
-            $this->scope = array(
+            $this->scope = [
                 'class' => get_class($this),
                 'script' => $this->thisScript,
                 'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
                 'browser' => $this->linkParameterProvider->getUrlParameters([]),
-            );
+            ];
         }
 
         return parent::PMiconATagWrap($icon, $cmd, $isExpand);

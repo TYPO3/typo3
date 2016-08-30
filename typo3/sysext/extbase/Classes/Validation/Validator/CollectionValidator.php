@@ -24,11 +24,11 @@ class CollectionValidator extends GenericObjectValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'elementValidator' => array(null, 'The validator type to use for the collection elements', 'string'),
-        'elementType' => array(null, 'The type of the elements in the collection', 'string'),
-        'validationGroups' => array(null, 'The validation groups to link to', 'string'),
-    );
+    protected $supportedOptions = [
+        'elementValidator' => [null, 'The validator type to use for the collection elements', 'string'],
+        'elementType' => [null, 'The type of the elements in the collection', 'string'],
+        'validationGroups' => [null, 'The validation groups to link to', 'string'],
+    ];
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver

@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category',
         'descriptionColumn' => 'description',
         'label' => 'title',
@@ -17,155 +17,155 @@ return array(
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'searchFields' => 'title,description',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_category'
-        ),
-        'security' => array(
+        ],
+        'security' => [
             'ignoreRootLevelRestriction' => true,
-        )
-    ),
-    'interface' => array(
+        ]
+    ],
+    'interface' => [
         'showRecordFieldList' => 'title,description'
-    ),
-    'types' => array(
-        '1' => array(
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'title, --palette--;;1, parent, description,
 				--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.items, items,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
-        ),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => 'sys_language_uid, l10n_parent, hidden')
-    ),
-    'columns' => array(
-        't3ver_label' => array(
+        ],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => 'sys_language_uid, l10n_parent, hidden']
+    ],
+    'columns' => [
+        't3ver_label' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 30
-            )
-        ),
-        'sys_language_uid' => array(
+            ]
+        ],
+        'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
-                ),
+                'items' => [
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
+                ],
                 'default' => 0,
                 'showIconTable' => true,
-            )
-        ),
-        'l10n_parent' => array(
+            ]
+        ],
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0)
-                ),
+                'items' => [
+                    ['', 0]
+                ],
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_category.sys_language_uid IN (-1,0)',
                 'default' => 0
-            )
-        ),
-        'l10n_diffsource' => array(
-            'config' => array(
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough',
                 'default' => ''
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            )
-        ),
-        'starttime' => array(
+            ]
+        ],
+        'starttime' => [
             'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 10,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        ),
-        'endtime' => array(
+            ]
+        ],
+        'endtime' => [
             'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 8,
                 'eval' => 'datetime',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
-                )
-            )
-        ),
-        'title' => array(
+                ]
+            ]
+        ],
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'width' => 200,
                 'eval' => 'trim,required'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'default' => '',
-            )
-        ),
-        'parent' => array(
+            ]
+        ],
+        'parent' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.parent',
-            'config' => array(
+            'config' => [
                 'minitems' => 0,
                 'maxitems' => 1,
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
-                'treeConfig' => array(
+                'treeConfig' => [
                     'parentField' => 'parent',
-                    'appearance' => array(
+                    'appearance' => [
                         'expandAll' => true,
                         'showHeader' => true,
                         'maxLevels' => 99,
-                    ),
-                ),
+                    ],
+                ],
                 'default' => 0
-            )
-        ),
-        'items' => array(
+            ]
+        ],
+        'items' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.items',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => '*',
                 'MM' => 'sys_category_record_mm',
-                'MM_oppositeUsage' => array(),
+                'MM_oppositeUsage' => [],
                 'size' => 10,
                 'show_thumbs' => false
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

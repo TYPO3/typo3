@@ -47,13 +47,13 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validPackageKeys()
     {
-        return array(
-            array('Doctrine.DBAL'),
-            array('TYPO3.CMS'),
-            array('My.Own.TwitterPackage'),
-            array('GoFor.IT'),
-            array('Symfony.Symfony')
-        );
+        return [
+            ['Doctrine.DBAL'],
+            ['TYPO3.CMS'],
+            ['My.Own.TwitterPackage'],
+            ['GoFor.IT'],
+            ['Symfony.Symfony']
+        ];
     }
 
     /**
@@ -77,11 +77,11 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidPackageKeys()
     {
-        return array(
-            array('TYPO3..Flow'),
-            array('RobertLemke.Flow. Twitter'),
-            array('Schalke*4')
-        );
+        return [
+            ['TYPO3..Flow'],
+            ['RobertLemke.Flow. Twitter'],
+            ['Schalke*4']
+        ];
     }
 
     /**

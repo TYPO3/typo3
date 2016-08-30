@@ -32,7 +32,7 @@ class ResourceCompressorTest extends BaseTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, array('compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory'));
+        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
     }
 
     /**
@@ -40,40 +40,40 @@ class ResourceCompressorTest extends BaseTestCase
      */
     public function cssFixStatementsDataProvider()
     {
-        return array(
-            'nothing to do - no charset/import/namespace' => array(
+        return [
+            'nothing to do - no charset/import/namespace' => [
                 'body { background: #ffffff; }',
                 'body { background: #ffffff; }'
-            ),
-            'import in front' => array(
+            ],
+            'import in front' => [
                 '@import url(http://www.example.com/css); body { background: #ffffff; }',
                 'LF/* moved by compressor */LF@import url(http://www.example.com/css);LF/* moved by compressor */LFbody { background: #ffffff; }'
-            ),
-            'import in back, without quotes' => array(
+            ],
+            'import in back, without quotes' => [
                 'body { background: #ffffff; } @import url(http://www.example.com/css);',
                 'LF/* moved by compressor */LF@import url(http://www.example.com/css);LF/* moved by compressor */LFbody { background: #ffffff; }'
-            ),
-            'import in back, with double-quotes' => array(
+            ],
+            'import in back, with double-quotes' => [
                 'body { background: #ffffff; } @import url("http://www.example.com/css");',
                 'LF/* moved by compressor */LF@import url("http://www.example.com/css");LF/* moved by compressor */LFbody { background: #ffffff; }'
-            ),
-            'import in back, with single-quotes' => array(
+            ],
+            'import in back, with single-quotes' => [
                 'body { background: #ffffff; } @import url(\'http://www.example.com/css\');',
                 'LF/* moved by compressor */LF@import url(\'http://www.example.com/css\');LF/* moved by compressor */LFbody { background: #ffffff; }'
-            ),
-            'import in middle and back, without quotes' => array(
+            ],
+            'import in middle and back, without quotes' => [
                 'body { background: #ffffff; } @import url(http://www.example.com/A); div { background: #000; } @import url(http://www.example.com/B);',
                 'LF/* moved by compressor */LF@import url(http://www.example.com/A);@import url(http://www.example.com/B);LF/* moved by compressor */LFbody { background: #ffffff; }  div { background: #000; }'
-            ),
-            'charset declaration is unique' => array(
+            ],
+            'charset declaration is unique' => [
                 'body { background: #ffffff; } @charset "UTF-8"; div { background: #000; }; @charset "UTF-8";',
                 '@charset "UTF-8";LF/* moved by compressor */LFbody { background: #ffffff; }  div { background: #000; };'
-            ),
-            'order of charset, namespace and import is correct' => array(
+            ],
+            'order of charset, namespace and import is correct' => [
                 'body { background: #ffffff; } @charset "UTF-8"; div { background: #000; }; @import "file2.css"; @namespace url(http://www.w3.org/1999/xhtml);',
                 '@charset "UTF-8";LF/* moved by compressor */LF@namespace url(http://www.w3.org/1999/xhtml);LF/* moved by compressor */LF@import "file2.css";LF/* moved by compressor */LFbody { background: #ffffff; }  div { background: #000; };'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -96,12 +96,12 @@ class ResourceCompressorTest extends BaseTestCase
     {
         $fileName = 'fooFile.css';
         $compressedFileName = $fileName . '.gzip';
-        $testFileFixture = array(
-            $fileName => array(
+        $testFileFixture = [
+            $fileName => [
                 'file' => $fileName,
                 'compress' => true,
-            )
-        );
+            ]
+        ];
         $this->subject->expects($this->once())
             ->method('compressCssFile')
             ->with($fileName)
@@ -121,12 +121,12 @@ class ResourceCompressorTest extends BaseTestCase
     {
         $fileName = 'fooFile.js';
         $compressedFileName = $fileName . '.gzip';
-        $testFileFixture = array(
-            $fileName => array(
+        $testFileFixture = [
+            $fileName => [
                 'file' => $fileName,
                 'compress' => true,
-            )
-        );
+            ]
+        ];
         $this->subject->expects($this->once())
             ->method('compressJsFile')
             ->with($fileName)
@@ -146,13 +146,13 @@ class ResourceCompressorTest extends BaseTestCase
     {
         $fileName = 'fooFile.css';
         $concatenatedFileName = 'merged_' . $fileName;
-        $testFileFixture = array(
-            $fileName => array(
+        $testFileFixture = [
+            $fileName => [
                 'file' => $fileName,
                 'excludeFromConcatenation' => false,
                 'media' => 'all',
-            )
-        );
+            ]
+        ];
         $this->subject->expects($this->once())
             ->method('createMergedCssFile')
             ->will($this->returnValue($concatenatedFileName));
@@ -172,24 +172,24 @@ class ResourceCompressorTest extends BaseTestCase
         $allFileName = 'allFile.css';
         $screenFileName1 = 'screenFile.css';
         $screenFileName2 = 'screenFile2.css';
-        $testFileFixture = array(
-            $allFileName => array(
+        $testFileFixture = [
+            $allFileName => [
                 'file' => $allFileName,
                 'excludeFromConcatenation' => false,
                 'media' => 'all',
-            ),
+            ],
             // use two screen files to check if they are merged into one, even with a different media type
-            $screenFileName1 => array(
+            $screenFileName1 => [
                 'file' => $screenFileName1,
                 'excludeFromConcatenation' => false,
                 'media' => 'screen',
-            ),
-            $screenFileName2 => array(
+            ],
+            $screenFileName2 => [
                 'file' => $screenFileName2,
                 'excludeFromConcatenation' => false,
                 'media' => 'screen',
-            ),
-        );
+            ],
+        ];
         $this->subject->expects($this->exactly(2))
             ->method('createMergedCssFile')
             ->will($this->onConsecutiveCalls(
@@ -199,10 +199,10 @@ class ResourceCompressorTest extends BaseTestCase
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'merged_' . $allFileName,
             'merged_' . $screenFileName1
-        ), array_keys($result));
+        ], array_keys($result));
         $this->assertEquals('all', $result['merged_' . $allFileName]['media']);
         $this->assertEquals('screen', $result['merged_' . $screenFileName1]['media']);
     }
@@ -215,29 +215,29 @@ class ResourceCompressorTest extends BaseTestCase
         $screen1FileName = 'screen1File.css';
         $screen2FileName = 'screen2File.css';
         $screen3FileName = 'screen3File.css';
-        $testFileFixture = array(
-            $screen1FileName => array(
+        $testFileFixture = [
+            $screen1FileName => [
                 'file' => $screen1FileName,
                 'excludeFromConcatenation' => false,
                 'media' => 'screen',
-            ),
-            $screen2FileName => array(
+            ],
+            $screen2FileName => [
                 'file' => $screen2FileName,
                 'excludeFromConcatenation' => false,
                 'media' => 'screen',
-            ),
-            $screen3FileName => array(
+            ],
+            $screen3FileName => [
                 'file' => $screen3FileName,
                 'excludeFromConcatenation' => false,
                 'forceOnTop' => true,
                 'media' => 'screen',
-            ),
-        );
+            ],
+        ];
         // Replace mocked method getFilenameFromMainDir by passthrough callback
         $this->subject->expects($this->any())->method('getFilenameFromMainDir')->willReturnArgument(0);
         $this->subject->expects($this->once())
             ->method('createMergedCssFile')
-            ->with($this->equalTo(array($screen3FileName, $screen1FileName, $screen2FileName)));
+            ->with($this->equalTo([$screen3FileName, $screen1FileName, $screen2FileName]));
 
         $this->subject->concatenateCssFiles($testFileFixture);
     }
@@ -250,34 +250,34 @@ class ResourceCompressorTest extends BaseTestCase
         $screen1FileName = 'screen1File.css';
         $screen2FileName = 'screen2File.css';
         $screen3FileName = 'screen3File.css';
-        $testFileFixture = array(
-            $screen1FileName => array(
+        $testFileFixture = [
+            $screen1FileName => [
                 'file' => $screen1FileName,
                 'excludeFromConcatenation' => false,
                 'media' => 'screen',
-            ),
-            $screen2FileName => array(
+            ],
+            $screen2FileName => [
                 'file' => $screen2FileName,
                 'excludeFromConcatenation' => true,
                 'media' => 'screen',
-            ),
-            $screen3FileName => array(
+            ],
+            $screen3FileName => [
                 'file' => $screen3FileName,
                 'excludeFromConcatenation' => false,
                 'media' => 'screen',
-            ),
-        );
+            ],
+        ];
         $this->subject->expects($this->any())->method('getFilenameFromMainDir')->willReturnArgument(0);
         $this->subject->expects($this->once())
             ->method('createMergedCssFile')
-            ->with($this->equalTo(array($screen1FileName, $screen3FileName)))
+            ->with($this->equalTo([$screen1FileName, $screen3FileName]))
             ->will($this->returnValue('merged_screen'));
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
-        $this->assertEquals(array(
+        $this->assertEquals([
             $screen2FileName,
             'merged_screen'
-        ), array_keys($result));
+        ], array_keys($result));
         $this->assertEquals('screen', $result[$screen2FileName]['media']);
         $this->assertEquals('screen', $result['merged_screen']['media']);
     }
@@ -289,13 +289,13 @@ class ResourceCompressorTest extends BaseTestCase
     {
         $fileName = 'fooFile.js';
         $concatenatedFileName = 'merged_' . $fileName;
-        $testFileFixture = array(
-            $fileName => array(
+        $testFileFixture = [
+            $fileName => [
                 'file' => $fileName,
                 'excludeFromConcatenation' => false,
                 'section' => 'top',
-            )
-        );
+            ]
+        ];
         $this->subject->expects($this->once())
             ->method('createMergedJsFile')
             ->will($this->returnValue($concatenatedFileName));
@@ -312,24 +312,24 @@ class ResourceCompressorTest extends BaseTestCase
      */
     public function calcStatementsDataProvider()
     {
-        return array(
-            'simple calc' => array(
+        return [
+            'simple calc' => [
                 'calc(100% - 3px)',
                 'calc(100% - 3px)',
-            ),
-            'complex calc with parentheses at the beginning' => array(
+            ],
+            'complex calc with parentheses at the beginning' => [
                 'calc((100%/20) - 2*3px)',
                 'calc((100%/20) - 2*3px)',
-            ),
-            'complex calc with parentheses at the end' => array(
+            ],
+            'complex calc with parentheses at the end' => [
                 'calc(100%/20 - 2*3px - (200px + 3%))',
                 'calc(100%/20 - 2*3px - (200px + 3%))',
-            ),
-            'complex calc with many parentheses' => array(
+            ],
+            'complex calc with many parentheses' => [
                 'calc((100%/20) - (2 * (3px - (200px + 3%))))',
                 'calc((100%/20) - (2 * (3px - (200px + 3%))))',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -350,33 +350,33 @@ class ResourceCompressorTest extends BaseTestCase
     public function compressCssFileContentDataProvider()
     {
         $path = dirname(__FILE__) . '/ResourceCompressorTest/Fixtures/';
-        return array(
+        return [
             // File. Tests:
             // - Stripped comments and white-space.
             // - Retain white-space in selectors. (http://drupal.org/node/472820)
             // - Retain pseudo-selectors. (http://drupal.org/node/460448)
-            0 => array(
+            0 => [
                 $path . 'css_input_without_import.css',
                 $path . 'css_input_without_import.css.optimized.css'
-            ),
+            ],
             // File. Tests:
             // - Retain comment hacks.
-            2 => array(
+            2 => [
                 $path . 'comment_hacks.css',
                 $path . 'comment_hacks.css.optimized.css'
-            ),/*
+            ],/*
             // File. Tests:
             // - Any @charset declaration at the beginning of a file should be
             //   removed without breaking subsequent CSS.*/
-            6 => array(
+            6 => [
                 $path . 'charset_sameline.css',
                 $path . 'charset.css.optimized.css'
-            ),
-            7 => array(
+            ],
+            7 => [
                 $path . 'charset_newline.css',
                 $path . 'charset.css.optimized.css'
-            ),
-        );
+            ],
+        ];
     }
 
     /**

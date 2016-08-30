@@ -35,9 +35,9 @@ class DatabaseCheck
      *
      * @var array
      */
-    protected $incompatibleSqlModes = array(
+    protected $incompatibleSqlModes = [
         'NO_BACKSLASH_ESCAPES'
-    );
+    ];
 
     /**
      * Get all status information as array with status objects
@@ -46,7 +46,7 @@ class DatabaseCheck
      */
     public function getStatus()
     {
-        $statusArray = array();
+        $statusArray = [];
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         if (!StringUtility::beginsWith($defaultConnection->getServerVersion(), 'MySQL')) {

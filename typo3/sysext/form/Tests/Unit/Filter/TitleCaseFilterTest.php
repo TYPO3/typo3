@@ -42,12 +42,12 @@ class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stringProvider()
     {
-        return array(
-            'some text' => array('some text', 'Some Text'),
-            'some Text' => array('some Text', 'Some Text'),
-            'Ein Maß' => array('Ein Maß', 'Ein Maß'),
-            '¿por que?' => array('¿por que?', '¿por Que?'),
-        );
+        return [
+            'some text' => ['some text', 'Some Text'],
+            'some Text' => ['some Text', 'Some Text'],
+            'Ein Maß' => ['Ein Maß', 'Ein Maß'],
+            '¿por que?' => ['¿por que?', '¿por Que?'],
+        ];
     }
 
     /**

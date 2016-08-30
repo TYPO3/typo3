@@ -47,21 +47,21 @@ abstract class AbstractDriver implements DriverInterface
      *
      * @var array
      */
-    protected $supportedHashAlgorithms = array();
+    protected $supportedHashAlgorithms = [];
 
     /**
      * The configuration of this driver
      *
      * @var array
      */
-    protected $configuration = array();
+    protected $configuration = [];
 
     /**
      * Creates this object.
      *
      * @param array $configuration
      */
-    public function __construct(array $configuration = array())
+    public function __construct(array $configuration = [])
     {
         $this->configuration = $configuration;
     }

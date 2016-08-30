@@ -36,11 +36,11 @@ class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo\\Bar\\Domain\\Model\\' . $className));
+        $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, ['dummy'], ['Foo\\Bar\\Domain\\Model\\' . $className]);
         $objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
         /** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $service */
-        $service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array('dummy'));
+        $service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, ['dummy']);
         $service->_set('objectManager', $objectManager);
         $classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
         $this->assertTrue($classSchema->isAggregateRoot());
@@ -61,10 +61,10 @@ class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo_Bar_Domain_Model_' . $className));
+        $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, ['dummy'], ['Foo_Bar_Domain_Model_' . $className]);
         $objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
-        $service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array('dummy'));
+        $service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, ['dummy']);
         $service->_set('objectManager', $objectManager);
         $classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
         $this->assertTrue($classSchema->isAggregateRoot());

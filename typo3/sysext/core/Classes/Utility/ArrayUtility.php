@@ -52,9 +52,9 @@ class ArrayUtility
      * @param array $haystack The array in which to search
      * @return array $haystack array reduced matching $needle values
      */
-    public static function filterByValueRecursive($needle = '', array $haystack = array())
+    public static function filterByValueRecursive($needle = '', array $haystack = [])
     {
-        $resultArray = array();
+        $resultArray = [];
         // Define a lambda function to be applied to all members of this array dimension
         // Call recursive if current value is of type array
         // Write to $resultArray (by reference!) if types and value match
@@ -195,7 +195,7 @@ class ArrayUtility
             }
             // Create cell if it doesn't exist
             if (!array_key_exists($segment, $pointer)) {
-                $pointer[$segment] = array();
+                $pointer[$segment] = [];
             }
             // Set pointer to new cell
             $pointer = &$pointer[$segment];
@@ -300,7 +300,7 @@ class ArrayUtility
      * @return string String representation of array
      * @throws \RuntimeException
      */
-    public static function arrayExport(array $array = array(), $level = 0)
+    public static function arrayExport(array $array = [], $level = 0)
     {
         $lines = '[' . LF;
         $level++;
@@ -384,7 +384,7 @@ class ArrayUtility
      */
     public static function flatten(array $array, $prefix = '')
     {
-        $flatArray = array();
+        $flatArray = [];
         foreach ($array as $key => $value) {
             // Ensure there is no trailling dot:
             $key = rtrim($key, '.');
@@ -432,9 +432,9 @@ class ArrayUtility
      * @param array $mask Array that has the keys which should be kept in the source array
      * @return array Keys which are present in both arrays with values of the source array
      */
-    public static function intersectRecursive(array $source, array $mask = array())
+    public static function intersectRecursive(array $source, array $mask = [])
     {
-        $intersection = array();
+        $intersection = [];
         foreach ($source as $key => $_) {
             if (!array_key_exists($key, $mask)) {
                 continue;
@@ -476,7 +476,7 @@ class ArrayUtility
      * @param int $level Internal level used for recursion, do *not* set from outside!
      * @return array
      */
-    public static function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = array(), $level = 0)
+    public static function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = [], $level = 0)
     {
         $level++;
         $allKeysAreNumeric = true;
@@ -665,7 +665,7 @@ class ArrayUtility
      */
     public static function arrayDiffAssocRecursive(array $array1, array $array2)
     {
-        $differenceArray = array();
+        $differenceArray = [];
         foreach ($array1 as $key => $value) {
             if (!array_key_exists($key, $array2)) {
                 $differenceArray[$key] = $value;

@@ -69,13 +69,13 @@ class TypoScriptTemplateInfoHook
     {
         $t3editor = $this->getT3editor();
         $t3editor->getJavascriptCode();
-        foreach (array('constants', 'config') as $type) {
+        foreach (['constants', 'config'] as $type) {
             if ($parameters['e'][$type]) {
                 $attributes = 'rows="' . (int)$parameters['numberOfRows'] . '" wrap="off" style="width:98%;height:60%"';
                 $title = $GLOBALS['LANG']->getLL('template') . ' ' . $parameters['tplRow']['title'] . $GLOBALS['LANG']->getLL('delimiter') . ' ' . $GLOBALS['LANG']->getLL($type);
-                $outCode = $t3editor->getCodeEditor('data[' . $type . ']', 'text-monospace enable-tab', '$1', $attributes, $title, array(
+                $outCode = $t3editor->getCodeEditor('data[' . $type . ']', 'text-monospace enable-tab', '$1', $attributes, $title, [
                     'pageId' => (int)$pObj->pObj->id
-                ));
+                ]);
                 $parameters['theOutput'] = preg_replace('/\\<textarea name="data\\[' . $type . '\\]".*\\>([^\\<]*)\\<\\/textarea\\>/mi', $outCode, $parameters['theOutput']);
             }
         }
@@ -111,7 +111,7 @@ class TypoScriptTemplateInfoHook
                 $POST = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
                 if ($POST['submit']) {
                     // Set the data to be saved
-                    $recData = array();
+                    $recData = [];
                     if (is_array($POST['data'])) {
                         foreach ($POST['data'] as $field => $val) {
                             switch ($field) {
@@ -130,12 +130,12 @@ class TypoScriptTemplateInfoHook
                         /* @var $tstemplateinfo \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController */
                         // load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set
                         $tstemplateinfo->pObj = $pObj;
-                        $tstemplateinfo->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(array('includeTypoScriptFileContent' => true), array(), 'web_ts');
+                        $tstemplateinfo->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(['includeTypoScriptFileContent' => true], [], 'web_ts');
                         $recData['sys_template'][$saveId] = $tstemplateinfo->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
                         // Create new tce-object
                         $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                         // Initialize
-                        $tce->start($recData, array());
+                        $tce->start($recData, []);
                         // Saved the stuff
                         $tce->process_datamap();
                         // Clear the cache (note: currently only admin-users can clear the

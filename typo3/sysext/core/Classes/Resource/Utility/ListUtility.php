@@ -32,7 +32,7 @@ class ListUtility
     {
         /** @var LanguageService $lang */
         $lang = $GLOBALS['LANG'];
-        $resolvedFolders = array();
+        $resolvedFolders = [];
 
         /** @var $folder \TYPO3\CMS\Core\Resource\Folder */
         foreach ($folders as $folder) {

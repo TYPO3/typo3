@@ -37,7 +37,7 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
     /**
      * Configuration
      */
-    public $conf = array();
+    public $conf = [];
 
     /**
      * cObj object
@@ -59,7 +59,7 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
         // If the link was not rendered
         if (substr($content, 0, 3) !== '<a ' && substr($content, 0, 5) === '<img ') {
             // Let's remove the accessibility icon, if there is one
-            $matches = array();
+            $matches = [];
             if (preg_match('/^<img .*>/', $content, $matches) === 1) {
                 $attributes = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($matches[0]);
                 if ($attributes['src']) {

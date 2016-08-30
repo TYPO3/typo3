@@ -32,7 +32,7 @@ class ContextMenuDataProvider
      *
      * @var array
      */
-    protected $disableItems = array();
+    protected $disableItems = [];
 
     /**
      * Context Menu Type (e.g. table.pages, table.tt_content)
@@ -105,7 +105,7 @@ class ContextMenuDataProvider
             return true;
         }
         // Parse condition string
-        $conditions = array();
+        $conditions = [];
         preg_match_all('/(.+?)(>=|<=|!=|=|>|<)(.+?)(\\|\\||&&|$)/is', $displayCondition, $conditions);
         $lastResult = false;
         $chainType = '';
@@ -118,7 +118,7 @@ class ContextMenuDataProvider
                 continue;
             }
             // Fetch compare value
-            $returnValue = call_user_func(array($node, $method));
+            $returnValue = call_user_func([$node, $method]);
             if (is_array($returnValue)) {
                 $returnValue = $returnValue[$index];
             }
@@ -253,16 +253,16 @@ class ContextMenuDataProvider
     {
         $tsConfig = $this->getBackendUser()
             ->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
-        $disableItems = array();
+        $disableItems = [];
         if (trim($tsConfig['value']) !== '') {
             $disableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
         }
         $tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.pageTree.disableItems');
-        $oldDisableItems = array();
+        $oldDisableItems = [];
         if (trim($tsConfig['value']) !== '') {
             $oldDisableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
         }
-        $additionalItems = array();
+        $additionalItems = [];
         foreach ($oldDisableItems as $item) {
             if (empty($this->legacyContextMenuMapping[$item])) {
                 $additionalItems[] = $item;
@@ -305,7 +305,7 @@ class ContextMenuDataProvider
     {
         $this->disableItems = $this->getDisableActions();
         $configuration = $this->getConfiguration();
-        $contextMenuActions = array();
+        $contextMenuActions = [];
         if (is_array($configuration)) {
             $contextMenuActions = $this->getNextContextMenuLevel($configuration, $node);
         }

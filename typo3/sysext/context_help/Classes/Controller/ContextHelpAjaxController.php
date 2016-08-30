@@ -60,11 +60,11 @@ class ContextHelpAjaxController
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $moreIcon = $helpTextArray['moreInfo'] ? $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render() : '';
-        return array(
+        return [
             'title' => $helpTextArray['title'],
             'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
             'id' => $table . '.' . $field,
             'moreInfo' => $helpTextArray['moreInfo']
-        );
+        ];
     }
 }

@@ -80,7 +80,7 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      */
     public function getAll()
     {
-        $mirrorProperties = array();
+        $mirrorProperties = [];
         $mirrorProperties['title'] = $this->title;
         $mirrorProperties['host'] = $this->host;
         $mirrorProperties['path'] = $this->path;

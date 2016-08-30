@@ -22,7 +22,7 @@ class ServiceUnavailableException extends AbstractServerErrorException
     /**
      * @var array HTTP Status Header lines
      */
-    protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_503);
+    protected $statusHeaders = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_503];
 
     /**
      * @var string Title of the message

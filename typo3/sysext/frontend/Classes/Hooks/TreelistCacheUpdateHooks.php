@@ -31,11 +31,11 @@ class TreelistCacheUpdateHooks
      *
      * @var array
      */
-    private $updateRequiringFields = array(
+    private $updateRequiringFields = [
         'pid',
         'php_tree_stop',
         'extendToSubpages'
-    );
+    ];
 
     /**
      * Constructor, adds update requiring fields to the default ones
@@ -111,7 +111,7 @@ class TreelistCacheUpdateHooks
             $affectedPagePid = $affectedRecord['pid'];
 
             // Faking the updated fields
-            $updatedFields = array();
+            $updatedFields = [];
             if ($command === 'delete') {
                 $updatedFields['deleted'] = 1;
             } else {
@@ -244,7 +244,7 @@ class TreelistCacheUpdateHooks
     protected function clearCacheForAllParents($affectedParentPage)
     {
         $rootLine = BackendUtility::BEgetRootLine($affectedParentPage);
-        $rootLineIds = array();
+        $rootLineIds = [];
         foreach ($rootLine as $page) {
             if ($page['uid'] != 0) {
                 $rootLineIds[] = $page['uid'];
@@ -329,7 +329,7 @@ class TreelistCacheUpdateHooks
      */
     protected function determineClearCacheActions($status, $updatedFields)
     {
-        $actions = array();
+        $actions = [];
         if ($status == 'new') {
             // New page
             $actions['allParents'] = true;

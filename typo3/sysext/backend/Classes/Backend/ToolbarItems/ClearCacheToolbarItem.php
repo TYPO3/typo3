@@ -30,12 +30,12 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     /**
      * @var array
      */
-    protected $cacheActions = array();
+    protected $cacheActions = [];
 
     /**
      * @var array
      */
-    protected $optionValues = array();
+    protected $optionValues = [];
 
     /**
      * @var IconFactory
@@ -57,13 +57,13 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
 
         // Clear all page-related caches
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
-            $this->cacheActions[] = array(
+            $this->cacheActions[] = [
                 'id' => 'pages',
                 'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesTitle')),
                 'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesDescription')),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'pages']),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-low', Icon::SIZE_SMALL)->render()
-            );
+            ];
             $this->optionValues[] = 'pages';
         }
 
@@ -71,13 +71,13 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         // or if BE-User is admin and the TSconfig explicitly disables the possibility for admins.
         // This is useful for big production systems where admins accidentally could slow down the system.
         if ($backendUser->getTSConfigVal('options.clearCache.all') || ($backendUser->isAdmin() && $backendUser->getTSConfigVal('options.clearCache.all') !== '0')) {
-            $this->cacheActions[] = array(
+            $this->cacheActions[] = [
                 'id' => 'all',
                 'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesTitle2')),
                 'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesDescription2')),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all']),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-high', Icon::SIZE_SMALL)->render()
-            );
+            ];
             $this->optionValues[] = 'all';
         }
 
@@ -134,7 +134,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $result = array();
+        $result = [];
         $result[] = '<ul class="dropdown-list">';
         foreach ($this->cacheActions as $cacheAction) {
             $title = $cacheAction['description'] ?: $cacheAction['title'];
@@ -156,7 +156,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**

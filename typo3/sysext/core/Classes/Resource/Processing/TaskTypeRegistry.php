@@ -25,7 +25,7 @@ class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $registeredTaskTypes = array();
+    protected $registeredTaskTypes = [];
 
     /**
      * Register task types from configuration

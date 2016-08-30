@@ -51,7 +51,7 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
 
         $targetIdentifier = $route->getOption('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
-        return call_user_func_array($target, array($request, $response));
+        return call_user_func_array($target, [$request, $response]);
     }
 
     /**

@@ -25,7 +25,7 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow()
     {
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array(), '', false);
+        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [], '', false);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
         $dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
@@ -37,14 +37,14 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $domainObject = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
 
-        $mmMatchFields = array(
+        $mmMatchFields = [
             'identifier' => 'myTable:myField',
-        );
+        ];
 
-        $expectedRow = array(
+        $expectedRow = [
             'identifier' => 'myTable:myField',
             '' => 0
-        );
+        ];
 
         $columnMap
             ->expects($this->once())
@@ -80,7 +80,7 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $session = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getIdentifierByObject'))
+            ->setMethods(['getIdentifierByObject'])
             ->disableOriginalConstructor()
             ->getMock();
         $object = new \stdClass();
@@ -88,7 +88,7 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
-        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($configurationManager));
+        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [$configurationManager]);
         $backend->_set('session', $session);
 
         $this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
@@ -103,12 +103,12 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $configurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $parentObject = new \stdClass();
         $proxy = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class)
-            ->setMethods(array('_loadRealInstance'))
-            ->setConstructorArgs(array($parentObject, 'y', 'z'))
+            ->setMethods(['_loadRealInstance'])
+            ->setConstructorArgs([$parentObject, 'y', 'z'])
             ->disableProxyingToOriginalMethods()
             ->getMock();
         $session = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getIdentifierByObject'))
+            ->setMethods(['getIdentifierByObject'])
             ->disableOriginalConstructor()
             ->getMock();
         $object = new \stdClass();
@@ -117,7 +117,7 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
-        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($configurationManager));
+        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [$configurationManager]);
         $backend->_set('session', $session);
 
         $this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);

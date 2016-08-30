@@ -73,7 +73,7 @@ class TcaFlexFetch implements FormDataProviderInterface
             );
         }
         if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
-            $dataStructureArray['meta'] = array();
+            $dataStructureArray['meta'] = [];
         }
         // This kicks one array depth:  config['ds']['matchingIdentifier'] becomes config['ds']
         $result['processedTca']['columns'][$fieldName]['config']['ds'] = $dataStructureArray;

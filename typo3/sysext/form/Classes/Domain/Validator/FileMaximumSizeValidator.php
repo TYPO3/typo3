@@ -21,11 +21,11 @@ class FileMaximumSizeValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'maximum' => array('', 'The maximum file size', 'integer', true),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'maximum' => ['', 'The maximum file size', 'integer', true],
+    ];
 
     /**
      * Constant for localisation

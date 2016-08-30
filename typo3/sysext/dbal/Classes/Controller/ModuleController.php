@@ -53,9 +53,9 @@ class ModuleController extends BaseScriptClass
      */
     public function init()
     {
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName,
-        );
+        ];
         $this->getLanguageService()->includeLLFile('EXT:dbal/Resources/Private/Language/locallang.xlf');
         parent::init();
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
@@ -69,13 +69,13 @@ class ModuleController extends BaseScriptClass
     public function menuConfig()
     {
         $languageService = $this->getLanguageService();
-        $this->MOD_MENU = array(
-            'function' => array(
+        $this->MOD_MENU = [
+            'function' => [
                 0 => $languageService->getLL('Debug_log'),
                 'info' => $languageService->getLL('Cached_info'),
                 'sqlcheck' => $languageService->getLL('SQL_check')
-            )
-        );
+            ]
+        ];
         parent::menuConfig();
     }
 
@@ -301,7 +301,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
      */
     protected function createFieldsValuesArray($in)
     {
-        $ret = array();
+        $ret = [];
         $in = explode(LF, $in);
         foreach ($in as $v) {
             $fv = explode('=', $v);
@@ -422,8 +422,8 @@ updateQryForm(\'' . $input['QUERY'] . '\');
             case 'joins':
                 $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script', 'tx_dbal_debuglog', 'table_join!=\'\'', 'table_join,script,exec_time,query');
                 // Init vars in which to pick up the query result:
-                $tableIndex = array();
-                $tRows = array();
+                $tableIndex = [];
+                $tRows = [];
                 $tRows[] = '
 						<tr>
 							<td>Execution time</td>
@@ -471,7 +471,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
             case 'errors':
                 $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serdata,exec_time,query,script', 'tx_dbal_debuglog', 'errorFlag>0', '', 'tstamp DESC');
                 // Init vars in which to pick up the query result:
-                $tRows = array();
+                $tRows = [];
                 $tRows[] = '
 						<tr>
 							<td>Execution time</td>
@@ -496,7 +496,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
                 break;
             case 'parsing':
                 $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('query,serdata', 'tx_dbal_debuglog', 'errorFlag&2=2');
-                $tRows = array();
+                $tRows = [];
                 while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                     // Create output row
                     $tRows[] = '
@@ -511,7 +511,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
                 break;
             case 'where':
                 $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script,tablename,whereclause', 'tx_dbal_debuglog_where', '', '', 'tstamp DESC');
-                $tRows = array();
+                $tRows = [];
                 $tRows[] = '
 						<tr>
 							<td>Time</td>
@@ -525,7 +525,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 								<td>' . BackendUtility::datetime($row['tstamp']) . '</td>
 								<td>' . htmlspecialchars($row['script']) . '</td>
 								<td>' . htmlspecialchars($row['tablename']) . '</td>
-									<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause'])) . '</td>
+									<td>' . str_replace(['\'\'', '""', 'IS NULL', 'IS NOT NULL'], ['<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'], htmlspecialchars($row['whereclause'])) . '</td>
 							</tr>';
                 }
                 $outStr = '
@@ -537,7 +537,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
                 $specTime = GeneralUtility::_GP('specTime');
                 if ($specTime) {
                     $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int)$specTime);
-                    $tRows = array();
+                    $tRows = [];
                     $tRows[] = '
 							<tr>
 								<td>Execution time</td>
@@ -553,12 +553,12 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 									<td>' . ($row['errorFlag'] ? 1 : 0) . '</td>
 									<td>' . htmlspecialchars($row['table_join']) . '</td>
 									<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
-									<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query'])) . '</td>
+									<td>' . str_replace(['\'\'', '""', 'IS NULL', 'IS NOT NULL'], ['<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'], htmlspecialchars($row['query'])) . '</td>
 								</tr>';
                     }
                 } else {
                     $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*) AS qrycount, MAX(errorFlag) as error', 'tx_dbal_debuglog', '', 'tstamp,script', 'tstamp DESC');
-                    $tRows = array();
+                    $tRows = [];
                     $tRows[] = '
 							<tr>
 								<td>Time</td>

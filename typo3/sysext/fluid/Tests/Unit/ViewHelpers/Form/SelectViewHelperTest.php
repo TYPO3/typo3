@@ -29,21 +29,21 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @var array Backup of current locale, it is manipulated in tests
      */
-    protected $backupLocales = array();
+    protected $backupLocales = [];
 
     protected function setUp()
     {
         parent::setUp();
         // Store all locale categories manipulated in tests for reconstruction in tearDown
-        $this->backupLocales = array(
+        $this->backupLocales = [
             'LC_COLLATE' => setlocale(LC_COLLATE, 0),
             'LC_CTYPE' => setlocale(LC_CTYPE, 0),
             'LC_MONETARY' => setlocale(LC_MONETARY, 0),
             'LC_TIME' => setlocale(LC_TIME, 0),
-        );
+        ];
         $this->arguments['name'] = '';
         $this->arguments['sortByOptionLabel'] = false;
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
         $this->viewHelper->_set('tag', $this->tagBuilder);
     }
@@ -63,7 +63,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->tagBuilder->expects($this->once())->method('setTagName')->with('select');
 
-        $this->arguments['options'] = array();
+        $this->arguments['options'] = [];
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
         $this->viewHelper->initialize();
@@ -80,10 +80,10 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2'
-        );
+        ];
         $this->arguments['value'] = 'value2';
         $this->arguments['name'] = 'myName';
 
@@ -108,22 +108,22 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['optionValueField'] = 'uid';
         $this->arguments['optionLabelField'] = 'title';
         $this->arguments['sortByOptionLabel'] = true;
-        $this->arguments['options'] = array(
-            array(
+        $this->arguments['options'] = [
+            [
                 'uid' => 1,
                 'title' => 'Foo'
-            ),
-            array(
+            ],
+            [
                 'uid' => -1,
                 'title' => 'Bar'
-            ),
-            array(
+            ],
+            [
                 'title' => 'Baz'
-            ),
-            array(
+            ],
+            [
                 'uid' => '2'
-            ),
-        );
+            ],
+        ];
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -160,7 +160,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['optionValueField'] = 'uid';
         $this->arguments['optionLabelField'] = 'title';
         $this->arguments['sortByOptionLabel'] = true;
-        $this->arguments['options'] = array($obj1, $obj2, $obj3, $obj4);
+        $this->arguments['options'] = [$obj1, $obj2, $obj3, $obj4];
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -183,22 +183,22 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['optionValueField'] = 'uid';
         $this->arguments['optionLabelField'] = 'title';
         $this->arguments['sortByOptionLabel'] = true;
-        $this->arguments['options'] = new \ArrayObject(array(
-            array(
+        $this->arguments['options'] = new \ArrayObject([
+            [
                 'uid' => 1,
                 'title' => 'Foo'
-            ),
-            array(
+            ],
+            [
                 'uid' => -1,
                 'title' => 'Bar'
-            ),
-            array(
+            ],
+            [
                 'title' => 'Baz'
-            ),
-            array(
+            ],
+            [
                 'uid' => '2'
-            ),
-        ));
+            ],
+        ]);
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -216,7 +216,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value=""></option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
 
-        $this->arguments['options'] = array();
+        $this->arguments['options'] = [];
         $this->arguments['value'] = 'value2';
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -235,11 +235,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value3">label3</option>' . chr(10) . '<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value3' => 'label3',
             'value1' => 'label1',
             'value2' => 'label2'
-        );
+        ];
 
         $this->arguments['value'] = 'value2';
         $this->arguments['name'] = 'myName';
@@ -260,11 +260,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value3' => 'label3',
             'value1' => 'label1',
             'value2' => 'label2'
-        );
+        ];
 
         $this->arguments['value'] = 'value2';
         $this->arguments['name'] = 'myName';
@@ -296,13 +296,13 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">Bamberg</option>' . chr(10) . '<option value="value2" selected="selected">Bämm</option>' . chr(10) . '<option value="value3">Bar</option>' . chr(10) . '<option value="value4">Bär</option>' . chr(10) . '<option value="value5">Burg</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value4' => 'Bär',
             'value2' => 'Bämm',
             'value5' => 'Burg',
             'value1' => 'Bamberg',
             'value3' => 'Bar'
-        );
+        ];
         $this->arguments['value'] = 'value2';
         $this->arguments['name'] = 'myName';
         $this->arguments['sortByOptionLabel'] = true;
@@ -319,13 +319,13 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->tagBuilder = new TagBuilder();
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',
             'value3' => 'label3'
-        );
+        ];
 
-        $this->arguments['value'] = array('value3', 'value1');
+        $this->arguments['value'] = ['value3', 'value1'];
         $this->arguments['name'] = 'myName';
         $this->arguments['multiple'] = true;
 
@@ -356,11 +356,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(2, 'Sebastian', 'Kurfuerst');
         $user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(3, 'Robert', 'Lemke');
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             $user_is,
             $user_sk,
             $user_rl
-        );
+        ];
 
         $this->arguments['value'] = $user_sk;
         $this->arguments['optionValueField'] = 'id';
@@ -383,12 +383,12 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $user_is = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');
         $user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(2, 'Sebastian', 'Kurfuerst');
         $user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(3, 'Robert', 'Lemke');
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             $user_is,
             $user_sk,
             $user_rl
-        );
-        $this->arguments['value'] = array($user_rl, $user_is);
+        ];
+        $this->arguments['value'] = [$user_rl, $user_is];
         $this->arguments['optionValueField'] = 'id';
         $this->arguments['optionLabelField'] = 'lastName';
         $this->arguments['name'] = 'myName';
@@ -428,8 +428,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(2, 'Sebastian', 'Kurfuerst');
         $user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(3, 'Robert', 'Lemke');
 
-        $this->arguments['options'] = array($user_is,$user_sk,$user_rl);
-        $this->arguments['value'] = array($user_rl, $user_is);
+        $this->arguments['options'] = [$user_is,$user_sk,$user_rl];
+        $this->arguments['value'] = [$user_rl, $user_is];
         $this->arguments['optionLabelField'] = 'lastName';
         $this->arguments['name'] = 'myName';
         $this->arguments['multiple'] = true;
@@ -464,9 +464,9 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
 
         $user = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             $user
-        );
+        ];
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -489,14 +489,14 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->tagBuilder->expects($this->once())->method('render');
 
         $user = $this->getMockBuilder(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass::class)
-            ->setMethods(array('__toString'))
-            ->setConstructorArgs(array(1, 'Ingmar', 'Schlecht'))
+            ->setMethods(['__toString'])
+            ->setConstructorArgs([1, 'Ingmar', 'Schlecht'])
             ->getMock();
         $user->expects($this->atLeastOnce())->method('__toString')->will($this->returnValue('toStringResult'));
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             $user
-        );
+        ];
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -518,9 +518,9 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
 
         $user = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             $user
-        );
+        ];
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -533,7 +533,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderCallsSetErrorClassAttribute()
     {
-        $this->arguments['options'] = array();
+        $this->arguments['options'] = [];
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->_set('tag', $this->tagBuilder);
@@ -548,11 +548,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3" selected="selected">label3</option>' . chr(10));
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',
             'value3' => 'label3'
-        );
+        ];
         $this->arguments['name'] = 'myName';
         $this->arguments['multiple'] = true;
         $this->arguments['selectAllByDefault'] = true;
@@ -570,12 +570,12 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
 
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',
             'value3' => 'label3'
-        );
-        $this->arguments['value'] = array('value2', 'value1');
+        ];
+        $this->arguments['value'] = ['value2', 'value1'];
         $this->arguments['name'] = 'myName';
         $this->arguments['multiple'] = true;
         $this->arguments['selectAllByDefault'] = true;
@@ -595,11 +595,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="">please choose</option>' . chr(10) . '<option value="value1">label1</option>' . chr(10) . '<option value="value2">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',
             'value3' => 'label3'
-        );
+        ];
         $this->arguments['name'] = 'myName';
         $this->arguments['prependOptionLabel'] = 'please choose';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -617,11 +617,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="-1">please choose</option>' . chr(10) . '<option value="value1">label1</option>' . chr(10) . '<option value="value2">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
-        $this->arguments['options'] = array(
+        $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',
             'value3' => 'label3'
-        );
+        ];
         $this->arguments['name'] = 'myName';
         $this->arguments['prependOptionLabel'] = 'please choose';
         $this->arguments['prependOptionValue'] = '-1';

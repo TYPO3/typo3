@@ -32,7 +32,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $languages = array(
+    protected $languages = [
         'default' => 'English',
         'af' => 'Afrikaans',
         'ar' => 'Arabic',
@@ -85,14 +85,14 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         'uk' => 'Ukrainian',
         'vi' => 'Vietnamese',
         'zh' => 'Chinese (Trad.)'
-    );
+    ];
 
     /**
      * Reversed mapping with codes used by TYPO3 4.5 and below
      *
      * @var array
      */
-    protected $isoReverseMapping = array(
+    protected $isoReverseMapping = [
         'bs' => 'ba', // Bosnian
         'cs' => 'cz', // Czech
         'da' => 'dk', // Danish
@@ -112,7 +112,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         'zh' => 'hk', // Chinese (China)
         'zh_CN' => 'ch', // Chinese (Simplified)
         'zh_HK' => 'hk'
-    );
+    ];
 
     /**
      * Mapping with codes used by TYPO3 4.5 and below
@@ -147,10 +147,10 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         // Initializes the locale dependencies with TYPO3 supported locales
-        $instance->localeDependencies = array();
+        $instance->localeDependencies = [];
         foreach ($instance->languages as $locale => $name) {
             if (strlen($locale) === 5) {
-                $instance->localeDependencies[$locale] = array(substr($locale, 0, 2));
+                $instance->localeDependencies[$locale] = [substr($locale, 0, 2)];
             }
         }
         // Merge user-provided locale dependencies
@@ -197,7 +197,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getLocaleDependencies($locale)
     {
-        $dependencies = array();
+        $dependencies = [];
         if (isset($this->localeDependencies[$locale])) {
             $dependencies = $this->localeDependencies[$locale];
             // Search for dependencies recursively
@@ -232,7 +232,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         $selectedLanguage = 'default';
         $preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
         // Order the preferred languages after they key
-        $sortedPreferredLanguages = array();
+        $sortedPreferredLanguages = [];
         foreach ($preferredLanguages as $preferredLanguage) {
             $quality = 1.0;
             if (strpos($preferredLanguage, ';q=') !== false) {

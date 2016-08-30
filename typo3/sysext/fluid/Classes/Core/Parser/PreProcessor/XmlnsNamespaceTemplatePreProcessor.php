@@ -49,11 +49,11 @@ class XmlnsNamespaceTemplatePreProcessor implements TemplateProcessorInterface
      */
     public function preProcessSource($templateSource)
     {
-        $matches = array();
+        $matches = [];
         $namespacePattern = 'xmlns:([a-z0-9]+)="(http\\:\\/\\/typo3\\.org\\/ns\\/[^"]+)"';
         $matched = preg_match('/<([a-z0-9]+)(?:[^>]*?)\\s+' . $namespacePattern . '[^>]*>/', $templateSource, $matches);
         if ($matched) {
-            $namespaces = array();
+            $namespaces = [];
             preg_match_all('/' . $namespacePattern . '/', $matches[0], $namespaces, PREG_SET_ORDER);
             foreach ($namespaces as $set) {
                 $namespaceUrl = $set[2];

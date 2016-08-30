@@ -26,11 +26,11 @@ class Bootstrap
      * Do not touch if you are not sure what you are doing!
      * @var array
      */
-    protected $extbaseConfiguration = array(
+    protected $extbaseConfiguration = [
         'vendorName' => 'TYPO3\\CMS',
         'extensionName' => 'SysNote',
         'pluginName' => 'Note',
-    );
+    ];
 
     /**
      * @var array
@@ -45,7 +45,7 @@ class Bootstrap
      * @param array $arguments Arguments to pass to the controller action
      * @return string
      */
-    public function run($controllerName, $actionName, array $arguments = array())
+    public function run($controllerName, $actionName, array $arguments = [])
     {
         if (!$this->expectOutput($arguments)) {
             return '';
@@ -68,7 +68,7 @@ class Bootstrap
      * @param array $arguments Arguments for the extbase plugin
      * @return bool
      */
-    protected function expectOutput(array $arguments = array())
+    protected function expectOutput(array $arguments = [])
     {
         // no pids set
         if (!isset($arguments['pids']) || empty($arguments['pids']) || empty($GLOBALS['BE_USER']->user['uid'])) {

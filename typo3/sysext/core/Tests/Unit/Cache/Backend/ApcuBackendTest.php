@@ -119,7 +119,7 @@ class ApcuBackendTest extends UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+        $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
         $this->assertEquals($identifier, $retrieved[0]);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
@@ -134,8 +134,8 @@ class ApcuBackendTest extends UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
-        $backend->set($identifier, $data, array('UnitTestTag%tag3'));
+        $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tagX']);
+        $backend->set($identifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
         $this->assertEquals([], $retrieved);
     }
@@ -153,12 +153,12 @@ class ApcuBackendTest extends UnitTestCase
 
         /** @var $backendMock \PHPUnit_Framework_MockObject_MockObject|ApcuBackend */
         $backendMock = $this->getMockBuilder(ApcuBackend::class)
-            ->setMethods(array('setIdentifierPrefix', 'getCurrentUserData', 'getPathSite'))
-            ->setConstructorArgs(array('testcontext'))
+            ->setMethods(['setIdentifierPrefix', 'getCurrentUserData', 'getPathSite'])
+            ->setConstructorArgs(['testcontext'])
             ->getMock();
 
         $backendMock->expects($this->once())->method('getCurrentUserData')->will(
-            $this->returnValue(array('name' => 'testname'))
+            $this->returnValue(['name' => 'testname'])
         );
 
         $backendMock->expects($this->once())->method('getPathSite')->will(
@@ -197,9 +197,9 @@ class ApcuBackendTest extends UnitTestCase
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
-        $backend->set('BackendAPCUTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-        $backend->set('BackendAPCUTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-        $backend->set('BackendAPCUTest3', $data, array('UnitTestTag%test'));
+        $backend->set('BackendAPCUTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendAPCUTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendAPCUTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
         $this->assertTrue($backend->has('BackendAPCUTest1'));
         $this->assertFalse($backend->has('BackendAPCUTest2'));
@@ -266,7 +266,7 @@ class ApcuBackendTest extends UnitTestCase
     public function setTagsOnlyOnceToIdentifier()
     {
         $identifier = $this->getUniqueId('MyIdentifier');
-        $tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+        $tags = ['UnitTestTag%test', 'UnitTestTag%boring'];
 
         $backend = $this->setUpBackend(true);
         $backend->_call('addIdentifierToTags', $identifier, $tags);

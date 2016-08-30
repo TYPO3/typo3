@@ -30,9 +30,9 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(InvalidLogProcessorConfigurationException::class);
         $this->expectExceptionCode(1321696151);
 
-        $invalidConfiguration = array(
+        $invalidConfiguration = [
             'foo' => 'bar'
-        );
+        ];
         GeneralUtility::makeInstance(ProcessorFixture::class, $invalidConfiguration);
     }
 
@@ -46,7 +46,7 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('dummy', $level, 'message');
         $processor = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Processor\ProcessorInterface::class)
-            ->setMethods(array('processLogRecord'))
+            ->setMethods(['processLogRecord'])
             ->getMock();
         $processor->expects($this->once())->method('processLogRecord')->willReturn($logRecord);
 

@@ -73,7 +73,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * @param array $options Configuration options - unused here
      * @throws \TYPO3\CMS\Core\Cache\Exception
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('apc')) {
             throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "apc" or "apcu" must be installed and loaded in order to use the APC backend.', 1232985414);
@@ -106,7 +106,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      */
     protected function getCurrentUserData()
     {
-        return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : array('name' => 'default');
+        return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : ['name' => 'default'];
     }
 
     /**
@@ -131,7 +131,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1232986818);
@@ -206,7 +206,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
         $success = false;
         $identifiers = apc_fetch($this->getIdentifierPrefix() . 'tag_' . $tag, $success);
         if ($success === false) {
-            return array();
+            return [];
         } else {
             return (array)$identifiers;
         }
@@ -223,7 +223,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     {
         $success = false;
         $tags = apc_fetch($this->getIdentifierPrefix() . 'ident_' . $identifier, $success);
-        return $success ? (array)$tags : array();
+        return $success ? (array)$tags : [];
     }
 
     /**

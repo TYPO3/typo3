@@ -24,7 +24,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset
     /**
      * @var array Default paths to search for executable, with trailing slash
      */
-    protected $defaultExecutableSearchPaths = array(
+    protected $defaultExecutableSearchPaths = [
         '/usr/local/bin/',
         '/opt/local/bin/',
         '/usr/bin/',
@@ -34,7 +34,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset
         'C:/php/GraphicsMagick/',
         'C:/apache/ImageMagick/',
         'C:/apache/GraphicsMagick/',
-    );
+    ];
 
     /**
      * @var string Absolute path with found executable

@@ -38,7 +38,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @var array<string>
      * @api
      */
-    protected $sourceTypes = array();
+    protected $sourceTypes = [];
 
     /**
      * The target type this converter can convert to.
@@ -140,7 +140,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      */
     public function getSourceChildPropertiesToBeConverted($source)
     {
-        return array();
+        return [];
     }
 
     /**

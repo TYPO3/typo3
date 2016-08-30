@@ -24,17 +24,17 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $javaScriptResources = array();
+    protected $javaScriptResources = [];
 
     /**
      * @var array
      */
-    protected $stylesheetResources = array();
+    protected $stylesheetResources = [];
 
     /**
      * @var array
      */
-    protected $localizationResources = array();
+    protected $localizationResources = [];
 
     /**
      * @return \TYPO3\CMS\Workspaces\Service\AdditionalResourceService

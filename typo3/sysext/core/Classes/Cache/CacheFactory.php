@@ -70,7 +70,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidCacheException if the cache frontend is not valid
      * @api
      */
-    public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = array())
+    public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = [])
     {
         // New operator used on purpose: This class is required early during
         // bootstrap before makeInstance() is properly set up
@@ -79,7 +79,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface
         if (!$backend instanceof \TYPO3\CMS\Core\Cache\Backend\BackendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception\InvalidBackendException('"' . $backendObjectName . '" is not a valid cache backend object.', 1216304301);
         }
-        if (is_callable(array($backend, 'initializeObject'))) {
+        if (is_callable([$backend, 'initializeObject'])) {
             $backend->initializeObject();
         }
         // New used on purpose, see comment above
@@ -87,7 +87,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface
         if (!$cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception\InvalidCacheException('"' . $cacheObjectName . '" is not a valid cache frontend object.', 1216304300);
         }
-        if (is_callable(array($cache, 'initializeObject'))) {
+        if (is_callable([$cache, 'initializeObject'])) {
             $cache->initializeObject();
         }
         $this->cacheManager->registerCache($cache);

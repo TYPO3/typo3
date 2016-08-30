@@ -31,14 +31,14 @@ class DatabaseWriterTest extends FunctionalTestCase
      */
     public function writeLogInsertsLogRecordWithGivenProperties()
     {
-        $logRecordData = array(
+        $logRecordData = [
             'request_id' => Bootstrap::getInstance()->getRequestId(),
             'time_micro' => 1469740000.0,
             'component' => 'aComponent',
             'level' => LogLevel::DEBUG,
             'message' => 'aMessage',
             'data' => ''
-        );
+        ];
         $logRecord = new LogRecord(
             $logRecordData['component'],
             $logRecordData['level'],

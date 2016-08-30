@@ -35,7 +35,7 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, array('dummy'), array(), '', false);
+        $this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, ['dummy'], [], '', false);
     }
 
     /**
@@ -62,7 +62,7 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function priorityIsHigherThanDefaultRequestHandler()
     {
         $defaultWebRequestHandler = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class)
-            ->setMethods(array('handleRequest'))
+            ->setMethods(['handleRequest'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
@@ -76,13 +76,13 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $handler = new WidgetRequestHandler();
         $request = $this->createMock(Request::class);
         $requestBuilder = $this->getMockBuilder(WidgetRequestBuilder::class)
-            ->setMethods(array('build'))
+            ->setMethods(['build'])
             ->getMock();
         $requestBuilder->expects($this->once())->method('build')->willReturn($request);
         $objectManager = $this->createMock(ObjectManagerInterface::class);
         $objectManager->expects($this->once())->method('get')->willReturn($this->createMock(Response::class));
         $requestDispatcher = $this->getMockBuilder(Dispatcher::class)
-            ->setMethods(array('dispatch'))
+            ->setMethods(['dispatch'])
             ->disableOriginalConstructor()
             ->getMock();
         $requestDispatcher->expects($this->once())->method('dispatch')->with($request);

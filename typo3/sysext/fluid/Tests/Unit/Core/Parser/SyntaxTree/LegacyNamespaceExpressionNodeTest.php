@@ -31,11 +31,11 @@ class LegacyNamespaceExpressionNodeTest extends UnitTestCase
     public function evaluateExpressionExtractsNamespaces(array $matches, array $expected)
     {
         $resolver = $this->getMockBuilder('TYPO3Fluid\\Fluid\\Core\\ViewHelper\\ViewHelperResolver')
-            ->setMethods(array('addNamespace'))
+            ->setMethods(['addNamespace'])
             ->getMock();
         $resolver->expects($this->once())->method('addNamespace')->with($expected[0], $expected[1]);
         $context = $this->getMockBuilder(RenderingContextFixture::class)
-            ->setMethods(array('getViewHelperResolver'))
+            ->setMethods(['getViewHelperResolver'])
             ->getMock();
         $context->expects($this->once())->method('getViewHelperResolver')->willReturn($resolver);
         LegacyNamespaceExpressionNode::evaluateExpression($context, $matches[0], $matches);
@@ -46,15 +46,15 @@ class LegacyNamespaceExpressionNodeTest extends UnitTestCase
      */
     public function getEvaluateExpressionTestValues()
     {
-        return array(
-            array(
-                array('foo', 'bar', 'baz'),
-                array('bar', 'baz')
-            ),
-            array(
-                array('test1', 'test2', 'test3'),
-                array('test2', 'test3')
-            )
-        );
+        return [
+            [
+                ['foo', 'bar', 'baz'],
+                ['bar', 'baz']
+            ],
+            [
+                ['test1', 'test2', 'test3'],
+                ['test2', 'test3']
+            ]
+        ];
     }
 }

@@ -39,7 +39,7 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('triggers', 'array', 'Defined triggers to be forwarded to client (e.g. refreshing backend widgets)', false, array());
+        $this->registerArgument('triggers', 'array', 'Defined triggers to be forwarded to client (e.g. refreshing backend widgets)', false, []);
     }
 
     /**

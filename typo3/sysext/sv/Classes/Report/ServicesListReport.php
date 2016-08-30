@@ -221,12 +221,12 @@ class ServicesListReport implements ReportInterface
      */
     protected function getInstalledServices()
     {
-        $filteredServices = array();
+        $filteredServices = [];
         foreach ($GLOBALS['T3_SERVICES'] as $serviceType => $serviceList) {
             // If the (first) key of the service list is not the same as the service type,
             // it's a "true" service type. Keep it and sort it.
             if (key($serviceList) !== $serviceType) {
-                uasort($serviceList, array($this, 'sortServices'));
+                uasort($serviceList, [$this, 'sortServices']);
                 $filteredServices[$serviceType] = $serviceList;
             }
         }

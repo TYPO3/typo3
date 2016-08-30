@@ -83,7 +83,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1363429303);
         $factory = new MenuContentObjectFactory;
-        $factory->registerMenuType(array(), 'foo');
+        $factory->registerMenuType([], 'foo');
     }
 
     /**
@@ -94,6 +94,6 @@ class MenuContentObjectFactoryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1363429303);
         $factory = new MenuContentObjectFactory;
-        $factory->registerMenuType('foo', array());
+        $factory->registerMenuType('foo', []);
     }
 }

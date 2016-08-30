@@ -25,21 +25,21 @@ class IsoCodeService
      * @param array $conf
      * @return array
      */
-    public function renderIsoCodeSelectDropdown(array $conf = array())
+    public function renderIsoCodeSelectDropdown(array $conf = [])
     {
         $languageService = $this->getLanguageService();
 
         $isoCodes = $this->getIsoCodes();
-        $languages = array();
+        $languages = [];
         foreach ($isoCodes as $isoCode) {
             $languages[$isoCode] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/db.xlf:sys_language.language_isocode.' . $isoCode);
         }
         // Sort languages by name
         asort($languages);
 
-        $items = array();
+        $items = [];
         foreach ($languages as $isoCode => $name) {
-            $items[] = array($name, $isoCode);
+            $items[] = [$name, $isoCode];
         }
 
         $conf['items'] = array_merge($conf['items'], $items);
@@ -55,7 +55,7 @@ class IsoCodeService
      */
     protected function getIsoCodes()
     {
-        $isoCodes = array(
+        $isoCodes = [
             'ab',
             'aa',
             'af',
@@ -240,7 +240,7 @@ class IsoCodeService
             'yo',
             'za',
             'zu',
-        );
+        ];
         return $isoCodes;
     }
 

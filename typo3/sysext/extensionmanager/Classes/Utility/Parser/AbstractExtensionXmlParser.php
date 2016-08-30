@@ -152,7 +152,7 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
      */
     public function getAll()
     {
-        $versionProperties = array();
+        $versionProperties = [];
         $versionProperties['extkey'] = $this->extensionKey;
         $versionProperties['version'] = $this->version;
         $versionProperties['alldownloadcounter'] = $this->extensionDownloadCounter;
@@ -403,7 +403,7 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
      */
     protected function convertDependencies($dependencies)
     {
-        $newDependencies = array();
+        $newDependencies = [];
         $dependenciesArray = unserialize($dependencies);
         if (is_array($dependenciesArray)) {
             foreach ($dependenciesArray as $version) {

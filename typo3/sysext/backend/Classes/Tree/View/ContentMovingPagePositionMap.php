@@ -41,7 +41,7 @@ class ContentMovingPagePositionMap extends PagePositionMap
      */
     public function linkPageTitle($str, $rec)
     {
-        $url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid));
+        $url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid]);
         return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
     }
 

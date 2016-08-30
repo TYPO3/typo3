@@ -31,7 +31,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
      *
      * @var array
      */
-    protected $fields = array('notificationEmail');
+    protected $fields = ['notificationEmail'];
 
     /**
      * Field prefix.
@@ -58,13 +58,13 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
         $fieldId = 'task_' . $fieldName;
         $fieldHtml = '<textarea class="form-control" ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
 
-        $additionalFields = array();
-        $additionalFields[$fieldId] = array(
+        $additionalFields = [];
+        $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails',
             'cshKey' => '',
             'cshLabel' => $fieldId
-        );
+        ];
 
         return $additionalFields;
     }

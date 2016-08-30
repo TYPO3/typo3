@@ -53,9 +53,9 @@ class EmailViewHelper extends AbstractViewHelper
         $email = $this->arguments['email'];
 
         return static::renderStatic(
-            array(
+            [
                 'email' => $email,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

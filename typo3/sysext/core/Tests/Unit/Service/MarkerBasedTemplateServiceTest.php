@@ -39,21 +39,21 @@ class MarkerBasedTemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSubpartDataProvider()
     {
-        return array(
-            'No start marker' => array(
+        return [
+            'No start marker' => [
                 '<body>text</body>',
                 '###SUBPART###',
                 ''
-            ),
-            'No stop marker' => array(
+            ],
+            'No stop marker' => [
                 '<body>
 <!-- ###SUBPART### Start -->
 text
 </body>',
                 '###SUBPART###',
                 ''
-            ),
-            'Start and stop marker in HTML comment' => array(
+            ],
+            'Start and stop marker in HTML comment' => [
                 '<body>
 <!-- ###SUBPART### Start -->
 text
@@ -63,8 +63,8 @@ text
                 '
 text
 '
-            ),
-            'Stop marker in HTML comment' => array(
+            ],
+            'Stop marker in HTML comment' => [
                 '<body>
 ###SUBPART###
 text
@@ -74,8 +74,8 @@ text
                 '
 text
 '
-            ),
-            'Start marker in HTML comment' => array(
+            ],
+            'Start marker in HTML comment' => [
                 '<body>
 <!-- ###SUBPART### Start -->
 text
@@ -85,8 +85,8 @@ text
                 '
 text
 '
-            ),
-            'Start and stop marker direct' => array(
+            ],
+            'Start and stop marker direct' => [
                 '<body>
 ###SUBPART###
 text
@@ -96,8 +96,8 @@ text
                 '
 text
 '
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -119,16 +119,16 @@ text
      */
     public function substituteSubpartDataProvider()
     {
-        return array(
-            'No start marker' => array(
+        return [
+            'No start marker' => [
                 '<body>text</body>',
                 '###SUBPART###',
                 'hello',
                 false,
                 false,
                 '<body>text</body>'
-            ),
-            'No stop marker' => array(
+            ],
+            'No stop marker' => [
                 '<body>
 <!-- ###SUBPART### Start -->
 text
@@ -141,8 +141,8 @@ text
 <!-- ###SUBPART### Start -->
 text
 </body>',
-            ),
-            'Start and stop marker in HTML comment' => array(
+            ],
+            'Start and stop marker in HTML comment' => [
                 '<body>
 <!-- ###SUBPART### Start -->
 text
@@ -155,8 +155,8 @@ text
                 '<body>
 hello
 </body>'
-            ),
-            'Recursive subpart' => array(
+            ],
+            'Recursive subpart' => [
                 '<body>
 <!-- ###SUBPART### Start -->text1<!-- ###SUBPART### End -->
 <!-- ###SUBPART### Start -->text2<!-- ###SUBPART### End -->
@@ -169,8 +169,8 @@ hello
 hello
 hello
 </body>'
-            ),
-            'Keep HTML marker' => array(
+            ],
+            'Keep HTML marker' => [
                 '<body>
 <!-- ###SUBPART### Start -->text<!-- ###SUBPART### End -->
 </body>',
@@ -181,8 +181,8 @@ hello
                 '<body>
 <!-- ###SUBPART### Start -->hello<!-- ###SUBPART### End -->
 </body>'
-            ),
-            'Keep HTML begin marker' => array(
+            ],
+            'Keep HTML begin marker' => [
                 '<body>
 <!-- ###SUBPART### Start -->text###SUBPART###
 </body>',
@@ -193,8 +193,8 @@ hello
                 '<body>
 <!-- ###SUBPART### Start -->hello###SUBPART###
 </body>'
-            ),
-            'Keep HTML end marker' => array(
+            ],
+            'Keep HTML end marker' => [
                 '<body>
 ###SUBPART###text<!-- ###SUBPART### End -->
 </body>',
@@ -205,8 +205,8 @@ hello
                 '<body>
 ###SUBPART###hello<!-- ###SUBPART### End -->
 </body>'
-            ),
-            'Keep plain marker' => array(
+            ],
+            'Keep plain marker' => [
                 '<body>
 ###SUBPART###text###SUBPART###
 </body>',
@@ -217,20 +217,20 @@ hello
                 '<body>
 ###SUBPART###hello###SUBPART###
 </body>'
-            ),
-            'Wrap around' => array(
+            ],
+            'Wrap around' => [
                 '<body>
 ###SUBPART###text###SUBPART###
 </body>',
                 '###SUBPART###',
-                array('before-', '-after'),
+                ['before-', '-after'],
                 false,
                 true,
                 '<body>
 ###SUBPART###before-text-after###SUBPART###
 </body>'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -253,62 +253,62 @@ hello
      */
     public function substituteMarkerArrayDataProvider()
     {
-        return array(
-            'Upper case marker' => array(
+        return [
+            'Upper case marker' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
-                array('###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'),
+                ['###MARKER1###' => 'marker 1',
+                    '###MARKER2###' => 'marker 2'],
                 '',
                 false,
                 false,
                 'This is marker 1 and this is marker 2'
-            ),
-            'Lower case marker' => array(
+            ],
+            'Lower case marker' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
-                array('###marker1###' => 'marker 1',
-                    '###marker2###' => 'marker 2'),
+                ['###marker1###' => 'marker 1',
+                    '###marker2###' => 'marker 2'],
                 '',
                 true,
                 false,
                 'This is marker 1 and this is marker 2'
-            ),
-            'Upper case marker without hash mark' => array(
+            ],
+            'Upper case marker without hash mark' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
-                array('MARKER1' => 'marker 1',
-                    'MARKER2' => 'marker 2'),
+                ['MARKER1' => 'marker 1',
+                    'MARKER2' => 'marker 2'],
                 '###|###',
                 false,
                 false,
                 'This is marker 1 and this is marker 2'
-            ),
-            'Upper case marker with another hash mark' => array(
+            ],
+            'Upper case marker with another hash mark' => [
                 'This is *MARKER1* and this is *MARKER2*',
-                array('MARKER1' => 'marker 1',
-                    'MARKER2' => 'marker 2'),
+                ['MARKER1' => 'marker 1',
+                    'MARKER2' => 'marker 2'],
                 '*|*',
                 false,
                 false,
                 'This is marker 1 and this is marker 2'
-            ),
-            'Upper case marker with unused marker' => array(
+            ],
+            'Upper case marker with unused marker' => [
                 'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
-                array('###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'),
+                ['###MARKER1###' => 'marker 1',
+                    '###MARKER2###' => 'marker 2'],
                 '',
                 false,
                 false,
                 'This is marker 1 and this is marker 2 ###UNUSED###'
-            ),
-            'Upper case marker with unused marker deleted' => array(
+            ],
+            'Upper case marker with unused marker deleted' => [
                 'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
-                array('###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'),
+                ['###MARKER1###' => 'marker 1',
+                    '###MARKER2###' => 'marker 2'],
                 '',
                 false,
                 true,
                 'This is marker 1 and this is marker 2 '
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -331,20 +331,20 @@ hello
      */
     public function substituteMarkerDataProvider()
     {
-        return array(
-            'Single marker' => array(
+        return [
+            'Single marker' => [
                 'This is a ###SAMPLE### text',
                 '###SAMPLE###',
                 'simple',
                 'This is a simple text'
-            ),
-            'Double marker' => array(
+            ],
+            'Double marker' => [
                 'This is a ###SAMPLE### text with a ###SAMPLE### content',
                 '###SAMPLE###',
                 'simple',
                 'This is a simple text with a simple content'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -366,20 +366,20 @@ hello
      */
     public function substituteSubpartArrayDataProvider()
     {
-        return array(
-            'Substitute multiple subparts at once with plain marker' => array(
+        return [
+            'Substitute multiple subparts at once with plain marker' => [
                 '<body>
 ###SUBPART1###text1###SUBPART1###
 ###SUBPART2###text2###SUBPART2###
 </body>',
-                array('###SUBPART1###' => 'hello',
-                    '###SUBPART2###' => 'world'),
+                ['###SUBPART1###' => 'hello',
+                    '###SUBPART2###' => 'world'],
                 '<body>
 hello
 world
 </body>'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -425,125 +425,125 @@ Value 3.2
 
 ';
 
-        return array(
-            'Single marker' => array(
+        return [
+            'Single marker' => [
                 '###SINGLEMARKER###',
-                array(
+                [
                     '###SINGLEMARKER###' => 'Value 1'
-                ),
+                ],
                 '',
                 false,
                 false,
                 'Value 1'
-            ),
-            'Subpart marker' => array(
+            ],
+            'Subpart marker' => [
                 $template,
-                array(
+                [
                     '###SINGLEMARKER1###' => 'Value 1',
-                    '###FOO###' => array(
-                        array(
-                            '###BAR###' => array(
-                                array(
+                    '###FOO###' => [
+                        [
+                            '###BAR###' => [
+                                [
                                     '###SINGLEMARKER2###' => 'Value 2.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     '###SINGLEMARKER2###' => 'Value 2.2'
-                                )
-                            ),
-                            '###FOOTER###' => array(
-                                array(
+                                ]
+                            ],
+                            '###FOOTER###' => [
+                                [
                                     '###SINGLEMARKER3###' => 'Value 3.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     '###SINGLEMARKER3###' => 'Value 3.2'
-                                )
-                            )
-                        )
-                    )
-                ),
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 '',
                 false,
                 false,
                 $expected
-            ),
-            'Subpart marker with wrap' => array(
+            ],
+            'Subpart marker with wrap' => [
                 $template,
-                array(
+                [
                     'SINGLEMARKER1' => 'Value 1',
-                    'FOO' => array(
-                        array(
-                            'BAR' => array(
-                                array(
+                    'FOO' => [
+                        [
+                            'BAR' => [
+                                [
                                     'SINGLEMARKER2' => 'Value 2.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     'SINGLEMARKER2' => 'Value 2.2'
-                                )
-                            ),
-                            'FOOTER' => array(
-                                array(
+                                ]
+                            ],
+                            'FOOTER' => [
+                                [
                                     'SINGLEMARKER3' => 'Value 3.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     'SINGLEMARKER3' => 'Value 3.2'
-                                )
-                            )
-                        )
-                    )
-                ),
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 '###|###',
                 false,
                 false,
                 $expected
-            ),
-            'Subpart marker with lower marker array keys' => array(
+            ],
+            'Subpart marker with lower marker array keys' => [
                 $template,
-                array(
+                [
                     '###singlemarker1###' => 'Value 1',
-                    '###foo###' => array(
-                        array(
-                            '###bar###' => array(
-                                array(
+                    '###foo###' => [
+                        [
+                            '###bar###' => [
+                                [
                                     '###singlemarker2###' => 'Value 2.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     '###singlemarker2###' => 'Value 2.2'
-                                )
-                            ),
-                            '###footer###' => array(
-                                array(
+                                ]
+                            ],
+                            '###footer###' => [
+                                [
                                     '###singlemarker3###' => 'Value 3.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     '###singlemarker3###' => 'Value 3.2'
-                                )
-                            )
-                        )
-                    )
-                ),
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 '',
                 true,
                 false,
                 $expected
-            ),
-            'Subpart marker with unused markers' => array(
+            ],
+            'Subpart marker with unused markers' => [
                 $template,
-                array(
-                    '###FOO###' => array(
-                        array(
-                            '###BAR###' => array(
-                                array(
+                [
+                    '###FOO###' => [
+                        [
+                            '###BAR###' => [
+                                [
                                     '###SINGLEMARKER2###' => 'Value 2.1'
-                                )
-                            ),
-                            '###FOOTER###' => array(
-                                array(
+                                ]
+                            ],
+                            '###FOOTER###' => [
+                                [
                                     '###SINGLEMARKER3###' => 'Value 3.1'
-                                )
-                            )
-                        )
-                    )
-                ),
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 '',
                 false,
                 true,
@@ -556,25 +556,25 @@ Value 2.1
 Value 3.1
 
 '
-            ),
-            'Subpart marker with empty subpart' => array(
+            ],
+            'Subpart marker with empty subpart' => [
                 $template,
-                array(
+                [
                     '###SINGLEMARKER1###' => 'Value 1',
-                    '###FOO###' => array(
-                        array(
-                            '###BAR###' => array(
-                                array(
+                    '###FOO###' => [
+                        [
+                            '###BAR###' => [
+                                [
                                     '###SINGLEMARKER2###' => 'Value 2.1'
-                                ),
-                                array(
+                                ],
+                                [
                                     '###SINGLEMARKER2###' => 'Value 2.2'
-                                )
-                            ),
-                            '###FOOTER###' => array()
-                        )
-                    )
-                ),
+                                ]
+                            ],
+                            '###FOOTER###' => []
+                        ]
+                    ]
+                ],
                 '',
                 false,
                 false,
@@ -587,8 +587,8 @@ Value 2.2
 
 
 '
-            )
-        );
+            ]
+        ];
     }
 
     /**

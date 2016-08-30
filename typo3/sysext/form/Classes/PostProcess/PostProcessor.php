@@ -78,7 +78,7 @@ class PostProcessor extends AbstractPostProcessor
                 }
                 $className = false;
                 $processorName = $this->postProcessorTypoScript[$key];
-                $processorArguments = array();
+                $processorArguments = [];
                 if (isset($this->postProcessorTypoScript[$key . '.'])) {
                     $processorArguments = $this->postProcessorTypoScript[$key . '.'];
                 }

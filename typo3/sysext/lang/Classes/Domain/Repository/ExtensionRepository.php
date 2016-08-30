@@ -37,7 +37,7 @@ class ExtensionRepository
     /**
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager

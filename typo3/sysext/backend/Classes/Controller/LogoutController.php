@@ -43,7 +43,7 @@ class LogoutController
         if (empty($redirectUrl)) {
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('login', array(), $uriBuilder::ABSOLUTE_URL);
+            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('login', [], $uriBuilder::ABSOLUTE_URL);
         }
         return $response
             ->withStatus(303)
@@ -61,7 +61,7 @@ class LogoutController
             return;
         }
         // Logout written to log
-        $this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($this->getBackendUser()->user['username']));
+        $this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', [$this->getBackendUser()->user['username']]);
         /** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
         $backendFormProtection = FormProtectionFactory::get();
         $backendFormProtection->removeSessionTokenFromRegistry();

@@ -40,9 +40,9 @@ class RemoveFormat extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'removeformat' => 'RemoveFormat'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

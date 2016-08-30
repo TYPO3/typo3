@@ -119,7 +119,7 @@ class SelectImageController extends AbstractLinkBrowserController
             $this->contentTypo3Language = GeneralUtility::_GP('contentTypo3Language');
             $this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
         }
-        $pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language));
+        $pArr[1] = implode(':', [$this->editorNo, $this->contentTypo3Language]);
         $pArr[2] = $this->RTEtsConfigParams;
         $pArr[3] = $this->displayedLinkHandlerId === 'plain'
             ? self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS
@@ -287,7 +287,7 @@ class SelectImageController extends AbstractLinkBrowserController
         $uidList = GeneralUtility::_GP('uidList');
         // handle ajax request for
         $uids = explode('|', $uidList);
-        $tags = array();
+        $tags = [];
         foreach ($uids as $uid) {
             $fileObject = ResourceFactory::getInstance()->getFileObject((int)$uid);
             // Get default values for alt and title attributes from file properties
@@ -298,10 +298,10 @@ class SelectImageController extends AbstractLinkBrowserController
                 $magicImageService = GeneralUtility::makeInstance(MagicImageService::class);
                 $magicImageService->setMagicImageMaximumDimensions($this->RTEProperties['default.']);
                 // Create the magic image
-                $imageConfiguration = array(
+                $imageConfiguration = [
                     'width' => GeneralUtility::_GP('cWidth'),
                     'height' => GeneralUtility::_GP('cHeight')
-                );
+                ];
                 $fileObject = $magicImageService->createMagicImage($fileObject, $imageConfiguration);
                 $width = $fileObject->getProperty('width');
                 $height = $fileObject->getProperty('height');

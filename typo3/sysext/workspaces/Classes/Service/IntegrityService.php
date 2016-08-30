@@ -49,12 +49,12 @@ class IntegrityService
     /**
      * @var array
      */
-    protected $statusRepresentation = array(
+    protected $statusRepresentation = [
         self::STATUS_Succes => 'success',
         self::STATUS_Info => 'info',
         self::STATUS_Warning => 'warning',
         self::STATUS_Error => 'error'
-    );
+    ];
 
     /**
      * @var \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord[]
@@ -75,7 +75,7 @@ class IntegrityService
      *
      * @var array
      */
-    protected $issues = array();
+    protected $issues = [];
 
     /**
      * Sets the affected elements.
@@ -196,7 +196,7 @@ class IntegrityService
         } elseif (isset($this->issues[$identifier])) {
             return $this->issues[$identifier];
         }
-        return array();
+        return [];
     }
 
     /**
@@ -208,7 +208,7 @@ class IntegrityService
      */
     public function getIssueMessages($identifier = null, $asString = false)
     {
-        $messages = array();
+        $messages = [];
         if ($identifier === null) {
             foreach ($this->issues as $idenfieriferIssues) {
                 foreach ($idenfieriferIssues as $issue) {
@@ -237,11 +237,11 @@ class IntegrityService
     protected function addIssue($identifier, $status, $message)
     {
         if (!isset($this->issues[$identifier])) {
-            $this->issues[$identifier] = array();
+            $this->issues[$identifier] = [];
         }
-        $this->issues[$identifier][] = array(
+        $this->issues[$identifier][] = [
             'status' => $status,
             'message' => $message
-        );
+        ];
     }
 }

@@ -110,7 +110,7 @@ class FormWizardElement extends AbstractFormElement
         $itemName = $parameterArray['itemFormElName'];
         // Resolving script filename and setting URL.
 
-        $params = array();
+        $params = [];
         $params['fieldConfig'] = $parameterArray['fieldConf'];
         $params['table'] = $table;
         $params['uid'] = $row['uid'];
@@ -121,7 +121,7 @@ class FormWizardElement extends AbstractFormElement
         $params['itemName'] = $itemName;
         $params['hmac'] = GeneralUtility::hmac($params['formName'] . $params['itemName'], 'wizard_js');
 
-        return GeneralUtility::implodeArrayForUrl('', array('P' => $params));
+        return GeneralUtility::implodeArrayForUrl('', ['P' => $params]);
     }
 
     /**
@@ -161,9 +161,9 @@ class FormWizardElement extends AbstractFormElement
      */
     protected function resultAddWizardCss()
     {
-        $cssFiles = array(
+        $cssFiles = [
             'form.css'
-        );
+        ];
         $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/Css/';
         // Load the wizards css
         foreach ($cssFiles as $cssFile) {
@@ -201,12 +201,12 @@ class FormWizardElement extends AbstractFormElement
         $this->resultArray['additionalInlineLanguageLabelFiles'] += $this->getLocalization();
         $settings = $this->getPlainPageWizardModTsConfigSettingsProperties();
         $settingsCommand = $this->resultAddWizardSettingsJson($settings);
-        $this->resultArray['requireJsModules'][] = array(
+        $this->resultArray['requireJsModules'][] = [
             'TYPO3/CMS/Form/Wizard' => "function(){\n"
                 //. "\t" . 'console.log(this, arguments);' . "\n"
                 . "\t" . $settingsCommand . "\n"
                 . '}'
-        );
+        ];
         $attributes = [];
         $attributes['id'] = StringUtility::getUniqueId('formengine-form-wizard-');
         /**

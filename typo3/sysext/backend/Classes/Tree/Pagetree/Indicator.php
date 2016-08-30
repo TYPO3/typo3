@@ -24,7 +24,7 @@ class Indicator
      *
      * @var array
      */
-    protected $indicatorProviders = array();
+    protected $indicatorProviders = [];
 
     /**
      * Constructor for class tx_reports_report_Status
@@ -59,7 +59,7 @@ class Indicator
      */
     public function getAllIndicators()
     {
-        $indicators = array();
+        $indicators = [];
         foreach ($this->indicatorProviders as $indicatorProvider) {
             $indicator = $indicatorProvider->getIndicator();
             if ($indicator) {

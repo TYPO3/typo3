@@ -33,9 +33,9 @@ class FalStatus implements StatusProviderInterface
      */
     public function getStatus()
     {
-        $statuses = array(
+        $statuses = [
             'MissingFiles' => $this->getMissingFilesStatus(),
-        );
+        ];
         return $statuses;
     }
 
@@ -55,7 +55,7 @@ class FalStatus implements StatusProviderInterface
         /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storageObjects = $storageRepository->findAll();
-        $storages = array();
+        $storages = [];
 
         /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject */
         foreach ($storageObjects as $storageObject) {

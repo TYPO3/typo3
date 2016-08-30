@@ -26,7 +26,7 @@ class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->flashMessageService = $this->getAccessibleMock(\TYPO3\CMS\Core\Messaging\FlashMessageService::class, array('dummy'));
+        $this->flashMessageService = $this->getAccessibleMock(\TYPO3\CMS\Core\Messaging\FlashMessageService::class, ['dummy']);
     }
 
     /**
@@ -34,7 +34,7 @@ class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function flashMessageServiceInitiallyIsEmpty()
     {
-        $this->assertSame(array(), $this->flashMessageService->_get('flashMessageQueues'));
+        $this->assertSame([], $this->flashMessageService->_get('flashMessageQueues'));
     }
 
     /**

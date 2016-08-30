@@ -95,11 +95,11 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
         $shortName = $this->getUniqueId();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
-            $shortName => array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
+            $shortName => [
                 'class' => $className
-            )
-        );
+            ]
+        ];
         $this->initializeSubject();
         $this->assertEquals($className, $this->subject->getDriverClass($shortName));
     }
@@ -111,11 +111,11 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
         $shortName = $this->getUniqueId();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
-            $shortName => array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
+            $shortName => [
                 'class' => $className
-            )
-        );
+            ]
+        ];
         $this->initializeSubject();
         $this->assertTrue($this->subject->driverExists($shortName));
         $this->assertFalse($this->subject->driverExists($this->getUniqueId()));
@@ -126,8 +126,8 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function driverExistsReturnsFalseIfDriverDoesNotExist()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
+        ];
         $this->initializeSubject();
         $this->assertFalse($this->subject->driverExists($this->getUniqueId()));
     }

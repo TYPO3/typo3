@@ -42,7 +42,7 @@ class t3lib_object_tests_amixed_array
      * @param \t3lib_object_tests_c $c
      * @param array $myvalue
      */
-    public function __construct(\t3lib_object_tests_b $b, \t3lib_object_tests_c $c, array $myvalue = array('some' => 'default'))
+    public function __construct(\t3lib_object_tests_b $b, \t3lib_object_tests_c $c, array $myvalue = ['some' => 'default'])
     {
         $this->b = $b;
         $this->c = $c;
@@ -90,7 +90,7 @@ class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\Singl
      * @param \t3lib_object_tests_c $c
      * @param array $someDefaultParameter
      */
-    public function __construct(\t3lib_object_tests_b $b, \t3lib_object_tests_c $c, $someDefaultParameter = array('some' => 'default'))
+    public function __construct(\t3lib_object_tests_b $b, \t3lib_object_tests_c $c, $someDefaultParameter = ['some' => 'default'])
     {
         $this->b = $b;
         $this->c = $c;

@@ -48,12 +48,12 @@ class WarningMessagePostProcessor
                 // the admin should take a look at the detailed status report
                 $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
                 $reportModuleIdentifier = 'system_ReportsTxreportsm1';
-                $reportModuleParameters = array(
+                $reportModuleParameters = [
                     'tx_reports_system_reportstxreportsm1[extension]=tx_reports',
                     'tx_reports_system_reportstxreportsm1[report]=status',
                     'tx_reports_system_reportstxreportsm1[action]=detail',
                     'tx_reports_system_reportstxreportsm1[controller]=Report',
-                );
+                ];
                 $warningMessages['tx_reports_status_notification'] = sprintf(
                     $this->getLanguageService()->getLL('status_problemNotification'),
                     '<a href="javascript:top.goToModule(' . GeneralUtility::quoteJSvalue($reportModuleIdentifier) . ', 1, ' . GeneralUtility::quoteJSvalue('&' . implode('&', $reportModuleParameters)) . ');">',

@@ -128,7 +128,7 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
             return null;
         }
 
-        $update = array();
+        $update = [];
         $update = $this->mapSettings($workspaceRecord, $update, 'edit', 'edit');
         $update = $this->mapSettings($workspaceRecord, $update, 'publish', 'publish');
         $update = $this->mapSettings($workspaceRecord, $update, 'publish', 'execute');
@@ -147,7 +147,7 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
             return null;
         }
 
-        $update = array();
+        $update = [];
         $update = $this->mapSettings($stageRecord, $update);
         return $update;
     }

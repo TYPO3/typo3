@@ -31,5 +31,5 @@ interface ExceptionHandlerInterface
      * @param array $contentObjectConfiguration
      * @return string
      */
-    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = array());
+    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = []);
 }

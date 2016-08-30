@@ -37,7 +37,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    private $tables = array('sys_category', 'sys_category_record_mm');
+    private $tables = ['sys_category', 'sys_category_record_mm'];
 
     /**
      * @var int
@@ -47,7 +47,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    private $collectionRecord = array();
+    private $collectionRecord = [];
 
     /**
      * @var int
@@ -63,13 +63,13 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         parent::setUp();
         $this->subject = GeneralUtility::makeInstance(CategoryCollection::class, $this->tableName);
-        $this->collectionRecord = array(
+        $this->collectionRecord = [
             'uid' => 0,
             'title' => $this->getUniqueId('title'),
             'description' => $this->getUniqueId('description'),
             'table_name' => $this->tableName,
-        );
-        $GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
+        ];
+        $GLOBALS['TCA'][$this->tableName] = ['ctrl' => []];
         // prepare environment
         $this->createDummyTable();
         $this->populateDummyTable();
@@ -181,12 +181,12 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $collection->rewind();
         $this->assertEquals($record, $collection->current());
         // Add a new record
-        $fakeRecord = array(
+        $fakeRecord = [
             'uid' => $this->numberOfRecords + 1,
             'pid' => 0,
             'title' => $this->getUniqueId('title'),
             'categories' => 0
-        );
+        ];
         // Check the number of records
         $collection->add($fakeRecord);
         $this->assertEquals($this->numberOfRecords + 1, $collection->count());
@@ -200,12 +200,12 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         $collection = CategoryCollection::load($this->categoryUid, true, $this->tableName);
         // Add a new record
-        $fakeRecord = array(
+        $fakeRecord = [
             'uid' => $this->numberOfRecords + 1,
             'pid' => 0,
             'title' => $this->getUniqueId('title'),
             'categories' => 0
-        );
+        ];
         // Check the number of records
         $collection->add($fakeRecord);
         $this->assertEquals($this->numberOfRecords + 1, $collection->count());
@@ -230,9 +230,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation()
     {
         // Remove one relation
-        $fakeName = array(
+        $fakeName = [
             'tablenames' => $this->getUniqueId('name')
-        );
+        ];
         $this->getConnectionPool()
             ->getConnectionForTable('sys_category_record_mm')
             ->update('sys_category_record_mm', $fakeName, ['uid_foreign' => 1]);
@@ -252,9 +252,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     private function populateDummyTable()
     {
         for ($index = 1; $index <= $this->numberOfRecords; $index++) {
-            $values = array(
+            $values = [
                 'title' => $this->getUniqueId('title')
-            );
+            ];
             $this->getConnectionPool()
                 ->getConnectionForTable($this->tableName)
                 ->insert($this->tableName, $values);
@@ -269,12 +269,12 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     private function makeRelationBetweenCategoryAndDummyTable()
     {
         for ($index = 1; $index <= $this->numberOfRecords; $index++) {
-            $values = array(
+            $values = [
                 'uid_local' => $this->categoryUid,
                 'uid_foreign' => $index,
                 'tablenames' => $this->tableName,
                 'fieldname' => 'categories'
-            );
+            ];
             $this->getConnectionPool()
                 ->getConnectionForTable('sys_category_record_mm')
                 ->insert('sys_category_record_mm', $values);
@@ -351,12 +351,12 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             $connection->query($query);
         }
 
-        $values = array(
+        $values = [
             'title' => $this->getUniqueId('title'),
             'l10n_diffsource' => '',
             'description' => '',
             'is_dummy_record' => 1
-        );
+        ];
 
         $connection->insert('sys_category', $values);
         $this->categoryUid = $connection->lastInsertId();

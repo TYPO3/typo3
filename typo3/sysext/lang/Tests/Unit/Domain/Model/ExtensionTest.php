@@ -194,7 +194,7 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getUpdateResultInitiallyReturnsEmptyArray()
     {
         $this->assertSame(
-            array(),
+            [],
             $this->subject->getUpdateResult()
         );
     }
@@ -204,12 +204,12 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setUpdateResultSetsUpdateResult()
     {
-        $updateResult = array(
-            'nl' => array(
+        $updateResult = [
+            'nl' => [
                 'icon' => '<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info">&nbsp;</span>',
                 'message' => 'translation_n_a'
-            ),
-        );
+            ],
+        ];
 
         $this->subject->setUpdateResult($updateResult);
 

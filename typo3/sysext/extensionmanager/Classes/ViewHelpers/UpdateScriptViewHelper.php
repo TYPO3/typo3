@@ -66,7 +66,7 @@ class UpdateScriptViewHelper extends Link\ActionViewHelper
             $action = 'show';
             $uri = $uriBuilder->reset()->uriFor(
                 $action,
-                array('extensionKey' => $extensionKey),
+                ['extensionKey' => $extensionKey],
                 'UpdateScript'
             );
             $this->tag->addAttribute('href', $uri);

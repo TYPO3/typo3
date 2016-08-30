@@ -48,29 +48,29 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $templateService = $this->getMockBuilder(TemplateService::class)
-            ->setMethods(array('getFileName', 'linkData'))
+            ->setMethods(['getFileName', 'linkData'])
             ->getMock();
         $this->tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->tsfe->tmpl = $templateService;
-        $this->tsfe->config = array();
-        $this->tsfe->page = array();
+        $this->tsfe->config = [];
+        $this->tsfe->page = [];
         $sysPageMock = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(array('getRawRecord'))
+            ->setMethods(['getRawRecord'])
             ->getMock();
         $this->tsfe->sys_page = $sysPageMock;
         $GLOBALS['TSFE'] = $this->tsfe;
 
         $contentObjectRenderer = new ContentObjectRenderer();
-        $contentObjectRenderer->setContentObjectClassMap(array(
+        $contentObjectRenderer->setContentObjectClassMap([
             'FILES' => FilesContentObject::class,
             'TEXT' => TextContentObject::class,
-        ));
+        ]);
         $this->subject = $this->getMockBuilder(FilesContentObject::class)
-            ->setMethods(array('getFileCollector'))
-            ->setConstructorArgs(array($contentObjectRenderer))
+            ->setMethods(['getFileCollector'])
+            ->setConstructorArgs([$contentObjectRenderer])
             ->getMock();
     }
 
@@ -79,138 +79,138 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForFileReferencesDataProvider()
     {
-        return array(
-            'One file reference' => array(
-                array(
+        return [
+            'One file reference' => [
+                [
                     'references' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p>',
-            ),
-            'One file reference with begin higher than allowed' => array(
-                array(
+            ],
+            'One file reference with begin higher than allowed' => [
+                [
                     'references' => '1',
                     'begin' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'One file reference with maxItems higher than allowed' => array(
-                array(
+            ],
+            'One file reference with maxItems higher than allowed' => [
+                [
                     'references' => '1',
                     'maxItems' => '2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p>',
-            ),
-            'Multiple file references' => array(
-                array(
+            ],
+            'Multiple file references' => [
+                [
                     'references' => '1,2,3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'Multiple file references with begin' => array(
-                array(
+            ],
+            'Multiple file references with begin' => [
+                [
                     'references' => '1,2,3',
                     'begin' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p><p>File 3</p>',
-            ),
-            'Multiple file references with negative begin' => array(
-                array(
+            ],
+            'Multiple file references with negative begin' => [
+                [
                     'references' => '1,2,3',
                     'begin' => '-1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'Multiple file references with maxItems' => array(
-                array(
+            ],
+            'Multiple file references with maxItems' => [
+                [
                     'references' => '1,2,3',
                     'maxItems' => '2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p>',
-            ),
-            'Multiple file references with negative maxItems' => array(
-                array(
+            ],
+            'Multiple file references with negative maxItems' => [
+                [
                     'references' => '1,2,3',
                     'maxItems' => '-2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'Multiple file references with begin and maxItems' => array(
-                array(
+            ],
+            'Multiple file references with begin and maxItems' => [
+                [
                     'references' => '1,2,3',
                     'begin' => '1',
                     'maxItems' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p>',
-            ),
-            'Multiple file references unsorted' => array(
-                array(
+            ],
+            'Multiple file references unsorted' => [
+                [
                     'references' => '1,3,2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 3</p><p>File 2</p>',
-            ),
-            'Multiple file references sorted by name' => array(
-                array(
+            ],
+            'Multiple file references sorted by name' => [
+                [
                     'references' => '3,1,2',
                     'sorting' => 'name',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -219,7 +219,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForFileReferences($configuration, $expected)
     {
-        $fileReferenceMap = array();
+        $fileReferenceMap = [];
         for ($i = 1; $i < 4; $i++) {
             $fileReference = $this->createMock(FileReference::class);
             $fileReference->expects($this->any())
@@ -234,7 +234,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ->with('name')
                 ->will($this->returnValue('File ' . $i));
 
-            $fileReferenceMap[] = array($i, $fileReference);
+            $fileReferenceMap[] = [$i, $fileReference];
         }
 
         $fileRepository = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\FileRepository::class)->getMock();
@@ -242,7 +242,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('findFileReferenceByUid')
             ->will($this->returnValueMap($fileReferenceMap));
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(array('getFileRepository'))
+            ->setMethods(['getFileRepository'])
             ->getMock();
         $fileCollector->expects($this->any())
             ->method('getFileRepository')
@@ -260,138 +260,138 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForFilesDataProvider()
     {
-        return array(
-            'One file' => array(
-                array(
+        return [
+            'One file' => [
+                [
                     'files' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p>',
-            ),
-            'One file with begin higher than allowed' => array(
-                array(
+            ],
+            'One file with begin higher than allowed' => [
+                [
                     'files' => '1',
                     'begin' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'One file with maxItems higher than allowed' => array(
-                array(
+            ],
+            'One file with maxItems higher than allowed' => [
+                [
                     'files' => '1',
                     'maxItems' => '2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p>',
-            ),
-            'Multiple files' => array(
-                array(
+            ],
+            'Multiple files' => [
+                [
                     'files' => '1,2,3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'Multiple files with begin' => array(
-                array(
+            ],
+            'Multiple files with begin' => [
+                [
                     'files' => '1,2,3',
                     'begin' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p><p>File 3</p>',
-            ),
-            'Multiple files with negative begin' => array(
-                array(
+            ],
+            'Multiple files with negative begin' => [
+                [
                     'files' => '1,2,3',
                     'begin' => '-1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'Multiple files with maxItems' => array(
-                array(
+            ],
+            'Multiple files with maxItems' => [
+                [
                     'files' => '1,2,3',
                     'maxItems' => '2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p>',
-            ),
-            'Multiple files with negative maxItems' => array(
-                array(
+            ],
+            'Multiple files with negative maxItems' => [
+                [
                     'files' => '1,2,3',
                     'maxItems' => '-2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'Multiple files with begin and maxItems' => array(
-                array(
+            ],
+            'Multiple files with begin and maxItems' => [
+                [
                     'files' => '1,2,3',
                     'begin' => '1',
                     'maxItems' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p>',
-            ),
-            'Multiple files unsorted' => array(
-                array(
+            ],
+            'Multiple files unsorted' => [
+                [
                     'files' => '1,3,2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 3</p><p>File 2</p>',
-            ),
-            'Multiple files sorted by name' => array(
-                array(
+            ],
+            'Multiple files sorted by name' => [
+                [
                     'files' => '3,1,2',
                     'sorting' => 'name',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -400,7 +400,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForFiles($configuration, $expected)
     {
-        $fileMap = array();
+        $fileMap = [];
         for ($i = 1; $i < 4; $i++) {
             $file = $this->createMock(File::class);
             $file->expects($this->any())
@@ -415,7 +415,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ->with('name')
                 ->will($this->returnValue('File ' . $i));
 
-            $fileMap[] = array($i, array(), $file);
+            $fileMap[] = [$i, [], $file];
         }
 
         $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->getMock();
@@ -423,7 +423,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getFileObject')
             ->will($this->returnValueMap($fileMap));
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(array('getResourceFactory'))
+            ->setMethods(['getResourceFactory'])
             ->getMock();
         $fileCollector->expects($this->any())
             ->method('getResourceFactory')
@@ -441,175 +441,175 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForCollectionsDataProvider()
     {
-        return array(
-            'One collection' => array(
-                array(
+        return [
+            'One collection' => [
+                [
                     'collections' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'One collection with begin' => array(
-                array(
+            ],
+            'One collection with begin' => [
+                [
                     'collections' => '1',
                     'begin' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p><p>File 3</p>',
-            ),
-            'One collection with begin higher than allowed' => array(
-                array(
+            ],
+            'One collection with begin higher than allowed' => [
+                [
                     'collections' => '1',
                     'begin' => '3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'One collection with maxItems' => array(
-                array(
+            ],
+            'One collection with maxItems' => [
+                [
                     'collections' => '1',
                     'maxItems' => '2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p>',
-            ),
-            'One collection with maxItems higher than allowed' => array(
-                array(
+            ],
+            'One collection with maxItems higher than allowed' => [
+                [
                     'collections' => '1',
                     'maxItems' => '4',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'One collections with begin and maxItems' => array(
-                array(
+            ],
+            'One collections with begin and maxItems' => [
+                [
                     'collections' => '1',
                     'begin' => '1',
                     'maxItems' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p>',
-            ),
-            'Multiple collections' => array(
-                array(
+            ],
+            'Multiple collections' => [
+                [
                     'collections' => '1,2,3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple collections with begin' => array(
-                array(
+            ],
+            'Multiple collections with begin' => [
+                [
                     'collections' => '1,2,3',
                     'begin' => '3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple collections with negative begin' => array(
-                array(
+            ],
+            'Multiple collections with negative begin' => [
+                [
                     'collections' => '1,2,3',
                     'begin' => '-3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple collections with maxItems' => array(
-                array(
+            ],
+            'Multiple collections with maxItems' => [
+                [
                     'collections' => '1,2,3',
                     'maxItems' => '5',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p>',
-            ),
-            'Multiple collections with negative maxItems' => array(
-                array(
+            ],
+            'Multiple collections with negative maxItems' => [
+                [
                     'collections' => '1,2,3',
                     'maxItems' => '-5',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'Multiple collections with begin and maxItems' => array(
-                array(
+            ],
+            'Multiple collections with begin and maxItems' => [
+                [
                     'collections' => '1,2,3',
                     'begin' => '4',
                     'maxItems' => '3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 5</p><p>File 6</p><p>File 7</p>',
-            ),
-            'Multiple collections unsorted' => array(
-                array(
+            ],
+            'Multiple collections unsorted' => [
+                [
                     'collections' => '1,3,2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 7</p><p>File 8</p><p>File 9</p><p>File 4</p><p>File 5</p><p>File 6</p>',
-            ),
-            'Multiple collections sorted by name' => array(
-                array(
+            ],
+            'Multiple collections sorted by name' => [
+                [
                     'collections' => '3,1,2',
                     'sorting' => 'name',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -618,10 +618,10 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForCollections($configuration, $expected)
     {
-        $collectionMap = array();
+        $collectionMap = [];
         $fileCount = 1;
         for ($i = 1; $i < 4; $i++) {
-            $fileReferenceArray = array();
+            $fileReferenceArray = [];
             for ($j = 1; $j < 4; $j++) {
                 $fileReference = $this->createMock(FileReference::class);
                 $fileReference->expects($this->any())
@@ -645,7 +645,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ->method('getItems')
                 ->will($this->returnValue($fileReferenceArray));
 
-            $collectionMap[] = array($i, $collection);
+            $collectionMap[] = [$i, $collection];
         }
 
         $collectionRepository = $this->getMockBuilder(FileCollectionRepository::class)->getMock();
@@ -653,7 +653,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('findByUid')
             ->will($this->returnValueMap($collectionMap));
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(array('getFileCollectionRepository'))
+            ->setMethods(['getFileCollectionRepository'])
             ->getMock();
         $fileCollector->expects($this->any())
             ->method('getFileCollectionRepository')
@@ -670,206 +670,206 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForFoldersDataProvider()
     {
-        return array(
-            'One folder' => array(
-                array(
+        return [
+            'One folder' => [
+                [
                     'folders' => '1:myfolder/',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'One folder with begin' => array(
-                array(
+            ],
+            'One folder with begin' => [
+                [
                     'folders' => '1:myfolder/',
                     'begin' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p><p>File 3</p>',
-            ),
-            'One folder with begin higher than allowed' => array(
-                array(
+            ],
+            'One folder with begin higher than allowed' => [
+                [
                     'folders' => '1:myfolder/',
                     'begin' => '3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'One folder with maxItems' => array(
-                array(
+            ],
+            'One folder with maxItems' => [
+                [
                     'folders' => '1:myfolder/',
                     'maxItems' => '2',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p>',
-            ),
-            'One folder with maxItems higher than allowed' => array(
-                array(
+            ],
+            'One folder with maxItems higher than allowed' => [
+                [
                     'folders' => '1:myfolder/',
                     'maxItems' => '4',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p>',
-            ),
-            'One folder with begin and maxItems' => array(
-                array(
+            ],
+            'One folder with begin and maxItems' => [
+                [
                     'folders' => '1:myfolder/',
                     'begin' => '1',
                     'maxItems' => '1',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 2</p>',
-            ),
-            'Multiple folders' => array(
-                array(
+            ],
+            'Multiple folders' => [
+                [
                     'folders' => '1:myfolder/,2:myfolder/,3:myfolder/',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple folders with begin' => array(
-                array(
+            ],
+            'Multiple folders with begin' => [
+                [
                     'folders' => '1:myfolder/,2:myfolder/,3:myfolder/',
                     'begin' => '3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple folders with negative begin' => array(
-                array(
+            ],
+            'Multiple folders with negative begin' => [
+                [
                     'folders' => '1:myfolder/,2:myfolder/,3:myfolder/',
                     'begin' => '-3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple folders with maxItems' => array(
-                array(
+            ],
+            'Multiple folders with maxItems' => [
+                [
                     'folders' => '1:myfolder/,2:myfolder/,3:myfolder/',
                     'maxItems' => '5',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p>',
-            ),
-            'Multiple folders with negative maxItems' => array(
-                array(
+            ],
+            'Multiple folders with negative maxItems' => [
+                [
                     'folders' => '1:myfolder/,2:myfolder/,3:myfolder/',
                     'maxItems' => '-5',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '',
-            ),
-            'Multiple folders with begin and maxItems' => array(
-                array(
+            ],
+            'Multiple folders with begin and maxItems' => [
+                [
                     'folders' => '1:myfolder/,2:myfolder/,3:myfolder/',
                     'begin' => '4',
                     'maxItems' => '3',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 5</p><p>File 6</p><p>File 7</p>',
-            ),
-            'Multiple folders unsorted' => array(
-                array(
+            ],
+            'Multiple folders unsorted' => [
+                [
                     'folders' => '1:myfolder/,3:myfolder/,2:myfolder/',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 7</p><p>File 8</p><p>File 9</p><p>File 4</p><p>File 5</p><p>File 6</p>',
-            ),
-            'Multiple folders sorted by name' => array(
-                array(
+            ],
+            'Multiple folders sorted by name' => [
+                [
                     'folders' => '3:myfolder/,1:myfolder/,2:myfolder/',
                     'sorting' => 'name',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-            ),
-            'Multiple folders recursively' => array(
-                array(
+            ],
+            'Multiple folders recursively' => [
+                [
                     'folders' => '1:myfolder/',
-                    'folders.' => array(
+                    'folders.' => [
                         'recursive' => '1'
-                    ),
+                    ],
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 7</p><p>File 8</p><p>File 9</p><p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p>',
                 true
-            ),
-            'Multiple folders recursively, sorted by name' => array(
-                array(
+            ],
+            'Multiple folders recursively, sorted by name' => [
+                [
                     'folders' => '1:myfolder/',
-                    'folders.' => array(
+                    'folders.' => [
                         'recursive' => '1'
-                    ),
+                    ],
                     'sorting' => 'name',
                     'renderObj' => 'TEXT',
-                    'renderObj.' => array(
+                    'renderObj.' => [
                         'data' => 'file:current:name',
                         'wrap' => '<p>|</p>',
-                    ),
-                ),
+                    ],
+                ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
                 true
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -878,8 +878,8 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderReturnsFilesForFolders($configuration, $expected, $recursive = false)
     {
-        $folderMap = array();
-        $folders = array();
+        $folderMap = [];
+        $folders = [];
         $fileCount = 1;
         $filesArrayForFolder = [];
         for ($i = 1; $i < 4; $i++) {
@@ -907,15 +907,15 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             if ($recursive) {
                 if ($i < 3) {
                     $folders[$i] = $folder;
-                    $folderMap[$i] = array('1:myfolder/mysubfolder-' . $i . '/', $folder);
+                    $folderMap[$i] = ['1:myfolder/mysubfolder-' . $i . '/', $folder];
                 } else {
                     $folder->expects($this->any())
                         ->method('getSubfolders')
                         ->will($this->returnValue($folders));
-                    $folderMap[$i] = array('1:myfolder/', $folder);
+                    $folderMap[$i] = ['1:myfolder/', $folder];
                 }
             } else {
-                $folderMap[$i] = array($i . ':myfolder/', $folder);
+                $folderMap[$i] = [$i . ':myfolder/', $folder];
             }
         }
         foreach ($folderMap as $i => $folderMapInfo) {
@@ -936,7 +936,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getFolderObjectFromCombinedIdentifier')
             ->will($this->returnValueMap($folderMap));
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(array('getResourceFactory'))
+            ->setMethods(['getResourceFactory'])
             ->getMock();
         $fileCollector->expects($this->any())
             ->method('getResourceFactory')

@@ -5722,7 +5722,7 @@ class ContentObjectRenderer
                 return $linkText;
             }
         // Disallow direct javascript: or data: links
-        } elseif (in_array(strtolower(trim($linkHandlerKeyword)), array('javascript', 'data'), true)) {
+        } elseif (in_array(strtolower(trim($linkHandlerKeyword)), ['javascript', 'data'], true)) {
             return $linkText;
         } else {
             $linkParameter = $linkParameterParts['url'];

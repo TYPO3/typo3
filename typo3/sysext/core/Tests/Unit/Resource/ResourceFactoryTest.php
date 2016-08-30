@@ -22,7 +22,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceFactory
@@ -32,12 +32,12 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array
      */
-    protected $filesCreated = array();
+    protected $filesCreated = [];
 
     protected function setUp()
     {
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array('dummy'), array(), '', false);
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, ['dummy'], [], '', false);
     }
 
     protected function tearDown()
@@ -81,7 +81,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockedRegistry = $this->createMock(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
         $mockedRegistry->expects($this->once())->method('getDriverClass')->with($this->equalTo($driverFixtureClass))->will($this->returnValue($driverFixtureClass));
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class, $mockedRegistry);
-        $obj = $this->subject->getDriverObject($driverFixtureClass, array());
+        $obj = $this->subject->getDriverObject($driverFixtureClass, []);
         $this->assertInstanceOf(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, $obj);
     }
 
@@ -97,8 +97,8 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
         $subject = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Resource\ResourceFactory::class,
-            array('getFolderObjectFromCombinedIdentifier'),
-            array(),
+            ['getFolderObjectFromCombinedIdentifier'],
+            [],
             '',
             false
         );
@@ -117,8 +117,8 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
         $subject = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Resource\ResourceFactory::class,
-            array('getFolderObjectFromCombinedIdentifier'),
-            array(),
+            ['getFolderObjectFromCombinedIdentifier'],
+            [],
             '',
             false
         );
@@ -134,7 +134,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven()
     {
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array('getFileObjectFromCombinedIdentifier'), array(), '', false);
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
         $filename = 'typo3temp/var/tests/4711.txt';
         $this->subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
@@ -167,47 +167,47 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function storageDetectionDataProvider()
     {
-        return array(
-            'NoLocalStoragesReturnDefaultStorage' => array(
-                array(),
+        return [
+            'NoLocalStoragesReturnDefaultStorage' => [
+                [],
                 'my/dummy/Image.png',
                 0
-            ),
-            'NoMatchReturnsDefaultStorage' => array(
-                array(1 => 'fileadmin/', 2 => 'fileadmin2/public/'),
+            ],
+            'NoMatchReturnsDefaultStorage' => [
+                [1 => 'fileadmin/', 2 => 'fileadmin2/public/'],
                 'my/dummy/Image.png',
                 0
-            ),
-            'MatchReturnsTheMatch' => array(
-                array(1 => 'fileadmin/', 2 => 'other/public/'),
+            ],
+            'MatchReturnsTheMatch' => [
+                [1 => 'fileadmin/', 2 => 'other/public/'],
                 'fileadmin/dummy/Image.png',
                 1
-            ),
-            'TwoFoldersWithSameStartReturnsCorrect' => array(
-                array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
+            ],
+            'TwoFoldersWithSameStartReturnsCorrect' => [
+                [1 => 'fileadmin/', 2 => 'fileadmin/public/'],
                 'fileadmin/dummy/Image.png',
                 1
-            ),
-            'NestedStorageReallyReturnsTheBestMatching' => array(
-                array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
+            ],
+            'NestedStorageReallyReturnsTheBestMatching' => [
+                [1 => 'fileadmin/', 2 => 'fileadmin/public/'],
                 'fileadmin/public/Image.png',
                 2
-            ),
-            'CommonPrefixButWrongPath' => array(
-                array(1 => 'fileadmin/', 2 => 'uploads/test/'),
+            ],
+            'CommonPrefixButWrongPath' => [
+                [1 => 'fileadmin/', 2 => 'uploads/test/'],
                 'uploads/bogus/dummy.png',
                 0
-            ),
-            'CommonPrefixRightPath' => array(
-                array(1 => 'fileadmin/', 2 => 'uploads/test/'),
+            ],
+            'CommonPrefixRightPath' => [
+                [1 => 'fileadmin/', 2 => 'uploads/test/'],
                 'uploads/test/dummy.png',
                 2
-            ),
-            'FindStorageFromWindowsPath' => array(
-                array(1 => 'fileadmin/', 2 => 'uploads/test/'),
+            ],
+            'FindStorageFromWindowsPath' => [
+                [1 => 'fileadmin/', 2 => 'uploads/test/'],
                 'uploads\\test\\dummy.png',
                 2
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -49,7 +49,7 @@ class TimeTracker implements SingletonInterface
     /**
      * @var array
      */
-    public $printConf = array(
+    public $printConf = [
         'showParentKeys' => 1,
         'contentLength' => 10000,
         // Determines max length of displayed content before it gets cropped.
@@ -61,7 +61,7 @@ class TimeTracker implements SingletonInterface
         'flag_content' => 0,
         'allTime' => 0,
         'keyLgd' => 40
-    );
+    ];
 
     /**
      * @var array
@@ -91,7 +91,7 @@ class TimeTracker implements SingletonInterface
     /**
      * @var array
      */
-    public $tsStack = array(array());
+    public $tsStack = [[]];
 
     /**
      * @var int
@@ -101,12 +101,12 @@ class TimeTracker implements SingletonInterface
     /**
      * @var array
      */
-    public $tsStackLevelMax = array();
+    public $tsStackLevelMax = [];
 
     /**
      * @var array
      */
-    public $tsStackLog = array();
+    public $tsStackLog = [];
 
     /**
      * @var int
@@ -116,7 +116,7 @@ class TimeTracker implements SingletonInterface
     /**
      * @var array
      */
-    public $currentHashPointer = array();
+    public $currentHashPointer = [];
 
     /**
      * Log entries that take than this number of milliseconds (own time) will be highlighted during log display. Set 0 to disable highlighting.
@@ -173,13 +173,13 @@ class TimeTracker implements SingletonInterface
         $this->tsStackLevelMax[] = $this->tsStackLevel;
         // setTSlog
         $k = end($this->currentHashPointer);
-        $this->tsStackLog[$k] = array(
+        $this->tsStackLog[$k] = [
             'level' => $this->tsStackLevel,
             'tsStack' => $this->tsStack,
             'value' => $value,
             'starttime' => microtime(true),
             'stackPointer' => $this->tsStackPointer
-        );
+        ];
     }
 
     /**
@@ -257,7 +257,7 @@ class TimeTracker implements SingletonInterface
             return;
         }
         $this->tsStackPointer++;
-        $this->tsStack[$this->tsStackPointer] = array();
+        $this->tsStack[$this->tsStackPointer] = [];
     }
 
     /**
@@ -329,14 +329,14 @@ class TimeTracker implements SingletonInterface
         }
         unset($data);
         // Create hierarchical array of keys pointing to the stack
-        $arr = array();
+        $arr = [];
         foreach ($this->tsStackLog as $uniqueId => $data) {
             $this->createHierarchyArray($arr, $data['level'], $uniqueId);
         }
         // Parsing the registeret content and create icon-html for the tree
         $this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
         // Displaying the tree:
-        $outputArr = array();
+        $outputArr = [];
         $outputArr[] = $this->fw('TypoScript Key');
         $outputArr[] = $this->fw('Value');
         if ($this->printConf['allTime']) {
@@ -377,7 +377,7 @@ class TimeTracker implements SingletonInterface
             // Key label:
             $keyLabel = '';
             if (!$flag_tree && $data['stackPointer']) {
-                $temp = array();
+                $temp = [];
                 foreach ($data['tsStack'] as $k => $v) {
                     $temp[] = GeneralUtility::fixed_lgd_cs(implode($v, $k ? '.' : '/'), -$keyLgd);
                 }
@@ -410,7 +410,7 @@ class TimeTracker implements SingletonInterface
                 $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
             }
             // Messages:
-            $msgArr = array();
+            $msgArr = [];
             $msg = '';
             if ($flag_messages && is_array($data['message'])) {
                 foreach ($data['message'] as $v) {
@@ -547,7 +547,7 @@ class TimeTracker implements SingletonInterface
     protected function createHierarchyArray(&$arr, $pointer, $uniqueId)
     {
         if (!is_array($arr)) {
-            $arr = array();
+            $arr = [];
         }
         if ($pointer > 0) {
             end($arr);

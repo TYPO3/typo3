@@ -189,7 +189,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
     {
         if (isset($this->internalArguments['__referrer']['@request'])) {
             $referrerArray = unserialize($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['@request']));
-            $arguments = array();
+            $arguments = [];
             if (isset($this->internalArguments['__referrer']['arguments'])) {
                 // This case is kept for compatibility in 7.6 and 6.2, but will be removed in 8
                 $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['arguments'])));

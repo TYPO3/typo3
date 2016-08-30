@@ -80,7 +80,7 @@ class BaseScriptClass
      * @see init()
      * @var array
      */
-    public $MCONF = array();
+    public $MCONF = [];
 
     /**
      * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module (page id)
@@ -112,9 +112,9 @@ class BaseScriptClass
      * @see init()
      * @var array
      */
-    public $MOD_MENU = array(
-        'function' => array()
-    );
+    public $MOD_MENU = [
+        'function' => []
+    ];
 
     /**
      * Current settings for the keys of the MOD_MENU array
@@ -122,7 +122,7 @@ class BaseScriptClass
      * @see $MOD_MENU
      * @var array
      */
-    public $MOD_SETTINGS = array();
+    public $MOD_SETTINGS = [];
 
     /**
      * Module TSconfig based on PAGE TSconfig / USER TSconfig
@@ -324,7 +324,7 @@ class BaseScriptClass
      */
     public function extObjHeader()
     {
-        if (is_callable(array($this->extObj, 'head'))) {
+        if (is_callable([$this->extObj, 'head'])) {
             $this->extObj->head();
         }
     }
@@ -350,7 +350,7 @@ class BaseScriptClass
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             $this->extObj->pObj = $this;
-            if (is_callable(array($this->extObj, 'main'))) {
+            if (is_callable([$this->extObj, 'main'])) {
                 $this->content .= $this->extObj->main();
             }
         }

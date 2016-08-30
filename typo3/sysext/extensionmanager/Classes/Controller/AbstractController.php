@@ -24,9 +24,9 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     /**
      * @var array
      */
-    protected $triggerArguments = array(
+    protected $triggerArguments = [
         self::TRIGGER_RefreshModuleMenu,
-    );
+    ];
 
     /**
      * Translation shortcut
@@ -49,7 +49,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     protected function handleTriggerArguments()
     {
-        $triggers = array();
+        $triggers = [];
 
         foreach ($this->triggerArguments as $triggerArgument) {
             if ($this->request->hasArgument($triggerArgument)) {

@@ -129,7 +129,7 @@ class BackendUserActionController extends ActionController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = array('id', 'M', $modulePrefix);
+            $getVars = ['id', 'M', $modulePrefix];
         }
         $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUsers');
         if ($this->request->getControllerName() === 'BackendUser') {
@@ -161,12 +161,12 @@ class BackendUserActionController extends ActionController
         }
         if ($this->request->getControllerName() === 'BackendUserGroup') {
             $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUserGroupsMenu');
-            $returnUrl = rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser', array(
-                'tx_beuser_system_beusertxbeuser' => array(
+            $returnUrl = rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser', [
+                'tx_beuser_system_beusertxbeuser' => [
                     'action' => 'index',
                     'controller' => 'BackendUserGroup'
-                )
-            )));
+                ]
+            ]));
             $parameters = GeneralUtility::explodeUrl2Array('edit[be_groups][0]=new&returnUrl=' . $returnUrl);
             $addUserLink = BackendUtility::getModuleUrl('record_edit', $parameters);
             $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');

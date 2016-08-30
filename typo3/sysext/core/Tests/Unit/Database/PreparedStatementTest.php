@@ -50,8 +50,8 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
             DatabaseConnection::class,
-            array('prepare_PREPAREDquery'),
-            array(),
+            ['prepare_PREPAREDquery'],
+            [],
             '',
             false,
             false

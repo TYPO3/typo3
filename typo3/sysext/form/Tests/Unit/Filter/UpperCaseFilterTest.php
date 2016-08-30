@@ -36,10 +36,10 @@ class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function stringProvider()
     {
-        return array(
-            'asdf' => array('asdf', 'ASDF'),
-            'as?df' => array('as?df', 'AS?DF'),
-        );
+        return [
+            'asdf' => ['asdf', 'ASDF'],
+            'as?df' => ['as?df', 'AS?DF'],
+        ];
     }
 
     /**

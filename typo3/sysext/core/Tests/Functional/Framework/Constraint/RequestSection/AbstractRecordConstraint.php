@@ -24,7 +24,7 @@ abstract class AbstractRecordConstraint extends \PHPUnit_Framework_Constraint
     /**
      * @var array
      */
-    protected $sectionFailures = array();
+    protected $sectionFailures = [];
 
     /**
      * @var string

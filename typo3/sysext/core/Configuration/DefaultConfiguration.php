@@ -16,8 +16,8 @@
  * This file contains the default array definition that is
  * later populated as $GLOBALS['TYPO3_CONF_VARS']
  */
-return array(
-    'GFX' => array(
+return [
+    'GFX' => [
         // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,                            // Boolean: Enables the use of thumbnails in the backend interface.
         'thumbnails_png' => true,                            // Boolean. If false, thumbnails from non-image files will be converted to 'gif', otherwise 'png' (default).
@@ -38,18 +38,18 @@ return array(
         'processor_colorspace' => 'RGB',                            // String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV
         'jpg_quality' => 70,                            // Integer: Default JPEG generation quality
         'png_truecolor' => true,                        // Boolean: When creating png images, always use the full colorpalette, if disabled could reduce file sizes for scaled images, but the image quality will be let down.
-    ),
-    'SYS' => array(
+    ],
+    'SYS' => [
         // System related concerning both frontend and backend.
-        'lang' => array(
-            'format' => array(
+        'lang' => [
+            'format' => [
                 'priority' => 'xlf,xml'
-            ),
-            'parser' => array(
+            ],
+            'parser' => [
                 'xml' => \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class,
                 'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class
-            )
-        ),
+            ]
+        ],
         'fileCreateMask' => '0664',                        // File mode mask for Unix file systems (when files are uploaded/created).
         'folderCreateMask' => '2775',                    // As above, but for folders.
         'createGroup' => '',                            // Group for newly created files and folders (Unix only). Group ownership can be changed on Unix file systems (see above). Set this if you want to change the group ownership of created files/folders to a specific group. This makes sense in all cases where the webserver is running with a different user/group as you do. Create a new group on your system and add you and the webserver user to the group. Now you can safely set the last bit in fileCreateMask/folderCreateMask to 0 (e.g. 770). Important: The user who is running your webserver needs to be a member of the group you specify here! Otherwise you might get some error messages.
@@ -88,115 +88,115 @@ return array(
         'reverseProxyPrefix' => '',                // String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
         'reverseProxySSL' => '',                // String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.
         'reverseProxyPrefixSSL' => '',            // String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.
-        'caching' => array(
-            'cacheConfigurations' => array(
+        'caching' => [
+            'cacheConfigurations' => [
                 // The cache_core cache is is for core php code only and must
                 // not be abused by third party extensions.
-                'cache_core' => array(
+                'cache_core' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('system')
-                ),
-                'cache_hash' => array(
+                    ],
+                    'groups' => ['system']
+                ],
+                'cache_hash' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(),
-                    'groups' => array('pages')
-                ),
-                'cache_pages' => array(
+                    'options' => [],
+                    'groups' => ['pages']
+                ],
+                'cache_pages' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(
+                    'options' => [
                         'compression' => true
-                    ),
-                    'groups' => array('pages')
-                ),
-                'cache_pagesection' => array(
+                    ],
+                    'groups' => ['pages']
+                ],
+                'cache_pagesection' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(
+                    'options' => [
                         'compression' => true,
                         'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
-                    ),
-                    'groups' => array('pages')
-                ),
-                'cache_phpcode' => array(
+                    ],
+                    'groups' => ['pages']
+                ],
+                'cache_phpcode' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('system')
-                ),
-                'cache_runtime' => array(
+                    ],
+                    'groups' => ['system']
+                ],
+                'cache_runtime' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
-                    'options' => array(),
-                    'groups' => array()
-                ),
-                'cache_rootline' => array(
+                    'options' => [],
+                    'groups' => []
+                ],
+                'cache_rootline' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
-                    ),
-                    'groups' => array('pages')
-                ),
-                'cache_imagesizes' => array(
+                    ],
+                    'groups' => ['pages']
+                ],
+                'cache_imagesizes' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('lowlevel'),
-                ),
-                'assets' => array(
+                    ],
+                    'groups' => ['lowlevel'],
+                ],
+                'assets' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('system')
-                ),
-                'l10n' => array(
+                    ],
+                    'groups' => ['system']
+                ],
+                'l10n' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('system')
-                ),
-                'fluid_template' => array(
+                    ],
+                    'groups' => ['system']
+                ],
+                'fluid_template' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
                     'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
-                    'groups' => array('system'),
-                ),
-                'extbase_object' => array(
+                    'groups' => ['system'],
+                ],
+                'extbase_object' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('system')
-                ),
-                'extbase_reflection' => array(
+                    ],
+                    'groups' => ['system']
+                ],
+                'extbase_reflection' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => array(
+                    'options' => [
                         'defaultLifetime' => 0,
-                    ),
-                    'groups' => array('system')
-                ),
-                'extbase_datamapfactory_datamap' => array(
+                    ],
+                    'groups' => ['system']
+                ],
+                'extbase_datamapfactory_datamap' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'groups' => array('system'),
-                ),
-            ),
-        ),
+                    'groups' => ['system'],
+                ],
+            ],
+        ],
         'defaultCategorizedTables' => 'pages,tt_content,sys_file_metadata', // List of comma separated tables that are categorizable by default.
         'displayErrors' => -1,        // <p>Integer (-1, 0, 1). Configures whether PHP errors or Exceptions should be displayed.</p><dl><dt>0</dt><dd>Do not display any PHP error message. Sets PHP "display_errors" setting to 0. Overrides the value of [SYS][exceptionalErrors] and sets it to 0 (= no errors are turned into exceptions). The configured [SYS][productionExceptionHandler] is used as exception handler.</dd><dt>1</dt><dd>Display error messages with the registered [SYS][errorHandler]. Sets PHP "display_errors" setting to 1. The configured [SYS][debugExceptionHandler] is used as exception handler.</dd><dt>-1</dt><dd>TYPO3 CMS does not touch the PHP "display_errors" setting. If [SYS][devIPmask] matches the user's IP address, the configured [SYS][debugExceptionHandler] is used instead of the [SYS][productionExceptionHandler] to handle exceptions.</dd></dl>
         'productionExceptionHandler' => \TYPO3\CMS\Core\Error\ProductionExceptionHandler::class,        // String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler". This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if [SYS][displayErrors] is set to "0" or is set to "-1" and [SYS][devIPmask] doesn't match the user's IP.
@@ -208,40 +208,40 @@ return array(
         'enable_exceptionDLOG' => 0,// Boolean: If set, exceptions are written to the developer log (requires an installed *devlog* extension).
         'syslogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),        // Integer: Configures which PHP errors should be logged to the configured syslogs (see: [SYS][systemLog]). If set to "0" no PHP errors are logged to the syslog. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).
         'belogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),        // Integer: Configures which PHP errors should be logged to the "syslog" table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).
-        'locallangXMLOverride' => array(),        // For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
+        'locallangXMLOverride' => [],        // For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
         'generateApacheHtaccess' => 1,        // Boolean: TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.
-        'Objects' => array(),
-        'fal' => array(
-            'registeredDrivers' => array(
-                'Local' => array(
+        'Objects' => [],
+        'fal' => [
+            'registeredDrivers' => [
+                'Local' => [
                     'class' => \TYPO3\CMS\Core\Resource\Driver\LocalDriver::class,
                     'shortName' => 'Local',
                     'flexFormDS' => 'FILE:EXT:core/Configuration/Resource/Driver/LocalDriverFlexForm.xml',
                     'label' => 'Local filesystem'
-                )
-            ),
-            'defaultFilterCallbacks' => array(
-                array(
+                ]
+            ],
+            'defaultFilterCallbacks' => [
+                [
                     \TYPO3\CMS\Core\Resource\Filter\FileNameFilter::class,
                     'filterHiddenFilesAndFolders'
-                )
-            ),
-            'processingTaskTypes' => array(
+                ]
+            ],
+            'processingTaskTypes' => [
                 'Image.Preview' => \TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask::class,
                 'Image.CropScaleMask' => \TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask::class
-            ),
-            'registeredCollections' => array(
+            ],
+            'registeredCollections' => [
                 'static' => \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class,
                 'folder' => \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection::class,
                 'category' => \TYPO3\CMS\Core\Resource\Collection\CategoryBasedFileCollection::class,
-            ),
-            'onlineMediaHelpers' => array(
+            ],
+            'onlineMediaHelpers' => [
                 'youtube' => \TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper::class,
                 'vimeo' => \TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper::class,
-            ),
-        ),
-        'IconFactory' => array(
-            'recordStatusMapping' => array(
+            ],
+        ],
+        'IconFactory' => [
+            'recordStatusMapping' => [
                 'hidden' => 'overlay-hidden',
                 'fe_group' => 'overlay-restricted',
                 'starttime' => 'overlay-scheduled',
@@ -252,250 +252,250 @@ return array(
                 'missing' => 'overlay-missing',
                 'translated' => 'overlay-translated',
                 'protectedSection' => 'overlay-includes-subpages'
-            ),
-            'overlayPriorities' => array(
+            ],
+            'overlayPriorities' => [
                 'hidden',
                 'starttime',
                 'endtime',
                 'futureendtime',
                 'protectedSection',
                 'fe_group'
-            )
-        ),
-        'FileInfo' => array(
+            ]
+        ],
+        'FileInfo' => [
             // Static mapping for file extensions to mime types.
             // In special cases the mime type is not detected correctly.
             // Use this array only if the automatic detection does not work correct!
-            'fileExtensionToMimeType' => array(
+            'fileExtensionToMimeType' => [
                 'svg' => 'image/svg+xml',
                 'youtube' => 'video/youtube',
                 'vimeo' => 'video/vimeo',
-            )
-        ),
-        'fluid' => array(
-            'interceptors' => array(),
-        ),
-        'linkHandler' => array( // Array: Available link types, class which implement the LinkHandling interface
+            ]
+        ],
+        'fluid' => [
+            'interceptors' => [],
+        ],
+        'linkHandler' => [ // Array: Available link types, class which implement the LinkHandling interface
             'page'   => \TYPO3\CMS\Core\LinkHandling\PageLinkHandler::class,
             'file'   => \TYPO3\CMS\Core\LinkHandling\FileLinkHandler::class,
             'folder' => \TYPO3\CMS\Core\LinkHandling\FolderLinkHandler::class,
             'url'    => \TYPO3\CMS\Core\LinkHandling\UrlLinkHandler::class,
             'email'  => \TYPO3\CMS\Core\LinkHandling\EmailLinkHandler::class,
-        ),
-        'livesearch' => array(),    // Array: keywords used for commands to search for specific tables
+        ],
+        'livesearch' => [],    // Array: keywords used for commands to search for specific tables
         'isInitialInstallationInProgress' => false,        // Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
         'isInitialDatabaseImportDone' => true,        // Boolean: If TRUE, the database import is finished. This value is handled within the install tool step installer internally.
-        'formEngine' => array(
-            'nodeRegistry' => array(), // Array: Registry to add or overwrite FormEngine nodes. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeInterface.
-            'nodeResolver' => array(), // Array: Additional node resolver. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeResolverInterface.
-            'formDataGroup' => array( // Array: Registry of form data providers for form data groups
-                'tcaDatabaseRecord' => array(
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(
-                        'depends' => array(
+        'formEngine' => [
+            'nodeRegistry' => [], // Array: Registry to add or overwrite FormEngine nodes. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeInterface.
+            'nodeResolver' => [], // Array: Additional node resolver. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeResolverInterface.
+            'formDataGroup' => [ // Array: Registry of form data providers for form data groups
+                'tcaDatabaseRecord' => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class => [],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class,
-                        )
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => array(
-                        'depends' => array(
+                        ]
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class => [
+                        'depends' => [
                             // Language stuff depends on user ts, but it *may* also depend on new row defaults
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
                             // As the ctrl.type can hold a nested key we need to resolve all relations
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
@@ -504,237 +504,237 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                             // GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineIsOnSymmetricSide::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineIsOnSymmetricSide::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineIsOnSymmetricSide::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class,
-                        ),
-                    ),
-                ),
-                'flexFormSegment' => array(
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                ],
+                'flexFormSegment' => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        )
-                    )
-                ),
-                'tcaInputPlaceholderRecord' => array(
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
-                        'depends' => array(
+                        ]
+                    ]
+                ],
+                'tcaInputPlaceholderRecord' => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
-                        ),
-                    ),
-                ),
-                'inlineParentRecord' => array(
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                ],
+                'inlineParentRecord' => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                        )
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
-                        'depends' => array(
+                        ]
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
-                        'depends' => array(
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
+                        'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'EXT' => array( // Options related to the Extension Management
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'EXT' => [ // Options related to the Extension Management
         'allowGlobalInstall' => false,        // Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.
         'allowLocalInstall' => true,        // Boolean: If set, local extensions in typo3conf/ext/ are allowed to be installed, updated and deleted etc.
         'allowSystemInstall' => false,        // Boolean: If set, you can install extensions in the sysext/ dir.
         'excludeForPackaging' => '(?:\\..*(?!htaccess)|.*~|.*\\.swp|.*\\.bak|\\.sass-cache|node_modules|bower_components)',        // String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
-        'extConf' => array(
-            'saltedpasswords' => serialize(array(
-                'BE.' => array(
+        'extConf' => [
+            'saltedpasswords' => serialize([
+                'BE.' => [
                     'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
                     'forceSalted' => 0,
                     'onlyAuthService' => 0,
                     'updatePasswd' => 1,
-                ),
-                'FE.' => array(
+                ],
+                'FE.' => [
                     'enabled' => 0,
                     'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
                     'forceSalted' => 0,
                     'onlyAuthService' => 0,
                     'updatePasswd' => 1,
-                ),
-            )),
-        ),
-        'runtimeActivatedPackages' => array(),
-    ),
-    'BE' => array(
+                ],
+            ]),
+        ],
+        'runtimeActivatedPackages' => [],
+    ],
+    'BE' => [
         // Backend Configuration.
-        'lang' => array(
+        'lang' => [
             'debug' => false
-        ),
+        ],
         'fileadminDir' => 'fileadmin/',                    // Path to the fileadmin dir. This is relative to PATH_site, DefaultStorage will be created with that configuration, do not access manually but ResourceFactory::getDefaultStorage()
         'RTE_imageStorageDir' => 'uploads/',            // Default storage directory for Rich Text Editor files
         'lockRootPath' => '',                            // This path is used to evaluate if paths outside of PATH_site should be allowed. Ending slash required!
@@ -759,9 +759,9 @@ return array(
         'disable_exec_function' => false,                // Boolean: Don't use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all fileoperations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.
         'compressionLevel' => 0,                        // Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see _.htacces for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. 'true' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.
         'installToolPassword' => '',                    // String: This is the md5-hashed, salted password for the Install Tool. Set this to '' and access will be totally denied. You may consider to externally protect the typo3/sysext/install/ folder, eg. with a .htaccess file.
-        'pageTree' => array(
+        'pageTree' => [
             'preloadLimit' => 50
-        ),
+        ],
         'defaultUserTSconfig' => 'options.enableBookmarks=1
 			options.file_list.enableDisplayBigControlPanel=selectable
 			options.file_list.enableDisplayThumbnails=selectable
@@ -1058,17 +1058,17 @@ return array(
 			}
 		',
         // String (exclude).Enter lines of default Page TSconfig.
-        'defaultPermissions' => array(),
-        'defaultUC' => array(),
+        'defaultPermissions' => [],
+        'defaultUC' => [],
         // The control of file extensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
         // The control is done like this: If an extension matches 'allow' then the check returns TRUE. If not and an extension matches 'deny' then the check return FALSE. If no match at all, returns TRUE.
         // You list extensions comma-separated. If the value is a '*' every extension is matched
         // If no file extension, TRUE is returned if 'allow' is '*', FALSE if 'deny' is '*' and TRUE if none of these matches
         // This configuration below accepts everything in ftpspace and everything in webspace except php3,php4,php5 or php files
-        'fileExtensions' => array(
-            'webspace' => array('allow' => '', 'deny' => PHP_EXTENSIONS_DEFAULT)
-        ),
-        'customPermOptions' => array(),                        // Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
+        'fileExtensions' => [
+            'webspace' => ['allow' => '', 'deny' => PHP_EXTENSIONS_DEFAULT]
+        ],
+        'customPermOptions' => [],                        // Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
         'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT,        // A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT
         'interfaces' => 'backend',                            // This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
         'explicitADmode' => 'explicitDeny',                    // Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!
@@ -1076,15 +1076,15 @@ return array(
         'explicitConfirmationOfTranslation' => false,        // If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.
         'versionNumberInFilename' => false,                    // <p>Boolean: If TRUE, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)</p><p>If FALSE the filemtime will be appended as a query-string.</p>
         'debug' => false,                                    // Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!
-        'AJAX' => array(),                                    // array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See the AjaxRequestHandler class for more information.
-        'toolbarItems' => array(), // Array: Registered toolbar items classes
-        'HTTP' => array(
-            'Response' => array(
-                'Headers' => array('clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN')
-            )
-        ),
-    ),
-    'FE' => array( // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
+        'AJAX' => [],                                    // array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See the AjaxRequestHandler class for more information.
+        'toolbarItems' => [], // Array: Registered toolbar items classes
+        'HTTP' => [
+            'Response' => [
+                'Headers' => ['clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN']
+            ]
+        ],
+    ],
+    'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',        // Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with '/'. If not, then any path where the first part is like this path will match. That is: 'myfolder/ , myarchive' will match eg. 'myfolder/', 'myarchive/', 'myarchive_one/', 'myarchive_2/' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser)
         'debug' => false,        // Boolean: If set, some debug HTML-comments may be output somewhere. Can also be set by TypoScript.
         'noPHPscriptInclude' => false,        // Boolean: If set, PHP-scripts are not included by TypoScript configurations, unless they reside in the folders typo3/ext/, typo3/sysext/ or typo3conf/ext. This is a security option to ensure that users with template-access do not terrorize
@@ -1108,31 +1108,31 @@ return array(
         'lockHashKeyWords' => 'useragent',        // Keyword list (Strings commaseparated). Currently only "useragent"; If set, then the FE user session is locked to the value of HTTP_USER_AGENT. This lowers the risk of session hi-jacking. However some cases (like payment gateways) might have to use the session cookie and in this case you will have to disable that feature (eg. with a blank string).
         'defaultUserTSconfig' => '',        // String (textarea). Enter lines of default frontend user/group TSconfig.
         'defaultTypoScript_constants' => '',        // String (textarea). Enter lines of default TypoScript, constants-field.
-        'defaultTypoScript_constants.' => array(),        // Lines of TS to include after a static template with the uid = the index in the array (Constants)
+        'defaultTypoScript_constants.' => [],        // Lines of TS to include after a static template with the uid = the index in the array (Constants)
         'defaultTypoScript_setup' => '',        // String (textarea). Enter lines of default TypoScript, setup-field.
-        'defaultTypoScript_setup.' => array(),        // Lines of TS to include after a static template with the uid = the index in the array (Setup)
+        'defaultTypoScript_setup.' => [],        // Lines of TS to include after a static template with the uid = the index in the array (Setup)
         'additionalAbsRefPrefixDirectories' => '',        // Enter additional directories to be prepended with absRefPrefix. Directories must be comma-separated. TYPO3 already prepends the following directories: typo3/, typo3temp/, typo3conf/ext/ and all local storages
-        'IPmaskMountGroups' => array( // This allows you to specify an array of IPmaskLists/fe_group-uids. If the REMOTE_ADDR of the user matches an IPmaskList, then the given fe_group is add to the gr_list. So this is an automatic mounting of a user-group. But no fe_user is logged in though! This feature is implemented for the default frontend user authentication and might not be implemented for alternative authentication services.
+        'IPmaskMountGroups' => [ // This allows you to specify an array of IPmaskLists/fe_group-uids. If the REMOTE_ADDR of the user matches an IPmaskList, then the given fe_group is add to the gr_list. So this is an automatic mounting of a user-group. But no fe_user is logged in though! This feature is implemented for the default frontend user authentication and might not be implemented for alternative authentication services.
             // array('IPmaskList_1','fe_group uid'), array('IPmaskList_2','fe_group uid')
-        ),
+        ],
         'get_url_id_token' => '#get_URL_ID_TOK#',        // This is the token, which is substituted in the output code in order to keep a GET-based session going. Normally the GET-session-id is 5 chars ('&amp;ftu=') + hash_length (norm. 10)
         'content_doktypes' => '1,2,5,7',        // List of pages.doktype values which can contain content (so shortcut pages and external url pages are excluded, but all pages below doktype 199 should be included. doktype=6 is not either (backend users only...).
         'enable_mount_pids' => true,        // Boolean: If set to "1", the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
         'pageOverlayFields' => 'uid,doktype,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email,url,urltype,shortcut,shortcut_mode',        // List of fields from the table "pages_language_overlay" which should be overlaid on page records. See \TYPO3\CMS\Frontend\Page\PageRepository::getPageOverlay()
         'hidePagesIfNotTranslatedByDefault' => false,        // Boolean: If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
-        'eID_include' => array(),        // Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for \TYPO3\CMS\Frontend\Http\RequestHandlerRequestHandler to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
+        'eID_include' => [],        // Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for \TYPO3\CMS\Frontend\Http\RequestHandlerRequestHandler to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
         'disableNoCacheParameter' => false,        // Boolean: If set, the no_cache request parameter will become ineffective. This is currently still an experimental feature and will require a website only with plugins that don't use this parameter. However, using "&amp;no_cache=1" should be avoided anyway because there are better ways to disable caching for a certain part of the website (see COA_INT/USER_INT documentation in TSref).
-        'cacheHash' => array(),        // Array: Processed values of the cHash* parameters, handled by core bootstrap internally
+        'cacheHash' => [],        // Array: Processed values of the cHash* parameters, handled by core bootstrap internally
         'cHashExcludedParameters' => 'L, pk_campaign, pk_kwd, utm_source, utm_medium, utm_campaign, utm_term, utm_content',        // String: The the given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]
         'cHashOnlyForParameters' => '',        // String: Only the given parameters will be evaluated in the cHash calculation. Example: tx_news_pi1[uid]
         'cHashRequiredParameters' => '',        // Optional: Configure Parameters that require a cHash. If no cHash is given but one of the parameters are set, then TYPO3 triggers the configured cHash Error behaviour
         'cHashExcludedParametersIfEmpty' => '',        // Optional: Configure Parameters that are only relevant for the chash if there's an associated value available. And asterisk "*" can be used to skip all empty parameters.
         'workspacePreviewLogoutTemplate' => '',        // If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: fileadmin/templates/template_workspace_preview_logout.html. Inside you can put the marker %1$s to insert the URL to go back to. Use this in &lt;a href="%1$s"&gt;Go back...&lt;/a&gt; links
         'versionNumberInFilename' => 'querystring',        // String: embed,querystring,''. Allows to automatically include a version number (timestamp of the file) to referred CSS and JS filenames on the rendered page. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). Set to 'embed' will have the timestamp embedded in the filename, ie. filename.1269312081.js. IMPORTANT: 'embed' requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)<p>Set to 'querystring' (default setting) to append the version number as a query parameter (doesn't require mod_rewrite). Set to '' will turn this functionality off (behaves like TYPO3 &lt; v4.4).</p>
-        'contentRenderingTemplates' => array(),    // Array to define the TypoScript parts that define the main content rendering. Extensions like "css_styled_content" provide content rendering templates. Other extensions like "felogin" or "indexed search" extend these templates and their TypoScript parts are added directly after the content templates. See EXT:css_styled_content/ext_localconf.php and EXT:frontend/Classes/TypoScript/TemplateService.php
-        'ContentObjects' => array(),    // Array to register ContentObject (cObjects) like TEXT or HMENU within ext_localconf.php, see EXT:frontend/ext_localconf.php
-    ),
-    'MAIL' => array( // Mail configurations to tune how \TYPO3\CMS\Core\Mail\ classes will send their mails.
+        'contentRenderingTemplates' => [],    // Array to define the TypoScript parts that define the main content rendering. Extensions like "css_styled_content" provide content rendering templates. Other extensions like "felogin" or "indexed search" extend these templates and their TypoScript parts are added directly after the content templates. See EXT:css_styled_content/ext_localconf.php and EXT:frontend/Classes/TypoScript/TemplateService.php
+        'ContentObjects' => [],    // Array to register ContentObject (cObjects) like TEXT or HMENU within ext_localconf.php, see EXT:frontend/ext_localconf.php
+    ],
+    'MAIL' => [ // Mail configurations to tune how \TYPO3\CMS\Core\Mail\ classes will send their mails.
         'transport' => 'mail',        // <p>String:</p><dl><dt>mail</dt><dd>Sends messages by delegating to PHP's internal mail() function. No further settings required. This is the most unreliable option. If you are serious about sending mails, consider using "smtp" or "sendmail".</dd><dt>smtp</dt><dd>Sends messages over the (standardized) Simple Message Transfer Protocol. It can deal with encryption and authentication. Most flexible option, requires a mail server and configurations in transport_smtp_* settings below. Works the same on Windows, Unix and MacOS.</dd><dt>sendmail</dt><dd>Sends messages by communicating with a locally installed MTA - such as sendmail. See setting transport_sendmail_command bellow.<dd><dt>mbox</dt><dd>This doesn't send any mail out, but instead will write every outgoing mail to a file adhering to the RFC 4155 mbox format, which is a simple text file where the mails are concatenated. Useful for debugging the mail sending process and on development machines which cannot send mails to the outside. Configure the file to write to in the 'transport_mbox_file' setting below</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements Swift_Transport. The constructor receives all settings from the MAIL section to make it possible to add custom settings.</dd></dl>
         'transport_smtp_server' => 'localhost:25',        // String: <em>only with transport=smtp</em>: &lt;server:port> of mailserver to connect to. &lt;port> defaults to "25".
         'transport_smtp_encrypt' => '',        // String: <em>only with transport=smtp</em>: Connect to the server using the specified transport protocol. Requires openssl library. Usually available: <em>ssl, sslv2, sslv3, tls</em>. Check <a href="http://www.php.net/stream_get_transports" target="_blank">stream_get_transports()</a>.
@@ -1142,12 +1142,12 @@ return array(
         'transport_mbox_file' => '',        // String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
         'defaultMailFromAddress' => '',        // String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
         'defaultMailFromName' => ''// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
-    ),
-    'HTTP' => array(    // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
-        'allow_redirects' => array( // Mixed, set to false if you want to allow redirects, or use it as an array to add more values, see http://docs.guzzlephp.org/en/latest/request-options.html#allow-redirects for syntax
+    ],
+    'HTTP' => [    // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
+        'allow_redirects' => [ // Mixed, set to false if you want to allow redirects, or use it as an array to add more values, see http://docs.guzzlephp.org/en/latest/request-options.html#allow-redirects for syntax
             'max' => 5,        // Integer: Maximum number of tries before an exception is thrown.
             'strict' => false        // Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers).
-        ),
+        ],
         'cert' => null,  // Mixed: Set to a string to specify the path to a file containing a PEM formatted client side certificate. See http://docs.guzzlephp.org/en/latest/request-options.html#cert
         'connect_timeout' => 10,        // Integer: Default timeout for connection. Exception will be thrown if connecting to remote host takes more than this number of seconds.
         'proxy' => null,        // Mixed: Default proxy server as "proxy.example.org", multiple proxies for different protocols can be added separately as array, as well as authentication and port, see http://docs.guzzlephp.org/en/latest/request-options.html#proxy
@@ -1155,22 +1155,22 @@ return array(
         'timeout' => 0,        // Integer: Default timeout for whole request. Exception will be thrown if sending the request takes more than this number of seconds. Should be greater than connection timeout (see above) or "0" to not set a limit. Defaults to "0".
         'verify' => true,       // Mixed: Describes the SSL certificate verification behavior of a request. http://docs.guzzlephp.org/en/latest/request-options.html#verify
         'version' => '1.1',        // String: Default HTTP protocol version. Use either "1.0" or "1.1".
-        'headers' => array( // Additional HTTP headers sent by every request TYPO3 executes.
+        'headers' => [ // Additional HTTP headers sent by every request TYPO3 executes.
             'User-Agent' => 'TYPO3/' . TYPO3_version // String: Default user agent. If empty, this will be "TYPO3/x.y.z", while x.y.z is the current version. This overrides the constant <em>TYPO3_user_agent</em>.
-        )
-    ),
-    'LOG' => array(
-        'writerConfiguration' => array(
-            \TYPO3\CMS\Core\Log\LogLevel::WARNING => array(
-                \TYPO3\CMS\Core\Log\Writer\FileWriter::class => array()
-            )
-        )
-    ),
-    'USER' => array(),
-    'SC_OPTIONS' => array(
+        ]
+    ],
+    'LOG' => [
+        'writerConfiguration' => [
+            \TYPO3\CMS\Core\Log\LogLevel::WARNING => [
+                \TYPO3\CMS\Core\Log\Writer\FileWriter::class => []
+            ]
+        ]
+    ],
+    'USER' => [],
+    'SC_OPTIONS' => [
         // Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
-        'GLOBAL' => array(
-            'softRefParser' => array(
+        'GLOBAL' => [
+            'softRefParser' => [
                 'substitute' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'notify' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'images' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
@@ -1179,25 +1179,25 @@ return array(
                 'ext_fileref' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'email' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-            ),
-            'cliKeys' => array()
-        ),
-    ),
-    'EXTCONF' => array(
+            ],
+            'cliKeys' => []
+        ],
+    ],
+    'EXTCONF' => [
         // Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
-        'cms' => array(
-            'db_layout' => array(
-                'addTables' => array(
-                    'fe_users' => array(
-                        0 => array(
+        'cms' => [
+            'db_layout' => [
+                'addTables' => [
+                    'fe_users' => [
+                        0 => [
                             'MENU' => '',
                             'fList' => 'username,usergroup,name,email,telephone,address,zip,city',
                             'icon' => true
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'SVCONF' => array()
-);
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'SVCONF' => []
+];

@@ -88,7 +88,7 @@ class RemoveUserViewHelper extends AbstractViewHelper
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
             . ' data-severity="warning"'
             . ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
-            . ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) . '" '
+            . ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'beuser', [$backendUser->getUserName()])) . '" '
             . ' data-button-close-text="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
             . '>' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
     }

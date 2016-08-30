@@ -27,8 +27,8 @@ class StructureHasRecordConstraint extends AbstractStructureRecordConstraint
      */
     protected function matchesSection(ResponseSection $responseSection)
     {
-        $nonMatchingVariants = array();
-        $remainingRecordVariants = array();
+        $nonMatchingVariants = [];
+        $remainingRecordVariants = [];
 
         foreach ($responseSection->findStructures($this->recordIdentifier, $this->recordField) as $path => $structure) {
             if (empty($structure) || !is_array($structure)) {
@@ -36,7 +36,7 @@ class StructureHasRecordConstraint extends AbstractStructureRecordConstraint
                 return false;
             }
 
-            $remainingRecords = array();
+            $remainingRecords = [];
             $nonMatchingValues = $this->getNonMatchingValues($structure);
 
             if ($this->strict) {

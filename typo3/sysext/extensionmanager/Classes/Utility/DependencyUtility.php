@@ -53,7 +53,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $availableExtensions = array();
+    protected $availableExtensions = [];
 
     /**
      * @var string
@@ -63,7 +63,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $dependencyErrors = array();
+    protected $dependencyErrors = [];
 
     /**
      * @var bool
@@ -147,7 +147,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function checkDependencies(Extension $extension)
     {
-        $this->dependencyErrors = array();
+        $this->dependencyErrors = [];
         $dependencies = $extension->getDependencies();
         foreach ($dependencies as $dependency) {
             /** @var Dependency $dependency */
@@ -170,12 +170,12 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
                     $extensionKey = $identifier;
                 }
                 if (!isset($this->dependencyErrors[$extensionKey])) {
-                    $this->dependencyErrors[$extensionKey] = array();
+                    $this->dependencyErrors[$extensionKey] = [];
                 }
-                $this->dependencyErrors[$extensionKey][] = array(
+                $this->dependencyErrors[$extensionKey][] = [
                     'code' => $e->getCode(),
                     'message' => $e->getMessage()
-                );
+                ];
             }
         }
     }
@@ -557,10 +557,10 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
         $lowestVersionInteger = $lowestVersion ? VersionNumberUtility::convertVersionNumberToInteger($lowestVersion) : 0;
         $highestVersion = $dependency->getHighestVersion();
         $highestVersionInteger = $highestVersion ? VersionNumberUtility::convertVersionNumberToInteger($highestVersion) : 0;
-        return array(
+        return [
             'lowestIntegerVersion' => $lowestVersionInteger,
             'highestIntegerVersion' => $highestVersionInteger
-        );
+        ];
     }
 
     /**
@@ -570,7 +570,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function findInstalledExtensionsThatDependOnMe($extensionKey)
     {
         $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-        $dependentExtensions = array();
+        $dependentExtensions = [];
         foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
             if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === true) {
                 if (is_array($availableAndInstalledExtension['constraints']) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
@@ -589,7 +589,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getExtensionsSuitableForTypo3Version($extensions)
     {
-        $suitableExtensions = array();
+        $suitableExtensions = [];
         /** @var Extension $extension */
         foreach ($extensions as $extension) {
             /** @var Dependency $dependency */

@@ -29,7 +29,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      *
      * @var array
      */
-    protected $configuration = array();
+    protected $configuration = [];
 
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -65,7 +65,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      *
      * @var array
      */
-    protected $configurationCache = array();
+    protected $configurationCache = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
@@ -123,10 +123,10 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      * @param array $configuration The new configuration
      * @return void
      */
-    public function setConfiguration(array $configuration = array())
+    public function setConfiguration(array $configuration = [])
     {
         // reset 1st level cache
-        $this->configurationCache = array();
+        $this->configurationCache = [];
         $this->extensionName = isset($configuration['extensionName']) ? $configuration['extensionName'] : null;
         $this->pluginName = isset($configuration['pluginName']) ? $configuration['pluginName'] : null;
         $this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
@@ -216,7 +216,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     protected function getExtbaseConfiguration()
     {
         $setup = $this->getTypoScriptSetup();
-        $extbaseConfiguration = array();
+        $extbaseConfiguration = [];
         if (isset($setup['config.']['tx_extbase.'])) {
             $extbaseConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
         }
@@ -240,12 +240,12 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      */
     protected function overrideSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions)
     {
-        $overriddenSwitchableControllerActions = array();
+        $overriddenSwitchableControllerActions = [];
         foreach ($switchableControllerActions as $controllerName => $actions) {
             if (!isset($frameworkConfiguration['controllerConfiguration'][$controllerName])) {
                 continue;
             }
-            $overriddenSwitchableControllerActions[$controllerName] = array('actions' => $actions);
+            $overriddenSwitchableControllerActions[$controllerName] = ['actions' => $actions];
             $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'];
             if (!is_array($nonCacheableActions)) {
                 // There are no non-cacheable actions, thus we can directly continue

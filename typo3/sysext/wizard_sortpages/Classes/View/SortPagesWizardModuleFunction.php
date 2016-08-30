@@ -45,7 +45,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
             $sys_pages = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
             $sortByField = GeneralUtility::_GP('sortByField');
             if ($sortByField) {
-                $menuItems = array();
+                $menuItems = [];
                 if ($sortByField === 'title' || $sortByField === 'subtitle' || $sortByField === 'crdate' || $sortByField === 'tstamp') {
                     $menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', $sortByField, '', false);
                 } elseif ($sortByField === 'REV') {
@@ -55,11 +55,11 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 if (!empty($menuItems)) {
                     $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                     $menuItems = array_reverse($menuItems);
-                    $cmd = array();
+                    $cmd = [];
                     foreach ($menuItems as $r) {
                         $cmd['pages'][$r['uid']]['move'] = $this->pObj->id;
                     }
-                    $tce->start(array(), $cmd);
+                    $tce->start([], $cmd);
                     $tce->process_cmdmap();
                     BackendUtility::setUpdateSignal('updatePageTree');
                 }
@@ -67,7 +67,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
             $menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', false);
 
             if (!empty($menuItems)) {
-                $lines = array();
+                $lines = [];
                 $lines[] = '<thead><tr>';
                 $lines[] = '<th>' . $lang->getLL('wiz_changeOrder_title') . '</th>';
                 $lines[] = '<th>' . $lang->getLL('wiz_changeOrder_subtitle') . '</th>';
@@ -90,7 +90,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 $theCode .= '<div class="table-fit"><table class="table table-striped table-hover">' . implode('', $lines) . '</table></div>';
 
                 // Menu:
-                $lines = array();
+                $lines = [];
                 $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_title'), 'title');
                 $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_subtitle'), 'subtitle');
                 $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_tChange'), 'tstamp');
@@ -125,10 +125,10 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
     protected function wiz_linkOrder($title, $order)
     {
         $href = BackendUtility::getModuleUrl('web_func',
-            array(
+            [
                 'id' => $GLOBALS['SOBE']->id,
                 'sortByField' => $order
-            )
+            ]
         );
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($href) . '" '
             . ' data-severity="warning"'

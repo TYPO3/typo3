@@ -29,7 +29,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function getSqlSchemaMigrationService()
     {
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $databaseConnection */
-        $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', false);
+        $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, ['isDbalEnabled'], [], '', false);
         $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(false));
 
         return $subject;
@@ -43,13 +43,13 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function getDbalEnabledSqlSchemaMigrationService()
     {
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $databaseConnection */
-        $databaseConnection = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        $databaseConnection = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, ['dummy'], [], '', false);
         $databaseConnection->_set(
             'dbmsSpecifics',
             new \TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics()
         );
 
-        $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled', 'getDatabaseConnection'), array(), '', false);
+        $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, ['isDbalEnabled', 'getDatabaseConnection'], [], '', false);
         $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(true));
         $subject->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($databaseConnection));
 
@@ -67,16 +67,16 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $result = $subject->getFieldDefinitions_fileContent($inputString);
 
         $this->assertEquals(
-            array(
-                'atable' => array(
-                    'fields' => array(
+            [
+                'atable' => [
+                    'fields' => [
                         'aFieldName' => 'int(11) unsigned default \'0\'',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'COLLATE' => '',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             $result
         );
     }
@@ -88,41 +88,41 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'varchar(999) DEFAULT \'0\' NOT NULL'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'varchar(255) DEFAULT \'0\' NOT NULL'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+            [
+                'extra' => [],
+                'diff' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'varchar(999) DEFAULT \'0\' NOT NULL'
-                        )
-                    )
-                ),
-                'diff_currentValues' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+                        ]
+                    ]
+                ],
+                'diff_currentValues' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'varchar(255) DEFAULT \'0\' NOT NULL'
-                        )
-                    )
-                )
-            )
+                        ]
+                    ]
+                ]
+            ]
         );
     }
 
@@ -133,41 +133,41 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'varchar(999) NULL'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'varchar(255) NULL'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+            [
+                'extra' => [],
+                'diff' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'varchar(999) NULL'
-                        )
-                    )
-                ),
-                'diff_currentValues' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+                        ]
+                    ]
+                ],
+                'diff_currentValues' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'varchar(255) NULL'
-                        )
-                    )
-                )
-            )
+                        ]
+                    ]
+                ]
+            ]
         );
     }
 
@@ -178,43 +178,43 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'varchar(999) DEFAULT \'0\' NOT NULL'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'varchar(255) DEFAULT \'0\' NOT NULL'
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             '',
             true
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+            [
+                'extra' => [],
+                'diff' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'varchar(999) DEFAULT \'0\''
-                        )
-                    )
-                ),
-                'diff_currentValues' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+                        ]
+                    ]
+                ],
+                'diff_currentValues' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'varchar(255) DEFAULT \'0\''
-                        )
-                    )
-                )
-            )
+                        ]
+                    ]
+                ]
+            ]
         );
     }
 
@@ -225,29 +225,29 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null,
-            )
+            ]
         );
     }
 
@@ -258,29 +258,29 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'subtype' => 'SET(\'Tx_MyExt_Domain_Model_Xyz\',\'Tx_MyExt_Domain_Model_Abc\',\'\') NOT NULL DEFAULT \'\',',
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'subtype' => 'set(\'Tx_MyExt_Domain_Model_Xyz\',\'Tx_MyExt_Domain_Model_Abc\',\'\') NOT NULL DEFAULT \'\',',
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null,
-            )
+            ]
         );
     }
 
@@ -291,28 +291,28 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'PRIMARY KEY (md5hash)',
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
-                        'PRIMARY KEY (md5hash)'),
-                )
-            )
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
+                        'PRIMARY KEY (md5hash)'],
+                ]
+            ]
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null,
-            )
+            ]
         );
     }
 
@@ -323,33 +323,33 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'keys' => array(
+            [
+                'tx_foo' => [
+                    'keys' => [
                         'foo' => 'SPATIAL foo (foo)'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'keys' => array()
-                )
-            )
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'keys' => []
+                ]
+            ]
         );
 
         $this->assertEquals(
             $differenceArray,
-            array(
-                'extra' => array(
-                    'tx_foo' => array(
-                        'keys' => array(
+            [
+                'extra' => [
+                    'tx_foo' => [
+                        'keys' => [
                             'foo' => 'SPATIAL foo (foo)'
-                        )
-                    )
-                ),
-                'diff' => array(),
+                        ]
+                    ]
+                ],
+                'diff' => [],
                 'diff_currentValues' => null
-            )
+            ]
         );
     }
 
@@ -360,7 +360,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $fieldDefinition = $subject->assembleFieldDefinition(
-            array(
+            [
                 'Field' => 'uid',
                 'Type' => 'int(11)',
                 'Null' => 'NO',
@@ -368,7 +368,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Default' => null,
                 'Extra' => 'auto_increment',
                 'Comment' => 'I am a comment',
-            )
+            ]
         );
 
         $this->assertSame(
@@ -384,14 +384,14 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $fieldDefinition = $subject->assembleFieldDefinition(
-            array(
+            [
                 'Field' => 'uid',
                 'Type' => 'int(11)',
                 'Null' => 'NO',
                 'Key' => 'PRI',
                 'Default' => null,
                 'Extra' => 'auto_increment',
-            )
+            ]
         );
 
         $this->assertSame(
@@ -407,35 +407,35 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertSame(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null,
-            )
+            ]
         );
     }
 
@@ -446,33 +446,33 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getDbalEnabledSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array()
-                )
-            )
+                    ],
+                    'extra' => []
+                ]
+            ]
         );
 
         $this->assertSame(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null,
-            )
+            ]
         );
     }
 
@@ -483,47 +483,47 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'INT(11) UNSIGNED DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertSame(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+            [
+                'extra' => [],
+                'diff' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'int(11) UNSIGNED DEFAULT \'0\' NOT NULL',
-                        ),
-                    )
-                ),
-                'diff_currentValues' => array(
-                    'tx_foo' => array(
-                        'fields' => array(
+                        ],
+                    ]
+                ],
+                'diff_currentValues' => [
+                    'tx_foo' => [
+                        'fields' => [
                             'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
-                        ),
-                    )
-                )
-            )
+                        ],
+                    ]
+                ]
+            ]
         );
     }
 
@@ -534,35 +534,35 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getDbalEnabledSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'INT(11) UNSIGNED DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'fields' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
                         'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
-                    ),
-                    'extra' => array(
+                    ],
+                    'extra' => [
                         'ENGINE' => 'InnoDB'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertSame(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null
-            )
+            ]
         );
     }
 
@@ -573,29 +573,29 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getDbalEnabledSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'keys' => array(
+            [
+                'tx_foo' => [
+                    'keys' => [
                         'foo' => 'KEY foo (foo(199))'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'keys' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'keys' => [
                         'foo' => 'KEY foo (foo)'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertSame(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(),
+            [
+                'extra' => [],
+                'diff' => [],
                 'diff_currentValues' => null,
-            )
+            ]
         );
     }
 
@@ -606,41 +606,41 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getSqlSchemaMigrationService();
         $differenceArray = $subject->getDatabaseExtra(
-            array(
-                'tx_foo' => array(
-                    'keys' => array(
+            [
+                'tx_foo' => [
+                    'keys' => [
                         'foo' => 'KEY foo (foo(199))'
-                    )
-                )
-            ),
-            array(
-                'tx_foo' => array(
-                    'keys' => array(
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'keys' => [
                         'foo' => 'KEY foo (foo)'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->assertSame(
             $differenceArray,
-            array(
-                'extra' => array(),
-                'diff' => array(
-                    'tx_foo' => array(
-                        'keys' => array(
+            [
+                'extra' => [],
+                'diff' => [
+                    'tx_foo' => [
+                        'keys' => [
                             'foo' => 'KEY foo (foo(199))'
-                        )
-                    )
-                ),
-                'diff_currentValues' => array(
-                    'tx_foo' => array(
-                        'keys' => array(
+                        ]
+                    ]
+                ],
+                'diff_currentValues' => [
+                    'tx_foo' => [
+                        'keys' => [
                             'foo' => 'KEY foo (foo)'
-                        )
-                    )
-                )
-            )
+                        ]
+                    ]
+                ]
+            ]
         );
     }
 }

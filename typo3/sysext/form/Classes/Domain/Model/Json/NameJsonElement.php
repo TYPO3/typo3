@@ -32,30 +32,30 @@ class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElem
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(),
-        'legend' => array(
+    public $configuration = [
+        'attributes' => [],
+        'legend' => [
             'value' => ''
-        ),
-        'various' => array(
+        ],
+        'various' => [
             'prefix' => false,
             'suffix' => false,
             'middleName' => false
-        )
-    );
+        ]
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'class',
         'dir',
         'id',
         'lang',
         'style'
-    );
+    ];
 
     /**
      * Set all the parameters for this object
@@ -87,7 +87,7 @@ class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElem
                 if ((int)$key && strpos($key, '.') === false) {
                     if (isset($parameters[$key . '.'])) {
                         $childElementArguments = $parameters[$key . '.'];
-                        if (in_array($childElementArguments['name'], array('prefix', 'suffix', 'middleName'))) {
+                        if (in_array($childElementArguments['name'], ['prefix', 'suffix', 'middleName'])) {
                             $this->configuration['various'][$childElementArguments['name']] = true;
                         }
                     }

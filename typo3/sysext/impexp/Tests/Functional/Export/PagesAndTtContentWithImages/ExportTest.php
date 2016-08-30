@@ -21,9 +21,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase
 {
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
-    );
+    ];
 
     protected function setUp()
     {
@@ -65,10 +65,10 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
         $out = $this->export->compileMemoryToFileContent('xml');
 
-        $expectedErrors = array(
+        $expectedErrors = [
             'File size of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added with current size.',
             'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
-        );
+        ];
         $errors = $this->export->errorLog;
         $this->assertSame($expectedErrors, $errors);
 
@@ -97,15 +97,15 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     protected function compileExportPagesAndRelatedTtContentWithImages()
     {
         $this->export->setRecordTypesIncludeFields(
-            array(
-                'pages' => array(
+            [
+                'pages' => [
                     'title',
                     'deleted',
                     'doktype',
                     'hidden',
                     'perms_everybody'
-                ),
-                'tt_content' => array(
+                ],
+                'tt_content' => [
                     'CType',
                     'header',
                     'header_link',
@@ -113,15 +113,15 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'hidden',
                     'image',
                     't3ver_oid'
-                ),
-                'sys_language' => array(
+                ],
+                'sys_language' => [
                     'uid',
                     'pid',
                     'hidden',
                     'title',
                     'flag'
-                ),
-                'sys_file_reference' => array(
+                ],
+                'sys_file_reference' => [
                     'uid_local',
                     'uid_foreign',
                     'tablenames',
@@ -132,8 +132,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'description',
                     'alternative',
                     'link',
-                ),
-                'sys_file' => array(
+                ],
+                'sys_file' => [
                     'storage',
                     'type',
                     'metadata',
@@ -146,8 +146,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'size',
                     'creation_date',
                     'modification_date',
-                ),
-                'sys_file_storage' => array(
+                ],
+                'sys_file_storage' => [
                     'name',
                     'description',
                     'driver',
@@ -157,8 +157,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'is_public',
                     'is_writable',
                     'is_online'
-                ),
-                'sys_file_metadata' => array(
+                ],
+                'sys_file_metadata' => [
                     'title',
                     'width',
                     'height',
@@ -167,16 +167,16 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'file',
                     'sys_language_uid',
                     'l10n_parent'
-                )
-            )
+                ]
+            ]
         );
 
-        $this->export->relOnlyTables = array(
+        $this->export->relOnlyTables = [
             'sys_file',
             'sys_file_metadata',
             'sys_file_storage',
             'sys_language'
-        );
+        ];
 
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));

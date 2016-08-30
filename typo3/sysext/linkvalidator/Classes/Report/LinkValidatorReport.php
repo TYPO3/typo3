@@ -43,7 +43,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      *
      * @var array
      */
-    protected $pageRecord = array();
+    protected $pageRecord = [];
 
     /**
      * Information, if the module is accessible for the current user or not
@@ -71,14 +71,14 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      *
      * @var array
      */
-    protected $modTS = array();
+    protected $modTS = [];
 
     /**
      * List of available link types to check defined in the TSconfig
      *
      * @var array
      */
-    protected $availableOptions = array();
+    protected $availableOptions = [];
 
     /**
      * List of link types currently chosen in the statistics table
@@ -86,7 +86,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      *
      * @var array
      */
-    protected $checkOpt = array();
+    protected $checkOpt = [];
 
     /**
      * Html for the statistics table with the checkboxes of the link types
@@ -114,7 +114,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     /**
      * @var \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface[]
      */
-    protected $hookObjectsArr = array();
+    protected $hookObjectsArr = [];
 
     /**
      * @var string
@@ -212,18 +212,18 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function createTabs()
     {
-        $menuItems = array(
-            0 => array(
+        $menuItems = [
+            0 => [
                 'label' => $this->getLanguageService()->getLL('Report'),
                 'content' => $this->flush(true)
-            ),
-        );
+            ],
+        ];
 
         if ((bool)$this->modTS['showCheckLinkTab']) {
-            $menuItems[1] = array(
+            $menuItems[1] = [
                 'label' => $this->getLanguageService()->getLL('CheckLink'),
                 'content' => $this->flush()
-            );
+            ];
         }
 
         // @todo: Use $this-moduleTemplate as soon as this class extends from AbstractModule
@@ -272,7 +272,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function updateBrokenLinks()
     {
-        $searchFields = array();
+        $searchFields = [];
         // Get the searchFields from TypoScript
         foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
@@ -355,15 +355,15 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     protected function getLevelSelector()
     {
         // Build level selector
-        $options = array();
-        $availableOptions = array(
+        $options = [];
+        $availableOptions = [
             0 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
             1 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
             2 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
             3 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
             4 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
             999 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
-        );
+        ];
         foreach ($availableOptions as $optionValue => $optionLabel) {
             $options[] = '<option value="' . $optionValue . '"' . ($optionValue === (int)$this->searchLevel ? ' selected="selected"' : '') . '>' . htmlspecialchars($optionLabel) . '</option>';
         }
@@ -518,14 +518,14 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     protected function startTable()
     {
         // Listing head
-        $makerTableHead = array(
+        $makerTableHead = [
             'tablehead_path' => $this->getLanguageService()->getLL('list.tableHead.path'),
             'tablehead_element' => $this->getLanguageService()->getLL('list.tableHead.element'),
             'tablehead_headlink' => $this->getLanguageService()->getLL('list.tableHead.headlink'),
             'tablehead_linktarget' => $this->getLanguageService()->getLL('list.tableHead.linktarget'),
             'tablehead_linkmessage' => $this->getLanguageService()->getLL('list.tableHead.linkmessage'),
             'tablehead_lastcheck' => $this->getLanguageService()->getLL('list.tableHead.lastCheck'),
-        );
+        ];
 
         // Add CSH to the header of each column
         foreach ($makerTableHead as $column => $label) {
@@ -546,7 +546,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function renderTableRow($table, array $row, $brokenLinksItemTemplate)
     {
-        $markerArray = array();
+        $markerArray = [];
         $fieldName = '';
         // Restore the linktype object
         $hookObj = $this->hookObjectsArr[$row['link_type']];
@@ -627,7 +627,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function getCheckOptions(array $brokenLinkOverView, $prefix = '')
     {
-        $markerArray = array();
+        $markerArray = [];
         if (!empty($prefix)) {
             $additionalAttr = ' class="' . $prefix . '"';
         } else {
@@ -648,9 +648,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             ) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
                     if (in_array($type, $linktypes)) {
-                        $hookSectionMarker = array(
+                        $hookSectionMarker = [
                             'count' => $brokenLinkOverView[$type] ?: '0',
-                        );
+                        ];
 
                         $translation = $this->getLanguageService()->getLL('hooks.' . $type) ?: $type;
                         $hookSectionMarker['option'] = '<input type="checkbox"' . $additionalAttr . ' id="' . $prefix . 'SET_' . $type . '" name="' . $prefix
@@ -682,11 +682,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function getDocHeaderButtons()
     {
-        return array(
+        return [
             'csh' => BackendUtility::cshItem('_MOD_web_func', ''),
             'shortcut' => $this->getShortcutButton(),
             'save' => ''
-        );
+        ];
     }
 
     /**
@@ -710,7 +710,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function getTemplateMarkers()
     {
-        return array(
+        return [
             'FUNC_TITLE' => $this->getLanguageService()->getLL('report.func.title'),
             'CHECKOPTIONS_TITLE' => $this->getLanguageService()->getLL('report.statistics.header'),
             'FUNC_MENU' => $this->getLevelSelector(),
@@ -719,7 +719,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
             'REFRESH' => '<input type="submit" class="btn btn-default t3js-update-button" name="refreshLinkList" id="refreshLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh-link-list')) . '" />',
             'UPDATE' => '',
-        );
+        ];
     }
 
     /**
@@ -729,7 +729,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function getTemplateMarkersCheck()
     {
-        return array(
+        return [
             'FUNC_TITLE' => $this->getLanguageService()->getLL('checklinks.func.title'),
             'CHECKOPTIONS_TITLE' => $this->getLanguageService()->getLL('checklinks.statistics.header'),
             'FUNC_MENU' => $this->getLevelSelector(),
@@ -738,7 +738,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
             'REFRESH' => '',
             'UPDATE' => '<input type="submit" class="btn btn-default t3js-update-button" name="updateLinkList" id="updateLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_update')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_update-link-list')) . '"/>',
-        );
+        ];
     }
 
     /**

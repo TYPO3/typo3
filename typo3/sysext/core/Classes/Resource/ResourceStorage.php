@@ -101,7 +101,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @var array
      */
-    protected $fileMounts = array();
+    protected $fileMounts = [];
 
     /**
      * The file permissions of the user (and their group) merged together and
@@ -109,7 +109,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @var array
      */
-    protected $userPermissions = array();
+    protected $userPermissions = [];
 
     /**
      * The capabilities of this storage as defined in the storage record.
@@ -153,7 +153,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @var array
      */
-    protected $fileAndFolderNameFilters = array();
+    protected $fileAndFolderNameFilters = [];
 
     /**
      * Levels numbers used to generate hashed subfolders in the processing folder
@@ -441,7 +441,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\FolderDoesNotExistException
      * @return void
      */
-    public function addFileMount($folderIdentifier, $additionalData = array())
+    public function addFileMount($folderIdentifier, $additionalData = [])
     {
         // check for the folder before we add it as a filemount
         if ($this->driver->folderExists($folderIdentifier) === false) {
@@ -462,11 +462,11 @@ class ResourceStorage implements ResourceStorageInterface
             return;
         }
         if (empty($additionalData)) {
-            $additionalData = array(
+            $additionalData = [
                 'path' => $folderIdentifier,
                 'title' => $folderIdentifier,
                 'folder' => $folderObject
-            );
+            ];
         } else {
             $additionalData['folder'] = $folderObject;
             if (!isset($additionalData['title'])) {
@@ -610,11 +610,11 @@ class ResourceStorage implements ResourceStorageInterface
             return false;
         }
         $isReadCheck = false;
-        if (in_array($action, array('read', 'copy', 'move', 'replace'), true)) {
+        if (in_array($action, ['read', 'copy', 'move', 'replace'], true)) {
             $isReadCheck = true;
         }
         $isWriteCheck = false;
-        if (in_array($action, array('add', 'write', 'move', 'rename', 'replace', 'delete'), true)) {
+        if (in_array($action, ['add', 'write', 'move', 'rename', 'replace', 'delete'], true)) {
             $isWriteCheck = true;
         }
         // Check 3: Does the user have the right to perform the action?
@@ -674,11 +674,11 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $isReadCheck = false;
-        if (in_array($action, array('read', 'copy'), true)) {
+        if (in_array($action, ['read', 'copy'], true)) {
             $isReadCheck = true;
         }
         $isWriteCheck = false;
-        if (in_array($action, array('add', 'move', 'write', 'delete', 'rename'), true)) {
+        if (in_array($action, ['add', 'move', 'write', 'delete', 'rename'], true)) {
             $isWriteCheck = true;
         }
         // Check 2: Does the user has the right to perform the action?
@@ -1278,7 +1278,7 @@ class ResourceStorage implements ResourceStorageInterface
         $publicUrl = null;
         if ($this->isOnline()) {
             // Pre-process the public URL by an accordant slot
-            $this->emitPreGeneratePublicUrlSignal($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
+            $this->emitPreGeneratePublicUrlSignal($resourceObject, $relativeToCurrentScript, ['publicUrl' => &$publicUrl]);
 
             if (
                 $publicUrl === null
@@ -1295,7 +1295,7 @@ class ResourceStorage implements ResourceStorageInterface
                 }
 
                 if ($publicUrl === null && $resourceObject instanceof FileInterface) {
-                    $queryParameterArray = array('eID' => 'dumpFile', 't' => '');
+                    $queryParameterArray = ['eID' => 'dumpFile', 't' => ''];
                     if ($resourceObject instanceof File) {
                         $queryParameterArray['f'] = $resourceObject->getUid();
                         $queryParameterArray['t'] = 'f';
@@ -1389,7 +1389,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @return array
      * @internal
      */
-    public function getFileInfoByIdentifier($identifier, array $propertiesToExtract = array())
+    public function getFileInfoByIdentifier($identifier, array $propertiesToExtract = [])
     {
         return $this->driver->getFileInfoByIdentifier($identifier, $propertiesToExtract);
     }
@@ -1401,7 +1401,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function unsetFileAndFolderNameFilters()
     {
-        $this->fileAndFolderNameFilters = array();
+        $this->fileAndFolderNameFilters = [];
     }
 
     /**
@@ -1486,10 +1486,10 @@ class ResourceStorage implements ResourceStorageInterface
 
         $rows = $this->getFileIndexRepository()->findByFolder($folder);
 
-        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : array();
+        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : [];
         $fileIdentifiers = array_values($this->driver->getFilesInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev));
 
-        $items = array();
+        $items = [];
         foreach ($fileIdentifiers as $identifier) {
             if (isset($rows[$identifier])) {
                 $fileObject = $this->getFileFactory()->getFileObject($rows[$identifier]['uid'], $rows[$identifier]);
@@ -1516,7 +1516,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getFileIdentifiersInFolder($folderIdentifier, $useFilters = true, $recursive = false)
     {
-        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : array();
+        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : [];
         return $this->driver->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filters);
     }
 
@@ -1530,7 +1530,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function countFilesInFolder(Folder $folder, $useFilters = true, $recursive = false)
     {
         $this->assureFolderReadPermission($folder);
-        $filters = $useFilters ? $this->fileAndFolderNameFilters : array();
+        $filters = $useFilters ? $this->fileAndFolderNameFilters : [];
         return $this->driver->countFilesInFolder($folder->getIdentifier(), $recursive, $filters);
     }
 
@@ -1542,7 +1542,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getFolderIdentifiersInFolder($folderIdentifier, $useFilters = true, $recursive = false)
     {
-        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : array();
+        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : [];
         return $this->driver->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $filters);
     }
 
@@ -1569,7 +1569,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getProcessingFolders()
     {
         if ($this->processingFolders === null) {
-            $this->processingFolders = array();
+            $this->processingFolders = [];
             $this->processingFolders[] = $this->getProcessingFolder();
             /** @var $storageRepository StorageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
@@ -1659,7 +1659,7 @@ class ResourceStorage implements ResourceStorageInterface
         // See for more information: http://support.microsoft.com/kb/323308
         header("Cache-Control: ''");
         header('Last-Modified: ' .
-            gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), array('mtime')))) . ' GMT',
+            gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), ['mtime']))) . ' GMT',
             true,
             200
         );
@@ -1831,13 +1831,13 @@ class ResourceStorage implements ResourceStorageInterface
                 if (!$file instanceof AbstractFile) {
                     throw new \RuntimeException('The given file is not of type AbstractFile.', 1384209025);
                 }
-                $file->updateProperties(array('identifier' => $newIdentifier));
+                $file->updateProperties(['identifier' => $newIdentifier]);
             } else {
                 $tempPath = $file->getForLocalProcessing();
                 $newIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
                 $sourceStorage->driver->deleteFile($file->getIdentifier());
                 if ($file instanceof File) {
-                    $file->updateProperties(array('storage' => $this->getUid(), 'identifier' => $newIdentifier));
+                    $file->updateProperties(['storage' => $this->getUid(), 'identifier' => $newIdentifier]);
                 }
             }
             $this->getIndexer()->updateIndexEntry($file);
@@ -1875,7 +1875,7 @@ class ResourceStorage implements ResourceStorageInterface
         try {
             $newIdentifier = $this->driver->renameFile($file->getIdentifier(), $sanitizedTargetFileName);
             if ($file instanceof File) {
-                $file->updateProperties(array('identifier' => $newIdentifier));
+                $file->updateProperties(['identifier' => $newIdentifier]);
             }
             $this->getIndexer()->updateIndexEntry($file);
         } catch (\RuntimeException $e) {
@@ -1962,8 +1962,8 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function getAllFileObjectsInFolder(Folder $folder)
     {
-        $files = array();
-        $folderQueue = array($folder);
+        $files = [];
+        $folderQueue = [$folder];
         while (!empty($folderQueue)) {
             $folder = array_shift($folderQueue);
             foreach ($folder->getSubfolders() as $subfolder) {
@@ -2022,7 +2022,7 @@ class ResourceStorage implements ResourceStorageInterface
         // Update the identifier and storage of all file objects
         foreach ($fileObjects as $oldIdentifier => $fileObject) {
             $newIdentifier = $fileMappings[$oldIdentifier];
-            $fileObject->updateProperties(array('storage' => $this->getUid(), 'identifier' => $newIdentifier));
+            $fileObject->updateProperties(['storage' => $this->getUid(), 'identifier' => $newIdentifier]);
             $this->getIndexer()->updateIndexEntry($fileObject);
         }
         $returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
@@ -2133,7 +2133,7 @@ class ResourceStorage implements ResourceStorageInterface
         // Update the identifier of all file objects
         foreach ($fileObjects as $oldIdentifier => $fileObject) {
             $newIdentifier = $fileMappings[$oldIdentifier];
-            $fileObject->updateProperties(array('identifier' => $newIdentifier));
+            $fileObject->updateProperties(['identifier' => $newIdentifier]);
             $this->getIndexer()->updateIndexEntry($fileObject);
         }
         $returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
@@ -2208,7 +2208,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getFoldersInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = true, $recursive = false, $sort = '', $sortRev = false)
     {
-        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : array();
+        $filters = $useFilters == true ? $this->fileAndFolderNameFilters : [];
 
         $folderIdentifiers = $this->driver->getFoldersInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev);
 
@@ -2219,7 +2219,7 @@ class ResourceStorage implements ResourceStorageInterface
                 unset($folderIdentifiers[$processingIdentifier]);
             }
         }
-        $folders = array();
+        $folders = [];
         foreach ($folderIdentifiers as $folderIdentifier) {
             $folders[$folderIdentifier] = $this->getFolder($folderIdentifier, true);
         }
@@ -2236,7 +2236,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function countFoldersInFolder(Folder $folder, $useFilters = true, $recursive = false)
     {
         $this->assureFolderReadPermission($folder);
-        $filters = $useFilters ? $this->fileAndFolderNameFilters : array();
+        $filters = $useFilters ? $this->fileAndFolderNameFilters : [];
         return $this->driver->countFoldersInFolder($folder->getIdentifier(), $recursive, $filters);
     }
 
@@ -2421,7 +2421,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitSanitizeFileNameSignal($fileName, Folder $targetFolder)
     {
-        list($fileName) = $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_SanitizeFileName, array($fileName, $targetFolder, $this, $this->driver));
+        list($fileName) = $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_SanitizeFileName, [$fileName, $targetFolder, $this, $this->driver]);
         return $fileName;
     }
 
@@ -2435,7 +2435,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileAdd, [&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver]);
         return $targetFileName;
     }
 
@@ -2448,7 +2448,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileAddSignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileAdd, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileAdd, [$file, $targetFolder]);
     }
 
     /**
@@ -2460,7 +2460,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileCopy, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileCopy, [$file, $targetFolder]);
     }
 
     /**
@@ -2472,7 +2472,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCopy, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCopy, [$file, $targetFolder]);
     }
 
     /**
@@ -2484,7 +2484,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileMove, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileMove, [$file, $targetFolder]);
     }
 
     /**
@@ -2497,7 +2497,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder, FolderInterface $originalFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileMove, array($file, $targetFolder, $originalFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileMove, [$file, $targetFolder, $originalFolder]);
     }
 
     /**
@@ -2509,7 +2509,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileRenameSignal(FileInterface $file, $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileRename, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileRename, [$file, $targetFolder]);
     }
 
     /**
@@ -2521,7 +2521,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileRenameSignal(FileInterface $file, $sanitizedTargetFileName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileRename, array($file, $sanitizedTargetFileName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileRename, [$file, $sanitizedTargetFileName]);
     }
 
     /**
@@ -2533,7 +2533,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileReplaceSignal(FileInterface $file, $localFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileReplace, array($file, $localFilePath));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileReplace, [$file, $localFilePath]);
     }
 
     /**
@@ -2545,7 +2545,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileReplaceSignal(FileInterface $file, $localFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileReplace, array($file, $localFilePath));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileReplace, [$file, $localFilePath]);
     }
 
     /**
@@ -2556,7 +2556,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileCreateSignal($newFileIdentifier, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCreate, array($newFileIdentifier, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCreate, [$newFileIdentifier, $targetFolder]);
     }
 
     /**
@@ -2567,7 +2567,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileDeleteSignal(FileInterface $file)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileDelete, array($file));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileDelete, [$file]);
     }
 
     /**
@@ -2578,7 +2578,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileDeleteSignal(FileInterface $file)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileDelete, array($file));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileDelete, [$file]);
     }
 
     /**
@@ -2590,7 +2590,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileSetContentsSignal(FileInterface $file, $content)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileSetContents, array($file, $content));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileSetContents, [$file, $content]);
     }
 
     /**
@@ -2602,7 +2602,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderAddSignal(Folder $targetFolder, $name)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderAdd, array($targetFolder, $name));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderAdd, [$targetFolder, $name]);
     }
 
     /**
@@ -2613,7 +2613,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderAddSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderAdd, array($folder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderAdd, [$folder]);
     }
 
     /**
@@ -2626,7 +2626,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderCopy, array($folder, $targetFolder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderCopy, [$folder, $targetFolder, $newName]);
     }
 
     /**
@@ -2639,7 +2639,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderCopy, array($folder, $targetFolder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderCopy, [$folder, $targetFolder, $newName]);
     }
 
     /**
@@ -2652,7 +2652,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderMove, array($folder, $targetFolder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderMove, [$folder, $targetFolder, $newName]);
     }
 
     /**
@@ -2666,7 +2666,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName, Folder $originalFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderMove, array($folder, $targetFolder, $newName, $originalFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderMove, [$folder, $targetFolder, $newName, $originalFolder]);
     }
 
     /**
@@ -2678,7 +2678,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderRenameSignal(Folder $folder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderRename, array($folder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderRename, [$folder, $newName]);
     }
 
     /**
@@ -2690,7 +2690,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderRenameSignal(Folder $folder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderRename, array($folder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderRename, [$folder, $newName]);
     }
 
     /**
@@ -2701,7 +2701,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderDeleteSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderDelete, array($folder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderDelete, [$folder]);
     }
 
     /**
@@ -2712,7 +2712,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderDeleteSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderDelete, array($folder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderDelete, [$folder]);
     }
 
     /**
@@ -2724,7 +2724,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreGeneratePublicUrlSignal(ResourceInterface $resourceObject, $relativeToCurrentScript, array $urlData)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreGeneratePublicUrl, array($this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreGeneratePublicUrl, [$this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData]);
     }
 
     /**

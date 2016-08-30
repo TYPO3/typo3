@@ -21,16 +21,16 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase
 {
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
             'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
             'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension'
-    );
+    ];
 
     protected function setUp()
     {
@@ -48,23 +48,23 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     public function exportPagesAndRelatedTtContent()
     {
         $this->export->setRecordTypesIncludeFields(
-            array(
-                'pages' => array(
+            [
+                'pages' => [
                     'title',
                     'deleted',
                     'doktype',
                     'hidden',
                     'perms_everybody'
-                ),
-                'tt_content' => array(
+                ],
+                'tt_content' => [
                     'CType',
                     'header',
                     'header_link',
                     'deleted',
                     'hidden',
                     't3ver_oid'
-                ),
-                'sys_file' => array(
+                ],
+                'sys_file' => [
                     'storage',
                     'type',
                     'metadata',
@@ -77,13 +77,13 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'size',
                     'creation_date',
                     'modification_date',
-                ),
-            )
+                ],
+            ]
         );
 
-        $this->export->relOnlyTables = array(
+        $this->export->relOnlyTables = [
                 'sys_file',
-        );
+        ];
 
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));

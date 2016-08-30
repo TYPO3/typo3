@@ -41,7 +41,7 @@ interface BackendInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null);
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null);
 
     /**
      * Loads data from the cache.

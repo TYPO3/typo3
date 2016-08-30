@@ -28,7 +28,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
@@ -40,7 +40,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
     public function renderCorrectlySetsTagName()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName'))
+            ->setMethods(['setTagName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
@@ -56,7 +56,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('addAttribute', 'setContent', 'render'))
+            ->setMethods(['addAttribute', 'setContent', 'render'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'password');
@@ -66,10 +66,10 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
         $mockTagBuilder->expects($this->once())->method('render');
         $this->viewHelper->_set('tag', $mockTagBuilder);
 
-        $arguments = array(
+        $arguments = [
             'name' => 'NameOfTextbox',
             'value' => 'Current value'
-        );
+        ];
         $this->viewHelper->setArguments($arguments);
 
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());

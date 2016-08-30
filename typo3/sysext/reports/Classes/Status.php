@@ -113,13 +113,13 @@ class Status
      */
     public function __toString()
     {
-        $severity = array(
+        $severity = [
             self::NOTICE => 'NOTE',
             self::INFO => 'INFO',
             self::OK => 'OK',
             self::WARNING => 'WARN',
             self::ERROR => 'ERR'
-        );
+        ];
         // Max length 80 characters
         $stringRepresentation = str_pad(('[' . $severity[$this->severity] . ']'), 7) . str_pad($this->title, 40) . ' - ' . substr($this->value, 0, 30);
         return $stringRepresentation;

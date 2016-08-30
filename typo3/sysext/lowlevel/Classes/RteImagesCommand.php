@@ -74,21 +74,21 @@ Reports problems with RTE images';
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'completeFileList' => array('Complete list of used RTEmagic files', 'Both parent and copy are listed here including usage count (which should in theory all be "1"). This list does not exclude files that might be missing.', 1),
-                'RTEmagicFilePairs' => array('Statistical info about RTEmagic files', '(copy used as index)', 0),
-                'doubleFiles' => array('Duplicate RTEmagic image files', 'These files are RTEmagic images found used in multiple records! RTEmagic images should be used by only one record at a time. A large amount of such images probably stems from previous versions of TYPO3 (before 4.2) which did not support making copies automatically of RTEmagic images in case of new copies / versions.', 3),
-                'missingFiles' => array('Missing RTEmagic image files', 'These files are not found in the file system! Should be corrected!', 3),
-                'lostFiles' => array('Lost RTEmagic files from uploads/', 'These files you might be able to delete but only if _all_ RTEmagic images are found by the soft reference parser. If you are using the RTE in third-party extensions it is likely that the soft reference parser is not applied correctly to their RTE and thus these "lost" files actually represent valid RTEmagic images, just not registered. Lost files can be auto-fixed but only if you specifically set "lostFiles" as parameter to the --AUTOFIX option.', 2)
-            ),
-            'RTEmagicFilePairs' => array(),
-            'doubleFiles' => array(),
-            'completeFileList' => array(),
-            'missingFiles' => array(),
-            'lostFiles' => array()
-        );
+            'headers' => [
+                'completeFileList' => ['Complete list of used RTEmagic files', 'Both parent and copy are listed here including usage count (which should in theory all be "1"). This list does not exclude files that might be missing.', 1],
+                'RTEmagicFilePairs' => ['Statistical info about RTEmagic files', '(copy used as index)', 0],
+                'doubleFiles' => ['Duplicate RTEmagic image files', 'These files are RTEmagic images found used in multiple records! RTEmagic images should be used by only one record at a time. A large amount of such images probably stems from previous versions of TYPO3 (before 4.2) which did not support making copies automatically of RTEmagic images in case of new copies / versions.', 3],
+                'missingFiles' => ['Missing RTEmagic image files', 'These files are not found in the file system! Should be corrected!', 3],
+                'lostFiles' => ['Lost RTEmagic files from uploads/', 'These files you might be able to delete but only if _all_ RTEmagic images are found by the soft reference parser. If you are using the RTE in third-party extensions it is likely that the soft reference parser is not applied correctly to their RTE and thus these "lost" files actually represent valid RTEmagic images, just not registered. Lost files can be auto-fixed but only if you specifically set "lostFiles" as parameter to the --AUTOFIX option.', 2]
+            ],
+            'RTEmagicFilePairs' => [],
+            'doubleFiles' => [],
+            'completeFileList' => [],
+            'missingFiles' => [],
+            'lostFiles' => []
+        ];
         // Select all RTEmagic files in the reference table (only from soft references of course)
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
@@ -138,7 +138,7 @@ Reports problems with RTE images';
         // Now, ask for RTEmagic files inside uploads/ folder:
         $cleanerModules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
         $cleanerMode = GeneralUtility::getUserObj($cleanerModules['lost_files'][0]);
-        $resLostFiles = $cleanerMode->main(array(), false, true);
+        $resLostFiles = $cleanerMode->main([], false, true);
         if (is_array($resLostFiles['RTEmagicFiles'])) {
             foreach ($resLostFiles['RTEmagicFiles'] as $fileName) {
                 if (!isset($resultArray['completeFileList'][$fileName])) {
@@ -261,7 +261,7 @@ Reports problems with RTE images';
     {
         if (!is_object($this->fileProcObj)) {
             $this->fileProcObj = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-            $this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+            $this->fileProcObj->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
             $this->fileProcObj->setActionPermissions();
         }
         return $this->fileProcObj;

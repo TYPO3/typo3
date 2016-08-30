@@ -33,7 +33,7 @@ class LinkAnalyzer
      *
      * @var array
      */
-    protected $searchFields = array();
+    protected $searchFields = [];
 
     /**
      * List of comma separated page uids (rootline downwards)
@@ -47,35 +47,35 @@ class LinkAnalyzer
      *
      * @var array
      */
-    protected $linkCounts = array();
+    protected $linkCounts = [];
 
     /**
      * Array of tables and the number of broken external links they contain
      *
      * @var array
      */
-    protected $brokenLinkCounts = array();
+    protected $brokenLinkCounts = [];
 
     /**
      * Array of tables and records containing broken links
      *
      * @var array
      */
-    protected $recordsWithBrokenLinks = array();
+    protected $recordsWithBrokenLinks = [];
 
     /**
      * Array for hooks for own checks
      *
      * @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype[]
      */
-    protected $hookObjectsArr = array();
+    protected $hookObjectsArr = [];
 
     /**
      * Array with information about the current page
      *
      * @var array
      */
-    protected $extPageInTreeInfo = array();
+    protected $extPageInTreeInfo = [];
 
     /**
      * Reference to the current element with table:uid, e.g. pages:85
@@ -96,7 +96,7 @@ class LinkAnalyzer
      *
      * @var array
      */
-    protected $tsConfig = array();
+    protected $tsConfig = [];
 
     /**
      * Fill hookObjectsArr with different link types and possible XClasses.
@@ -134,7 +134,7 @@ class LinkAnalyzer
      * @param bool $considerHidden Defines whether to look into hidden fields
      * @return void
      */
-    public function getLinkStatistics($checkOptions = array(), $considerHidden = false)
+    public function getLinkStatistics($checkOptions = [], $considerHidden = false)
     {
         $results = [];
         $pidList = GeneralUtility::intExplode(',', $this->pidList, true);
@@ -353,7 +353,7 @@ class LinkAnalyzer
      */
     protected function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table)
     {
-        $currentR = array();
+        $currentR = [];
         $linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
         $idRecord = $record['uid'];
         $type = '';
@@ -531,7 +531,7 @@ class LinkAnalyzer
         return $this->getSignalSlotDispatcher()->dispatch(
             self::class,
             'beforeAnalyzeRecord',
-            array($results, $record, $table, $fields, $this)
+            [$results, $record, $table, $fields, $this]
         );
     }
 

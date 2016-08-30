@@ -99,7 +99,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
     public function getFilteredTree($nodeId, $nodeData, $searchFilter)
     {
         if (strval($searchFilter) === '') {
-            return array();
+            return [];
         }
         /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
         $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
@@ -122,7 +122,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
      */
     public function getNodeTypes()
     {
-        $doktypeLabelMap = array();
+        $doktypeLabelMap = [];
         foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $doktypeItemConfig) {
             if ($doktypeItemConfig[1] === '--div--') {
                 continue;
@@ -130,7 +130,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
             $doktypeLabelMap[$doktypeItemConfig[1]] = $doktypeItemConfig[0];
         }
         $doktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
-        $output = array();
+        $output = [];
         $allowedDoktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select'], true);
         $isAdmin = $GLOBALS['BE_USER']->isAdmin();
         // Early return if backend user may not create any doktype
@@ -143,13 +143,13 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
             }
             $label = htmlspecialchars($GLOBALS['LANG']->sL($doktypeLabelMap[$doktype]));
             $icon = $this->iconFactory->getIcon($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype], Icon::SIZE_SMALL)->render();
-            $output[] = array(
+            $output[] = [
                 'nodeType' => $doktype,
                 'cls' => 'typo3-pagetree-topPanel-button',
                 'html' => $icon,
                 'title' => $label,
                 'tooltip' => $label
-            );
+            ];
         }
         return $output;
     }
@@ -164,10 +164,10 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
         /** @var $indicatorProvider \TYPO3\CMS\Backend\Tree\Pagetree\Indicator */
         $indicatorProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\Indicator::class);
         $indicatorHtmlArr = $indicatorProvider->getAllIndicators();
-        $indicator = array(
+        $indicator = [
             'html' => implode(' ', $indicatorHtmlArr),
             '_COUNT' => count($indicatorHtmlArr)
-        );
+        ];
         return $indicator;
     }
 
@@ -180,8 +180,8 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
     {
         $file = 'LLL:EXT:lang/locallang_core.xlf:';
         $indicators = $this->getIndicators();
-        $configuration = array(
-            'LLL' => array(
+        $configuration = [
+            'LLL' => [
                 'copyHint' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.copyHint')),
                 'fakeNodeHint' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'mess.please_wait')),
                 'activeFilterMode' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.activeFilterMode')),
@@ -196,16 +196,16 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
                 'deleteDialogTitle' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem')),
                 'deleteDialogMessage' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning')),
                 'recursiveDeleteDialogMessage' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recursiveDeleteWarning'))
-            ),
-            'Configuration' => array(
+            ],
+            'Configuration' => [
                 'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
                 'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(JsConfirmation::DELETE),
                 'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == true,
                 'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu'),
                 'indicator' => $indicators['html'],
                 'temporaryMountPoint' => Commands::getMountPointPath()
-            ),
-            'Icons' => array(
+            ],
+            'Icons' => [
                 'InputClear' => $this->iconFactory->getIcon('actions-input-clear', Icon::SIZE_SMALL)->render(),
                 'Close' => $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline'),
                 'TrashCan' => $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render('inline'),
@@ -214,8 +214,8 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
                 'NewNode' => $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render(),
                 'Filter' => $this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL)->render(),
                 'Refresh' => $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render()
-            )
-        );
+            ]
+        ];
         return $configuration;
     }
 }

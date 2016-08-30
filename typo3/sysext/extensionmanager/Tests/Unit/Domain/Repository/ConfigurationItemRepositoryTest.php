@@ -40,7 +40,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // Mock system under test to make protected methods accessible
         $this->configurationItemRepository = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository::class,
-            array('dummy')
+            ['dummy']
         );
 
         $this->injectedObjectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
@@ -55,8 +55,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getConfigurationArrayFromExtensionKeyReturnsSortedHierarchicArray()
     {
-        $flatConfigurationItemArray = array(
-            'item1' => array(
+        $flatConfigurationItemArray = [
+            'item1' => [
                 'cat' => 'basic',
                 'subcat_name' => 'enable',
                 'subcat' => 'a/enable/10z',
@@ -66,8 +66,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'value' => 'one',
                 'default_value' => 'one',
                 'subcat_label' => 'Enable features',
-            ),
-            'integerValue' => array(
+            ],
+            'integerValue' => [
                 'cat' => 'basic',
                 'subcat_name' => 'enable',
                 'subcat' => 'a/enable/20z',
@@ -77,8 +77,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'value' => '1',
                 'default_value' => '1',
                 'subcat_label' => 'Enable features',
-            ),
-            'enableJquery' => array(
+            ],
+            'enableJquery' => [
                 'cat' => 'advanced',
                 'subcat_name' => 'file',
                 'subcat' => 'c/file/10z',
@@ -88,12 +88,12 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'value' => '1',
                 'default_value' => '1',
                 'subcat_label' => 'Files',
-            ),
-        );
+            ],
+        ];
 
         $configurationItemRepository = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository::class,
-            array('mergeWithExistingConfiguration', 'translate')
+            ['mergeWithExistingConfiguration', 'translate']
         );
         $configurationItemRepository->_set(
             'objectManager',
@@ -113,10 +113,10 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('mergeWithExistingConfiguration')
             ->will($this->returnValue($flatConfigurationItemArray));
 
-        $expectedArray = array(
-            'basic' => array(
-                'enable' => array(
-                    'item1' => array(
+        $expectedArray = [
+            'basic' => [
+                'enable' => [
+                    'item1' => [
                         'cat' => 'basic',
                         'subcat_name' => 'enable',
                         'subcat' => 'a/enable/10z',
@@ -126,12 +126,12 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         'value' => 'one',
                         'default_value' => 'one',
                         'subcat_label' => 'Enable features',
-                        'labels' => array(
+                        'labels' => [
                             0 => 'Item 1',
                             1 => 'This is the first configuration item'
-                        )
-                    ),
-                    'integerValue' => array(
+                        ]
+                    ],
+                    'integerValue' => [
                         'cat' => 'basic',
                         'subcat_name' => 'enable',
                         'subcat' => 'a/enable/20z',
@@ -141,16 +141,16 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         'value' => '1',
                         'default_value' => '1',
                         'subcat_label' => 'Enable features',
-                        'labels' => array(
+                        'labels' => [
                             0 => 'Integer Value',
                             1 => 'Please insert a positive integer value'
-                        )
-                    )
-                )
-            ),
-            'advanced' => array(
-                'file' => array(
-                    'enableJquery' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'advanced' => [
+                'file' => [
+                    'enableJquery' => [
                         'cat' => 'advanced',
                         'subcat_name' => 'file',
                         'subcat' => 'c/file/10z',
@@ -160,14 +160,14 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         'value' => '1',
                         'default_value' => '1',
                         'subcat_label' => 'Files',
-                        'labels' => array(
+                        'labels' => [
                             0 => 'enableJquery',
                             1 => 'Insert jQuery plugin'
-                        )
-                    ),
-                )
-            )
-        );
+                        ]
+                    ],
+                ]
+            ]
+        ];
 
         $this->assertSame(
             $expectedArray,
@@ -181,12 +181,12 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addMetaInformationUnsetsOriginalConfigurationMetaKey()
     {
-        $configuration = array(
+        $configuration = [
             '__meta__' => 'metaInformation',
             'test123' => 'test123'
-        );
+        ];
         $this->configurationItemRepository->_callRef('addMetaInformation', $configuration);
-        $this->assertEquals(array('test123' => 'test123'), $configuration);
+        $this->assertEquals(['test123' => 'test123'], $configuration);
     }
 
     /**
@@ -195,10 +195,10 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addMetaInformationReturnsMetaInformation()
     {
-        $configuration = array(
+        $configuration = [
             '__meta__' => 'metaInformation',
             'test123' => 'test123'
-        );
+        ];
         $meta = $this->configurationItemRepository->_callRef('addMetaInformation', $configuration);
         $this->assertEquals('metaInformation', $meta);
     }
@@ -208,9 +208,9 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractInformationForConfigFieldsOfTypeUserAddsGenericAndTypeInformationDataProvider()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'cat' => 'basic',
                     'subcat_name' => 'enable',
                     'subcat' => 'a/enable/z',
@@ -220,10 +220,10 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'value' => 0,
                     'default_value' => 0,
                     'comparisonGeneric' => 'TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->checkConfigurationFrontend'
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'cat' => 'basic',
                     'subcat_name' => 'enable',
                     'subcat' => 'a/enable/z',
@@ -233,10 +233,10 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'value' => 0,
                     'default_value' => 0,
                     'comparisonGeneric' => 'TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->checkConfigurationBackend'
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'cat' => 'basic',
                     'subcat_name' => 'enable',
                     'subcat' => 'a/enable/z',
@@ -246,9 +246,9 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'value' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
                     'default_value' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
                     'comparisonGeneric' => 'TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -270,7 +270,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractInformationForConfigFieldsOfTypeOptionsAddsGenericTypeAndLabelInformation()
     {
-        $option = array(
+        $option = [
             'cat' => 'basic',
             'subcat_name' => 'enable',
             'subcat' => 'a/enable/100z',
@@ -279,13 +279,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'name' => 'defaultConfiguration',
             'value' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
             'default_value' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
-            'genericComparisonValue' => array(
+            'genericComparisonValue' => [
                 'Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.)' => 'Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.)',
                 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
                 'Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)' => 'Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)'
-            ),
+            ],
             'typeComparisonValue' => 'options'
-        );
+        ];
         $optionModified = $this->configurationItemRepository->_callRef('extractInformationForConfigFieldsOfTypeOptions', $option);
         $this->assertArrayHasKey('generic', $optionModified);
         $this->assertArrayHasKey('type', $optionModified);
@@ -300,7 +300,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractInformationForConfigFieldsOfTypeOptionsWithLabelsAndValuesAddsGenericTypeAndLabelInformation()
     {
-        $option = array(
+        $option = [
             'cat' => 'basic',
             'subcat_name' => 'enable',
             'subcat' => 'a/enable/100z',
@@ -309,13 +309,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'name' => 'defaultConfiguration',
             'value' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
             'default_value' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
-            'genericComparisonValue' => array(
+            'genericComparisonValue' => [
                 'Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.)' => 'MINIMAL',
                 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)' => 'TYPICAL',
                 'Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)' => 'DEMO'
-            ),
+            ],
             'typeComparisonValue' => 'options'
-        );
+        ];
         $optionModified = $this->configurationItemRepository->_callRef('extractInformationForConfigFieldsOfTypeOptions', $option);
         $this->assertArrayHasKey('generic', $optionModified);
         $this->assertArrayHasKey('type', $optionModified);
@@ -343,7 +343,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->configurationItemRepository->_call(
             'mergeWithExistingConfiguration',
-            array(),
+            [],
             $this->getUniqueId('not_existing_extension')
         );
     }
@@ -364,9 +364,9 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->any())
             ->method('get')
             ->will($this->returnValue($configurationManagerMock));
-        $defaultConfiguration = array(
+        $defaultConfiguration = [
             'foo' => 'bar'
-        );
+        ];
         $configuration = $this->configurationItemRepository->_call(
             'mergeWithExistingConfiguration',
             $defaultConfiguration,
@@ -381,15 +381,15 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mergeWithExistingConfigurationOverwritesDefaultKeysWithCurrent()
     {
-        $localConfiguration = serialize(array(
-            'FE.' => array(
+        $localConfiguration = serialize([
+            'FE.' => [
                 'enabled' => '1',
                 'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface_sha1::class
-            ),
-            'CLI.' => array(
+            ],
+            'CLI.' => [
                 'enabled' => '0'
-            )
-        ));
+            ]
+        ]);
 
         $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
         $configurationManagerMock
@@ -403,38 +403,38 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('get')
             ->will($this->returnValue($configurationManagerMock));
 
-        $defaultConfiguration = array(
-            'FE.enabled' => array(
+        $defaultConfiguration = [
+            'FE.enabled' => [
                 'value' => '0'
-            ),
-            'FE.saltedPWHashingMethod' => array(
+            ],
+            'FE.saltedPWHashingMethod' => [
                 'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
-            ),
-            'BE.enabled' => array(
+            ],
+            'BE.enabled' => [
                 'value' => '1'
-            ),
-            'BE.saltedPWHashingMethod' => array(
+            ],
+            'BE.saltedPWHashingMethod' => [
                 'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
-            )
-        );
+            ]
+        ];
 
-        $expectedResult = array(
-            'FE.enabled' => array(
+        $expectedResult = [
+            'FE.enabled' => [
                 'value' => '1'
-            ),
-            'FE.saltedPWHashingMethod' => array(
+            ],
+            'FE.saltedPWHashingMethod' => [
                 'value' => \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface_sha1::class
-            ),
-            'BE.enabled' => array(
+            ],
+            'BE.enabled' => [
                 'value' => '1'
-            ),
-            'BE.saltedPWHashingMethod' => array(
+            ],
+            'BE.saltedPWHashingMethod' => [
                 'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
-            ),
-            'CLI.enabled' => array(
+            ],
+            'CLI.enabled' => [
                 'value' => '0'
-            )
-        );
+            ]
+        ];
 
         $actualResult = $this->configurationItemRepository->_call(
             'mergeWithExistingConfiguration',

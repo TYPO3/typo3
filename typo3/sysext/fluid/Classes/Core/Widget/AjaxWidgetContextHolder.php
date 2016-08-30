@@ -29,7 +29,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $widgetContexts = array();
+    protected $widgetContexts = [];
 
     /**
      * @var string

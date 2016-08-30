@@ -70,14 +70,14 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      *
      * @var array
      */
-    protected $backendLayouts = array();
+    protected $backendLayouts = [];
 
     /**
      * PageTs Config
      *
      * @var array
      */
-    protected $pageTsConfig = array();
+    protected $pageTsConfig = [];
 
     /**
      * PageId

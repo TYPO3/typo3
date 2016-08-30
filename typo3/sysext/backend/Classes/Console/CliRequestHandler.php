@@ -155,7 +155,7 @@ class CliRequestHandler implements RequestHandlerInterface
         $GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
         $GLOBALS['temp_cliKey'] = array_shift($_SERVER['argv']);
         array_unshift($_SERVER['argv'], $GLOBALS['temp_cliScriptPath']);
-        return array($commandLineScript, $commandLineName);
+        return [$commandLineScript, $commandLineName];
     }
 
     /**

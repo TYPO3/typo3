@@ -24,7 +24,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     protected $basedir = 'basedir';
 
@@ -68,7 +68,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function propertiesCanBeUpdated()
     {
         $fixture = $this->createFolderFixture('/somePath', 'someName');
-        $fixture->updateProperties(array('identifier' => '/someOtherPath', 'name' => 'someNewName'));
+        $fixture->updateProperties(['identifier' => '/someOtherPath', 'name' => 'someNewName']);
         $this->assertSame('someNewName', $fixture->getName());
         $this->assertSame('/someOtherPath', $fixture->getIdentifier());
     }
@@ -79,7 +79,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function propertiesAreNotUpdatedIfNotSetInInput()
     {
         $fixture = $this->createFolderFixture('/somePath/someName/', 'someName');
-        $fixture->updateProperties(array('identifier' => '/someOtherPath'));
+        $fixture->updateProperties(['identifier' => '/someOtherPath']);
         $this->assertSame('someName', $fixture->getName());
     }
 
@@ -89,20 +89,20 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFilesReturnsArrayWithFilenamesAsKeys()
     {
         $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
-        $mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue(array(
-                'somefile.png' => array(
+        $mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue([
+                'somefile.png' => [
                     'name' => 'somefile.png'
-                ),
-                'somefile.jpg' => array(
+                ],
+                'somefile.jpg' => [
                     'name' => 'somefile.jpg'
-                )
-            )
+                ]
+            ]
         ));
         $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
 
         $fileList = $fixture->getFiles();
 
-        $this->assertSame(array('somefile.png', 'somefile.jpg'), array_keys($fileList));
+        $this->assertSame(['somefile.png', 'somefile.jpg'], array_keys($fileList));
     }
 
     /**
@@ -115,7 +115,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('getFilesInFolder')
             ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), false)
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
         $fixture->getFiles();
@@ -131,7 +131,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('getFilesInFolder')
             ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), true)
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
         $fixture->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
@@ -174,7 +174,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $parentFolderFixture = $this->createFolderFixture($parentIdentifier, 'parent');
         $mockedStorage = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\ResourceStorage::class)
-            ->setMethods(array('getFolderIdentifierFromFileIdentifier', 'getFolder'))
+            ->setMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));

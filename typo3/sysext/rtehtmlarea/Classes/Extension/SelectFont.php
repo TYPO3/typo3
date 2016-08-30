@@ -41,18 +41,18 @@ class SelectFont extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'fontstyle' => 'FontName',
         'fontsize' => 'FontSize'
-    );
+    ];
 
     /**
      * List of default fonts
      *
      * @var array
      */
-    protected $defaultFont = array(
-        'fontstyle' => array(
+    protected $defaultFont = [
+        'fontstyle' => [
             'Arial' => 'Arial,sans-serif',
             'Arial Black' => '\'Arial Black\',sans-serif',
             'Verdana' => 'Verdana,Arial,sans-serif',
@@ -62,8 +62,8 @@ class SelectFont extends RteHtmlAreaApi
             'Courier' => 'Courier',
             'Webdings' => 'Webdings',
             'Wingdings' => 'Wingdings'
-        ),
-        'fontsize' => array(
+        ],
+        'fontsize' => [
             'Extra small' => '8px',
             'Very small' => '9px',
             'Small' => '10px',
@@ -71,8 +71,8 @@ class SelectFont extends RteHtmlAreaApi
             'Large' => '16px',
             'Very large' => '24px',
             'Extra large' => '32px'
-        )
-    );
+        ]
+    ];
 
     /**
      * RTE properties
@@ -101,7 +101,7 @@ class SelectFont extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $pluginButtonsArray = GeneralUtility::trimExplode(',', $this->pluginButtons);
         // Process Page TSConfig configuration for each button
         foreach ($pluginButtonsArray as $buttonId) {
@@ -120,9 +120,9 @@ class SelectFont extends RteHtmlAreaApi
      */
     protected function buildJSFontItemsConfig($buttonId)
     {
-        $jsArray = array();
+        $jsArray = [];
         $hideItems = '';
-        $addItems = array();
+        $addItems = [];
         // Getting removal and addition configuration
         if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.'][$buttonId . '.'])) {
             if ($this->configuration['thisConfig']['buttons.'][$buttonId . '.']['removeItems']) {
@@ -135,21 +135,21 @@ class SelectFont extends RteHtmlAreaApi
         $languageService = $this->getLanguageService();
         // Initializing the items array
         $languageKey = $buttonId == 'fontstyle' ? 'Default font' : 'Default size';
-        $items = array(
-            'none' => array(
+        $items = [
+            'none' => [
                 $languageService->sL(
                     'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/SelectFont/locallang.xlf:' . $languageKey
                 ),
                 'none'
-            ),
-        );
+            ],
+        ];
         // Inserting and localizing default items
         if ($hideItems != '*') {
             $index = 0;
             foreach ($this->defaultFont[$buttonId] as $name => $value) {
                 if (!GeneralUtility::inList($hideItems, strval(($index + 1)))) {
                     $label = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/SelectFont/locallang.xlf:' . $name) ?: $name;
-                    $items[$name] = array($label, $this->cleanList($value));
+                    $items[$name] = [$label, $this->cleanList($value)];
                 }
                 $index++;
             }
@@ -160,21 +160,21 @@ class SelectFont extends RteHtmlAreaApi
                 $name = substr($name, 0, -1);
                 if (in_array($name, $addItems)) {
                     $label = $this->getPageConfigLabel($conf['name']);
-                    $items[$name] = array($label, $this->cleanList($conf['value']));
+                    $items[$name] = [$label, $this->cleanList($conf['value'])];
                 }
             }
         }
         // Seting default item
         if ($this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem'] && $items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']]) {
-            $items['none'] = array($items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']][0], 'none');
+            $items['none'] = [$items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']][0], 'none'];
             unset($items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']]);
         }
         // Setting the JS list of options
-        $itemsJSArray = array();
+        $itemsJSArray = [];
         foreach ($items as $name => $option) {
-            $itemsJSArray[] = array('text' => $option[0], 'value' => $option[1]);
+            $itemsJSArray[] = ['text' => $option[0], 'value' => $option[1]];
         }
-        $itemsJSArray = json_encode(array('options' => $itemsJSArray));
+        $itemsJSArray = json_encode(['options' => $itemsJSArray]);
         // Adding to button JS configuration
         if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$buttonId . '.'])) {
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $buttonId . ' = new Object();';

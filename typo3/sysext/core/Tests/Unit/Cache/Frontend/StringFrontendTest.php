@@ -31,7 +31,7 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1233057566);
 
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
-            ->setMethods(array('isValidEntryIdentifier'))
+            ->setMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
@@ -45,7 +45,7 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $theString = 'Just some value';
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('set')->with($this->equalTo('StringCacheTest'), $this->equalTo($theString));
@@ -61,12 +61,12 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $theString = 'Just some value';
         $theLifetime = 1234;
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects($this->once())->method('set')->with($this->equalTo('StringCacheTest'), $this->equalTo($theString), $this->equalTo(array()), $this->equalTo($theLifetime));
+        $backend->expects($this->once())->method('set')->with($this->equalTo('StringCacheTest'), $this->equalTo($theString), $this->equalTo([]), $this->equalTo($theLifetime));
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\StringFrontend('StringFrontend', $backend);
-        $cache->set('StringCacheTest', $theString, array(), $theLifetime);
+        $cache->set('StringCacheTest', $theString, [], $theLifetime);
     }
 
     /**
@@ -78,11 +78,11 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1222808333);
 
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\StringFrontend('StringFrontend', $backend);
-        $cache->set('StringCacheTest', array());
+        $cache->set('StringCacheTest', []);
     }
 
     /**
@@ -91,7 +91,7 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFetchesStringValueFromBackend()
     {
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('get')->will($this->returnValue('Just some value'));
@@ -105,7 +105,7 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function hasReturnsResultFromBackend()
     {
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('has')->with($this->equalTo('StringCacheTest'))->will($this->returnValue(true));
@@ -120,7 +120,7 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $cacheIdentifier = 'someCacheIdentifier';
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('remove')->with($this->equalTo($cacheIdentifier))->will($this->returnValue(true));
@@ -147,10 +147,10 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getByTagCallsBackend()
     {
         $tag = 'sometag';
-        $identifiers = array('one', 'two');
-        $entries = array('one value', 'two value');
+        $identifiers = ['one', 'two'];
+        $entries = ['one value', 'two value'];
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));

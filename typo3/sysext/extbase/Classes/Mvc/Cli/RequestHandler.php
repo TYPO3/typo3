@@ -80,7 +80,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface
      */
     public function handleRequest()
     {
-        $commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
+        $commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : [];
         $callingScript = array_shift($commandLine);
         if ($callingScript !== $_SERVER['_']) {
             $callingScript = $_SERVER['_'] . ' ' . $callingScript;

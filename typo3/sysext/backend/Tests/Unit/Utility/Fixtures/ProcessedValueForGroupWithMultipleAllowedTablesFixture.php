@@ -27,10 +27,10 @@ class ProcessedValueForGroupWithMultipleAllowedTablesFixture extends \TYPO3\CMS\
         static $called = 0;
         ++$called;
         if ($called === 1) {
-            return array('title' => 'Page 1');
+            return ['title' => 'Page 1'];
         }
         if ($called === 2) {
-            return array('header' => 'Configuration 2');
+            return ['header' => 'Configuration 2'];
         }
     }
 

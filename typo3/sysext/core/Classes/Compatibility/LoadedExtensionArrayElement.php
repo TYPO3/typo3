@@ -31,19 +31,19 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
     /**
      * @var array List of relevant extension files
      */
-    protected $extensionFilesToCheckFor = array(
+    protected $extensionFilesToCheckFor = [
         'ext_localconf.php',
         'ext_tables.php',
         'ext_tables.sql',
         'ext_tables_static+adt.sql',
         'ext_typoscript_constants.txt',
         'ext_typoscript_setup.txt'
-    );
+    ];
 
     /**
      * @var array Final extension information
      */
-    protected $extensionInformation = array();
+    protected $extensionInformation = [];
 
     /**
      * Constructor builds compatibility API

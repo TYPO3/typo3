@@ -57,9 +57,9 @@ class TaskModuleController extends BaseScriptClass
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:taskcenter/Resources/Private/Language/locallang_task.xlf');
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName
-        );
+        ];
         parent::init();
     }
 
@@ -70,7 +70,7 @@ class TaskModuleController extends BaseScriptClass
      */
     public function menuConfig()
     {
-        $this->MOD_MENU = array('mode' => array());
+        $this->MOD_MENU = ['mode' => []];
         $this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_overview');
         $this->MOD_MENU['mode']['tasks'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
         /* Copied from parent::menuConfig, because parent is hardcoded to menu.function,
@@ -299,7 +299,7 @@ class TaskModuleController extends BaseScriptClass
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Taskcenter/Taskcenter');
             $userSorting = unserialize($this->getBackendUser()->uc['taskcenter']['sorting']);
             if (is_array($userSorting)) {
-                $newSorting = array();
+                $newSorting = [];
                 foreach ($userSorting as $item) {
                     if (isset($items[$item])) {
                         $newSorting[] = $items[$item];
@@ -386,7 +386,7 @@ class TaskModuleController extends BaseScriptClass
     protected function indexAction()
     {
         $content = '';
-        $tasks = array();
+        $tasks = [];
         $icon = ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Icons/module-taskcenter.svg';
         // Render the tasks only if there are any available
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'])) {
@@ -410,14 +410,14 @@ class TaskModuleController extends BaseScriptClass
                     }
                     // Generate an array of all tasks
                     $uniqueKey = $this->getUniqueKey($extKey . '.' . $taskClass);
-                    $tasks[$uniqueKey] = array(
+                    $tasks[$uniqueKey] = [
                         'title' => $taskTitle,
                         'descriptionHtml' => $taskDescriptionHtml,
                         'description' => $this->getLanguageService()->sL($task['description']),
                         'icon' => $icon,
                         'link' => $link,
                         'uid' => $extKey . '.' . $taskClass
-                    );
+                    ];
                 }
             }
             $content .= $this->renderListMenu($tasks, true);
@@ -502,8 +502,8 @@ class TaskModuleController extends BaseScriptClass
      */
     protected function getUniqueKey($string)
     {
-        $search = array('.', '_');
-        $replace = array('-', '');
+        $search = ['.', '_'];
+        $replace = ['-', ''];
         return str_replace($search, $replace, $string);
     }
 

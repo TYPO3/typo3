@@ -58,11 +58,11 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
         $absolute = $this->arguments['absolute'];
 
         return static::renderStatic(
-            array(
+            [
                 'path' => $path,
                 'extensionName' => $extensionName,
                 'absolute' => $absolute
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

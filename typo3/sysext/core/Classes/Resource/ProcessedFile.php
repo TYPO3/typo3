@@ -326,7 +326,7 @@ class ProcessedFile extends AbstractFile
     public function updateProperties(array $properties)
     {
         if (!is_array($this->properties)) {
-            $this->properties = array();
+            $this->properties = [];
         }
 
         if (array_key_exists('uid', $properties) && MathUtility::canBeInterpretedAsInteger($properties['uid'])) {
@@ -367,14 +367,14 @@ class ProcessedFile extends AbstractFile
 
         $properties['configuration'] = serialize($this->processingConfiguration);
 
-        return array_merge($properties, array(
+        return array_merge($properties, [
             'storage' => $this->getStorage()->getUid(),
             'checksum' => $this->calculateChecksum(),
             'task_type' => $this->taskType,
             'configurationsha1' => sha1($properties['configuration']),
             'original' => $this->originalFile->getUid(),
             'originalfilesha1' => $this->originalFileSha1
-        ));
+        ]);
     }
 
     /**

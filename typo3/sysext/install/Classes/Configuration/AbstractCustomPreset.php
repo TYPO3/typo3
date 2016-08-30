@@ -78,7 +78,7 @@ abstract class AbstractCustomPreset extends AbstractPreset
      */
     public function getConfigurationValues()
     {
-        $configurationValues = array();
+        $configurationValues = [];
         foreach ($this->configurationValues as $configurationKey => $configurationValue) {
             if (isset($this->postValues['enable'])
                 && $this->postValues['enable'] === $this->name

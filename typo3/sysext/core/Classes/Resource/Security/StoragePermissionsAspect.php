@@ -39,10 +39,10 @@ class StoragePermissionsAspect
     /**
      * @var array
      */
-    protected $defaultStorageZeroPermissions = array(
+    protected $defaultStorageZeroPermissions = [
         'readFolder' => true,
         'readFile' => true
-    );
+    ];
 
     /**
      * @param BackendUserAuthentication|null $backendUserAuthentication

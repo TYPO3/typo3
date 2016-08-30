@@ -36,7 +36,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @var array
      */
-    protected $storagePageIds = array();
+    protected $storagePageIds = [];
 
     /**
      * A flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
@@ -53,7 +53,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @var array
      */
-    protected $enableFieldsToBeIgnored = array();
+    protected $enableFieldsToBeIgnored = [];
 
     /**
      * Flag whether deleted records should be included in the result set.

@@ -57,13 +57,13 @@ class UserFileMountService
                 $queue = $flashMessageService->getMessageQueueByIdentifier();
                 $queue->enqueue(new FlashMessage('Storage #' . $storageUid . ' does not exist. No folder is currently selectable.', '', FlashMessage::ERROR));
                 if (empty($PA['items'])) {
-                    $PA['items'][] = array(
+                    $PA['items'][] = [
                         $PA['row'][$PA['field']],
                         $PA['row'][$PA['field']]
-                    );
+                    ];
                 }
             } elseif ($storage->isBrowsable()) {
-                $rootLevelFolders = array();
+                $rootLevelFolders = [];
 
                 $fileMounts = $storage->getFileMounts();
                 if (!empty($fileMounts)) {
@@ -77,10 +77,10 @@ class UserFileMountService
                 foreach ($rootLevelFolders as $rootLevelFolder) {
                     $folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
                     foreach ($folderItems as $item) {
-                        $PA['items'][] = array(
+                        $PA['items'][] = [
                             $item->getIdentifier(),
                             $item->getIdentifier()
-                        );
+                        ];
                     }
                 }
             } else {
@@ -89,14 +89,14 @@ class UserFileMountService
                 $queue = $flashMessageService->getMessageQueueByIdentifier();
                 $queue->enqueue(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));
                 if (empty($PA['items'])) {
-                    $PA['items'][] = array(
+                    $PA['items'][] = [
                         $PA['row'][$PA['field']],
                         $PA['row'][$PA['field']]
-                    );
+                    ];
                 }
             }
         } else {
-            $PA['items'][] = array('', 'Please choose a FAL mount from above first.');
+            $PA['items'][] = ['', 'Please choose a FAL mount from above first.'];
         }
     }
 
@@ -113,15 +113,15 @@ class UserFileMountService
         $level++;
         // hard break on recursion
         if ($level > 99) {
-            return array();
+            return [];
         }
-        $allFolderItems = array($parentFolder);
+        $allFolderItems = [$parentFolder];
         $subFolders = $parentFolder->getSubfolders();
         foreach ($subFolders as $subFolder) {
             try {
                 $subFolderItems = $this->getSubfoldersForOptionList($subFolder, $level);
             } catch (InsufficientFolderReadPermissionsException $e) {
-                $subFolderItems  = array();
+                $subFolderItems  = [];
             }
             $allFolderItems = array_merge($allFolderItems, $subFolderItems);
         }

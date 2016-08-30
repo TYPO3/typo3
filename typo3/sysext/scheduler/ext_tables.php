@@ -8,13 +8,13 @@ if (TYPO3_MODE === 'BE') {
         'txschedulerM1',
         '',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'system_txschedulerM1',
             'icon' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
             'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf'
-        )
+        ]
     );
 
     // Add context sensitive help (csh) to the backend module

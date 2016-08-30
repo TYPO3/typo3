@@ -31,7 +31,7 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1233057566);
 
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
-            ->setMethods(array('isValidEntryIdentifier'))
+            ->setMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
@@ -46,9 +46,9 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $originalSourceCode = 'return "hello world!";';
         $modifiedSourceCode = '<?php' . chr(10) . $originalSourceCode . chr(10) . '#';
         $mockBackend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface::class);
-        $mockBackend->expects($this->once())->method('set')->with('Foo-Bar', $modifiedSourceCode, array('tags'), 1234);
+        $mockBackend->expects($this->once())->method('set')->with('Foo-Bar', $modifiedSourceCode, ['tags'], 1234);
         $cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, 'PhpFrontend', $mockBackend);
-        $cache->set('Foo-Bar', $originalSourceCode, array('tags'), 1234);
+        $cache->set('Foo-Bar', $originalSourceCode, ['tags'], 1234);
     }
 
     /**
@@ -60,10 +60,10 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1264023824);
 
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $cache->set('Foo-Bar', array());
+        $cache->set('Foo-Bar', []);
     }
 
     /**

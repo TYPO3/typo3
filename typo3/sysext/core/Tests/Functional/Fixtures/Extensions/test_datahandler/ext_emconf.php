@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Test',
     'description' => 'DataHandler Test',
     'category' => 'example',
@@ -11,15 +11,15 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'Oliver Hader',
     'author_email' => 'oliver@typo3.org',
     'author_company' => '',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '6.0.0-0.0.0',
             'workspaces' => '0.0.0-',
             'version' => '0.0.0-',
-        ),
-        'conflicts' => array(
-        ),
-        'suggests' => array(
-        ),
-    ),
-);
+        ],
+        'conflicts' => [
+        ],
+        'suggests' => [
+        ],
+    ],
+];

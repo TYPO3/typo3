@@ -68,9 +68,9 @@ class ExtensionManager
 
             foreach ($document->getTranslations() as $documentTranslation) {
                 $actions[] = FormatsViewHelper::renderStatic(
-                    array(
+                    [
                         'documentTranslation' => $documentTranslation,
-                    ),
+                    ],
                     function () {},
                     new RenderingContext()
                 );

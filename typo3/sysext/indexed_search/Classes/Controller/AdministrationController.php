@@ -45,12 +45,12 @@ class AdministrationController extends ActionController
     /**
      * @var array External parsers
      */
-    protected $external_parsers = array();
+    protected $external_parsers = [];
 
     /**
      * @var array Configuration defined in the Extension Manager
      */
-    protected $indexerConfig = array();
+    protected $indexerConfig = [];
 
     /**
      * @var bool is metaphone enabled
@@ -213,10 +213,10 @@ class AdministrationController extends ActionController
      */
     public function indexAction()
     {
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
             'records' => $this->administrationRepository->getRecordsNumbers(),
             'phash' => $this->administrationRepository->getPageHashTypes()
-        ));
+        ]);
 
         if ($this->pageUid) {
             $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -226,12 +226,12 @@ class AdministrationController extends ActionController
             $last24hours = $expressionBuilder->gt('tstamp', ($GLOBALS['EXEC_TIME'] - 86400));
             $last30days = $expressionBuilder->gt('tstamp', ($GLOBALS['EXEC_TIME'] - 30 * 86400));
 
-            $this->view->assignMultiple(array(
+            $this->view->assignMultiple([
                 'pageUid' => $this->pageUid,
                 'all' => $this->administrationRepository->getGeneralSearchStatistic('', $this->pageUid),
                 'last24hours' => $this->administrationRepository->getGeneralSearchStatistic($last24hours, $this->pageUid),
                 'last30days' => $this->administrationRepository->getGeneralSearchStatistic($last30days, $this->pageUid),
-            ));
+            ]);
         }
     }
 
@@ -293,7 +293,7 @@ class AdministrationController extends ActionController
             ->where($queryBuilder->expr()->eq('phash', $pageHash))
             ->execute()
             ->fetchAll();
-        $debugInfo = array();
+        $debugInfo = [];
         $lexer = '';
         if (is_array($debugRow)) {
             $debugInfo = unserialize($debugRow[0]['debuginfo']);
@@ -301,7 +301,7 @@ class AdministrationController extends ActionController
             unset($debugInfo['lexer']);
         }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
-        $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', $pageRecord['keywords'], true)) : array();
+        $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', $pageRecord['keywords'], true)) : [];
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
         $wordRecords = $queryBuilder
@@ -320,7 +320,7 @@ class AdministrationController extends ActionController
                 $wordRecords[$id]['is_keyword'] = true;
             }
         }
-        $metaphoneRows = $metaphone = array();
+        $metaphoneRows = $metaphone = [];
         if ($this->enableMetaphoneSearch && is_array($wordRecords)) {
             // Group metaphone hash
             foreach ($wordRecords as $row) {
@@ -329,11 +329,11 @@ class AdministrationController extends ActionController
 
             foreach ($metaphoneRows as $hash => $words) {
                 if (count($words) > 1) {
-                    $metaphone[] = array(
+                    $metaphone[] = [
                         'metaphone' => $this->indexer->metaphone($words[0], 1), $hash,
                         'words' => $words,
                         'hash' => $hash
-                    );
+                    ];
                 }
             }
         }
@@ -403,7 +403,7 @@ class AdministrationController extends ActionController
      * @param array $keywords
      * @return void
      */
-    public function saveStopwordsKeywordsAction($pageHash, $pageId, $stopwords = array(), $keywords = array())
+    public function saveStopwordsKeywordsAction($pageHash, $pageId, $stopwords = [], $keywords = [])
     {
         if ($this->getBackendUserAuthentication()->isAdmin()) {
             if (is_array($stopwords) && !empty($stopwords)) {
@@ -414,7 +414,7 @@ class AdministrationController extends ActionController
             }
         }
 
-        $this->redirect('statisticDetails', null, null, array('pageHash' => $pageHash));
+        $this->redirect('statisticDetails', null, null, ['pageHash' => $pageHash]);
     }
 
     /**
@@ -441,10 +441,10 @@ class AdministrationController extends ActionController
             ->execute()
             ->fetchAll();
 
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
             'rows' => $rows,
             'phash' => $pageHash
-        ));
+        ]);
     }
 
     /**
@@ -469,13 +469,13 @@ class AdministrationController extends ActionController
 
         $allLines = $this->administrationRepository->getTree($this->pageUid, $depth, $mode);
 
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
             'levelTranslations' => explode('|', $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchLevels')),
             'tree' => $allLines,
             'pageUid' => $this->pageUid,
             'mode' => $mode,
             'depth' => $depth
-        ));
+        ]);
     }
 
     /**
@@ -489,7 +489,7 @@ class AdministrationController extends ActionController
     public function deleteIndexedItemAction($id, $depth = 1, $mode = 'overview')
     {
         $this->administrationRepository->removeIndexedPhashRow($id, $this->pageUid, $depth);
-        $this->redirect('statistic', null, null, array('depth' => $depth, 'mode' => $mode));
+        $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
     }
 
     /**

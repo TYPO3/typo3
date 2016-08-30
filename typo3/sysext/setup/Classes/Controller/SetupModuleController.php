@@ -62,12 +62,12 @@ class SetupModuleController extends AbstractModule
     /**
      * @var array
      */
-    public $MOD_MENU = array();
+    public $MOD_MENU = [];
 
     /**
      * @var array
      */
-    public $MOD_SETTINGS = array();
+    public $MOD_SETTINGS = [];
 
     /**
      * @var string
@@ -192,7 +192,7 @@ class SetupModuleController extends AbstractModule
         $columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
         $beUser = $this->getBackendUser();
         $beUserId = $beUser->user['uid'];
-        $storeRec = array();
+        $storeRec = [];
         $fieldList = $this->getFieldsFromShowItem();
         if (is_array($d) && $this->formProtection->validateToken((string)GeneralUtility::_POST('formToken'), 'BE user setup', 'edit')) {
             // UC hashed before applying changes
@@ -217,7 +217,7 @@ class SetupModuleController extends AbstractModule
                         continue;
                     }
                     if ($config['table']) {
-                        if ($config['table'] === 'be_users' && !in_array($field, array('password', 'password2', 'passwordCurrent', 'email', 'realName', 'admin', 'avatar'))) {
+                        if ($config['table'] === 'be_users' && !in_array($field, ['password', 'password2', 'passwordCurrent', 'email', 'realName', 'admin', 'avatar'])) {
                             if (!isset($config['access']) || $this->checkAccess($config) && $beUser->user[$field] !== $d['be_users'][$field]) {
                                 if ($config['type'] === 'check') {
                                     $fieldValue = isset($d['be_users'][$field]) ? 1 : 0;
@@ -241,7 +241,7 @@ class SetupModuleController extends AbstractModule
                 // Possibility to modify the transmitted values. Useful to do transformations, like RSA password decryption
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'])) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'] as $function) {
-                        $params = array('be_user_data' => &$be_user_data);
+                        $params = ['be_user_data' => &$be_user_data];
                         GeneralUtility::callUserFunction($function, $params, $this);
                     }
                 }
@@ -279,7 +279,7 @@ class SetupModuleController extends AbstractModule
             // If something in the uc-array of the user has changed, we save the array...
             if ($save_before != $save_after) {
                 $beUser->writeUC($beUser->uc);
-                $beUser->writelog(254, 1, 0, 1, 'Personal settings changed', array());
+                $beUser->writelog(254, 1, 0, 1, 'Personal settings changed', []);
                 $this->setupIsUpdated = true;
             }
             // Persist data if something has changed:
@@ -290,7 +290,7 @@ class SetupModuleController extends AbstractModule
                 // This is so the user can actually update his user record.
                 $isAdmin = $beUser->user['admin'];
                 $beUser->user['admin'] = 1;
-                $dataHandler->start($storeRec, array(), $beUser);
+                $dataHandler->start($storeRec, [], $beUser);
                 // This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
                 $dataHandler->bypassWorkspaceRestrictions = true;
                 $dataHandler->process_datamap();
@@ -343,7 +343,7 @@ class SetupModuleController extends AbstractModule
         $javaScript = '';
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'] as $function) {
-                $params = array();
+                $params = [];
                 $javaScript .= GeneralUtility::callUserFunction($function, $params, $this);
             }
         }
@@ -462,9 +462,9 @@ class SetupModuleController extends AbstractModule
     protected function renderUserSetup()
     {
         $html = '';
-        $result = array();
+        $result = [];
         $firstTabLabel = '';
-        $code = array();
+        $code = [];
         $fieldArray = $this->getFieldsFromShowItem();
         $tabLabel = '';
         foreach ($fieldArray as $fieldName) {
@@ -475,12 +475,12 @@ class SetupModuleController extends AbstractModule
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
                     $firstTabLabel = $tabLabel;
                 } else {
-                    $result[] = array(
+                    $result[] = [
                         'label' => $tabLabel,
                         'content' => count($code) ? implode(LF, $code) : ''
-                    );
+                    ];
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
-                    $code = array();
+                    $code = [];
                 }
                 continue;
             }
@@ -635,10 +635,10 @@ class SetupModuleController extends AbstractModule
                 '</div></div></div>';
         }
 
-        $result[] = array(
+        $result[] = [
             'label' => $tabLabel,
             'content' => count($code) ? implode(LF, $code) : ''
-        );
+        ];
         return $result;
     }
 
@@ -667,7 +667,7 @@ class SetupModuleController extends AbstractModule
      */
     public function renderLanguageSelect($params)
     {
-        $languageOptions = array();
+        $languageOptions = [];
         // Compile the languages dropdown
         $langDefault = htmlspecialchars($this->getLanguageService()->getLL('lang_default'));
         $languageOptions[$langDefault] = '<option value=""' . ($this->getBackendUser()->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
@@ -757,7 +757,7 @@ class SetupModuleController extends AbstractModule
                 ->orderBy('username')
                 ->execute()
                 ->fetchAll();
-            $opt = array();
+            $opt = [];
             foreach ($users as $rr) {
                 $label = $rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '');
                 $opt[] = '<option value="' . (int)$rr['uid'] . '"' . ($this->simUser === (int)$rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
@@ -952,14 +952,14 @@ class SetupModuleController extends AbstractModule
             if ($file && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
 
                 // Create new file reference
-                $storeRec['sys_file_reference']['NEW1234'] = array(
+                $storeRec['sys_file_reference']['NEW1234'] = [
                     'uid_local' => (int)$fileUid,
                     'uid_foreign' => (int)$beUserId,
                     'tablenames' => 'be_users',
                     'fieldname' => 'avatar',
                     'pid' => 0,
                     'table_local' => 'sys_file',
-                );
+                ];
                 $storeRec['be_users'][(int)$beUserId]['avatar'] = 'NEW1234';
             }
         }

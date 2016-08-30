@@ -29,7 +29,7 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function registersExpectedArgumentsInInitializeArgumentsMethod()
     {
         $mock = $this->getMockBuilder(ImageViewHelper::class)
-            ->setMethods(array('registerUniversalTagAttributes', 'registerTagAttribute'))
+            ->setMethods(['registerUniversalTagAttributes', 'registerTagAttribute'])
             ->getMock();
         $mock->expects($this->at(0))->method('registerUniversalTagAttributes');
         $mock->expects($this->at(1))->method('registerTagAttribute')->with('alt', 'string', $this->anything(), false);
@@ -47,7 +47,7 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderMethodThrowsExceptionOnInvalidArguments(array $arguments)
     {
         $mock = $this->getMockBuilder(ImageViewHelper::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $mock->setArguments($arguments);
 
@@ -73,11 +73,11 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getInvalidArguments()
     {
-        return array(
-            array(array('image' => null)),
-            array(array('src' => null)),
-            array(array('src' => 'something', 'image' => 'something')),
-        );
+        return [
+            [['image' => null]],
+            [['src' => null]],
+            [['src' => 'something', 'image' => 'something']],
+        ];
     }
 
     /**
@@ -89,31 +89,31 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderMethodCreatesExpectedTag(array $arguments, array $expected)
     {
         $image = $this->getMockBuilder(FileReference::class)
-            ->setMethods(array('getProperty'))
+            ->setMethods(['getProperty'])
             ->disableOriginalConstructor()
             ->getMock();
-        $image->expects($this->any())->method('getProperty')->willReturnMap(array(
-            array('width', $arguments['width']),
-            array('height', $arguments['height']),
-            array('alternative', 'alternative'),
-            array('title', 'title'),
-            array('crop', 'crop')
-        ));
+        $image->expects($this->any())->method('getProperty')->willReturnMap([
+            ['width', $arguments['width']],
+            ['height', $arguments['height']],
+            ['alternative', 'alternative'],
+            ['title', 'title'],
+            ['crop', 'crop']
+        ]);
         $imageService = $this->getMockBuilder(ImageService::class)
-            ->setMethods(array('getImage', 'applyProcessingInstructions', 'getImageUri'))
+            ->setMethods(['getImage', 'applyProcessingInstructions', 'getImageUri'])
             ->getMock();
         $imageService->expects($this->once())->method('getImage')->willReturn($image);
         $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($image);
         $imageService->expects($this->once())->method('getImageUri')->with($image)->willReturn('test.png');
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('addAttribute', 'render'))
+            ->setMethods(['addAttribute', 'render'])
             ->getMock();
         $index = -1;
         foreach ($expected as $expectedAttribute => $expectedValue) {
             $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
         }
         $tagBuilder->expects($this->once())->method('render');
-        $mock = $this->getAccessibleMock(ImageViewHelper::class, array('dummy'), array(), '', false);
+        $mock = $this->getAccessibleMock(ImageViewHelper::class, ['dummy'], [], '', false);
         $mock->_set('imageService', $imageService);
         $mock->_set('tag', $tagBuilder);
         $mock->setArguments($arguments);
@@ -136,9 +136,9 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getRenderMethodTestValues()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'src' => 'test',
                     'width' => 100,
                     'height' => 200,
@@ -147,17 +147,17 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'minHeight' => 500,
                     'maxHeight' => 600,
                     'crop' => false
-                ),
-                array(
+                ],
+                [
                     'src' => 'test.png',
                     'width' => '100',
                     'height' => '200',
                     'alt' => 'alternative',
                     'title' => 'title'
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'src' => 'test',
                     'width' => 100,
                     'height' => 200,
@@ -166,15 +166,15 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'minHeight' => 500,
                     'maxHeight' => 600,
                     'crop' => null
-                ),
-                array(
+                ],
+                [
                     'src' => 'test.png',
                     'width' => '100',
                     'height' => '200',
                     'alt' => 'alternative',
                     'title' => 'title'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 }

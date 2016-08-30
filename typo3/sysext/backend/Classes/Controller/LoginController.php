@@ -208,20 +208,20 @@ class LoginController
 
         // Start form
         $formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'LoginForm' : 'LogoutForm';
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
             'backendUser' => $this->getBackendUserAuthentication()->user,
             'hasLoginError' => $this->isLoginInProgress(),
             'formType' => $formType,
             'logo' => $logo,
-            'images' => array(
+            'images' => [
                 'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
                 'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
-            ),
+            ],
             'copyright' => BackendUtility::TYPO3_copyRightNotice(),
             'loginNewsItems' => $this->getSystemNews(),
             'loginProviderIdentifier' => $this->loginProviderIdentifier,
             'loginProviders' => $this->loginProviders
-        ));
+        ]);
 
         // Initialize interface selectors:
         $this->makeInterfaceSelectorBox();
@@ -331,18 +331,18 @@ class LoginController
             $parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
             if (count($parts) > 1) {
                 // Only if more than one interface is defined we will show the selector
-                $interfaces = array(
-                    'backend' => array(
+                $interfaces = [
+                    'backend' => [
                         'label' => $this->getLanguageService()->getLL('interface.backend'),
                         'jumpScript' => BackendUtility::getModuleUrl('main'),
                         'interface' => 'backend'
-                    ),
-                    'frontend' => array(
+                    ],
+                    'frontend' => [
                         'label' => $this->getLanguageService()->getLL('interface.frontend'),
                         'jumpScript' => '../',
                         'interface' => 'frontend'
-                    )
-                );
+                    ]
+                ];
 
                 $this->view->assign('showInterfaceSelector', true);
                 $this->view->assign('interfaces', $interfaces);
@@ -365,7 +365,7 @@ class LoginController
         $systemNewsTable = 'sys_news';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($systemNewsTable);
-        $systemNews = array();
+        $systemNews = [];
         $systemNewsRecords = $queryBuilder
             ->select('title', 'content', 'crdate')
             ->from($systemNewsTable)
@@ -373,11 +373,11 @@ class LoginController
             ->execute()
             ->fetchAll();
         foreach ($systemNewsRecords as $systemNewsRecord) {
-            $systemNews[] = array(
+            $systemNews[] = [
                 'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
                 'header' => $systemNewsRecord['title'],
                 'content' => $systemNewsRecord['content']
-            );
+            ];
         }
         return $systemNews;
     }
@@ -429,9 +429,9 @@ class LoginController
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')));
-        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')));
-        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')));
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;

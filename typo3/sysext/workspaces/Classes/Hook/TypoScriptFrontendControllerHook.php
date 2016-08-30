@@ -37,13 +37,13 @@ class TypoScriptFrontendControllerHook
             $backendDomain = $this->getBackendUserAuthentication()->getSessionData('workspaces.backend_domain');
         }
 
-        $previewParts = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle('FLUIDTEMPLATE', array(
+        $previewParts = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle('FLUIDTEMPLATE', [
             'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
-            'variables.' => array(
+            'variables.' => [
                 'backendDomain' => 'TEXT',
-                'backendDomain.' => array('value' => $backendDomain)
-            )
-        ));
+                'backendDomain.' => ['value' => $backendDomain]
+            ]
+        ]);
         $this->getTypoScriptFrontendController()->content = str_ireplace('</body>', $previewParts . '</body>', $this->getTypoScriptFrontendController()->content);
     }
 

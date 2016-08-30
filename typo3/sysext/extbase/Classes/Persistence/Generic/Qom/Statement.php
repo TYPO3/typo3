@@ -27,7 +27,7 @@ class Statement implements ConstraintInterface
     /**
      * @var array
      */
-    protected $boundVariables = array();
+    protected $boundVariables = [];
 
     /**
      * Constructs the Statement instance
@@ -35,7 +35,7 @@ class Statement implements ConstraintInterface
      * @param string|\TYPO3\CMS\Core\Database\PreparedStatement $statement The statement as sql string or TYPO3\CMS\Core\Database\PreparedStatement
      * @param array $boundVariables An array of variables to bind to the statement, only to be used with preparedStatement
      */
-    public function __construct($statement, array $boundVariables = array())
+    public function __construct($statement, array $boundVariables = [])
     {
         $this->statement = $statement;
         $this->boundVariables = $boundVariables;

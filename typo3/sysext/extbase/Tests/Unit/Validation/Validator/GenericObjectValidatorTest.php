@@ -67,12 +67,12 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
         $classNameForObjectWithPrivateProperties = $this->getUniqueId('B');
         eval('class ' . $classNameForObjectWithPrivateProperties . '{ protected $foo = \'foovalue\'; protected $bar = \'barvalue\'; }');
         $objectWithPrivateProperties = new $classNameForObjectWithPrivateProperties();
-        return array(
+        return [
             // If no errors happened, this is shown
-            array($objectWithPrivateProperties, $emptyResult1, $emptyResult2, array()),
+            [$objectWithPrivateProperties, $emptyResult1, $emptyResult2, []],
             // If errors on two properties happened, they are merged together.
-            array($objectWithPrivateProperties, $resultWithError1, $resultWithError2, array('foo' => array($error1), 'bar' => array($error2)))
-        );
+            [$objectWithPrivateProperties, $resultWithError1, $resultWithError2, ['foo' => [$error1], 'bar' => [$error2]]]
+        ];
     }
 
     /**
@@ -86,11 +86,11 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
     public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($mockObject, $validationResultForFoo, $validationResultForBar, $errors)
     {
         $validatorForFoo = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
-            ->setMethods(array('validate', 'getOptions'))
+            ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForFoo->expects($this->once())->method('validate')->with('foovalue')->will($this->returnValue($validationResultForFoo));
         $validatorForBar = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
-            ->setMethods(array('validate', 'getOptions'))
+            ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForBar->expects($this->once())->method('validate')->with('barvalue')->will($this->returnValue($validationResultForBar));
         $this->validator->addPropertyValidator('foo', $validatorForFoo);
@@ -112,8 +112,8 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
         $A->b = $B;
         $B->a = $A;
 
-        $aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
-        $bValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
+        $aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator([]);
+        $bValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator([]);
 
         $aValidator->addPropertyValidator('b', $bValidator);
         $bValidator->addPropertyValidator('a', $aValidator);
@@ -142,11 +142,11 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
         $result = new \TYPO3\CMS\Extbase\Error\Result();
         $result->addError($error);
         $mockUuidValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
-            ->setMethods(array('validate', 'getOptions'))
+            ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result));
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
-        $this->assertSame(array('b.uuid' => array($error)), $aValidator->validate($A)->getFlattenedErrors());
+        $this->assertSame(['b.uuid' => [$error]], $aValidator->validate($A)->getFlattenedErrors());
     }
 
     /**
@@ -171,11 +171,11 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
         $result1 = new \TYPO3\CMS\Extbase\Error\Result();
         $result1->addError($error1);
         $mockUuidValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
-            ->setMethods(array('validate', 'getOptions'))
+            ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result1));
         $aValidator->addPropertyValidator('uuid', $mockUuidValidator);
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
-        $this->assertSame(array('b.uuid' => array($error1), 'uuid' => array($error1)), $aValidator->validate($A)->getFlattenedErrors());
+        $this->assertSame(['b.uuid' => [$error1], 'uuid' => [$error1]], $aValidator->validate($A)->getFlattenedErrors());
     }
 }

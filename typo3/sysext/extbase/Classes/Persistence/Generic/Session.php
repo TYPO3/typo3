@@ -35,7 +35,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $reconstitutedEntitiesData = array();
+    protected $reconstitutedEntitiesData = [];
 
     /**
      * @var ObjectStorage
@@ -45,7 +45,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $identifierMap = array();
+    protected $identifierMap = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -79,7 +79,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $entityData
      * @return void
      */
-    public function registerReconstitutedEntity($entity, array $entityData = array())
+    public function registerReconstitutedEntity($entity, array $entityData = [])
     {
         $this->reconstitutedEntities->attach($entity);
         $this->reconstitutedEntitiesData[$entityData['identifier']] = $entityData;
@@ -222,9 +222,9 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function destroy()
     {
-        $this->identifierMap = array();
+        $this->identifierMap = [];
         $this->objectMap = new ObjectStorage();
         $this->reconstitutedEntities = new ObjectStorage();
-        $this->reconstitutedEntitiesData = array();
+        $this->reconstitutedEntitiesData = [];
     }
 }

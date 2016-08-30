@@ -24,12 +24,12 @@ abstract class AbstractService
     /**
      * @var array service description array
      */
-    public $info = array();
+    public $info = [];
 
     /**
      * @var array error stack
      */
-    public $error = array();
+    public $error = [];
 
     /**
      * @var bool Defines if debug messages should be written with \TYPO3\CMS\Core\Utility\GeneralUtility::devLog
@@ -67,12 +67,12 @@ abstract class AbstractService
      * @private
      * @var array
      */
-    public $tempFiles = array();
+    public $tempFiles = [];
 
     /**
      * @var array list of registered shutdown functions; should be used to prevent registering the same function multiple times
      */
-    protected $shutdownRegistry = array();
+    protected $shutdownRegistry = [];
 
     /**
      * @var string Prefix for temporary files
@@ -166,7 +166,7 @@ abstract class AbstractService
      */
     public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred')
     {
-        array_push($this->error, array('nr' => $errNum, 'msg' => $errMsg));
+        array_push($this->error, ['nr' => $errNum, 'msg' => $errMsg]);
         /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
         $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         $timeTracker->setTSlogMessage($errMsg, 2);
@@ -220,7 +220,7 @@ abstract class AbstractService
      */
     public function getErrorMsgArray()
     {
-        $errArr = array();
+        $errArr = [];
         if (!empty($this->error)) {
             foreach ($this->error as $error) {
                 $errArr[] = $error['msg'];
@@ -246,7 +246,7 @@ abstract class AbstractService
      */
     public function resetErrors()
     {
-        $this->error = array();
+        $this->error = [];
     }
 
     /***************************************
@@ -381,7 +381,7 @@ abstract class AbstractService
     public function registerTempFile($absFile)
     {
         if (!isset($this->shutdownRegistry[__METHOD__])) {
-            register_shutdown_function(array($this, 'unlinkTempFiles'));
+            register_shutdown_function([$this, 'unlinkTempFiles']);
             $this->shutdownRegistry[__METHOD__] = true;
         }
         $this->tempFiles[] = $absFile;
@@ -397,7 +397,7 @@ abstract class AbstractService
         foreach ($this->tempFiles as $absFile) {
             GeneralUtility::unlink_tempfile($absFile);
         }
-        $this->tempFiles = array();
+        $this->tempFiles = [];
     }
 
     /***************************************

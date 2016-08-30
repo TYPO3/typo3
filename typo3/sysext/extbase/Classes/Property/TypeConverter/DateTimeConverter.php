@@ -78,7 +78,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('string', 'integer', 'array');
+    protected $sourceTypes = ['string', 'integer', 'array'];
 
     /**
      * @var string
@@ -99,7 +99,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      */
     public function canConvertFrom($source, $targetType)
     {
-        if (!is_callable(array($targetType, 'createFromFormat'))) {
+        if (!is_callable([$targetType, 'createFromFormat'])) {
             return false;
         }
         if (is_array($source)) {
@@ -121,7 +121,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @return \DateTime
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         $dateFormat = $this->getDefaultDateFormat($configuration);
         if (is_string($source)) {
@@ -162,7 +162,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
             $date = $targetType::createFromFormat($dateFormat, $dateAsString);
         }
         if ($date === false) {
-            return new \TYPO3\CMS\Extbase\Validation\Error('The date "%s" was not recognized (for format "%s").', 1307719788, array($dateAsString, $dateFormat));
+            return new \TYPO3\CMS\Extbase\Validation\Error('The date "%s" was not recognized (for format "%s").', 1307719788, [$dateAsString, $dateFormat]);
         }
         if (is_array($source)) {
             $this->overrideTimeIfSpecified($date, $source);

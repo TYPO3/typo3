@@ -60,7 +60,7 @@ class CommandUtility
      *
      * @var array
      */
-    protected static $applications = array();
+    protected static $applications = [];
 
     /**
      * Paths where to search for applications
@@ -261,7 +261,7 @@ class CommandUtility
     public static function getPaths($addInvalid = false)
     {
         if (!self::init()) {
-            return array();
+            return [];
         }
 
         $paths = self::$paths;
@@ -346,10 +346,10 @@ class CommandUtility
      */
     protected static function getConfiguredApps()
     {
-        $cmdArr = array();
+        $cmdArr = [];
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']) {
-            $binSetup = str_replace(array('\'.chr(10).\'', '\' . LF . \''), LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']);
+            $binSetup = str_replace(['\'.chr(10).\'', '\' . LF . \''], LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']);
             $pathSetup = preg_split('/[\n,]+/', $binSetup);
             foreach ($pathSetup as $val) {
                 if (trim($val) === '') {
@@ -372,8 +372,8 @@ class CommandUtility
      */
     protected static function getPathsInternal()
     {
-        $pathsArr = array();
-        $sysPathArr = array();
+        $pathsArr = [];
+        $sysPathArr = [];
 
             // Image magick paths first
             // processor_path_lzw take precedence over processor_path
@@ -404,10 +404,10 @@ class CommandUtility
 
             // Set common paths for Unix (only)
         if (TYPO3_OS !== 'WIN') {
-            $sysPathArr = array_merge($sysPathArr, array(
+            $sysPathArr = array_merge($sysPathArr, [
                 '/usr/bin/' => '/usr/bin/',
                 '/usr/local/bin/' => '/usr/local/bin/',
-            ));
+            ]);
         }
 
         $pathsArr = array_merge($pathsArr, $sysPathArr);
@@ -461,6 +461,6 @@ class CommandUtility
      */
     public static function escapeShellArgument($input)
     {
-        return self::escapeShellArguments(array($input))[0];
+        return self::escapeShellArguments([$input])[0];
     }
 }

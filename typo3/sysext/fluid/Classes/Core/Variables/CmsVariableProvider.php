@@ -30,7 +30,7 @@ class CmsVariableProvider extends \TYPO3Fluid\Fluid\Core\Variables\StandardVaria
      * @param array $accessors
      * @return mixed
      */
-    public function getByPath($path, array $accessors = array())
+    public function getByPath($path, array $accessors = [])
     {
         return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($this->variables, $path);
     }

@@ -41,19 +41,19 @@ class InputColorPickerElement extends AbstractFormElement
         $specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
         $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-        $classes = array();
-        $attributes = array();
+        $classes = [];
+        $attributes = [];
 
         // readonly
         if ($config['readOnly']) {
             $itemFormElValue = $parameterArray['itemFormElValue'];
             $options = $this->data;
-            $options['parameterArray'] = array(
-                'fieldConf' => array(
+            $options['parameterArray'] = [
+                'fieldConf' => [
                     'config' => $config,
-                ),
+                ],
                 'itemFormElValue' => $itemFormElValue,
-            );
+            ];
             $options['renderType'] = 'none';
             return $this->nodeFactory->create($options)->render();
         }
@@ -62,7 +62,7 @@ class InputColorPickerElement extends AbstractFormElement
         foreach ($evalList as $func) {
             switch ($func) {
                 case 'required':
-                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => true));
+                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(['required' => true]);
                     break;
                 default:
                     // @todo: This is ugly: The code should find out on it's own whether a eval definition is a
@@ -72,9 +72,9 @@ class InputColorPickerElement extends AbstractFormElement
                         if (class_exists($func)) {
                             $evalObj = GeneralUtility::makeInstance($func);
                             if (method_exists($evalObj, 'deevaluateFieldValue')) {
-                                $_params = array(
+                                $_params = [
                                     'value' => $parameterArray['itemFormElValue']
-                                );
+                                ];
                                 $parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
                             }
                         }
@@ -82,11 +82,11 @@ class InputColorPickerElement extends AbstractFormElement
             }
         }
 
-        $paramsList = array(
+        $paramsList = [
             'field' => $parameterArray['itemFormElName'],
             'evalList' => implode(',', $evalList),
             'is_in' => trim($config['is_in']),
-        );
+        ];
 
         // set classes
         $classes[] = 'form-control';
@@ -97,9 +97,9 @@ class InputColorPickerElement extends AbstractFormElement
         $attributes['class'] = implode(' ', $classes);
 
         // Load needed js library
-        $resultArray['requireJsModules'][] = array(
+        $resultArray['requireJsModules'][] = [
             'TYPO3/CMS/Backend/ColorPicker' => 'function(ColorPicker){ColorPicker.initialize()}'
-        );
+        ];
 
         // calculate attributes
         $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
@@ -146,7 +146,7 @@ class InputColorPickerElement extends AbstractFormElement
 
         // Wrap a wizard around the item?
         $html = $this->renderWizards(
-            array($html),
+            [$html],
             $config['wizards'],
             $table,
             $row,

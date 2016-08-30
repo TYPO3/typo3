@@ -147,13 +147,13 @@ class InputButton extends AbstractButton implements ButtonInterface
      */
     public function render()
     {
-        $attributes = array(
+        $attributes = [
             'name' => $this->getName(),
             'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
             'value' => $this->getValue(),
             'title' => $this->getTitle(),
             'form' => trim($this->getForm())
-        );
+        ];
         $labelText = '';
         if ($this->showLabelText) {
             $labelText = ' ' . $this->title;

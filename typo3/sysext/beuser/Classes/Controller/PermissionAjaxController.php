@@ -36,7 +36,7 @@ class PermissionAjaxController
      *
      * @var array
      */
-    protected $conf = array();
+    protected $conf = [];
 
     /**
      * @var IconFactory
@@ -78,7 +78,7 @@ class PermissionAjaxController
         $extPath = ExtensionManagementUtility::extPath('beuser');
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setPartialRootPaths(array('default' => ExtensionManagementUtility::extPath('beuser') . 'Resources/Private/Partials'));
+        $view->setPartialRootPaths(['default' => ExtensionManagementUtility::extPath('beuser') . 'Resources/Private/Partials']);
         $view->assign('pageId', $this->conf['page']);
 
         $content = '';
@@ -96,10 +96,10 @@ class PermissionAjaxController
                     $userId = $this->conf['new_owner_uid'];
                     if (is_int($userId)) {
                         // Prepare data to change
-                        $data = array();
+                        $data = [];
                         $data['pages'][$this->conf['page']]['perms_userid'] = $userId;
                         // Execute TCE Update
-                        $tce->start($data, array());
+                        $tce->start($data, []);
                         $tce->process_datamap();
 
                         $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/PermissionAjax/ChangeOwner.html');
@@ -119,10 +119,10 @@ class PermissionAjaxController
                     $groupId = $this->conf['new_group_uid'];
                     if (is_int($groupId)) {
                         // Prepare data to change
-                        $data = array();
+                        $data = [];
                         $data['pages'][$this->conf['page']]['perms_groupid'] = $groupId;
                         // Execute TCE Update
-                        $tce->start($data, array());
+                        $tce->start($data, []);
                         $tce->process_datamap();
 
                         $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/PermissionAjax/ChangeGroup.html');
@@ -137,10 +137,10 @@ class PermissionAjaxController
                     break;
                 case 'toggle_edit_lock':
                     // Prepare data to change
-                    $data = array();
+                    $data = [];
                     $data['pages'][$this->conf['page']]['editlock'] = $this->conf['editLockState'] === 1 ? 0 : 1;
                     // Execute TCE Update
-                    $tce->start($data, array());
+                    $tce->start($data, []);
                     $tce->process_datamap();
                     $content = $this->renderToggleEditLock($this->conf['page'], $data['pages'][$this->conf['page']]['editlock']);
                     break;
@@ -151,10 +151,10 @@ class PermissionAjaxController
                         $this->conf['permissions'] = (int)($this->conf['permissions'] + $this->conf['bits']);
                     }
                     // Prepare data to change
-                    $data = array();
+                    $data = [];
                     $data['pages'][$this->conf['page']]['perms_' . $this->conf['who']] = $this->conf['permissions'];
                     // Execute TCE Update
-                    $tce->start($data, array());
+                    $tce->start($data, []);
                     $tce->process_datamap();
 
                     $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/PermissionAjax/ChangePermission.html');

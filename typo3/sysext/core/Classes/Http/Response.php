@@ -42,7 +42,7 @@ class Response extends Message implements ResponseInterface
      * The standardized and other important HTTP Status Codes
      * @var array
      */
-    protected $availableStatusCodes = array(
+    protected $availableStatusCodes = [
         // INFORMATIONAL CODES
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -106,7 +106,7 @@ class Response extends Message implements ResponseInterface
         508 => 'Loop Detected',
         509 => 'Bandwidth Limit Exceeded',
         511 => 'Network Authentication Required'
-    );
+    ];
 
     /**
      * Constructor for generating new responses
@@ -116,7 +116,7 @@ class Response extends Message implements ResponseInterface
      * @param array $headers
      * @throws \InvalidArgumentException if any of the given arguments are given
      */
-    public function __construct($body = 'php://temp', $statusCode = 200, $headers = array())
+    public function __construct($body = 'php://temp', $statusCode = 200, $headers = [])
     {
         // Build a streamable object for the body
         if (!is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {

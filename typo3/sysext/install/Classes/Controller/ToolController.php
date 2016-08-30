@@ -27,7 +27,7 @@ class ToolController extends AbstractController
     /**
      * @var array List of valid action names that need authentication
      */
-    protected $authenticationActions = array(
+    protected $authenticationActions = [
         'importantActions',
         'systemEnvironment',
         'configuration',
@@ -38,7 +38,7 @@ class ToolController extends AbstractController
         'cleanUp',
         'loadExtensions',
         'about',
-    );
+    ];
 
     /**
      * Main dispatch method
@@ -103,7 +103,7 @@ class ToolController extends AbstractController
                 if ($errorType & (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR)) {
                     $getPostValues = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');
 
-                    $parameters = array();
+                    $parameters = [];
 
                     // Add context parameter in case this script was called within backend scope
                     $context = 'install[context]=standalone';
@@ -151,7 +151,7 @@ class ToolController extends AbstractController
     protected function getLastError()
     {
         $getVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('install');
-        $lastError = array();
+        $lastError = [];
         if (isset($getVars['lastError']) && isset($getVars['lastErrorHash']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
             $calculatedHash = hash_hmac('sha1', $getVars['lastError'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'InstallToolError');
             if ($calculatedHash === $getVars['lastErrorHash']) {

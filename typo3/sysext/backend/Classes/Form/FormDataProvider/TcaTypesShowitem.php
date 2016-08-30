@@ -183,7 +183,7 @@ class TcaTypesShowitem implements FormDataProviderInterface
      */
     protected function removeFieldsByBitmaskExcludeBits(array $result, $bitmaskValue, $recordTypeValue)
     {
-        $removeListArray = array();
+        $removeListArray = [];
         $bitmaskValue = MathUtility::forceIntegerInRange($bitmaskValue, 0);
         $excludeListBitsArray = $this->processedTca['types'][$recordTypeValue]['bitmask_excludelist_bits'];
         foreach ($excludeListBitsArray as $bitKey => $excludeList) {
@@ -210,7 +210,7 @@ class TcaTypesShowitem implements FormDataProviderInterface
      */
     protected function removeFields(array $result, array $removeListArray, $recordTypeValue)
     {
-        $newFieldList = array();
+        $newFieldList = [];
         $showItemFieldString = $result['processedTca']['types'][$recordTypeValue]['showitem'];
         $showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, true);
         foreach ($showItemFieldArray as $fieldConfigurationString) {
@@ -247,7 +247,7 @@ class TcaTypesShowitem implements FormDataProviderInterface
                 }
                 $showItemFieldString = $paletteArray['showitem'];
                 $showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, true);
-                $newFieldList = array();
+                $newFieldList = [];
                 foreach ($showItemFieldArray as $fieldConfigurationString) {
                     $fieldConfigurationArray = GeneralUtility::trimExplode(';', $fieldConfigurationString);
                     $fieldName = $fieldConfigurationArray[0];

@@ -22,12 +22,12 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $drivers = array();
+    protected $drivers = [];
 
     /**
      * @var array
      */
-    protected $driverConfigurations = array();
+    protected $driverConfigurations = [];
 
     /**
      * Creates this object.
@@ -73,12 +73,12 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         $this->drivers[$shortName] = $className;
-        $this->driverConfigurations[$shortName] = array(
+        $this->driverConfigurations[$shortName] = [
             'class' => $className,
             'shortName' => $shortName,
             'label' => $label,
             'flexFormDS' => $flexFormDataStructurePathAndFilename
-        );
+        ];
         return true;
     }
 
@@ -91,7 +91,7 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
         $configurationFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['configuration']['config'];
         foreach ($this->driverConfigurations as $driver) {
             $label = $driver['label'] ?: $driver['class'];
-            $driverFieldConfig['items'][$driver['shortName']] = array($label, $driver['shortName']);
+            $driverFieldConfig['items'][$driver['shortName']] = [$label, $driver['shortName']];
             if ($driver['flexFormDS']) {
                 $configurationFieldConfig['ds'][$driver['shortName']] = $driver['flexFormDS'];
             }

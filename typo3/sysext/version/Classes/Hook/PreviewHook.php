@@ -350,16 +350,16 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function compilePreviewKeyword($getVarsStr, $backendUserUid, $ttl = 172800, $fullWorkspace = null)
     {
-        $fieldData = array(
+        $fieldData = [
             'keyword' => md5(uniqid(microtime(), true)),
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
-            'config' => serialize(array(
+            'config' => serialize([
                 'fullWorkspace' => $fullWorkspace,
                 'getVars' => $getVarsStr,
                 'BEUSER_uid' => $backendUserUid
-            ))
-        );
+            ])
+        ];
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_preview')
             ->insert(

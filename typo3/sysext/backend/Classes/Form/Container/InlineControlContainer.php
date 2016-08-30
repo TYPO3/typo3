@@ -44,7 +44,7 @@ class InlineControlContainer extends AbstractContainer
      *
      * @var array
      */
-    protected $inlineData = array();
+    protected $inlineData = [];
 
     /**
      * @var InlineStackProcessor
@@ -105,13 +105,13 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Add the current inline job to the structure stack
-        $newStructureItem = array(
+        $newStructureItem = [
             'table' => $table,
             'uid' => $row['uid'],
             'field' => $field,
             'config' => $config,
             'localizationMode' => BackendUtility::getInlineLocalizationMode($table, $config),
-        );
+        ];
         // Extract FlexForm parts (if any) from element name, e.g. array('vDEF', 'lDEF', 'FlexField', 'vDEF')
         if (!empty($parameterArray['itemFormElName'])) {
             $flexFormParts = $this->extractFlexFormParts($parameterArray['itemFormElName']);
@@ -136,7 +136,7 @@ class InlineControlContainer extends AbstractContainer
         $config['inline']['first'] = false;
         // @todo: This initialization shouldn't be required data provider should take care this is set?
         if (!is_array($this->data['parameterArray']['fieldConf']['children'])) {
-            $this->data['parameterArray']['fieldConf']['children'] = array();
+            $this->data['parameterArray']['fieldConf']['children'] = [];
         }
         $firstChild = reset($this->data['parameterArray']['fieldConf']['children']);
         if (isset($firstChild['databaseRow']['uid'])) {
@@ -150,23 +150,23 @@ class InlineControlContainer extends AbstractContainer
 
         $top = $inlineStackProcessor->getStructureLevel(0);
 
-        $this->inlineData['config'][$nameObject] = array(
+        $this->inlineData['config'][$nameObject] = [
             'table' => $foreign_table,
             'md5' => md5($nameObject)
-        );
-        $this->inlineData['config'][$nameObject . '-' . $foreign_table] = array(
+        ];
+        $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
             'min' => $config['minitems'],
             'max' => $config['maxitems'],
             'sortable' => $config['appearance']['useSortable'],
-            'top' => array(
+            'top' => [
                 'table' => $top['table'],
                 'uid' => $top['uid']
-            ),
-            'context' => array(
+            ],
+            'context' => [
                 'config' => $config,
                 'hmac' => GeneralUtility::hmac(serialize($config)),
-            ),
-        );
+            ],
+        ];
         $this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];
 
         $uniqueMax = 0;
@@ -187,10 +187,10 @@ class InlineControlContainer extends AbstractContainer
                         // A group field is still a list with pipe separated uid|tableName
                         $valueParts = GeneralUtility::trimExplode('|', $value);
                         $itemParts = explode('_', $valueParts[0]);
-                        $value = array(
+                        $value = [
                             'uid' => array_pop($itemParts),
                             'table' => implode('_', $itemParts)
-                        );
+                        ];
                     }
                     // @todo: This is weird, $value has different structure for group and select fields?
                     $uniqueIds[$child['databaseRow']['uid']] = $value;
@@ -202,7 +202,7 @@ class InlineControlContainer extends AbstractContainer
                 $possibleRecordsUidToTitle[$possibleRecord[1]] = $possibleRecord[0];
             }
             $uniqueMax = $config['appearance']['useCombination'] || empty($possibleRecords) ? -1 : count($possibleRecords);
-            $this->inlineData['unique'][$nameObject . '-' . $foreign_table] = array(
+            $this->inlineData['unique'][$nameObject . '-' . $foreign_table] = [
                 'max' => $uniqueMax,
                 'used' => $uniqueIds,
                 'type' => $type,
@@ -211,7 +211,7 @@ class InlineControlContainer extends AbstractContainer
                 'field' => $config['foreign_unique'],
                 'selector' => $config['selectorOrUniqueConfiguration']['isSelector'] ? $type : false,
                 'possible' => $possibleRecordsUidToTitle,
-            );
+            ];
         }
 
         $resultArray['inlineData'] = $this->inlineData;
@@ -306,14 +306,14 @@ class InlineControlContainer extends AbstractContainer
         if (is_array($config['customControls'])) {
             $html .= '<div id="' . $nameObject . '_customControls">';
             foreach ($config['customControls'] as $customControlConfig) {
-                $parameters = array(
+                $parameters = [
                     'table' => $table,
                     'field' => $field,
                     'row' => $row,
                     'nameObject' => $nameObject,
                     'nameForm' => $nameForm,
                     'config' => $config
-                );
+                ];
                 $html .= GeneralUtility::callUserFunction($customControlConfig, $parameters, $this);
             }
             $html .= '</div>';
@@ -326,7 +326,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
-            . $this->getValidationDataAsDataAttribute(array('type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']))
+            . $this->getValidationDataAsDataAttribute(['type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']])
             . ' class="inlineRecord" />';
         // Close the wrap for all inline fields (container)
         $html .= '</div>';
@@ -344,11 +344,11 @@ class InlineControlContainer extends AbstractContainer
      * @param array $conf TCA configuration of the parent(!) field
      * @return string The HTML code of the new link, wrapped in a div
      */
-    protected function getLevelInteractionLink($type, $objectPrefix, $conf = array())
+    protected function getLevelInteractionLink($type, $objectPrefix, $conf = [])
     {
         $languageService = $this->getLanguageService();
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-        $attributes = array();
+        $attributes = [];
         switch ($type) {
             case 'newRecord':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew'));
@@ -401,7 +401,7 @@ class InlineControlContainer extends AbstractContainer
      * @param array $attributes Array of attributes to be used in the anchor
      * @return string The wrapped text as HTML representation
      */
-    protected function wrapWithAnchor($text, $link, $attributes = array())
+    protected function wrapWithAnchor($text, $link, $attributes = [])
     {
         $link = trim($link);
         $result = '<a href="' . ($link ?: '#') . '"';
@@ -600,7 +600,7 @@ class InlineControlContainer extends AbstractContainer
     protected function extractFlexFormParts($formElementName)
     {
         $flexFormParts = null;
-        $matches = array();
+        $matches = [];
         if (preg_match('#^data(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
             $flexFormParts = GeneralUtility::trimExplode(
                 '][',

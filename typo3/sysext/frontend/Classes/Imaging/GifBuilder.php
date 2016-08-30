@@ -53,26 +53,26 @@ class GifBuilder extends GraphicalFunctions
      *
      * @var array
      */
-    public $combinedTextStrings = array();
+    public $combinedTextStrings = [];
 
     /**
      * Contains all filenames (basename without extension) used on this image
      *
      * @var array
      */
-    public $combinedFileNames = array();
+    public $combinedFileNames = [];
 
     /**
      * This is the array from which data->field: [key] is fetched. So this is the current record!
      *
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * @var array
      */
-    public $objBB = array();
+    public $objBB = [];
 
     /**
      * @var string
@@ -82,12 +82,12 @@ class GifBuilder extends GraphicalFunctions
     /**
      * @var array
      */
-    public $charRangeMap = array();
+    public $charRangeMap = [];
 
     /**
      * @var int[]
      */
-    public $XY = array();
+    public $XY = [];
 
     /**
      * @var ContentObjectRenderer
@@ -97,7 +97,7 @@ class GifBuilder extends GraphicalFunctions
     /**
      * @var array
      */
-    public $defaultWorkArea = array();
+    public $defaultWorkArea = [];
 
     /**
      * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
@@ -130,13 +130,13 @@ class GifBuilder extends GraphicalFunctions
                 }
             }
             // Initializing global Char Range Map
-            $this->charRangeMap = array();
+            $this->charRangeMap = [];
             if (is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'])) {
                 foreach ($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg) {
                     if (is_array($cRMcfg)) {
                         // Initializing:
                         $cRMkey = $GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'][substr($cRMcfgkey, 0, -1)];
-                        $this->charRangeMap[$cRMkey] = array();
+                        $this->charRangeMap[$cRMkey] = [];
                         $this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'];
                         $this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey, 0, -1);
                         $this->charRangeMap[$cRMkey]['multiplicator'] = (double) $cRMcfg['fontSizeMultiplicator'];
@@ -390,7 +390,7 @@ class GifBuilder extends GraphicalFunctions
             $this->saveAlphaLayer = true;
             // Force PNG in case no format is set
             $this->setup['format'] = 'png';
-            $BGcols = array();
+            $BGcols = [];
         } else {
             // Fill the background with the given color
             $BGcols = $this->convertColor($this->setup['backColor']);
@@ -407,7 +407,7 @@ class GifBuilder extends GraphicalFunctions
                     // all properties of the TEXT sub-object have already been stdWrap-ped
                     // before in ->checkTextObj()
                     if ($theValue !== 'TEXT') {
-                        $isStdWrapped = array();
+                        $isStdWrapped = [];
                         foreach ($conf as $key => $value) {
                             $parameter = rtrim($key, '.');
                             if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
@@ -428,7 +428,7 @@ class GifBuilder extends GraphicalFunctions
                         case 'TEXT':
                             if (!$conf['hide']) {
                                 if (is_array($conf['shadow.'])) {
-                                    $isStdWrapped = array();
+                                    $isStdWrapped = [];
                                     foreach ($conf['shadow.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
                                         if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
@@ -439,7 +439,7 @@ class GifBuilder extends GraphicalFunctions
                                     $this->makeShadow($this->im, $conf['shadow.'], $this->workArea, $conf);
                                 }
                                 if (is_array($conf['emboss.'])) {
-                                    $isStdWrapped = array();
+                                    $isStdWrapped = [];
                                     foreach ($conf['emboss.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
                                         if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
@@ -450,7 +450,7 @@ class GifBuilder extends GraphicalFunctions
                                     $this->makeEmboss($this->im, $conf['emboss.'], $this->workArea, $conf);
                                 }
                                 if (is_array($conf['outline.'])) {
-                                    $isStdWrapped = array();
+                                    $isStdWrapped = [];
                                     foreach ($conf['outline.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
                                         if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
@@ -549,7 +549,7 @@ class GifBuilder extends GraphicalFunctions
     {
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $cObj->start($this->data);
-        $isStdWrapped = array();
+        $isStdWrapped = [];
         foreach ($conf as $key => $value) {
             $parameter = rtrim($key, '.');
             if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
@@ -591,7 +591,7 @@ class GifBuilder extends GraphicalFunctions
             if (is_array($this->charRangeMap[$fontBaseName])) {
                 // Initialize splitRendering array:
                 if (!is_array($conf['splitRendering.'])) {
-                    $conf['splitRendering.'] = array();
+                    $conf['splitRendering.'] = [];
                 }
                 $cfgK = $this->charRangeMap[$fontBaseName]['cfgKey'];
                 // Do not impose settings if a splitRendering object already exists:
@@ -605,7 +605,7 @@ class GifBuilder extends GraphicalFunctions
                     }
                     // Multiplicator of pixelSpace:
                     if ($this->charRangeMap[$fontBaseName]['pixelSpace']) {
-                        $travKeys = array('xSpaceBefore', 'xSpaceAfter', 'ySpaceBefore', 'ySpaceAfter');
+                        $travKeys = ['xSpaceBefore', 'xSpaceAfter', 'ySpaceBefore', 'ySpaceAfter'];
                         foreach ($travKeys as $pxKey) {
                             if (isset($conf['splitRendering.'][$cfgK . '.'][$pxKey])) {
                                 $conf['splitRendering.'][$cfgK . '.'][$pxKey] = round($conf['splitRendering.'][$cfgK . '.'][$pxKey] * ($conf['fontSize'] / $this->charRangeMap[$fontBaseName]['pixelSpace']));
@@ -641,7 +641,7 @@ class GifBuilder extends GraphicalFunctions
      */
     public function calcOffset($string)
     {
-        $value = array();
+        $value = [];
         $numbers = GeneralUtility::trimExplode(',', $this->calculateFunctions($string));
         foreach ($numbers as $key => $val) {
             if ((string)$val == (string)(int)$val) {

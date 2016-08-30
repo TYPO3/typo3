@@ -27,36 +27,36 @@ class AuthenticationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processLoginDataProvider()
     {
-        return array(
-            'Backend login with securityLevel "normal"' => array(
+        return [
+            'Backend login with securityLevel "normal"' => [
                 'normal',
-                array(
+                [
                     'status' => 'login',
                     'uname' => 'admin',
                     'uident' => 'password',
-                ),
-                array(
+                ],
+                [
                     'status' => 'login',
                     'uname' => 'admin',
                     'uident' => 'password',
                     'uident_text' => 'password',
-                )
-            ),
-            'Frontend login with securityLevel "normal"' => array(
+                ]
+            ],
+            'Frontend login with securityLevel "normal"' => [
                 'normal',
-                array(
+                [
                     'status' => 'login',
                     'uname' => 'admin',
                     'uident' => 'password',
-                ),
-                array(
+                ],
+                [
                     'status' => 'login',
                     'uname' => 'admin',
                     'uident' => 'password',
                     'uident_text' => 'password',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

@@ -41,7 +41,7 @@ class MailMessage extends \Swift_Message
      *
      * @var array
      */
-    protected $failedRecipients = array();
+    protected $failedRecipients = [];
 
     /**
      * @return void

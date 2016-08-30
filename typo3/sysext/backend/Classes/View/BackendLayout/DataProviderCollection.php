@@ -22,12 +22,12 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array|DataProviderInterface[]
      */
-    protected $dataProviders = array();
+    protected $dataProviders = [];
 
     /**
      * @var array
      */
-    protected $results = array();
+    protected $results = [];
 
     /**
      * Adds a data provider to this collection.
@@ -74,7 +74,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getBackendLayoutCollections(DataProviderContext $dataProviderContext)
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->dataProviders as $identifier => $dataProvider) {
             $backendLayoutCollection = $this->createBackendLayoutCollection($identifier);

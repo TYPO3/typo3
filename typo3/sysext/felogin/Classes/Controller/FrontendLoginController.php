@@ -176,10 +176,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect']) &&
                     is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'])
                 ) {
-                    $_params = array(
+                    $_params = [
                         'loginType' => $this->logintype,
                         'redirectUrl' => &$this->redirectUrl
-                    );
+                    ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'] as $_funcRef) {
                         if ($_funcRef) {
                             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -194,9 +194,9 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'])
         ) {
-            $_params = array(
+            $_params = [
                 'content' => $content
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] as $_funcRef) {
                 $content = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -212,7 +212,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function showForgot()
     {
         $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_FORGOT###');
-        $subpartArray = ($linkpartArray = array());
+        $subpartArray = ($linkpartArray = []);
         $postData = GeneralUtility::_POST($this->prefixId);
         if ($postData['forgot_email']) {
             // Get hashes for compare
@@ -267,10 +267,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
             $markerArray['###BACKLINK_LOGIN###'] = '';
         }
-        $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')), array());
+        $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')), []);
         $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('legend', $this->pi_getLL('reset_password')));
-        $markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]' => 1), true);
+        $markerArray['###ACTION_URI###'] = $this->getPageLink('', [$this->prefixId . '[forgot]' => 1], true);
         $markerArray['###EMAIL_LABEL###'] = htmlspecialchars($this->pi_getLL('your_email'));
         $markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = htmlspecialchars($this->pi_getLL('forgot_password_enterEmail'));
         $markerArray['###FORGOT_EMAIL###'] = $this->prefixId . '[forgot_email]';
@@ -281,7 +281,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $hash = md5($this->generatePassword(3));
         $markerArray['###FORGOTHASH###'] = $hash;
         // Set hash in feuser session
-        $this->frontendController->fe_user->setKey('ses', 'forgot_hash', array('forgot_hash' => $hash));
+        $this->frontendController->fe_user->setKey('ses', 'forgot_hash', ['forgot_hash' => $hash]);
         return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
     }
 
@@ -293,7 +293,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function changePassword()
     {
-        $subpartArray = ($linkpartArray = array());
+        $subpartArray = ($linkpartArray = []);
         $done = false;
         $minLength = (int)$this->conf['newPasswordMinLength'] ?: 6;
         $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
@@ -342,11 +342,11 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     } else {
                         $newPass = $postData['password1'];
                         if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
-                            $_params = array(
+                            $_params = [
                                 'user' => $user,
                                 'newPassword' => $newPass,
                                 'newPasswordUnencrypted' => $newPass
-                            );
+                            ];
                             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'] as $_funcRef) {
                                 if ($_funcRef) {
                                     GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -374,16 +374,16 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         $subpartArray['###CHANGEPASSWORD_FORM###'] = '';
                         $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(
                             htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')),
-                            array($this->prefixId . '[redirectReferrer]' => 'off')
+                            [$this->prefixId . '[redirectReferrer]' => 'off']
                         );
                     }
                 }
                 if (!$done) {
                     // Change password form
-                    $markerArray['###ACTION_URI###'] = $this->getPageLink('', array(
+                    $markerArray['###ACTION_URI###'] = $this->getPageLink('', [
                         $this->prefixId . '[user]' => $user['uid'],
                         $this->prefixId . '[forgothash]' => $piHash
-                    ), true);
+                    ], true);
                     $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('change_password'));
                     $markerArray['###NEWPASSWORD1_LABEL###'] = htmlspecialchars($this->pi_getLL('newpassword_label1'));
                     $markerArray['###NEWPASSWORD2_LABEL###'] = htmlspecialchars($this->pi_getLL('newpassword_label2'));
@@ -427,10 +427,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $isAbsRefPrefix = !empty($this->frontendController->absRefPrefix);
         $isBaseURL = !empty($this->frontendController->baseUrl);
         $isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
-        $link = $this->pi_getPageLink($this->frontendController->id, '', array(
+        $link = $this->pi_getPageLink($this->frontendController->id, '', [
             rawurlencode($this->prefixId . '[user]') => $user['uid'],
             rawurlencode($this->prefixId . '[forgothash]') => $randHash
-        ));
+        ]);
         // Prefix link if necessary
         if ($isFeloginBaseURL) {
             // First priority, use specific base URL
@@ -457,10 +457,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'])
         ) {
-            $params = array(
+            $params = [
                 'message' => &$msg,
                 'user' => &$user
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'] as $reference) {
                 if ($reference) {
                     GeneralUtility::callUserFunction($reference, $params, $this);
@@ -482,12 +482,12 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function showLogout()
     {
         $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGOUT###');
-        $subpartArray = ($linkpartArray = array());
+        $subpartArray = ($linkpartArray = []);
         $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('status_header', $this->conf['logoutHeader_stdWrap.']);
         $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('status_message', $this->conf['logoutMessage_stdWrap.']);
         $this->cObj->stdWrap($this->flexFormValue('message', 's_status'), $this->conf['logoutMessage_stdWrap.']);
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('logout'));
-        $markerArray['###ACTION_URI###'] = $this->getPageLink('', array(), true);
+        $markerArray['###ACTION_URI###'] = $this->getPageLink('', [], true);
         $markerArray['###LOGOUT_LABEL###'] = htmlspecialchars($this->pi_getLL('logout'));
         $markerArray['###NAME###'] = htmlspecialchars($this->frontendController->fe_user->user['name']);
         $markerArray['###STORAGE_PID###'] = $this->spid;
@@ -512,7 +512,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function showLogin()
     {
         $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
-        $subpartArray = ($linkpartArray = ($markerArray = array()));
+        $subpartArray = ($linkpartArray = ($markerArray = []));
         $gpRedirectUrl = '';
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('oLabel_header_welcome'));
         if ($this->logintype === 'login') {
@@ -524,7 +524,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $subpartArray['###LOGIN_FORM###'] = '';
                 // Hook for general actions after after login has been confirmed (by Thomas Danzl <thomas@danzl.org>)
                 if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']) {
-                    $_params = array();
+                    $_params = [];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed'] as $_funcRef) {
                         if ($_funcRef) {
                             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -542,7 +542,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'])
                     && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'])
                 ) {
-                    $params = array();
+                    $params = [];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'] as $funcRef) {
                         if ($funcRef) {
                             GeneralUtility::callUserFunction($funcRef, $params, $this);
@@ -570,8 +570,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // The methods should also set the required JS functions to get included
         $onSubmit = '';
         $extraHidden = '';
-        $onSubmitAr = array();
-        $extraHiddenAr = array();
+        $onSubmitAr = [];
+        $extraHiddenAr = [];
         // Check for referer redirect method. if present, save referer in form field
         if (GeneralUtility::inList($this->conf['redirectMode'], 'referer') || GeneralUtility::inList($this->conf['redirectMode'], 'refererDomains')) {
             $referer = $this->referer ? $this->referer : GeneralUtility::getIndpEnv('HTTP_REFERER');
@@ -583,7 +583,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
-            $_params = array();
+            $_params = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) {
                 list($onSub, $hid) = GeneralUtility::callUserFunction($funcRef, $_params, $this);
                 $onSubmitAr[] = $onSub;
@@ -600,7 +600,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $gpRedirectUrl = $this->redirectUrl;
         }
         // Login form
-        $markerArray['###ACTION_URI###'] = $this->getPageLink('', array(), true);
+        $markerArray['###ACTION_URI###'] = $this->getPageLink('', [], true);
         // Used by kb_md5fepw extension...
         $markerArray['###EXTRA_HIDDEN###'] = $extraHidden;
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('login'));
@@ -615,7 +615,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $markerArray['###PREFIXID###'] = $this->prefixId;
         $markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
         if ($this->conf['showForgotPasswordLink']) {
-            $linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|', $this->getPageLink('|', array($this->prefixId . '[forgot]' => 1)));
+            $linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|', $this->getPageLink('|', [$this->prefixId . '[forgot]' => 1]));
             $markerArray['###FORGOT_PASSWORD###'] = htmlspecialchars($this->pi_getLL('ll_forgot_header'));
         } else {
             $subpartArray['###FORGOTP_VALID###'] = '';
@@ -649,7 +649,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function processRedirect()
     {
-        $redirect_url = array();
+        $redirect_url = [];
         if ($this->conf['redirectMode']) {
             $redirectMethods = GeneralUtility::trimExplode(',', $this->conf['redirectMode'], true);
             foreach ($redirectMethods as $redirMethod) {
@@ -727,7 +727,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             if ($this->conf['domains'] && $this->piVars['redirectReferrer'] !== 'off') {
                                 $url = $this->referer;
                                 // Is referring url allowed to redirect?
-                                $match = array();
+                                $match = [];
                                 if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
                                     $redirect_domain = $match[1];
                                     $found = false;
@@ -759,10 +759,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
                 } elseif ($this->logintype == '' && $redirMethod == 'login' && $this->conf['redirectPageLogin']) {
                     // If login and page not accessible
-                    $this->cObj->typoLink('', array(
+                    $this->cObj->typoLink('', [
                         'parameter' => $this->conf['redirectPageLogin'],
                         'linkAccessRestrictedPages' => true
-                    ));
+                    ]);
                     $redirect_url[] = $this->cObj->lastTypoLinkUrl;
                 } elseif ($this->logintype == '' && $redirMethod == 'logout' && $this->conf['redirectPageLogout'] && $this->frontendController->loginUser) {
                     // If logout and page not accessible
@@ -771,7 +771,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     // after logout
                     // Hook for general actions after after logout has been confirmed
                     if ($this->logintype === 'logout' && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
-                        $_params = array();
+                        $_params = [];
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] as $_funcRef) {
                             if ($_funcRef) {
                                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -801,7 +801,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (!empty($redirect_url)) {
             return array_filter($redirect_url, 'strlen');
         }
-        return array();
+        return [];
     }
 
     /**
@@ -811,7 +811,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function mergeflexFormValuesIntoConf()
     {
-        $flex = array();
+        $flex = [];
         if ($this->flexFormValue('showForgotPassword', 'sDEF')) {
             $flex['showForgotPasswordLink'] = $this->flexFormValue('showForgotPassword', 'sDEF');
         }
@@ -951,7 +951,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param array $stdWrapArray TS stdWrap array
      * @return string label text
      */
-    protected function getDisplayText($label, $stdWrapArray = array())
+    protected function getDisplayText($label, $stdWrapArray = [])
     {
         $text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_' . $label), $stdWrapArray);
         $replace = $this->getUserFieldMarkers();
@@ -965,7 +965,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function getUserFieldMarkers()
     {
-        $marker = array();
+        $marker = [];
         // replace markers with fe_user data
         if ($this->frontendController->fe_user->user) {
             // All fields of fe_user will be replaced, scheme is ###FEUSER_FIELDNAME###

@@ -97,7 +97,7 @@ class YouTubeRenderer implements FileRendererInterface
             }
         }
 
-        $urlParams = array('autohide=1');
+        $urlParams = ['autohide=1'];
         if (!isset($options['controls']) || !empty($options['controls'])) {
             $urlParams[] = 'controls=2';
         }

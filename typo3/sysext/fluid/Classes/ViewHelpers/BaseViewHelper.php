@@ -55,7 +55,7 @@ class BaseViewHelper extends AbstractViewHelper
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

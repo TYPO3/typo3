@@ -91,7 +91,7 @@ class HistoryEntryViewHelper extends AbstractViewHelper
         $historyLabel = LocalizationUtility::translate(
             'changesInFields',
             $controllerContext->getRequest()->getControllerExtensionName(),
-            array($historyEntry->getFieldlist())
+            [$historyEntry->getFieldlist()]
         );
         $titleLable = LocalizationUtility::translate(
             'showHistory',
@@ -100,10 +100,10 @@ class HistoryEntryViewHelper extends AbstractViewHelper
         $historyIcon = $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
         $historyHref = BackendUtility::getModuleUrl(
                 'record_history',
-                array(
+                [
                     'sh_uid' => $historyEntry->getUid(),
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-                )
+                ]
             );
         $historyLink = '<a href="' . htmlspecialchars($historyHref) . '" title="' . htmlspecialchars($titleLable) . '">' . $historyIcon . '</a>';
         return htmlspecialchars($historyLabel) . '&nbsp;' . $historyLink;

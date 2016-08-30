@@ -30,7 +30,7 @@ class Status implements ReportInterface
     /**
      * @var StatusProviderInterface[][]
      */
-    protected $statusProviders = array();
+    protected $statusProviders = [];
 
     /**
      * Constructor for class tx_reports_report_Status
@@ -66,7 +66,7 @@ class Status implements ReportInterface
     protected function getStatusProviders()
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
-            $this->statusProviders[$key] = array();
+            $this->statusProviders[$key] = [];
             foreach ($statusProvidersList as $statusProvider) {
                 $statusProviderInstance = GeneralUtility::makeInstance($statusProvider);
                 if ($statusProviderInstance instanceof StatusProviderInterface) {
@@ -83,9 +83,9 @@ class Status implements ReportInterface
      */
     public function getSystemStatus()
     {
-        $status = array();
+        $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
-            $status[$statusProviderId] = array();
+            $status[$statusProviderId] = [];
             foreach ($statusProviderList as $statusProvider) {
                 $statuses = $statusProvider->getStatus();
                 $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
@@ -101,9 +101,9 @@ class Status implements ReportInterface
      */
     public function getDetailedSystemStatus()
     {
-        $status = array();
+        $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
-            $status[$statusProviderId] = array();
+            $status[$statusProviderId] = [];
             foreach ($statusProviderList as $statusProvider) {
                 if ($statusProvider instanceof ExtendedStatusProviderInterface) {
                     $statuses = $statusProvider->getDetailedStatus();
@@ -158,23 +158,23 @@ class Status implements ReportInterface
         foreach ($statuses as $provider => $providerStatus) {
             $providerState = $this->sortStatuses($providerStatus);
             $id++;
-            $classes = array(
+            $classes = [
                 ReportStatus::NOTICE => 'notice',
                 ReportStatus::INFO => 'info',
                 ReportStatus::OK => 'success',
                 ReportStatus::WARNING => 'warning',
                 ReportStatus::ERROR => 'danger'
-            );
+            ];
             $messages = '';
             /** @var ReportStatus $status */
             foreach ($providerState as $status) {
                 $severity = $status->getSeverity();
-                $messages .= strtr($template, array(
+                $messages .= strtr($template, [
                     '###CLASS###' => $classes[$severity],
                     '###HEADER###' => $status->getTitle(),
                     '###STATUS###' => $status->getValue(),
                     '###CONTENT###' => $status->getMessage()
-                ));
+                ]);
             }
             $header = '<h2>' . $provider . '</h2>';
             $table = '<table class="table table-striped table-hover">';
@@ -197,17 +197,17 @@ class Status implements ReportInterface
         // Extract the primary status collections, i.e. the status groups
         // that must appear on top of the status report
         // Change their keys to localized collection titles
-        $primaryStatuses = array(
+        $primaryStatuses = [
             $this->getLanguageService()->getLL('status_typo3') => $statusCollection['typo3'],
             $this->getLanguageService()->getLL('status_system') => $statusCollection['system'],
             $this->getLanguageService()->getLL('status_security') => $statusCollection['security'],
             $this->getLanguageService()->getLL('status_configuration') => $statusCollection['configuration']
-        );
+        ];
         unset($statusCollection['typo3'], $statusCollection['system'], $statusCollection['security'], $statusCollection['configuration']);
         // Assemble list of secondary status collections with left-over collections
         // Change their keys using localized labels if available
         // @todo extract into getLabel() method
-        $secondaryStatuses = array();
+        $secondaryStatuses = [];
         foreach ($statusCollection as $statusProviderId => $collection) {
             $label = '';
             if (strpos($statusProviderId, 'LLL:') === 0) {
@@ -234,8 +234,8 @@ class Status implements ReportInterface
      */
     protected function sortStatuses(array $statusCollection)
     {
-        $statuses = array();
-        $sortTitle = array();
+        $statuses = [];
+        $sortTitle = [];
         $header = null;
         /** @var ReportStatus $status */
         foreach ($statusCollection as $status) {

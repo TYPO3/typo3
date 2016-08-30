@@ -33,7 +33,7 @@ class DocumentationService
      */
     public function getOfficialDocuments()
     {
-        $documents = array();
+        $documents = [];
 
         $json = GeneralUtility::getUrl('https://docs.typo3.org/typo3cms/documents.json');
         if ($json) {
@@ -56,7 +56,7 @@ class DocumentationService
      */
     public function getLocalExtensions()
     {
-        $documents = array();
+        $documents = [];
 
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionData) {
             $absoluteExtensionPath = ExtensionManagementUtility::extPath($extensionKey);
@@ -69,7 +69,7 @@ class DocumentationService
                 }
 
                 $documentKey = 'typo3cms.extensions.' . $extensionKey;
-                $documents[] = array(
+                $documents[] = [
                     'title'   => $metadata['title'],
                     'icon'    => MiscUtility::getIcon($documentKey),
                     'type'    => 'Extension',
@@ -77,7 +77,7 @@ class DocumentationService
                     'shortcut' => $extensionKey,
                     'url'     => 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/',
                     'version' => $version,
-                );
+                ];
             }
         }
 
@@ -110,7 +110,7 @@ class DocumentationService
             return $success;
         }
 
-        $languages = array($language);
+        $languages = [$language];
         if ($language !== 'default') {
             $languages[] = 'default';
         }
@@ -204,11 +204,11 @@ class DocumentationService
             $documents = json_decode(file_get_contents($absoluteCacheFilename), true);
             foreach ($documents as $document) {
                 if ($document['key'] === $key) {
-                    $composerData = array(
+                    $composerData = [
                         'name' => $document['title'],
                         'type' => 'documentation',
                         'description' => 'TYPO3 ' . $document['type'],
-                    );
+                    ];
                     $relativeComposerFilename = $key . '/' . $language . '/composer.json';
                     $absoluteComposerFilename = GeneralUtility::getFileAbsFileName('typo3conf/Documentation/' . $relativeComposerFilename);
                     GeneralUtility::writeFile($absoluteComposerFilename, json_encode($composerData));
@@ -229,7 +229,7 @@ class DocumentationService
      */
     protected function getAvailablePackages($url)
     {
-        $packages = array();
+        $packages = [];
         $url = rtrim($url, '/') . '/';
         $indexUrl = $url . 'packages/packages.xml';
 
@@ -260,10 +260,10 @@ class DocumentationService
 
         // SimpleXML does not properly handle arrays with only 1 item
         if ($data['languagePackIndex']['languagepack'][0] === null) {
-            $data['languagePackIndex']['languagepack'] = array($data['languagePackIndex']['languagepack']);
+            $data['languagePackIndex']['languagepack'] = [$data['languagePackIndex']['languagepack']];
         }
 
-        $packages = array();
+        $packages = [];
         foreach ($data['languagePackIndex']['languagepack'] as $languagePack) {
             $language = $languagePack['@attributes']['language'];
             $version = $languagePack['@attributes']['version'];

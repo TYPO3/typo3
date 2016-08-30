@@ -63,7 +63,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         parent::initDocumentTemplate();
 
         if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(true)) {
-            $this->parameters['fieldChangeFunc'] = array();
+            $this->parameters['fieldChangeFunc'] = [];
         }
         unset($this->parameters['fieldChangeFunc']['alert']);
         $update = [];
@@ -113,7 +113,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
     {
         $result = false;
         if (isset($this->parameters['fieldChangeFunc']) && is_array($this->parameters['fieldChangeFunc']) && isset($this->parameters['fieldChangeFuncHash'])) {
-            $matches = array();
+            $matches = [];
             $pattern = '#\\[el\\]\\[(([^]-]+-[^]-]+-)(idx\\d+-)([^]]+))\\]#i';
             $fieldChangeFunctions = $this->parameters['fieldChangeFunc'];
             // Special handling of flexform sections:

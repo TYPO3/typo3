@@ -45,7 +45,7 @@ class TreeDataProviderFactory
             $tcaConfiguration['internal_type'] = 'db';
         }
         if ($tcaConfiguration['internal_type'] === 'db') {
-            $unselectableUids = array();
+            $unselectableUids = [];
             if ($dataProvider === null) {
                 $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class);
             }

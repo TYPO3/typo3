@@ -341,77 +341,77 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function typolinkReturnsCorrectLinksForPagesDataProvider()
     {
-        return array(
-            'Link to page' => array(
+        return [
+            'Link to page' => [
                 'My page',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42">My page</a>',
-            ),
-            'Link to page without link text' => array(
+            ],
+            'Link to page without link text' => [
                 '',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42">Page title</a>',
-            ),
-            'Link to page with attributes' => array(
+            ],
+            'Link to page with attributes' => [
                 'My page',
-                array(
+                [
                     'parameter' => '42',
                     'ATagParams' => 'class="page-class"',
                     'target' => '_self',
                     'title' => 'Link to internal page',
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
-            ),
-            'Link to page with attributes in parameter' => array(
+            ],
+            'Link to page with attributes in parameter' => [
                 'My page',
-                array(
+                [
                     'parameter' => '42 _self page-class "Link to internal page"',
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
-            ),
-            'Link to page with bold tag in title' => array(
+            ],
+            'Link to page with bold tag in title' => [
                 '',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page <b>title</b>',
-                ),
+                ],
                 '<a href="index.php?id=42">Page <b>title</b></a>',
-            ),
-            'Link to page with script tag in title' => array(
+            ],
+            'Link to page with script tag in title' => [
                 '',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => '<script>alert(123)</script>Page title',
-                ),
+                ],
                 '<a href="index.php?id=42">&lt;script&gt;alert(123)&lt;/script&gt;Page title</a>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

@@ -30,14 +30,14 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      *
      * @var array
      */
-    protected $headers = array();
+    protected $headers = [];
 
     /**
      * Additional header tags
      *
      * @var array
      */
-    protected $additionalHeaderData = array();
+    protected $additionalHeaderData = [];
 
     /**
      * The HTTP status code
@@ -65,7 +65,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      *
      * @var array
      */
-    protected $statusMessages = array(
+    protected $statusMessages = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
@@ -111,7 +111,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
         505 => 'HTTP Version Not Supported',
         507 => 'Insufficient Storage',
         509 => 'Bandwidth Limit Exceeded'
-    );
+    ];
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
@@ -174,7 +174,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
             throw new \InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
         }
         if ($replaceExistingHeader === true || !isset($this->headers[$name])) {
-            $this->headers[$name] = array($value);
+            $this->headers[$name] = [$value];
         } else {
             $this->headers[$name][] = $value;
         }
@@ -188,7 +188,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      */
     public function getHeaders()
     {
-        $preparedHeaders = array();
+        $preparedHeaders = [];
         if ($this->statusCode !== null) {
             $protocolVersion = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
             $statusHeader = $protocolVersion . ' ' . $this->statusCode . ' ' . $this->statusMessage;

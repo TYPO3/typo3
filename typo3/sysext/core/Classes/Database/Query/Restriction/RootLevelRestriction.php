@@ -31,7 +31,7 @@ class RootLevelRestriction implements QueryRestrictionInterface
     /**
      * @param array $tableNames
      */
-    public function __construct(array $tableNames = array())
+    public function __construct(array $tableNames = [])
     {
         $this->tableNames = $tableNames;
     }

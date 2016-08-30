@@ -8,13 +8,13 @@ if (TYPO3_MODE === 'BE') {
         'help',
         'documentation',
         'top',
-        array(
+        [
             'Document' => 'list, download, fetch',
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'icon'   => 'EXT:documentation/Resources/Public/Icons/module-documentation.svg',
             'labels' => 'LLL:EXT:documentation/Resources/Private/Language/locallang_mod.xlf',
-        )
+        ]
     );
 }

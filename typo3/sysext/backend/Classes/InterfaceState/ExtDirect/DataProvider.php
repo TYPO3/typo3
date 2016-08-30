@@ -45,10 +45,10 @@ class DataProvider
     {
         $key = $parameter->params->key;
         $data = $this->userSettingsController->process('get', $key);
-        return array(
+        return [
             'success' => true,
             'data' => $data
-        );
+        ];
     }
 
     /**
@@ -64,9 +64,9 @@ class DataProvider
         foreach ($data as $setting) {
             $this->userSettingsController->process('set', $key . '.' . $setting->name, $setting->value);
         }
-        return array(
+        return [
             'success' => true,
             'params' => $parameter
-        );
+        ];
     }
 }

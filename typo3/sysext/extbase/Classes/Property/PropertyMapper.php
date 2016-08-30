@@ -53,7 +53,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $typeConverters = array();
+    protected $typeConverters = [];
 
     /**
      * A list of property mapping messages (errors, warnings) which have occurred on last mapping.
@@ -113,7 +113,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         if ($configuration === null) {
             $configuration = $this->configurationBuilder->build();
         }
-        $currentPropertyPath = array();
+        $currentPropertyPath = [];
         $this->messages = new \TYPO3\CMS\Extbase\Error\Result();
         try {
             $result = $this->doMapping($source, $targetType, $configuration, $currentPropertyPath);
@@ -171,7 +171,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
             throw new Exception\TypeConverterException('Type converter for "' . $source . '" -> "' . $targetType . '" not found.');
         }
 
-        $convertedChildProperties = array();
+        $convertedChildProperties = [];
         foreach ($typeConverter->getSourceChildPropertiesToBeConverted($source) as $sourcePropertyName => $sourcePropertyValue) {
             $targetPropertyName = $configuration->getTargetPropertyName($sourcePropertyName);
             if ($configuration->shouldSkip($targetPropertyName)) {
@@ -332,7 +332,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getConvertersForInterfaces(array $convertersForSource, array $interfaceNames)
     {
-        $convertersForInterface = array();
+        $convertersForInterface = [];
         foreach ($interfaceNames as $implementedInterface) {
             if (isset($convertersForSource[$implementedInterface])) {
                 foreach ($convertersForSource[$implementedInterface] as $priority => $converter) {

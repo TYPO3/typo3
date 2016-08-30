@@ -83,7 +83,7 @@ class AutoPublishService
             // $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
             // Execute CMD array:
             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->start(array(), $cmd);
+            $tce->start([], $cmd);
             $tce->process_cmdmap();
         }
         // Restore admin status

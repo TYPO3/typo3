@@ -28,12 +28,12 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider()
     {
-        return array(
-            array('file', '/file', true),
-            array('.htaccess', '/.htaccess', -1),
-            array('applypatch-msg.sample', '/.git/applypatch-msg.sample', -1),
-            array('applypatch-msg.sample', '/user_upload/.git/applypatch-msg.sample', -1),
-        );
+        return [
+            ['file', '/file', true],
+            ['.htaccess', '/.htaccess', -1],
+            ['applypatch-msg.sample', '/.git/applypatch-msg.sample', -1],
+            ['applypatch-msg.sample', '/user_upload/.git/applypatch-msg.sample', -1],
+        ];
     }
 
     /**
@@ -43,12 +43,12 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getItemsAndPathsWithHiddenFilesAndFolders_dataProvider()
     {
-        return array(
-            array('file', '/file', true),
-            array('.htaccess', '/.htaccess', true),
-            array('applypatch-msg.sample', '/.git/applypatch-msg.sample', true),
-            array('applypatch-msg.sample', '/user_upload/.git/applypatch-msg.sample', true),
-        );
+        return [
+            ['file', '/file', true],
+            ['.htaccess', '/.htaccess', true],
+            ['applypatch-msg.sample', '/.git/applypatch-msg.sample', true],
+            ['applypatch-msg.sample', '/user_upload/.git/applypatch-msg.sample', true],
+        ];
     }
 
     /**
@@ -65,7 +65,7 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame(
             $expected,
             FileNameFilter::filterHiddenFilesAndFolders(
-                $itemName, $itemIdentifier, '', array(), $driverMock
+                $itemName, $itemIdentifier, '', [], $driverMock
             )
         );
     }
@@ -84,7 +84,7 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         FileNameFilter::setShowHiddenFilesAndFolders(true);
         $this->assertSame(
             FileNameFilter::filterHiddenFilesAndFolders(
-                $itemName, $itemIdentifier, '', array(), $driverMock
+                $itemName, $itemIdentifier, '', [], $driverMock
             ),
             $expected
         );

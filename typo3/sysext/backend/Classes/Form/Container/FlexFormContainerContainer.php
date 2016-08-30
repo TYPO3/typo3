@@ -65,7 +65,7 @@ class FlexFormContainerContainer extends AbstractContainer
             . '[' . $flexFormContainerCounter . ']'
             . '[_TOGGLE]';
 
-        $moveAndDeleteContent = array();
+        $moveAndDeleteContent = [];
         $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
         if ($userHasAccessToDefaultLanguage) {
             $moveAndDeleteContent[] = '<span class="btn btn-default t3js-sortable-handle"><span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove')) . '">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '</span></span>';
@@ -75,11 +75,11 @@ class FlexFormContainerContainer extends AbstractContainer
         $options = $this->data;
         $options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
         // Append container specific stuff to field prefix
-        $options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' .  $this->data['flexFormContainerName'] . '][el]';
+        $options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' . $this->data['flexFormContainerName'] . '][el]';
         $options['renderType'] = 'flexFormElementContainer';
         $containerContentResult = $this->nodeFactory->create($options)->render();
 
-        $html = array();
+        $html = [];
         $html[] = '<div id="' . $flexFormFieldIdentifierPrefix . '" class="t3-form-field-container-flexsections t3-flex-section t3js-flex-section">';
         $html[] =    '<input class="t3-flex-control t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
         $html[] =    '<div class="panel panel-default panel-condensed">';

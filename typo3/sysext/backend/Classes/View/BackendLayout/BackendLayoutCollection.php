@@ -27,7 +27,7 @@ class BackendLayoutCollection
     /**
      * @var array|BackendLayout[]
      */
-    protected $backendLayouts = array();
+    protected $backendLayouts = [];
 
     /**
      * @param string $identifier

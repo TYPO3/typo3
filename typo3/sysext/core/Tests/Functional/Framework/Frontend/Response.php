@@ -99,7 +99,7 @@ class Response
             $sectionIdentifiers = ['Default'];
         }
 
-        $sections = array();
+        $sections = [];
         foreach ($sectionIdentifiers as $sectionIdentifier) {
             $sections[] = $this->getResponseContent()->getSection($sectionIdentifier);
         }

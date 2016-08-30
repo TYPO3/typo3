@@ -197,7 +197,7 @@ class ExtensionManagementUtility
         $result = false;
         // Build map of short keys referencing to real keys:
         if (!isset(self::$extensionKeyMap)) {
-            self::$extensionKeyMap = array();
+            self::$extensionKeyMap = [];
             foreach (static::$packageManager->getActivePackages() as $package) {
                 $shortKey = str_replace('_', '', $package->getPackageKey());
                 self::$extensionKeyMap[$shortKey] = $package->getPackageKey();
@@ -292,7 +292,7 @@ class ExtensionManagementUtility
             return;
         }
         list($positionIdentifier, $entityName) = GeneralUtility::trimExplode(':', $position);
-        $palettesChanged = array();
+        $palettesChanged = [];
 
         foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
             // skip if we don't want to add the field for this type
@@ -422,7 +422,7 @@ class ExtensionManagementUtility
             }
             $fieldArrayWithOptions = GeneralUtility::trimExplode(',', $typeArray['showitem']);
             // Find the field we're handling
-            $newFieldStringArray = array();
+            $newFieldStringArray = [];
             foreach ($fieldArrayWithOptions as $fieldNumber => $fieldString) {
                 $newFieldStringArray[] = $fieldString;
                 $fieldArray = GeneralUtility::trimExplode(';', $fieldString);
@@ -534,7 +534,7 @@ class ExtensionManagementUtility
                     } else {
                         $offset = $relativeItemKey + 1;
                     }
-                    array_splice($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'], $offset, 0, array(0 => $item));
+                    array_splice($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'], $offset, 0, [0 => $item]);
                 }
             } else {
                 // Insert at new item at the end of the array if relative position was not found
@@ -556,49 +556,49 @@ class ExtensionManagementUtility
      *
      * @return array
      */
-    public static function getFileFieldTCAConfig($fieldName, array $customSettingOverride = array(), $allowedFileExtensions = '', $disallowedFileExtensions = '')
+    public static function getFileFieldTCAConfig($fieldName, array $customSettingOverride = [], $allowedFileExtensions = '', $disallowedFileExtensions = '')
     {
-        $fileFieldTCAConfig = array(
+        $fileFieldTCAConfig = [
             'type' => 'inline',
             'foreign_table' => 'sys_file_reference',
             'foreign_field' => 'uid_foreign',
             'foreign_sortby' => 'sorting_foreign',
             'foreign_table_field' => 'tablenames',
-            'foreign_match_fields' => array(
+            'foreign_match_fields' => [
                 'fieldname' => $fieldName
-            ),
+            ],
             'foreign_label' => 'uid_local',
             'foreign_selector' => 'uid_local',
-            'foreign_selector_fieldTcaOverride' => array(
-                'config' => array(
-                    'appearance' => array(
+            'foreign_selector_fieldTcaOverride' => [
+                'config' => [
+                    'appearance' => [
                         'elementBrowserType' => 'file',
                         'elementBrowserAllowed' => $allowedFileExtensions
-                    )
-                )
-            ),
-            'filter' => array(
-                array(
+                    ]
+                ]
+            ],
+            'filter' => [
+                [
                     'userFunc' => \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class . '->filterInlineChildren',
-                    'parameters' => array(
+                    'parameters' => [
                         'allowedFileExtensions' => $allowedFileExtensions,
                         'disallowedFileExtensions' => $disallowedFileExtensions
-                    )
-                )
-            ),
-            'appearance' => array(
+                    ]
+                ]
+            ],
+            'appearance' => [
                 'useSortable' => true,
-                'headerThumbnail' => array(
+                'headerThumbnail' => [
                     'field' => 'uid_local',
                     'width' => '45',
                     'height' => '45c',
-                ),
+                ],
                 'showPossibleLocalizationRecords' => false,
                 'showRemovedLocalizationRecords' => false,
                 'showSynchronizationLink' => false,
                 'showAllLocalizationLink' => false,
 
-                'enabledControls' => array(
+                'enabledControls' => [
                     'info' => true,
                     'new' => false,
                     'dragdrop' => true,
@@ -606,13 +606,13 @@ class ExtensionManagementUtility
                     'hide' => true,
                     'delete' => true,
                     'localize' => true,
-                ),
-            ),
-            'behaviour' => array(
+                ],
+            ],
+            'behaviour' => [
                 'localizationMode' => 'select',
                 'localizeChildrenAtParentLocalization' => true,
-            ),
-        );
+            ],
+        ];
         ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
         return $fileFieldTCAConfig;
     }
@@ -715,13 +715,13 @@ class ExtensionManagementUtility
     protected static function removeDuplicatesForInsertion($insertionList, $list = '')
     {
         $insertionListParts = preg_split('/\\s*,\\s*/', $insertionList);
-        $listMatches = array();
+        $listMatches = [];
         if ($list !== '') {
             preg_match_all('/(?:^|,)\\s*\\b([^;,]+)\\b[^,]*/', $list, $listMatches);
             $listMatches = $listMatches[1];
         }
 
-        $cleanInsertionListParts = array();
+        $cleanInsertionListParts = [];
         foreach ($insertionListParts as $fieldName) {
             $fieldNameParts = explode(';', $fieldName, 2);
             $cleanFieldName = $fieldNameParts[0];
@@ -746,7 +746,7 @@ class ExtensionManagementUtility
      */
     protected static function explodeItemList($itemList)
     {
-        $items = array();
+        $items = [];
         $itemParts = GeneralUtility::trimExplode(',', $itemList, true);
         foreach ($itemParts as $itemPart) {
             $itemDetails = GeneralUtility::trimExplode(';', $itemPart, false, 5);
@@ -756,11 +756,11 @@ class ExtensionManagementUtility
                 $key .= count($items);
             }
             if (!isset($items[$key])) {
-                $items[$key] = array(
+                $items[$key] = [
                     'rawData' => $itemPart,
-                    'details' => array()
-                );
-                $details = array(0 => 'field', 1 => 'label', 2 => 'palette');
+                    'details' => []
+                ];
+                $details = [0 => 'field', 1 => 'label', 2 => 'palette'];
                 foreach ($details as $id => $property) {
                     $items[$key]['details'][$property] = isset($itemDetails[$id]) ? $itemDetails[$id] : '';
                 }
@@ -779,18 +779,18 @@ class ExtensionManagementUtility
      */
     protected static function generateItemList(array $items, $useRawData = false)
     {
-        $itemParts = array();
+        $itemParts = [];
         foreach ($items as $item => $itemDetails) {
             if (strpos($item, '--') !== false) {
                 // If $item is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
-                $item = str_replace(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', $item);
+                $item = str_replace([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], '', $item);
             }
             if ($useRawData) {
                 $itemParts[] = $itemDetails['rawData'];
             } else {
                 if (count($itemDetails['details']) > 1) {
-                    $details = array('palette', 'label', 'field');
-                    $elements = array();
+                    $details = ['palette', 'label', 'field'];
+                    $elements = [];
                     $addEmpty = false;
                     foreach ($details as $property) {
                         if ($itemDetails['details'][$property] !== '' || $addEmpty) {
@@ -831,17 +831,17 @@ class ExtensionManagementUtility
      * @param array $moduleConfiguration Icon with array keys: access, icon, labels to configure the module
      * @throws \InvalidArgumentException
      */
-    public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = array())
+    public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = [])
     {
         if (empty($extensionName)) {
             throw new \InvalidArgumentException('The extension name must not be empty', 1325938973);
         }
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-        $defaultModuleConfiguration = array(
+        $defaultModuleConfiguration = [
             'access' => 'admin',
             'icon' => 'EXT:backend/Resources/Public/Images/Logo.png',
             'labels' => '',
-        );
+        ];
         // Add mandatory parameter to use new pagetree
         if ($mainModuleName === 'web') {
             $defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
@@ -856,7 +856,7 @@ class ExtensionManagementUtility
         $moduleConfiguration['name'] = $moduleSignature;
         $moduleConfiguration['script'] = 'extjspaneldummy.html';
         $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['configureModuleFunction'] = array(ExtensionManagementUtility::class, 'configureModule');
+        $moduleConfiguration['configureModuleFunction'] = [ExtensionManagementUtility::class, 'configureModule'];
         $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
         self::addModule($mainModuleName, $subModuleName, $position);
     }
@@ -902,7 +902,7 @@ class ExtensionManagementUtility
      * @param array $moduleConfiguration additional configuration, previously put in "conf.php" of the module directory
      * @return void
      */
-    public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = array())
+    public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
     {
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
@@ -971,11 +971,11 @@ class ExtensionManagementUtility
      */
     public static function registerExtDirectComponent($endpointName, $callbackClass, $moduleName = null, $accessLevel = null)
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName] = [
             'callbackClass' => $callbackClass,
             'moduleName' => $moduleName,
             'accessLevel' => $accessLevel
-        );
+        ];
     }
 
     /**
@@ -989,10 +989,10 @@ class ExtensionManagementUtility
     public static function registerAjaxHandler($ajaxId, $callbackMethod, $csrfTokenCheck = true)
     {
         GeneralUtility::logDeprecatedFunction();
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxId] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxId] = [
             'callbackMethod' => $callbackMethod,
             'csrfTokenCheck' => $csrfTokenCheck
-        );
+        ];
     }
 
     /**
@@ -1012,11 +1012,11 @@ class ExtensionManagementUtility
      */
     public static function insertModuleFunction($modname, $className, $classPath = null, $title, $MM_key = 'function', $WS = '')
     {
-        $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = array(
+        $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = [
             'name' => $className,
             'title' => $title,
             'ws' => $WS
-        );
+        ];
     }
 
     /**
@@ -1080,10 +1080,10 @@ class ExtensionManagementUtility
     {
         if ($tca_descr_key) {
             if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key])) {
-                $GLOBALS['TCA_DESCR'][$tca_descr_key] = array();
+                $GLOBALS['TCA_DESCR'][$tca_descr_key] = [];
             }
             if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'])) {
-                $GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'] = array();
+                $GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'] = [];
             }
             $GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'][] = $file_ref;
         }
@@ -1104,11 +1104,11 @@ class ExtensionManagementUtility
         if (!isset($extensionKey)) {
             throw new \RuntimeException('No extensionKey set in addNavigationComponent(). Provide it as third Parameter', 1404068039);
         }
-        $GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = array(
+        $GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = [
             'componentId' => $componentId,
             'extKey' => $extensionKey,
             'isCoreComponent' => false
-        );
+        ];
     }
 
     /**
@@ -1165,7 +1165,7 @@ class ExtensionManagementUtility
                 }
             }
             // Convert subtype list to array for quicker access
-            $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'] = array();
+            $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'] = [];
             $serviceSubTypes = GeneralUtility::trimExplode(',', $info['subtype']);
             foreach ($serviceSubTypes as $subtype) {
                 $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'][$subtype] = $subtype;
@@ -1181,7 +1181,7 @@ class ExtensionManagementUtility
      * @param mixed $excludeServiceKeys Service keys that should be excluded in the search for a service. Array or comma list.
      * @return mixed Service info array if a service was found, FALSE otherwise
      */
-    public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array())
+    public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = [])
     {
         $serviceKey = false;
         $serviceInfo = false;
@@ -1454,7 +1454,7 @@ tt_content.' . $key . $suffix . ' {
     {
         if ($extKey && $path && is_array($GLOBALS['TCA']['sys_template']['columns'])) {
             $value = str_replace(',', '', 'EXT:' . $extKey . '/' . $path);
-            $itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
+            $itemArray = [trim($title . ' (' . $extKey . ')'), $value];
             $GLOBALS['TCA']['sys_template']['columns']['include_static_file']['config']['items'][] = $itemArray;
         }
     }
@@ -1481,7 +1481,7 @@ tt_content.' . $key . $suffix . ' {
         }
 
         $value = str_replace(',',  '', 'EXT:' . $extKey . '/' . $filePath);
-        $itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
+        $itemArray = [trim($title . ' (' . $extKey . ')'), $value];
         $GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
     }
 
@@ -1650,7 +1650,7 @@ tt_content.' . $key . $suffix . ' {
     protected static function createExtLocalconfCacheEntry()
     {
         $extensionInformation = $GLOBALS['TYPO3_LOADED_EXT'];
-        $phpCodeToCache = array();
+        $phpCodeToCache = [];
         // Set same globals as in loadSingleExtLocalconfFiles()
         $phpCodeToCache[] = '/**';
         $phpCodeToCache[] = ' * Compiled ext_localconf.php cache file';
@@ -1737,7 +1737,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function buildBaseTcaFromSingleFiles()
     {
-        $GLOBALS['TCA'] = array();
+        $GLOBALS['TCA'] = [];
 
         $activePackages = static::$packageManager->getActivePackages();
 
@@ -1813,7 +1813,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function emitTcaIsBeingBuiltSignal(array $tca)
     {
-        list($tca) = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'tcaIsBeingBuilt', array($tca));
+        list($tca) = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'tcaIsBeingBuilt', [$tca]);
         $GLOBALS['TCA'] = $tca;
     }
 
@@ -1827,7 +1827,7 @@ tt_content.' . $key . $suffix . ' {
     {
         /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
         $codeCache = self::getCacheManager()->getCache('cache_core');
-        $codeCache->set(static::getBaseTcaCacheIdentifier(), serialize(array('tca' => $GLOBALS['TCA'], 'categoryRegistry' => CategoryRegistry::getInstance())));
+        $codeCache->set(static::getBaseTcaCacheIdentifier(), serialize(['tca' => $GLOBALS['TCA'], 'categoryRegistry' => CategoryRegistry::getInstance()]));
     }
 
     /**
@@ -1902,7 +1902,7 @@ tt_content.' . $key . $suffix . ' {
     protected static function createExtTablesCacheEntry()
     {
         $extensionInformation = $GLOBALS['TYPO3_LOADED_EXT'];
-        $phpCodeToCache = array();
+        $phpCodeToCache = [];
         // Set same globals as in loadSingleExtTablesFiles()
         $phpCodeToCache[] = '/**';
         $phpCodeToCache[] = ' * Compiled ext_tables.php cache file';
@@ -2025,7 +2025,7 @@ tt_content.' . $key . $suffix . ' {
      * @see addTCAcolumns
      * @see addToAllTCAtypes
      */
-    public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array(), $override = false)
+    public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = [], $override = false)
     {
         // Update the category registry
         $result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options, $override);

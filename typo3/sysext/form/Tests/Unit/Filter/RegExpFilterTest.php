@@ -31,23 +31,23 @@ class RegExpFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function dataProvider()
     {
-        return array(
-            'a-a -> aa for /-/' => array(
+        return [
+            'a-a -> aa for /-/' => [
                 'a-a',
                 '/-/',
                 'aa'
-            ),
-            'aaa -> "" for /.+/' => array(
+            ],
+            'aaa -> "" for /.+/' => [
                 'aaa',
                 '/.+/',
                 ''
-            ),
-            'aAa -> aa for /[^a]+/' => array(
+            ],
+            'aAa -> aa for /[^a]+/' => [
                 'aAa',
                 '/[^a]+/',
                 'aa'
-            ),
-        );
+            ],
+        ];
     }
 
     /**

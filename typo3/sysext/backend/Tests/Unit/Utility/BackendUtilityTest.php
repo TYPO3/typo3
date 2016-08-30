@@ -48,76 +48,76 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function calcAgeDataProvider()
     {
-        return array(
-            'Single year' => array(
+        return [
+            'Single year' => [
                 'seconds' => 60 * 60 * 24 * 365,
                 'expectedLabel' => '1 year'
-            ),
-            'Plural years' => array(
+            ],
+            'Plural years' => [
                 'seconds' => 60 * 60 * 24 * 365 * 2,
                 'expectedLabel' => '2 yrs'
-            ),
-            'Single negative year' => array(
+            ],
+            'Single negative year' => [
                 'seconds' => 60 * 60 * 24 * 365 * -1,
                 'expectedLabel' => '-1 year'
-            ),
-            'Plural negative years' => array(
+            ],
+            'Plural negative years' => [
                 'seconds' => 60 * 60 * 24 * 365 * 2 * -1,
                 'expectedLabel' => '-2 yrs'
-            ),
-            'Single day' => array(
+            ],
+            'Single day' => [
                 'seconds' => 60 * 60 * 24,
                 'expectedLabel' => '1 day'
-            ),
-            'Plural days' => array(
+            ],
+            'Plural days' => [
                 'seconds' => 60 * 60 * 24 * 2,
                 'expectedLabel' => '2 days'
-            ),
-            'Single negative day' => array(
+            ],
+            'Single negative day' => [
                 'seconds' => 60 * 60 * 24 * -1,
                 'expectedLabel' => '-1 day'
-            ),
-            'Plural negative days' => array(
+            ],
+            'Plural negative days' => [
                 'seconds' => 60 * 60 * 24 * 2 * -1,
                 'expectedLabel' => '-2 days'
-            ),
-            'Single hour' => array(
+            ],
+            'Single hour' => [
                 'seconds' => 60 * 60,
                 'expectedLabel' => '1 hour'
-            ),
-            'Plural hours' => array(
+            ],
+            'Plural hours' => [
                 'seconds' => 60 * 60 * 2,
                 'expectedLabel' => '2 hrs'
-            ),
-            'Single negative hour' => array(
+            ],
+            'Single negative hour' => [
                 'seconds' => 60 * 60 * -1,
                 'expectedLabel' => '-1 hour'
-            ),
-            'Plural negative hours' => array(
+            ],
+            'Plural negative hours' => [
                 'seconds' => 60 * 60 * 2 * -1,
                 'expectedLabel' => '-2 hrs'
-            ),
-            'Single minute' => array(
+            ],
+            'Single minute' => [
                 'seconds' => 60,
                 'expectedLabel' => '1 min'
-            ),
-            'Plural minutes' => array(
+            ],
+            'Plural minutes' => [
                 'seconds' => 60 * 2,
                 'expectedLabel' => '2 min'
-            ),
-            'Single negative minute' => array(
+            ],
+            'Single negative minute' => [
                 'seconds' => 60 * -1,
                 'expectedLabel' => '-1 min'
-            ),
-            'Plural negative minutes' => array(
+            ],
+            'Plural negative minutes' => [
                 'seconds' => 60 * 2 * -1,
                 'expectedLabel' => '-2 min'
-            ),
-            'Zero seconds' => array(
+            ],
+            'Zero seconds' => [
                 'seconds' => 0,
                 'expectedLabel' => '0 min'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -141,17 +141,17 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForZeroStringIsZero()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'columns' => array(
-                    'header' => array(
-                        'config' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'header' => [
+                        'config' => [
                             'type' => 'input',
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
         $this->assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
 
@@ -160,17 +160,17 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForGroup()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'columns' => array(
-                    'multimedia' => array(
-                        'config' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'multimedia' => [
+                        'config' => [
                             'type' => 'group',
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
         $this->assertSame('1, 2', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
@@ -179,11 +179,11 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForGroupWithOneAllowedTable()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'columns' => array(
-                    'pages' => array(
-                        'config' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'pages' => [
+                        'config' => [
                             'type' => 'group',
                             'allowed' => 'pages',
                             'internal_type' => 'db',
@@ -191,11 +191,11 @@ class BackendUtilityTest extends UnitTestCase
                             'minitems' => 0,
                             'show_thumbs' => true,
                             'size' => 3,
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertSame('Page 1, Page 2', ProcessedValueForGroupWithOneAllowedTableFixture::getProcessedValue('tt_content', 'pages', '1,2'));
     }
@@ -205,20 +205,20 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForGroupWithMultipleAllowedTables()
     {
-        $GLOBALS['TCA'] = array(
-            'index_config' => array(
-                'columns' => array(
-                    'indexcfgs' => array(
-                        'config' => array(
+        $GLOBALS['TCA'] = [
+            'index_config' => [
+                'columns' => [
+                    'indexcfgs' => [
+                        'config' => [
                             'type' => 'group',
                             'internal_type' => 'db',
                             'allowed' => 'index_config,pages',
                             'size' => 5,
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertSame('Page 1, Configuration 2', ProcessedValueForGroupWithMultipleAllowedTablesFixture::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
     }
@@ -298,38 +298,38 @@ class BackendUtilityTest extends UnitTestCase
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerInstance);
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $GLOBALS['TCA'] = array(
-            'pages' => array(
-                'columns' => array(
-                    'categories' => array(
-                        'config' => array(
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'columns' => [
+                    'categories' => [
+                        'config' => [
                             'type' => 'select',
                             'foreign_table' => 'sys_category',
                             'MM' => 'sys_category_record_mm',
-                            'MM_match_fields' => array(
+                            'MM_match_fields' => [
                                 'fieldname' => 'categories',
                                 'tablesnames' => 'pages',
-                            ),
+                            ],
                             'MM_opposite_field' => 'items',
-                        ),
-                    ),
-                ),
-            ),
-            'sys_category' => array(
-                'ctrl' => array('label' => 'title'),
-                'columns' => array(
-                    'items' => array(
-                        'config' => array(
+                        ],
+                    ],
+                ],
+            ],
+            'sys_category' => [
+                'ctrl' => ['label' => 'title'],
+                'columns' => [
+                    'items' => [
+                        'config' => [
                             'type' => 'group',
                             'internal_type' => 'db',
                             'allowed' => '*',
                             'MM' => 'sys_category_record_mm',
-                            'MM_oppositeUsage' => array(),
-                        )
-                    )
-                ),
-            ),
-        );
+                            'MM_oppositeUsage' => [],
+                        ]
+                    ]
+                ],
+            ],
+        ];
 
         $this->assertSame(
             'Category 1; Category 2',
@@ -441,97 +441,97 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getCommonSelectFieldsReturnsCorrectFieldsDataProvider()
     {
-        return array(
-            'only uid' => array(
+        return [
+            'only uid' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(),
+                'presetFields' => [],
+                'tca' => [],
                 'expectedFields' => 'uid'
-            ),
-            'label set' => array(
+            ],
+            'label set' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
                         'label' => 'label'
-                    )
-                ),
+                    ]
+                ],
                 'expectedFields' => 'uid,label'
-            ),
-            'label_alt set' => array(
+            ],
+            'label_alt set' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
                         'label_alt' => 'label,label2'
-                    )
-                ),
+                    ]
+                ],
                 'expectedFields' => 'uid,label,label2'
-            ),
-            'versioningWS set' => array(
+            ],
+            'versioningWS set' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
                         'versioningWS' => true
-                    )
-                ),
+                    ]
+                ],
                 'expectedFields' => 'uid,t3ver_id,t3ver_state,t3ver_wsid,t3ver_count'
-            ),
-            'selicon_field set' => array(
+            ],
+            'selicon_field set' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
                         'selicon_field' => 'field'
-                    )
-                ),
+                    ]
+                ],
                 'expectedFields' => 'uid,field'
-            ),
-            'typeicon_column set' => array(
+            ],
+            'typeicon_column set' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
                         'typeicon_column' => 'field'
-                    )
-                ),
+                    ]
+                ],
                 'expectedFields' => 'uid,field'
-            ),
-            'enablecolumns set' => array(
+            ],
+            'enablecolumns set' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
-                        'enablecolumns' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'enablecolumns' => [
                             'disabled' => 'hidden',
                             'starttime' => 'start',
                             'endtime' => 'stop',
                             'fe_group' => 'groups'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'expectedFields' => 'uid,hidden,start,stop,groups'
-            ),
-            'label set to uid' => array(
+            ],
+            'label set to uid' => [
                 'table' => 'test_table',
                 'prefix' => '',
-                'presetFields' => array(),
-                'tca' => array(
-                    'ctrl' => array(
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
                         'label' => 'uid'
-                    )
-                ),
+                    ]
+                ],
                 'expectedFields' => 'uid'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -562,66 +562,66 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getLabelFromItemlistReturnsCorrectFieldsDataProvider()
     {
-        return array(
-            'item set' => array(
+        return [
+            'item set' => [
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '1',
-                'tca' => array(
-                    'columns' => array(
-                        'menu_type' => array(
-                            'config' => array(
-                                'items' => array(
-                                    array('Item 1', '0'),
-                                    array('Item 2', '1'),
-                                    array('Item 3', '3')
-                                )
-                            )
-                        )
-                    )
-                ),
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'items' => [
+                                    ['Item 1', '0'],
+                                    ['Item 2', '1'],
+                                    ['Item 3', '3']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 'expectedLabel' => 'Item 2'
-            ),
-            'item set twice' => array(
+            ],
+            'item set twice' => [
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '1',
-                'tca' => array(
-                    'columns' => array(
-                        'menu_type' => array(
-                            'config' => array(
-                                'items' => array(
-                                    array('Item 1', '0'),
-                                    array('Item 2a', '1'),
-                                    array('Item 2b', '1'),
-                                    array('Item 3', '3')
-                                )
-                            )
-                        )
-                    )
-                ),
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'items' => [
+                                    ['Item 1', '0'],
+                                    ['Item 2a', '1'],
+                                    ['Item 2b', '1'],
+                                    ['Item 3', '3']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 'expectedLabel' => 'Item 2a'
-            ),
-            'item not found' => array(
+            ],
+            'item not found' => [
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '5',
-                'tca' => array(
-                    'columns' => array(
-                        'menu_type' => array(
-                            'config' => array(
-                                'items' => array(
-                                    array('Item 1', '0'),
-                                    array('Item 2', '1'),
-                                    array('Item 3', '2')
-                                )
-                            )
-                        )
-                    )
-                ),
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'items' => [
+                                    ['Item 1', '0'],
+                                    ['Item 2', '1'],
+                                    ['Item 3', '2']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 'expectedLabel' => null
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -652,48 +652,48 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider()
     {
-        return array(
-            'no field found' => array(
+        return [
+            'no field found' => [
                 'pageId' => '123',
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '10',
-                'tca' => array(
-                    'columns' => array(
-                        'menu_type' => array(
-                            'config' => array(
-                                'items' => array(
-                                    array('Item 1', '0'),
-                                    array('Item 2', '1'),
-                                    array('Item 3', '3')
-                                )
-                            )
-                        )
-                    )
-                ),
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'items' => [
+                                    ['Item 1', '0'],
+                                    ['Item 2', '1'],
+                                    ['Item 3', '3']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 'expectedLabel' => ''
-            ),
-            'no tsconfig set' => array(
+            ],
+            'no tsconfig set' => [
                 'pageId' => '123',
                 'table' => 'tt_content',
                 'col' => 'menu_type',
                 'key' => '1',
-                'tca' => array(
-                    'columns' => array(
-                        'menu_type' => array(
-                            'config' => array(
-                                'items' => array(
-                                    array('Item 1', '0'),
-                                    array('Item 2', '1'),
-                                    array('Item 3', '3')
-                                )
-                            )
-                        )
-                    )
-                ),
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'items' => [
+                                    ['Item 1', '0'],
+                                    ['Item 2', '1'],
+                                    ['Item 3', '3']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 'expectedLabel' => 'Item 2'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -735,49 +735,49 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getLabelsFromItemsListDataProvider()
     {
-        return array(
-            'return value if found' => array(
+        return [
+            'return value if found' => [
                 'foobar', // table
                 'someColumn', // col
                 'foo, bar', // keyList
-                array( // TCA
-                    'columns' => array(
-                        'someColumn' => array(
-                            'config' => array(
-                                'items' => array(
-                                    '0' => array('aFooLabel', 'foo'),
-                                    '1' => array('aBarLabel', 'bar')
-                                )
-                            )
-                        )
-                    )
-                ),
-                array(), // page TSconfig
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'items' => [
+                                    '0' => ['aFooLabel', 'foo'],
+                                    '1' => ['aBarLabel', 'bar']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [], // page TSconfig
                 'aFooLabel, aBarLabel' // expected
-            ),
-            'page TSconfig overrules TCA' => array(
+            ],
+            'page TSconfig overrules TCA' => [
                 'foobar', // table
                 'someColumn', // col
                 'foo,bar, add', // keyList
-                array( // TCA
-                    'columns' => array(
-                        'someColumn' => array(
-                            'config' => array(
-                                'items' => array(
-                                    '0' => array('aFooLabel', 'foo'),
-                                    '1' => array('aBarLabel', 'bar')
-                                )
-                            )
-                        )
-                    )
-                ),
-                array( // page TSconfig
-                    'addItems.' => array('add' => 'aNewLabel'),
-                    'altLabels.' => array('bar' => 'aBarDiffLabel'),
-                ),
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'items' => [
+                                    '0' => ['aFooLabel', 'foo'],
+                                    '1' => ['aBarLabel', 'bar']
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [ // page TSconfig
+                    'addItems.' => ['add' => 'aNewLabel'],
+                    'altLabels.' => ['bar' => 'aBarDiffLabel'],
+                ],
                 'aFooLabel, aBarDiffLabel, aNewLabel' // expected
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -809,19 +809,19 @@ class BackendUtilityTest extends UnitTestCase
     {
         $table = 'foobar';
         $col = 'someColumn';
-        $tca = array(
-            'columns' => array(
-                'someColumn' => array(
-                    'config' => array(
+        $tca = [
+            'columns' => [
+                'someColumn' => [
+                    'config' => [
                         'type' => 'select',
-                        'items' => array(
-                            '0' => array('aFooLabel', 'foo'),
-                            '1' => array('aBarLabel', 'bar')
-                        )
-                    )
-                )
-            )
-        );
+                        'items' => [
+                            '0' => ['aFooLabel', 'foo'],
+                            '1' => ['aBarLabel', 'bar']
+                        ]
+                    ]
+                ]
+            ]
+        ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
@@ -838,18 +838,18 @@ class BackendUtilityTest extends UnitTestCase
     {
         $table = 'foobar';
         $col = 'someColumn';
-        $tca = array(
-            'columns' => array(
-                'someColumn' => array(
-                    'config' => array(
+        $tca = [
+            'columns' => [
+                'someColumn' => [
+                    'config' => [
                         'type' => 'select',
-                        'items' => array(
-                            '0' => array('aFooLabel', 'foo')
-                        )
-                    )
-                )
-            )
-        );
+                        'items' => [
+                            '0' => ['aFooLabel', 'foo']
+                        ]
+                    ]
+                ]
+            ]
+        ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
@@ -885,22 +885,22 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getModTSconfigIgnoresValuesFromUserTsConfigIfNoSet()
     {
-        $completeConfiguration = array(
+        $completeConfiguration = [
             'value' => 'bar',
-            'properties' => array(
-                'permissions.' => array(
-                    'file.' => array(
-                        'default.' => array('readAction' => '1'),
-                        '1.' => array('writeAction' => '1'),
-                        '0.' => array('readAction' => '0'),
-                    ),
-                )
-            )
-        );
+            'properties' => [
+                'permissions.' => [
+                    'file.' => [
+                        'default.' => ['readAction' => '1'],
+                        '1.' => ['writeAction' => '1'],
+                        '0.' => ['readAction' => '0'],
+                    ],
+                ]
+            ]
+        ];
 
         $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
-        $GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(array('value' => null, 'properties' => null)));
+        $GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(['value' => null, 'properties' => null]));
 
         $this->assertSame($completeConfiguration, BackendUtilityFixture::getModTSconfig(42, 'notrelevant'));
     }
@@ -912,132 +912,132 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function replaceL10nModeFieldsReplacesFieldsDataProvider()
     {
-        return array(
-            'same table: mergeIfNotBlank' => array(
+        return [
+            'same table: mergeIfNotBlank' => [
                 'foo',
-                array(
+                [
                     'origUid' => 1,
                     'field2' => 'fdas',
                     'field3' => 'trans',
-                ),
-                array(
-                    'foo' => array(
-                        'ctrl' => array(
+                ],
+                [
+                    'foo' => [
+                        'ctrl' => [
                             'transOrigPointerTable' => '',
                             'transOrigPointerField' => 'origUid'
-                        ),
-                        'columns' => array(
-                            'field2' => array('l10n_mode' => 'mergeIfNotBlank'),
-                            'field3' => array('l10n_mode' => 'mergeIfNotBlank')
-                        )
-                    )
-                ),
-                array(
+                        ],
+                        'columns' => [
+                            'field2' => ['l10n_mode' => 'mergeIfNotBlank'],
+                            'field3' => ['l10n_mode' => 'mergeIfNotBlank']
+                        ]
+                    ]
+                ],
+                [
                     'origUid' => 0,
                     'field2' => 'basic',
                     'field3' => '',
-                ),
-                array(
+                ],
+                [
                     'origUid' => 1,
                     'field2' => 'fdas',
                     'field3' => 'trans',
-                )
-            ),
-            'other table: mergeIfNotBlank' => array(
+                ]
+            ],
+            'other table: mergeIfNotBlank' => [
                 'foo',
-                array(
+                [
                     'origUid' => 1,
                     'field2' => '',
                     'field3' => 'trans',
-                ),
-                array(
-                    'foo' => array(
-                        'ctrl' => array(
+                ],
+                [
+                    'foo' => [
+                        'ctrl' => [
                             'transOrigPointerTable' => 'bar',
                             'transOrigPointerField' => 'origUid'
-                        )
-                    ),
-                    'bar' => array(
-                        'columns' => array(
-                            'field2' => array('l10n_mode' => 'mergeIfNotBlank'),
-                            'field3' => array('l10n_mode' => 'mergeIfNotBlank')
-                        )
-                    )
-                ),
-                array(
+                        ]
+                    ],
+                    'bar' => [
+                        'columns' => [
+                            'field2' => ['l10n_mode' => 'mergeIfNotBlank'],
+                            'field3' => ['l10n_mode' => 'mergeIfNotBlank']
+                        ]
+                    ]
+                ],
+                [
                     'origUid' => 0,
                     'field2' => 'basic',
                     'field3' => '',
-                ),
-                array(
+                ],
+                [
                     'origUid' => 1,
                     'field2' => 'basic',
                     'field3' => 'trans',
-                )
-            ),
-            'same table: exclude' => array(
+                ]
+            ],
+            'same table: exclude' => [
                 'foo',
-                array(
+                [
                     'origUid' => 1,
                     'field2' => 'fdas',
                     'field3' => 'trans',
-                ),
-                array(
-                    'foo' => array(
-                        'ctrl' => array(
+                ],
+                [
+                    'foo' => [
+                        'ctrl' => [
                             'transOrigPointerTable' => '',
                             'transOrigPointerField' => 'origUid'
-                        ),
-                        'columns' => array(
-                            'field2' => array('l10n_mode' => 'exclude'),
-                            'field3' => array('l10n_mode' => 'exclude')
-                        )
-                    )
-                ),
-                array(
+                        ],
+                        'columns' => [
+                            'field2' => ['l10n_mode' => 'exclude'],
+                            'field3' => ['l10n_mode' => 'exclude']
+                        ]
+                    ]
+                ],
+                [
                     'origUid' => 0,
                     'field2' => 'basic',
                     'field3' => '',
-                ),
-                array(
+                ],
+                [
                     'origUid' => 1,
                     'field2' => 'basic',
                     'field3' => '',
-                )
-            ),
-            'other table: exclude' => array(
+                ]
+            ],
+            'other table: exclude' => [
                 'foo',
-                array(
+                [
                     'origUid' => 1,
                     'field2' => 'fdas',
                     'field3' => 'trans',
-                ),
-                array(
-                    'foo' => array(
-                        'ctrl' => array(
+                ],
+                [
+                    'foo' => [
+                        'ctrl' => [
                             'transOrigPointerTable' => 'bar',
                             'transOrigPointerField' => 'origUid'
-                        )
-                    ),
-                    'bar' => array(
-                        'columns' => array(
-                            'field2' => array('l10n_mode' => 'exclude'),
-                            'field3' => array('l10n_mode' => 'exclude')
-                        )
-                    )
-                ),
-                array(
+                        ]
+                    ],
+                    'bar' => [
+                        'columns' => [
+                            'field2' => ['l10n_mode' => 'exclude'],
+                            'field3' => ['l10n_mode' => 'exclude']
+                        ]
+                    ]
+                ],
+                [
                     'origUid' => 0,
                     'field2' => 'basic',
                     'field3' => '',
-                ),
-                array(
+                ],
+                [
                     'origUid' => 1,
                     'field2' => 'basic',
                     'field3' => '',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -1084,7 +1084,7 @@ class BackendUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $tca;
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|BackendUtility $subject */
-        $subject = $this->getAccessibleMock(BackendUtility::class, array('dummy'));
+        $subject = $this->getAccessibleMock(BackendUtility::class, ['dummy']);
         $this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
     }
 
@@ -1094,24 +1094,24 @@ class BackendUtilityTest extends UnitTestCase
     public function getSpecConfPartsSplitsDefaultExtras()
     {
         $defaultExtras = 'nowrap:wizards[foo|bar]:anotherDefaultExtras:some[other|setting|with|parameters]';
-        $expected = array(
+        $expected = [
             'nowrap' => 1,
-            'wizards' => array(
-                'parameters' => array(
+            'wizards' => [
+                'parameters' => [
                     0 => 'foo',
                     1 => 'bar',
-                ),
-            ),
+                ],
+            ],
             'anotherDefaultExtras' => 1,
-            'some' => array(
-                'parameters' => array(
+            'some' => [
+                'parameters' => [
                     0 => 'other',
                     1 => 'setting',
                     2 => 'with',
                     3 => 'parameters',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->assertEquals($expected, BackendUtility::getSpecConfParts($defaultExtras));
     }
 

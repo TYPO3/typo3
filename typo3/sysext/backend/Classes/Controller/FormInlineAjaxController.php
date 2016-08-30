@@ -382,35 +382,35 @@ class FormInlineAjaxController
                 $parentLanguage = implode(',', $parentLanguage);
             }
 
-            $cmd = array();
+            $cmd = [];
             // Localize a single child element from default language of the parent element
             if (MathUtility::canBeInterpretedAsInteger($type)) {
-                $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = array(
+                $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = [
                     'field' => $parent['field'],
                     'language' => $parentLanguage,
-                    'ids' => array($type),
-                );
+                    'ids' => [$type],
+                ];
             // Either localize or synchronize all child elements from default language of the parent element
             } else {
-                $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = array(
+                $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = [
                     'field' => $parent['field'],
                     'language' => $parentLanguage,
                     'action' => $type,
-                );
+                ];
             }
 
             /** @var $tce DataHandler */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->start(array(), $cmd);
+            $tce->start([], $cmd);
             $tce->process_cmdmap();
 
             $newItemList = $tce->registerDBList[$parent['table']][$parent['uid']][$parentFieldName];
 
-            $jsonArray = array(
+            $jsonArray = [
                 'data' => '',
                 'stylesheetFiles' => [],
                 'scriptCall' => [],
-            );
+            ];
             $nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
             $nameObjectForeignTable = $nameObject . '-' . $child['table'];
 
@@ -515,7 +515,7 @@ class FormInlineAjaxController
             }
         }
 
-        $response->getBody()->write(json_encode(array()));
+        $response->getBody()->write(json_encode([]));
         return $response;
     }
 
@@ -633,7 +633,7 @@ class FormInlineAjaxController
         }
         if (!empty($childResult['additionalJavaScriptSubmit'])) {
             $additionalJavaScriptSubmit = implode('', $childResult['additionalJavaScriptSubmit']);
-            $additionalJavaScriptSubmit = str_replace(array(CR, LF), '', $additionalJavaScriptSubmit);
+            $additionalJavaScriptSubmit = str_replace([CR, LF], '', $additionalJavaScriptSubmit);
             $jsonResult['scriptCall'][] = 'TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJavaScriptSubmit) . '");';
         }
         foreach ($childResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
@@ -782,7 +782,7 @@ class FormInlineAjaxController
     protected function getInlineExpandCollapseStateArrayForTableUid($table, $uid)
     {
         $inlineView = $this->getInlineExpandCollapseStateArray();
-        $result = array();
+        $result = [];
         if (MathUtility::canBeInterpretedAsInteger($uid)) {
             if (!empty($inlineView[$table][$uid])) {
                 $result = $inlineView[$table][$uid];
@@ -994,7 +994,7 @@ class FormInlineAjaxController
          */
 
         if (preg_match($pattern, $domObjectId, $match)) {
-            return array($match['flexformPath'], $match['tableName']);
+            return [$match['flexformPath'], $match['tableName']];
         }
 
         return [];

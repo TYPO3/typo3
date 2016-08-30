@@ -33,7 +33,7 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
-            ->setMethods(array('translateErrorMessage'))
+            ->setMethods(['translateErrorMessage'])
             ->getMock();
         $this->assertFalse($subject->validate('12ssDF34daweidf')->hasErrors());
     }
@@ -45,7 +45,7 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
-            ->setMethods(array('translateErrorMessage'))
+            ->setMethods(['translateErrorMessage'])
             ->getMock();
         $this->assertTrue($subject->validate('adsf%&/$jklsfdö')->hasErrors());
     }
@@ -57,7 +57,7 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
-            ->setMethods(array('translateErrorMessage'))
+            ->setMethods(['translateErrorMessage'])
             ->getMock();
         $this->assertEquals(1, count($subject->validate('adsf%&/$jklsfdö')->getErrors()));
     }
@@ -69,7 +69,7 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
-            ->setMethods(array('translateErrorMessage'))
+            ->setMethods(['translateErrorMessage'])
             ->getMock();
         $this->assertFalse($subject->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
     }

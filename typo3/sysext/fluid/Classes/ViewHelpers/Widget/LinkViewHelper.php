@@ -52,7 +52,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
         $this->registerArgument('addQueryStringMethod', 'string', 'Method to be used for query string');
         $this->registerArgument('action', 'string', 'Target action');
-        $this->registerArgument('arguments', 'array', 'Arguments', false, array());
+        $this->registerArgument('arguments', 'array', 'Arguments', false, []);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
         $this->registerArgument('format', 'string', 'The requested format, e.g. ".html', false, '');
         $this->registerArgument('ajax', 'bool', 'TRUE if the URI should be to an AJAX widget, FALSE otherwise.', false, false);
@@ -107,7 +107,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
     {
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $argumentPrefix = $this->controllerContext->getRequest()->getArgumentPrefix();
-        $arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : array();
+        $arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : [];
         if ($this->hasArgument('action')) {
             $arguments['action'] = $this->arguments['action'];
         }
@@ -115,11 +115,11 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
             $arguments['format'] = $this->arguments['format'];
         }
         return $uriBuilder->reset()
-            ->setArguments(array($argumentPrefix => $arguments))
+            ->setArguments([$argumentPrefix => $arguments])
             ->setSection($this->arguments['section'])
             ->setAddQueryString(true)
             ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])
-            ->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))
+            ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash'])
             ->setFormat($this->arguments['format'])
             ->build();
     }

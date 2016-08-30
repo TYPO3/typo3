@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 // Add the service
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService('rsaauth', 'auth', \TYPO3\CMS\Rsaauth\RsaAuthService::class, array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService('rsaauth', 'auth', \TYPO3\CMS\Rsaauth\RsaAuthService::class, [
     'title' => 'RSA authentication',
     'description' => 'Authenticates users by using encrypted passwords',
     'subtype' => 'processLoginDataBE,processLoginDataFE',
@@ -15,7 +15,7 @@ defined('TYPO3_MODE') or die();
     'exec' => '',
     // Do not put a dependency on openssh here or service loading will fail!
     'className' => \TYPO3\CMS\Rsaauth\RsaAuthService::class
-));
+]);
 
 // Add hook for user setup module
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->getLoginScripts';
@@ -39,8 +39,8 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['RsaPublicKeyGenerationControll
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\DecryptionHook::class;
 
 // Add own form element
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1436965601] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1436965601] = [
     'nodeName' => 'rsaInput',
     'priority' => '70',
     'class' => \TYPO3\CMS\Rsaauth\Form\Element\RsaInputElement::class,
-);
+];

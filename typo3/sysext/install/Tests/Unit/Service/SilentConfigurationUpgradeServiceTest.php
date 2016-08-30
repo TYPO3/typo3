@@ -69,11 +69,11 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
      */
     public function configureBackendLoginSecurityLocalconfiguration()
     {
-        return array(
-            array('', 'rsa', true, false),
-            array('normal', 'rsa', true, true),
-            array('rsa', 'normal', false, true),
-        );
+        return [
+            ['', 'rsa', true, false],
+            ['normal', 'rsa', true, true],
+            ['rsa', 'normal', false, true],
+        ];
     }
 
     /**
@@ -89,8 +89,8 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
@@ -102,18 +102,18 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->will($this->returnValue($isPackageActive));
         ExtensionManagementUtility::setPackageManager($packageManager);
 
-        $currentLocalConfiguration = array(
-            array('BE/loginSecurityLevel', $current)
-        );
+        $currentLocalConfiguration = [
+            ['BE/loginSecurityLevel', $current]
+        ];
         $closure = function () {
             throw new \RuntimeException('Path does not exist in array', 1341397869);
         };
 
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'setLocalConfigurationValueByPath',
-            )
+            ]
         );
         if ($hasLocalConfig) {
             $this->configurationManager->expects($this->once())
@@ -143,23 +143,23 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $obsoleteLocalConfigurationSettings = array(
+        $obsoleteLocalConfigurationSettings = [
             'SYS/form_enctype',
-        );
+        ];
 
-        $currentLocalConfiguration = array(
-            array($obsoleteLocalConfigurationSettings, true)
-        );
+        $currentLocalConfiguration = [
+            [$obsoleteLocalConfigurationSettings, true]
+        ];
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'removeLocalConfigurationKeysByPath',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(1))
             ->method('removeLocalConfigurationKeysByPath')
@@ -181,23 +181,23 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $obsoleteLocalConfigurationSettings = array(
+        $obsoleteLocalConfigurationSettings = [
             'SYS/form_enctype',
-        );
+        ];
 
-        $currentLocalConfiguration = array(
-            array($obsoleteLocalConfigurationSettings, false)
-        );
+        $currentLocalConfiguration = [
+            [$obsoleteLocalConfigurationSettings, false]
+        ];
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'removeLocalConfigurationKeysByPath',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(1))
             ->method('removeLocalConfigurationKeysByPath')
@@ -217,21 +217,21 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $currentLocalConfiguration = array(
-            array('SYS/encryptionKey', 'EnCrYpTiOnKeY')
-        );
+        $currentLocalConfiguration = [
+            ['SYS/encryptionKey', 'EnCrYpTiOnKeY']
+        ];
 
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'setLocalConfigurationValueByPath',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(1))
             ->method('getLocalConfigurationValueByPath')
@@ -252,8 +252,8 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
@@ -263,10 +263,10 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         };
 
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'setLocalConfigurationValueByPath',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(1))
             ->method('getLocalConfigurationValueByPath')
@@ -393,18 +393,18 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'setLocalConfigurationValuesByPathValuePairs',
                 'removeLocalConfigurationKeysByPath',
                 'getLocalConfiguration'
-            )
+            ]
         );
 
         $this->configurationManager->expects($this->any())
@@ -436,25 +436,25 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $currentLocalConfiguration = array(
-            array('GFX/im', 0),
-            array('GFX/im_path', ''),
-            array('GFX/im_path_lzw', ''),
-            array('GFX/imagefile_ext', 'gif,jpg,png'),
-            array('GFX/thumbnails', 0)
-        );
+        $currentLocalConfiguration = [
+            ['GFX/im', 0],
+            ['GFX/im_path', ''],
+            ['GFX/im_path_lzw', ''],
+            ['GFX/imagefile_ext', 'gif,jpg,png'],
+            ['GFX/thumbnails', 0]
+        ];
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'getDefaultConfigurationValueByPath',
                 'setLocalConfigurationValuesByPathValuePairs',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(5))
             ->method('getLocalConfigurationValueByPath')
@@ -464,7 +464,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         $this->configurationManager->expects($this->once())
             ->method('setLocalConfigurationValuesByPathValuePairs')
             ->withConsecutive(
-                array(array('GFX/imagefile_ext' => 'gif,jpg,jpeg,png'))
+                [['GFX/imagefile_ext' => 'gif,jpg,jpeg,png']]
             );
 
         $this->expectException(RedirectException::class);
@@ -482,25 +482,25 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $currentLocalConfiguration = array(
-            array('GFX/im', 1),
-            array('GFX/im_path', ''),
-            array('GFX/im_path_lzw', ''),
-            array('GFX/imagefile_ext', 'gif,jpg,jpeg,png'),
-            array('GFX/thumbnails', 0)
-        );
+        $currentLocalConfiguration = [
+            ['GFX/im', 1],
+            ['GFX/im_path', ''],
+            ['GFX/im_path_lzw', ''],
+            ['GFX/imagefile_ext', 'gif,jpg,jpeg,png'],
+            ['GFX/thumbnails', 0]
+        ];
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'getDefaultConfigurationValueByPath',
                 'setLocalConfigurationValuesByPathValuePairs',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(5))
             ->method('getLocalConfigurationValueByPath')
@@ -523,23 +523,23 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $currentLocalConfiguration = array(
-            array('GFX/processor', 'GraphicsMagick'),
-            array('GFX/processor_allowTemporaryMasksAsPng', 1),
-            array('GFX/processor_effects', 0)
-        );
+        $currentLocalConfiguration = [
+            ['GFX/processor', 'GraphicsMagick'],
+            ['GFX/processor_allowTemporaryMasksAsPng', 1],
+            ['GFX/processor_effects', 0]
+        ];
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'getDefaultConfigurationValueByPath',
                 'setLocalConfigurationValuesByPathValuePairs',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(3))
             ->method('getLocalConfigurationValueByPath')
@@ -549,8 +549,8 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         $this->configurationManager->expects($this->once())
             ->method('setLocalConfigurationValuesByPathValuePairs')
             ->withConsecutive(
-                array(array('GFX/processor_allowTemporaryMasksAsPng' => 0,
-                            'GFX/processor_effects' => -1))
+                [['GFX/processor_allowTemporaryMasksAsPng' => 0,
+                            'GFX/processor_effects' => -1]]
             );
 
         $this->expectException(RedirectException::class);
@@ -568,23 +568,23 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
 
-        $currentLocalConfiguration = array(
-            array('GFX/processor', ''),
-            array('GFX/processor_allowTemporaryMasksAsPng', 0),
-            array('GFX/processor_effects', 0)
-        );
+        $currentLocalConfiguration = [
+            ['GFX/processor', ''],
+            ['GFX/processor_allowTemporaryMasksAsPng', 0],
+            ['GFX/processor_effects', 0]
+        ];
         $this->createConfigurationManagerWithMockedMethods(
-            array(
+            [
                 'getLocalConfigurationValueByPath',
                 'getDefaultConfigurationValueByPath',
                 'setLocalConfigurationValuesByPathValuePairs',
-            )
+            ]
         );
         $this->configurationManager->expects($this->exactly(3))
             ->method('getLocalConfigurationValueByPath')

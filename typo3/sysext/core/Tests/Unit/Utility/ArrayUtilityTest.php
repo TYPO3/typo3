@@ -35,124 +35,124 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function filterByValueRecursive()
     {
-        return array(
-            'empty search array' => array(
+        return [
+            'empty search array' => [
                 'banana',
-                array(),
-                array()
-            ),
-            'empty string as needle' => array(
+                [],
+                []
+            ],
+            'empty string as needle' => [
                 '',
-                array(
+                [
                     '',
                     'apple'
-                ),
-                array(
+                ],
+                [
                     ''
-                )
-            ),
-            'flat array searching for string' => array(
+                ]
+            ],
+            'flat array searching for string' => [
                 'banana',
-                array(
+                [
                     'apple',
                     'banana'
-                ),
-                array(
+                ],
+                [
                     1 => 'banana'
-                )
-            ),
-            'flat array searching for string with two matches' => array(
+                ]
+            ],
+            'flat array searching for string with two matches' => [
                 'banana',
-                array(
+                [
                     'foo' => 'apple',
                     'firstbanana' => 'banana',
                     'secondbanana' => 'banana'
-                ),
-                array(
+                ],
+                [
                     'firstbanana' => 'banana',
                     'secondbanana' => 'banana'
-                )
-            ),
-            'multi dimensional array searching for string with multiple matches' => array(
+                ]
+            ],
+            'multi dimensional array searching for string with multiple matches' => [
                 'banana',
-                array(
+                [
                     'foo' => 'apple',
                     'firstbanana' => 'banana',
-                    'grape' => array(
+                    'grape' => [
                         'foo2' => 'apple2',
                         'secondbanana' => 'banana',
-                        'foo3' => array()
-                    ),
+                        'foo3' => []
+                    ],
                     'bar' => 'orange'
-                ),
-                array(
+                ],
+                [
                     'firstbanana' => 'banana',
-                    'grape' => array(
+                    'grape' => [
                         'secondbanana' => 'banana'
-                    )
-                )
-            ),
-            'multi dimensional array searching for integer with multiple matches' => array(
+                    ]
+                ]
+            ],
+            'multi dimensional array searching for integer with multiple matches' => [
                 42,
-                array(
+                [
                     'foo' => 23,
                     'bar' => 42,
-                    array(
+                    [
                         'foo' => 23,
                         'bar' => 42
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'bar' => 42,
-                    array(
+                    [
                         'bar' => 42
-                    )
-                )
-            ),
-            'flat array searching for boolean TRUE' => array(
+                    ]
+                ]
+            ],
+            'flat array searching for boolean TRUE' => [
                 true,
-                array(
+                [
                     23 => false,
                     42 => true
-                ),
-                array(
+                ],
+                [
                     42 => true
-                )
-            ),
-            'multi dimensional array searching for boolean FALSE' => array(
+                ]
+            ],
+            'multi dimensional array searching for boolean FALSE' => [
                 false,
-                array(
+                [
                     23 => false,
                     42 => true,
-                    'foo' => array(
+                    'foo' => [
                         23 => false,
                         42 => true
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     23 => false,
-                    'foo' => array(
+                    'foo' => [
                         23 => false
-                    )
-                )
-            ),
-            'flat array searching for array' => array(
-                array(
+                    ]
+                ]
+            ],
+            'flat array searching for array' => [
+                [
                     'foo' => 'bar'
-                ),
-                array(
+                ],
+                [
                     'foo' => 'bar',
-                    'foobar' => array(
+                    'foobar' => [
                         'foo' => 'bar'
-                    )
-                ),
-                array(
-                    'foobar' => array(
+                    ]
+                ],
+                [
+                    'foobar' => [
                         'foo' => 'bar'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -177,8 +177,8 @@ class ArrayUtilityTest extends UnitTestCase
     {
         $instance = new \stdClass();
         $this->assertEquals(
-            array($instance),
-            ArrayUtility::filterByValueRecursive($instance, array($instance))
+            [$instance],
+            ArrayUtility::filterByValueRecursive($instance, [$instance])
         );
     }
 
@@ -188,8 +188,8 @@ class ArrayUtilityTest extends UnitTestCase
     public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass()
     {
         $this->assertEquals(
-            array(),
-            ArrayUtility::filterByValueRecursive(new \stdClass(), array(new \stdClass()))
+            [],
+            ArrayUtility::filterByValueRecursive(new \stdClass(), [new \stdClass()])
         );
     }
 
@@ -206,7 +206,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function isValidPathReturnsTrueIfPathExists()
     {
-        $this->assertTrue(ArrayUtility::isValidPath(array('foo' => 'bar'), 'foo'));
+        $this->assertTrue(ArrayUtility::isValidPath(['foo' => 'bar'], 'foo'));
     }
 
     /**
@@ -214,7 +214,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function isValidPathReturnsFalseIfPathDoesNotExist()
     {
-        $this->assertFalse(ArrayUtility::isValidPath(array('foo' => 'bar'), 'bar'));
+        $this->assertFalse(ArrayUtility::isValidPath(['foo' => 'bar'], 'bar'));
     }
 
     ///////////////////////
@@ -241,47 +241,47 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathInvalidPathDataProvider()
     {
-        return array(
-            'not existing path 1' => array(
-                array(
-                    'foo' => array()
-                ),
+        return [
+            'not existing path 1' => [
+                [
+                    'foo' => []
+                ],
                 'foo/bar/baz',
                 false
-            ),
-            'not existing path 2' => array(
-                array(
-                    'foo' => array(
+            ],
+            'not existing path 2' => [
+                [
+                    'foo' => [
                         'baz' => 42
-                    ),
-                    'bar' => array()
-                ),
+                    ],
+                    'bar' => []
+                ],
                 'foo/bar/baz',
                 false
-            ),
+            ],
             // Negative test: This could be improved and the test moved to
             // the valid data provider if the method supports this
-            'doubletick encapsulated quoted doubletick does not work' => array(
-                array(
-                    '"foo"bar"' => array(
+            'doubletick encapsulated quoted doubletick does not work' => [
+                [
+                    '"foo"bar"' => [
                         'baz' => 42
-                    ),
-                    'bar' => array()
-                ),
+                    ],
+                    'bar' => []
+                ],
                 '"foo\\"bar"/baz',
                 42
-            ),
+            ],
             // Negative test: Method could be improved here
-            'path with doubletick does not work' => array(
-                array(
-                    'fo"o' => array(
+            'path with doubletick does not work' => [
+                [
+                    'fo"o' => [
                         'bar' => 42
-                    )
-                ),
+                    ]
+                ],
                 'fo"o/foobar',
                 42
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -310,85 +310,85 @@ class ArrayUtilityTest extends UnitTestCase
         $testObject = new \stdClass();
         $testObject->foo = 'foo';
         $testObject->bar = 'bar';
-        return array(
-            'integer in multi level array' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+        return [
+            'integer in multi level array' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 42
-                        ),
-                        'bar2' => array()
-                    )
-                ),
+                        ],
+                        'bar2' => []
+                    ]
+                ],
                 'foo/bar/baz',
                 42
-            ),
-            'zero integer in multi level array' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+            ],
+            'zero integer in multi level array' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 0
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 0
-            ),
-            'NULL value in multi level array' => array(
-                array(
-                    'foo' => array(
+            ],
+            'NULL value in multi level array' => [
+                [
+                    'foo' => [
                         'baz' => null
-                    )
-                ),
+                    ]
+                ],
                 'foo/baz',
                 null
-            ),
-            'get string value' => array(
-                array(
-                    'foo' => array(
+            ],
+            'get string value' => [
+                [
+                    'foo' => [
                         'baz' => 'this is a test string'
-                    )
-                ),
+                    ]
+                ],
                 'foo/baz',
                 'this is a test string'
-            ),
-            'get boolean value: FALSE' => array(
-                array(
-                    'foo' => array(
+            ],
+            'get boolean value: FALSE' => [
+                [
+                    'foo' => [
                         'baz' => false
-                    )
-                ),
+                    ]
+                ],
                 'foo/baz',
                 false
-            ),
-            'get boolean value: TRUE' => array(
-                array(
-                    'foo' => array(
+            ],
+            'get boolean value: TRUE' => [
+                [
+                    'foo' => [
                         'baz' => true
-                    )
-                ),
+                    ]
+                ],
                 'foo/baz',
                 true
-            ),
-            'get object value' => array(
-                array(
-                    'foo' => array(
+            ],
+            'get object value' => [
+                [
+                    'foo' => [
                         'baz' => $testObject
-                    )
-                ),
+                    ]
+                ],
                 'foo/baz',
                 $testObject
-            ),
-            'enclosed path' => array(
-                array(
-                    'foo/bar' => array(
+            ],
+            'enclosed path' => [
+                [
+                    'foo/bar' => [
                         'foobar' => 42
-                    )
-                ),
+                    ]
+                ],
                 '"foo/bar"/foobar',
                 42
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -408,14 +408,14 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathAcceptsDifferentDelimiter()
     {
-        $input = array(
-            'foo' => array(
-                'bar' => array(
+        $input = [
+            'foo' => [
+                'bar' => [
                     'baz' => 42
-                ),
-                'bar2' => array()
-            )
-        );
+                ],
+                'bar2' => []
+            ]
+        ];
         $searchPath = 'foo%bar%baz';
         $expected = 42;
         $delimiter = '%';
@@ -464,162 +464,162 @@ class ArrayUtilityTest extends UnitTestCase
         $testObject = new \stdClass();
         $testObject->foo = 'foo';
         $testObject->bar = 'bar';
-        return array(
-            'set integer value: 42' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+        return [
+            'set integer value: 42' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 0
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 42,
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 42
-                        )
-                    )
-                )
-            ),
-            'set integer value: 0' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'set integer value: 0' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 42
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 0,
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 0
-                        )
-                    )
-                )
-            ),
-            'set null value' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'set null value' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 42
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 null,
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => null
-                        )
-                    )
-                )
-            ),
-            'set array value' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'set array value' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 42
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
-                array(
+                [
                     'foo' => 123
-                ),
-                array(
-                    'foo' => array(
-                        'bar' => array(
-                            'baz' => array(
+                ],
+                [
+                    'foo' => [
+                        'bar' => [
+                            'baz' => [
                                 'foo' => 123
-                            )
-                        )
-                    )
-                )
-            ),
-            'set boolean value: FALSE' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'set boolean value: FALSE' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => true
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 false,
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => false
-                        )
-                    )
-                )
-            ),
-            'set boolean value: TRUE' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'set boolean value: TRUE' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => null
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 true,
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => true
-                        )
-                    )
-                )
-            ),
-            'set object value' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'set object value' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => null
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar/baz',
                 $testObject,
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => $testObject
-                        )
-                    )
-                )
-            ),
-            'multi keys in array' => array(
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'multi keys in array' => [
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 'value'
-                        ),
-                        'bar2' => array(
+                        ],
+                        'bar2' => [
                             'baz' => 'value'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'foo/bar2/baz',
                 'newValue',
-                array(
-                    'foo' => array(
-                        'bar' => array(
+                [
+                    'foo' => [
+                        'bar' => [
                             'baz' => 'value'
-                        ),
-                        'bar2' => array(
+                        ],
+                        'bar2' => [
                             'baz' => 'newValue'
-                        )
-                    )
-                )
-            )
-        );
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -703,18 +703,18 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function removeByPathAcceptsGivenDelimiter()
     {
-        $inputArray = array(
-            'foo' => array(
+        $inputArray = [
+            'foo' => [
                 'toRemove' => 42,
                 'keep' => 23
-            ),
-        );
+            ],
+        ];
         $path = 'foo.toRemove';
-        $expected = array(
-            'foo' => array(
+        $expected = [
+            'foo' => [
                 'keep' => 23,
-            ),
-        );
+            ],
+        ];
         $this->assertEquals(
             $expected,
             ArrayUtility::removeByPath($inputArray, $path, '.')
@@ -726,47 +726,47 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function removeByPathRemovesCorrectPathDataProvider()
     {
-        return array(
-            'single value' => array(
-                array(
-                    'foo' => array(
+        return [
+            'single value' => [
+                [
+                    'foo' => [
                         'toRemove' => 42,
                         'keep' => 23
-                    ),
-                ),
+                    ],
+                ],
                 'foo/toRemove',
-                array(
-                    'foo' => array(
+                [
+                    'foo' => [
                         'keep' => 23,
-                    ),
-                ),
-            ),
-            'whole array' => array(
-                array(
-                    'foo' => array(
+                    ],
+                ],
+            ],
+            'whole array' => [
+                [
+                    'foo' => [
                         'bar' => 42
-                    ),
-                ),
+                    ],
+                ],
                 'foo',
-                array(),
-            ),
-            'sub array' => array(
-                array(
-                    'foo' => array(
+                [],
+            ],
+            'sub array' => [
+                [
+                    'foo' => [
                         'keep' => 23,
-                        'toRemove' => array(
+                        'toRemove' => [
                             'foo' => 'bar',
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 'foo/toRemove',
-                array(
-                    'foo' => array(
+                [
+                    'foo' => [
                         'keep' => 23,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -792,26 +792,26 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function sortByKeyRecursiveCheckIfSortingIsCorrect()
     {
-        $unsortedArray = array(
+        $unsortedArray = [
             'z' => null,
             'a' => null,
-            'd' => array(
+            'd' => [
                 'c' => null,
                 'b' => null,
                 'd' => null,
                 'a' => null
-            )
-        );
-        $expectedResult = array(
+            ]
+        ];
+        $expectedResult = [
             'a' => null,
-            'd' => array(
+            'd' => [
                 'a' => null,
                 'b' => null,
                 'c' => null,
                 'd' => null
-            ),
+            ],
             'z' => null
-        );
+        ];
         $this->assertSame($expectedResult, ArrayUtility::sortByKeyRecursive($unsortedArray));
     }
 
@@ -823,122 +823,122 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function sortArraysByKeyCheckIfSortingIsCorrectDataProvider()
     {
-        return array(
-            'assoc array index' => array(
-                array(
-                    '22' => array(
+        return [
+            'assoc array index' => [
+                [
+                    '22' => [
                         'uid' => '22',
                         'title' => 'c',
                         'dummy' => 2
-                    ),
-                    '24' => array(
+                    ],
+                    '24' => [
                         'uid' => '24',
                         'title' => 'a',
                         'dummy' => 3
-                    ),
-                    '23' => array(
+                    ],
+                    '23' => [
                         'uid' => '23',
                         'title' => 'b',
                         'dummy' => 4
-                    ),
-                ),
+                    ],
+                ],
                 'title',
                 true,
-                array(
-                    '24' => array(
+                [
+                    '24' => [
                         'uid' => '24',
                         'title' => 'a',
                         'dummy' => 3
-                    ),
-                    '23' => array(
+                    ],
+                    '23' => [
                         'uid' => '23',
                         'title' => 'b',
                         'dummy' => 4
-                    ),
-                    '22' => array(
+                    ],
+                    '22' => [
                         'uid' => '22',
                         'title' => 'c',
                         'dummy' => 2
-                    ),
-                ),
-            ),
-            'numeric array index' => array(
-                array(
-                    22 => array(
+                    ],
+                ],
+            ],
+            'numeric array index' => [
+                [
+                    22 => [
                         'uid' => '22',
                         'title' => 'c',
                         'dummy' => 2
-                    ),
-                    24 => array(
+                    ],
+                    24 => [
                         'uid' => '24',
                         'title' => 'a',
                         'dummy' => 3
-                    ),
-                    23 => array(
+                    ],
+                    23 => [
                         'uid' => '23',
                         'title' => 'b',
                         'dummy' => 4
-                    ),
-                ),
+                    ],
+                ],
                 'title',
                 true,
-                array(
-                    24 => array(
+                [
+                    24 => [
                         'uid' => '24',
                         'title' => 'a',
                         'dummy' => 3
-                    ),
-                    23 => array(
+                    ],
+                    23 => [
                         'uid' => '23',
                         'title' => 'b',
                         'dummy' => 4
-                    ),
-                    22 => array(
+                    ],
+                    22 => [
                         'uid' => '22',
                         'title' => 'c',
                         'dummy' => 2
-                    ),
-                ),
-            ),
-            'numeric array index DESC' => array(
-                array(
-                    23 => array(
+                    ],
+                ],
+            ],
+            'numeric array index DESC' => [
+                [
+                    23 => [
                         'uid' => '23',
                         'title' => 'b',
                         'dummy' => 4
-                    ),
-                    22 => array(
+                    ],
+                    22 => [
                         'uid' => '22',
                         'title' => 'c',
                         'dummy' => 2
-                    ),
-                    24 => array(
+                    ],
+                    24 => [
                         'uid' => '24',
                         'title' => 'a',
                         'dummy' => 3
-                    ),
-                ),
+                    ],
+                ],
                 'title',
                 false,
-                array(
-                    22 => array(
+                [
+                    22 => [
                         'uid' => '22',
                         'title' => 'c',
                         'dummy' => 2
-                    ),
-                    23 => array(
+                    ],
+                    23 => [
                         'uid' => '23',
                         'title' => 'b',
                         'dummy' => 4
-                    ),
-                    24 => array(
+                    ],
+                    24 => [
                         'uid' => '24',
                         'title' => 'a',
                         'dummy' => 3
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -974,21 +974,21 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayExportReturnsFormattedMultidimensionalArray()
     {
-        $array = array(
-            'foo' => array(
+        $array = [
+            'foo' => [
                 'bar' => 42,
-                'bar2' => array(
+                'bar2' => [
                     'baz' => 'val\'ue',
                     'baz2' => true,
                     'baz3' => false,
-                    'baz4' => array()
-                )
-            ),
+                    'baz4' => []
+                ]
+            ],
             'baz' => 23,
             'foobar' => null,
             'qux' => 0.1,
             'qux2' => 0.000000001,
-        );
+        ];
         $expected =
             '[' . LF .
                 '    \'foo\' => [' . LF .
@@ -1030,11 +1030,11 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayExportReturnsNumericArrayKeys()
     {
-        $array = array(
+        $array = [
             'foo' => 'string key',
             23 => 'integer key',
             '42' => 'string key representing integer'
-        );
+        ];
         $expected =
             '[' . LF .
                 '    \'foo\' => \'string key\',' . LF .
@@ -1049,11 +1049,11 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayExportReturnsNoKeyIndexForConsecutiveCountedArrays()
     {
-        $array = array(
+        $array = [
             0 => 'zero',
             1 => 'one',
             2 => 'two'
-        );
+        ];
         $expected =
             '[' . LF .
                 '    \'zero\',' . LF .
@@ -1068,12 +1068,12 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayExportReturnsKeyIndexForNonConsecutiveCountedArrays()
     {
-        $array = array(
+        $array = [
             0 => 'zero',
             1 => 'one',
             3 => 'three',
             4 => 'four'
-        );
+        ];
         $expected =
             '[' . LF .
                 '    0 => \'zero\',' . LF .
@@ -1093,92 +1093,92 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function flattenCalculatesExpectedResultDataProvider()
     {
-        return array(
-            'plain array' => array(
-                array(
+        return [
+            'plain array' => [
+                [
                     'first' => 1,
                     'second' => 2
-                ),
-                array(
+                ],
+                [
                     'first' => 1,
                     'second' => 2
-                )
-            ),
-            'plain array with faulty dots' => array(
-                array(
+                ]
+            ],
+            'plain array with faulty dots' => [
+                [
                     'first.' => 1,
                     'second.' => 2
-                ),
-                array(
+                ],
+                [
                     'first' => 1,
                     'second' => 2
-                )
-            ),
-            'nested array of 2 levels' => array(
-                array(
-                    'first.' => array(
+                ]
+            ],
+            'nested array of 2 levels' => [
+                [
+                    'first.' => [
                         'firstSub' => 1
-                    ),
-                    'second.' => array(
+                    ],
+                    'second.' => [
                         'secondSub' => 2
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'first.firstSub' => 1,
                     'second.secondSub' => 2
-                )
-            ),
-            'nested array of 2 levels with faulty dots' => array(
-                array(
-                    'first.' => array(
+                ]
+            ],
+            'nested array of 2 levels with faulty dots' => [
+                [
+                    'first.' => [
                         'firstSub.' => 1
-                    ),
-                    'second.' => array(
+                    ],
+                    'second.' => [
                         'secondSub.' => 2
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'first.firstSub' => 1,
                     'second.secondSub' => 2
-                )
-            ),
-            'nested array of 3 levels' => array(
-                array(
-                    'first.' => array(
-                        'firstSub.' => array(
+                ]
+            ],
+            'nested array of 3 levels' => [
+                [
+                    'first.' => [
+                        'firstSub.' => [
                             'firstSubSub' => 1
-                        )
-                    ),
-                    'second.' => array(
-                        'secondSub.' => array(
+                        ]
+                    ],
+                    'second.' => [
+                        'secondSub.' => [
                             'secondSubSub' => 2
-                        )
-                    )
-                ),
-                array(
+                        ]
+                    ]
+                ],
+                [
                     'first.firstSub.firstSubSub' => 1,
                     'second.secondSub.secondSubSub' => 2
-                )
-            ),
-            'nested array of 3 levels with faulty dots' => array(
-                array(
-                    'first.' => array(
-                        'firstSub.' => array(
+                ]
+            ],
+            'nested array of 3 levels with faulty dots' => [
+                [
+                    'first.' => [
+                        'firstSub.' => [
                             'firstSubSub.' => 1
-                        )
-                    ),
-                    'second.' => array(
-                        'secondSub.' => array(
+                        ]
+                    ],
+                    'second.' => [
+                        'secondSub.' => [
                             'secondSubSub.' => 2
-                        )
-                    )
-                ),
-                array(
+                        ]
+                    ]
+                ],
+                [
                     'first.firstSub.firstSubSub' => 1,
                     'second.secondSub.secondSubSub' => 2
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -1202,195 +1202,195 @@ class ArrayUtilityTest extends UnitTestCase
     public function intersectRecursiveCalculatesExpectedResultDataProvider()
     {
         $sameObject = new \stdClass();
-        return array(
+        return [
             // array($source, $mask, $expected)
-            'empty array is returned if source is empty array' => array(
-                array(),
-                array(
+            'empty array is returned if source is empty array' => [
+                [],
+                [
                     'foo' => 'bar',
-                ),
-                array(),
-            ),
-            'empty array is returned if mask is empty' => array(
-                array(
+                ],
+                [],
+            ],
+            'empty array is returned if mask is empty' => [
+                [
                     'foo' => 'bar',
-                ),
-                array(),
-                array(),
-            ),
-            'key is kept on first level if exists in mask' => array(
-                array(
+                ],
+                [],
+                [],
+            ],
+            'key is kept on first level if exists in mask' => [
+                [
                     'foo' => 42,
-                ),
-                array(
+                ],
+                [
                     'foo' => 42,
-                ),
-                array(
+                ],
+                [
                     'foo' => 42,
-                ),
-            ),
-            'value of key in source is kept if mask has different value' => array(
-                array(
+                ],
+            ],
+            'value of key in source is kept if mask has different value' => [
+                [
                     'foo' => 42,
-                ),
-                array(
+                ],
+                [
                     'foo' => new \stdClass(),
-                ),
-                array(
+                ],
+                [
                     'foo' => 42,
-                ),
-            ),
-            'key is kept on first level if according mask value is NULL' => array(
-                array(
+                ],
+            ],
+            'key is kept on first level if according mask value is NULL' => [
+                [
                     'foo' => 42,
-                ),
-                array(
+                ],
+                [
                     'foo' => null,
-                ),
-                array(
+                ],
+                [
                     'foo' => 42,
-                ),
-            ),
-            'null in source value is kept' => array(
-                array(
+                ],
+            ],
+            'null in source value is kept' => [
+                [
                     'foo' => null,
-                ),
-                array(
+                ],
+                [
                     'foo' => 'bar',
-                ),
-                array(
+                ],
+                [
                     'foo' => null,
-                )
-            ),
-            'mask does not add new keys' => array(
-                array(
+                ]
+            ],
+            'mask does not add new keys' => [
+                [
                     'foo' => 42,
-                ),
-                array(
+                ],
+                [
                     'foo' => 23,
-                    'bar' => array(
+                    'bar' => [
                         4711
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'foo' => 42,
-                ),
-            ),
-            'mask does not overwrite simple values with arrays' => array(
-                array(
+                ],
+            ],
+            'mask does not overwrite simple values with arrays' => [
+                [
                     'foo' => 42,
-                ),
-                array(
-                    'foo' => array(
+                ],
+                [
+                    'foo' => [
                         'bar' => 23,
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'foo' => 42,
-                ),
-            ),
-            'key is kept on first level if according mask value is array' => array(
-                array(
+                ],
+            ],
+            'key is kept on first level if according mask value is array' => [
+                [
                     'foo' => 42,
-                ),
-                array(
-                    'foo' => array(
+                ],
+                [
+                    'foo' => [
                         'bar' => 23
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'foo' => 42,
-                ),
-            ),
-            'full array is kept if value is array and mask value is simple type' => array(
-                array(
-                    'foo' => array(
+                ],
+            ],
+            'full array is kept if value is array and mask value is simple type' => [
+                [
+                    'foo' => [
                         'bar' => 23
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'foo' => 42,
-                ),
-                array(
-                    'foo' => array(
+                ],
+                [
+                    'foo' => [
                         'bar' => 23
-                    ),
-                ),
-            ),
-            'key handling is type agnostic' => array(
-                array(
+                    ],
+                ],
+            ],
+            'key handling is type agnostic' => [
+                [
                     42 => 'foo',
-                ),
-                array(
+                ],
+                [
                     '42' => 'bar',
-                ),
-                array(
+                ],
+                [
                     42 => 'foo',
-                ),
-            ),
-            'value is same if value is object' => array(
-                array(
+                ],
+            ],
+            'value is same if value is object' => [
+                [
                     'foo' => $sameObject,
-                ),
-                array(
+                ],
+                [
                     'foo' => 'something',
-                ),
-                array(
+                ],
+                [
                     'foo' => $sameObject,
-                ),
-            ),
-            'mask does not add simple value to result if key does not exist in source' => array(
-                array(
+                ],
+            ],
+            'mask does not add simple value to result if key does not exist in source' => [
+                [
                     'foo' => '42',
-                ),
-                array(
+                ],
+                [
                     'foo' => '42',
                     'bar' => 23
-                ),
-                array(
+                ],
+                [
                     'foo' => '42',
-                ),
-            ),
-            'array of source is kept if value of mask key exists but is no array' => array(
-                array(
+                ],
+            ],
+            'array of source is kept if value of mask key exists but is no array' => [
+                [
                     'foo' => '42',
-                    'bar' => array(
+                    'bar' => [
                         'baz' => 23
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'foo' => 'value is not significant',
                     'bar' => null,
-                ),
-                array(
+                ],
+                [
                     'foo' => '42',
-                    'bar' => array(
+                    'bar' => [
                         'baz' => 23
-                    ),
-                ),
-            ),
-            'sub arrays are kept if mask has according sub array key and is similar array' => array(
-                array(
+                    ],
+                ],
+            ],
+            'sub arrays are kept if mask has according sub array key and is similar array' => [
+                [
                     'first1' => 42,
-                    'first2' => array(
+                    'first2' => [
                         'second1' => 23,
                         'second2' => 4711,
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'first1' => 42,
-                    'first2' => array(
+                    'first2' => [
                         'second1' => 'exists but different',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'first1' => 42,
-                    'first2' => array(
+                    'first2' => [
                         'second1' => 23,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -1413,118 +1413,118 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider()
     {
-        return array(
-            'empty array is returned if source is empty array' => array(
-                array(),
-                array()
-            ),
-            'returns self if array is already numerically keyed' => array(
-                array(1,2,3),
-                array(1,2,3)
-            ),
-            'returns correctly if keys are numeric, but contains a leap' => array(
-                array(0 => 'One', 1 => 'Two', 3 => 'Three'),
-                array(0 => 'One', 1 => 'Two', 2 => 'Three'),
-            ),
-            'returns correctly even though keys are strings but still numeric' => array(
-                array('0' => 'One', '1' => 'Two', '3' => 'Three'),
-                array(0 => 'One', 1 => 'Two', 2 => 'Three'),
-            ),
-            'returns correctly if just a single keys is not numeric' => array(
-                array(0 => 'Zero', '1' => 'One', 'Two' => 'Two'),
-                array(0 => 'Zero', '1' => 'One', 'Two' => 'Two'),
-            ),
-            'return self with nested numerically keyed array' => array(
-                array(
+        return [
+            'empty array is returned if source is empty array' => [
+                [],
+                []
+            ],
+            'returns self if array is already numerically keyed' => [
+                [1,2,3],
+                [1,2,3]
+            ],
+            'returns correctly if keys are numeric, but contains a leap' => [
+                [0 => 'One', 1 => 'Two', 3 => 'Three'],
+                [0 => 'One', 1 => 'Two', 2 => 'Three'],
+            ],
+            'returns correctly even though keys are strings but still numeric' => [
+                ['0' => 'One', '1' => 'Two', '3' => 'Three'],
+                [0 => 'One', 1 => 'Two', 2 => 'Three'],
+            ],
+            'returns correctly if just a single keys is not numeric' => [
+                [0 => 'Zero', '1' => 'One', 'Two' => 'Two'],
+                [0 => 'Zero', '1' => 'One', 'Two' => 'Two'],
+            ],
+            'return self with nested numerically keyed array' => [
+                [
                     'One',
                     'Two',
                     'Three',
-                    array(
+                    [
                         'sub.One',
                         'sub.Two',
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'One',
                     'Two',
                     'Three',
-                    array(
+                    [
                         'sub.One',
                         'sub.Two',
-                    )
-                )
-            ),
-            'returns correctly with nested numerically keyed array with leaps' => array(
-                array(
+                    ]
+                ]
+            ],
+            'returns correctly with nested numerically keyed array with leaps' => [
+                [
                     'One',
                     'Two',
                     'Three',
-                    array(
+                    [
                         0 => 'sub.One',
                         2 => 'sub.Two',
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'One',
                     'Two',
                     'Three',
-                    array(
+                    [
                         'sub.One',
                         'sub.Two',
-                    )
-                )
-            ),
-            'returns correctly with nested string-keyed array' => array(
-                array(
+                    ]
+                ]
+            ],
+            'returns correctly with nested string-keyed array' => [
+                [
                     'One',
                     'Two',
                     'Three',
-                    array(
+                    [
                         'one' => 'sub.One',
                         'two' => 'sub.Two',
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'One',
                     'Two',
                     'Three',
-                    array(
+                    [
                         'one' => 'sub.One',
                         'two' => 'sub.Two',
-                    )
-                )
-            ),
-            'returns correctly with deeply nested arrays' => array(
-                array(
+                    ]
+                ]
+            ],
+            'returns correctly with deeply nested arrays' => [
+                [
                     'One',
                     'Two',
-                    array(
+                    [
                         'one' => 1,
                         'two' => 2,
-                        'three' => array(
+                        'three' => [
                             2 => 'SubSubOne',
                             5 => 'SubSubTwo',
-                            9 => array(0,1,2),
-                            array()
-                        )
-                    )
-                ),
-                array(
+                            9 => [0,1,2],
+                            []
+                        ]
+                    ]
+                ],
+                [
                     'One',
                     'Two',
-                    array(
+                    [
                         'one' => 1,
                         'two' => 2,
-                        'three' => array(
+                        'three' => [
                             'SubSubOne',
                             'SubSubTwo',
-                            array(0,1,2),
-                            array()
-                        )
-                    )
-                )
-            )
-        );
+                            [0,1,2],
+                            []
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -1543,237 +1543,237 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider()
     {
-        return array(
-            'Override array can reset string to array' => array(
-                array(
-                    'first' => array(
+        return [
+            'Override array can reset string to array' => [
+                [
+                    'first' => [
                         'second' => 'foo',
-                    ),
-                ),
-                array(
-                    'first' => array(
-                        'second' => array('third' => 'bar'),
-                    ),
-                ),
+                    ],
+                ],
+                [
+                    'first' => [
+                        'second' => ['third' => 'bar'],
+                    ],
+                ],
                 true,
                 true,
                 true,
-                array(
-                    'first' => array(
-                        'second' => array('third' => 'bar'),
-                    ),
-                ),
-            ),
-            'Override array does not reset array to string (weird!)' => array(
-                array(
-                    'first' => array(),
-                ),
-                array(
+                [
+                    'first' => [
+                        'second' => ['third' => 'bar'],
+                    ],
+                ],
+            ],
+            'Override array does not reset array to string (weird!)' => [
+                [
+                    'first' => [],
+                ],
+                [
                     'first' => 'foo',
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
-                    'first' => array(), // This is rather unexpected, naive expectation: first => 'foo'
-                ),
-            ),
-            'Override array does override string with null' => array(
-                array(
+                [
+                    'first' => [], // This is rather unexpected, naive expectation: first => 'foo'
+                ],
+            ],
+            'Override array does override string with null' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'first' => null,
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
+                [
                     'first' => null,
-                ),
-            ),
-            'Override array does override null with string' => array(
-                array(
+                ],
+            ],
+            'Override array does override null with string' => [
+                [
                     'first' => null,
-                ),
-                array(
+                ],
+                [
                     'first' => 'foo',
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
+                [
                     'first' => 'foo',
-                ),
-            ),
-            'Override array does override null with empty string' => array(
-                array(
+                ],
+            ],
+            'Override array does override null with empty string' => [
+                [
                     'first' => null,
-                ),
-                array(
+                ],
+                [
                     'first' => '',
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
+                [
                     'first' => '',
-                ),
-            ),
-            'Override array does not override string with NULL if requested' => array(
-                array(
+                ],
+            ],
+            'Override array does not override string with NULL if requested' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'first' => null,
-                ),
+                ],
                 true,
                 false, // no include empty values
                 true,
-                array(
+                [
                     'first' => 'foo',
-                ),
-            ),
-            'Override array does override null with null' => array(
-                array(
+                ],
+            ],
+            'Override array does override null with null' => [
+                [
                     'first' => null,
-                ),
-                array(
+                ],
+                [
                     'first' => null,
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
+                [
                     'first' => '',
-                ),
-            ),
-            'Override array can __UNSET values' => array(
-                array(
-                    'first' => array(
+                ],
+            ],
+            'Override array can __UNSET values' => [
+                [
+                    'first' => [
                         'second' => 'second',
                         'third' => 'third',
-                    ),
-                    'fifth' => array(),
-                ),
-                array(
-                    'first' => array(
+                    ],
+                    'fifth' => [],
+                ],
+                [
+                    'first' => [
                         'second' => 'overrule',
                         'third' => '__UNSET',
                         'fourth' => 'overrile',
-                    ),
+                    ],
                     'fifth' => '__UNSET',
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
-                    'first' => array(
+                [
+                    'first' => [
                         'second' => 'overrule',
                         'fourth' => 'overrile',
-                    ),
-                ),
-            ),
-            'Override can add keys' => array(
-                array(
+                    ],
+                ],
+            ],
+            'Override can add keys' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'second' => 'bar',
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
+                [
                     'first' => 'foo',
                     'second' => 'bar',
-                ),
-            ),
-            'Override does not add key if __UNSET' => array(
-                array(
+                ],
+            ],
+            'Override does not add key if __UNSET' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'second' => '__UNSET',
-                ),
+                ],
                 true,
                 true,
                 true,
-                array(
+                [
                     'first' => 'foo',
-                ),
-            ),
-            'Override does not add key if not requested' => array(
-                array(
+                ],
+            ],
+            'Override does not add key if not requested' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'second' => 'bar',
-                ),
+                ],
                 false, // no add keys
                 true,
                 true,
-                array(
+                [
                     'first' => 'foo',
-                ),
-            ),
-            'Override does not add key if not requested with add include empty values' => array(
-                array(
+                ],
+            ],
+            'Override does not add key if not requested with add include empty values' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'second' => 'bar',
-                ),
+                ],
                 false, // no add keys
                 false, // no include empty values
                 true,
-                array(
+                [
                     'first' => 'foo',
-                ),
-            ),
-            'Override does not override string with empty string if requested' => array(
-                array(
+                ],
+            ],
+            'Override does not override string with empty string if requested' => [
+                [
                     'first' => 'foo',
-                ),
-                array(
+                ],
+                [
                     'first' => '',
-                ),
+                ],
                 true,
                 false, // no include empty values
                 true,
-                array(
+                [
                     'first' => 'foo',
-                ),
-            ),
-            'Override array does merge instead of __UNSET if requested (weird!)' => array(
-                array(
-                    'first' => array(
+                ],
+            ],
+            'Override array does merge instead of __UNSET if requested (weird!)' => [
+                [
+                    'first' => [
                         'second' => 'second',
                         'third' => 'third',
-                    ),
-                    'fifth' => array(),
-                ),
-                array(
-                    'first' => array(
+                    ],
+                    'fifth' => [],
+                ],
+                [
+                    'first' => [
                         'second' => 'overrule',
                         'third' => '__UNSET',
                         'fourth' => 'overrile',
-                    ),
+                    ],
                     'fifth' => '__UNSET',
-                ),
+                ],
                 true,
                 true,
                 false,
-                array(
-                    'first' => array(
+                [
+                    'first' => [
                         'second' => 'overrule',
                         'third' => '__UNSET', // overruled
                         'fourth' => 'overrile',
-                    ),
-                    'fifth' => array(), // not overruled with string here, naive expectation: 'fifth' => '__UNSET'
-                ),
-            ),
-        );
+                    ],
+                    'fifth' => [], // not overruled with string here, naive expectation: 'fifth' => '__UNSET'
+                ],
+            ],
+        ];
     }
 
     /**
@@ -1814,16 +1814,16 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function inArrayDataProvider()
     {
-        return array(
-            'Empty array' => array(array(), 'search', false),
-            'One item array no match' => array(array('one'), 'two', false),
-            'One item array match' => array(array('one'), 'one', true),
-            'Multiple items array no match' => array(array('one', 2, 'three', 4), 'four', false),
-            'Multiple items array match' => array(array('one', 2, 'three', 4), 'three', true),
-            'Integer search items can match string values' => array(array('0', '1', '2'), 1, true),
-            'Search item is not casted to integer for a match' => array(array(4), '4a', false),
-            'Empty item won\'t match - in contrast to the php-builtin ' => array(array(0, 1, 2), '', false)
-        );
+        return [
+            'Empty array' => [[], 'search', false],
+            'One item array no match' => [['one'], 'two', false],
+            'One item array match' => [['one'], 'one', true],
+            'Multiple items array no match' => [['one', 2, 'three', 4], 'four', false],
+            'Multiple items array match' => [['one', 2, 'three', 4], 'three', true],
+            'Integer search items can match string values' => [['0', '1', '2'], 1, true],
+            'Search item is not casted to integer for a match' => [[4], '4a', false],
+            'Empty item won\'t match - in contrast to the php-builtin ' => [[0, 1, 2], '', false]
+        ];
     }
 
     //////////////////////////////////
@@ -1834,17 +1834,17 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function checkRemoveArrayEntryByValueRemovesEntriesFromOneDimensionalArray()
     {
-        $inputArray = array(
+        $inputArray = [
             '0' => 'test1',
             '1' => 'test2',
             '2' => 'test3',
             '3' => 'test2'
-        );
+        ];
         $compareValue = 'test2';
-        $expectedResult = array(
+        $expectedResult = [
             '0' => 'test1',
             '2' => 'test3'
-        );
+        ];
         $actualResult = ArrayUtility::removeArrayEntryByValue($inputArray, $compareValue);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -1854,18 +1854,18 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function checkRemoveArrayEntryByValueRemovesEntriesFromMultiDimensionalArray()
     {
-        $inputArray = array(
+        $inputArray = [
             '0' => 'foo',
-            '1' => array(
+            '1' => [
                 '10' => 'bar'
-            ),
+            ],
             '2' => 'bar'
-        );
+        ];
         $compareValue = 'bar';
-        $expectedResult = array(
+        $expectedResult = [
             '0' => 'foo',
-            '1' => array()
-        );
+            '1' => []
+        ];
         $actualResult = ArrayUtility::removeArrayEntryByValue($inputArray, $compareValue);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -1875,16 +1875,16 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function checkRemoveArrayEntryByValueRemovesEntryWithEmptyString()
     {
-        $inputArray = array(
+        $inputArray = [
             '0' => 'foo',
             '1' => '',
             '2' => 'bar'
-        );
+        ];
         $compareValue = '';
-        $expectedResult = array(
+        $expectedResult = [
             '0' => 'foo',
             '2' => 'bar'
-        );
+        ];
         $actualResult = ArrayUtility::removeArrayEntryByValue($inputArray, $compareValue);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -1911,18 +1911,18 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function keepItemsInArrayWorksWithOneArgumentDataProvider()
     {
-        $array = array(
+        $array = [
             'one' => 'one',
             'two' => 'two',
             'three' => 'three'
-        );
-        return array(
-            'Empty argument will match "all" elements' => array(null, $array, $array),
-            'No match' => array('four', $array, array()),
-            'One match' => array('two', $array, array('two' => 'two')),
-            'Multiple matches' => array('two,one', $array, array('one' => 'one', 'two' => 'two')),
-            'Argument can be an array' => array(array('three'), $array, array('three' => 'three'))
-        );
+        ];
+        return [
+            'Empty argument will match "all" elements' => [null, $array, $array],
+            'No match' => ['four', $array, []],
+            'One match' => ['two', $array, ['two' => 'two']],
+            'Multiple matches' => ['two,one', $array, ['one' => 'one', 'two' => 'two']],
+            'Argument can be an array' => [['three'], $array, ['three' => 'three']]
+        ];
     }
 
     /**
@@ -1934,12 +1934,12 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function keepItemsInArrayCanUseClosure()
     {
-        $array = array(
-            'aa' => array('first', 'second'),
-            'bb' => array('third', 'fourth'),
-            'cc' => array('fifth', 'sixth')
-        );
-        $expected = array('bb' => array('third', 'fourth'));
+        $array = [
+            'aa' => ['first', 'second'],
+            'bb' => ['third', 'fourth'],
+            'cc' => ['fifth', 'sixth']
+        ];
+        $expected = ['bb' => ['third', 'fourth']];
         $keepItems = 'third';
         $match = ArrayUtility::keepItemsInArray(
             $array,
@@ -1959,20 +1959,20 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function remapArrayKeysExchangesKeysWithGivenMapping()
     {
-        $array = array(
+        $array = [
             'one' => 'one',
             'two' => 'two',
             'three' => 'three'
-        );
-        $keyMapping = array(
+        ];
+        $keyMapping = [
             'one' => '1',
             'two' => '2'
-        );
-        $expected = array(
+        ];
+        $expected = [
             '1' => 'one',
             '2' => 'two',
             'three' => 'three'
-        );
+        ];
         ArrayUtility::remapArrayKeys($array, $keyMapping);
         $this->assertEquals($expected, $array);
     }
@@ -1985,18 +1985,18 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayDiffAssocRecursiveHandlesOneDimensionalArrays()
     {
-        $array1 = array(
+        $array1 = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => 'value3'
-        );
-        $array2 = array(
+        ];
+        $array2 = [
             'key1' => 'value1',
             'key3' => 'value3'
-        );
-        $expectedResult = array(
+        ];
+        $expectedResult = [
             'key2' => 'value2'
-        );
+        ];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -2006,34 +2006,34 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayDiffAssocRecursiveHandlesMultiDimensionalArrays()
     {
-        $array1 = array(
+        $array1 = [
             'key1' => 'value1',
-            'key2' => array(
+            'key2' => [
                 'key21' => 'value21',
                 'key22' => 'value22',
-                'key23' => array(
+                'key23' => [
                     'key231' => 'value231',
                     'key232' => 'value232'
-                )
-            )
-        );
-        $array2 = array(
+                ]
+            ]
+        ];
+        $array2 = [
             'key1' => 'value1',
-            'key2' => array(
+            'key2' => [
                 'key21' => 'value21',
-                'key23' => array(
+                'key23' => [
                     'key231' => 'value231'
-                )
-            )
-        );
-        $expectedResult = array(
-            'key2' => array(
+                ]
+            ]
+        ];
+        $expectedResult = [
+            'key2' => [
                 'key22' => 'value22',
-                'key23' => array(
+                'key23' => [
                     'key232' => 'value232'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -2043,23 +2043,23 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function arrayDiffAssocRecursiveHandlesMixedArrays()
     {
-        $array1 = array(
-            'key1' => array(
+        $array1 = [
+            'key1' => [
                 'key11' => 'value11',
                 'key12' => 'value12'
-            ),
+            ],
             'key2' => 'value2',
             'key3' => 'value3'
-        );
-        $array2 = array(
+        ];
+        $array2 = [
             'key1' => 'value1',
-            'key2' => array(
+            'key2' => [
                 'key21' => 'value21'
-            )
-        );
-        $expectedResult = array(
+            ]
+        ];
+        $expectedResult = [
             'key3' => 'value3'
-        );
+        ];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -2073,7 +2073,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function naturalKeySortRecursiveSortsOneDimensionalArrayByNaturalOrder()
     {
-        $testArray = array(
+        $testArray = [
             'bb' => 'bb',
             'ab' => 'ab',
             '123' => '123',
@@ -2085,8 +2085,8 @@ class ArrayUtilityTest extends UnitTestCase
             '2' => '2',
             'zap' => 'zap',
             '210' => '210'
-        );
-        $expectedResult = array(
+        ];
+        $expectedResult = [
             '2',
             '23',
             '123',
@@ -2098,7 +2098,7 @@ class ArrayUtilityTest extends UnitTestCase
             'bad',
             'bb',
             'zap'
-        );
+        ];
         ArrayUtility::naturalKeySortRecursive($testArray);
         $this->assertEquals($expectedResult, array_values($testArray));
     }
@@ -2108,12 +2108,12 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function naturalKeySortRecursiveSortsMultiDimensionalArrayByNaturalOrder()
     {
-        $testArray = array(
+        $testArray = [
             '2' => '2',
             'bb' => 'bb',
             'ab' => 'ab',
             '23' => '23',
-            'aaa' => array(
+            'aaa' => [
                 'bb' => 'bb',
                 'ab' => 'ab',
                 '123' => '123',
@@ -2122,7 +2122,7 @@ class ArrayUtilityTest extends UnitTestCase
                 'abc' => 'abc',
                 'ba' => 'ba',
                 '23' => '23',
-                'bad' => array(
+                'bad' => [
                     'bb' => 'bb',
                     'ab' => 'ab',
                     '123' => '123',
@@ -2134,18 +2134,18 @@ class ArrayUtilityTest extends UnitTestCase
                     '2' => '2',
                     'zap' => 'zap',
                     '210' => '210'
-                ),
+                ],
                 '210' => '210',
                 'zap' => 'zap'
-            ),
+            ],
             'abc' => 'abc',
             'ba' => 'ba',
             '210' => '210',
             'bad' => 'bad',
             '123' => '123',
             'zap' => 'zap'
-        );
-        $expectedResult = array(
+        ];
+        $expectedResult = [
             '2',
             '23',
             '123',
@@ -2157,7 +2157,7 @@ class ArrayUtilityTest extends UnitTestCase
             'bad',
             'bb',
             'zap'
-        );
+        ];
         ArrayUtility::naturalKeySortRecursive($testArray);
         $this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa']['bad'])));
         $this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa'])));

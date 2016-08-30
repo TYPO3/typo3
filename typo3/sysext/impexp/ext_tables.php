@@ -2,14 +2,14 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
-    $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
+    $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = [
         'name' => \TYPO3\CMS\Impexp\Clickmenu::class
-    );
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp'][\TYPO3\CMS\Impexp\Task\ImportExportTask::class] = array(
+    ];
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp'][\TYPO3\CMS\Impexp\Task\ImportExportTask::class] = [
         'title' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.alttitle',
         'description' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.description',
         'icon' => 'EXT:impexp/Resources/Public/Images/export.gif'
-    );
+    ];
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
     // Special context menu actions for the import/export module
     $importExportActions = '

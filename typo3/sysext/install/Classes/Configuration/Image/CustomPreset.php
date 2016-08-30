@@ -24,7 +24,7 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'GFX/processor_enabled' => false,
         'GFX/processor_path' => '',
         'GFX/processor_path_lzw' => '',
@@ -32,5 +32,5 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
         'GFX/processor_effects' => 0,
         'GFX/processor_allowTemporaryMasksAsPng' => true,
         'GFX/processor_colorspace' => '',
-    );
+    ];
 }

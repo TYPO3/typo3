@@ -144,10 +144,10 @@ class LanguageController extends ActionController
     public function updateLanguageAction(array $data)
     {
         $numberOfExtensionsToUpdate = 10;
-        $response = array(
+        $response = [
             'success' => false,
             'progress' => 0,
-        );
+        ];
         $progress = 0;
         if (!empty($data['locale'])) {
             $allCount = 0;
@@ -193,14 +193,14 @@ class LanguageController extends ActionController
      */
     public function updateTranslationAction(array $data)
     {
-        $response = array('success' => false);
+        $response = ['success' => false];
         if (!empty($data['extension']) && !empty($data['locale'])) {
             $result = $this->translationService->updateTranslation($data['extension'], $data['locale']);
             if (empty($result[$data['extension']][$data['locale']]['error'])) {
-                $response = array(
+                $response = [
                     'success' => true,
                     'result' => $result,
-                );
+                ];
             }
         }
         $this->view->assign('response', $response);
@@ -216,7 +216,7 @@ class LanguageController extends ActionController
      */
     public function activateLanguageAction(array $data)
     {
-        $response = array('success' => false);
+        $response = ['success' => false];
         if (!empty($data['locale'])) {
             $response = $this->languageRepository->activateByLocale($data['locale']);
         }
@@ -231,7 +231,7 @@ class LanguageController extends ActionController
      */
     public function deactivateLanguageAction(array $data)
     {
-        $response = array('success' => false);
+        $response = ['success' => false];
         if (!empty($data['locale'])) {
             $response = $this->languageRepository->deactivateByLocale($data['locale']);
         }
@@ -285,7 +285,7 @@ class LanguageController extends ActionController
         $action = 'listLanguages';
         $isActive = $this->request->getControllerActionName() === $action ? true : false;
         $languageListMenuItem->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:header.languages'));
-        $uri = $uriBuilder->reset()->uriFor('listLanguages', array(), 'Language');
+        $uri = $uriBuilder->reset()->uriFor('listLanguages', [], 'Language');
         $languageListMenuItem->setHref($uri)->setActive($isActive);
 
         /** @var MenuItem $translationMenuItem */
@@ -293,7 +293,7 @@ class LanguageController extends ActionController
         $action = 'listTranslations';
         $isActive = $this->request->getControllerActionName() === $action ? true : false;
         $translationMenuItem->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:header.translations'));
-        $uri = $uriBuilder->reset()->uriFor('listTranslations', array(), 'Language');
+        $uri = $uriBuilder->reset()->uriFor('listTranslations', [], 'Language');
         $translationMenuItem->setHref($uri)->setActive($isActive);
 
         $menu->addMenuItem($languageListMenuItem);

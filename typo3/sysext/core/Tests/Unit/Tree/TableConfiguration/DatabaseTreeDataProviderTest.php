@@ -121,7 +121,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     protected function initializeSubjectMock(array $mockMethods)
     {
-        $this->subject = $this->getAccessibleMock(DatabaseTreeDataProvider::class, $mockMethods, array(), '', false);
+        $this->subject = $this->getAccessibleMock(DatabaseTreeDataProvider::class, $mockMethods, [], '', false);
         $this->subject->expects($this->any())->method('getRootUid')->will($this->returnValue(0));
         $this->subject->_set('treeData', $this->treeData);
     }
@@ -131,7 +131,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     public function loadTreeDataLevelMaximumSetToZeroWorks()
     {
-        $this->initializeSubjectMock(array('getRelatedRecords', 'getRootUid', 'getChildrenOf'));
+        $this->initializeSubjectMock(['getRelatedRecords', 'getRootUid', 'getChildrenOf']);
         $this->subject->_set('levelMaximum', 0);
         $this->subject->expects($this->never())->method('getChildrenOf');
         $this->subject->_call('loadTreeData');
@@ -142,7 +142,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     public function loadTreeDataLevelMaximumSetToOneWorks()
     {
-        $this->initializeSubjectMock(array('getRelatedRecords', 'getRootUid', 'getChildrenOf'));
+        $this->initializeSubjectMock(['getRelatedRecords', 'getRootUid', 'getChildrenOf']);
         $this->subject->_set('levelMaximum', 1);
         $this->subject->expects($this->once())->method('getChildrenOf')->with($this->treeData, 1);
         $this->subject->_call('loadTreeData');
@@ -160,9 +160,9 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
         $expectedStorage = new TreeNodeCollection();
         $expectedStorage->append($expectedTreeNode);
 
-        $this->initializeSubjectMock(array('getRelatedRecords', 'getRootUid'));
+        $this->initializeSubjectMock(['getRelatedRecords', 'getRootUid']);
         $this->subject->_set('levelMaximum', 1);
-        $this->subject->expects($this->once())->method('getRelatedRecords')->will($this->returnValue(array(1)));
+        $this->subject->expects($this->once())->method('getRelatedRecords')->will($this->returnValue([1]));
         $storage = $this->subject->_call('getChildrenOf', $this->treeData, 1);
 
         $this->assertEquals($expectedStorage, $storage);
@@ -189,10 +189,10 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
         $expectedFirstLevelTreeNode->setChildNodes($expectedStorageOfSecondLevelChildren);
         $expectedStorage->append($expectedFirstLevelTreeNode);
 
-        $this->initializeSubjectMock(array('getRelatedRecords', 'getRootUid'));
+        $this->initializeSubjectMock(['getRelatedRecords', 'getRootUid']);
         $this->subject->_set('levelMaximum', 2);
-        $this->subject->expects($this->at(0))->method('getRelatedRecords')->will($this->returnValue(array(1)));
-        $this->subject->expects($this->at(1))->method('getRelatedRecords')->will($this->returnValue(array(2)));
+        $this->subject->expects($this->at(0))->method('getRelatedRecords')->will($this->returnValue([1]));
+        $this->subject->expects($this->at(1))->method('getRelatedRecords')->will($this->returnValue([2]));
         $storage = $this->subject->_call('getChildrenOf', $this->treeData, 1);
 
         $this->assertEquals($expectedStorage, $storage);

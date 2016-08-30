@@ -31,12 +31,12 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
@@ -72,7 +72,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $inQuery = $this->postRepository->createQuery();
 
         $inQuery->matching(
-            $inQuery->in('blog', array($blog1, $blog2))
+            $inQuery->in('blog', [$blog1, $blog2])
         );
 
         $this->assertSame(11, $inQuery->count());
@@ -89,7 +89,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $inQuery = $this->postRepository->createQuery();
 
         $inQuery->matching(
-            $inQuery->in('blog', array($blog1, $blog2))
+            $inQuery->in('blog', [$blog1, $blog2])
         );
 
         $this->assertSame(11, $inQuery->count());
@@ -97,7 +97,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $newInQuery = $this->postRepository->createQuery();
 
         $newInQuery->matching(
-            $newInQuery->in('blog', array($blog1))
+            $newInQuery->in('blog', [$blog1])
         );
 
         $this->assertSame(10, $newInQuery->count());
@@ -162,7 +162,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     public function inConditionWorksWithQueryResult()
     {
         $query = $this->blogRepository->createQuery();
-        $query->matching($query->in('uid', array(1, 2)));
+        $query->matching($query->in('uid', [1, 2]));
         $queryResult = $query->execute();
 
         $inQuery = $this->postRepository->createQuery();
@@ -180,7 +180,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     public function inConditionWorksWithQueryResultOnSecondCall()
     {
         $query = $this->blogRepository->createQuery();
-        $query->matching($query->in('uid', array(1, 2)));
+        $query->matching($query->in('uid', [1, 2]));
         $queryResult = $query->execute();
 
         $inQuery = $this->postRepository->createQuery();

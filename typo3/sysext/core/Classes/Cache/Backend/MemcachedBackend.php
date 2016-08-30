@@ -72,7 +72,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @var array
      */
-    protected $servers = array();
+    protected $servers = [];
 
     /**
      * Indicates whether the memcache uses compression or not (requires zlib),
@@ -96,7 +96,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @param array $options Configuration options - depends on the actual backend
      * @throws Exception if memcache is not installed
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             throw new Exception('The PHP extension "memcache" or "memcached" must be installed and loaded in ' . 'order to use the Memcached backend.', 1213987706);
@@ -231,7 +231,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @throws Exception\InvalidDataException if $data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
             throw new \InvalidArgumentException('Could not set value. Key more than 250 characters (' . $this->identifierPrefix . $entryIdentifier . ').', 1232969508);

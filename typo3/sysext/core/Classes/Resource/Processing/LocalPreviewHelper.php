@@ -62,7 +62,7 @@ class LocalPreviewHelper
         $sourceFile = $task->getSourceFile();
 
         // Merge custom configuration with default configuration
-        $configuration = array_merge(array('width' => 64, 'height' => 64), $task->getConfiguration());
+        $configuration = array_merge(['width' => 64, 'height' => 64], $task->getConfiguration());
         $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1);
         $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1);
 
@@ -110,21 +110,21 @@ class LocalPreviewHelper
                 'No ext!',
                 $file->getName()
             );
-            $result = array(
+            $result = [
                 'filePath' => $targetFilePath,
-            );
+            ];
         } elseif ($file->getExtension() === 'svg') {
             /** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
             $gifBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
             $gifBuilder->init();
             $gifBuilder->absPrefix = PATH_site;
             $info = $gifBuilder->getImageDimensions($originalFileName);
-            $newInfo = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], array());
-            $result = array(
+            $newInfo = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], []);
+            $result = [
                 'width' => $newInfo[0],
                 'height' => $newInfo[1],
                 'filePath' => '' // no file = use original
-            );
+            ];
         } else {
             // Create the temporary file
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
@@ -145,9 +145,9 @@ class LocalPreviewHelper
                     );
                 }
             }
-            $result = array(
+            $result = [
                 'filePath' => $targetFilePath,
-            );
+            ];
         }
 
         return $result;

@@ -66,7 +66,7 @@ class ContextMenuAction
      *
      * @var array
      */
-    protected $customAttributes = array();
+    protected $customAttributes = [];
 
     /**
      * Returns the label
@@ -229,14 +229,14 @@ class ContextMenuAction
      */
     public function toArray()
     {
-        $arrayRepresentation = array(
+        $arrayRepresentation = [
             'label' => $this->getLabel(),
             'id' => $this->getId(),
             'icon' => $this->getIcon(),
             'callbackAction' => $this->getCallbackAction(),
             'type' => $this->getType(),
             'customAttributes' => $this->getCustomAttributes()
-        );
+        ];
         $arrayRepresentation['childActions'] = '';
         if ($this->hasChildActions()) {
             $arrayRepresentation['childActions'] = $this->childActions->toArray();

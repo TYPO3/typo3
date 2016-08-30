@@ -100,16 +100,16 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
      */
     public function conversionTestingDataProvider()
     {
-        return array(
-            array('FooB4r', CaseViewHelper::CASE_LOWER, 'foob4r'),
-            array('FooB4r', CaseViewHelper::CASE_UPPER, 'FOOB4R'),
-            array('foo bar', CaseViewHelper::CASE_CAPITAL, 'Foo bar'),
-            array('FOO Bar', CaseViewHelper::CASE_UNCAPITAL, 'fOO Bar'),
-            array('smørrebrød', CaseViewHelper::CASE_UPPER, 'SMØRREBRØD'),
-            array('smørrebrød', CaseViewHelper::CASE_CAPITAL, 'Smørrebrød'),
-            array('römtömtömtöm', CaseViewHelper::CASE_UPPER, 'RÖMTÖMTÖMTÖM'),
-            array('Ἕλλάς α ω', CaseViewHelper::CASE_UPPER, 'ἝΛΛΆΣ Α Ω'),
-        );
+        return [
+            ['FooB4r', CaseViewHelper::CASE_LOWER, 'foob4r'],
+            ['FooB4r', CaseViewHelper::CASE_UPPER, 'FOOB4R'],
+            ['foo bar', CaseViewHelper::CASE_CAPITAL, 'Foo bar'],
+            ['FOO Bar', CaseViewHelper::CASE_UNCAPITAL, 'fOO Bar'],
+            ['smørrebrød', CaseViewHelper::CASE_UPPER, 'SMØRREBRØD'],
+            ['smørrebrød', CaseViewHelper::CASE_CAPITAL, 'Smørrebrød'],
+            ['römtömtömtöm', CaseViewHelper::CASE_UPPER, 'RÖMTÖMTÖMTÖM'],
+            ['Ἕλλάς α ω', CaseViewHelper::CASE_UPPER, 'ἝΛΛΆΣ Α Ω'],
+        ];
     }
 
     /**

@@ -65,7 +65,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']) && trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']) !== '') {
             $this->supportedExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']);
         } else {
-            $this->supportedExtensions = array('xlf', 'xml', 'php');
+            $this->supportedExtensions = ['xlf', 'xml', 'php'];
         }
     }
 
@@ -148,13 +148,13 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function setConfiguration($fileReference, $languageKey, $charset)
     {
-        $this->configuration[$fileReference] = array(
+        $this->configuration[$fileReference] = [
             'fileReference' => $fileReference,
             'fileExtension' => false,
             'parserClass' => null,
             'languageKey' => $languageKey,
             'charset' => $charset
-        );
+        ];
         $fileWithoutExtension = GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
         foreach ($this->supportedExtensions as $extension) {
             if (@is_file(($fileWithoutExtension . '.' . $extension))) {

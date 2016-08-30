@@ -41,7 +41,7 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
     /**
      * @var array
      */
-    public $conf = array();
+    public $conf = [];
 
     /**
      * cObj object

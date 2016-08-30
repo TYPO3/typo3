@@ -43,8 +43,8 @@ class InputTextElement extends AbstractFormElement
         $specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
         $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-        $classes = array();
-        $attributes = array();
+        $classes = [];
+        $attributes = [];
 
         // readonly
         if ($config['readOnly']) {
@@ -60,12 +60,12 @@ class InputTextElement extends AbstractFormElement
                 $itemFormElValue = $itemFormElValue ? '*********' : '';
             }
             $options = $this->data;
-            $options['parameterArray'] = array(
-                'fieldConf' => array(
+            $options['parameterArray'] = [
+                'fieldConf' => [
                     'config' => $config,
-                ),
+                ],
                 'itemFormElValue' => $itemFormElValue,
-            );
+            ];
             $options['renderType'] = 'none';
             return $this->nodeFactory->create($options)->render();
         }
@@ -102,7 +102,7 @@ class InputTextElement extends AbstractFormElement
         foreach ($evalList as $func) {
             switch ($func) {
                 case 'required':
-                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => true));
+                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(['required' => true]);
                     break;
                 default:
                     // @todo: This is ugly: The code should find out on it's own whether a eval definition is a
@@ -112,20 +112,20 @@ class InputTextElement extends AbstractFormElement
                         if (class_exists($func)) {
                             $evalObj = GeneralUtility::makeInstance($func);
                             if (method_exists($evalObj, 'deevaluateFieldValue')) {
-                                $_params = array(
+                                $_params = [
                                     'value' => $parameterArray['itemFormElValue']
-                                );
+                                ];
                                 $parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
                             }
                         }
                     }
             }
         }
-        $paramsList = array(
+        $paramsList = [
             'field' => $parameterArray['itemFormElName'],
             'evalList' => implode(',', $evalList),
             'is_in' => trim($config['is_in']),
-        );
+        ];
         // set classes
         $classes[] = 'form-control';
         $classes[] = 't3js-clearable';
@@ -192,7 +192,7 @@ class InputTextElement extends AbstractFormElement
 
         // Wrap a wizard around the item?
         $html = $this->renderWizards(
-            array($html),
+            [$html],
             $config['wizards'],
             $table,
             $row,

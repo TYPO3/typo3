@@ -47,7 +47,7 @@ class Message
      *
      * @var array
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * An optional title for the message (used eg. in flashMessages).
@@ -65,7 +65,7 @@ class Message
      * @param string $title optional title for the message
      * @api
      */
-    public function __construct($message, $code, array $arguments = array(), $title = '')
+    public function __construct($message, $code, array $arguments = [], $title = '')
     {
         $this->message = $message;
         $this->code = $code;

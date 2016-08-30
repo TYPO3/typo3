@@ -38,14 +38,14 @@ class Message implements MessageInterface
      * This is a mixed-case list of the headers (as due to the specification)
      * @var array
      */
-    protected $headers = array();
+    protected $headers = [];
 
     /**
      * Lowercased version of all headers, in order to check if a header is set or not
      * this way a lot of checks are easier to be set
      * @var array
      */
-    protected $lowercasedHeaderNames = array();
+    protected $lowercasedHeaderNames = [];
 
     /**
      * The body as a Stream object
@@ -145,14 +145,14 @@ class Message implements MessageInterface
     public function getHeader($name)
     {
         if (!$this->hasHeader($name)) {
-            return array();
+            return [];
         }
         $header = $this->lowercasedHeaderNames[strtolower($name)];
         $headerValue = $this->headers[$header];
         if (is_array($headerValue)) {
             return $headerValue;
         } else {
-            return array($headerValue);
+            return [$headerValue];
         }
     }
 
@@ -202,7 +202,7 @@ class Message implements MessageInterface
     public function withHeader($name, $value)
     {
         if (is_string($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         if (!is_array($value) || !$this->arrayContainsOnlyStrings($value)) {
@@ -238,7 +238,7 @@ class Message implements MessageInterface
     public function withAddedHeader($name, $value)
     {
         if (is_string($value)) {
-            $value = array($value);
+            $value = [$value];
         }
         if (!is_array($value) || !$this->arrayContainsOnlyStrings($value)) {
             throw new \InvalidArgumentException('Invalid header value for header "' . $name . '". The header value must be a string or array of strings', 1436717267);
@@ -338,18 +338,18 @@ class Message implements MessageInterface
      */
     protected function filterHeaders(array $originalHeaders)
     {
-        $headerNames = $headers = array();
+        $headerNames = $headers = [];
         foreach ($originalHeaders as $header => $value) {
             if (!is_string($header) || (!is_array($value) && !is_string($value))) {
                 continue;
             }
             if (!is_array($value)) {
-                $value = array($value);
+                $value = [$value];
             }
             $headerNames[strtolower($header)] = $header;
             $headers[$header] = $value;
         }
-        return array($headerNames, $headers);
+        return [$headerNames, $headers];
     }
 
     /**

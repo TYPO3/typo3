@@ -117,12 +117,12 @@ abstract class AbstractMessage
      */
     public function __toString()
     {
-        $severities = array(
+        $severities = [
             self::INFO => 'INFO',
             self::OK => 'OK',
             self::WARNING => 'WARNING',
             self::ERROR => 'ERROR'
-        );
+        ];
         $title = '';
         if (!empty($this->title)) {
             $title = ' - ' . $this->title;

@@ -27,7 +27,7 @@ class CacheFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function createReturnsInstanceOfTheSpecifiedCacheFrontend()
     {
         $mockCacheManager = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)
-            ->setMethods(array('registerCache'))
+            ->setMethods(['registerCache'])
             ->disableOriginalConstructor()
             ->getMock();
         $factory = new \TYPO3\CMS\Core\Cache\CacheFactory('Testing', $mockCacheManager);
@@ -41,7 +41,7 @@ class CacheFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function createInjectsAnInstanceOfTheSpecifiedBackendIntoTheCacheFrontend()
     {
         $mockCacheManager = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)
-            ->setMethods(array('registerCache'))
+            ->setMethods(['registerCache'])
             ->disableOriginalConstructor()
             ->getMock();
         $factory = new \TYPO3\CMS\Core\Cache\CacheFactory('Testing', $mockCacheManager);
@@ -55,7 +55,7 @@ class CacheFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function createRegistersTheCacheAtTheCacheManager()
     {
         $mockCacheManager = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)
-            ->setMethods(array('registerCache'))
+            ->setMethods(['registerCache'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockCacheManager->expects($this->once())->method('registerCache');

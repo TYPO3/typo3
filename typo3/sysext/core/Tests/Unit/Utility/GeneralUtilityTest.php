@@ -40,7 +40,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \TYPO3\CMS\Core\Package\PackageManager
@@ -124,19 +124,19 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function gpDataProvider()
     {
-        return array(
-            'No key parameter' => array(null, array(), array(), null),
-            'Key not found' => array('cake', array(), array(), null),
-            'Value only in GET' => array('cake', array('cake' => 'li\\e'), array(), 'li\\e'),
-            'Value only in POST' => array('cake', array(), array('cake' => 'l\\ie'), 'l\\ie'),
-            'Value from POST preferred over GET' => array('cake', array('cake' => 'is a'), array('cake' => '\\lie'), '\\lie'),
-            'Value can be an array' => array(
+        return [
+            'No key parameter' => [null, [], [], null],
+            'Key not found' => ['cake', [], [], null],
+            'Value only in GET' => ['cake', ['cake' => 'li\\e'], [], 'li\\e'],
+            'Value only in POST' => ['cake', [], ['cake' => 'l\\ie'], 'l\\ie'],
+            'Value from POST preferred over GET' => ['cake', ['cake' => 'is a'], ['cake' => '\\lie'], '\\lie'],
+            'Value can be an array' => [
                 'cake',
-                array('cake' => array('is a' => 'l\\ie')),
-                array(),
-                array('is a' => 'l\\ie')
-            )
-        );
+                ['cake' => ['is a' => 'l\\ie']],
+                [],
+                ['is a' => 'l\\ie']
+            ]
+        ];
     }
 
     ///////////////////////////
@@ -160,17 +160,17 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function gpMergedDataProvider()
     {
-        $fullDataArray = array('cake' => array('a' => 'is a', 'b' => 'lie'));
-        $postPartData = array('cake' => array('b' => 'lie'));
-        $getPartData = array('cake' => array('a' => 'is a'));
-        $getPartDataModified = array('cake' => array('a' => 'is not a'));
-        return array(
-            'Key doesn\' exist' => array(array('foo'), array('bar'), array()),
-            'No POST data' => array($fullDataArray, array(), $fullDataArray['cake']),
-            'No GET data' => array(array(), $fullDataArray, $fullDataArray['cake']),
-            'POST and GET are merged' => array($getPartData, $postPartData, $fullDataArray['cake']),
-            'POST is preferred over GET' => array($getPartDataModified, $fullDataArray, $fullDataArray['cake'])
-        );
+        $fullDataArray = ['cake' => ['a' => 'is a', 'b' => 'lie']];
+        $postPartData = ['cake' => ['b' => 'lie']];
+        $getPartData = ['cake' => ['a' => 'is a']];
+        $getPartDataModified = ['cake' => ['a' => 'is not a']];
+        return [
+            'Key doesn\' exist' => [['foo'], ['bar'], []],
+            'No POST data' => [$fullDataArray, [], $fullDataArray['cake']],
+            'No GET data' => [[], $fullDataArray, $fullDataArray['cake']],
+            'POST and GET are merged' => [$getPartData, $postPartData, $fullDataArray['cake']],
+            'POST is preferred over GET' => [$getPartDataModified, $fullDataArray, $fullDataArray['cake']]
+        ];
     }
 
     ///////////////////////////////
@@ -184,12 +184,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getAndPostDataProvider()
     {
-        return array(
-            'Requested input data doesn\'t exist' => array('cake', array(), null),
-            'No key will return entire input data' => array(null, array('cake' => 'l\\ie'), array('cake' => 'l\\ie')),
-            'Can retrieve specific input' => array('cake', array('cake' => 'l\\ie', 'foo'), 'l\\ie'),
-            'Can retrieve nested input data' => array('cake', array('cake' => array('is a' => 'l\\ie')), array('is a' => 'l\\ie'))
-        );
+        return [
+            'Requested input data doesn\'t exist' => ['cake', [], null],
+            'No key will return entire input data' => [null, ['cake' => 'l\\ie'], ['cake' => 'l\\ie']],
+            'Can retrieve specific input' => ['cake', ['cake' => 'l\\ie', 'foo'], 'l\\ie'],
+            'Can retrieve nested input data' => ['cake', ['cake' => ['is a' => 'l\\ie']], ['is a' => 'l\\ie']]
+        ];
     }
 
     /**
@@ -219,7 +219,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @test
      * @dataProvider getSetDataProvider
      */
-    public function canSetNewGetInputValues($input, $key, $expected, $getPreset = array())
+    public function canSetNewGetInputValues($input, $key, $expected, $getPreset = [])
     {
         $_GET = $getPreset;
         GeneralUtility::_GETset($input, $key);
@@ -233,16 +233,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetDataProvider()
     {
-        return array(
-            'No input data used without target key' => array(null, null, array()),
-            'No input data used with target key' => array('', 'cake', array('cake' => '')),
-            'No target key used with string input data' => array('data', null, array()),
-            'No target key used with array input data' => array(array('cake' => 'lie'), null, array('cake' => 'lie')),
-            'Target key and string input data' => array('lie', 'cake', array('cake' => 'lie')),
-            'Replace existing GET data' => array('lie', 'cake', array('cake' => 'lie'), array('cake' => 'is a lie')),
-            'Target key pointing to sublevels and string input data' => array('lie', 'cake|is', array('cake' => array('is' => 'lie'))),
-            'Target key pointing to sublevels and array input data' => array(array('a' => 'lie'), 'cake|is', array('cake' => array('is' => array('a' => 'lie'))))
-        );
+        return [
+            'No input data used without target key' => [null, null, []],
+            'No input data used with target key' => ['', 'cake', ['cake' => '']],
+            'No target key used with string input data' => ['data', null, []],
+            'No target key used with array input data' => [['cake' => 'lie'], null, ['cake' => 'lie']],
+            'Target key and string input data' => ['lie', 'cake', ['cake' => 'lie']],
+            'Replace existing GET data' => ['lie', 'cake', ['cake' => 'lie'], ['cake' => 'is a lie']],
+            'Target key pointing to sublevels and string input data' => ['lie', 'cake|is', ['cake' => ['is' => 'lie']]],
+            'Target key pointing to sublevels and array input data' => [['a' => 'lie'], 'cake|is', ['cake' => ['is' => ['a' => 'lie']]]]
+        ];
     }
 
     ///////////////////////////
@@ -255,17 +255,17 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function cmpIPv4DataProviderMatching()
     {
-        return array(
-            'host with full IP address' => array('127.0.0.1', '127.0.0.1'),
-            'host with two wildcards at the end' => array('127.0.0.1', '127.0.*.*'),
-            'host with wildcard at third octet' => array('127.0.0.1', '127.0.*.1'),
-            'host with wildcard at second octet' => array('127.0.0.1', '127.*.0.1'),
-            '/8 subnet' => array('127.0.0.1', '127.1.1.1/8'),
-            '/32 subnet (match only name)' => array('127.0.0.1', '127.0.0.1/32'),
-            '/30 subnet' => array('10.10.3.1', '10.10.3.3/30'),
-            'host with wildcard in list with IPv4/IPv6 addresses' => array('192.168.1.1', '127.0.0.1, 1234:5678::/126, 192.168.*'),
-            'host in list with IPv4/IPv6 addresses' => array('192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1'),
-        );
+        return [
+            'host with full IP address' => ['127.0.0.1', '127.0.0.1'],
+            'host with two wildcards at the end' => ['127.0.0.1', '127.0.*.*'],
+            'host with wildcard at third octet' => ['127.0.0.1', '127.0.*.1'],
+            'host with wildcard at second octet' => ['127.0.0.1', '127.*.0.1'],
+            '/8 subnet' => ['127.0.0.1', '127.1.1.1/8'],
+            '/32 subnet (match only name)' => ['127.0.0.1', '127.0.0.1/32'],
+            '/30 subnet' => ['10.10.3.1', '10.10.3.3/30'],
+            'host with wildcard in list with IPv4/IPv6 addresses' => ['192.168.1.1', '127.0.0.1, 1234:5678::/126, 192.168.*'],
+            'host in list with IPv4/IPv6 addresses' => ['192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1'],
+        ];
     }
 
     /**
@@ -284,14 +284,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function cmpIPv4DataProviderNotMatching()
     {
-        return array(
-            'single host' => array('127.0.0.1', '127.0.0.2'),
-            'single host with wildcard' => array('127.0.0.1', '127.*.1.1'),
-            'single host with /32 subnet mask' => array('127.0.0.1', '127.0.0.2/32'),
-            '/31 subnet' => array('127.0.0.1', '127.0.0.2/31'),
-            'list with IPv4/IPv6 addresses' => array('127.0.0.1', '10.0.2.3, 192.168.1.1, ::1'),
-            'list with only IPv6 addresses' => array('10.20.30.40', '::1, 1234:5678::/127')
-        );
+        return [
+            'single host' => ['127.0.0.1', '127.0.0.2'],
+            'single host with wildcard' => ['127.0.0.1', '127.*.1.1'],
+            'single host with /32 subnet mask' => ['127.0.0.1', '127.0.0.2/32'],
+            '/31 subnet' => ['127.0.0.1', '127.0.0.2/31'],
+            'list with IPv4/IPv6 addresses' => ['127.0.0.1', '10.0.2.3, 192.168.1.1, ::1'],
+            'list with only IPv6 addresses' => ['10.20.30.40', '::1, 1234:5678::/127']
+        ];
     }
 
     /**
@@ -313,18 +313,18 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function cmpIPv6DataProviderMatching()
     {
-        return array(
-            'empty address' => array('::', '::'),
-            'empty with netmask in list' => array('::', '::/0'),
-            'empty with netmask 0 and host-bits set in list' => array('::', '::123/0'),
-            'localhost' => array('::1', '::1'),
-            'localhost with leading zero blocks' => array('::1', '0:0::1'),
-            'host with submask /128' => array('::1', '0:0::1/128'),
-            '/16 subnet' => array('1234::1', '1234:5678::/16'),
-            '/126 subnet' => array('1234:5678::3', '1234:5678::/126'),
-            '/126 subnet with host-bits in list set' => array('1234:5678::3', '1234:5678::2/126'),
-            'list with IPv4/IPv6 addresses' => array('1234:5678::3', '::1, 127.0.0.1, 1234:5678::/126, 192.168.1.1')
-        );
+        return [
+            'empty address' => ['::', '::'],
+            'empty with netmask in list' => ['::', '::/0'],
+            'empty with netmask 0 and host-bits set in list' => ['::', '::123/0'],
+            'localhost' => ['::1', '::1'],
+            'localhost with leading zero blocks' => ['::1', '0:0::1'],
+            'host with submask /128' => ['::1', '0:0::1/128'],
+            '/16 subnet' => ['1234::1', '1234:5678::/16'],
+            '/126 subnet' => ['1234:5678::3', '1234:5678::/126'],
+            '/126 subnet with host-bits in list set' => ['1234:5678::3', '1234:5678::2/126'],
+            'list with IPv4/IPv6 addresses' => ['1234:5678::3', '::1, 127.0.0.1, 1234:5678::/126, 192.168.1.1']
+        ];
     }
 
     /**
@@ -343,16 +343,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function cmpIPv6DataProviderNotMatching()
     {
-        return array(
-            'empty against localhost' => array('::', '::1'),
-            'empty against localhost with /128 netmask' => array('::', '::1/128'),
-            'localhost against different host' => array('::1', '::2'),
-            'localhost against host with prior bits set' => array('::1', '::1:1'),
-            'host against different /17 subnet' => array('1234::1', '1234:f678::/17'),
-            'host against different /127 subnet' => array('1234:5678::3', '1234:5678::/127'),
-            'host against IPv4 address list' => array('1234:5678::3', '127.0.0.1, 192.168.1.1'),
-            'host against mixed list with IPv6 host in different subnet' => array('1234:5678::3', '::1, 1234:5678::/127')
-        );
+        return [
+            'empty against localhost' => ['::', '::1'],
+            'empty against localhost with /128 netmask' => ['::', '::1/128'],
+            'localhost against different host' => ['::1', '::2'],
+            'localhost against host with prior bits set' => ['::1', '::1:1'],
+            'host against different /17 subnet' => ['1234::1', '1234:f678::/17'],
+            'host against different /127 subnet' => ['1234:5678::3', '1234:5678::/127'],
+            'host against IPv4 address list' => ['1234:5678::3', '127.0.0.1, 192.168.1.1'],
+            'host against mixed list with IPv6 host in different subnet' => ['1234:5678::3', '::1, 1234:5678::/127']
+        ];
     }
 
     /**
@@ -374,13 +374,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function IPv6Hex2BinDataProviderCorrect()
     {
-        return array(
-            'empty 1' => array('::', str_pad('', 16, "\x00")),
-            'empty 2, already normalized' => array('0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")),
-            'already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"),
-            'expansion in middle 1' => array('1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"),
-            'expansion in middle 2' => array('beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"),
-        );
+        return [
+            'empty 1' => ['::', str_pad('', 16, "\x00")],
+            'empty 2, already normalized' => ['0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")],
+            'already normalized' => ['0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"],
+            'expansion in middle 1' => ['1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"],
+            'expansion in middle 2' => ['beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"],
+        ];
     }
 
     /**
@@ -402,14 +402,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function IPv6Bin2HexDataProviderCorrect()
     {
-        return array(
-            'empty' => array(str_pad('', 16, "\x00"), '::'),
-            'non-empty front' => array("\x01" . str_pad('', 15, "\x00"), '100::'),
-            'non-empty back' => array(str_pad('', 15, "\x00") . "\x01", '::1'),
-            'normalized' => array("\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78", '102:304::506:78'),
-            'expansion in middle 1' => array("\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02", '1::2'),
-            'expansion in middle 2' => array("\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa", 'beef::fefa'),
-        );
+        return [
+            'empty' => [str_pad('', 16, "\x00"), '::'],
+            'non-empty front' => ["\x01" . str_pad('', 15, "\x00"), '100::'],
+            'non-empty back' => [str_pad('', 15, "\x00") . "\x01", '::1'],
+            'normalized' => ["\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78", '102:304::506:78'],
+            'expansion in middle 1' => ["\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02", '1::2'],
+            'expansion in middle 2' => ["\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa", 'beef::fefa'],
+        ];
     }
 
     /**
@@ -431,14 +431,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function normalizeCompressIPv6DataProviderCorrect()
     {
-        return array(
-            'empty' => array('::', '0000:0000:0000:0000:0000:0000:0000:0000'),
-            'localhost' => array('::1', '0000:0000:0000:0000:0000:0000:0000:0001'),
-            'expansion in middle 1' => array('1::2', '0001:0000:0000:0000:0000:0000:0000:0002'),
-            'expansion in middle 2' => array('1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'),
-            'expansion in middle 3' => array('1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'),
-            'expansion in middle 4' => array('1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005')
-        );
+        return [
+            'empty' => ['::', '0000:0000:0000:0000:0000:0000:0000:0000'],
+            'localhost' => ['::1', '0000:0000:0000:0000:0000:0000:0000:0001'],
+            'expansion in middle 1' => ['1::2', '0001:0000:0000:0000:0000:0000:0000:0002'],
+            'expansion in middle 2' => ['1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'],
+            'expansion in middle 3' => ['1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'],
+            'expansion in middle 4' => ['1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005']
+        ];
     }
 
     /**
@@ -480,12 +480,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function validIpDataProvider()
     {
-        return array(
-            '0.0.0.0' => array('0.0.0.0'),
-            'private IPv4 class C' => array('192.168.0.1'),
-            'private IPv4 class A' => array('10.0.13.1'),
-            'private IPv6' => array('fe80::daa2:5eff:fe8b:7dfb')
-        );
+        return [
+            '0.0.0.0' => ['0.0.0.0'],
+            'private IPv4 class C' => ['192.168.0.1'],
+            'private IPv4 class A' => ['10.0.13.1'],
+            'private IPv6' => ['fe80::daa2:5eff:fe8b:7dfb']
+        ];
     }
 
     /**
@@ -504,15 +504,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function invalidIpDataProvider()
     {
-        return array(
-            'null' => array(null),
-            'zero' => array(0),
-            'string' => array('test'),
-            'string empty' => array(''),
-            'string NULL' => array('NULL'),
-            'out of bounds IPv4' => array('300.300.300.300'),
-            'dotted decimal notation with only two dots' => array('127.0.1')
-        );
+        return [
+            'null' => [null],
+            'zero' => [0],
+            'string' => ['test'],
+            'string empty' => [''],
+            'string NULL' => ['NULL'],
+            'out of bounds IPv4' => ['300.300.300.300'],
+            'dotted decimal notation with only two dots' => ['127.0.1']
+        ];
     }
 
     /**
@@ -534,18 +534,18 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function cmpFqdnValidDataProvider()
     {
-        return array(
-            'localhost should usually resolve, IPv4' => array('127.0.0.1', '*'),
-            'localhost should usually resolve, IPv6' => array('::1', '*'),
+        return [
+            'localhost should usually resolve, IPv4' => ['127.0.0.1', '*'],
+            'localhost should usually resolve, IPv6' => ['::1', '*'],
             // other testcases with resolving not possible since it would
             // require a working IPv4/IPv6-connectivity
-            'aaa.bbb.ccc.ddd.eee, full' => array('aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee'),
-            'aaa.bbb.ccc.ddd.eee, wildcard first' => array('aaa.bbb.ccc.ddd.eee', '*.ccc.ddd.eee'),
-            'aaa.bbb.ccc.ddd.eee, wildcard last' => array('aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.*'),
-            'aaa.bbb.ccc.ddd.eee, wildcard middle' => array('aaa.bbb.ccc.ddd.eee', 'aaa.*.eee'),
-            'list-matches, 1' => array('aaa.bbb.ccc.ddd.eee', 'xxx, yyy, zzz, aaa.*.eee'),
-            'list-matches, 2' => array('aaa.bbb.ccc.ddd.eee', '127:0:0:1,,aaa.*.eee,::1')
-        );
+            'aaa.bbb.ccc.ddd.eee, full' => ['aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee'],
+            'aaa.bbb.ccc.ddd.eee, wildcard first' => ['aaa.bbb.ccc.ddd.eee', '*.ccc.ddd.eee'],
+            'aaa.bbb.ccc.ddd.eee, wildcard last' => ['aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.*'],
+            'aaa.bbb.ccc.ddd.eee, wildcard middle' => ['aaa.bbb.ccc.ddd.eee', 'aaa.*.eee'],
+            'list-matches, 1' => ['aaa.bbb.ccc.ddd.eee', 'xxx, yyy, zzz, aaa.*.eee'],
+            'list-matches, 2' => ['aaa.bbb.ccc.ddd.eee', '127:0:0:1,,aaa.*.eee,::1']
+        ];
     }
 
     /**
@@ -564,10 +564,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function cmpFqdnInvalidDataProvider()
     {
-        return array(
-            'num-parts of hostname to check can only be less or equal than hostname, 1' => array('aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee.fff'),
-            'num-parts of hostname to check can only be less or equal than hostname, 2' => array('aaa.bbb.ccc.ddd.eee', 'aaa.*.bbb.ccc.ddd.eee')
-        );
+        return [
+            'num-parts of hostname to check can only be less or equal than hostname, 1' => ['aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee.fff'],
+            'num-parts of hostname to check can only be less or equal than hostname, 2' => ['aaa.bbb.ccc.ddd.eee', 'aaa.*.bbb.ccc.ddd.eee']
+        ];
     }
 
     /**
@@ -599,12 +599,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inListForItemContainedReturnsTrueDataProvider()
     {
-        return array(
-            'Element as second element of four items' => array('one,findme,three,four'),
-            'Element at beginning of list' => array('findme,one,two'),
-            'Element at end of list' => array('one,two,findme'),
-            'One item list' => array('findme')
-        );
+        return [
+            'Element as second element of four items' => ['one,findme,three,four'],
+            'Element at beginning of list' => ['findme,one,two'],
+            'Element at end of list' => ['one,two,findme'],
+            'One item list' => ['findme']
+        ];
     }
 
     /**
@@ -624,11 +624,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inListForItemNotContainedReturnsFalseDataProvider()
     {
-        return array(
-            'Four item list' => array('one,two,three,four'),
-            'One item list' => array('one'),
-            'Empty list' => array('')
-        );
+        return [
+            'Four item list' => ['one,two,three,four'],
+            'One item list' => ['one'],
+            'Empty list' => ['']
+        ];
     }
 
     ///////////////////////////////
@@ -652,23 +652,23 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmFromListRemovesElementsFromCommaSeparatedListDataProvider()
     {
-        return array(
-            'Element as second element of three' => array('one,removeme,two', 'one,two'),
-            'Element at beginning of list' => array('removeme,one,two', 'one,two'),
-            'Element at end of list' => array('one,two,removeme', 'one,two'),
-            'One item list' => array('removeme', ''),
-            'Element not contained in list' => array('one,two,three', 'one,two,three'),
-            'Empty element survives' => array('one,,three,,removeme', 'one,,three,'),
-            'Empty element survives at start' => array(',removeme,three,removeme', ',three'),
-            'Empty element survives at end' => array('removeme,three,removeme,', 'three,'),
-            'Empty list' => array('', ''),
-            'List contains removeme multiple times' => array('removeme,notme,removeme,removeme', 'notme'),
-            'List contains removeme multiple times nothing else' => array('removeme,removeme,removeme', ''),
-            'List contains removeme multiple times nothing else 2x' => array('removeme,removeme', ''),
-            'List contains removeme multiple times nothing else 3x' => array('removeme,removeme,removeme', ''),
-            'List contains removeme multiple times nothing else 4x' => array('removeme,removeme,removeme,removeme', ''),
-            'List contains removeme multiple times nothing else 5x' => array('removeme,removeme,removeme,removeme,removeme', ''),
-        );
+        return [
+            'Element as second element of three' => ['one,removeme,two', 'one,two'],
+            'Element at beginning of list' => ['removeme,one,two', 'one,two'],
+            'Element at end of list' => ['one,two,removeme', 'one,two'],
+            'One item list' => ['removeme', ''],
+            'Element not contained in list' => ['one,two,three', 'one,two,three'],
+            'Empty element survives' => ['one,,three,,removeme', 'one,,three,'],
+            'Empty element survives at start' => [',removeme,three,removeme', ',three'],
+            'Empty element survives at end' => ['removeme,three,removeme,', 'three,'],
+            'Empty list' => ['', ''],
+            'List contains removeme multiple times' => ['removeme,notme,removeme,removeme', 'notme'],
+            'List contains removeme multiple times nothing else' => ['removeme,removeme,removeme', ''],
+            'List contains removeme multiple times nothing else 2x' => ['removeme,removeme', ''],
+            'List contains removeme multiple times nothing else 3x' => ['removeme,removeme,removeme', ''],
+            'List contains removeme multiple times nothing else 4x' => ['removeme,removeme,removeme,removeme', ''],
+            'List contains removeme multiple times nothing else 5x' => ['removeme,removeme,removeme,removeme,removeme', ''],
+        ];
     }
 
     ///////////////////////////////
@@ -692,17 +692,17 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function expandListExpandsIntegerRangesDataProvider()
     {
-        return array(
-            'Expand for the same number' => array('1,2-2,7', '1,2,7'),
-            'Small range expand with parameters reversed ignores reversed items' => array('1,5-3,7', '1,7'),
-            'Small range expand' => array('1,3-5,7', '1,3,4,5,7'),
-            'Expand at beginning' => array('3-5,1,7', '3,4,5,1,7'),
-            'Expand at end' => array('1,7,3-5', '1,7,3,4,5'),
-            'Multiple small range expands' => array('1,3-5,7-10,12', '1,3,4,5,7,8,9,10,12'),
-            'One item list' => array('1-5', '1,2,3,4,5'),
-            'Nothing to expand' => array('1,2,3,4', '1,2,3,4'),
-            'Empty list' => array('', '')
-        );
+        return [
+            'Expand for the same number' => ['1,2-2,7', '1,2,7'],
+            'Small range expand with parameters reversed ignores reversed items' => ['1,5-3,7', '1,7'],
+            'Small range expand' => ['1,3-5,7', '1,3,4,5,7'],
+            'Expand at beginning' => ['3-5,1,7', '3,4,5,1,7'],
+            'Expand at end' => ['1,7,3-5', '1,7,3,4,5'],
+            'Multiple small range expands' => ['1,3-5,7-10,12', '1,3,4,5,7,8,9,10,12'],
+            'One item list' => ['1-5', '1,2,3,4,5'],
+            'Nothing to expand' => ['1,2,3,4', '1,2,3,4'],
+            'Empty list' => ['', '']
+        ];
     }
 
     /**
@@ -735,13 +735,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function uniqueListUnifiesCommaSeparatedListDataProvider()
     {
-        return array(
-            'List without duplicates' => array('one,two,three', 'one,two,three'),
-            'List with two consecutive duplicates' => array('one,two,two,three,three', 'one,two,three'),
-            'List with non-consecutive duplicates' => array('one,two,three,two,three', 'one,two,three'),
-            'One item list' => array('one', 'one'),
-            'Empty list' => array('', '')
-        );
+        return [
+            'List without duplicates' => ['one,two,three', 'one,two,three'],
+            'List with two consecutive duplicates' => ['one,two,two,three,three', 'one,two,three'],
+            'List with non-consecutive duplicates' => ['one,two,three,two,three', 'one,two,three'],
+            'One item list' => ['one', 'one'],
+            'Empty list' => ['', '']
+        ];
     }
 
     ///////////////////////////////
@@ -754,13 +754,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isFirstPartOfStrReturnsTrueForMatchingFirstPartDataProvider()
     {
-        return array(
-            'match first part of string' => array('hello world', 'hello'),
-            'match whole string' => array('hello', 'hello'),
-            'integer is part of string with same number' => array('24', 24),
-            'string is part of integer with same number' => array(24, '24'),
-            'integer is part of string starting with same number' => array('24 beer please', 24)
-        );
+        return [
+            'match first part of string' => ['hello world', 'hello'],
+            'match whole string' => ['hello', 'hello'],
+            'integer is part of string with same number' => ['24', 24],
+            'string is part of integer with same number' => [24, '24'],
+            'integer is part of string starting with same number' => ['24 beer please', 24]
+        ];
     }
 
     /**
@@ -779,24 +779,24 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isFirstPartOfStrReturnsFalseForNotMatchingFirstPartDataProvider()
     {
-        return array(
-            'no string match' => array('hello', 'bye'),
-            'no case sensitive string match' => array('hello world', 'Hello'),
-            'array is not part of string' => array('string', array()),
-            'string is not part of array' => array(array(), 'string'),
-            'NULL is not part of string' => array('string', null),
-            'string is not part of NULL' => array(null, 'string'),
-            'NULL is not part of array' => array(array(), null),
-            'array is not part of NULL' => array(null, array()),
-            'empty string is not part of empty string' => array('', ''),
-            'NULL is not part of empty string' => array('', null),
-            'false is not part of empty string' => array('', false),
-            'empty string is not part of NULL' => array(null, ''),
-            'empty string is not part of false' => array(false, ''),
-            'empty string is not part of zero integer' => array(0, ''),
-            'zero integer is not part of NULL' => array(null, 0),
-            'zero integer is not part of empty string' => array('', 0)
-        );
+        return [
+            'no string match' => ['hello', 'bye'],
+            'no case sensitive string match' => ['hello world', 'Hello'],
+            'array is not part of string' => ['string', []],
+            'string is not part of array' => [[], 'string'],
+            'NULL is not part of string' => ['string', null],
+            'string is not part of NULL' => [null, 'string'],
+            'NULL is not part of array' => [[], null],
+            'array is not part of NULL' => [null, []],
+            'empty string is not part of empty string' => ['', ''],
+            'NULL is not part of empty string' => ['', null],
+            'false is not part of empty string' => ['', false],
+            'empty string is not part of NULL' => [null, ''],
+            'empty string is not part of false' => [false, ''],
+            'empty string is not part of zero integer' => [0, ''],
+            'zero integer is not part of NULL' => [null, 0],
+            'zero integer is not part of empty string' => ['', 0]
+        ];
     }
 
     /**
@@ -827,41 +827,41 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function formatSizeDataProvider()
     {
-        return array(
-            'IEC Bytes stay bytes (min)' => array(1, '', 0, '1 '),
-            'IEC Bytes stay bytes (max)' => array(921, '', 0, '921 '),
-            'IEC Kilobytes are used (min)' => array(922, '', 0, '0.90 Ki'),
-            'IEC Kilobytes are used (max)' => array(943718, '', 0, '922 Ki'),
-            'IEC Megabytes are used (min)' => array(943719, '', 0, '0.90 Mi'),
-            'IEC Megabytes are used (max)' => array(966367641, '', 0, '922 Mi'),
-            'IEC Gigabytes are used (min)' => array(966367642, '', 0, '0.90 Gi'),
-            'IEC Gigabytes are used (max)' => array(989560464998, '', 0, '922 Gi'),
-            'IEC Decimal is omitted for large kilobytes' => array(31080, '', 0, '30 Ki'),
-            'IEC Decimal is omitted for large megabytes' => array(31458000, '', 0, '30 Mi'),
-            'IEC Decimal is omitted for large gigabytes' => array(32212254720, '', 0, '30 Gi'),
-            'SI Bytes stay bytes (min)' => array(1, 'si', 0, '1 '),
-            'SI Bytes stay bytes (max)' => array(899, 'si', 0, '899 '),
-            'SI Kilobytes are used (min)' => array(901, 'si', 0, '0.90 k'),
-            'SI Kilobytes are used (max)' => array(900000, 'si', 0, '900 k'),
-            'SI Megabytes are used (min)' => array(900001, 'si', 0, '0.90 M'),
-            'SI Megabytes are used (max)' => array(900000000, 'si', 0, '900 M'),
-            'SI Gigabytes are used (min)' => array(900000001, 'si', 0, '0.90 G'),
-            'SI Gigabytes are used (max)' => array(900000000000, 'si', 0, '900 G'),
-            'SI Decimal is omitted for large kilobytes' => array(30000, 'si', 0, '30 k'),
-            'SI Decimal is omitted for large megabytes' => array(30000000, 'si', 0, '30 M'),
-            'SI Decimal is omitted for large gigabytes' => array(30000000000, 'si', 0, '30 G'),
-            'Label for bytes can be exchanged (binary unit)' => array(1, ' Foo|||', 0, '1 Foo'),
-            'Label for kilobytes can be exchanged (binary unit)' => array(1024, '| Foo||', 0, '1.00 Foo'),
-            'Label for megabyes can be exchanged (binary unit)' => array(1048576, '|| Foo|', 0, '1.00 Foo'),
-            'Label for gigabytes can be exchanged (binary unit)' => array(1073741824, '||| Foo', 0, '1.00 Foo'),
-            'Label for bytes can be exchanged (decimal unit)' => array(1, ' Foo|||', 1000, '1 Foo'),
-            'Label for kilobytes can be exchanged (decimal unit)' => array(1000, '| Foo||', 1000, '1.00 Foo'),
-            'Label for megabyes can be exchanged (decimal unit)' => array(1000000, '|| Foo|', 1000, '1.00 Foo'),
-            'Label for gigabytes can be exchanged (decimal unit)' => array(1000000000, '||| Foo', 1000, '1.00 Foo'),
-            'IEC Base is ignored' => array(1024, 'iec', 1000, '1.00 Ki'),
-            'SI Base is ignored' => array(1000, 'si', 1024, '1.00 k'),
-            'Use binary base for unexpected base' => array(2048, '| Bar||', 512, '2.00 Bar')
-        );
+        return [
+            'IEC Bytes stay bytes (min)' => [1, '', 0, '1 '],
+            'IEC Bytes stay bytes (max)' => [921, '', 0, '921 '],
+            'IEC Kilobytes are used (min)' => [922, '', 0, '0.90 Ki'],
+            'IEC Kilobytes are used (max)' => [943718, '', 0, '922 Ki'],
+            'IEC Megabytes are used (min)' => [943719, '', 0, '0.90 Mi'],
+            'IEC Megabytes are used (max)' => [966367641, '', 0, '922 Mi'],
+            'IEC Gigabytes are used (min)' => [966367642, '', 0, '0.90 Gi'],
+            'IEC Gigabytes are used (max)' => [989560464998, '', 0, '922 Gi'],
+            'IEC Decimal is omitted for large kilobytes' => [31080, '', 0, '30 Ki'],
+            'IEC Decimal is omitted for large megabytes' => [31458000, '', 0, '30 Mi'],
+            'IEC Decimal is omitted for large gigabytes' => [32212254720, '', 0, '30 Gi'],
+            'SI Bytes stay bytes (min)' => [1, 'si', 0, '1 '],
+            'SI Bytes stay bytes (max)' => [899, 'si', 0, '899 '],
+            'SI Kilobytes are used (min)' => [901, 'si', 0, '0.90 k'],
+            'SI Kilobytes are used (max)' => [900000, 'si', 0, '900 k'],
+            'SI Megabytes are used (min)' => [900001, 'si', 0, '0.90 M'],
+            'SI Megabytes are used (max)' => [900000000, 'si', 0, '900 M'],
+            'SI Gigabytes are used (min)' => [900000001, 'si', 0, '0.90 G'],
+            'SI Gigabytes are used (max)' => [900000000000, 'si', 0, '900 G'],
+            'SI Decimal is omitted for large kilobytes' => [30000, 'si', 0, '30 k'],
+            'SI Decimal is omitted for large megabytes' => [30000000, 'si', 0, '30 M'],
+            'SI Decimal is omitted for large gigabytes' => [30000000000, 'si', 0, '30 G'],
+            'Label for bytes can be exchanged (binary unit)' => [1, ' Foo|||', 0, '1 Foo'],
+            'Label for kilobytes can be exchanged (binary unit)' => [1024, '| Foo||', 0, '1.00 Foo'],
+            'Label for megabyes can be exchanged (binary unit)' => [1048576, '|| Foo|', 0, '1.00 Foo'],
+            'Label for gigabytes can be exchanged (binary unit)' => [1073741824, '||| Foo', 0, '1.00 Foo'],
+            'Label for bytes can be exchanged (decimal unit)' => [1, ' Foo|||', 1000, '1 Foo'],
+            'Label for kilobytes can be exchanged (decimal unit)' => [1000, '| Foo||', 1000, '1.00 Foo'],
+            'Label for megabyes can be exchanged (decimal unit)' => [1000000, '|| Foo|', 1000, '1.00 Foo'],
+            'Label for gigabytes can be exchanged (decimal unit)' => [1000000000, '||| Foo', 1000, '1.00 Foo'],
+            'IEC Base is ignored' => [1024, 'iec', 1000, '1.00 Ki'],
+            'SI Base is ignored' => [1000, 'si', 1024, '1.00 k'],
+            'Use binary base for unexpected base' => [2048, '| Bar||', 512, '2.00 Bar']
+        ];
     }
 
     ///////////////////////////////
@@ -874,20 +874,20 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function splitCalcDataProvider()
     {
-        return array(
-            'empty string returns empty array' => array(
-                array(),
+        return [
+            'empty string returns empty array' => [
+                [],
                 ''
-            ),
-            'number without operator returns array with plus and number' => array(
-                array(array('+', 42)),
+            ],
+            'number without operator returns array with plus and number' => [
+                [['+', 42]],
                 '42'
-            ),
-            'two numbers with asterisk return first number with plus and second number with asterisk' => array(
-                array(array('+', 42), array('*', 31)),
+            ],
+            'two numbers with asterisk return first number with plus and second number with asterisk' => [
+                [['+', 42], ['*', 31]],
                 '42 * 31'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -932,13 +932,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function deHSCentitiesReturnsDecodedStringDataProvider()
     {
-        return array(
-            'Empty string' => array('', ''),
-            'Double encoded &' => array('&amp;amp;', '&amp;'),
-            'Double encoded numeric entity' => array('&amp;#1234;', '&#1234;'),
-            'Double encoded hexadecimal entity' => array('&amp;#x1b;', '&#x1b;'),
-            'Single encoded entities are not touched' => array('&amp; &#1234; &#x1b;', '&amp; &#1234; &#x1b;')
-        );
+        return [
+            'Empty string' => ['', ''],
+            'Double encoded &' => ['&amp;amp;', '&amp;'],
+            'Double encoded numeric entity' => ['&amp;#1234;', '&#1234;'],
+            'Double encoded hexadecimal entity' => ['&amp;#x1b;', '&#x1b;'],
+            'Single encoded entities are not touched' => ['&amp; &#1234; &#x1b;', '&amp; &#1234; &#x1b;']
+        ];
     }
 
     //////////////////////////////////
@@ -960,13 +960,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function slashJsDataProvider()
     {
-        return array(
-            'Empty string is not changed' => array('', false, ''),
-            'Normal string is not changed' => array('The cake is a lie √', false, 'The cake is a lie √'),
-            'String with single quotes' => array('The \'cake\' is a lie', false, 'The \\\'cake\\\' is a lie'),
-            'String with single quotes and backslashes - just escape single quotes' => array('The \\\'cake\\\' is a lie', false, 'The \\\\\'cake\\\\\' is a lie'),
-            'String with single quotes and backslashes - escape both' => array('The \\\'cake\\\' is a lie', true, 'The \\\\\\\'cake\\\\\\\' is a lie')
-        );
+        return [
+            'Empty string is not changed' => ['', false, ''],
+            'Normal string is not changed' => ['The cake is a lie √', false, 'The cake is a lie √'],
+            'String with single quotes' => ['The \'cake\' is a lie', false, 'The \\\'cake\\\' is a lie'],
+            'String with single quotes and backslashes - just escape single quotes' => ['The \\\'cake\\\' is a lie', false, 'The \\\\\'cake\\\\\' is a lie'],
+            'String with single quotes and backslashes - escape both' => ['The \\\'cake\\\' is a lie', true, 'The \\\\\\\'cake\\\\\\\' is a lie']
+        ];
     }
 
     //////////////////////////////////
@@ -1005,11 +1005,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function strtouppperDataProvider()
     {
-        return array(
-            'Empty string' => array('', ''),
-            'String containing only latin characters' => array('the cake is a lie.', 'THE CAKE IS A LIE.'),
-            'String with umlauts and accent characters' => array('the càkê is ä lie.', 'THE CàKê IS ä LIE.')
-        );
+        return [
+            'Empty string' => ['', ''],
+            'String containing only latin characters' => ['the cake is a lie.', 'THE CAKE IS A LIE.'],
+            'String with umlauts and accent characters' => ['the càkê is ä lie.', 'THE CàKê IS ä LIE.']
+        ];
     }
 
     /**
@@ -1040,20 +1040,20 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validEmailValidDataProvider()
     {
-        return array(
-            'short mail address' => array('a@b.c'),
-            'simple mail address' => array('test@example.com'),
-            'uppercase characters' => array('QWERTYUIOPASDFGHJKLZXCVBNM@QWERTYUIOPASDFGHJKLZXCVBNM.NET'),
-            'equal sign in local part' => array('test=mail@example.com'),
-            'dash in local part' => array('test-mail@example.com'),
-            'plus in local part' => array('test+mail@example.com'),
-            'question mark in local part' => array('test?mail@example.com'),
-            'slash in local part' => array('foo/bar@example.com'),
-            'hash in local part' => array('foo#bar@example.com'),
-            'dot in local part' => array('firstname.lastname@employee.2something.com'),
-            'dash as local part' => array('-@foo.com'),
-            'umlauts in domain part' => array('foo@äöüfoo.com')
-        );
+        return [
+            'short mail address' => ['a@b.c'],
+            'simple mail address' => ['test@example.com'],
+            'uppercase characters' => ['QWERTYUIOPASDFGHJKLZXCVBNM@QWERTYUIOPASDFGHJKLZXCVBNM.NET'],
+            'equal sign in local part' => ['test=mail@example.com'],
+            'dash in local part' => ['test-mail@example.com'],
+            'plus in local part' => ['test+mail@example.com'],
+            'question mark in local part' => ['test?mail@example.com'],
+            'slash in local part' => ['foo/bar@example.com'],
+            'hash in local part' => ['foo#bar@example.com'],
+            'dot in local part' => ['firstname.lastname@employee.2something.com'],
+            'dash as local part' => ['-@foo.com'],
+            'umlauts in domain part' => ['foo@äöüfoo.com']
+        ];
     }
 
     /**
@@ -1072,35 +1072,35 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validEmailInvalidDataProvider()
     {
-        return array(
-            'empty string' => array(''),
-            'empty array' => array(array()),
-            'integer' => array(42),
-            'float' => array(42.23),
-            'array' => array(array('foo')),
-            'object' => array(new \stdClass()),
-            '@ sign only' => array('@'),
-            'string longer than 320 characters' => array(str_repeat('0123456789', 33)),
-            'duplicate @' => array('test@@example.com'),
-            'duplicate @ combined with further special characters in local part' => array('test!.!@#$%^&*@example.com'),
-            'opening parenthesis in local part' => array('foo(bar@example.com'),
-            'closing parenthesis in local part' => array('foo)bar@example.com'),
-            'opening square bracket in local part' => array('foo[bar@example.com'),
-            'closing square bracket as local part' => array(']@example.com'),
-            'top level domain only' => array('test@com'),
-            'dash as second level domain' => array('foo@-.com'),
-            'domain part starting with dash' => array('foo@-foo.com'),
-            'domain part ending with dash' => array('foo@foo-.com'),
-            'number as top level domain' => array('foo@bar.123'),
-            'dot at beginning of domain part' => array('test@.com'),
-            'local part ends with dot' => array('e.x.a.m.p.l.e.@example.com'),
-            'umlauts in local part' => array('äöüfoo@bar.com'),
-            'trailing whitespace' => array('test@example.com '),
-            'trailing carriage return' => array('test@example.com' . CR),
-            'trailing linefeed' => array('test@example.com' . LF),
-            'trailing carriage return linefeed' => array('test@example.com' . CRLF),
-            'trailing tab' => array('test@example.com' . TAB)
-        );
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'integer' => [42],
+            'float' => [42.23],
+            'array' => [['foo']],
+            'object' => [new \stdClass()],
+            '@ sign only' => ['@'],
+            'string longer than 320 characters' => [str_repeat('0123456789', 33)],
+            'duplicate @' => ['test@@example.com'],
+            'duplicate @ combined with further special characters in local part' => ['test!.!@#$%^&*@example.com'],
+            'opening parenthesis in local part' => ['foo(bar@example.com'],
+            'closing parenthesis in local part' => ['foo)bar@example.com'],
+            'opening square bracket in local part' => ['foo[bar@example.com'],
+            'closing square bracket as local part' => [']@example.com'],
+            'top level domain only' => ['test@com'],
+            'dash as second level domain' => ['foo@-.com'],
+            'domain part starting with dash' => ['foo@-foo.com'],
+            'domain part ending with dash' => ['foo@foo-.com'],
+            'number as top level domain' => ['foo@bar.123'],
+            'dot at beginning of domain part' => ['test@.com'],
+            'local part ends with dot' => ['e.x.a.m.p.l.e.@example.com'],
+            'umlauts in local part' => ['äöüfoo@bar.com'],
+            'trailing whitespace' => ['test@example.com '],
+            'trailing carriage return' => ['test@example.com' . CR],
+            'trailing linefeed' => ['test@example.com' . LF],
+            'trailing carriage return linefeed' => ['test@example.com' . CRLF],
+            'trailing tab' => ['test@example.com' . TAB]
+        ];
     }
 
     /**
@@ -1121,7 +1121,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function intExplodeConvertsStringsToInteger()
     {
         $testString = '1,foo,2';
-        $expectedArray = array(1, 0, 2);
+        $expectedArray = [1, 0, 2];
         $actualArray = GeneralUtility::intExplode(',', $testString);
         $this->assertEquals($expectedArray, $actualArray);
     }
@@ -1137,13 +1137,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function implodeArrayForUrlDataProvider()
     {
-        $valueArray = array('one' => '√', 'two' => 2);
-        return array(
-            'Empty input' => array('foo', array(), ''),
-            'String parameters' => array('foo', $valueArray, '&foo[one]=%E2%88%9A&foo[two]=2'),
-            'Nested array parameters' => array('foo', array($valueArray), '&foo[0][one]=%E2%88%9A&foo[0][two]=2'),
-            'Keep blank parameters' => array('foo', array('one' => '√', ''), '&foo[one]=%E2%88%9A&foo[0]=')
-        );
+        $valueArray = ['one' => '√', 'two' => 2];
+        return [
+            'Empty input' => ['foo', [], ''],
+            'String parameters' => ['foo', $valueArray, '&foo[one]=%E2%88%9A&foo[two]=2'],
+            'Nested array parameters' => ['foo', [$valueArray], '&foo[0][one]=%E2%88%9A&foo[0][two]=2'],
+            'Keep blank parameters' => ['foo', ['one' => '√', ''], '&foo[one]=%E2%88%9A&foo[0]=']
+        ];
     }
 
     /**
@@ -1160,7 +1160,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function implodeArrayForUrlCanSkipEmptyParameters()
     {
-        $input = array('one' => '√', '');
+        $input = ['one' => '√', ''];
         $expected = '&foo[one]=%E2%88%9A';
         $this->assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', true));
     }
@@ -1170,7 +1170,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function implodeArrayForUrlCanUrlEncodeKeyNames()
     {
-        $input = array('one' => '√', '');
+        $input = ['one' => '√', ''];
         $expected = '&foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=';
         $this->assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', false, true));
     }
@@ -1181,7 +1181,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function explodeUrl2ArrayTransformsParameterStringToNestedArray($name, $array, $input)
     {
-        $expected = $array ? array($name => $array) : array();
+        $expected = $array ? [$name => $array] : [];
         $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input, true));
     }
 
@@ -1201,11 +1201,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function explodeUrl2ArrayDataProvider()
     {
-        return array(
-            'Empty string' => array('', array()),
-            'Simple parameter string' => array('&one=%E2%88%9A&two=2', array('one' => '√', 'two' => 2)),
-            'Nested parameter string' => array('&foo[one]=%E2%88%9A&two=2', array('foo[one]' => '√', 'two' => 2))
-        );
+        return [
+            'Empty string' => ['', []],
+            'Simple parameter string' => ['&one=%E2%88%9A&two=2', ['one' => '√', 'two' => 2]],
+            'Nested parameter string' => ['&foo[one]=%E2%88%9A&two=2', ['foo[one]' => '√', 'two' => 2]]
+        ];
     }
 
     //////////////////////////////////
@@ -1217,8 +1217,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function compileSelectedGetVarsFromArrayFiltersIncomingData()
     {
         $filter = 'foo,bar';
-        $getArray = array('foo' => 1, 'cake' => 'lie');
-        $expected = array('foo' => 1);
+        $getArray = ['foo' => 1, 'cake' => 'lie'];
+        $expected = ['foo' => 1];
         $result = GeneralUtility::compileSelectedGetVarsFromArray($filter, $getArray, false);
         $this->assertSame($expected, $result);
     }
@@ -1230,8 +1230,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $_GET['bar'] = '2';
         $filter = 'foo,bar';
-        $getArray = array('foo' => 1, 'cake' => 'lie');
-        $expected = array('foo' => 1, 'bar' => '2');
+        $getArray = ['foo' => 1, 'cake' => 'lie'];
+        $expected = ['foo' => 1, 'bar' => '2'];
         $result = GeneralUtility::compileSelectedGetVarsFromArray($filter, $getArray, true);
         $this->assertSame($expected, $result);
     }
@@ -1245,68 +1245,68 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function revExplodeDataProvider()
     {
-        return array(
-            'limit 0 should return unexploded string' => array(
+        return [
+            'limit 0 should return unexploded string' => [
                 ':',
                 'my:words:here',
                 0,
-                array('my:words:here')
-            ),
-            'limit 1 should return unexploded string' => array(
+                ['my:words:here']
+            ],
+            'limit 1 should return unexploded string' => [
                 ':',
                 'my:words:here',
                 1,
-                array('my:words:here')
-            ),
-            'limit 2 should return two pieces' => array(
+                ['my:words:here']
+            ],
+            'limit 2 should return two pieces' => [
                 ':',
                 'my:words:here',
                 2,
-                array('my:words', 'here')
-            ),
-            'limit 3 should return unexploded string' => array(
+                ['my:words', 'here']
+            ],
+            'limit 3 should return unexploded string' => [
                 ':',
                 'my:words:here',
                 3,
-                array('my', 'words', 'here')
-            ),
-            'limit 0 should return unexploded string if no delimiter is contained' => array(
+                ['my', 'words', 'here']
+            ],
+            'limit 0 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 0,
-                array('mywordshere')
-            ),
-            'limit 1 should return unexploded string if no delimiter is contained' => array(
+                ['mywordshere']
+            ],
+            'limit 1 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 1,
-                array('mywordshere')
-            ),
-            'limit 2 should return unexploded string if no delimiter is contained' => array(
+                ['mywordshere']
+            ],
+            'limit 2 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 2,
-                array('mywordshere')
-            ),
-            'limit 3 should return unexploded string if no delimiter is contained' => array(
+                ['mywordshere']
+            ],
+            'limit 3 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 3,
-                array('mywordshere')
-            ),
-            'multi character delimiter is handled properly with limit 2' => array(
+                ['mywordshere']
+            ],
+            'multi character delimiter is handled properly with limit 2' => [
                 '[]',
                 'a[b][c][d]',
                 2,
-                array('a[b][c', 'd]')
-            ),
-            'multi character delimiter is handled properly with limit 3' => array(
+                ['a[b][c', 'd]']
+            ],
+            'multi character delimiter is handled properly with limit 3' => [
                 '[]',
                 'a[b][c][d]',
                 3,
-                array('a[b', 'c', 'd]')
-            ),
-        );
+                ['a[b', 'c', 'd]']
+            ],
+        ];
     }
 
     /**
@@ -1325,7 +1325,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function revExplodeRespectsLimitThreeWhenExploding()
     {
         $testString = 'even:more:of:my:words:here';
-        $expectedArray = array('even:more:of:my', 'words', 'here');
+        $expectedArray = ['even:more:of:my', 'words', 'here'];
         $actualArray = GeneralUtility::revExplode(':', $testString, 3);
         $this->assertEquals($expectedArray, $actualArray);
     }
@@ -1577,11 +1577,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getBytesFromSizeMeasurementDataProvider()
     {
-        return array(
-            '100 kilo Bytes' => array('102400', '100k'),
-            '100 mega Bytes' => array('104857600', '100m'),
-            '100 giga Bytes' => array('107374182400', '100g')
-        );
+        return [
+            '100 kilo Bytes' => ['102400', '100k'],
+            '100 mega Bytes' => ['104857600', '100m'],
+            '100 giga Bytes' => ['107374182400', '100g']
+        ];
     }
 
     /**
@@ -1640,16 +1640,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function hostnameAndPortDataProvider()
     {
-        return array(
-            'localhost ipv4 without port' => array('127.0.0.1', '127.0.0.1', ''),
-            'localhost ipv4 with port' => array('127.0.0.1:81', '127.0.0.1', '81'),
-            'localhost ipv6 without port' => array('[::1]', '[::1]', ''),
-            'localhost ipv6 with port' => array('[::1]:81', '[::1]', '81'),
-            'ipv6 without port' => array('[2001:DB8::1]', '[2001:DB8::1]', ''),
-            'ipv6 with port' => array('[2001:DB8::1]:81', '[2001:DB8::1]', '81'),
-            'hostname without port' => array('lolli.did.this', 'lolli.did.this', ''),
-            'hostname with port' => array('lolli.did.this:42', 'lolli.did.this', '42')
-        );
+        return [
+            'localhost ipv4 without port' => ['127.0.0.1', '127.0.0.1', ''],
+            'localhost ipv4 with port' => ['127.0.0.1:81', '127.0.0.1', '81'],
+            'localhost ipv6 without port' => ['[::1]', '[::1]', ''],
+            'localhost ipv6 with port' => ['[::1]:81', '[::1]', '81'],
+            'ipv6 without port' => ['[2001:DB8::1]', '[2001:DB8::1]', ''],
+            'ipv6 with port' => ['[2001:DB8::1]:81', '[2001:DB8::1]', '81'],
+            'hostname without port' => ['lolli.did.this', 'lolli.did.this', ''],
+            'hostname with port' => ['lolli.did.this:42', 'lolli.did.this', '42']
+        ];
     }
 
     /**
@@ -1677,15 +1677,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function hostnamesMatchingTrustedHostsConfigurationDataProvider()
     {
-        return array(
-            'hostname without port matching' => array('lolli.did.this', '.*\.did\.this'),
-            'other hostname without port matching' => array('helmut.did.this', '.*\.did\.this'),
-            'two different hostnames without port matching 1st host' => array('helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
-            'two different hostnames without port matching 2nd host' => array('lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
-            'hostname with port matching' => array('lolli.did.this:42', '.*\.did\.this:42'),
-            'hostnames are case insensitive 1' => array('lolli.DID.this:42', '.*\.did.this:42'),
-            'hostnames are case insensitive 2' => array('lolli.did.this:42', '.*\.DID.this:42'),
-        );
+        return [
+            'hostname without port matching' => ['lolli.did.this', '.*\.did\.this'],
+            'other hostname without port matching' => ['helmut.did.this', '.*\.did\.this'],
+            'two different hostnames without port matching 1st host' => ['helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames without port matching 2nd host' => ['lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'hostname with port matching' => ['lolli.did.this:42', '.*\.did\.this:42'],
+            'hostnames are case insensitive 1' => ['lolli.DID.this:42', '.*\.did.this:42'],
+            'hostnames are case insensitive 2' => ['lolli.did.this:42', '.*\.DID.this:42'],
+        ];
     }
 
     /**
@@ -1693,14 +1693,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function hostnamesNotMatchingTrustedHostsConfigurationDataProvider()
     {
-        return array(
-            'hostname without port' => array('lolli.did.this', 'helmut\.did\.this'),
-            'hostname with port, but port not allowed' => array('lolli.did.this:42', 'helmut\.did\.this'),
-            'two different hostnames in pattern but host header starts with differnet value #1' => array('sub.helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
-            'two different hostnames in pattern but host header starts with differnet value #2' => array('sub.lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
-            'two different hostnames in pattern but host header ends with differnet value #1' => array('helmut.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'),
-            'two different hostnames in pattern but host header ends with differnet value #2' => array('lolli.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'),
-        );
+        return [
+            'hostname without port' => ['lolli.did.this', 'helmut\.did\.this'],
+            'hostname with port, but port not allowed' => ['lolli.did.this:42', 'helmut\.did\.this'],
+            'two different hostnames in pattern but host header starts with differnet value #1' => ['sub.helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header starts with differnet value #2' => ['sub.lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header ends with differnet value #1' => ['helmut.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header ends with differnet value #2' => ['lolli.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
+        ];
     }
 
     /**
@@ -1729,81 +1729,81 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function serverNamePatternDataProvider()
     {
-        return array(
-            'host value matches server name and server port is default http' => array(
+        return [
+            'host value matches server name and server port is default http' => [
                 'httpHost' => 'secure.web.server',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => true,
                 'serverPort' => '80',
                 'ssl' => 'Off',
-            ),
-            'host value matches server name if compared case insensitive 1' => array(
+            ],
+            'host value matches server name if compared case insensitive 1' => [
                 'httpHost' => 'secure.web.server',
                 'serverName' => 'secure.WEB.server',
                 'isAllowed' => true,
-            ),
-            'host value matches server name if compared case insensitive 2' => array(
+            ],
+            'host value matches server name if compared case insensitive 2' => [
                 'httpHost' => 'secure.WEB.server',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => true,
-            ),
-            'host value matches server name and server port is default https' => array(
+            ],
+            'host value matches server name and server port is default https' => [
                 'httpHost' => 'secure.web.server',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => true,
                 'serverPort' => '443',
                 'ssl' => 'On',
-            ),
-            'host value matches server name and server port' => array(
+            ],
+            'host value matches server name and server port' => [
                 'httpHost' => 'secure.web.server:88',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => true,
                 'serverPort' => '88',
-            ),
-            'host value matches server name case insensitive 1 and server port' => array(
+            ],
+            'host value matches server name case insensitive 1 and server port' => [
                 'httpHost' => 'secure.WEB.server:88',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => true,
                 'serverPort' => '88',
-            ),
-            'host value matches server name case insensitive 2 and server port' => array(
+            ],
+            'host value matches server name case insensitive 2 and server port' => [
                 'httpHost' => 'secure.web.server:88',
                 'serverName' => 'secure.WEB.server',
                 'isAllowed' => true,
                 'serverPort' => '88',
-            ),
-            'host value is ipv6 but matches server name and server port' => array(
+            ],
+            'host value is ipv6 but matches server name and server port' => [
                 'httpHost' => '[::1]:81',
                 'serverName' => '[::1]',
                 'isAllowed' => true,
                 'serverPort' => '81',
-            ),
-            'host value does not match server name' => array(
+            ],
+            'host value does not match server name' => [
                 'httpHost' => 'insecure.web.server',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => false,
-            ),
-            'host value does not match server port' => array(
+            ],
+            'host value does not match server port' => [
                 'httpHost' => 'secure.web.server:88',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => false,
                 'serverPort' => '89',
-            ),
-            'host value has default port that does not match server port' => array(
+            ],
+            'host value has default port that does not match server port' => [
                 'httpHost' => 'secure.web.server',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => false,
                 'serverPort' => '81',
                 'ssl' => 'Off',
-            ),
-            'host value has default port that does not match server ssl port' => array(
+            ],
+            'host value has default port that does not match server ssl port' => [
                 'httpHost' => 'secure.web.server',
                 'serverName' => 'secure.web.server',
                 'isAllowed' => false,
                 'serverPort' => '444',
                 'ssl' => 'On',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1889,10 +1889,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function underscoredToUpperCamelCaseDataProvider()
     {
-        return array(
-            'single word' => array('Blogexample', 'blogexample'),
-            'multiple words' => array('BlogExample', 'blog_example')
-        );
+        return [
+            'single word' => ['Blogexample', 'blogexample'],
+            'multiple words' => ['BlogExample', 'blog_example']
+        ];
     }
 
     /**
@@ -1914,10 +1914,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function underscoredToLowerCamelCaseDataProvider()
     {
-        return array(
-            'single word' => array('minimalvalue', 'minimalvalue'),
-            'multiple words' => array('minimalValue', 'minimal_value')
-        );
+        return [
+            'single word' => ['minimalvalue', 'minimalvalue'],
+            'multiple words' => ['minimalValue', 'minimal_value']
+        ];
     }
 
     /**
@@ -1939,12 +1939,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function camelCaseToLowerCaseUnderscoredDataProvider()
     {
-        return array(
-            'single word' => array('blogexample', 'blogexample'),
-            'single word starting upper case' => array('blogexample', 'Blogexample'),
-            'two words starting lower case' => array('minimal_value', 'minimalValue'),
-            'two words starting upper case' => array('blog_example', 'BlogExample')
-        );
+        return [
+            'single word' => ['blogexample', 'blogexample'],
+            'single word starting upper case' => ['blogexample', 'Blogexample'],
+            'two words starting lower case' => ['minimal_value', 'minimalValue'],
+            'two words starting upper case' => ['blog_example', 'BlogExample']
+        ];
     }
 
     /**
@@ -1966,11 +1966,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function lcfirstDataProvider()
     {
-        return array(
-            'single word' => array('blogexample', 'blogexample'),
-            'single Word starting upper case' => array('blogexample', 'Blogexample'),
-            'two words' => array('blogExample', 'BlogExample')
-        );
+        return [
+            'single word' => ['blogexample', 'blogexample'],
+            'single Word starting upper case' => ['blogexample', 'Blogexample'],
+            'two words' => ['blogExample', 'BlogExample']
+        ];
     }
 
     /**
@@ -1992,27 +1992,27 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validUrlValidResourceDataProvider()
     {
-        return array(
-            'http' => array('http://www.example.org/'),
-            'http without trailing slash' => array('http://qwe'),
-            'http directory with trailing slash' => array('http://www.example/img/dir/'),
-            'http directory without trailing slash' => array('http://www.example/img/dir'),
-            'http index.html' => array('http://example.com/index.html'),
-            'http index.php' => array('http://www.example.com/index.php'),
-            'http test.png' => array('http://www.example/img/test.png'),
-            'http username password querystring and ancher' => array('https://user:pw@www.example.org:80/path?arg=value#fragment'),
-            'file' => array('file:///tmp/test.c'),
-            'file directory' => array('file://foo/bar'),
-            'ftp directory' => array('ftp://ftp.example.com/tmp/'),
-            'mailto' => array('mailto:foo@bar.com'),
-            'news' => array('news:news.php.net'),
-            'telnet' => array('telnet://192.0.2.16:80/'),
-            'ldap' => array('ldap://[2001:db8::7]/c=GB?objectClass?one'),
-            'http punycode domain name' => array('http://www.xn--bb-eka.at'),
-            'http punicode subdomain' => array('http://xn--h-zfa.oebb.at'),
-            'http domain-name umlauts' => array('http://www.öbb.at'),
-            'http subdomain umlauts' => array('http://äh.oebb.at'),
-        );
+        return [
+            'http' => ['http://www.example.org/'],
+            'http without trailing slash' => ['http://qwe'],
+            'http directory with trailing slash' => ['http://www.example/img/dir/'],
+            'http directory without trailing slash' => ['http://www.example/img/dir'],
+            'http index.html' => ['http://example.com/index.html'],
+            'http index.php' => ['http://www.example.com/index.php'],
+            'http test.png' => ['http://www.example/img/test.png'],
+            'http username password querystring and ancher' => ['https://user:pw@www.example.org:80/path?arg=value#fragment'],
+            'file' => ['file:///tmp/test.c'],
+            'file directory' => ['file://foo/bar'],
+            'ftp directory' => ['ftp://ftp.example.com/tmp/'],
+            'mailto' => ['mailto:foo@bar.com'],
+            'news' => ['news:news.php.net'],
+            'telnet' => ['telnet://192.0.2.16:80/'],
+            'ldap' => ['ldap://[2001:db8::7]/c=GB?objectClass?one'],
+            'http punycode domain name' => ['http://www.xn--bb-eka.at'],
+            'http punicode subdomain' => ['http://xn--h-zfa.oebb.at'],
+            'http domain-name umlauts' => ['http://www.öbb.at'],
+            'http subdomain umlauts' => ['http://äh.oebb.at'],
+        ];
     }
 
     /**
@@ -2031,22 +2031,22 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isValidUrlInvalidRessourceDataProvider()
     {
-        return array(
-            'http missing colon' => array('http//www.example/wrong/url/'),
-            'http missing slash' => array('http:/www.example'),
-            'hostname only' => array('www.example.org/'),
-            'file missing protocol specification' => array('/tmp/test.c'),
-            'slash only' => array('/'),
-            'string http://' => array('http://'),
-            'string http:/' => array('http:/'),
-            'string http:' => array('http:'),
-            'string http' => array('http'),
-            'empty string' => array(''),
-            'string -1' => array('-1'),
-            'string array()' => array('array()'),
-            'random string' => array('qwe'),
-            'http directory umlauts' => array('http://www.oebb.at/äöü/'),
-        );
+        return [
+            'http missing colon' => ['http//www.example/wrong/url/'],
+            'http missing slash' => ['http:/www.example'],
+            'hostname only' => ['www.example.org/'],
+            'file missing protocol specification' => ['/tmp/test.c'],
+            'slash only' => ['/'],
+            'string http://' => ['http://'],
+            'string http:/' => ['http:/'],
+            'string http:' => ['http:'],
+            'string http' => ['http'],
+            'empty string' => [''],
+            'string -1' => ['-1'],
+            'string array()' => ['array()'],
+            'random string' => ['qwe'],
+            'http directory umlauts' => ['http://www.oebb.at/äöü/'],
+        ];
     }
 
     /**
@@ -2077,14 +2077,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkisOnCurrentHostInvalidHosts()
     {
-        return array(
-            'empty string' => array(''),
-            'arbitrary string' => array('arbitrary string'),
-            'localhost IP' => array('127.0.0.1'),
-            'relative path' => array('./relpath/file.txt'),
-            'absolute path' => array('/abspath/file.txt?arg=value'),
-            'differnt host' => array(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org')
-        );
+        return [
+            'empty string' => [''],
+            'arbitrary string' => ['arbitrary string'],
+            'localhost IP' => ['127.0.0.1'],
+            'relative path' => ['./relpath/file.txt'],
+            'absolute path' => ['/abspath/file.txt?arg=value'],
+            'differnt host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org']
+        ];
     }
 
     ////////////////////////////////////////
@@ -2097,15 +2097,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sanitizeLocalUrlValidPathsDataProvider()
     {
-        return array(
-            'alt_intro.php' => array('alt_intro.php'),
-            'alt_intro.php?foo=1&bar=2' => array('alt_intro.php?foo=1&bar=2'),
-            '../index.php' => array('../index.php'),
-            '../typo3/alt_intro.php' => array('../typo3/alt_intro.php'),
-            '../~userDirectory/index.php' => array('../~userDirectory/index.php'),
-            '../typo3/index.php?var1=test-case&var2=~user' => array('../typo3/index.php?var1=test-case&var2=~user'),
-            PATH_site . 'typo3/alt_intro.php' => array(PATH_site . 'typo3/alt_intro.php'),
-        );
+        return [
+            'alt_intro.php' => ['alt_intro.php'],
+            'alt_intro.php?foo=1&bar=2' => ['alt_intro.php?foo=1&bar=2'],
+            '../index.php' => ['../index.php'],
+            '../typo3/alt_intro.php' => ['../typo3/alt_intro.php'],
+            '../~userDirectory/index.php' => ['../~userDirectory/index.php'],
+            '../typo3/index.php?var1=test-case&var2=~user' => ['../typo3/index.php?var1=test-case&var2=~user'],
+            PATH_site . 'typo3/alt_intro.php' => [PATH_site . 'typo3/alt_intro.php'],
+        ];
     }
 
     /**
@@ -2138,28 +2138,28 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $host = 'localhost';
         $subDirectory = '/cms/';
 
-        return array(
-            $subDirectory . 'typo3/alt_intro.php' => array(
+        return [
+            $subDirectory . 'typo3/alt_intro.php' => [
                 $subDirectory . 'typo3/alt_intro.php',
                 $host,
                 $subDirectory,
-            ),
-            $subDirectory . 'index.php' => array(
+            ],
+            $subDirectory . 'index.php' => [
                 $subDirectory . 'index.php',
                 $host,
                 $subDirectory,
-            ),
-            'http://' . $host . '/typo3/alt_intro.php' => array(
+            ],
+            'http://' . $host . '/typo3/alt_intro.php' => [
                 'http://' . $host . '/typo3/alt_intro.php',
                 $host,
                 '',
-            ),
-            'http://' . $host . $subDirectory . 'typo3/alt_intro.php' => array(
+            ],
+            'http://' . $host . $subDirectory . 'typo3/alt_intro.php' => [
                 'http://' . $host . $subDirectory . 'typo3/alt_intro.php',
                 $host,
                 $subDirectory,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2199,15 +2199,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sanitizeLocalUrlInvalidDataProvider()
     {
-        return array(
-            'empty string' => array(''),
-            'http domain' => array('http://www.google.de/'),
-            'https domain' => array('https://www.google.de/'),
-            'XSS attempt' => array('" onmouseover="alert(123)"'),
-            'invalid URL, UNC path' => array('\\\\foo\\bar\\'),
-            'invalid URL, HTML break out attempt' => array('" >blabuubb'),
-            'base64 encoded string' => array('data:%20text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4='),
-        );
+        return [
+            'empty string' => [''],
+            'http domain' => ['http://www.google.de/'],
+            'https domain' => ['https://www.google.de/'],
+            'XSS attempt' => ['" onmouseover="alert(123)"'],
+            'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
+            'invalid URL, HTML break out attempt' => ['" >blabuubb'],
+            'base64 encoded string' => ['data:%20text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4='],
+        ];
     }
 
     /**
@@ -2331,24 +2331,24 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeDotsFromTypoScriptSucceedsWithDottedArray()
     {
-        $typoScript = array(
-            'propertyA.' => array(
-                'keyA.' => array(
+        $typoScript = [
+            'propertyA.' => [
+                'keyA.' => [
                     'valueA' => 1
-                ),
+                ],
                 'keyB' => 2
-            ),
+            ],
             'propertyB' => 3
-        );
-        $expectedResult = array(
-            'propertyA' => array(
-                'keyA' => array(
+        ];
+        $expectedResult = [
+            'propertyA' => [
+                'keyA' => [
                     'valueA' => 1
-                ),
+                ],
                 'keyB' => 2
-            ),
+            ],
             'propertyB' => 3
-        );
+        ];
         $this->assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
@@ -2357,25 +2357,25 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeDotsFromTypoScriptOverridesSubArray()
     {
-        $typoScript = array(
-            'propertyA.' => array(
+        $typoScript = [
+            'propertyA.' => [
                 'keyA' => 'getsOverridden',
-                'keyA.' => array(
+                'keyA.' => [
                     'valueA' => 1
-                ),
+                ],
                 'keyB' => 2
-            ),
+            ],
             'propertyB' => 3
-        );
-        $expectedResult = array(
-            'propertyA' => array(
-                'keyA' => array(
+        ];
+        $expectedResult = [
+            'propertyA' => [
+                'keyA' => [
                     'valueA' => 1
-                ),
+                ],
                 'keyB' => 2
-            ),
+            ],
             'propertyB' => 3
-        );
+        ];
         $this->assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
@@ -2384,23 +2384,23 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeDotsFromTypoScriptOverridesWithScalar()
     {
-        $typoScript = array(
-            'propertyA.' => array(
-                'keyA.' => array(
+        $typoScript = [
+            'propertyA.' => [
+                'keyA.' => [
                     'valueA' => 1
-                ),
+                ],
                 'keyA' => 'willOverride',
                 'keyB' => 2
-            ),
+            ],
             'propertyB' => 3
-        );
-        $expectedResult = array(
-            'propertyA' => array(
+        ];
+        $expectedResult = [
+            'propertyA' => [
                 'keyA' => 'willOverride',
                 'keyB' => 2
-            ),
+            ],
             'propertyB' => 3
-        );
+        ];
         $this->assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
@@ -2471,48 +2471,48 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function quoteJsValueDataProvider()
     {
-        return array(
-            'Immune characters are returned as is' => array(
+        return [
+            'Immune characters are returned as is' => [
                 '._,',
                 '._,'
-            ),
-            'Alphanumerical characters are returned as is' => array(
+            ],
+            'Alphanumerical characters are returned as is' => [
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-            ),
-            'Angle brackets and ampersand are encoded' => array(
+            ],
+            'Angle brackets and ampersand are encoded' => [
                 '<>&',
                 '\\u003C\\u003E\\u0026'
-            ),
-            'Quotes and backslashes are encoded' => array(
+            ],
+            'Quotes and backslashes are encoded' => [
                 '"\'\\',
                 '\\u0022\\u0027\\u005C'
-            ),
-            'Forward slashes are escaped' => array(
+            ],
+            'Forward slashes are escaped' => [
                 '</script>',
                 '\\u003C\\/script\\u003E'
-            ),
-            'Empty string stays empty' => array(
+            ],
+            'Empty string stays empty' => [
                 '',
                 ''
-            ),
-            'Exclamation mark and space are properly encoded' => array(
+            ],
+            'Exclamation mark and space are properly encoded' => [
                 'Hello World!',
                 'Hello\\u0020World\\u0021'
-            ),
-            'Whitespaces are properly encoded' => array(
+            ],
+            'Whitespaces are properly encoded' => [
                 TAB . LF . CR . ' ',
                 '\\u0009\\u000A\\u000D\\u0020'
-            ),
-            'Null byte is properly encoded' => array(
+            ],
+            'Null byte is properly encoded' => [
                 chr(0),
                 '\\u0000'
-            ),
-            'Umlauts are properly encoded' => array(
+            ],
+            'Umlauts are properly encoded' => [
                 'ÜüÖöÄä',
                 '\\u00dc\\u00fc\\u00d6\\u00f6\\u00c4\\u00e4'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -2534,9 +2534,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetWritesArrayToGetSystemVariable()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
-        $getParameters = array('foo' => 'bar');
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        $getParameters = ['foo' => 'bar'];
         GeneralUtility::_GETset($getParameters);
         $this->assertSame($getParameters, $_GET);
     }
@@ -2546,9 +2546,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetWritesArrayToGlobalsHttpGetVars()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
-        $getParameters = array('foo' => 'bar');
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        $getParameters = ['foo' => 'bar'];
         GeneralUtility::_GETset($getParameters);
         $this->assertSame($getParameters, $GLOBALS['HTTP_GET_VARS']);
     }
@@ -2558,11 +2558,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetForArrayDropsExistingValues()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
-        GeneralUtility::_GETset(array('foo' => 'bar'));
-        GeneralUtility::_GETset(array('oneKey' => 'oneValue'));
-        $this->assertEquals(array('oneKey' => 'oneValue'), $GLOBALS['HTTP_GET_VARS']);
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['foo' => 'bar']);
+        GeneralUtility::_GETset(['oneKey' => 'oneValue']);
+        $this->assertEquals(['oneKey' => 'oneValue'], $GLOBALS['HTTP_GET_VARS']);
     }
 
     /**
@@ -2570,8 +2570,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetAssignsOneValueToOneKey()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
         GeneralUtility::_GETset('oneValue', 'oneKey');
         $this->assertEquals('oneValue', $GLOBALS['HTTP_GET_VARS']['oneKey']);
     }
@@ -2581,11 +2581,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetForOneValueDoesNotDropUnrelatedValues()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
-        GeneralUtility::_GETset(array('foo' => 'bar'));
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['foo' => 'bar']);
         GeneralUtility::_GETset('oneValue', 'oneKey');
-        $this->assertEquals(array('foo' => 'bar', 'oneKey' => 'oneValue'), $GLOBALS['HTTP_GET_VARS']);
+        $this->assertEquals(['foo' => 'bar', 'oneKey' => 'oneValue'], $GLOBALS['HTTP_GET_VARS']);
     }
 
     /**
@@ -2593,10 +2593,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetCanAssignsAnArrayToASpecificArrayElement()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
-        GeneralUtility::_GETset(array('childKey' => 'oneValue'), 'parentKey');
-        $this->assertEquals(array('parentKey' => array('childKey' => 'oneValue')), $GLOBALS['HTTP_GET_VARS']);
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['childKey' => 'oneValue'], 'parentKey');
+        $this->assertEquals(['parentKey' => ['childKey' => 'oneValue']], $GLOBALS['HTTP_GET_VARS']);
     }
 
     /**
@@ -2604,10 +2604,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetCanAssignAStringValueToASpecificArrayChildElement()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
         GeneralUtility::_GETset('oneValue', 'parentKey|childKey');
-        $this->assertEquals(array('parentKey' => array('childKey' => 'oneValue')), $GLOBALS['HTTP_GET_VARS']);
+        $this->assertEquals(['parentKey' => ['childKey' => 'oneValue']], $GLOBALS['HTTP_GET_VARS']);
     }
 
     /**
@@ -2615,14 +2615,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetCanAssignAnArrayToASpecificArrayChildElement()
     {
-        $_GET = array();
-        $GLOBALS['HTTP_GET_VARS'] = array();
-        GeneralUtility::_GETset(array('key1' => 'value1', 'key2' => 'value2'), 'parentKey|childKey');
-        $this->assertEquals(array(
-            'parentKey' => array(
-                'childKey' => array('key1' => 'value1', 'key2' => 'value2')
-            )
-        ), $GLOBALS['HTTP_GET_VARS']);
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['key1' => 'value1', 'key2' => 'value2'], 'parentKey|childKey');
+        $this->assertEquals([
+            'parentKey' => [
+                'childKey' => ['key1' => 'value1', 'key2' => 'value2']
+            ]
+        ], $GLOBALS['HTTP_GET_VARS']);
     }
 
     ///////////////////////////
@@ -2648,15 +2648,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $hookClassName = $this->getUniqueId('tx_coretest');
         $minifyHookMock = $this->getMockBuilder('stdClass')
-            ->setMethods(array('minify'))
+            ->setMethods(['minify'])
             ->setMockClassName($hookClassName)
             ->getMock();
         $functionName = $hookClassName . '->minify';
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
+        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = [];
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->once())->method('minify')->will($this->returnCallback(array($this, 'isMinifyJavaScriptHookCalledCallback')));
+        $minifyHookMock->expects($this->once())->method('minify')->will($this->returnCallback([$this, 'isMinifyJavaScriptHookCalledCallback']));
         GeneralUtility::minifyJavaScript('foo');
     }
 
@@ -2685,15 +2685,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $hookClassName = $this->getUniqueId('tx_coretest');
         $minifyHookMock = $this->getMockBuilder('stdClass')
-            ->setMethods(array('minify'))
+            ->setMethods(['minify'])
             ->setMockClassName($hookClassName)
             ->getMock();
         $functionName = '&' . $hookClassName . '->minify';
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
+        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = [];
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback(array($this, 'minifyJavaScriptErroneousCallback')));
+        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback([$this, 'minifyJavaScriptErroneousCallback']));
         $error = '';
         GeneralUtility::minifyJavaScript('string to compress', $error);
         $this->assertSame('Error minifying java script: foo', $error);
@@ -2709,15 +2709,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $hookClassName = $this->getUniqueId('tx_coretest');
         $minifyHookMock = $this->getMockBuilder('stdClass')
-            ->setMethods(array('minify'))
+            ->setMethods(['minify'])
             ->setMockClassName($hookClassName)
             ->getMock();
         $functionName = '&' . $hookClassName . '->minify';
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
+        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = [];
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback(array($this, 'minifyJavaScriptErroneousCallback')));
+        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback([$this, 'minifyJavaScriptErroneousCallback']));
         $this->expectException(\RuntimeException::class);
         GeneralUtilityMinifyJavaScriptFixture::minifyJavaScript('string to compress');
     }
@@ -3127,10 +3127,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider()
     {
-        return array(
-            'no double slash if concatenated with PATH_site' => array('fileadmin/testDir1'),
-            'double slash if concatenated with PATH_site' => array('/fileadmin/testDir2'),
-        );
+        return [
+            'no double slash if concatenated with PATH_site' => ['fileadmin/testDir1'],
+            'double slash if concatenated with PATH_site' => ['/fileadmin/testDir2'],
+        ];
     }
 
     /**
@@ -3301,7 +3301,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303662956);
 
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/foo', array());
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/foo', []);
     }
 
     ///////////////////////////////
@@ -3447,12 +3447,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
             $this->markTestSkipped('getFilesInDirCreateTestDirectory() helper method not available without vfsStream.');
         }
-        $structure = array(
-            'subDirectory' => array(
+        $structure = [
+            'subDirectory' => [
                 'test.php' => 'butter',
                 'other.php' => 'milk',
                 'stuff.csv' => 'honey',
-            ),
+            ],
             'excludeMe.txt' => 'cocoa nibs',
             'testB.txt' => 'olive oil',
             'testA.txt' => 'eggs',
@@ -3460,7 +3460,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'test.js' => 'oranges',
             'test.css' => 'apples',
             '.secret.txt' => 'sammon',
-        );
+        ];
         vfsStream::setup('test', null, $structure);
         $vfsUrl = vfsStream::url('test');
 
@@ -3553,7 +3553,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $this->assertSame(
             array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false)),
-            array('.secret.txt', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt')
+            ['.secret.txt', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt']
         );
     }
 
@@ -3563,7 +3563,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFilesInDirCanOrderByMtime()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = array();
+        $files = [];
         $iterator = new \DirectoryIterator($vfsStreamUrl);
         foreach ($iterator as $fileinfo) {
             if ($fileinfo->isFile()) {
@@ -3625,37 +3625,37 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function imageMagickCommandsDataProvider()
     {
-        return array(
+        return [
             // Some theoretical tests first
-            array(
+            [
                 '',
-                array(),
-                array()
-            ),
-            array(
+                [],
+                []
+            ],
+            [
                 'aa bb "cc" "dd"',
-                array('aa', 'bb', '"cc"', '"dd"'),
-                array('aa', 'bb', 'cc', 'dd')
-            ),
-            array(
+                ['aa', 'bb', '"cc"', '"dd"'],
+                ['aa', 'bb', 'cc', 'dd']
+            ],
+            [
                 'aa bb "cc dd"',
-                array('aa', 'bb', '"cc dd"'),
-                array('aa', 'bb', 'cc dd')
-            ),
-            array(
+                ['aa', 'bb', '"cc dd"'],
+                ['aa', 'bb', 'cc dd']
+            ],
+            [
                 '\'aa bb\' "cc dd"',
-                array('\'aa bb\'', '"cc dd"'),
-                array('aa bb', 'cc dd')
-            ),
-            array(
+                ['\'aa bb\'', '"cc dd"'],
+                ['aa bb', 'cc dd']
+            ],
+            [
                 '\'aa bb\' cc "dd"',
-                array('\'aa bb\'', 'cc', '"dd"'),
-                array('aa bb', 'cc', 'dd')
-            ),
+                ['\'aa bb\'', 'cc', '"dd"'],
+                ['aa bb', 'cc', 'dd']
+            ],
             // Now test against some real world examples
-            array(
+            [
                 '/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
-                array(
+                [
                     '/opt/local/bin/gm.exe',
                     'convert',
                     '+profile',
@@ -3665,8 +3665,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
                     '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ),
-                array(
+                ],
+                [
                     '/opt/local/bin/gm.exe',
                     'convert',
                     '+profile',
@@ -3676,11 +3676,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
                     'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'C:/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
-                array(
+                [
                     'C:/opt/local/bin/gm.exe',
                     'convert',
                     '+profile',
@@ -3690,8 +3690,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
                     '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ),
-                array(
+                ],
+                [
                     'C:/opt/local/bin/gm.exe',
                     'convert',
                     '+profile',
@@ -3701,11 +3701,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     'C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
                     'C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
-                array(
+                [
                     '/usr/bin/gm',
                     'convert',
                     '+profile',
@@ -3715,8 +3715,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
                     '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ),
-                array(
+                ],
+                [
                     '/usr/bin/gm',
                     'convert',
                     '+profile',
@@ -3726,11 +3726,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
                     '/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
-                array(
+                [
                     '/usr/bin/gm',
                     'convert',
                     '+profile',
@@ -3740,8 +3740,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
                     '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ),
-                array(
+                ],
+                [
                     '/usr/bin/gm',
                     'convert',
                     '+profile',
@@ -3751,11 +3751,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
                     '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\' \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
-                array(
+                [
                     '/usr/bin/gm',
                     'convert',
                     '+profile',
@@ -3765,8 +3765,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\'',
                     '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\''
-                ),
-                array(
+                ],
+                [
                     '/usr/bin/gm',
                     'convert',
                     '+profile',
@@ -3776,9 +3776,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-negate',
                     '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
                     '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -3842,15 +3842,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function dirnameDataProvider()
     {
-        return array(
-            'absolute path with multiple part and file' => array('/dir1/dir2/script.php', '/dir1/dir2'),
-            'absolute path with one part' => array('/dir1/', '/dir1'),
-            'absolute path to file without extension' => array('/dir1/something', '/dir1'),
-            'relative path with one part and file' => array('dir1/script.php', 'dir1'),
-            'relative one-character path with one part and file' => array('d/script.php', 'd'),
-            'absolute zero-part path with file' => array('/script.php', ''),
-            'empty string' => array('', '')
-        );
+        return [
+            'absolute path with multiple part and file' => ['/dir1/dir2/script.php', '/dir1/dir2'],
+            'absolute path with one part' => ['/dir1/', '/dir1'],
+            'absolute path to file without extension' => ['/dir1/something', '/dir1'],
+            'relative path with one part and file' => ['dir1/script.php', 'dir1'],
+            'relative one-character path with one part and file' => ['d/script.php', 'd'],
+            'absolute zero-part path with file' => ['/script.php', ''],
+            'empty string' => ['', '']
+        ];
     }
 
     /**
@@ -3873,35 +3873,35 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function resolveBackPathDataProvider()
     {
-        return array(
-            'empty path' => array('', ''),
-            'this directory' => array('./', './'),
-            'relative directory without ..' => array('dir1/dir2/dir3/', 'dir1/dir2/dir3/'),
-            'relative path without ..' => array('dir1/dir2/script.php', 'dir1/dir2/script.php'),
-            'absolute directory without ..' => array('/dir1/dir2/dir3/', '/dir1/dir2/dir3/'),
-            'absolute path without ..' => array('/dir1/dir2/script.php', '/dir1/dir2/script.php'),
-            'only one directory upwards without trailing slash' => array('..', '..'),
-            'only one directory upwards with trailing slash' => array('../', '../'),
-            'one level with trailing ..' => array('dir1/..', ''),
-            'one level with trailing ../' => array('dir1/../', ''),
-            'two levels with trailing ..' => array('dir1/dir2/..', 'dir1'),
-            'two levels with trailing ../' => array('dir1/dir2/../', 'dir1/'),
-            'leading ../ without trailing /' => array('../dir1', '../dir1'),
-            'leading ../ with trailing /' => array('../dir1/', '../dir1/'),
-            'leading ../ and inside path' => array('../dir1/dir2/../dir3/', '../dir1/dir3/'),
-            'one times ../ in relative directory' => array('dir1/../dir2/', 'dir2/'),
-            'one times ../ in absolute directory' => array('/dir1/../dir2/', '/dir2/'),
-            'one times ../ in relative path' => array('dir1/../dir2/script.php', 'dir2/script.php'),
-            'one times ../ in absolute path' => array('/dir1/../dir2/script.php', '/dir2/script.php'),
-            'consecutive ../' => array('dir1/dir2/dir3/../../../dir4', 'dir4'),
-            'distrubuted ../ with trailing /' => array('dir1/../dir2/dir3/../', 'dir2/'),
-            'distributed ../ without trailing /' => array('dir1/../dir2/dir3/..', 'dir2'),
-            'multiple distributed and consecutive ../ together' => array('dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/', 'dir1/dir2/dir5/dir6/dir8/'),
-            'dirname with leading ..' => array('dir1/..dir2/dir3/', 'dir1/..dir2/dir3/'),
-            'dirname with trailing ..' => array('dir1/dir2../dir3/', 'dir1/dir2../dir3/'),
-            'more times upwards than downwards in directory' => array('dir1/../../', '../'),
-            'more times upwards than downwards in path' => array('dir1/../../script.php', '../script.php')
-        );
+        return [
+            'empty path' => ['', ''],
+            'this directory' => ['./', './'],
+            'relative directory without ..' => ['dir1/dir2/dir3/', 'dir1/dir2/dir3/'],
+            'relative path without ..' => ['dir1/dir2/script.php', 'dir1/dir2/script.php'],
+            'absolute directory without ..' => ['/dir1/dir2/dir3/', '/dir1/dir2/dir3/'],
+            'absolute path without ..' => ['/dir1/dir2/script.php', '/dir1/dir2/script.php'],
+            'only one directory upwards without trailing slash' => ['..', '..'],
+            'only one directory upwards with trailing slash' => ['../', '../'],
+            'one level with trailing ..' => ['dir1/..', ''],
+            'one level with trailing ../' => ['dir1/../', ''],
+            'two levels with trailing ..' => ['dir1/dir2/..', 'dir1'],
+            'two levels with trailing ../' => ['dir1/dir2/../', 'dir1/'],
+            'leading ../ without trailing /' => ['../dir1', '../dir1'],
+            'leading ../ with trailing /' => ['../dir1/', '../dir1/'],
+            'leading ../ and inside path' => ['../dir1/dir2/../dir3/', '../dir1/dir3/'],
+            'one times ../ in relative directory' => ['dir1/../dir2/', 'dir2/'],
+            'one times ../ in absolute directory' => ['/dir1/../dir2/', '/dir2/'],
+            'one times ../ in relative path' => ['dir1/../dir2/script.php', 'dir2/script.php'],
+            'one times ../ in absolute path' => ['/dir1/../dir2/script.php', '/dir2/script.php'],
+            'consecutive ../' => ['dir1/dir2/dir3/../../../dir4', 'dir4'],
+            'distrubuted ../ with trailing /' => ['dir1/../dir2/dir3/../', 'dir2/'],
+            'distributed ../ without trailing /' => ['dir1/../dir2/dir3/..', 'dir2'],
+            'multiple distributed and consecutive ../ together' => ['dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/', 'dir1/dir2/dir5/dir6/dir8/'],
+            'dirname with leading ..' => ['dir1/..dir2/dir3/', 'dir1/..dir2/dir3/'],
+            'dirname with trailing ..' => ['dir1/dir2../dir3/', 'dir1/dir2../dir3/'],
+            'more times upwards than downwards in directory' => ['dir1/../../', '../'],
+            'more times upwards than downwards in path' => ['dir1/../../script.php', '../script.php']
+        ];
     }
 
     /**
@@ -4009,7 +4009,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function makeInstanceInstanciatesConfiguredImplementation()
     {
         GeneralUtilityFixture::resetFinalClassNameCache();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = array('className' => ReplacementClassFixture::class);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
         $this->assertInstanceOf(ReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
 
@@ -4019,8 +4019,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function makeInstanceResolvesConfiguredImplementationsRecursively()
     {
         GeneralUtilityFixture::resetFinalClassNameCache();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = array('className' => ReplacementClassFixture::class);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][ReplacementClassFixture::class] = array('className' => OtherReplacementClassFixture::class);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][ReplacementClassFixture::class] = ['className' => OtherReplacementClassFixture::class];
         $this->assertInstanceOf(OtherReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
 
@@ -4074,7 +4074,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1288967686);
 
         $instance = $this->getMockBuilder(\TYPO3\CMS\Core\SingletonInterface::class)
-            ->setMethods(array('foo'))
+            ->setMethods(['foo'])
             ->getMock();
         $singletonClassName = get_class($this->createMock(\TYPO3\CMS\Core\SingletonInterface::class));
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
@@ -4125,7 +4125,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
-        GeneralUtility::resetSingletonInstances(array());
+        GeneralUtility::resetSingletonInstances([]);
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
         $this->assertArrayNotHasKey($instanceClassName, $registeredSingletonInstances);
     }
@@ -4138,7 +4138,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::resetSingletonInstances(
-            array($instanceClassName => $instance)
+            [$instanceClassName => $instance]
         );
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
         $this->assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
@@ -4166,7 +4166,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1288967686);
 
         $instance = $this->getMockBuilder('foo')
-            ->setMethods(array('bar'))
+            ->setMethods(['bar'])
             ->getMock();
         $singletonClassName = get_class($this->createMock('foo'));
         GeneralUtility::addInstance($singletonClassName, $instance);
@@ -4264,11 +4264,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // build the dummy package "foo" for use in ExtensionManagementUtility::extPath('foo');
         $package = $this->getMockBuilder(Package::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('getPackagePath'))
+            ->setMethods(['getPackagePath'])
             ->getMock();
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('isPackageActive', 'getPackage'))
+            ->setMethods(['isPackageActive', 'getPackage'])
             ->getMock();
         $package->expects($this->any())
             ->method('getPackagePath')
@@ -4294,14 +4294,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validPathStrInvalidCharactersDataProvider()
     {
-        return array(
-            'double slash in path' => array('path//path'),
-            'backslash in path' => array('path\\path'),
-            'directory up in path' => array('path/../path'),
-            'directory up at the beginning' => array('../path'),
-            'NUL character in path' => array('path' . chr(0) . 'path'),
-            'BS character in path' => array('path' . chr(8) . 'path')
-        );
+        return [
+            'double slash in path' => ['path//path'],
+            'backslash in path' => ['path\\path'],
+            'directory up in path' => ['path/../path'],
+            'directory up at the beginning' => ['../path'],
+            'NUL character in path' => ['path' . chr(0) . 'path'],
+            'BS character in path' => ['path' . chr(8) . 'path']
+        ];
     }
 
     /**
@@ -4331,17 +4331,17 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function deniedFilesDataProvider()
     {
-        return array(
-            'Nul character in file' => array('image' . chr(0) . '.gif'),
-            'Nul character in file with .php' => array('image.php' . chr(0) . '.gif'),
-            'Regular .php file' => array('file.php'),
-            'Regular .php5 file' => array('file.php5'),
-            'Regular .php3 file' => array('file.php3'),
-            'Regular .phpsh file' => array('file.phpsh'),
-            'Regular .phtml file' => array('file.phtml'),
-            'PHP file in the middle' => array('file.php.txt'),
-            '.htaccess file' => array('.htaccess'),
-        );
+        return [
+            'Nul character in file' => ['image' . chr(0) . '.gif'],
+            'Nul character in file with .php' => ['image.php' . chr(0) . '.gif'],
+            'Regular .php file' => ['file.php'],
+            'Regular .php5 file' => ['file.php5'],
+            'Regular .php3 file' => ['file.php3'],
+            'Regular .phpsh file' => ['file.phpsh'],
+            'Regular .phtml file' => ['file.phtml'],
+            'PHP file in the middle' => ['file.php.txt'],
+            '.htaccess file' => ['.htaccess'],
+        ];
     }
 
     /**
@@ -4464,7 +4464,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionWillReturnFalseForInvalidParameters($functionName)
     {
-        $inputData = array('foo' => 'bar');
+        $inputData = ['foo' => 'bar'];
         // omit the debug() output
         ob_start();
         $result = GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_', 1);
@@ -4483,7 +4483,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedException);
 
-        $inputData = array('foo' => 'bar');
+        $inputData = ['foo' => 'bar'];
         GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_', 2);
     }
 
@@ -4495,13 +4495,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionInvalidParameterDataprovider()
     {
-        return array(
+        return [
             'Function is not prefixed' => ['t3lib_divTest->calledUserFunction', 1294585866],
             'Class doesn\'t exists' => ['t3lib_divTest21345->user_calledUserFunction', 1294585866],
             'No method name' => ['t3lib_divTest', 1294585867],
             'No class name' => ['->user_calledUserFunction', 1294585866],
             'No function name' => ['', 1294585867]
-        );
+        ];
     }
 
     /**
@@ -4513,7 +4513,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionCanCallFunction()
     {
-        $inputData = array('foo' => 'bar');
+        $inputData = ['foo' => 'bar'];
         $result = GeneralUtility::callUserFunction(function () { return 'Worked fine'; }, $inputData, $this, '');
         $this->assertEquals('Worked fine', $result);
     }
@@ -4523,7 +4523,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionCanCallMethod()
     {
-        $inputData = array('foo' => 'bar');
+        $inputData = ['foo' => 'bar'];
         $result = GeneralUtility::callUserFunction(GeneralUtilityTest::class . '->user_calledUserFunction', $inputData, $this);
         $this->assertEquals('Worked fine', $result);
     }
@@ -4541,7 +4541,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionCanPrefixFuncNameWithFilePath()
     {
-        $inputData = array('foo' => 'bar');
+        $inputData = ['foo' => 'bar'];
         $result = GeneralUtility::callUserFunction('typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php:TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\GeneralUtilityTest->user_calledUserFunction', $inputData, $this);
         $this->assertEquals('Worked fine', $result);
     }
@@ -4551,7 +4551,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionCanPersistObjectsBetweenCalls()
     {
-        $inputData = array('called' => array());
+        $inputData = ['called' => []];
         GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
         GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
         $this->assertEquals(1, sizeof($inputData['called']));
@@ -4574,7 +4574,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callUserFunctionAcceptsClosures()
     {
-        $inputData = array('foo' => 'bar');
+        $inputData = ['foo' => 'bar'];
         $closure = function ($parameters, $reference) use ($inputData) {
             $reference->assertEquals($inputData, $parameters, 'Passed data doesn\'t match expected output');
             return 'Worked fine';
@@ -4589,7 +4589,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_');
         mkdir($directory);
-        $filesAndDirectories = GeneralUtility::getAllFilesAndFoldersInPath(array(), $directory, '', true);
+        $filesAndDirectories = GeneralUtility::getAllFilesAndFoldersInPath([], $directory, '', true);
         $check = true;
         foreach ($filesAndDirectories as $md5 => $path) {
             if (!preg_match('/^[a-f0-9]{32}$/', $md5)) {

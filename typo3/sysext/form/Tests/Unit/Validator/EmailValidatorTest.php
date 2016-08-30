@@ -29,12 +29,12 @@ class EmailValidatorTest extends AbstractValidatorTest
      */
     public function validEmailProvider()
     {
-        return array(
-            'a@b.de' => array('a@b.de'),
-            'somebody@mymac.local' => array('somebody@mymac.local'),
-            'empty value' => array(''),
-            'unexpected value' => array(array()),
-        );
+        return [
+            'a@b.de' => ['a@b.de'],
+            'somebody@mymac.local' => ['somebody@mymac.local'],
+            'empty value' => [''],
+            'unexpected value' => [[]],
+        ];
     }
 
     /**
@@ -42,11 +42,11 @@ class EmailValidatorTest extends AbstractValidatorTest
      */
     public function invalidEmailProvider()
     {
-        return array(
-            'myemail@' => array('myemail@'),
-            'myemail' => array('myemail'),
-            'somebody@localhost' => array('somebody@localhost'),
-        );
+        return [
+            'myemail@' => ['myemail@'],
+            'myemail' => ['myemail'],
+            'somebody@localhost' => ['somebody@localhost'],
+        ];
     }
 
     /**
@@ -55,7 +55,7 @@ class EmailValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -69,7 +69,7 @@ class EmailValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

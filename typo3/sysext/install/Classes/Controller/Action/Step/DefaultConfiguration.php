@@ -41,10 +41,10 @@ class DefaultConfiguration extends AbstractStepAction
         switch ($this->postValues['values']['sitesetup']) {
             // Update the admin backend user to show the distribution management on login
             case 'loaddistribution':
-                $adminUserFirstLogin = array(
+                $adminUserFirstLogin = [
                     'startModuleOnFirstLogin' => 'tools_ExtensionmanagerExtensionmanager->tx_extensionmanager_tools_extensionmanagerextensionmanager%5Baction%5D=distributions&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bcontroller%5D=List',
                     'ucSetByInstallTool' => '1',
-                );
+                ];
                 $connectionPool->getConnectionForTable('be_users')->update(
                     'be_users',
                     ['uc' => serialize($adminUserFirstLogin)],

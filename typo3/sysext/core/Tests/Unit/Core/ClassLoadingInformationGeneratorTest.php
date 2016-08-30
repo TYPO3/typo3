@@ -90,7 +90,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ]
             ],
         ];
-        $packageMock = $this->createPackageMock(array());
+        $packageMock = $this->createPackageMock([]);
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);

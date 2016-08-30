@@ -120,7 +120,7 @@ class SplitStorage extends AbstractStorage
             );
             $keyId = $connection->lastInsertId();
             // Store another part in session
-            $_SESSION['tx_rsaauth_key'] = array($keyId, $keyPart1);
+            $_SESSION['tx_rsaauth_key'] = [$keyId, $keyPart1];
         }
 
         $this->removeExpiredKeys();

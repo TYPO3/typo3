@@ -29,12 +29,12 @@ class AllConfiguration extends Action\AbstractAction
      *
      * @var array
      */
-    protected $phpErrorCodesSettings = array(
+    protected $phpErrorCodesSettings = [
         'errorHandlerErrors',
         'exceptionalErrors',
         'syslogErrorReporting',
         'belogErrorReporting',
-    );
+    ];
 
     /**
      * Executes the tool
@@ -61,7 +61,7 @@ class AllConfiguration extends Action\AbstractAction
      */
     protected function getSpeakingSectionNames()
     {
-        return array(
+        return [
             'BE' => 'Backend',
             'DB' => 'Database',
             'EXT' => 'Extension Installation',
@@ -70,7 +70,7 @@ class AllConfiguration extends Action\AbstractAction
             'HTTP' => 'Connection',
             'MAIL' => 'Mail',
             'SYS' => 'System'
-        );
+        ];
     }
 
     /**
@@ -80,18 +80,18 @@ class AllConfiguration extends Action\AbstractAction
      */
     protected function setUpConfigurationData()
     {
-        $data = array();
+        $data = [];
         $typo3ConfVars = array_keys($GLOBALS['TYPO3_CONF_VARS']);
         sort($typo3ConfVars);
         $commentArray = $this->getDefaultConfigArrayComments();
         foreach ($typo3ConfVars as $sectionName) {
-            $data[$sectionName] = array();
+            $data[$sectionName] = [];
 
             foreach ($GLOBALS['TYPO3_CONF_VARS'][$sectionName] as $key => $value) {
                 if (isset($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key])) {
                     // Don't allow editing stuff which is added by extensions
                     // Make sure we fix potentially duplicated entries from older setups
-                    $potentialValue = str_replace(array('\' . LF . \'', '\' . LF . \''), array(LF, LF), $value);
+                    $potentialValue = str_replace(['\' . LF . \'', '\' . LF . \''], [LF, LF], $value);
                     while (preg_match('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', $potentialValue)) {
                         $potentialValue = preg_replace('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', '', $potentialValue);
                     }
@@ -103,12 +103,12 @@ class AllConfiguration extends Action\AbstractAction
                 $doNotRender = (bool)preg_match('/^(<.*?>)?string \\(exclude\\)/i', $description);
 
                 if (!is_array($value) && !$doNotRender && (!preg_match('/[' . LF . CR . ']/', $value) || $isTextarea)) {
-                    $itemData = array();
+                    $itemData = [];
                     $itemData['key'] = $key;
                     $itemData['description'] = $description;
                     if ($isTextarea) {
                         $itemData['type'] = 'textarea';
-                        $itemData['value'] = str_replace(array('\' . LF . \'', '\' . LF . \''), array(LF, LF), $value);
+                        $itemData['value'] = str_replace(['\' . LF . \'', '\' . LF . \''], [LF, LF], $value);
                     } elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
                         $itemData['type'] = 'checkbox';
                         $itemData['value'] = $value ? '1' : '0';
@@ -140,9 +140,9 @@ class AllConfiguration extends Action\AbstractAction
      */
     protected function updateLocalConfigurationValues()
     {
-        $statusObjects = array();
+        $statusObjects = [];
         if (isset($this->postValues['values']) && is_array($this->postValues['values'])) {
-            $configurationPathValuePairs = array();
+            $configurationPathValuePairs = [];
             $commentArray = $this->getDefaultConfigArrayComments();
             $formValues = $this->postValues['values'];
             foreach ($formValues as $section => $valueArray) {
@@ -209,7 +209,7 @@ class AllConfiguration extends Action\AbstractAction
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $string = file_get_contents($configurationManager->getDefaultConfigurationFileLocation());
 
-        $commentArray = array();
+        $commentArray = [];
         $lines = explode(LF, $string);
         $in = 0;
         $mainKey = '';

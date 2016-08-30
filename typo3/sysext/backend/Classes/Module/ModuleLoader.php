@@ -36,21 +36,21 @@ class ModuleLoader
      *
      * @var array
      */
-    public $modules = array();
+    public $modules = [];
 
     /**
      * This array will hold the elements that should go into the select-list of modules for groups...
      *
      * @var array
      */
-    public $modListGroup = array();
+    public $modListGroup = [];
 
     /**
      * This array will hold the elements that should go into the select-list of modules for users...
      *
      * @var array
      */
-    public $modListUser = array();
+    public $modListUser = [];
 
     /**
      * The backend user for use internally
@@ -71,7 +71,7 @@ class ModuleLoader
      *
      * @var array
      */
-    protected $navigationComponents = array();
+    protected $navigationComponents = [];
 
     /**
      * Labels for the modules
@@ -188,7 +188,7 @@ class ModuleLoader
                 $setupInformation['configuration']['navigationFrameModule'],
                 !empty($setupInformation['configuration']['navigationFrameModuleParameters'])
                     ? $setupInformation['configuration']['navigationFrameModuleParameters']
-                    : array()
+                    : []
             );
         }
 
@@ -217,10 +217,10 @@ class ModuleLoader
      */
     protected function getModuleSetupInformation($moduleName)
     {
-        $moduleSetupInformation = array(
-            'configuration' => array(),
-            'labels' => array()
-        );
+        $moduleSetupInformation = [
+            'configuration' => [],
+            'labels' => []
+        ];
 
         $moduleConfiguration = !empty($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])
             ? $GLOBALS['TBE_MODULES']['_configuration'][$moduleName]
@@ -314,7 +314,7 @@ class ModuleLoader
      */
     public function parseModulesArray($arr)
     {
-        $theMods = array();
+        $theMods = [];
         if (is_array($arr)) {
             foreach ($arr as $mod => $subs) {
                 // Clean module name to alphanum
@@ -408,7 +408,7 @@ class ModuleLoader
      */
     public function getLabelsForModule($moduleName)
     {
-        return isset($this->moduleLabels[$moduleName]) ? $this->moduleLabels[$moduleName] : array();
+        return isset($this->moduleLabels[$moduleName]) ? $this->moduleLabels[$moduleName] : [];
     }
 
     /**

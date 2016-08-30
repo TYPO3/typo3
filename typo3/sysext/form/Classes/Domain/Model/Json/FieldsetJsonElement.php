@@ -31,25 +31,25 @@ class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJso
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(),
-        'legend' => array(
+    public $configuration = [
+        'attributes' => [],
+        'legend' => [
             'value' => ''
-        )
-    );
+        ]
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'class',
         'dir',
         'id',
         'lang',
         'style'
-    );
+    ];
 
     /**
      * Set all the parameters for this object

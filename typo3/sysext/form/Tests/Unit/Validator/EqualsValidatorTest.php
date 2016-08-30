@@ -29,10 +29,10 @@ class EqualsValidatorTest extends AbstractValidatorTest
      */
     public function validPairProvider()
     {
-        return array(
-            'something === something' => array(array('something', 'something')),
-            '4 === 4'                 => array(array(4, 4))
-        );
+        return [
+            'something === something' => [['something', 'something']],
+            '4 === 4'                 => [[4, 4]]
+        ];
     }
 
     /**
@@ -40,10 +40,10 @@ class EqualsValidatorTest extends AbstractValidatorTest
      */
     public function invalidPairProvider()
     {
-        return array(
-            'somethingElse !== something' => array(array('somethingElse', 'something')),
-            '4 !== 3'                     => array(array(4, 3))
-        );
+        return [
+            'somethingElse !== something' => [['somethingElse', 'something']],
+            '4 !== 3'                     => [[4, 3]]
+        ];
     }
 
     /**
@@ -52,10 +52,10 @@ class EqualsValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['field'] = uniqid('field');
         $subject = $this->createSubject($options);
-        $subject->setRawArgument(array($options['field'] => $input[0]));
+        $subject->setRawArgument([$options['field'] => $input[0]]);
 
         $this->assertEmpty(
             $subject->validate($input[1])->getErrors()
@@ -68,10 +68,10 @@ class EqualsValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['field'] = uniqid('field');
         $subject = $this->createSubject($options);
-        $subject->setRawArgument(array($options['field'] => $input[0]));
+        $subject->setRawArgument([$options['field'] => $input[0]]);
 
         $this->assertNotEmpty(
             $subject->validate($input[1])->getErrors()

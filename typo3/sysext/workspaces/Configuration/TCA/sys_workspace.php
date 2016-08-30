@@ -1,38 +1,38 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace',
         'adminOnly' => true,
         'rootLevel' => 1,
         'delete' => 'deleted',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_workspace'
-        ),
+        ],
         'versioningWS_alwaysAllowLiveEdit' => true
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 30,
                 'eval' => 'required,trim,unique'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 30
-            )
-        ),
-        'adminusers' => array(
+            ]
+        ],
+        'adminusers' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.adminusers',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
@@ -41,16 +41,16 @@ return array(
                 'maxitems' => 10,
                 'autoSizeMax' => 10,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'members' => array(
+                    ]
+                ]
+            ]
+        ],
+        'members' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.members',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
@@ -59,16 +59,16 @@ return array(
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'db_mountpoints' => array(
+                    ]
+                ]
+            ]
+        ],
+        'db_mountpoints' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:db_mountpoints',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
@@ -76,16 +76,16 @@ return array(
                 'maxitems' => 25,
                 'autoSizeMax' => 10,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'file_mountpoints' => array(
+                    ]
+                ]
+            ]
+        ],
+        'file_mountpoints' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'foreign_table' => 'sys_filemounts',
@@ -93,95 +93,95 @@ return array(
                 'size' => 3,
                 'maxitems' => 25,
                 'autoSizeMax' => 10,
-            )
-        ),
-        'publish_time' => array(
+            ]
+        ],
+        'publish_time' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.publish_time',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 8,
                 'eval' => 'datetime',
                 'default' => 0,
-            )
-        ),
-        'unpublish_time' => array(
+            ]
+        ],
+        'unpublish_time' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.unpublish_time',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 8,
                 'eval' => 'datetime',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
-                )
-            ),
+                ]
+            ],
             'displayCond' => 'FALSE'
-        ),
-        'freeze' => array(
+        ],
+        'freeze' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.freeze',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'live_edit' => array(
+            ]
+        ],
+        'live_edit' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.live_edit',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'swap_modes' => array(
+            ]
+        ],
+        'swap_modes' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.swap_modes',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                    array('Swap-Into-Workspace on Auto-publish', 1),
-                    array('Disable Swap-Into-Workspace', 2)
-                )
-            )
-        ),
-        'publish_access' => array(
+                'items' => [
+                    ['', 0],
+                    ['Swap-Into-Workspace on Auto-publish', 1],
+                    ['Disable Swap-Into-Workspace', 2]
+                ]
+            ]
+        ],
+        'publish_access' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.publish_access',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('Publish only content in publish stage', 0),
-                    array('Only workspace owner can publish', 0)
-                )
-            )
-        ),
-        'stagechg_notification' => array(
+                'items' => [
+                    ['Publish only content in publish stage', 0],
+                    ['Only workspace owner can publish', 0]
+                ]
+            ]
+        ],
+        'stagechg_notification' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.stagechg_notification',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                    array('Notify users on next stage only', 1),
-                    array('Notify all users on any change', 10)
-                )
-            )
-        ),
-        'custom_stages' => array(
+                'items' => [
+                    ['', 0],
+                    ['Notify users on next stage only', 1],
+                    ['Notify all users on any change', 10]
+                ]
+            ]
+        ],
+        'custom_stages' => [
             'exclude' => true,
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.custom_stages',
-            'config' => array(
+            'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'sys_workspace_stage',
                 'appearance' => 'useSortable,expandSingle',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'minitems' => 0
-            ),
+            ],
             'default' => 0
-        ),
-        'edit_notification_defaults' => array(
+        ],
+        'edit_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'displayCond' => 'FIELD:edit_allow_notificaton_settings:BIT:1',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
@@ -190,42 +190,42 @@ return array(
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'edit_allow_notificaton_settings' => array(
+                    ]
+                ]
+            ]
+        ],
+        'edit_allow_notificaton_settings' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''],
+                ],
                 'default' => 3,
                 'cols' => 2,
-            )
-        ),
-        'edit_notification_preselection' => array(
+            ]
+        ],
+        'edit_notification_preselection' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''],
+                ],
                 'default' => 2,
                 'cols' => 3,
-            )
-        ),
-        'publish_notification_defaults' => array(
+            ]
+        ],
+        'publish_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'displayCond' => 'FIELD:publish_allow_notificaton_settings:BIT:1',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
@@ -234,42 +234,42 @@ return array(
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'publish_allow_notificaton_settings' => array(
+                    ]
+                ]
+            ]
+        ],
+        'publish_allow_notificaton_settings' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''],
+                ],
                 'default' => 3,
                 'cols' => 2,
-            )
-        ),
-        'publish_notification_preselection' => array(
+            ]
+        ],
+        'publish_notification_preselection' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''],
+                ],
                 'default' => 1,
                 'cols' => 3,
-            )
-        ),
-        'execute_notification_defaults' => array(
+            ]
+        ],
+        'execute_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'displayCond' => 'FIELD:execute_allow_notificaton_settings:BIT:1',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
@@ -278,52 +278,52 @@ return array(
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'execute_allow_notificaton_settings' => array(
+                    ]
+                ]
+            ]
+        ],
+        'execute_allow_notificaton_settings' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''],
+                ],
                 'default' => 3,
                 'cols' => 2,
-            )
-        ),
-        'execute_notification_preselection' => array(
+            ]
+        ],
+        'execute_notification_preselection' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''],
+                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''],
+                ],
                 'default' => 3,
                 'cols' => 3,
-            )
-        )
-    ),
-    'palettes' => array(
-        'stage.edit' => array(
+            ]
+        ]
+    ],
+    'palettes' => [
+        'stage.edit' => [
             'showitem' => 'edit_allow_notificaton_settings, edit_notification_preselection,',
-        ),
-        'stage.publish' => array(
+        ],
+        'stage.publish' => [
             'showitem' => 'publish_allow_notificaton_settings, publish_notification_preselection,',
-        ),
-        'stage.execute' => array(
+        ],
+        'stage.execute' => [
             'showitem' => 'execute_allow_notificaton_settings, execute_notification_preselection,',
-        )
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'title,description,
+        ]
+    ],
+    'types' => [
+        '0' => ['showitem' => 'title,description,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.users,adminusers,members,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings, stagechg_notification,
 				--palette--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.edit;stage.edit, edit_notification_defaults,
@@ -332,6 +332,6 @@ return array(
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_filemounts.tabs.staging,custom_stages,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.other,freeze,live_edit,swap_modes,publish_access')
-    )
-);
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.other,freeze,live_edit,swap_modes,publish_access']
+    ]
+];

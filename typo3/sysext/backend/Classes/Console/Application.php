@@ -36,9 +36,9 @@ class Application implements ApplicationInterface
      * All available request handlers that can deal with a CLI Request
      * @var array
      */
-    protected $availableRequestHandlers = array(
+    protected $availableRequestHandlers = [
         \TYPO3\CMS\Backend\Console\CliRequestHandler::class
-    );
+    ];
 
     /**
      * Constructor setting up legacy constants and register available Request Handlers
@@ -111,7 +111,7 @@ class Application implements ApplicationInterface
     protected function initializeCgiCompatibilityLayerOrDie()
     {
         // Sanity check: Ensure we're running in a shell or cronjob (and NOT via HTTP)
-        $checkEnvVars = array('HTTP_USER_AGENT', 'HTTP_HOST', 'SERVER_NAME', 'REMOTE_ADDR', 'REMOTE_PORT', 'SERVER_PROTOCOL');
+        $checkEnvVars = ['HTTP_USER_AGENT', 'HTTP_HOST', 'SERVER_NAME', 'REMOTE_ADDR', 'REMOTE_PORT', 'SERVER_PROTOCOL'];
         foreach ($checkEnvVars as $var) {
             if (array_key_exists($var, $_SERVER)) {
                 echo 'SECURITY CHECK FAILED! This script cannot be used within your browser!' . LF;

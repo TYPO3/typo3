@@ -86,8 +86,8 @@ class SelectSingleElement extends AbstractFormElement
         // Prepare groups
         $selectItemCounter = 0;
         $selectItemGroupCount = 0;
-        $selectItemGroups = array();
-        $selectIcons = array();
+        $selectItemGroups = [];
+        $selectIcons = [];
         $selectedValue = '';
         $hasIcons = false;
 
@@ -101,9 +101,9 @@ class SelectSingleElement extends AbstractFormElement
                 if ($selectItemCounter !== 0) {
                     $selectItemGroupCount++;
                 }
-                $selectItemGroups[$selectItemGroupCount]['header'] = array(
+                $selectItemGroups[$selectItemGroupCount]['header'] = [
                     'title' => $item[0],
-                );
+                ];
             } else {
                 // IS ITEM
                 $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $title, $title) : '';
@@ -113,21 +113,21 @@ class SelectSingleElement extends AbstractFormElement
                     $selectedIcon = $icon;
                 }
 
-                $selectItemGroups[$selectItemGroupCount]['items'][] = array(
+                $selectItemGroups[$selectItemGroupCount]['items'][] = [
                     'title' => $item[0],
                     'value' => $item[1],
                     'icon' => $icon,
                     'selected' => $selected,
                     'index' => $selectItemCounter
-                );
+                ];
 
                 // ICON
                 if ($icon) {
-                    $selectIcons[] = array(
+                    $selectIcons[] = [
                         'title' => $item[0],
                         'icon' => $icon,
                         'index' => $selectItemCounter,
-                    );
+                    ];
                 }
 
                 $selectItemCounter++;
@@ -234,7 +234,7 @@ class SelectSingleElement extends AbstractFormElement
         // Wizards:
         if (!$disabled) {
             $html = $this->renderWizards(
-                array($html),
+                [$html],
                 $config['wizards'],
                 $table,
                 $row,

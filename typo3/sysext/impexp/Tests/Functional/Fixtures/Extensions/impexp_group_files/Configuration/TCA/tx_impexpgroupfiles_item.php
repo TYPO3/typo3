@@ -1,8 +1,8 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title'    => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xlf:tx_impexpgroupfiles_item',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -16,87 +16,87 @@ return array(
         'origUid' => 't3_origuid',
 
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
-        ),
+        ],
         'searchFields' => 'price,currency,symbol,',
         'iconfile' => 'EXT:impexp_group_files/Resources/Public/Icons/icon_tx_impexpgroupfiles_item.gif'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, images, image_references, flexform',
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'hidden, title, images, image_references, flexform, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => ''),
-    ),
-    'columns' => array(
+    ],
+    'types' => [
+        '1' => ['showitem' => 'hidden, title, images, image_references, flexform, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => ''],
+    ],
+    'columns' => [
 
-        't3ver_label' => array(
+        't3ver_label' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            )
-        ),
+            ]
+        ],
 
-        'hidden' => array(
+        'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-            ),
-        ),
-        'starttime' => array(
+            ],
+        ],
+        'starttime' => [
             'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-                ),
-            ),
-        ),
-        'endtime' => array(
+                ],
+            ],
+        ],
+        'endtime' => [
             'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-                ),
-            ),
-        ),
-        'l18n_diffsource' => array(
-            'config' => array(
+                ],
+            ],
+        ],
+        'l18n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough',
                 'default' => ''
-            )
-        ),
-        'title' => array(
+            ]
+        ],
+        'title' => [
             'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
                 'eval' => 'required'
-            )
-        ),
-        'images' => array(
+            ]
+        ],
+        'images' => [
             'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_images',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
@@ -105,11 +105,11 @@ return array(
                 'size' => 5,
                 'maxitems' => 5,
                 'show_thumbs' => true,
-            ),
-        ),
-        'image_references' => array(
+            ],
+        ],
+        'image_references' => [
             'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_image_references',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'file_reference',
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
@@ -117,13 +117,13 @@ return array(
                 'size' => 5,
                 'maxitems' => 5,
                 'show_thumbs' => true,
-            ),
-        ),
-        'flexform' => array(
+            ],
+        ],
+        'flexform' => [
             'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_flexform',
-            'config' => array(
+            'config' => [
                 'type' => 'flex',
-                'ds' => array(
+                'ds' => [
                     'default' => '<T3DataStructure>
 							<sheets>
 								<sDEF>
@@ -191,9 +191,9 @@ return array(
 								</sDEF>
 							</sheets>
 						</T3DataStructure>'
-                ),
+                ],
                 'default' => ''
-            )
-        ),
-    ),
-);
+            ]
+        ],
+    ],
+];

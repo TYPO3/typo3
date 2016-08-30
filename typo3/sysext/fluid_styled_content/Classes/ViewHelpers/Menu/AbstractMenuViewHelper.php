@@ -41,7 +41,7 @@ abstract class AbstractMenuViewHelper extends AbstractViewHelper
      */
     protected function getPageConstraints($includeNotInMenu = false, $includeMenuSeparator = false)
     {
-        $constraints = array();
+        $constraints = [];
 
         $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' . PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
 
@@ -77,9 +77,9 @@ abstract class AbstractMenuViewHelper extends AbstractViewHelper
                 if ($entryLevel < 0) {
                     $entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
                 }
-                $pageUids = array($typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']);
+                $pageUids = [$typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']];
             } else {
-                $pageUids = array($typoScriptFrontendController->id);
+                $pageUids = [$typoScriptFrontendController->id];
             }
         }
 

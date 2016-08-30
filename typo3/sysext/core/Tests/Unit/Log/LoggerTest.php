@@ -92,7 +92,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $logger = new Logger($component);
         /** @var $processor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface|\PHPUnit_Framework_MockObject_MockObject */
         $processor = $this->getMockBuilder(NullProcessor::class)
-            ->setMethods(array('processLogRecord'))
+            ->setMethods(['processLogRecord'])
             ->getMock();
         $processor->expects($this->once())->method('processLogRecord')->will($this->returnValue(new LogRecord($component, $level, $message)));
         $logger->addProcessor($level, $processor);
@@ -109,7 +109,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $logger = new Logger('test.core.log');
         /** @var NullWriter|\PHPUnit_Framework_MockObject_MockObject $writer */
         $writer = $this->getMockBuilder(NullWriter::class)
-            ->setMethods(array('writeLog'))
+            ->setMethods(['writeLog'])
             ->getMock();
         $writer->expects($this->once())->method('writeLog');
         $logger->addWriter(LogLevel::DEBUG, $writer);
@@ -134,16 +134,16 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function loggerLogsRecordsThroughShorthandMethodDataProvider()
     {
-        return array(
-            array('emergency'),
-            array('alert'),
-            array('critical'),
-            array('error'),
-            array('warning'),
-            array('notice'),
-            array('info'),
-            array('debug')
-        );
+        return [
+            ['emergency'],
+            ['alert'],
+            ['critical'],
+            ['error'],
+            ['warning'],
+            ['notice'],
+            ['info'],
+            ['debug']
+        ];
     }
 
     /**
@@ -156,7 +156,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $logger = new Logger('test.core.log');
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::DEBUG, $writer);
-        call_user_func(array($logger, $shorthandMethod), 'test message');
+        call_user_func([$logger, $shorthandMethod], 'test message');
         $this->assertAttributeNotEmpty('records', $writer);
     }
 

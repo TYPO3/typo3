@@ -34,12 +34,12 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
         $request = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject $abstractWidgetController */
         $abstractWidgetController = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->assertTrue($abstractWidgetController->canProcessRequest($request));
@@ -58,7 +58,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
         $response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
         /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $abstractWidgetController */
-        $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', false);
+        $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, ['resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'], [], '', false);
         $mockUriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $objectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class)->will($this->returnValue($mockUriBuilder));
@@ -83,45 +83,45 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setViewConfigurationPerformsExpectedInitialization(array $parent, $widget, array $expected)
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn(array(
-            'view' => array(
-                'widget' => array(
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
+            'view' => [
+                'widget' => [
                     'foobarClassName' => $widget
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $parentRequest = $this->getMockBuilder(Request::class)
-            ->setMethods(array('getControllerExtensionKey'))
+            ->setMethods(['getControllerExtensionKey'])
             ->getMock();
         $parentRequest->expects($this->once())->method('getControllerExtensionKey')->willReturn(null);
         $controllerContext = $this->getMockBuilder(ControllerContext::class)
-            ->setMethods(array('getRequest'))
+            ->setMethods(['getRequest'])
             ->getMock();
         $controllerContext->expects($this->once())->method('getRequest')->willReturn($parentRequest);
         $templatePaths = $this->getMockBuilder(TemplatePaths::class)
-            ->setMethods(array('fillFromConfigurationArray', 'toArray'))
+            ->setMethods(['fillFromConfigurationArray', 'toArray'])
             ->getMock();
         $templatePaths->expects($this->once())->method('fillFromConfigurationArray')->with($expected);
         $templatePaths->expects($this->any())->method('toArray')->willReturn($parent);
         $widgetContext = $this->getMockBuilder(WidgetContext::class)
-            ->setMethods(array('getWidgetViewHelperClassName'))
+            ->setMethods(['getWidgetViewHelperClassName'])
             ->getMock();
         $widgetContext->expects($this->once())->method('getWidgetViewHelperClassName')->willReturn('foobarClassName');
         $request = $this->getMockBuilder(Request::class)
-            ->setMethods(array('getWidgetContext'))
+            ->setMethods(['getWidgetContext'])
             ->getMock();
         $request->expects($this->once())->method('getWidgetContext')->willReturn($widgetContext);
 
-        $view = $this->getAccessibleMock(TemplateView::class, array('getTemplatePaths', 'toArray'), array(), '', false);
+        $view = $this->getAccessibleMock(TemplateView::class, ['getTemplatePaths', 'toArray'], [], '', false);
         $view->expects($this->exactly(2))->method('getTemplatePaths')->willReturn($templatePaths);
 
-        $mock = $this->getAccessibleMock(AbstractWidgetController::class, array('dummy'));
+        $mock = $this->getAccessibleMock(AbstractWidgetController::class, ['dummy']);
         $mock->_set('configurationManager', $configurationManager);
         $mock->_set('controllerContext', $controllerContext);
         $mock->_set('request', $request);
         $method = new \ReflectionMethod(AbstractWidgetController::class, 'setViewConfiguration');
         $method->setAccessible(true);
-        $method->invokeArgs($mock, array($view));
+        $method->invokeArgs($mock, [$view]);
     }
 
     /**
@@ -129,46 +129,46 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetViewConfigurationTestValues()
     {
-        return array(
-            'Empty path sets cause empty widget paths' => array(
-                array(),
+        return [
+            'Empty path sets cause empty widget paths' => [
+                [],
                 null,
-                array(
-                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array(),
-                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array(),
-                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array()
-                )
-            ),
-            'Parent request paths are reused when not overridden' => array(
-                array(
-                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo'),
-                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar'),
-                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz')
-                ),
-                array(),
-                array(
-                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo'),
-                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar'),
-                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz')
-                )
-            ),
-            'Widget paths are added to parent paths' => array(
-                array(
-                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo1'),
-                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar1'),
-                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz1')
-                ),
-                array(
-                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo2'),
-                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar2'),
-                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz2')
-                ),
-                array(
-                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo1', 'foo2'),
-                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar1', 'bar2'),
-                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz1', 'baz2')
-                )
-            ),
-        );
+                [
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => [],
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => [],
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => []
+                ]
+            ],
+            'Parent request paths are reused when not overridden' => [
+                [
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => ['foo'],
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => ['bar'],
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => ['baz']
+                ],
+                [],
+                [
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => ['foo'],
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => ['bar'],
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => ['baz']
+                ]
+            ],
+            'Widget paths are added to parent paths' => [
+                [
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => ['foo1'],
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => ['bar1'],
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => ['baz1']
+                ],
+                [
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => ['foo2'],
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => ['bar2'],
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => ['baz2']
+                ],
+                [
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => ['foo1', 'foo2'],
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => ['bar1', 'bar2'],
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => ['baz1', 'baz2']
+                ]
+            ],
+        ];
     }
 }

@@ -30,7 +30,7 @@ class ErrorHandler implements ErrorHandlerInterface
      *
      * @var array
      */
-    protected $exceptionalErrors = array();
+    protected $exceptionalErrors = [];
 
     /**
      * Whether to write a flash message in case of an error
@@ -49,7 +49,7 @@ class ErrorHandler implements ErrorHandlerInterface
         $excludedErrors = E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR;
         // reduces error types to those a custom error handler can process
         $errorHandlerErrors = $errorHandlerErrors & ~$excludedErrors;
-        set_error_handler(array($this, 'handleError'), $errorHandlerErrors);
+        set_error_handler([$this, 'handleError'], $errorHandlerErrors);
     }
 
     /**
@@ -91,7 +91,7 @@ class ErrorHandler implements ErrorHandlerInterface
         if (error_reporting() === 0) {
             return true;
         }
-        $errorLevels = array(
+        $errorLevels = [
             E_WARNING => 'Warning',
             E_NOTICE => 'Notice',
             E_USER_ERROR => 'User Error',
@@ -100,7 +100,7 @@ class ErrorHandler implements ErrorHandlerInterface
             E_STRICT => 'Runtime Notice',
             E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
             E_DEPRECATED => 'Runtime Deprecation Notice'
-        );
+        ];
         $message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
         if ($errorLevel & $this->exceptionalErrors) {
             // handle error raised at early parse time
@@ -188,7 +188,7 @@ class ErrorHandler implements ErrorHandlerInterface
         if ($connection->isConnected()) {
             $userId = 0;
             $workspace = 0;
-            $data = array();
+            $data = [];
             $backendUser = $this->getBackendUser();
             if (is_object($backendUser)) {
                 if (isset($backendUser->user['uid'])) {

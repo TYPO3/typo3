@@ -38,7 +38,7 @@ class RootlineUtility
     /**
      * @var array
      */
-    protected $parsedMountPointParameters = array();
+    protected $parsedMountPointParameters = [];
 
     /**
      * @var int
@@ -63,14 +63,14 @@ class RootlineUtility
     /**
      * @var array
      */
-    protected static $localCache = array();
+    protected static $localCache = [];
 
     /**
      * Fields to fetch when populating rootline data
      *
      * @var array
      */
-    protected static $rootlineFields = array(
+    protected static $rootlineFields = [
         'pid',
         'uid',
         't3ver_oid',
@@ -94,7 +94,7 @@ class RootlineUtility
         'mount_pid_ol',
         'fe_login_mode',
         'backend_layout_next_level'
-    );
+    ];
 
     /**
      * Rootline Context
@@ -111,7 +111,7 @@ class RootlineUtility
     /**
      * @var array
      */
-    protected static $pageRecordCache = array();
+    protected static $pageRecordCache = [];
 
     /**
      * @param int $uid
@@ -171,8 +171,8 @@ class RootlineUtility
      */
     public static function purgeCaches()
     {
-        self::$localCache = array();
-        self::$pageRecordCache = array();
+        self::$localCache = [];
+        self::$pageRecordCache = [];
     }
 
     /**
@@ -188,13 +188,13 @@ class RootlineUtility
             $mountPointParameter = str_replace(',', '__', $mountPointParameter);
         }
 
-        return implode('_', array(
+        return implode('_', [
             $otherUid !== null ? (int)$otherUid : $this->pageUid,
             $mountPointParameter,
             $this->languageUid,
             $this->workspaceUid,
             $this->versionPreview ? 1 : 0
-        ));
+        ]);
     }
 
     /**
@@ -300,7 +300,7 @@ class RootlineUtility
                     );
                     $relatedUids = isset($loadDBGroup->tableArray[$configuration['foreign_table']])
                         ? $loadDBGroup->tableArray[$configuration['foreign_table']]
-                        : array();
+                        : [];
                 } else {
                     $columnIsOverlaid = in_array($column, $pageOverlayFields, true);
                     $table = $configuration['foreign_table'];
@@ -358,10 +358,10 @@ class RootlineUtility
     protected function columnHasRelationToResolve(array $configuration)
     {
         $configuration = $configuration['config'];
-        if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], array('select', 'inline', 'group'))) {
+        if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'group'])) {
             return true;
         }
-        if (!empty($configuration['foreign_field']) && !empty($configuration['type']) && in_array($configuration['type'], array('select', 'inline'))) {
+        if (!empty($configuration['foreign_field']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline'])) {
             return true;
         }
         return false;
@@ -386,7 +386,7 @@ class RootlineUtility
         } else {
             $parentUid = $page['pid'];
         }
-        $cacheTags = array('pageId_' . $page['uid']);
+        $cacheTags = ['pageId_' . $page['uid']];
         if ($parentUid > 0) {
             // Get rootline of (and including) parent page
             $mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
@@ -401,7 +401,7 @@ class RootlineUtility
                 }
             }
         } else {
-            $rootline = array();
+            $rootline = [];
         }
         array_push($rootline, $page);
         krsort($rootline);
@@ -436,11 +436,11 @@ class RootlineUtility
         // Current page replaces the original mount-page
         if ($mountPointPageData['mount_pid_ol']) {
             $mountedPageData['_MOUNT_OL'] = true;
-            $mountedPageData['_MOUNT_PAGE'] = array(
+            $mountedPageData['_MOUNT_PAGE'] = [
                 'uid' => $mountPointPageData['uid'],
                 'pid' => $mountPointPageData['pid'],
                 'title' => $mountPointPageData['title']
-            );
+            ];
         } else {
             // The mount-page is not replaced, the mount-page itself has to be used
             $mountedPageData = $mountPointPageData;

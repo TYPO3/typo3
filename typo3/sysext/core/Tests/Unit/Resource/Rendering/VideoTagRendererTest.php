@@ -94,7 +94,7 @@ class VideoTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertSame(
             '<video width="300" height="200" controls loop><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200', array('loop' => 1))
+            $VideoTagRenderer->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
 
@@ -111,7 +111,7 @@ class VideoTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertSame(
             '<video width="300" height="200" controls autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $VideoTagRenderer->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 
@@ -128,7 +128,7 @@ class VideoTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertSame(
             '<video width="300" height="200" autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200', array('controls' => 0, 'autoplay' => 1))
+            $VideoTagRenderer->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
         );
     }
 }

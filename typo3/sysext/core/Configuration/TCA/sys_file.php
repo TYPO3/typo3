@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file',
         'label' => 'name',
         'tstamp' => 'tstamp',
@@ -9,118 +9,118 @@ return array(
         'rootLevel' => true,
         'default_sortby' => 'ORDER BY name ASC',
         'typeicon_column' => 'type',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             '1' => 'mimetypes-text-text',
             '2' => 'mimetypes-media-image',
             '3' => 'mimetypes-media-audio',
             '4' => 'mimetypes-media-video',
             '5' => 'mimetypes-application',
             'default' => 'mimetypes-other-other'
-        ),
-        'security' => array(
+        ],
+        'security' => [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
-        ),
+        ],
         'searchFields' => 'name, type, mime_type, sha1'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'storage, name, type, mime_type, size, sha1, missing'
-    ),
-    'columns' => array(
-        'fileinfo' => array(
-            'config' => array(
+    ],
+    'columns' => [
+        'fileinfo' => [
+            'config' => [
                 'type' => 'user',
                 'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Hook\\FileInfoHook->renderFileInfo'
-            )
-        ),
-        'storage' => array(
+            ]
+        ],
+        'storage' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.storage',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0)
-                ),
+                'items' => [
+                    ['', 0]
+                ],
                 'foreign_table' => 'sys_file_storage',
                 'foreign_table_where' => 'ORDER BY sys_file_storage.name',
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1
-            )
-        ),
-        'identifier' => array(
+            ]
+        ],
+        'identifier' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.identifier',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'name' => array(
+            ]
+        ],
+        'name' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.name',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'required',
-            )
-        ),
-        'type' => array(
+            ]
+        ],
+        'type' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.type',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'size' => 1,
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.unknown', 0),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.text', 1),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.image', 2),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.audio', 3),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.video', 4),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.software', 5)
-                )
-            )
-        ),
-        'mime_type' => array(
+                'items' => [
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file.type.unknown', 0],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file.type.text', 1],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file.type.image', 2],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file.type.audio', 3],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file.type.video', 4],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file.type.software', 5]
+                ]
+            ]
+        ],
+        'mime_type' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.mime_type',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'sha1' => array(
+            ]
+        ],
+        'sha1' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.sha1',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 30,
-            )
-        ),
-        'size' => array(
+            ]
+        ],
+        'size' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.size',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 8,
                 'max' => 30,
                 'eval' => 'int',
                 'default' => 0
-            )
-        ),
-        'missing' => array(
+            ]
+        ],
+        'missing' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.missing',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'metadata' => array(
+            ]
+        ],
+        'metadata' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.metadata',
-            'config' => array(
+            'config' => [
                 'readOnly' => true,
                 'type' => 'inline',
                 'foreign_table' => 'sys_file_metadata',
@@ -128,11 +128,11 @@ return array(
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,
-            )
-        )
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'fileinfo, storage, missing')
-    ),
-    'palettes' => array()
-);
+            ]
+        ]
+    ],
+    'types' => [
+        '1' => ['showitem' => 'fileinfo, storage, missing']
+    ],
+    'palettes' => []
+];

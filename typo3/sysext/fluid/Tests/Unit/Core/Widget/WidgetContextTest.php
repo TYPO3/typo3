@@ -45,7 +45,7 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->widgetContext, $value);
         $method = 'get' . ucfirst($name);
-        $this->assertEquals($value, call_user_func_array(array($this->widgetContext, $method), array()));
+        $this->assertEquals($value, call_user_func_array([$this->widgetContext, $method], []));
     }
 
     /**
@@ -57,7 +57,7 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setterMethodSetsPropertyValue($name, $value)
     {
         $method = 'set' . ucfirst($name);
-        call_user_func_array(array($this->widgetContext, $method), array($value));
+        call_user_func_array([$this->widgetContext, $method], [$value]);
         $this->assertAttributeEquals($value, $name, $this->widgetContext);
     }
 
@@ -66,12 +66,12 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSetterGetterTestValues()
     {
-        return array(
-            array('parentPluginNamespace', 'foo-bar'),
-            array('parentExtensionName', 'baz'),
-            array('parentPluginName', 'baz-foo'),
-            array('widgetViewHelperClassName', 'bar-foo'),
-        );
+        return [
+            ['parentPluginNamespace', 'foo-bar'],
+            ['parentExtensionName', 'baz'],
+            ['parentPluginName', 'baz-foo'],
+            ['widgetViewHelperClassName', 'bar-foo'],
+        ];
     }
 
     /**
@@ -97,8 +97,8 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function widgetConfigurationCanBeReadAgain()
     {
-        $this->widgetContext->setWidgetConfiguration(array('key' => 'value'));
-        $this->assertEquals(array('key' => 'value'), $this->widgetContext->getWidgetConfiguration());
+        $this->widgetContext->setWidgetConfiguration(['key' => 'value']);
+        $this->assertEquals(['key' => 'value'], $this->widgetContext->getWidgetConfiguration());
     }
 
     /**
@@ -128,10 +128,10 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function sleepReturnsExpectedPropertyNames()
     {
         $this->assertEquals(
-            array(
+            [
                 'widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName',
                 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'
-            ),
+            ],
             $this->widgetContext->__sleep()
         );
     }

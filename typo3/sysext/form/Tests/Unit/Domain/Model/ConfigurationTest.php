@@ -40,7 +40,7 @@ class ConfigurationTest extends UnitTestCase
     {
         parent::setUp();
         $this->typoScriptRepositoryProphecy = $this->prophesize(TypoScriptRepository::class);
-        $this->subject = $this->getAccessibleMock(Configuration::class, array('__none'));
+        $this->subject = $this->getAccessibleMock(Configuration::class, ['__none']);
         $this->subject->_set('typoScriptRepository', $this->typoScriptRepositoryProphecy->reveal());
     }
 
@@ -78,59 +78,59 @@ class ConfigurationTest extends UnitTestCase
      */
     public function propertiesAreUpdatedFromTypoScriptDataProvider()
     {
-        return array(
-            '#1' => array(
-                array(
+        return [
+            '#1' => [
+                [
                     'prefix' => '',
                     'themeName' => '',
                     'disableContentElement' => false,
-                ),
+                ],
                 '',
-                array(
+                [
                     'prefix' => 'form',
                     'themeName' => 'Default',
                     'contentElementRendering' => true,
-                ),
-            ),
-            '#2' => array(
-                array(
+                ],
+            ],
+            '#2' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'disableContentElement' => true,
-                ),
+                ],
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#3' => array(
-                array(
+                ],
+            ],
+            '#3' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'disableContentElement' => true,
-                ),
+                ],
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#4' => array(
-                array(
+                ],
+            ],
+            '#4' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'disableContentElement' => true,
-                ),
+                ],
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'contentElementRendering' => false,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

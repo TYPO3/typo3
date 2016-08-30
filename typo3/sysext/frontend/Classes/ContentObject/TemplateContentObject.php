@@ -29,11 +29,11 @@ class TemplateContentObject extends AbstractContentObject
      * @return string Output
      * @see substituteMarkerArrayCached()
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
-        $subparts = array();
-        $marks = array();
-        $wraps = array();
+        $subparts = [];
+        $marks = [];
+        $wraps = [];
         $markerWrap = isset($conf['markerWrap.']) ? $this->cObj->stdWrap($conf['markerWrap'], $conf['markerWrap.']) : $conf['markerWrap'];
         if (!$markerWrap) {
             $markerWrap = '### | ###';
@@ -122,7 +122,7 @@ class TemplateContentObject extends AbstractContentObject
                     }
                 }
                 // Getting subparts
-                $subpartArray = array();
+                $subpartArray = [];
                 foreach ($subparts as $theKey => $theValue) {
                     // Set current with the content of the subpart...
                     $this->cObj->data[$this->cObj->currentValKey] = $GLOBALS['TSFE']->register['SUBPART_' . $theKey];
@@ -132,19 +132,19 @@ class TemplateContentObject extends AbstractContentObject
                 // Reset current to empty
                 $this->cObj->data[$this->cObj->currentValKey] = '';
                 // Getting marks
-                $markerArray = array();
+                $markerArray = [];
                 foreach ($marks as $theKey => $theValue) {
                     $markerArray[$PRE . $theKey . $POST] = $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'marks.' . $theKey);
                 }
                 // Getting wraps
-                $subpartWraps = array();
+                $subpartWraps = [];
                 foreach ($wraps as $theKey => $theValue) {
                     $subpartWraps[$PRE . $theKey . $POST] = explode('|', $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'wraps.' . $theKey));
                 }
                 // Substitution
                 $substMarksSeparately = isset($conf['substMarksSeparately.']) ? $this->cObj->stdWrap($conf['substMarksSeparately'], $conf['substMarksSeparately.']) : $conf['substMarksSeparately'];
                 if ($substMarksSeparately) {
-                    $content = $this->cObj->substituteMarkerArrayCached($content, array(), $subpartArray, $subpartWraps);
+                    $content = $this->cObj->substituteMarkerArrayCached($content, [], $subpartArray, $subpartWraps);
                     $content = $this->cObj->substituteMarkerArray($content, $markerArray);
                 } else {
                     $content = $this->cObj->substituteMarkerArrayCached($content, $markerArray, $subpartArray, $subpartWraps);

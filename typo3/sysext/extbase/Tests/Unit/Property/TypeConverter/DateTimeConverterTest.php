@@ -44,7 +44,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(array('string', 'integer', 'array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals(['string', 'integer', 'array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('DateTime', $this->converter->getSupportedTargetType(), 'Target type does not match');
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
@@ -108,7 +108,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
                 ->will($this->returnValue(null));
 
-        $date = $this->converter->convertFrom($expectedResult, 'DateTime', array(), $mockMappingConfiguration);
+        $date = $this->converter->convertFrom($expectedResult, 'DateTime', [], $mockMappingConfiguration);
         $actualResult = $date->format(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::DEFAULT_DATE_FORMAT);
         $this->assertSame($expectedResult, $actualResult);
     }
@@ -118,7 +118,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromEmptyStringReturnsNull()
     {
-        $date = $this->converter->convertFrom('', 'DateTime', array(), null);
+        $date = $this->converter->convertFrom('', 'DateTime', [], null);
         $this->assertNull($date);
     }
 
@@ -128,16 +128,16 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromStringDataProvider()
     {
-        return array(
-            array('1308174051', '', false),
-            array('13-12-1980', 'd.m.Y', false),
-            array('1308174051', 'Y-m-d', false),
-            array('12:13', 'H:i', true),
-            array('13.12.1980', 'd.m.Y', true),
-            array('2005-08-15T15:52:01+00:00', null, true),
-            array('2005-08-15T15:52:01+0000', \DateTime::ISO8601, true),
-            array('1308174051', 'U', true),
-        );
+        return [
+            ['1308174051', '', false],
+            ['13-12-1980', 'd.m.Y', false],
+            ['1308174051', 'Y-m-d', false],
+            ['12:13', 'H:i', true],
+            ['13.12.1980', 'd.m.Y', true],
+            ['2005-08-15T15:52:01+00:00', null, true],
+            ['2005-08-15T15:52:01+0000', \DateTime::ISO8601, true],
+            ['1308174051', 'U', true],
+        ];
     }
 
     /**
@@ -159,7 +159,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         } else {
             $mockMappingConfiguration = null;
         }
-        $date = $this->converter->convertFrom($source, 'DateTime', array(), $mockMappingConfiguration);
+        $date = $this->converter->convertFrom($source, 'DateTime', [], $mockMappingConfiguration);
         if ($isValid !== true) {
             $this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $date);
             return;
@@ -179,10 +179,10 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider()
     {
-        return array(
-            array('1308174051'),
-            array(1308174051),
-        );
+        return [
+            ['1308174051'],
+            [1308174051],
+        ];
     }
 
     /**
@@ -192,7 +192,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromIntegerOrDigitStringWithoutConfigurationTests($source)
     {
-        $date = $this->converter->convertFrom($source, 'DateTime', array(), null);
+        $date = $this->converter->convertFrom($source, 'DateTime', [], null);
         $this->assertInstanceOf('DateTime', $date);
         $this->assertSame(strval($source), $date->format('U'));
     }
@@ -206,7 +206,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests($source)
     {
-        $date = $this->converter->convertFrom(array('date' => $source), 'DateTime', array(), null);
+        $date = $this->converter->convertFrom(['date' => $source], 'DateTime', [], null);
         $this->assertInstanceOf('DateTime', $date);
         $this->assertSame(strval($source), $date->format('U'));
     }
@@ -216,7 +216,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function canConvertFromReturnsTrueIfSourceTypeIsAnArray()
     {
-        $this->assertTrue($this->converter->canConvertFrom(array(), 'DateTime'));
+        $this->assertTrue($this->converter->canConvertFrom([], 'DateTime'));
     }
 
     /**
@@ -224,7 +224,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromReturnsErrorIfGivenArrayCantBeConverted()
     {
-        $error = $this->converter->convertFrom(array('date' => '1980-12-13'), 'DateTime');
+        $error = $this->converter->convertFrom(['date' => '1980-12-13'], 'DateTime');
         $this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $error);
     }
 
@@ -235,7 +235,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1308003914);
-        $this->converter->convertFrom(array('hour' => '12', 'minute' => '30'), 'DateTime');
+        $this->converter->convertFrom(['hour' => '12', 'minute' => '30'], 'DateTime');
     }
 
     /**
@@ -244,7 +244,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertFromProperlyConvertsArrayWithDefaultDateFormat()
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
-        $date = $this->converter->convertFrom(array('date' => $expectedResult), 'DateTime');
+        $date = $this->converter->convertFrom(['date' => $expectedResult], 'DateTime');
         $actualResult = $date->format('Y-m-d\\TH:i:sP');
         $this->assertSame($expectedResult, $actualResult);
     }
@@ -255,14 +255,14 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidDatePartKeyValuesDataProvider()
     {
-        return array(
-            array(array('day' => '13.0', 'month' => '10', 'year' => '2010')),
-            array(array('day' => '13', 'month' => '10.0', 'year' => '2010')),
-            array(array('day' => '13', 'month' => '10', 'year' => '2010.0')),
-            array(array('day' => '-13', 'month' => '10', 'year' => '2010')),
-            array(array('day' => '13', 'month' => '-10', 'year' => '2010')),
-            array(array('day' => '13', 'month' => '10', 'year' => '-2010')),
-        );
+        return [
+            [['day' => '13.0', 'month' => '10', 'year' => '2010']],
+            [['day' => '13', 'month' => '10.0', 'year' => '2010']],
+            [['day' => '13', 'month' => '10', 'year' => '2010.0']],
+            [['day' => '-13', 'month' => '10', 'year' => '2010']],
+            [['day' => '13', 'month' => '-10', 'year' => '2010']],
+            [['day' => '13', 'month' => '10', 'year' => '-2010']],
+        ];
     }
 
     /**
@@ -281,7 +281,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromProperlyConvertsArrayWithDateAsArray()
     {
-        $source = array('day' => '13', 'month' => '10', 'year' => '2010');
+        $source = ['day' => '13', 'month' => '10', 'year' => '2010'];
         $mappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
         $mappingConfiguration->setTypeConverterOption(
                 \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class,
@@ -289,7 +289,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Y-m-d'
         );
 
-        $date = $this->converter->convertFrom($source, 'DateTime', array(), $mappingConfiguration);
+        $date = $this->converter->convertFrom($source, 'DateTime', [], $mappingConfiguration);
         $actualResult = $date->format('Y-m-d');
         $this->assertSame('2010-10-13', $actualResult);
     }
@@ -299,13 +299,13 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromAllowsToOverrideTheTime()
     {
-        $source = array(
+        $source = [
             'date' => '2011-06-16',
             'dateFormat' => 'Y-m-d',
             'hour' => '12',
             'minute' => '30',
             'second' => '59',
-        );
+        ];
         $date = $this->converter->convertFrom($source, 'DateTime');
         $this->assertSame('2011-06-16', $date->format('Y-m-d'));
         $this->assertSame('12', $date->format('H'));
@@ -318,11 +318,11 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromAllowsToOverrideTheTimezone()
     {
-        $source = array(
+        $source = [
             'date' => '2011-06-16 12:30:59',
             'dateFormat' => 'Y-m-d H:i:s',
             'timezone' => 'Atlantic/Reykjavik',
-        );
+        ];
         $date = $this->converter->convertFrom($source, 'DateTime');
         $this->assertSame('2011-06-16', $date->format('Y-m-d'));
         $this->assertSame('12', $date->format('H'));
@@ -338,11 +338,11 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1308240974);
-        $source = array(
+        $source = [
             'date' => '2011-06-16',
             'dateFormat' => 'Y-m-d',
             'timezone' => 'Invalid/Timezone',
-        );
+        ];
         $this->converter->convertFrom($source, 'DateTime');
     }
 
@@ -353,7 +353,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1308003914);
-        $this->converter->convertFrom(array(), 'DateTime', array(), null);
+        $this->converter->convertFrom([], 'DateTime', [], null);
     }
 
     /**
@@ -361,7 +361,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromArrayReturnsNullForEmptyDate()
     {
-        $this->assertNull($this->converter->convertFrom(array('date' => ''), 'DateTime', array(), null));
+        $this->assertNull($this->converter->convertFrom(['date' => ''], 'DateTime', [], null));
     }
 
     /**
@@ -370,18 +370,18 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromArrayDataProvider()
     {
-        return array(
-            array(array('date' => '2005-08-15T15:52:01+01:00'), true),
-            array(array('date' => '1308174051', 'dateFormat' => ''), false),
-            array(array('date' => '13-12-1980', 'dateFormat' => 'd.m.Y'), false),
-            array(array('date' => '1308174051', 'dateFormat' => 'Y-m-d'), false),
-            array(array('date' => '12:13', 'dateFormat' => 'H:i'), true),
-            array(array('date' => '13.12.1980', 'dateFormat' => 'd.m.Y'), true),
-            array(array('date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''), true),
-            array(array('date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601), true),
-            array(array('date' => '1308174051', 'dateFormat' => 'U'), true),
-            array(array('date' => 1308174051, 'dateFormat' => 'U'), true),
-        );
+        return [
+            [['date' => '2005-08-15T15:52:01+01:00'], true],
+            [['date' => '1308174051', 'dateFormat' => ''], false],
+            [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false],
+            [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false],
+            [['date' => '12:13', 'dateFormat' => 'H:i'], true],
+            [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true],
+            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true],
+            [['date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601], true],
+            [['date' => '1308174051', 'dateFormat' => 'U'], true],
+            [['date' => 1308174051, 'dateFormat' => 'U'], true],
+        ];
     }
 
     /**
@@ -403,7 +403,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         } else {
             $mockMappingConfiguration = null;
         }
-        $date = $this->converter->convertFrom($source, 'DateTime', array(), $mockMappingConfiguration);
+        $date = $this->converter->convertFrom($source, 'DateTime', [], $mockMappingConfiguration);
 
         if ($isValid !== true) {
             $this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $date);

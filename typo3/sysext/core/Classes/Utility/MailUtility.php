@@ -36,9 +36,9 @@ class MailUtility
         if (!$address) {
             return null;
         } elseif ($name) {
-            return array($address => $name);
+            return [$address => $name];
         } else {
-            return array($address);
+            return [$address];
         }
     }
 
@@ -126,7 +126,7 @@ class MailUtility
      */
     public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76)
     {
-        $lines = array();
+        $lines = [];
         $substrStart = 0;
         while (strlen($str) > $substrStart) {
             $substr = substr($str, $substrStart, $lineWidth);
@@ -182,7 +182,7 @@ class MailUtility
             $rawAddresses
         );
         $addresses = $addressParser->parseAddressList();
-        $addressList = array();
+        $addressList = [];
         foreach ($addresses as $address) {
             if ($address->mailbox === '') {
                 continue;

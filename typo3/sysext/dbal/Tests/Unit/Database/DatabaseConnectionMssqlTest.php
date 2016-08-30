@@ -31,30 +31,30 @@ class DatabaseConnectionMssqlTest extends AbstractTestCase
      */
     protected function setUp()
     {
-        $configuration = array(
-            'handlerCfg' => array(
-                '_DEFAULT' => array(
+        $configuration = [
+            'handlerCfg' => [
+                '_DEFAULT' => [
                     'type' => 'adodb',
-                    'config' => array(
+                    'config' => [
                         'driver' => 'mssql',
-                    ),
-                ),
-            ),
-            'mapping' => array(
-                'tx_templavoila_tmplobj' => array(
-                    'mapFieldNames' => array(
+                    ],
+                ],
+            ],
+            'mapping' => [
+                'tx_templavoila_tmplobj' => [
+                    'mapFieldNames' => [
                         'datastructure' => 'ds',
-                    ),
-                ),
-                'Members' => array(
-                    'mapFieldNames' => array(
+                    ],
+                ],
+                'Members' => [
+                    'mapFieldNames' => [
                         'pid' => '0',
                         'cruser_id' => '1',
                         'uid' => 'MemberID',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $this->subject = $this->prepareSubject('mssql', $configuration);
     }
 

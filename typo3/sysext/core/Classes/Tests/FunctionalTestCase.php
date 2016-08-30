@@ -336,7 +336,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * @param int $pageId
      * @param array $typoScriptFiles
      */
-    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array())
+    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = [])
     {
         $pageId = (int)$pageId;
 
@@ -397,17 +397,17 @@ abstract class FunctionalTestCase extends BaseTestCase
             $additionalParameter .= '&workspaceId=' . (int)$workspaceId;
         }
 
-        $arguments = array(
+        $arguments = [
             'documentRoot' => $this->instancePath,
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
-        );
+        ];
 
         $template = new \Text_Template(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/request.tpl');
         $template->setVar(
-            array(
+            [
                 'arguments' => var_export($arguments, true),
                 'originalRoot' => ORIGINAL_ROOT,
-            )
+            ]
         );
 
         $php = \PHPUnit_Util_PHP::factory();

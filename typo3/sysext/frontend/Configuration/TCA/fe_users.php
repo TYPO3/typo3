@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'username',
         'default_sortby' => 'ORDER BY username',
         'tstamp' => 'tstamp',
@@ -8,44 +8,44 @@ return array(
         'cruser_id' => 'cruser_id',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'disable',
             'starttime' => 'starttime',
             'endtime' => 'endtime'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'status-user-frontend'
-        ),
+        ],
         'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
         'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,first_name,middle_name,last_name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime,lastlogin'
-    ),
-    'columns' => array(
-        'username' => array(
+    ],
+    'columns' => [
+        'username' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.username',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 255,
                 'eval' => 'nospace,trim,lower,uniqueInPid,required',
                 'autocomplete' => false,
-            )
-        ),
-        'password' => array(
+            ]
+        ],
+        'password' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 10,
                 'max' => 40,
                 'eval' => 'trim,required,password',
                 'autocomplete' => false,
-            )
-        ),
-        'usergroup' => array(
+            ]
+        ],
+        'usergroup' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.usergroup',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
@@ -54,224 +54,224 @@ return array(
                 'size' => 6,
                 'minitems' => 1,
                 'maxitems' => 50
-            )
-        ),
-        'lockToDomain' => array(
+            ]
+        ],
+        'lockToDomain' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.lockToDomain',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 50,
                 'softref' => 'substitute'
-            )
-        ),
-        'name' => array(
+            ]
+        ],
+        'name' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 40,
                 'eval' => 'trim',
                 'max' => 160
-            )
-        ),
-        'first_name' => array(
+            ]
+        ],
+        'first_name' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.first_name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 25,
                 'eval' => 'trim',
                 'max' => 50
-            )
-        ),
-        'middle_name' => array(
+            ]
+        ],
+        'middle_name' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.middle_name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 25,
                 'eval' => 'trim',
                 'max' => 50
-            )
-        ),
-        'last_name' => array(
+            ]
+        ],
+        'last_name' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.last_name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 25,
                 'eval' => 'trim',
                 'max' => 50
-            )
-        ),
-        'address' => array(
+            ]
+        ],
+        'address' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.address',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 20,
                 'rows' => 3
-            )
-        ),
-        'telephone' => array(
+            ]
+        ],
+        'telephone' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.phone',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 20,
                 'max' => 30
-            )
-        ),
-        'fax' => array(
+            ]
+        ],
+        'fax' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fax',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 30
-            )
-        ),
-        'email' => array(
+            ]
+        ],
+        'email' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 255
-            )
-        ),
-        'title' => array(
+            ]
+        ],
+        'title' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title_person',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => '40'
-            )
-        ),
-        'zip' => array(
+            ]
+        ],
+        'zip' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.zip',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 10,
                 'max' => '10'
-            )
-        ),
-        'city' => array(
+            ]
+        ],
+        'city' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.city',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 50
-            )
-        ),
-        'country' => array(
+            ]
+        ],
+        'country' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.country',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 40
-            )
-        ),
-        'www' => array(
+            ]
+        ],
+        'www' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.www',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 20,
                 'max' => 80
-            )
-        ),
-        'company' => array(
+            ]
+        ],
+        'company' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.company',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 20,
                 'max' => 80
-            )
-        ),
-        'image' => array(
+            ]
+        ],
+        'image' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.image',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'image',
-                array(
+                [
                     'maxitems' => 6,
                     'minitems'=> 0
-                ),
+                ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
-        ),
-        'disable' => array(
+        ],
+        'disable' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            )
-        ),
-        'starttime' => array(
+            ]
+        ],
+        'starttime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        ),
-        'endtime' => array(
+            ]
+        ],
+        'endtime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
-                )
-            )
-        ),
-        'TSconfig' => array(
+                ]
+            ]
+        ],
+        'TSconfig' => [
             'exclude' => true,
             'label' => 'TSconfig:',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 10
-            ),
+            ],
             'defaultExtras' => 'fixed-font : enable-tab'
-        ),
-        'lastlogin' => array(
+        ],
+        'lastlogin' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.lastlogin',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'readOnly' => true,
                 'size' => 12,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        )
-    ),
-    'types' => array(
-        '0' => array(
+            ]
+        ]
+    ],
+    'types' => [
+        '0' => [
             'showitem' => '
 				disable, username, password, usergroup, lastlogin,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.personelData, company, --palette--;;1, name, --palette--;;2, address, zip, city, country, telephone, fax, email, www, image,
@@ -279,10 +279,10 @@ return array(
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.access, starttime, endtime,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.extended
 			',
-        ),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => 'title'),
-        '2' => array('showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name')
-    )
-);
+        ],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => 'title'],
+        '2' => ['showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name']
+    ]
+];

@@ -3194,7 +3194,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     public function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider()
     {
-        return array(
+        return [
             'Relation with MM table and new status with default values' => [
                 [
                     'tableName' => 'aTable',
@@ -3304,7 +3304,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [],
                 []
             ]
-        );
+        ];
     }
 
     /**

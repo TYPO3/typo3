@@ -55,13 +55,13 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
             GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\SetupCheck::class)->getStatus(),
             GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck::class)->getStatus()
         );
-        $reportStatusTypes = array(
-            'error' => array(),
-            'warning' => array(),
-            'ok' => array(),
-            'information' => array(),
-            'notice' => array(),
-        );
+        $reportStatusTypes = [
+            'error' => [],
+            'warning' => [],
+            'ok' => [],
+            'information' => [],
+            'notice' => [],
+        ];
 
         /** @var $statusObject \TYPO3\CMS\Install\Status\AbstractStatus */
         foreach ($statusObjects as $statusObject) {
@@ -72,7 +72,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
             $reportStatusTypes[$severityIdentifier][] = $statusObject;
         }
 
-        $statusArray = array();
+        $statusArray = [];
         foreach ($reportStatusTypes as $type => $statusObjects) {
             $value = count($statusObjects);
             $message = '';

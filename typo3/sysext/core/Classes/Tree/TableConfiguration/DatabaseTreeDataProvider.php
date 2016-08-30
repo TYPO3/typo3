@@ -70,7 +70,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * @var array
      */
-    protected $idCache = array();
+    protected $idCache = [];
 
     /**
      * Stores TCA-Configuration of the LookUpField in tableName
@@ -84,12 +84,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      *
      * @var array
      */
-    protected $nodeSortValues = array();
+    protected $nodeSortValues = [];
 
     /**
      * @var array TCEforms compiled TSConfig array
      */
-    protected $generatedTSConfig = array();
+    protected $generatedTSConfig = [];
 
     /**
      * @var Dispatcher
@@ -254,7 +254,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         /** @var $node \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode */
         $node = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode::class);
-        $row = array();
+        $row = [];
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
             $node->setExpanded(true);
@@ -340,10 +340,10 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                 ->fetch();
         }
         if (empty($nodeData)) {
-            $nodeData = array(
+            $nodeData = [
                 'uid' => 0,
                 $this->getLookupField() => ''
-            );
+            ];
         }
         $storage = null;
         $children = $this->getRelatedRecords($nodeData);
@@ -378,7 +378,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         } else {
             $children = $this->getChildrenUidsFromChildrenRelation($row);
         }
-        $allowedArray = array();
+        $allowedArray = [];
         foreach ($children as $child) {
             if (!in_array($child, $this->idCache) && in_array($child, $this->itemWhiteList)) {
                 $allowedArray[] = $child;
@@ -428,7 +428,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function getChildrenUidsFromChildrenRelation(array $row)
     {
-        $relatedUids = array();
+        $relatedUids = [];
         $uid = $row['uid'];
         $value = $row[$this->getLookupField()];
         switch ((string)$this->columnConfiguration['type']) {

@@ -34,7 +34,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \TYPO3\CMS\Core\Package\PackageManager
@@ -63,7 +63,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param array $packageMethods
      * @return PackageManager|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = array('getPackagePath', 'getPackageKey'))
+    protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = ['getPackagePath', 'getPackageKey'])
     {
         $packagePath = PATH_site . 'typo3temp/var/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);
@@ -73,7 +73,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->setMethods($packageMethods)
                 ->getMock();
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('isPackageActive', 'getPackage', 'getActivePackages'))
+            ->setMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
             ->getMock();
         $package->expects($this->any())
                 ->method('getPackagePath')
@@ -83,17 +83,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->will($this->returnValue($packageKey));
         $packageManager->expects($this->any())
                 ->method('isPackageActive')
-                ->will($this->returnValueMap(array(
-                    array(null, false),
-                    array($packageKey, true)
-                )));
+                ->will($this->returnValueMap([
+                    [null, false],
+                    [$packageKey, true]
+                ]));
         $packageManager->expects($this->any())
                 ->method('getPackage')
                 ->with($this->equalTo($packageKey))
                 ->will($this->returnValue($package));
         $packageManager->expects($this->any())
                 ->method('getActivePackages')
-                ->will($this->returnValue(array($packageKey => $package)));
+                ->will($this->returnValue([$packageKey => $package]));
         return $packageManager;
     }
 
@@ -133,7 +133,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = $this->getUniqueId('foo');
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('isPackageActive'))
+            ->setMethods(['isPackageActive'])
             ->getMock();
         $packageManager->expects($this->once())
                 ->method('isPackageActive')
@@ -150,11 +150,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $package = $this->getMockBuilder(Package::class)
                 ->disableOriginalConstructor()
-                ->setMethods(array('getPackagePath'))
+                ->setMethods(['getPackagePath'])
                 ->getMock();
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('isPackageActive', 'getPackage'))
+            ->setMethods(['isPackageActive', 'getPackage'])
             ->getMock();
         $package->expects($this->once())
                 ->method('getPackagePath')
@@ -182,23 +182,23 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     private function generateTCAForTable($table)
     {
-        $tca = array();
-        $tca[$table] = array();
-        $tca[$table]['columns'] = array(
-            'fieldA' => array(),
-            'fieldC' => array()
-        );
-        $tca[$table]['types'] = array(
-            'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'),
-            'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'),
-            'typeC' => array('showitem' => 'fieldC;;paletteD')
-        );
-        $tca[$table]['palettes'] = array(
-            'paletteA' => array('showitem' => 'fieldX, fieldX1, fieldY'),
-            'paletteB' => array('showitem' => 'fieldX, fieldX1, fieldY'),
-            'paletteC' => array('showitem' => 'fieldX, fieldX1, fieldY'),
-            'paletteD' => array('showitem' => 'fieldX, fieldX1, fieldY')
-        );
+        $tca = [];
+        $tca[$table] = [];
+        $tca[$table]['columns'] = [
+            'fieldA' => [],
+            'fieldC' => []
+        ];
+        $tca[$table]['types'] = [
+            'typeA' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'],
+            'typeB' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'],
+            'typeC' => ['showitem' => 'fieldC;;paletteD']
+        ];
+        $tca[$table]['palettes'] = [
+            'paletteA' => ['showitem' => 'fieldX, fieldX1, fieldY'],
+            'paletteB' => ['showitem' => 'fieldX, fieldX1, fieldY'],
+            'paletteC' => ['showitem' => 'fieldX, fieldX1, fieldY'],
+            'paletteD' => ['showitem' => 'fieldX, fieldX1, fieldY']
+        ];
         return $tca;
     }
 
@@ -209,24 +209,24 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function extensionKeyDataProvider()
     {
-        return array(
-            'Without underscores' => array(
+        return [
+            'Without underscores' => [
                 'testkey',
                 'tx_testkey'
-            ),
-            'With underscores' => array(
+            ],
+            'With underscores' => [
                 'this_is_a_test_extension',
                 'tx_thisisatestextension'
-            ),
-            'With user prefix and without underscores' => array(
+            ],
+            'With user prefix and without underscores' => [
                 'user_testkey',
                 'user_testkey'
-            ),
-            'With user prefix and with underscores' => array(
+            ],
+            'With user prefix and with underscores' => [
                 'user_test_key',
                 'user_testkey'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -255,18 +255,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $extensionPrefix = 'tx_ttnews' . $uniqueSuffix;
         $package = $this->getMockBuilder(Package::class)
                 ->disableOriginalConstructor()
-                ->setMethods(array('getPackageKey'))
+                ->setMethods(['getPackageKey'])
                 ->getMock();
         $package->expects($this->exactly(2))
                 ->method('getPackageKey')
                 ->will($this->returnValue($extensionKey));
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('getActivePackages'))
+            ->setMethods(['getActivePackages'])
             ->getMock();
         $packageManager->expects($this->once())
                 ->method('getActivePackages')
-                ->will($this->returnValue(array($extensionKey => $package)));
+                ->will($this->returnValue([$extensionKey => $package]));
         ExtensionManagementUtility::setPackageManager($packageManager);
         $this->assertEquals($extensionKey, ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
     }
@@ -283,18 +283,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $extensionPrefix = 'tx_kickstarter' . $uniqueSuffix;
         $package = $this->getMockBuilder(Package::class)
                 ->disableOriginalConstructor()
-                ->setMethods(array('getPackageKey'))
+                ->setMethods(['getPackageKey'])
                 ->getMock();
         $package->expects($this->exactly(2))
                 ->method('getPackageKey')
                 ->will($this->returnValue($extensionKey));
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('getActivePackages'))
+            ->setMethods(['getActivePackages'])
             ->getMock();
         $packageManager->expects($this->once())
                 ->method('getActivePackages')
-                ->will($this->returnValue(array($extensionKey => $package)));
+                ->will($this->returnValue([$extensionKey => $package]));
         ExtensionManagementUtility::setPackageManager($packageManager);
         $this->assertEquals($extensionKey, ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
     }
@@ -511,23 +511,23 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function removeDuplicatesForInsertionRemovesDuplicatesDataProvider()
     {
-        return array(
-            'Simple' => array(
+        return [
+            'Simple' => [
                 'field_b, field_d, field_c',
                 'field_a, field_b, field_c',
                 'field_d'
-            ),
-            'with linebreaks' => array(
+            ],
+            'with linebreaks' => [
                 'field_b, --linebreak--, field_d, --linebreak--, field_c',
                 'field_a, field_b, field_c',
                 '--linebreak--, field_d, --linebreak--'
-            ),
-            'with linebreaks in list and insertion list' => array(
+            ],
+            'with linebreaks in list and insertion list' => [
                 'field_b, --linebreak--, field_d, --linebreak--, field_c',
                 'field_a, field_b, --linebreak--, field_c',
                 '--linebreak--, field_d, --linebreak--'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -552,20 +552,20 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldDoesNotAddAnythingIfFieldIsNotRegisteredInColumns()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'fieldX, fieldY',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $expected = $GLOBALS['TCA'];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
@@ -580,40 +580,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsFieldsToPaletteAndSuppressesDuplicates()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'fieldX, fieldY',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'fieldX, fieldY, dupeA',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -627,40 +627,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldDoesNotAddAFieldThatIsPartOfPaletteAlready()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -674,52 +674,52 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsFieldsToMultiplePalettes()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA, --palette--;;palette1',
-                    ),
-                    'typeB' => array(
+                    ],
+                    'typeB' => [
                         'showitem' => 'fieldA;aLabel, --palette--;;palette2',
-                    ),
-                ),
-                'palettes' => array(
-                    'palette1' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'palette1' => [
                         'showitem' => 'fieldX',
-                    ),
-                    'palette2' => array(
+                    ],
+                    'palette2' => [
                         'showitem' => 'fieldY',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA, --palette--;;palette1',
-                    ),
-                    'typeB' => array(
+                    ],
+                    'typeB' => [
                         'showitem' => 'fieldA;aLabel, --palette--;;palette2',
-                    ),
-                ),
-                'palettes' => array(
-                    'palette1' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'palette1' => [
                         'showitem' => 'fieldX, newA',
-                    ),
-                    'palette2' => array(
+                    ],
+                    'palette2' => [
                         'showitem' => 'fieldY, newA',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -733,40 +733,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsMultipleFields()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA, --palette--;;palette1',
-                    ),
-                ),
-                'palettes' => array(
-                    'palette1' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'palette1' => [
                         'showitem' => 'fieldX',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA, --palette--;;palette1',
-                    ),
-                ),
-                'palettes' => array(
-                    'palette1' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'palette1' => [
                         'showitem' => 'fieldX, newA, newB',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -780,40 +780,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsBeforeExistingIfRequested()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA, existingB',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA, newA, existingB',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -828,40 +828,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfBeforeRequestedDoesNotExist()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'fieldX, fieldY',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'fieldX, fieldY, newA, newB',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -876,40 +876,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsAfterExistingIfRequested()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA, existingB',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA, newA, existingB',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -924,40 +924,40 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfAfterRequestedDoesNotExist()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA, existingB',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;paletteA',
-                    ),
-                ),
-                'palettes' => array(
-                    'paletteA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'paletteA' => [
                         'showitem' => 'existingA, existingB, newA, newB',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -972,35 +972,35 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYet()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA, --palette--;;generatedFor-fieldA',
-                    ),
-                ),
-                'palettes' => array(
-                    'generatedFor-fieldA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'generatedFor-fieldA' => [
                         'showitem' => 'newA',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -1014,35 +1014,35 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYetAndKeepsExistingLabel()
     {
-        $GLOBALS['TCA'] = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA',
-                    ),
-                ),
-            ),
-        );
-        $expected = array(
-            'aTable' => array(
-                'columns' => array(
-                    'fieldA' => array(),
-                ),
-                'types' => array(
-                    'typeA' => array(
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'fieldA' => [],
+                ],
+                'types' => [
+                    'typeA' => [
                         'showitem' => 'fieldA;labelA, --palette--;;generatedFor-fieldA',
-                    ),
-                ),
-                'palettes' => array(
-                    'generatedFor-fieldA' => array(
+                    ],
+                ],
+                'palettes' => [
+                    'generatedFor-fieldA' => [
                         'showitem' => 'newA',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         ExtensionManagementUtility::addFieldsToAllPalettesOfField(
             'aTable',
             'fieldA',
@@ -1061,32 +1061,32 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function executePositionedStringInsertionTrimsCorrectCharactersDataProvider()
     {
-        return array(
-            'normal characters' => array(
+        return [
+            'normal characters' => [
                 'tr0',
                 'tr0',
-            ),
-            'newlines' => array(
+            ],
+            'newlines' => [
                 "test\n",
                 'test',
-            ),
-            'newlines with carriage return' => array(
+            ],
+            'newlines with carriage return' => [
                 "test\r\n",
                 'test',
-            ),
-            'tabs' => array(
+            ],
+            'tabs' => [
                 "test\t",
                 'test',
-            ),
-            'commas' => array(
+            ],
+            'commas' => [
                 'test,',
                 'test',
-            ),
-            'multiple commas with trailing spaces' => array(
+            ],
+            'multiple commas with trailing spaces' => [
                 "test,,\t, \r\n",
                 'test',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1097,7 +1097,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function executePositionedStringInsertionTrimsCorrectCharacters($string, $expectedResult)
     {
-        $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, array('dummy'));
+        $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, ['dummy']);
         $string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
         $this->assertEquals($expectedResult, $string);
     }
@@ -1124,7 +1124,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236964);
 
-        ExtensionManagementUtility::addTcaSelectItem('foo', array(), array());
+        ExtensionManagementUtility::addTcaSelectItem('foo', [], []);
     }
 
     /**
@@ -1135,7 +1135,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236965);
 
-        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), array());
+        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', [], []);
     }
 
     /**
@@ -1146,7 +1146,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236966);
 
-        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), 'foo', array());
+        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', [], 'foo', []);
     }
 
     /**
@@ -1157,7 +1157,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236967);
 
-        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), 'foo', 'not allowed keyword');
+        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', [], 'foo', 'not allowed keyword');
     }
 
     /**
@@ -1181,57 +1181,57 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         // - relativeToField
         // - relativePosition
         // - expectedResultArray
-        return array(
-            'add at end of array' => array(
+        return [
+            'add at end of array' => [
                 '',
                 '',
-                array(
-                    0 => array('firstElement'),
-                    1 => array('matchMe'),
-                    2 => array('thirdElement'),
-                    3 => array('insertedElement')
-                )
-            ),
-            'replace element' => array(
+                [
+                    0 => ['firstElement'],
+                    1 => ['matchMe'],
+                    2 => ['thirdElement'],
+                    3 => ['insertedElement']
+                ]
+            ],
+            'replace element' => [
                 'matchMe',
                 'replace',
-                array(
-                    0 => array('firstElement'),
-                    1 => array('insertedElement'),
-                    2 => array('thirdElement')
-                )
-            ),
-            'add element after' => array(
+                [
+                    0 => ['firstElement'],
+                    1 => ['insertedElement'],
+                    2 => ['thirdElement']
+                ]
+            ],
+            'add element after' => [
                 'matchMe',
                 'after',
-                array(
-                    0 => array('firstElement'),
-                    1 => array('matchMe'),
-                    2 => array('insertedElement'),
-                    3 => array('thirdElement')
-                )
-            ),
-            'add element before' => array(
+                [
+                    0 => ['firstElement'],
+                    1 => ['matchMe'],
+                    2 => ['insertedElement'],
+                    3 => ['thirdElement']
+                ]
+            ],
+            'add element before' => [
                 'matchMe',
                 'before',
-                array(
-                    0 => array('firstElement'),
-                    1 => array('insertedElement'),
-                    2 => array('matchMe'),
-                    3 => array('thirdElement')
-                )
-            ),
-            'add at end if relative position was not found' => array(
+                [
+                    0 => ['firstElement'],
+                    1 => ['insertedElement'],
+                    2 => ['matchMe'],
+                    3 => ['thirdElement']
+                ]
+            ],
+            'add at end if relative position was not found' => [
                 'notExistingItem',
                 'after',
-                array(
-                    0 => array('firstElement'),
-                    1 => array('matchMe'),
-                    2 => array('thirdElement'),
-                    3 => array('insertedElement')
-                )
-            )
-        );
+                [
+                    0 => ['firstElement'],
+                    1 => ['matchMe'],
+                    2 => ['thirdElement'],
+                    3 => ['insertedElement']
+                ]
+            ]
+        ];
     }
 
     /**
@@ -1243,22 +1243,22 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addTcaSelectItemInsertsItemAtSpecifiedPosition($relativeToField, $relativePosition, $expectedResultArray)
     {
-        $GLOBALS['TCA'] = array(
-            'testTable' => array(
-                'columns' => array(
-                    'testField' => array(
-                        'config' => array(
-                            'items' => array(
-                                '0' => array('firstElement'),
-                                '1' => array('matchMe'),
-                                2 => array('thirdElement')
-                            )
-                        )
-                    )
-                )
-            )
-        );
-        ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', array('insertedElement'), $relativeToField, $relativePosition);
+        $GLOBALS['TCA'] = [
+            'testTable' => [
+                'columns' => [
+                    'testField' => [
+                        'config' => [
+                            'items' => [
+                                '0' => ['firstElement'],
+                                '1' => ['matchMe'],
+                                2 => ['thirdElement']
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', ['insertedElement'], $relativeToField, $relativePosition);
         $this->assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
     }
 
@@ -1272,7 +1272,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1286,13 +1286,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1330,48 +1330,48 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function addModulePositionTestsDataProvider()
     {
-        return array(
-            'can add new main module if none exists' => array(
+        return [
+            'can add new main module if none exists' => [
                 'top',
                 '',
                 'newModule'
-            ),
-            'can add new sub module if no position specified' => array(
+            ],
+            'can add new sub module if no position specified' => [
                 '',
                 'some,modules',
                 'some,modules,newModule'
-            ),
-            'can add new sub module to top of module' => array(
+            ],
+            'can add new sub module to top of module' => [
                 'top',
                 'some,modules',
                 'newModule,some,modules'
-            ),
-            'can add new sub module if bottom of module' => array(
+            ],
+            'can add new sub module if bottom of module' => [
                 'bottom',
                 'some,modules',
                 'some,modules,newModule'
-            ),
-            'can add new sub module before specified sub module' => array(
+            ],
+            'can add new sub module before specified sub module' => [
                 'before:modules',
                 'some,modules',
                 'some,newModule,modules'
-            ),
-            'can add new sub module after specified sub module' => array(
+            ],
+            'can add new sub module after specified sub module' => [
                 'after:some',
                 'some,modules',
                 'some,newModule,modules'
-            ),
-            'can add new sub module at the bottom if specified sub module to add before does not exist' => array(
+            ],
+            'can add new sub module at the bottom if specified sub module to add before does not exist' => [
                 'before:modules',
                 'some,otherModules',
                 'some,otherModules,newModule'
-            ),
-            'can add new sub module at the bottom if specified sub module to add after does not exist' => array(
+            ],
+            'can add new sub module at the bottom if specified sub module to add after does not exist' => [
                 'after:some',
                 'someOther,modules',
                 'someOther,modules,newModule'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1410,13 +1410,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($packageManager);
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1433,13 +1433,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($packageManager);
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1455,17 +1455,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
+        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($this->createMockPackageManagerWithMockPackage($this->getUniqueId()));
         ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry();
     }
@@ -1496,7 +1496,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1509,18 +1509,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(true));
-        $mockCache->expects($this->once())->method('get')->willReturn('<?php ' . serialize(array('tca' => array(), 'categoryRegistry' => CategoryRegistry::getInstance())) . '?>');
+        $mockCache->expects($this->once())->method('get')->willReturn('<?php ' . serialize(['tca' => [], 'categoryRegistry' => CategoryRegistry::getInstance()]) . '?>');
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca(true);
     }
 
@@ -1542,13 +1542,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $tableConfiguration = '<?php return array(\'foo\' => \'' . $uniqueStringInTableConfiguration . '\'); ?>';
         file_put_contents($packagePath . 'Configuration/TCA/' . $uniqueTableName . '.php', $tableConfiguration);
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1563,18 +1563,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadBaseTcaWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects($this->once())->method('has')->will($this->returnValue(false));
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
+        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
     }
 
@@ -1604,7 +1604,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1618,13 +1618,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1649,19 +1649,19 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = $extTablesLocation;
         $uniqueStringInTables = $this->getUniqueId('foo');
         file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");
-        $GLOBALS['TYPO3_LOADED_EXT'] = array(
-            $extensionName => array(
+        $GLOBALS['TYPO3_LOADED_EXT'] = [
+            $extensionName => [
                 'ext_tables.php' => $extTablesLocation
-            )
-        );
+            ]
+        ];
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1675,17 +1675,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtTablesCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtTablesExists()
     {
         $extensionName = $this->getUniqueId('foo');
-        $GLOBALS['TYPO3_LOADED_EXT'] = array(
-            $extensionName => array(),
-        );
+        $GLOBALS['TYPO3_LOADED_EXT'] = [
+            $extensionName => [],
+        ];
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1701,17 +1701,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtTablesCacheEntryWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(AbstractFrontend::class)
-            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('getCache'))
+            ->setMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
+        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($this->createMockPackageManagerWithMockPackage($this->getUniqueId()));
         ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
     }
@@ -1741,7 +1741,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(array('flushCachesInGroup'))
+            ->setMethods(['flushCachesInGroup'])
             ->getMock();
         $mockCacheManager->expects($this->once())->method('flushCachesInGroup')->with('system');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1758,12 +1758,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function getExtensionVersionFaultyDataProvider()
     {
-        return array(
-            array(''),
-            array(0),
-            array(new \stdClass()),
-            array(true)
-        );
+        return [
+            [''],
+            [0],
+            [new \stdClass()],
+            [true]
+        ];
     }
 
     /**
@@ -1800,11 +1800,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $uniqueSuffix = $this->getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
         $packageMetaData = $this->getMockBuilder(MetaData::class)
-            ->setMethods(array('getVersion'))
-            ->setConstructorArgs(array($extensionKey))
+            ->setMethods(['getVersion'])
+            ->setConstructorArgs([$extensionKey])
             ->getMock();
         $packageMetaData->expects($this->any())->method('getVersion')->will($this->returnValue('1.2.3'));
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey, array('getPackagePath', 'getPackageKey', 'getPackageMetaData'));
+        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey, ['getPackagePath', 'getPackageKey', 'getPackageMetaData']);
         /** @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $packageManager->getPackage($extensionKey);
         $package->expects($this->any())
@@ -1845,7 +1845,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = $this->getUniqueId('foo');
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('isPackageActive'))
+            ->setMethods(['isPackageActive'])
             ->getMock();
         $packageManager->expects($this->once())
             ->method('isPackageActive')
@@ -1863,7 +1863,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = $this->getUniqueId('foo');
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(array('isPackageActive', 'deactivatePackage'))
+            ->setMethods(['isPackageActive', 'deactivatePackage'])
             ->getMock();
         $packageManager->expects($this->any())
             ->method('isPackageActive')
@@ -1888,7 +1888,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
         /** @var CategoryRegistry|\PHPUnit_Framework_MockObject_MockObject $registryMock */
         $registryMock = $this->getMockBuilder(CategoryRegistry::class)->getMock();
-        $registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories', array());
+        $registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories', []);
         GeneralUtility::setSingletonInstance(CategoryRegistry::class, $registryMock);
         ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
     }
@@ -1904,7 +1904,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
         /** @var CategoryRegistry|\PHPUnit_Framework_MockObject_MockObject $registryMock */
         $registryMock = $this->getMockBuilder(CategoryRegistry::class)->getMock();
-        $registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName, array());
+        $registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName, []);
         GeneralUtility::setSingletonInstance(CategoryRegistry::class, $registryMock);
         ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
     }
@@ -1919,17 +1919,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function addPluginSetsTcaCorrectlyForGivenExtKeyAsParameter()
     {
         $extKey = 'indexed_search';
-        $GLOBALS['TYPO3_LOADED_EXT'] = array();
+        $GLOBALS['TYPO3_LOADED_EXT'] = [];
         $GLOBALS['TYPO3_LOADED_EXT'][$extKey]['ext_icon'] = 'foo.gif';
-        $expectedTCA = array(
-            array(
+        $expectedTCA = [
+            [
                 'label',
                 $extKey,
                 'EXT:' . $extKey . '/foo.gif'
-            )
-        );
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
-        ExtensionManagementUtility::addPlugin(array('label', $extKey), 'list_type', $extKey);
+            ]
+        ];
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        ExtensionManagementUtility::addPlugin(['label', $extKey], 'list_type', $extKey);
         $this->assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
     }
 

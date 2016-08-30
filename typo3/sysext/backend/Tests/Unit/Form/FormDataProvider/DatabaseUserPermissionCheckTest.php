@@ -59,7 +59,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     {
         $this->beUserProphecy->isAdmin()->willReturn(true);
 
-        $result = $this->subject->addData(array());
+        $result = $this->subject->addData([]);
 
         $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -315,11 +315,11 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = [
             'unitTest' => function () {
                 return false;
             }
-        );
+        ];
 
         $this->expectException(AccessDeniedHookException::class);
         $this->expectExceptionCode(1437689705);
@@ -346,11 +346,11 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = [
             'unitTest' => function () {
                 return true;
             }
-        );
+        ];
 
         $result = $this->subject->addData($input);
 

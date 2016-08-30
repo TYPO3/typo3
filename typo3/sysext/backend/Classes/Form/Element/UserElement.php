@@ -34,7 +34,7 @@ class UserElement extends AbstractFormElement
         $parameterArray['row'] = $this->data['databaseRow'];
         $parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
             ? $parameterArray['fieldConf']['config']['parameters']
-            : array();
+            : [];
         $resultArray = $this->initializeResultArray();
         $resultArray['html'] = GeneralUtility::callUserFunction(
             $parameterArray['fieldConf']['config']['userFunc'],

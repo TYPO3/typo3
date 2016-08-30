@@ -32,7 +32,7 @@ class PostProcessorTest extends UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var Element|\Prophecy\Prophecy\ObjectProphecy
@@ -76,10 +76,10 @@ class PostProcessorTest extends UnitTestCase
      */
     public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix()
     {
-        $typoScript = array(
+        $typoScript = [
             10 => $this->getUniqueId('postprocess'),
             20 => PostProcessorWithoutFormPrefixFixture::class
-        );
+        ];
 
         $this->objectManagerProphecy
             ->get(Argument::cetera())
@@ -96,10 +96,10 @@ class PostProcessorTest extends UnitTestCase
      */
     public function processFindsClassSpecifiedByTypoScriptWithFormPrefix()
     {
-        $typoScript = array(
+        $typoScript = [
             10 => $this->getUniqueId('postprocess'),
             20 => PostProcessorWithFormPrefixFixture::class
-        );
+        ];
 
         $this->objectManagerProphecy
             ->get(Argument::cetera())
@@ -116,10 +116,10 @@ class PostProcessorTest extends UnitTestCase
      */
     public function processReturnsEmptyStringIfSpecifiedPostProcessorDoesNotImplementTheInterface()
     {
-        $typoScript = array(
+        $typoScript = [
             10 => $this->getUniqueId('postprocess'),
             20 => PostProcessorWithoutInterfaceFixture::class
-        );
+        ];
 
         $this->objectManagerProphecy
             ->get(Argument::cetera())
@@ -139,8 +139,8 @@ class PostProcessorTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(
             PostProcessor::class,
-            array('__none'),
-            array($this->elementProphecy->reveal(), $typoScript)
+            ['__none'],
+            [$this->elementProphecy->reveal(), $typoScript]
         );
         $subject->_set('controllerContext', $this->controllerContextProphecy->reveal());
         $subject->_set('objectManager', $this->objectManagerProphecy->reveal());

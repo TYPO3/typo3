@@ -141,12 +141,12 @@ class DebugUtility
         $trail = debug_backtrace(0);
         $trail = array_reverse($trail);
         array_pop($trail);
-        $path = array();
+        $path = [];
         foreach ($trail as $dat) {
             $fileInformation = $prependFileNames && !empty($dat['file']) ? $dat['file'] . ':' : '';
             $pathFragment = $fileInformation . $dat['class'] . $dat['type'] . $dat['function'];
             // add the path of the included file
-            if (in_array($dat['function'], array('require', 'include', 'require_once', 'include_once'))) {
+            if (in_array($dat['function'], ['require', 'include', 'require_once', 'include_once'])) {
                 $pathFragment .= '(' . PathUtility::stripPathSitePrefix($dat['args'][0]) . '),' . PathUtility::stripPathSitePrefix($dat['file']);
             }
             $path[] = $pathFragment . '#' . $dat['line'];

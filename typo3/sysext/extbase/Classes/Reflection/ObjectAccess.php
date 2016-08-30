@@ -122,15 +122,15 @@ class ObjectAccess
             return $subject[$propertyName];
         }
         $getterMethodName = 'get' . ucfirst($propertyName);
-        if (is_callable(array($subject, $getterMethodName))) {
+        if (is_callable([$subject, $getterMethodName])) {
             return $subject->{$getterMethodName}();
         }
         $getterMethodName = 'is' . ucfirst($propertyName);
-        if (is_callable(array($subject, $getterMethodName))) {
+        if (is_callable([$subject, $getterMethodName])) {
             return $subject->{$getterMethodName}();
         }
         $getterMethodName = 'has' . ucfirst($propertyName);
-        if (is_callable(array($subject, $getterMethodName))) {
+        if (is_callable([$subject, $getterMethodName])) {
             return $subject->{$getterMethodName}();
         }
         if (is_object($subject) && array_key_exists($propertyName, get_object_vars($subject))) {
@@ -205,7 +205,7 @@ class ObjectAccess
             } else {
                 $subject->{$propertyName} = $propertyValue;
             }
-        } elseif (is_callable(array($subject, $setterMethodName = self::buildSetterMethodName($propertyName)))) {
+        } elseif (is_callable([$subject, $setterMethodName = self::buildSetterMethodName($propertyName)])) {
             $subject->{$setterMethodName}($propertyValue);
         } elseif ($subject instanceof \ArrayAccess) {
             $subject[$propertyName] = $propertyValue;
@@ -240,7 +240,7 @@ class ObjectAccess
             $declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
         }
         foreach (get_class_methods($object) as $methodName) {
-            if (is_callable(array($object, $methodName))) {
+            if (is_callable([$object, $methodName])) {
                 if (substr($methodName, 0, 2) === 'is') {
                     $declaredPropertyNames[] = lcfirst(substr($methodName, 2));
                 }
@@ -280,7 +280,7 @@ class ObjectAccess
             $declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
         }
         foreach (get_class_methods($object) as $methodName) {
-            if (substr($methodName, 0, 3) === 'set' && is_callable(array($object, $methodName))) {
+            if (substr($methodName, 0, 3) === 'set' && is_callable([$object, $methodName])) {
                 $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
             }
         }
@@ -308,7 +308,7 @@ class ObjectAccess
         } elseif (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== false) {
             return true;
         }
-        return is_callable(array($object, self::buildSetterMethodName($propertyName)));
+        return is_callable([$object, self::buildSetterMethodName($propertyName)]);
     }
 
     /**
@@ -332,13 +332,13 @@ class ObjectAccess
         } elseif ($object instanceof \ArrayAccess && isset($object[$propertyName]) === true) {
             return true;
         }
-        if (is_callable(array($object, 'get' . ucfirst($propertyName)))) {
+        if (is_callable([$object, 'get' . ucfirst($propertyName)])) {
             return true;
         }
-        if (is_callable(array($object, 'has' . ucfirst($propertyName)))) {
+        if (is_callable([$object, 'has' . ucfirst($propertyName)])) {
             return true;
         }
-        if (is_callable(array($object, 'is' . ucfirst($propertyName)))) {
+        if (is_callable([$object, 'is' . ucfirst($propertyName)])) {
             return true;
         }
         return array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== false;
@@ -359,7 +359,7 @@ class ObjectAccess
         if (!is_object($object)) {
             throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1237301370);
         }
-        $properties = array();
+        $properties = [];
         foreach (self::getGettablePropertyNames($object) as $propertyName) {
             $propertyExists = false;
             $propertyValue = self::getPropertyInternal($object, $propertyName, false, $propertyExists);

@@ -37,17 +37,17 @@ class AdministrationRepository
      *
      * @var FileContentParser[]
      */
-    public $external_parsers = array();
+    public $external_parsers = [];
 
     /**
      * @var array
      */
-    protected $allPhashListed = array();
+    protected $allPhashListed = [];
 
     /**
      * @var array
      */
-    protected $iconFileNameCache = array();
+    protected $iconFileNameCache = [];
 
     /**
      * Get group list information
@@ -113,7 +113,7 @@ class AdministrationRepository
      */
     public function getExternalDocumentsStatistic()
     {
-        $result = array();
+        $result = [];
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
         $res = $queryBuilder
@@ -180,15 +180,15 @@ class AdministrationRepository
      */
     public function getRecordsNumbers()
     {
-        $tables = array(
+        $tables = [
             'index_phash',
             'index_words',
             'index_rel',
             'index_grlist',
             'index_section',
             'index_fulltext',
-        );
-        $recordList = array();
+        ];
+        $recordList = [];
         foreach ($tables as $tableName) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
             $recordList[$tableName] = $queryBuilder
@@ -207,14 +207,14 @@ class AdministrationRepository
      */
     public function getPageHashTypes()
     {
-        $counts = array();
-        $types = array(
+        $counts = [];
+        $types = [
             'html' => 1,
             'htm' => 1,
             'pdf' => 2,
             'doc' => 3,
             'txt' => 4
-        );
+        ];
         $revTypes = array_flip($types);
         $revTypes[0] = 'TYPO3 page';
 
@@ -229,12 +229,12 @@ class AdministrationRepository
 
         while ($row = $res->fetch()) {
             $itemType = $row['item_type'];
-            $counts[] = array(
+            $counts[] = [
                 'count' => $row['count'],
                 'name' => $revTypes[$itemType],
                 'type' => $itemType,
                 'uniqueCount' => $this->countUniqueTypes($itemType),
-            );
+            ];
         }
         return $counts;
     }
@@ -283,7 +283,7 @@ class AdministrationRepository
      */
     public function getPageStatistic()
     {
-        $result = array();
+        $result = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
         $res = $queryBuilder
             ->select('index_phash.*')
@@ -409,7 +409,7 @@ class AdministrationRepository
      */
     public function getTree($pageId, $depth = 4, $mode)
     {
-        $allLines = array();
+        $allLines = [];
         $pageRecord = BackendUtility::getRecord('pages', (int)$pageId);
         if (!$pageRecord) {
             return $allLines;
@@ -420,10 +420,10 @@ class AdministrationRepository
         $tree->init('AND ' . $perms_clause);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $HTML = '<span title="' . htmlspecialchars($pageRecord['title']) . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
-        $tree->tree[] = array(
+        $tree->tree[] = [
             'row' => $pageRecord,
             'HTML' => $HTML
-        );
+        ];
 
         if ($depth > 0) {
             $tree->getTree((int)$pageId, $depth, '');
@@ -610,7 +610,7 @@ class AdministrationRepository
         if ($phashList === 'ALL') {
             $this->getTree($pageId, $depth, '');
             $phashRows = $this->allPhashListed;
-            $this->allPhashListed = array();
+            $this->allPhashListed = [];
         } else {
             $phashRows = GeneralUtility::trimExplode(',', $phashList, true);
         }
@@ -618,7 +618,7 @@ class AdministrationRepository
         foreach ($phashRows as $phash) {
             $phash = (int)$phash;
             if ($phash > 0) {
-                $idList = array();
+                $idList = [];
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('index_section');
                 $res = $queryBuilder
@@ -700,10 +700,10 @@ class AdministrationRepository
             }
         }
         // Compile new list:
-        $data = array();
+        $data = [];
         $data['pages'][$pageId]['keywords'] = implode(', ', array_keys($keywords));
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($data, array());
+        $dataHandler->start($data, []);
         $dataHandler->process_datamap();
     }
 

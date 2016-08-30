@@ -406,7 +406,7 @@ abstract class AbstractTask
             ->execute()
             ->fetch();
 
-        $runningExecutions = array();
+        $runningExecutions = [];
         if ($row && $row['serialized_executions'] !== '') {
             $runningExecutions = unserialize($row['serialized_executions']);
         }
@@ -472,13 +472,13 @@ abstract class AbstractTask
                 $logMessage = 'Task failed to execute successfully. Class: ' . get_class($this) . ', UID: ' . $this->taskUid . '. ' . $failure->getMessage();
                 $this->scheduler->log($logMessage, 1, $failure->getCode());
                 // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
-                $failureString = serialize(array(
+                $failureString = serialize([
                     'code' => $failure->getCode(),
                     'message' => $failure->getMessage(),
                     'file' => $failure->getFile(),
                     'line' => $failure->getLine(),
                     'traceString' => $failure->getTraceAsString(),
-                ));
+                ]);
             } else {
                 $failureString = '';
             }

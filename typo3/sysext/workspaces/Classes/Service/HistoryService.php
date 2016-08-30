@@ -31,7 +31,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $historyObjects = array();
+    protected $historyObjects = [];
 
     /**
      * @var \TYPO3\CMS\Core\Utility\DiffUtility
@@ -55,7 +55,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getHistory($table, $id)
     {
-        $history = array();
+        $history = [];
         $i = 0;
         foreach ((array)$this->getHistoryObject($table, $id)->changeLog as $entry) {
             if ($i++ > 20) {
@@ -86,12 +86,12 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
         $avatar = GeneralUtility::makeInstance(Avatar::class);
         $beUserRecord = BackendUtility::getRecord('be_users', $entry['user']);
 
-        return array(
+        return [
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
             'user' => htmlspecialchars($this->getUserName($entry['user'])),
             'user_avatar' => $avatar->render($beUserRecord),
             'differences' => $differences
-        );
+        ];
     }
 
     /**
@@ -103,7 +103,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getDifferences(array $entry)
     {
-        $differences = array();
+        $differences = [];
         $tableName = $entry['tablename'];
         if (is_array($entry['newRecord'])) {
             $fields = array_keys($entry['newRecord']);
@@ -115,10 +115,10 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
                         BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true)
                     );
                     if (!empty($fieldDifferences)) {
-                        $differences[] = array(
+                        $differences[] = [
                             'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, $field)),
                             'html' => nl2br(trim($fieldDifferences)),
-                        );
+                        ];
                     }
                 }
             }

@@ -29,14 +29,14 @@ class Indexer
     /**
      * @var array
      */
-    public $reasons = array(
+    public $reasons = [
         -1 => 'mtime matched the document, so no changes detected and no content updated',
         -2 => 'The minimum age was not exceeded',
         1 => 'The configured max-age was exceeded for the document and thus it\'s indexed.',
         2 => 'The minimum age was exceed and mtime was set and the mtime was different, so the page was indexed.',
         3 => 'The minimum age was exceed, but mtime was not set, so the page was indexed.',
         4 => 'Page has never been indexed (is not represented in the index_phash table).'
-    );
+    ];
 
     /**
      * HTML code blocks to exclude from indexing
@@ -50,7 +50,7 @@ class Indexer
      *
      * @var array
      */
-    public $external_parsers = array();
+    public $external_parsers = [];
 
     /**
      * External parser objects, keys are file extension names. Values are objects with certain methods.
@@ -102,12 +102,12 @@ class Indexer
      *
      * @var array
      */
-    public $defaultContentArray = array(
+    public $defaultContentArray = [
         'title' => '',
         'description' => '',
         'keywords' => '',
         'body' => ''
-    );
+    ];
 
     /**
      * @var int
@@ -122,35 +122,35 @@ class Indexer
     /**
      * @var array
      */
-    public $conf = array();
+    public $conf = [];
 
     /**
      * Configuration set internally (see init functions for required keys and their meaning)
      *
      * @var array
      */
-    public $indexerConfig = array();
+    public $indexerConfig = [];
 
     /**
      * Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
      *
      * @var array
      */
-    public $hash = array();
+    public $hash = [];
 
     /**
      * Hash array, contains phash and phash_grouping
      *
      * @var array
      */
-    public $file_phash_arr = array();
+    public $file_phash_arr = [];
 
     /**
      * Hash array for files
      *
      * @var array
      */
-    public $contentParts = array();
+    public $contentParts = [];
 
     /**
      * Content of TYPO3 page
@@ -162,7 +162,7 @@ class Indexer
     /**
      * @var array
      */
-    public $internal_log = array();
+    public $internal_log = [];
 
     /**
      * Internal log
@@ -174,7 +174,7 @@ class Indexer
     /**
      * @var array
      */
-    public $cHashParams = array();
+    public $cHashParams = [];
 
     /**
      * cHashparams array
@@ -270,7 +270,7 @@ class Indexer
                     if (!$pObj->no_cache) {
                         if ((int)$pObj->sys_language_uid === (int)$pObj->sys_language_content) {
                             // Setting up internal configuration from config array:
-                            $this->conf = array();
+                            $this->conf = [];
                             // Information about page for which the indexing takes place
                             $this->conf['id'] = $pObj->id;
                             // Page id
@@ -291,7 +291,7 @@ class Indexer
                             $this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;
                             // reg1 of the caching table. Not known what practical use this has.
                             // Root line uids
-                            $this->conf['rootline_uids'] = array();
+                            $this->conf['rootline_uids'] = [];
                             foreach ($pObj->config['rootLine'] as $rlkey => $rldat) {
                                 $this->conf['rootline_uids'][$rlkey] = $rldat['uid'];
                             }
@@ -350,10 +350,10 @@ class Indexer
      * @param bool $createCHash If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cacheable pages from the backend!
      * @return void
      */
-    public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = array(), $createCHash = false)
+    public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = [], $createCHash = false)
     {
         // Setting up internal configuration from config array:
-        $this->conf = array();
+        $this->conf = [];
         // Information about page for which the indexing takes place
         $this->conf['id'] = $id;
         // Page id	(int)
@@ -623,7 +623,7 @@ class Indexer
         $contentArr['title'] = trim(isset($titleParts[1]) ? $titleParts[1] : $titleParts[0]);
         // get keywords and description metatags
         if ($this->conf['index_metatags']) {
-            $meta = array();
+            $meta = [];
             $i = 0;
             while ($this->embracingTags($headPart, 'meta', $dummy, $headPart, $meta[$i])) {
                 $i++;
@@ -803,11 +803,11 @@ class Indexer
                         $fI = pathinfo($linkSource);
                         $ext = strtolower($fI['extension']);
                         if (is_object($crawler)) {
-                            $params = array(
+                            $params = [
                                 'document' => $linkSource,
                                 'alturl' => $linkInfo['href'],
                                 'conf' => $this->conf
-                            );
+                            ];
                             unset($params['conf']['content']);
                             $crawler->addQueueEntry_callBack(0, $params, Hook\CrawlerFilesHook::class, $this->conf['id']);
                             $this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
@@ -816,10 +816,10 @@ class Indexer
                         }
                     } else {
                         if (is_object($crawler)) {
-                            $params = array(
+                            $params = [
                                 'document' => $linkSource,
                                 'conf' => $this->conf
-                            );
+                            ];
                             unset($params['conf']['content']);
                             $crawler->addQueueEntry_callBack(0, $params, Hook\CrawlerFilesHook::class, $this->conf['id']);
                             $this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
@@ -843,18 +843,18 @@ class Indexer
     {
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         $htmlParts = $htmlParser->splitTags('a', $html);
-        $hyperLinksData = array();
+        $hyperLinksData = [];
         foreach ($htmlParts as $index => $tagData) {
             if ($index % 2 !== 0) {
                 $tagAttributes = $htmlParser->get_tag_attributes($tagData, true);
                 $firstTagName = $htmlParser->getFirstTagName($tagData);
                 if (strtolower($firstTagName) === 'a') {
                     if ($tagAttributes[0]['href'] && $tagAttributes[0]['href'][0] != '#') {
-                        $hyperLinksData[] = array(
+                        $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
                             'localPath' => $this->createLocalPath($tagAttributes[0]['href'])
-                        );
+                        ];
                     }
                 }
             }
@@ -937,7 +937,7 @@ class Indexer
         if ((string)$content !== '') {
             // Compile headers:
             $headers = GeneralUtility::trimExplode(LF, $content, true);
-            $retVal = array();
+            $retVal = [];
             foreach ($headers as $line) {
                 if (trim($line) === '') {
                     break;
@@ -958,13 +958,13 @@ class Indexer
     protected function createLocalPath($sourcePath)
     {
         $localPath = '';
-        static $pathFunctions = array(
+        static $pathFunctions = [
             'createLocalPathFromT3vars',
             'createLocalPathUsingAbsRefPrefix',
             'createLocalPathUsingDomainURL',
             'createLocalPathFromAbsoluteURL',
             'createLocalPathFromRelativeURL'
-        );
+        ];
         foreach ($pathFunctions as $functionName) {
             $localPath = $this->{$functionName}($sourcePath);
             if ($localPath != '') {
@@ -1145,10 +1145,10 @@ class Indexer
                 $fileInfo = stat($absFile);
                 $cParts = $this->fileContentParts($ext, $absFile);
                 foreach ($cParts as $cPKey) {
-                    $this->internal_log = array();
+                    $this->internal_log = [];
                     $this->log_push('Index: ' . str_replace('.', '_', basename($file)) . ($cPKey ? '#' . $cPKey : ''), '');
                     $Pstart = GeneralUtility::milliseconds();
-                    $subinfo = array('key' => $cPKey);
+                    $subinfo = ['key' => $cPKey];
                     // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
                     $phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
                     $check = $this->checkMtimeTstamp($fileInfo['mtime'], $phash_arr['phash']);
@@ -1247,7 +1247,7 @@ class Indexer
      */
     public function fileContentParts($ext, $absFile)
     {
-        $cParts = array(0);
+        $cParts = [0];
         // Consult relevant external document parser:
         if (is_object($this->external_parsers[$ext])) {
             $cParts = $this->external_parsers[$ext]->fileContentParts($ext, $absFile);
@@ -1341,7 +1341,7 @@ class Indexer
      */
     public function indexAnalyze($content)
     {
-        $indexArr = array();
+        $indexArr = [];
         $counter = 0;
         $this->analyzeHeaderinfo($indexArr, $content, 'title', 7);
         $this->analyzeHeaderinfo($indexArr, $content, 'keywords', 6);
@@ -1455,7 +1455,7 @@ class Indexer
         // Remove any current data for this phash:
         $this->removeOldIndexedPages($this->hash['phash']);
         // setting new phash_row
-        $fields = array(
+        $fields = [
             'phash' => $this->hash['phash'],
             'phash_grouping' => $this->hash['phash_grouping'],
             'cHashParams' => serialize($this->cHashParams),
@@ -1481,7 +1481,7 @@ class Indexer
             'recordUid' => (int)$this->conf['recordUid'],
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
-        );
+        ];
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_phash');
@@ -1492,11 +1492,11 @@ class Indexer
         // PROCESSING index_grlist
         $this->submit_grlist($this->hash['phash'], $this->hash['phash']);
         // PROCESSING index_fulltext
-        $fields = array(
+        $fields = [
             'phash' => $this->hash['phash'],
             'fulltextdata' => implode(' ', $this->contentParts),
             'metaphonedata' => $this->metaphoneContent
-        );
+        ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
         }
@@ -1507,17 +1507,17 @@ class Indexer
         }
         // PROCESSING index_debug
         if ($this->indexerConfig['debugMode']) {
-            $fields = array(
+            $fields = [
                 'phash' => $this->hash['phash'],
-                'debuginfo' => serialize(array(
+                'debuginfo' => serialize([
                     'cHashParams' => $this->cHashParams,
                     'external_parsers initialized' => array_keys($this->external_parsers),
-                    'conf' => array_merge($this->conf, array('content' => substr($this->conf['content'], 0, 1000))),
-                    'contentParts' => array_merge($this->contentParts, array('body' => substr($this->contentParts['body'], 0, 1000))),
+                    'conf' => array_merge($this->conf, ['content' => substr($this->conf['content'], 0, 1000)]),
+                    'contentParts' => array_merge($this->contentParts, ['body' => substr($this->contentParts['body'], 0, 1000)]),
                     'logs' => $this->internal_log,
                     'lexer' => $this->lexerObj->debugString
-                ))
-            );
+                ])
+            ];
             if (IndexedSearchUtility::isTableUsed('index_debug')) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable('index_debug');
@@ -1537,12 +1537,12 @@ class Indexer
     public function submit_grlist($hash, $phash_x)
     {
         // Setting the gr_list record
-        $fields = array(
+        $fields = [
             'phash' => $hash,
             'phash_x' => $phash_x,
             'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
             'gr_list' => $this->conf['gr_list']
-        );
+        ];
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_grlist');
@@ -1560,11 +1560,11 @@ class Indexer
      */
     public function submit_section($hash, $hash_t3)
     {
-        $fields = array(
+        $fields = [
             'phash' => $hash,
             'phash_t3' => $hash_t3,
             'page_id' => (int)$this->conf['id']
-        );
+        ];
         $this->getRootLineFields($fields);
         if (IndexedSearchUtility::isTableUsed('index_section')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1629,7 +1629,7 @@ class Indexer
         // Split filename:
         $fileParts = parse_url($file);
         // Setting new
-        $fields = array(
+        $fields = [
             'phash' => $hash['phash'],
             'phash_grouping' => $hash['phash_grouping'],
             'cHashParams' => serialize($subinfo),
@@ -1649,18 +1649,18 @@ class Indexer
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
             'sys_language_uid' => (int)$this->conf['sys_language_uid']
-        );
+        ];
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_phash');
             $connection->insert('index_phash', $fields);
         }
         // PROCESSING index_fulltext
-        $fields = array(
+        $fields = [
             'phash' => $hash['phash'],
             'fulltextdata' => implode(' ', $contentParts),
             'metaphonedata' => $this->metaphoneContent
-        );
+        ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
         }
@@ -1671,15 +1671,15 @@ class Indexer
         }
         // PROCESSING index_debug
         if ($this->indexerConfig['debugMode']) {
-            $fields = array(
+            $fields = [
                 'phash' => $hash['phash'],
-                'debuginfo' => serialize(array(
+                'debuginfo' => serialize([
                     'cHashParams' => $subinfo,
-                    'contentParts' => array_merge($contentParts, array('body' => substr($contentParts['body'], 0, 1000))),
+                    'contentParts' => array_merge($contentParts, ['body' => substr($contentParts['body'], 0, 1000)]),
                     'logs' => $this->internal_log,
                     'lexer' => $this->lexerObj->debugString
-                ))
-            );
+                ])
+            ];
             if (IndexedSearchUtility::isTableUsed('index_debug')) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable('index_debug');
@@ -2234,13 +2234,13 @@ class Indexer
     public function setT3Hashes()
     {
         //  Set main array:
-        $hArray = array(
+        $hArray = [
             'id' => (int)$this->conf['id'],
             'type' => (int)$this->conf['type'],
             'sys_lang' => (int)$this->conf['sys_language_uid'],
             'MP' => (string)$this->conf['MP'],
             'cHash' => $this->cHashParams
-        );
+        ];
         // Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):
         $this->hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));
         // Add gr_list and set plain phash (Subdivision where special page composition based on login is taken into account as well. It is expected that such pages are normally similar regardless of the login.)
@@ -2255,13 +2255,13 @@ class Indexer
      * @param array $subinfo Additional content identifying the (subpart of) content. For instance; PDF files are divided into groups of pages for indexing.
      * @return array Array with "phash_grouping" and "phash" inside.
      */
-    public function setExtHashes($file, $subinfo = array())
+    public function setExtHashes($file, $subinfo = [])
     {
         //  Set main array:
-        $hash = array();
-        $hArray = array(
+        $hash = [];
+        $hArray = [
             'file' => $file
-        );
+        ];
         // Set grouping hash:
         $hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));
         // Add subinfo

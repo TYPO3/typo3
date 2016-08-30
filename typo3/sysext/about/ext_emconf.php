@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Help>About',
     'description' => 'Shows info about TYPO3, installed extensions and a separate module for available modules.',
     'category' => 'module',
@@ -10,11 +10,11 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'version' => '8.3.0',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '8.3.0-8.3.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

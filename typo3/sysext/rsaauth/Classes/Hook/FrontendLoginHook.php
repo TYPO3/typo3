@@ -36,6 +36,6 @@ class FrontendLoginHook
             $rsaEncryptionEncoder->enableRsaEncryption();
         }
 
-        return array(0 => '', 1 => '');
+        return [0 => '', 1 => ''];
     }
 }

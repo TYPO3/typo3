@@ -70,13 +70,13 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function matchingApplicationContextConditionsDataProvider()
     {
-        return array(
-            array('Production*'),
-            array('Production/Staging/*'),
-            array('Production/Staging/Server2'),
-            array('/^Production.*$/'),
-            array('/^Production\\/.+\\/Server\\d+$/'),
-        );
+        return [
+            ['Production*'],
+            ['Production/Staging/*'],
+            ['Production/Staging/Server2'],
+            ['/^Production.*$/'],
+            ['/^Production\\/.+\\/Server\\d+$/'],
+        ];
     }
 
     /**
@@ -90,7 +90,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
         $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, array('applicationContext', $matchingContextCondition))
+            $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['applicationContext', $matchingContextCondition])
         );
     }
 
@@ -101,14 +101,14 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function notMatchingApplicationContextConditionsDataProvider()
     {
-        return array(
-            array('Production'),
-            array('Testing*'),
-            array('Development/Profiling, Testing/Unit'),
-            array('Testing/Staging/Server2'),
-            array('/^Testing.*$/'),
-            array('/^Production\\/.+\\/Host\\d+$/'),
-        );
+        return [
+            ['Production'],
+            ['Testing*'],
+            ['Development/Profiling, Testing/Unit'],
+            ['Testing/Staging/Server2'],
+            ['/^Testing.*$/'],
+            ['/^Production\\/.+\\/Host\\d+$/'],
+        ];
     }
 
     /**
@@ -122,7 +122,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
         $this->assertFalse(
-            $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, array('applicationContext', $notMatchingApplicationContextCondition))
+            $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['applicationContext', $notMatchingApplicationContextCondition])
         );
     }
 
@@ -133,51 +133,51 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function evaluateConditionCommonDevIpMaskDataProvider()
     {
-        return array(
+        return [
             // [0] $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
             // [1] Actual IP
             // [2] Expected condition result
-            'IP matches' => array(
+            'IP matches' => [
                 '127.0.0.1',
                 '127.0.0.1',
                 true,
-            ),
-            'ipv4 wildcard subnet' => array(
+            ],
+            'ipv4 wildcard subnet' => [
                 '127.0.0.1/24',
                 '127.0.0.2',
                 true,
-            ),
-            'ipv6 wildcard subnet' => array(
+            ],
+            'ipv6 wildcard subnet' => [
                 '0:0::1/128',
                 '::1',
                 true,
-            ),
-            'List of addresses matches' => array(
+            ],
+            'List of addresses matches' => [
                 '1.2.3.4, 5.6.7.8',
                 '5.6.7.8',
                 true,
-            ),
-            'IP does not match' => array(
+            ],
+            'IP does not match' => [
                 '127.0.0.1',
                 '127.0.0.2',
                 false,
-            ),
-            'ipv4 subnet does not match' => array(
+            ],
+            'ipv4 subnet does not match' => [
                 '127.0.0.1/8',
                 '126.0.0.1',
                 false,
-            ),
-            'ipv6 subnet does not match' => array(
+            ],
+            'ipv6 subnet does not match' => [
                 '::1/127',
                 '::2',
                 false
-            ),
-            'List of addresses does not match' => array(
+            ],
+            'List of addresses does not match' => [
                 '127.0.0.1, ::1',
                 '::2',
                 false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -192,7 +192,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $_SERVER['REMOTE_ADDR'] = $actualIp;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
 
-        $actualResult = $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, array('IP', 'devIP'));
+        $actualResult = $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['IP', 'devIP']);
         $this->assertSame($expectedResult, $actualResult);
     }
 
@@ -204,7 +204,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunction')
+                ['userFunc', 'user_testFunction']
             )
         );
     }
@@ -217,7 +217,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithSingleArgument(x)')
+                ['userFunc', 'user_testFunctionWithSingleArgument(x)']
             )
         );
     }
@@ -230,7 +230,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithSingleArgument(0)')
+                ['userFunc', 'user_testFunctionWithSingleArgument(0)']
             )
         );
     }
@@ -243,7 +243,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithNoArgument( )')
+                ['userFunc', 'user_testFunctionWithNoArgument( )']
             )
         );
     }
@@ -256,7 +256,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments(1,2,3)')
+                ['userFunc', 'user_testFunctionWithThreeArguments(1,2,3)']
             )
         );
     }
@@ -269,7 +269,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments(0,true,"foo")')
+                ['userFunc', 'user_testFunctionWithThreeArguments(0,true,"foo")']
             )
         );
     }
@@ -282,7 +282,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments(0,"foo",true)')
+                ['userFunc', 'user_testFunctionWithThreeArguments(0,"foo",true)']
             )
         );
     }
@@ -295,7 +295,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments("foo",true,0)')
+                ['userFunc', 'user_testFunctionWithThreeArguments("foo",true,0)']
             )
         );
     }
@@ -308,7 +308,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments("foo",0,true)')
+                ['userFunc', 'user_testFunctionWithThreeArguments("foo",0,true)']
             )
         );
     }
@@ -321,7 +321,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments(true,0,"foo")')
+                ['userFunc', 'user_testFunctionWithThreeArguments(true,0,"foo")']
             )
         );
     }
@@ -334,7 +334,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments(true,"foo",0)')
+                ['userFunc', 'user_testFunctionWithThreeArguments(true,"foo",0)']
             )
         );
     }
@@ -347,7 +347,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments(0,true,'foo')")
+                ['userFunc', "user_testFunctionWithThreeArguments(0,true,'foo')"]
             )
         );
     }
@@ -360,7 +360,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments(0,'foo',true)")
+                ['userFunc', "user_testFunctionWithThreeArguments(0,'foo',true)"]
             )
         );
     }
@@ -373,7 +373,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments('foo',true,0)")
+                ['userFunc', "user_testFunctionWithThreeArguments('foo',true,0)"]
             )
         );
     }
@@ -386,7 +386,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments('foo',0,true)")
+                ['userFunc', "user_testFunctionWithThreeArguments('foo',0,true)"]
             )
         );
     }
@@ -399,7 +399,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments(true,0,'foo')")
+                ['userFunc', "user_testFunctionWithThreeArguments(true,0,'foo')"]
             )
         );
     }
@@ -412,7 +412,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments(true,'foo',0)")
+                ['userFunc', "user_testFunctionWithThreeArguments(true,'foo',0)"]
             )
         );
     }
@@ -425,7 +425,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', "user_testFunctionWithThreeArguments('foo','bar', 'baz')")
+                ['userFunc', "user_testFunctionWithThreeArguments('foo','bar', 'baz')"]
             )
         );
     }
@@ -438,7 +438,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments("foo","bar","baz")')
+                ['userFunc', 'user_testFunctionWithThreeArguments("foo","bar","baz")']
             )
         );
     }
@@ -451,7 +451,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertFalse(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionFalse')
+                ['userFunc', 'user_testFunctionFalse']
             )
         );
     }
@@ -464,7 +464,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments(1,2,"3,4,5,6")')
+                ['userFunc', 'user_testFunctionWithThreeArguments(1,2,"3,4,5,6")']
             )
         );
     }
@@ -477,7 +477,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArguments ( 1 , 2, "3, 4, 5, 6" )')
+                ['userFunc', 'user_testFunctionWithThreeArguments ( 1 , 2, "3, 4, 5, 6" )']
             )
         );
     }
@@ -490,7 +490,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArgumentsSpaces ( 1 , 2, "3, 4, 5, 6" )')
+                ['userFunc', 'user_testFunctionWithThreeArgumentsSpaces ( 1 , 2, "3, 4, 5, 6" )']
             )
         );
     }
@@ -503,7 +503,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithSpaces(" 3, 4, 5, 6 ")')
+                ['userFunc', 'user_testFunctionWithSpaces(" 3, 4, 5, 6 ")']
             )
         );
     }
@@ -516,7 +516,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithThreeArgumentsSpaces ( 1 , 2, "3, \"4, 5\", 6" )')
+                ['userFunc', 'user_testFunctionWithThreeArgumentsSpaces ( 1 , 2, "3, \"4, 5\", 6" )']
             )
         );
     }
@@ -529,7 +529,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testFunctionWithQuoteMissing ("value \")')
+                ['userFunc', 'user_testFunctionWithQuoteMissing ("value \")']
             )
         );
     }
@@ -542,7 +542,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'user_testQuotes("1 \" 2")')
+                ['userFunc', 'user_testQuotes("1 \" 2")']
             )
         );
     }
@@ -555,7 +555,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
-                array('userFunc', 'ConditionMatcherUserFunctions::isTrue(1)')
+                ['userFunc', 'ConditionMatcherUserFunctions::isTrue(1)']
             )
         );
     }

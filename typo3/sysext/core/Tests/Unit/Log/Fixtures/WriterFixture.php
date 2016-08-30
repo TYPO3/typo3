@@ -22,7 +22,7 @@ class WriterFixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter
     /**
      * @var array
      */
-    protected $records = array();
+    protected $records = [];
 
     public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record)
     {

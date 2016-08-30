@@ -51,7 +51,7 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
      * @param int $lifetime
      * @throws InvalidDataException
      */
-    public function set($entryIdentifier, $sourceCode, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $sourceCode, array $tags = [], $lifetime = null)
     {
         if (strpos($sourceCode, '<?php') === 0) {
             // Remove opening PHP tag; it is added by the cache backend to which

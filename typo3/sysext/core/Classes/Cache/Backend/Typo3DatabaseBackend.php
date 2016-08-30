@@ -83,7 +83,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * @throws Exception if no cache frontend has been set.
      * @throws InvalidDataException if the data to be stored is not a string.
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         $this->throwExceptionIfFrontendDoesNotExist();
         if (!is_string($data)) {

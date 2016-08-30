@@ -110,7 +110,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+        $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
         $this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
@@ -125,10 +125,10 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
-        $backend->set($identifier, $data, array('UnitTestTag%tag3'));
+        $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tagX']);
+        $backend->set($identifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
-        $this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
+        $this->assertEquals([], $retrieved, 'Found entry which should no longer exist.');
     }
 
     /**
@@ -160,9 +160,9 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
-        $backend->set('BackendWincacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-        $backend->set('BackendWincacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-        $backend->set('BackendWincacheTest3', $data, array('UnitTestTag%test'));
+        $backend->set('BackendWincacheTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendWincacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendWincacheTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
         $this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
         $this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
@@ -229,7 +229,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setTagsOnlyOnceToIdentifier()
     {
         $identifier = $this->getUniqueId('MyIdentifier');
-        $tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+        $tags = ['UnitTestTag%test', 'UnitTestTag%boring'];
 
         $backend = $this->setUpBackend(true);
         $backend->_call('addIdentifierToTags', $identifier, $tags);

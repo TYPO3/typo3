@@ -27,7 +27,7 @@ class VideoTagRenderer implements FileRendererInterface
      *
      * @var array
      */
-    protected $possibleMimeTypes = array('video/mp4', 'video/webm', 'video/ogg', 'application/ogg');
+    protected $possibleMimeTypes = ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg'];
 
     /**
      * Returns the priority of the renderer
@@ -64,7 +64,7 @@ class VideoTagRenderer implements FileRendererInterface
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = array(), $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
 
         // If autoplay isn't set manually check if $file is a FileReference take autoplay from there

@@ -25,12 +25,12 @@ class tx_indexed_search_pi_wizicon
      */
     public function proc($wizardItems)
     {
-        $wizardItems['plugins_tx_indexed_search'] = array(
+        $wizardItems['plugins_tx_indexed_search'] = [
             'iconIdentifier' => 'content-special-indexed_search',
             'title' => $GLOBALS['LANG']->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title'),
             'description' => $GLOBALS['LANG']->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description'),
             'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=indexed_search'
-        );
+        ];
         return $wizardItems;
     }
 }

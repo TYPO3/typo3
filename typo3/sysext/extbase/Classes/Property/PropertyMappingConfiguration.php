@@ -50,14 +50,14 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface[]
      */
-    protected $subConfigurationForProperty = array();
+    protected $subConfigurationForProperty = [];
 
     /**
      * Keys which should be renamed
      *
      * @var array
      */
-    protected $mapping = array();
+    protected $mapping = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
@@ -69,21 +69,21 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @var array
      */
-    protected $propertiesToBeMapped = array();
+    protected $propertiesToBeMapped = [];
 
     /**
      * List of property names to be skipped during property mapping
      *
      * @var array
      */
-    protected $propertiesToSkip = array();
+    protected $propertiesToSkip = [];
 
     /**
      * List of disallowed property names which will be ignored while property mapping
      *
      * @var array
      */
-    protected $propertiesNotToBeMapped = array();
+    protected $propertiesNotToBeMapped = [];
 
     /**
      * If TRUE, unknown properties will be skipped during property mapping
@@ -343,7 +343,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     protected function getTypeConvertersWithParentClasses($typeConverter)
     {
         $typeConverterClasses = class_parents($typeConverter);
-        $typeConverterClasses = $typeConverterClasses === false ? array() : $typeConverterClasses;
+        $typeConverterClasses = $typeConverterClasses === false ? [] : $typeConverterClasses;
         $typeConverterClasses[] = $typeConverter;
         return $typeConverterClasses;
     }

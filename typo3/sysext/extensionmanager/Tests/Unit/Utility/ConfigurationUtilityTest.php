@@ -27,29 +27,29 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $configurationUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)
-            ->setMethods(array('getDefaultConfigurationFromExtConfTemplateAsValuedArray'))
+            ->setMethods(['getDefaultConfigurationFromExtConfTemplateAsValuedArray'])
             ->getMock();
         $configurationUtility
             ->expects($this->once())
             ->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $extensionKey = $this->getUniqueId('some-extension');
 
-        $currentConfiguration = array(
+        $currentConfiguration = [
             'key1' => 'value1',
-            'key2.' => array(
+            'key2.' => [
                 'subkey1' => 'value2'
-            )
-        );
+            ]
+        ];
 
-        $expected = array(
-            'key1' => array(
+        $expected = [
+            'key1' => [
                 'value' => 'value1',
-            ),
-            'key2.subkey1' => array(
+            ],
+            'key2.subkey1' => [
                 'value' => 'value2',
-            ),
-        );
+            ],
+        ];
 
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = serialize($currentConfiguration);
         $actual = $configurationUtility->getCurrentConfiguration($extensionKey);
@@ -64,7 +64,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $configurationUtility = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class,
-            array('getDefaultConfigurationRawString')
+            ['getDefaultConfigurationRawString']
         );
         $configurationUtility
             ->expects($this->once())
@@ -81,8 +81,8 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->with(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class)
             ->will($this->returnValue($tsStyleConfig));
 
-        $constants = array(
-            'checkConfigurationFE' => array(
+        $constants = [
+            'checkConfigurationFE' => [
                 'cat' => 'basic',
                 'subcat_name' => 'enable',
                 'subcat' => 'a/enable/z',
@@ -91,8 +91,8 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'name' => 'checkConfigurationFE',
                 'value' => '0',
                 'default_value' => '0'
-            ),
-            'BE.forceSalted' => array(
+            ],
+            'BE.forceSalted' => [
                 'cat' => 'advancedbackend',
                 'subcat' => 'x/z',
                 'type' => 'boolean',
@@ -100,23 +100,23 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'name' => 'BE.forceSalted',
                 'value' => '0',
                 'default_value' => '0'
-            )
-        );
+            ]
+        ];
         $tsStyleConfig
             ->expects($this->once())
             ->method('ext_initTSstyleConfig')
             ->will($this->returnValue($constants));
 
-        $setupTsConstantEditor = array(
-            'advancedbackend.' => array(
+        $setupTsConstantEditor = [
+            'advancedbackend.' => [
                 'description' => '<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!',
                 1 => 'BE.forceSalted'
-            )
-        );
+            ]
+        ];
         $tsStyleConfig->setup['constants']['TSConstantEditor.'] = $setupTsConstantEditor;
 
-        $expected = array(
-            'checkConfigurationFE' => array(
+        $expected = [
+            'checkConfigurationFE' => [
                 'cat' => 'basic',
                 'subcat_name' => 'enable',
                 'subcat' => 'a/enable/z',
@@ -126,8 +126,8 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'value' => '0',
                 'default_value' => '0',
                 'subcat_label' => 'Enable features',
-            ),
-            'BE.forceSalted' => array(
+            ],
+            'BE.forceSalted' => [
                 'cat' => 'advancedbackend',
                 'subcat' => 'x/z',
                 'type' => 'boolean',
@@ -136,13 +136,13 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'value' => '0',
                 'default_value' => '0',
                 'highlight' => 1,
-            ),
-            '__meta__' => array(
-                'advancedbackend' => array(
+            ],
+            '__meta__' => [
+                'advancedbackend' => [
                     'highlightText' => '<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $result = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($this->getUniqueId('some_extension'));
         $this->assertEquals($expected, $result);
@@ -155,84 +155,84 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertValuedToNestedConfigurationDataProvider()
     {
-        return array(
-            'plain array' => array(
-                array(
-                    'first' => array(
+        return [
+            'plain array' => [
+                [
+                    'first' => [
                         'value' => 'value1'
-                    ),
-                    'second' => array(
+                    ],
+                    'second' => [
                         'value' => 'value2'
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'first' => 'value1',
                     'second' => 'value2'
-                )
-            ),
-            'nested value with 2 levels' => array(
-                array(
-                    'first.firstSub' => array(
+                ]
+            ],
+            'nested value with 2 levels' => [
+                [
+                    'first.firstSub' => [
                         'value' => 'value1'
-                    ),
-                    'second.secondSub' => array(
+                    ],
+                    'second.secondSub' => [
                         'value' => 'value2'
-                    )
-                ),
-                array(
-                    'first.' => array(
+                    ]
+                ],
+                [
+                    'first.' => [
                         'firstSub' => 'value1'
-                    ),
-                    'second.' => array(
+                    ],
+                    'second.' => [
                         'secondSub' => 'value2'
-                    )
-                )
-            ),
-            'nested value with 3 levels' => array(
-                array(
-                    'first.firstSub.firstSubSub' => array(
+                    ]
+                ]
+            ],
+            'nested value with 3 levels' => [
+                [
+                    'first.firstSub.firstSubSub' => [
                         'value' => 'value1'
-                    ),
-                    'second.secondSub.secondSubSub' => array(
+                    ],
+                    'second.secondSub.secondSubSub' => [
                         'value' => 'value2'
-                    )
-                ),
-                array(
-                    'first.' => array(
-                        'firstSub.' => array(
+                    ]
+                ],
+                [
+                    'first.' => [
+                        'firstSub.' => [
                             'firstSubSub' => 'value1'
-                        )
-                    ),
-                    'second.' => array(
-                        'secondSub.' => array(
+                        ]
+                    ],
+                    'second.' => [
+                        'secondSub.' => [
                             'secondSubSub' => 'value2'
-                        )
-                    )
-                )
-            ),
-            'mixed nested value with 2 levels' => array(
-                array(
-                    'first' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'mixed nested value with 2 levels' => [
+                [
+                    'first' => [
                         'value' => 'firstValue'
-                    ),
-                    'first.firstSub' => array(
+                    ],
+                    'first.firstSub' => [
                         'value' => 'value1'
-                    ),
-                    'second.secondSub' => array(
+                    ],
+                    'second.secondSub' => [
                         'value' => 'value2'
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'first' => 'firstValue',
-                    'first.' => array(
+                    'first.' => [
                         'firstSub' => 'value1'
-                    ),
-                    'second.' => array(
+                    ],
+                    'second.' => [
                         'secondSub' => 'value2'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -246,7 +246,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertValuedToNestedConfiguration(array $configuration, array $expected)
     {
         /** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, ['dummy'], [], '', false);
         $this->assertEquals($expected, $subject->convertValuedToNestedConfiguration($configuration));
     }
 
@@ -257,50 +257,50 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertNestedToValuedConfigurationDataProvider()
     {
-        return array(
-            'plain array' => array(
-                array(
+        return [
+            'plain array' => [
+                [
                     'first' => 'value1',
                     'second' => 'value2'
-                ),
-                array(
-                    'first' => array('value' => 'value1'),
-                    'second' => array('value' => 'value2'),
-                )
-            ),
-            'two levels' => array(
-                array(
-                    'first.' => array('firstSub' => 'value1'),
-                    'second.' => array('firstSub' => 'value2'),
-                ),
-                array(
-                    'first.firstSub' => array('value' => 'value1'),
-                    'second.firstSub' => array('value' => 'value2'),
-                )
-            ),
-            'three levels' => array(
-                array(
-                    'first.' => array('firstSub.' => array('firstSubSub' => 'value1')),
-                    'second.' => array('firstSub.' => array('firstSubSub' => 'value2'))
-                ),
-                array(
-                    'first.firstSub.firstSubSub' => array('value' => 'value1'),
-                    'second.firstSub.firstSubSub' => array('value' => 'value2'),
-                )
-            ),
-            'mixed' => array(
-                array(
-                    'first.' => array('firstSub' => 'value1'),
-                    'second.' => array('firstSub.' => array('firstSubSub' => 'value2')),
+                ],
+                [
+                    'first' => ['value' => 'value1'],
+                    'second' => ['value' => 'value2'],
+                ]
+            ],
+            'two levels' => [
+                [
+                    'first.' => ['firstSub' => 'value1'],
+                    'second.' => ['firstSub' => 'value2'],
+                ],
+                [
+                    'first.firstSub' => ['value' => 'value1'],
+                    'second.firstSub' => ['value' => 'value2'],
+                ]
+            ],
+            'three levels' => [
+                [
+                    'first.' => ['firstSub.' => ['firstSubSub' => 'value1']],
+                    'second.' => ['firstSub.' => ['firstSubSub' => 'value2']]
+                ],
+                [
+                    'first.firstSub.firstSubSub' => ['value' => 'value1'],
+                    'second.firstSub.firstSubSub' => ['value' => 'value2'],
+                ]
+            ],
+            'mixed' => [
+                [
+                    'first.' => ['firstSub' => 'value1'],
+                    'second.' => ['firstSub.' => ['firstSubSub' => 'value2']],
                     'third' => 'value3'
-                ),
-                array(
-                    'first.firstSub' => array('value' => 'value1'),
-                    'second.firstSub.firstSubSub' => array('value' => 'value2'),
-                    'third' => array('value' => 'value3')
-                )
-            )
-        );
+                ],
+                [
+                    'first.firstSub' => ['value' => 'value1'],
+                    'second.firstSub.firstSubSub' => ['value' => 'value2'],
+                    'third' => ['value' => 'value3']
+                ]
+            ]
+        ];
     }
 
     /**
@@ -314,7 +314,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertNestedToValuedConfiguration(array $configuration, array $expected)
     {
         /** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, ['dummy'], [], '', false);
         $this->assertEquals($expected, $subject->convertNestedToValuedConfiguration($configuration));
     }
 }

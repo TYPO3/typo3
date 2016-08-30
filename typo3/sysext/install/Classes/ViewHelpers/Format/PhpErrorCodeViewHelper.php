@@ -27,7 +27,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper
     /**
      * @var array
      */
-    protected static $levelNames = array(
+    protected static $levelNames = [
         E_ERROR => 'E_ERROR',
         E_WARNING => 'E_WARNING',
         E_PARSE => 'E_PARSE',
@@ -43,7 +43,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper
         E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
         E_DEPRECATED => 'E_DEPRECATED',
         E_USER_DEPRECATED => 'E_USER_DEPRECATED',
-    );
+    ];
 
     /**
      * Initialize arguments
@@ -78,7 +78,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $phpErrorCode = $arguments['phpErrorCode'];
-        $levels = array();
+        $levels = [];
         if (($phpErrorCode & E_ALL) == E_ALL) {
             $levels[] = 'E_ALL';
             $phpErrorCode &= ~E_ALL;

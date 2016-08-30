@@ -54,7 +54,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    private $singletonInstances = array();
+    private $singletonInstances = [];
 
     /**
      * Array of prototype objects currently being built, to prevent recursion.
@@ -120,9 +120,9 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $givenConstructorArguments the list of constructor arguments as array
      * @return object the built object
      */
-    public function getInstance($className, $givenConstructorArguments = array())
+    public function getInstance($className, $givenConstructorArguments = [])
     {
-        $this->prototypeObjectsWhichAreCurrentlyInstanciated = array();
+        $this->prototypeObjectsWhichAreCurrentlyInstanciated = [];
         return $this->getInstanceInternal($className, $givenConstructorArguments);
     }
 
@@ -151,7 +151,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      * @return object the built object
      */
-    protected function getInstanceInternal($className, $givenConstructorArguments = array())
+    protected function getInstanceInternal($className, $givenConstructorArguments = [])
     {
         $className = $this->getImplementationClassName($className);
         if ($className === \TYPO3\CMS\Extbase\Object\Container\Container::class) {
@@ -206,7 +206,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         }
         $constructorArguments = $this->getConstructorArguments($className, $classInfo, $givenConstructorArguments);
         array_unshift($constructorArguments, $className);
-        $instance = call_user_func_array(array(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'), $constructorArguments);
+        $instance = call_user_func_array([\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'], $constructorArguments);
         if ($classIsSingleton) {
             $this->singletonInstances[$className] = $instance;
         }
@@ -230,7 +230,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
             if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
                 $this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
             }
-            if (is_callable(array($instance, $injectMethodName))) {
+            if (is_callable([$instance, $injectMethodName])) {
                 $instance->{$injectMethodName}($instanceToInject);
             }
         }
@@ -254,7 +254,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function initializeObject($instance, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo)
     {
-        if ($classInfo->getIsInitializeable() && is_callable(array($instance, 'initializeObject'))) {
+        if ($classInfo->getIsInitializeable() && is_callable([$instance, 'initializeObject'])) {
             $instance->initializeObject();
         }
     }
@@ -294,7 +294,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      */
     private function getConstructorArguments($className, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo, array $givenConstructorArguments)
     {
-        $parameters = array();
+        $parameters = [];
         $constructorArgumentInformation = $classInfo->getConstructorArguments();
         foreach ($constructorArgumentInformation as $index => $argumentInformation) {
             // Constructor argument given AND argument is a simple type OR instance of argument type

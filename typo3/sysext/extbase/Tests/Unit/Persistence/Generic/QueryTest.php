@@ -46,7 +46,7 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, array('dummy'), array('someType'));
+        $this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, ['dummy'], ['someType']);
         $this->querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $this->query->_set('querySettings', $this->querySettings);
         $this->persistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
@@ -125,12 +125,12 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function equalsForCaseSensitiveFalseLowercasesOperandProvider()
     {
-        return array(
-            'Polish alphabet' => array('name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv'),
-            'German alphabet' => array('name', 'ßÜÖÄüöä', 'ßüöäüöä'),
-            'Greek alphabet' => array('name', 'Τάχιστη αλώπηξ βαφής ψημένη γη', 'τάχιστη αλώπηξ βαφής ψημένη γη'),
-            'Russian alphabet' => array('name', 'АВСТРАЛИЯавстралия', 'австралияавстралия')
-        );
+        return [
+            'Polish alphabet' => ['name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv'],
+            'German alphabet' => ['name', 'ßÜÖÄüöä', 'ßüöäüöä'],
+            'Greek alphabet' => ['name', 'Τάχιστη αλώπηξ βαφής ψημένη γη', 'τάχιστη αλώπηξ βαφής ψημένη γη'],
+            'Russian alphabet' => ['name', 'АВСТРАЛИЯавстралия', 'австралияавстралия']
+        ];
     }
 
     /**
@@ -150,7 +150,7 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dynamicOperand = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface::class);
         $objectManager->expects($this->any())->method('get')->will($this->returnValue($dynamicOperand));
         /** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
-        $qomFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class, array('comparison'));
+        $qomFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class, ['comparison']);
         $qomFactory->_set('objectManager', $objectManager);
         $qomFactory->expects($this->once())->method('comparison')->with($this->anything(), $this->anything(), $expectedOperand);
         $this->query->_set('qomFactory', $qomFactory);

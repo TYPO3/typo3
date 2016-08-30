@@ -147,7 +147,7 @@ class FileController
         $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         if ($httpHost !== $refInfo['host'] && $this->vC !== $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-            $this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+            $this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', [$refInfo['host'], $httpHost]);
         } else {
             $this->fileProcessor->start($this->file);
             $this->fileData = $this->fileProcessor->processData();
@@ -220,7 +220,7 @@ class FileController
             $response->getBody()->write(implode(',', $errors));
             $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
         } else {
-            $flatResult = array();
+            $flatResult = [];
             foreach ($this->fileData as $action => $results) {
                 foreach ($results as $result) {
                     if (is_array($result)) {
@@ -276,7 +276,7 @@ class FileController
         if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
             $thumbUrl = '';
             if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
-                $processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+                $processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
                 if ($processedFile) {
                     $thumbUrl = $processedFile->getPublicUrl(true);
                 }
@@ -284,11 +284,11 @@ class FileController
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $result = array_merge(
                 $result->toArray(),
-                array(
+                [
                     'date' => BackendUtility::date($result->getModificationTime()),
                     'icon' => $iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
                     'thumbUrl' => $thumbUrl
-                )
+                ]
             );
         } elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
             $result = $result->getIdentifier();

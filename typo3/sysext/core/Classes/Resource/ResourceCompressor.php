@@ -108,9 +108,9 @@ class ResourceCompressor
      * @param array $options Additional options
      * @return array CSS files
      */
-    public function concatenateCssFiles(array $cssFiles, array $options = array())
+    public function concatenateCssFiles(array $cssFiles, array $options = [])
     {
-        $filesToIncludeByType = array('all' => array());
+        $filesToIncludeByType = ['all' => []];
         foreach ($cssFiles as $key => $fileOptions) {
             // no concatenation allowed for this file, so continue
             if (!empty($fileOptions['excludeFromConcatenation'])) {
@@ -121,12 +121,12 @@ class ResourceCompressor
             if (
                 !isset($options['baseDirectories'])
                 || $this->checkBaseDirectory(
-                    $filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory))
+                    $filenameFromMainDir, array_merge($options['baseDirectories'], [$this->targetDirectory])
                 )
             ) {
                 $type = isset($fileOptions['media']) ? strtolower($fileOptions['media']) : 'all';
                 if (!isset($filesToIncludeByType[$type])) {
-                    $filesToIncludeByType[$type] = array();
+                    $filesToIncludeByType[$type] = [];
                 }
                 if ($fileOptions['forceOnTop']) {
                     array_unshift($filesToIncludeByType[$type], $filenameFromMainDir);
@@ -143,7 +143,7 @@ class ResourceCompressor
                     continue;
                 }
                 $targetFile = $this->createMergedCssFile($filesToInclude);
-                $concatenatedOptions = array(
+                $concatenatedOptions = [
                     'file' => $targetFile,
                     'rel' => 'stylesheet',
                     'media' => $mediaOption,
@@ -151,9 +151,9 @@ class ResourceCompressor
                     'excludeFromConcatenation' => true,
                     'forceOnTop' => false,
                     'allWrap' => ''
-                );
+                ];
                 // place the merged stylesheet on top of the stylesheets
-                $cssFiles = array_merge($cssFiles, array($targetFile => $concatenatedOptions));
+                $cssFiles = array_merge($cssFiles, [$targetFile => $concatenatedOptions]);
             }
         }
         return $cssFiles;
@@ -167,14 +167,14 @@ class ResourceCompressor
      */
     public function concatenateJsFiles(array $jsFiles)
     {
-        $filesToInclude = array();
+        $filesToInclude = [];
         foreach ($jsFiles as $key => $fileOptions) {
             // invalid section found or no concatenation allowed, so continue
             if (empty($fileOptions['section']) || !empty($fileOptions['excludeFromConcatenation'])) {
                 continue;
             }
             if (!isset($filesToInclude[$fileOptions['section']])) {
-                $filesToInclude[$fileOptions['section']] = array();
+                $filesToInclude[$fileOptions['section']] = [];
             }
             $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
             if ($fileOptions['forceOnTop']) {
@@ -188,7 +188,7 @@ class ResourceCompressor
         if (!empty($filesToInclude)) {
             foreach ($filesToInclude as $section => $files) {
                 $targetFile = $this->createMergedJsFile($files);
-                $concatenatedOptions = array(
+                $concatenatedOptions = [
                     'file' => $targetFile,
                     'type' => 'text/javascript',
                     'section' => $section,
@@ -196,9 +196,9 @@ class ResourceCompressor
                     'excludeFromConcatenation' => true,
                     'forceOnTop' => false,
                     'allWrap' => ''
-                );
+                ];
                 // place the merged javascript on top of the JS files
-                $jsFiles = array_merge(array($targetFile => $concatenatedOptions), $jsFiles);
+                $jsFiles = array_merge([$targetFile => $concatenatedOptions], $jsFiles);
             }
         }
         return $jsFiles;
@@ -310,7 +310,7 @@ class ResourceCompressor
      */
     public function compressCssFiles(array $cssFiles)
     {
-        $filesAfterCompression = array();
+        $filesAfterCompression = [];
         foreach ($cssFiles as $key => $fileOptions) {
             // if compression is enabled
             if ($fileOptions['compress']) {
@@ -371,7 +371,7 @@ class ResourceCompressor
      */
     public function compressJsFiles(array $jsFiles)
     {
-        $filesAfterCompression = array();
+        $filesAfterCompression = [];
         foreach ($jsFiles as $fileName => $fileOptions) {
             // If compression is enabled
             if ($fileOptions['compress']) {
@@ -496,8 +496,8 @@ class ResourceCompressor
      */
     protected function findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, $wrap = '|')
     {
-        $matches = array();
-        $replacements = array();
+        $matches = [];
+        $replacements = [];
         $wrap = explode('|', $wrap);
         preg_match_all($regex, $contents, $matches);
         foreach ($matches[2] as $matchCount => $match) {
@@ -525,7 +525,7 @@ class ResourceCompressor
      */
     protected function cssFixStatements($contents)
     {
-        $matches = array();
+        $matches = [];
         $comment = LF . '/* moved by compressor */' . LF;
         // nothing to do, so just return contents
         if (stripos($contents, '@charset') === false && stripos($contents, '@import') === false && stripos($contents, '@namespace') === false) {

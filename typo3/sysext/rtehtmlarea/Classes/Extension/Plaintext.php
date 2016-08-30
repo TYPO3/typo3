@@ -40,10 +40,10 @@ class Plaintext extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'pastetoggle' => 'PasteToggle',
         'pastebehaviour' => 'PasteBehaviour'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -65,7 +65,7 @@ class Plaintext extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $button = 'pastebehaviour';
         // Get current TYPO3 User Setting, if available
         if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
@@ -85,7 +85,7 @@ class Plaintext extends RteHtmlAreaApi
      */
     public function applyToolbarConstraints($show)
     {
-        $removeButtons = array();
+        $removeButtons = [];
         // Remove pastebehaviour button if pastetoggle is not configured
         if (!in_array('pastetoggle', $show)) {
             $removeButtons[] = 'pastebehaviour';

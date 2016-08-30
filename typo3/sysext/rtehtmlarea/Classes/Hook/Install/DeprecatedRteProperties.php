@@ -37,7 +37,7 @@ class DeprecatedRteProperties extends AbstractUpdate
      *
      * @var array
      */
-    protected $replacementRteProperties = array(
+    protected $replacementRteProperties = [
         'disableRightClick' => 'contextMenu.disable',
         'disableContextMenu' => 'contextMenu.disable',
         'hidePStyleItems' => 'buttons.formatblock.removeItems',
@@ -53,7 +53,7 @@ class DeprecatedRteProperties extends AbstractUpdate
         'blindImageOptions' => 'buttons.image.options.removeItems',
         'blindLinkOptions' => 'buttons.link.options.removeItems',
         'defaultLinkTarget' => 'buttons.link.properties.target.default'
-    );
+    ];
 
     /**
      * Properties that may be replaced automatically in Page TSconfig (except inludes from external files)
@@ -61,20 +61,20 @@ class DeprecatedRteProperties extends AbstractUpdate
      *
      * @var array
      */
-    protected $doubleReplacementRteProperties = array(
-        'disableTYPO3Browsers' => array(
+    protected $doubleReplacementRteProperties = [
+        'disableTYPO3Browsers' => [
             'buttons.image.TYPO3Browser.disabled',
             'buttons.link.TYPO3Browser.disabled'
-        ),
-        'showTagFreeClasses' => array(
+        ],
+        'showTagFreeClasses' => [
             'buttons.blockstyle.showTagFreeClasses',
             'buttons.textstyle.showTagFreeClasses'
-        ),
-        'disablePCexamples' => array(
+        ],
+        'disablePCexamples' => [
             'buttons.blockstyle.disableStyleOnOptionLabel',
             'buttons.textstyle.disableStyleOnOptionLabel'
-        )
-    );
+        ]
+    ];
 
     /**
      * Properties that may not be replaced automatically in Page TSconfig
@@ -82,7 +82,7 @@ class DeprecatedRteProperties extends AbstractUpdate
      *
      * @var array
      */
-    protected $useInsteadRteProperties = array(
+    protected $useInsteadRteProperties = [
         'fontSize' => 'buttons.fontsize.addItems',
         'RTE.default.classesAnchor' => 'RTE.default.buttons.link.properties.class.allowedClasses',
         'RTE.default.classesAnchor.default.[link-type]' => 'RTE.default.buttons.link.[link-type].properties.class.default',
@@ -94,7 +94,7 @@ class DeprecatedRteProperties extends AbstractUpdate
         'mainStyle_bgcolor' => 'contentCSS',
         'inlineStyle.[any-keystring]' => 'contentCSS',
         'ignoreMainStyleOverride' => 'n.a.'
-    );
+    ];
 
     /**
      * Function which checks if update is needed. Called in the beginning of an update process.
@@ -118,7 +118,7 @@ class DeprecatedRteProperties extends AbstractUpdate
         }
         $description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and have been removed in TYPO3 6.0.</p>' . LF . '<table><thead><tr><th>Deprecated property</th><th>Use instead</th></tr></thead>' . LF . '<tbody>' . $deprecatedProperties . '</tboby></table>' . LF . '<p>You are currently using some of these properties on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
         if ($pagesCount) {
-            $pagesUids = array();
+            $pagesUids = [];
             foreach ($pages as $page) {
                 $pagesUids[] = $page['uid'];
             }

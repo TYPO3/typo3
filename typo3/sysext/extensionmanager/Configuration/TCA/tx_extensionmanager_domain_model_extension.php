@@ -1,142 +1,142 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension',
         'label' => 'uid',
         'default_sortby' => '',
         'hideTable' => true,
         'rootLevel' => true,
         'adminOnly' => true,
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'empty-icon'
-        )
-    ),
-    'interface' => array(
+        ]
+    ],
+    'interface' => [
         'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash,serialized_dependencies'
-    ),
-    'columns' => array(
-        'extension_key' => array(
+    ],
+    'columns' => [
+        'extension_key' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.extensionkey',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'version' => array(
+            ]
+        ],
+        'version' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.version',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'alldownloadcounter' => array(
-            'config' => array(
+            ]
+        ],
+        'alldownloadcounter' => [
+            'config' => [
                 'type' => 'passthrough'
-            )
-        ),
-        'integer_version' => array(
+            ]
+        ],
+        'integer_version' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.integerversion',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'title' => array(
+            ]
+        ],
+        'title' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 5
-            )
-        ),
-        'state' => array(
+            ]
+        ],
+        'state' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.state',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'range' => array('lower' => 0, 'upper' => 1000),
+                'range' => ['lower' => 0, 'upper' => 1000],
                 'eval' => 'int'
-            )
-        ),
-        'category' => array(
+            ]
+        ],
+        'category' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.category',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'range' => array('lower' => 0, 'upper' => 1000),
+                'range' => ['lower' => 0, 'upper' => 1000],
                 'eval' => 'int'
-            )
-        ),
-        'last_updated' => array(
+            ]
+        ],
+        'last_updated' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.lastupdated',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'datetime'
-            )
-        ),
-        'update_comment' => array(
+            ]
+        ],
+        'update_comment' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.updatecomment',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 5
-            )
-        ),
-        'author_name' => array(
+            ]
+        ],
+        'author_name' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.authorname',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'author_email' => array(
+            ]
+        ],
+        'author_email' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.authoremail',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'current_version' => array(
+            ]
+        ],
+        'current_version' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.currentversion',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'size' => 1
-            )
-        ),
-        'review_state' => array(
+            ]
+        ],
+        'review_state' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.reviewstate',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'size' => 1
-            )
-        ),
-        'md5hash' => array(
+            ]
+        ],
+        'md5hash' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.md5hash',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 1,
-            ),
-        ),
-        'serialized_dependencies' => array(
+            ],
+        ],
+        'serialized_dependencies' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.serializedDependencies',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
-            ),
-        ),
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies')
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => '')
-    )
-);
+            ],
+        ],
+    ],
+    'types' => [
+        '0' => ['showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies']
+    ],
+    'palettes' => [
+        '1' => ['showitem' => '']
+    ]
+];

@@ -22,7 +22,7 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array|\TYPO3\CMS\Workspaces\ColumnDataProviderInterface[]
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
@@ -70,12 +70,12 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getDefinition()
     {
-        $columnSettings = array();
+        $columnSettings = [];
         foreach ($this->columns as $columnName => $dataProvider) {
             $definition = $dataProvider->getDefinition();
 
             if (!is_array($definition)) {
-                $definition = array();
+                $definition = [];
             }
 
             $definition['name'] = $columnName;
@@ -92,7 +92,7 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getHandler()
     {
-        $columnSettings = array();
+        $columnSettings = [];
         foreach ($this->columns as $columnName => $_) {
             $columnSettings[] = 'TYPO3.Workspaces.extension.AdditionalColumn.' . $columnName;
         }
@@ -107,7 +107,7 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getData(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $combinedRecord)
     {
-        $recordData = array();
+        $recordData = [];
         foreach ($this->columns as $columnName => $dataProvider) {
             $data = $dataProvider->getData($combinedRecord);
 

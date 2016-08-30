@@ -5,40 +5,40 @@
  * a package specific file typo3conf/AdditionalFactoryConfiguration.php
  * from eg. the government or introduction package.
  */
-return array(
-    'BE' => array(
+return [
+    'BE' => [
         'explicitADmode' => 'explicitAllow',
         'loginSecurityLevel' => 'rsa',
-    ),
-    'EXT' => array(
-        'extConf' => array(
+    ],
+    'EXT' => [
+        'extConf' => [
             'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',
-            'saltedpasswords' => serialize(array(
-                'BE.' => array(
+            'saltedpasswords' => serialize([
+                'BE.' => [
                     'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
                     'forceSalted' => 0,
                     'onlyAuthService' => 0,
                     'updatePasswd' => 1,
-                ),
-                'FE.' => array(
+                ],
+                'FE.' => [
                     'enabled' => 1,
                     'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
                     'forceSalted' => 0,
                     'onlyAuthService' => 0,
                     'updatePasswd' => 1,
-                ),
-            )),
-        ),
-    ),
-    'FE' => array(
+                ],
+            ]),
+        ],
+    ],
+    'FE' => [
         'loginSecurityLevel' => 'rsa',
-    ),
-    'GFX' => array(
+    ],
+    'GFX' => [
         'jpg_quality' => '80',
-    ),
-    'SYS' => array(
+    ],
+    'SYS' => [
         'isInitialInstallationInProgress' => true,
         'isInitialDatabaseImportDone' => false,
         'sitename' => 'New TYPO3 site',
-    ),
-);
+    ],
+];

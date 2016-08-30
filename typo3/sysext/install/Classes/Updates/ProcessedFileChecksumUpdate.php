@@ -150,7 +150,7 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate
                 continue;
             }
 
-            $processedFileObject = new ProcessedFile($originalFile, '', array(), $processedFileRow);
+            $processedFileObject = new ProcessedFile($originalFile, '', [], $processedFileRow);
 
             // calculate new checksum and name
             $newChecksum = $processedFileObject->calculateChecksum();
@@ -168,12 +168,12 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate
                 // rename file
                 if (@rename($filePath, $newFilePath)) {
                     // save result back into database
-                    $fields = array(
+                    $fields = [
                         'tstamp' => time(),
                         'identifier' => $newIdentifier,
                         'name' => $newName,
                         'checksum' => $newChecksum
-                    );
+                    ];
                     $fileConnection->update(
                         'sys_file_processedfile',
                         $fields,

@@ -35,7 +35,7 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getLogDataInitiallyReturnsEmptyArray()
     {
-        $this->assertSame(array(), $this->subject->getLogData());
+        $this->assertSame([], $this->subject->getLogData());
     }
 
     /**
@@ -44,7 +44,7 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getLogDataForEmptyStringLogDataReturnsEmptyArray()
     {
         $this->subject->setLogData('');
-        $this->assertSame(array(), $this->subject->getLogData());
+        $this->assertSame([], $this->subject->getLogData());
     }
 
     /**
@@ -53,7 +53,7 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getLogDataForGarbageStringLogDataReturnsEmptyArray()
     {
         $this->subject->setLogData('foo bar');
-        $this->assertSame(array(), $this->subject->getLogData());
+        $this->assertSame([], $this->subject->getLogData());
     }
 
     /**
@@ -61,7 +61,7 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getLogDataForSerializedArrayReturnsThatArray()
     {
-        $logData = array('foo', 'bar');
+        $logData = ['foo', 'bar'];
         $this->subject->setLogData(serialize($logData));
         $this->assertSame($logData, $this->subject->getLogData());
     }
@@ -72,6 +72,6 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getLogDataForSerializedObjectReturnsEmptyArray()
     {
         $this->subject->setLogData(new \stdClass());
-        $this->assertSame(array(), $this->subject->getLogData());
+        $this->assertSame([], $this->subject->getLogData());
     }
 }

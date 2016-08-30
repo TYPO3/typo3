@@ -35,14 +35,14 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
      *
      * @var array
      */
-    protected $defaultMarkers = array();
+    protected $defaultMarkers = [];
 
     /**
      * Markers in template to be filled
      *
      * @var array
      */
-    protected $markers = array();
+    protected $markers = [];
 
     /**
      * Constructor
@@ -81,14 +81,14 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
      */
     protected function getDefaultMarkers()
     {
-        $classes = array(
+        $classes = [
             self::NOTICE => 'notice',
             self::INFO => 'information',
             self::OK => 'ok',
             self::WARNING => 'warning',
             self::ERROR => 'error'
-        );
-        $defaultMarkers = array(
+        ];
+        $defaultMarkers = [
             '###CSS_CLASS###' => $classes[$this->severity],
             '###TITLE###' => $this->title,
             '###MESSAGE###' => $this->message,
@@ -98,7 +98,7 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
             '###BASEURL###' => substr(PATH_site, strlen(GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT'))),
             '###TYPO3_mainDir###' => TYPO3_mainDir,
             '###TYPO3_copyright_year###' => TYPO3_copyright_year
-        );
+        ];
         return $defaultMarkers;
     }
 

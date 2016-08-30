@@ -24,7 +24,7 @@ class ExtDirectDebug
      *
      * @var array
      */
-    protected $debugMessages = array();
+    protected $debugMessages = [];
 
     /**
      * destructor

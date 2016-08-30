@@ -41,7 +41,7 @@ class ArrayBrowser
      *
      * @var array
      */
-    public $depthKeys = array();
+    public $depthKeys = [];
 
     /**
      * Array defining which keys to expand. Typically set from outside from some session
@@ -49,7 +49,7 @@ class ArrayBrowser
      *
      * @var array
      */
-    public $searchKeys = array();
+    public $searchKeys = [];
 
     /**
      * After calling the getSearchKeys function this array is populated with the
@@ -224,7 +224,7 @@ class ArrayBrowser
      */
     public function depthKeys($arr, $settings)
     {
-        $tsbrArray = array();
+        $tsbrArray = [];
         foreach ($arr as $theK => $theV) {
             $theKeyParts = explode('.', $theK);
             $depth = '';

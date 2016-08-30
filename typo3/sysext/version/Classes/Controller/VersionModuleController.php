@@ -36,21 +36,21 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var array
      */
-    public $MCONF = array();
+    public $MCONF = [];
 
     /**
      * Module menu items
      *
      * @var array
      */
-    public $MOD_MENU = array();
+    public $MOD_MENU = [];
 
     /**
      * Module session settings
      *
      * @var array
      */
-    public $MOD_SETTINGS = array();
+    public $MOD_SETTINGS = [];
 
     /**
      * document template object
@@ -74,17 +74,17 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * @var array
      */
-    public $formatWorkspace_cache = array();
+    public $formatWorkspace_cache = [];
 
     /**
      * @var array
      */
-    public $formatCount_cache = array();
+    public $formatCount_cache = [];
 
     /**
      * @var array
      */
-    public $targets = array();
+    public $targets = [];
 
     /**
      * Accumulation of online targets.
@@ -103,12 +103,12 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * @var array
      */
-    public $stageIndex = array();
+    public $stageIndex = [];
 
     /**
      * @var array
      */
-    public $recIndex = array();
+    public $recIndex = [];
 
     /**
      * The name of the module
@@ -153,12 +153,12 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function main()
     {
         // Template markers
-        $markers = array(
+        $markers = [
             'CSH' => '',
             'FUNC_MENU' => '',
             'WS_MENU' => '',
             'CONTENT' => ''
-        );
+        ];
         // Setting module configuration:
         $this->MCONF['name'] = $this->moduleName;
         $this->REQUEST_URI = str_replace('&sendToReview=1', '', GeneralUtility::getIndpEnv('REQUEST_URI'));
@@ -233,12 +233,12 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getButtons()
     {
-        $buttons = array(
+        $buttons = [
             'csh' => '',
             'view' => '',
             'record_list' => '',
             'shortcut' => ''
-        );
+        ];
         // CSH
         if ($this->recordFound && $GLOBALS['TCA'][$this->table]['ctrl']['versioningWS']) {
             // View page
@@ -287,7 +287,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $diff_2_record = BackendUtility::getRecord($this->table, $diff_2);
                 if (is_array($diff_1_record) && is_array($diff_2_record)) {
                     $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-                    $rows = array();
+                    $rows = [];
                     $rows[] = '
 									<tr>
 										<th>' . $lang->getLL('fieldname') . '</th>
@@ -474,7 +474,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $content .= '
 					<table class="table">
 						<tr>
-							<th class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</th>
+							<th class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . '</th>
 							<th class="col-title">' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'])) . '</th>
 							<th></th>
 							<th></th>
@@ -485,7 +485,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 						<tr>
 							<td class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($table, $subrow, Icon::SIZE_SMALL)->render() . '</td>
 							<td class="col-title">' . BackendUtility::getRecordTitle($table, $subrow, true) . '</td>
-							<td>' . ($ownVer > 1 ? '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $subrow['uid']))) . '">' . ($ownVer - 1) . '</a>' : '') . '</td>
+							<td>' . ($ownVer > 1 ? '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', ['table' => $table, 'uid' => $subrow['uid']])) . '">' . ($ownVer - 1) . '</a>' : '') . '</td>
 							<td class="col-control">' . $this->adminLinks($table, $subrow) . '</td>
 						</tr>';
                     if ($table == 'pages' && $c < 100) {

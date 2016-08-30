@@ -7,13 +7,13 @@ if (TYPO3_MODE === 'BE') {
         'web',
         'Recycler',
         '',
-        array(
+        [
             'RecyclerModule' => 'index',
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.svg',
             'labels' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
-        )
+        ]
     );
 }

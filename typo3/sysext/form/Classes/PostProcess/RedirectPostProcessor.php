@@ -66,7 +66,7 @@ class RedirectPostProcessor extends AbstractPostProcessor implements PostProcess
     {
         $this->destination = '';
         if ($this->typoScript['destination']) {
-            $urlConf = array('parameter' => $this->typoScript['destination']);
+            $urlConf = ['parameter' => $this->typoScript['destination']];
             $this->destination = $GLOBALS['TSFE']->cObj->typoLink_URL($urlConf);
         }
     }

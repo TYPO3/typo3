@@ -67,7 +67,7 @@ class LanguageCommandController extends CommandController
         $translationService = $this->objectManager->get(TranslationService::class);
         /** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
         $languageRepository = $this->objectManager->get(LanguageRepository::class);
-        $locales = array();
+        $locales = [];
         if (!empty($localesToUpdate)) {
             $locales = GeneralUtility::trimExplode(',', $localesToUpdate, true);
         } else {

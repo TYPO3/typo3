@@ -30,7 +30,7 @@ class OrphanRecordsCommand extends CleanerCommand
     {
         parent::__construct();
         // Setting up help:
-        $this->cli_options[] = array('--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.');
+        $this->cli_options[] = ['--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.'];
         $this->cli_help['name'] = 'orphan_records -- To find records that has lost their connection with the page tree';
         $this->cli_help['description'] = trim('
 Assumptions:
@@ -61,21 +61,21 @@ Will report orphan uids from TCA tables.';
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'orphans' => array('Index of orphaned records', '', 3),
-                'misplaced_at_rootlevel' => array('Records that should not be at root level but are.', 'Fix manually by moving record into page tree', 2),
-                'misplaced_inside_tree' => array('Records that should be at root level but are not.', 'Fix manually by moving record to tree root', 2),
-                'illegal_record_under_versioned_page' => array('Records that cannot be attached to a versioned page', '(Listed under orphaned records so is fixed along with orphans.)', 2)
-            ),
-            'orphans' => array(),
-            'misplaced_at_rootlevel' => array(),
+            'headers' => [
+                'orphans' => ['Index of orphaned records', '', 3],
+                'misplaced_at_rootlevel' => ['Records that should not be at root level but are.', 'Fix manually by moving record into page tree', 2],
+                'misplaced_inside_tree' => ['Records that should be at root level but are not.', 'Fix manually by moving record to tree root', 2],
+                'illegal_record_under_versioned_page' => ['Records that cannot be attached to a versioned page', '(Listed under orphaned records so is fixed along with orphans.)', 2]
+            ],
+            'orphans' => [],
+            'misplaced_at_rootlevel' => [],
             // Subset of "all": Those that should not be at root level but are. [Warning: Fix by moving record into page tree]
-            'misplaced_inside_tree' => array(),
+            'misplaced_inside_tree' => [],
             // Subset of "all": Those that are inside page tree but should be at root level [Warning: Fix by setting PID to zero]
-            'illegal_record_under_versioned_page' => array()
-        );
+            'illegal_record_under_versioned_page' => []
+        ];
         // zero = tree root, must use tree root if you wish to reverse selection to find orphans!
         $startingPoint = 0;
         $pt = GeneralUtility::milliseconds();
@@ -98,7 +98,7 @@ Will report orphan uids from TCA tables.';
                 ->execute();
 
             if ($result->rowCount()) {
-                $resultArray['orphans'][$tableName] = array();
+                $resultArray['orphans'][$tableName] = [];
                 while ($orphanRecord = $result->fetch()) {
                     $resultArray['orphans'][$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];
                 }
@@ -132,7 +132,7 @@ Will report orphan uids from TCA tables.';
                 } else {
                     // Execute CMD array:
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->start(array(), array());
+                    $tce->start([], []);
                     // Notice, we are deleting pages with no regard to subpages/subrecords - we do this
                     // since they should also be included in the set of orphans of course!
                     $tce->deleteRecord($table, $uid, true, true);

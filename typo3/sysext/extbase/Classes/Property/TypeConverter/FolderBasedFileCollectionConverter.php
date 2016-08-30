@@ -24,7 +24,7 @@ class FolderBasedFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\Typ
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('integer');
+    protected $sourceTypes = ['integer'];
 
     /**
      * @var string

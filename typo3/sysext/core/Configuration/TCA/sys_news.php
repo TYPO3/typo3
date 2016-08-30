@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_news',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -9,82 +9,82 @@ return array(
         'adminOnly' => true,
         'rootLevel' => true,
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime'
-        ),
+        ],
         'default_sortby' => 'crdate DESC',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_news'
-        )
-    ),
-    'interface' => array(
+        ]
+    ],
+    'interface' => [
         'showRecordFieldList' => 'hidden,title,content,starttime,endtime'
-    ),
-    'columns' => array(
-        'hidden' => array(
+    ],
+    'columns' => [
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'starttime' => array(
+            ]
+        ],
+        'starttime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        ),
-        'endtime' => array(
+            ]
+        ],
+        'endtime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        ),
-        'title' => array(
+            ]
+        ],
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
                 'eval' => 'required'
-            )
-        ),
-        'content' => array(
+            ]
+        ],
+        'content' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.text',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 48,
                 'rows' => 5,
-                'wizards' => array(
-                    'RTE' => array(
+                'wizards' => [
+                    'RTE' => [
                         'notNewRecords' => true,
                         'RTEonly' => true,
                         'type' => 'script',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_rte'
-                        )
-                    )
-                )
-            ),
+                        ]
+                    ]
+                ]
+            ],
             'defaultExtras' => 'richtext:rte_transform',
-        )
-    ),
-    'types' => array(
-        '1' => array(
+        ]
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'hidden, title, content, --div--;LLL:EXT:lang/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime',
-        ),
-    ),
-);
+        ],
+    ],
+];

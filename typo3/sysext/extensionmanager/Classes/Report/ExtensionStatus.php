@@ -73,7 +73,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     public function getStatus()
     {
-        $status = array();
+        $status = [];
         $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
 
         $extensionStatus = $this->getSecurityStatusOfExtensions();
@@ -129,10 +129,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getSecurityStatusOfExtensions()
     {
         $extensionInformation = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-        $loadedInsecure = array();
-        $existingInsecure = array();
-        $loadedOutdated = array();
-        $existingOutdated = array();
+        $loadedInsecure = [];
+        $existingInsecure = [];
+        $loadedOutdated = [];
+        $existingOutdated = [];
         foreach ($extensionInformation as $extensionKey => $information) {
             if (
                 array_key_exists('terObject', $information)
@@ -146,30 +146,30 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                         array_key_exists('installed', $information)
                         && $information['installed'] === true
                     ) {
-                        $loadedInsecure[] = array(
+                        $loadedInsecure[] = [
                             'extensionKey' => $extensionKey,
                             'version' => $terObject->getVersion(),
-                        );
+                        ];
                     } else {
-                        $existingInsecure[] = array(
+                        $existingInsecure[] = [
                             'extensionKey' => $extensionKey,
                             'version' => $terObject->getVersion(),
-                        );
+                        ];
                     }
                 } elseif ($insecureStatus === -2) {
                     if (
                         array_key_exists('installed', $information)
                         && $information['installed'] === true
                     ) {
-                        $loadedOutdated[] = array(
+                        $loadedOutdated[] = [
                             'extensionKey' => $extensionKey,
                             'version' => $terObject->getVersion(),
-                        );
+                        ];
                     } else {
-                        $existingOutdated[] = array(
+                        $existingOutdated[] = [
                             'extensionKey' => $extensionKey,
                             'version' => $terObject->getVersion(),
-                        );
+                        ];
                     }
                 }
             }
@@ -186,7 +186,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.value'),
                 count($loadedInsecure)
             );
-            $extensionList = array();
+            $extensionList = [];
             foreach ($loadedInsecure as $insecureExtension) {
                 $extensionList[] = sprintf(
                     $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.message.extension'),
@@ -217,7 +217,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.value'),
                 count($existingInsecure)
             );
-            $extensionList = array();
+            $extensionList = [];
             foreach ($existingInsecure as $insecureExtension) {
                 $extensionList[] = sprintf(
                     $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.message.extension'),
@@ -248,7 +248,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value'),
                 count($loadedOutdated)
             );
-            $extensionList = array();
+            $extensionList = [];
             foreach ($loadedOutdated as $outdatedExtension) {
                 $extensionList[] = sprintf(
                     $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension'),
@@ -279,7 +279,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.value'),
                 count($existingOutdated)
             );
-            $extensionList = array();
+            $extensionList = [];
             foreach ($existingOutdated as $outdatedExtension) {
                 $extensionList[] = sprintf(
                     $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension'),

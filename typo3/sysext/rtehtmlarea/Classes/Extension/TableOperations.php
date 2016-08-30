@@ -50,7 +50,7 @@ class TableOperations extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'table' => 'InsertTable',
         'toggleborders' => 'TO-toggle-borders',
         'tableproperties' => 'TO-table-prop',
@@ -71,7 +71,7 @@ class TableOperations extends RteHtmlAreaApi
         'celldelete' => 'TO-cell-delete',
         'cellsplit' => 'TO-cell-split',
         'cellmerge' => 'TO-cell-merge'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -95,10 +95,10 @@ class TableOperations extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         if (in_array('table', $this->toolbar)) {
             // Combining fieldset disablers as a list
-            $disabledFieldsets = array('Alignment', 'Borders', 'Color', 'Description', 'Layout', 'RowGroup', 'Spacing', 'Style');
+            $disabledFieldsets = ['Alignment', 'Borders', 'Color', 'Description', 'Layout', 'RowGroup', 'Spacing', 'Style'];
             foreach ($disabledFieldsets as $index => $fieldset) {
                 if (!trim($this->configuration['thisConfig']['disable' . $fieldset . 'FieldsetInTableOperations'])) {
                     unset($disabledFieldsets[$index]);
@@ -107,7 +107,7 @@ class TableOperations extends RteHtmlAreaApi
             $disabledFieldsets = strtolower(implode(',', $disabledFieldsets));
             // Dialogue fieldsets removal configuration
             if ($disabledFieldsets) {
-                $dialogues = array('table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties');
+                $dialogues = ['table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties'];
                 foreach ($dialogues as $dialogue) {
                     if (in_array($dialogue, $this->toolbar)) {
                         if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$dialogue . '.'])) {

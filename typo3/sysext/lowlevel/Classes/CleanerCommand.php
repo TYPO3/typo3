@@ -45,17 +45,17 @@ class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
     /**
      * @var array
      */
-    public $pagetreePlugins = array();
+    public $pagetreePlugins = [];
 
     /**
      * @var array
      */
-    public $cleanerModules = array();
+    public $cleanerModules = [];
 
     /**
      * @var array
      */
-    public $performanceStatistics = array();
+    public $performanceStatistics = [];
 
     /**
      * @var array
@@ -71,19 +71,19 @@ class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
         parent::__construct();
         $this->cleanerModules = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
         // Adding options to help archive:
-        $this->cli_options[] = array('-r', 'Execute this tool, otherwise help is shown');
-        $this->cli_options[] = array('-v level', 'Verbosity level 0-3', 'The value of level can be:
+        $this->cli_options[] = ['-r', 'Execute this tool, otherwise help is shown'];
+        $this->cli_options[] = ['-v level', 'Verbosity level 0-3', 'The value of level can be:
   0 = all output
   1 = info and greater (default)
   2 = warnings and greater
-  3 = errors');
-        $this->cli_options[] = array('--refindex mode', 'Mode for reference index handling for operations that require a clean reference index ("update"/"ignore")', 'Options are "check" (default), "update" and "ignore". By default, the reference index is checked before running analysis that require a clean index. If the check fails, the analysis is not run. You can choose to bypass this completely (using value "ignore") or ask to have the index updated right away before the analysis (using value "update")');
-        $this->cli_options[] = array('--AUTOFIX [testName]', 'Repairs errors that can be automatically fixed.', 'Only add this option after having run the test without it so you know what will happen when you add this option! The optional parameter "[testName]" works for some tool keys to limit the fixing to a particular test.');
-        $this->cli_options[] = array('--dryrun', 'With --AUTOFIX it will only simulate a repair process', 'You may like to use this to see what the --AUTOFIX option will be doing. It will output the whole process like if a fix really occurred but nothing is in fact happening');
-        $this->cli_options[] = array('--YES', 'Implicit YES to all questions', 'Use this with EXTREME care. The option "-i" is not affected by this option.');
-        $this->cli_options[] = array('-i', 'Interactive', 'Will ask you before running the AUTOFIX on each element.');
-        $this->cli_options[] = array('--filterRegex expr', 'Define an expression for preg_match() that must match the element ID in order to auto repair it', 'The element ID is the string in quotation marks when the text \'Cleaning ... in "ELEMENT ID"\'. "expr" is the expression for preg_match(). To match for example "Nature3.JPG" and "Holiday3.JPG" you can use "/.*3.JPG/". To match for example "Image.jpg" and "Image.JPG" you can use "/.*.jpg/i". Try a --dryrun first to see what the matches are!');
-        $this->cli_options[] = array('--showhowto', 'Displays HOWTO file for cleaner script.');
+  3 = errors'];
+        $this->cli_options[] = ['--refindex mode', 'Mode for reference index handling for operations that require a clean reference index ("update"/"ignore")', 'Options are "check" (default), "update" and "ignore". By default, the reference index is checked before running analysis that require a clean index. If the check fails, the analysis is not run. You can choose to bypass this completely (using value "ignore") or ask to have the index updated right away before the analysis (using value "update")'];
+        $this->cli_options[] = ['--AUTOFIX [testName]', 'Repairs errors that can be automatically fixed.', 'Only add this option after having run the test without it so you know what will happen when you add this option! The optional parameter "[testName]" works for some tool keys to limit the fixing to a particular test.'];
+        $this->cli_options[] = ['--dryrun', 'With --AUTOFIX it will only simulate a repair process', 'You may like to use this to see what the --AUTOFIX option will be doing. It will output the whole process like if a fix really occurred but nothing is in fact happening'];
+        $this->cli_options[] = ['--YES', 'Implicit YES to all questions', 'Use this with EXTREME care. The option "-i" is not affected by this option.'];
+        $this->cli_options[] = ['-i', 'Interactive', 'Will ask you before running the AUTOFIX on each element.'];
+        $this->cli_options[] = ['--filterRegex expr', 'Define an expression for preg_match() that must match the element ID in order to auto repair it', 'The element ID is the string in quotation marks when the text \'Cleaning ... in "ELEMENT ID"\'. "expr" is the expression for preg_match(). To match for example "Nature3.JPG" and "Holiday3.JPG" you can use "/.*3.JPG/". To match for example "Image.jpg" and "Image.JPG" you can use "/.*.jpg/i". Try a --dryrun first to see what the matches are!'];
+        $this->cli_options[] = ['--showhowto', 'Displays HOWTO file for cleaner script.'];
         // Setting help texts:
         $this->cli_help['name'] = 'lowlevel_cleaner -- Analysis and clean-up tools for TYPO3 installations';
         $this->cli_help['synopsis'] = 'toolkey ###OPTIONS###';
@@ -232,12 +232,12 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
     {
         $detailLevel = MathUtility::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1, 0, 3);
         $silent = !$this->cli_echo();
-        $severity = array(
+        $severity = [
             0 => 'MESSAGE',
             1 => 'INFO',
             2 => 'WARNING',
             3 => 'ERROR'
-        );
+        ];
         // Header output:
         if ($detailLevel <= 1) {
             $this->cli_echo('*********************************************
@@ -315,27 +315,27 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
             }
         }
 
-        $this->recStats = array(
-            'all' => array(),
+        $this->recStats = [
+            'all' => [],
             // All records connected in tree including versions (the reverse are orphans). All Info and Warning categories below are included here (and therefore safe if you delete the reverse of the list)
-            'deleted' => array(),
+            'deleted' => [],
             // Subset of "alL" that are deleted-flagged [Info]
-            'versions' => array(),
+            'versions' => [],
             // Subset of "all" which are offline versions (pid=-1). [Info]
-            'versions_published' => array(),
+            'versions_published' => [],
             // Subset of "versions" that is a count of 1 or more (has been published) [Info]
-            'versions_liveWS' => array(),
+            'versions_liveWS' => [],
             // Subset of "versions" that exists in live workspace [Info]
-            'versions_lost_workspace' => array(),
+            'versions_lost_workspace' => [],
             // Subset of "versions" that doesn't belong to an existing workspace [Warning: Fix by move to live workspace]
-            'versions_inside_versioned_page' => array(),
+            'versions_inside_versioned_page' => [],
             // Subset of "versions" This is versions of elements found inside an already versioned branch / page. In real life this can work out, but is confusing and the backend should prevent this from happening to people. [Warning: Fix by deleting those versions (or publishing them)]
-            'illegal_record_under_versioned_page' => array(),
+            'illegal_record_under_versioned_page' => [],
             // If a page is "element" or "page" version and records are found attached to it, they might be illegally attached, so this will tell you. [Error: Fix by deleting orphans since they are not registered in "all" category]
-            'misplaced_at_rootlevel' => array(),
+            'misplaced_at_rootlevel' => [],
             // Subset of "all": Those that should not be at root level but are. [Warning: Fix by moving record into page tree]
-            'misplaced_inside_tree' => array()
-        );
+            'misplaced_inside_tree' => []
+        ];
         // Start traversal:
         $pt2 = GeneralUtility::milliseconds();
         $this->performanceStatistics['genTree_traverse()'] = '';

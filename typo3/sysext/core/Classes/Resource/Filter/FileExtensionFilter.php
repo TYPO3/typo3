@@ -54,7 +54,7 @@ class FileExtensionFilter
         if ($parameters['disallowedFileExtensions']) {
             $this->setDisallowedFileExtensions($parameters['disallowedFileExtensions']);
         }
-        $cleanValues = array();
+        $cleanValues = [];
         if (is_array($values)) {
             foreach ($values as $value) {
                 if (empty($value)) {

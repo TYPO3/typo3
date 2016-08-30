@@ -24,7 +24,7 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'BE/debug' => '',
         'FE/debug' => '',
         'SYS/devIPmask' => '',
@@ -32,5 +32,5 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
         'SYS/enableDeprecationLog' => '',
         'SYS/sqlDebug' => '',
         'SYS/systemLogLevel' => '',
-    );
+    ];
 }

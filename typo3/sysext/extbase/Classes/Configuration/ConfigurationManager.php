@@ -99,7 +99,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
      * @param array $configuration The new configuration
      * @return void
      */
-    public function setConfiguration(array $configuration = array())
+    public function setConfiguration(array $configuration = [])
     {
         $this->concreteConfigurationManager->setConfiguration($configuration);
     }

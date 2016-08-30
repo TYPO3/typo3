@@ -55,28 +55,28 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $reflectedClassNames = array();
+    protected $reflectedClassNames = [];
 
     /**
      * Array of tags and the names of classes which are tagged with them.
      *
      * @var array
      */
-    protected $taggedClasses = array();
+    protected $taggedClasses = [];
 
     /**
      * Array of class names and their tags and values.
      *
      * @var array
      */
-    protected $classTagsValues = array();
+    protected $classTagsValues = [];
 
     /**
      * Array of class names, method names and their tags and values.
      *
      * @var array
      */
-    protected $methodTagsValues = array();
+    protected $methodTagsValues = [];
 
     /**
      * Array of class names, method names, their parameters and additional
@@ -84,28 +84,28 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $methodParameters = array();
+    protected $methodParameters = [];
 
     /**
      * Array of class names and names of their properties.
      *
      * @var array
      */
-    protected $classPropertyNames = array();
+    protected $classPropertyNames = [];
 
     /**
      * Array of class names, property names and their tags and values.
      *
      * @var array
      */
-    protected $propertyTagsValues = array();
+    protected $propertyTagsValues = [];
 
     /**
      * List of tags which are ignored while reflecting class and method annotations.
      *
      * @var array
      */
-    protected $ignoredTags = array('package', 'subpackage', 'license', 'copyright', 'author', 'version', 'const');
+    protected $ignoredTags = ['package', 'subpackage', 'license', 'copyright', 'author', 'version', 'const'];
 
     /**
      * Indicates whether the Reflection cache needs to be updated.
@@ -124,7 +124,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $classSchemata = array();
+    protected $classSchemata = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -139,7 +139,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $methodReflections = array();
+    protected $methodReflections = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -222,9 +222,9 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
             $this->reflectClass($className);
         }
         if (!isset($this->classTagsValues[$className])) {
-            return array();
+            return [];
         }
-        return isset($this->classTagsValues[$className]) ? $this->classTagsValues[$className] : array();
+        return isset($this->classTagsValues[$className]) ? $this->classTagsValues[$className] : [];
     }
 
     /**
@@ -240,9 +240,9 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
             $this->reflectClass($className);
         }
         if (!isset($this->classTagsValues[$className])) {
-            return array();
+            return [];
         }
-        return isset($this->classTagsValues[$className][$tag]) ? $this->classTagsValues[$className][$tag] : array();
+        return isset($this->classTagsValues[$className][$tag]) ? $this->classTagsValues[$className][$tag] : [];
     }
 
     /**
@@ -256,7 +256,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
         if (!isset($this->reflectedClassNames[$className])) {
             $this->reflectClass($className);
         }
-        return isset($this->classPropertyNames[$className]) ? $this->classPropertyNames[$className] : array();
+        return isset($this->classPropertyNames[$className]) ? $this->classPropertyNames[$className] : [];
     }
 
     /**
@@ -306,7 +306,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
     public function getMethodTagsValues($className, $methodName)
     {
         if (!isset($this->methodTagsValues[$className][$methodName])) {
-            $this->methodTagsValues[$className][$methodName] = array();
+            $this->methodTagsValues[$className][$methodName] = [];
             $method = $this->getMethodReflection($className, $methodName);
             foreach ($method->getTagsValues() as $tag => $values) {
                 if (array_search($tag, $this->ignoredTags) === false) {
@@ -329,7 +329,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (!isset($this->methodParameters[$className][$methodName])) {
             $method = $this->getMethodReflection($className, $methodName);
-            $this->methodParameters[$className][$methodName] = array();
+            $this->methodParameters[$className][$methodName] = [];
             foreach ($method->getParameters() as $parameterPosition => $parameter) {
                 $this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $parameterPosition, $method);
             }
@@ -350,9 +350,9 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
             $this->reflectClass($className);
         }
         if (!isset($this->propertyTagsValues[$className])) {
-            return array();
+            return [];
         }
-        return isset($this->propertyTagsValues[$className][$propertyName]) ? $this->propertyTagsValues[$className][$propertyName] : array();
+        return isset($this->propertyTagsValues[$className][$propertyName]) ? $this->propertyTagsValues[$className][$propertyName] : [];
     }
 
     /**
@@ -369,9 +369,9 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
             $this->reflectClass($className);
         }
         if (!isset($this->propertyTagsValues[$className][$propertyName])) {
-            return array();
+            return [];
         }
-        return isset($this->propertyTagsValues[$className][$propertyName][$tag]) ? $this->propertyTagsValues[$className][$propertyName][$tag] : array();
+        return isset($this->propertyTagsValues[$className][$propertyName][$tag]) ? $this->propertyTagsValues[$className][$propertyName][$tag] : [];
     }
 
     /**
@@ -518,13 +518,13 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function convertParameterReflectionToArray(ParameterReflection $parameter, $parameterPosition, MethodReflection $method = null)
     {
-        $parameterInformation = array(
+        $parameterInformation = [
             'position' => $parameterPosition,
             'byReference' => $parameter->isPassedByReference(),
             'array' => $parameter->isArray(),
             'optional' => $parameter->isOptional(),
             'allowsNull' => $parameter->allowsNull()
-        );
+        ];
         $parameterClass = $parameter->getClass();
         $parameterInformation['class'] = $parameterClass !== null ? $parameterClass->getName() : null;
         if ($parameter->isDefaultValueAvailable()) {
@@ -596,8 +596,8 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
         if (!is_object($this->dataCache)) {
             throw new Exception('A cache must be injected before initializing the Reflection Service.', 1232044697);
         }
-        $data = array();
-        $propertyNames = array(
+        $data = [];
+        $propertyNames = [
             'reflectedClassNames',
             'classPropertyNames',
             'classTagsValues',
@@ -606,7 +606,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
             'propertyTagsValues',
             'taggedClasses',
             'classSchemata'
-        );
+        ];
         foreach ($propertyNames as $propertyName) {
             $data[$propertyName] = $this->{$propertyName};
         }

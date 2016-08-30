@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
@@ -15,15 +15,15 @@ return array(
         'cruser_id' => 'cruser_id',
         'editlock' => 'editlock',
         'useColumnsForDefaultValues' => 'doktype,fe_group,hidden',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
             'fe_group' => 'fe_group'
-        ),
+        ],
         'transForeignTable' => 'pages_language_overlay',
         'typeicon_column' => 'doktype',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             '1' => 'apps-pagetree-page-default',
             '1-hideinmenu' => 'apps-pagetree-page-not-in-menu',
             '1-root' => 'apps-pagetree-page-domain',
@@ -56,463 +56,463 @@ return array(
             'page-contentFromPid-root' => 'apps-pagetree-page-content-from-page-root',
             'page-contentFromPid-hideinmenu' => 'apps-pagetree-page-content-from-page-hideinmenu',
             'default' => 'apps-pagetree-page-default'
-        ),
+        ],
         'searchFields' => 'title,alias,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
         'maxDBListItems' => 30,
         'maxSingleDBListItems' => 50
-    ),
-    'columns' => array(
-        'doktype' => array(
+    ],
+    'columns' => [
+        'doktype' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.page',
                         '--div--'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_tca.xlf:doktype.I.0',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
                         'apps-pagetree-page-default'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.4',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION,
                         'apps-pagetree-page-backend-users'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.link',
                         '--div--'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.2',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT,
                         'apps-pagetree-page-shortcut'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.5',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT,
                         'apps-pagetree-page-mountpoint'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.8',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
                         'apps-pagetree-page-shortcut-external'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.special',
                         '--div--'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER,
                         'apps-pagetree-folder-default'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER,
                         'apps-filetree-folder-recycler'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.7',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER,
                         'apps-pagetree-spacer'
-                    )
-                ),
+                    ]
+                ],
                 'default' => (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
-            )
-        ),
-        'title' => array(
+            ]
+        ],
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
                 'eval' => 'trim,required'
-            )
-        ),
-        'TSconfig' => array(
+            ]
+        ],
+        'TSconfig' => [
             'exclude' => true,
             'label' => 'TSconfig:',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 5
-            ),
+            ],
             'defaultExtras' => 'fixed-font : enable-tab'
-        ),
-        'php_tree_stop' => array(
+        ],
+        'php_tree_stop' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:php_tree_stop',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    )
-                )
-            )
-        ),
-        'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
-        't3ver_label' => array(
+                    ]
+                ]
+            ]
+        ],
+        'tx_impexp_origuid' => ['config' => ['type' => 'passthrough']],
+        't3ver_label' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 23,
                 'max' => 255
-            )
-        ),
-        'editlock' => array(
+            ]
+        ],
+        'editlock' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:editlock',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    )
-                )
-            )
-        ),
-        'hidden' => array(
+                    ]
+                ]
+            ]
+        ],
+        'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 1,
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_checkbox_1_formlabel'
-                    )
-                )
-            )
-        ),
-        'starttime' => array(
+                    ]
+                ]
+            ]
+        ],
+        'starttime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        ),
-        'endtime' => array(
+            ]
+        ],
+        'endtime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                )
-            )
-        ),
-        'layout' => array(
+                ]
+            ]
+        ],
+        'layout' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.layout',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
                         '0'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.layout.I.1',
                         '1'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.layout.I.2',
                         '2'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.layout.I.3',
                         '3'
-                    )
-                ),
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'url_scheme' => array(
+            ]
+        ],
+        'url_scheme' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
                         0
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme.http',
                         1
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme.https',
                         2
-                    )
-                ),
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'fe_group' => array(
+            ]
+        ],
+        'fe_group' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 7,
                 'maxitems' => 20,
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
                         -1
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
                         -2
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
                         '--div--'
-                    )
-                ),
+                    ]
+                ],
                 'exclusiveKeys' => '-1,-2',
                 'foreign_table' => 'fe_groups',
                 'foreign_table_where' => 'ORDER BY fe_groups.title',
                 'enableMultiSelectFilterTextfield' => true
-            )
-        ),
-        'extendToSubpages' => array(
+            ]
+        ],
+        'extendToSubpages' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.extendToSubpages',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    )
-                )
-            )
-        ),
-        'nav_title' => array(
+                    ]
+                ]
+            ]
+        ],
+        'nav_title' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
                 'eval' => 'trim'
-            )
-        ),
-        'nav_hide' => array(
+            ]
+        ],
+        'nav_hide' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide_checkbox_1_formlabel'
-                    )
-                )
-            )
-        ),
-        'subtitle' => array(
+                    ]
+                ]
+            ]
+        ],
+        'subtitle' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
                 'eval' => 'trim'
-            )
-        ),
-        'target' => array(
+            ]
+        ],
+        'target' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 80,
                 'eval' => 'trim'
-            )
-        ),
-        'alias' => array(
+            ]
+        ],
+        'alias' => [
             'exclude' => true,
             'displayCond' => 'VERSION:IS:false',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 32,
                 'eval' => 'nospace,alphanum_x,lower,unique',
                 'softref' => 'notify'
-            )
-        ),
-        'url' => array(
+            ]
+        ],
+        'url' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 23,
                 'max' => 255,
                 'eval' => 'trim,required',
                 'softref' => 'url'
-            )
-        ),
-        'urltype' => array(
+            ]
+        ],
+        'urltype' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_core.xlf:labels.automatic',
                         '0'
-                    ),
-                    array(
+                    ],
+                    [
                         'http://',
                         '1'
-                    ),
-                    array(
+                    ],
+                    [
                         'https://',
                         '4'
-                    ),
-                    array(
+                    ],
+                    [
                         'ftp://',
                         '2'
-                    ),
-                    array(
+                    ],
+                    [
                         'mailto:',
                         '3'
-                    )
-                ),
+                    ]
+                ],
                 'default' => 1
-            )
-        ),
-        'lastUpdated' => array(
+            ]
+        ],
+        'lastUpdated' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.lastUpdated',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0
-            )
-        ),
-        'newUntil' => array(
+            ]
+        ],
+        'newUntil' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.newUntil',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'max' => 20,
                 'eval' => 'date',
                 'default' => 0
-            )
-        ),
-        'cache_timeout' => array(
+            ]
+        ],
+        'cache_timeout' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
                         0
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.1',
                         60
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.2',
                         300
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.3',
                         900
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.4',
                         1800
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.5',
                         3600
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.6',
                         14400
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.7',
                         86400
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.8',
                         172800
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.9',
                         604800
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout.I.10',
                         2678400
-                    )
-                ),
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'cache_tags' => array(
+            ]
+        ],
+        'cache_tags' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_tags',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
                 'eval' => ''
-            )
-        ),
-        'no_cache' => array(
+            ]
+        ],
+        'no_cache' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache_checkbox_1_formlabel'
-                    )
-                )
-            )
-        ),
-        'no_search' => array(
+                    ]
+                ]
+            ]
+        ],
+        'no_search' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search_checkbox_1_formlabel'
-                    )
-                )
-            )
-        ),
-        'shortcut' => array(
+                    ]
+                ]
+            ]
+        ],
+        'shortcut' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.shortcut_page',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
@@ -520,48 +520,48 @@ return array(
                 'maxitems' => 1,
                 'minitems' => 0,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest',
-                        'default' => array(
+                        'default' => [
                             'additionalSearchFields' => 'nav_title, alias, url'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'shortcut_mode' => array(
+            ]
+        ],
+        'shortcut_mode' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode.I.0',
                         \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode.I.1',
                         \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode.I.2',
                         \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode.I.3',
                         \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE
-                    )
-                ),
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'content_from_pid' => array(
+            ]
+        ],
+        'content_from_pid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
@@ -569,17 +569,17 @@ return array(
                 'maxitems' => 1,
                 'minitems' => 0,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                ),
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'mount_pid' => array(
+            ]
+        ],
+        'mount_pid' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
@@ -587,246 +587,246 @@ return array(
                 'maxitems' => 1,
                 'minitems' => 0,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                ),
+                    ]
+                ],
                 'default' => 0
-            )
-        ),
-        'keywords' => array(
+            ]
+        ],
+        'keywords' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.keywords',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 3
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 3
-            )
-        ),
-        'abstract' => array(
+            ]
+        ],
+        'abstract' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.abstract',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 3
-            )
-        ),
-        'author' => array(
+            ]
+        ],
+        'author' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.author',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 23,
                 'eval' => 'trim',
                 'max' => 80
-            )
-        ),
-        'author_email' => array(
+            ]
+        ],
+        'author_email' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 23,
                 'eval' => 'trim',
                 'max' => 80,
                 'softref' => 'email[subst]'
-            )
-        ),
-        'media' => array(
+            ]
+        ],
+        'media' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.media',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', array(
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', [
                     // Use the imageoverlayPalette instead of the basicoverlayPalette
-                    'foreign_types' => array(
-                        '0' => array(
+                    'foreign_types' => [
+                        '0' => [
                             'showitem' => '
 								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 								--palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
                             'showitem' => '
 								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 								--palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                             'showitem' => '
 								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 								--palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
                             'showitem' => '
 								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
 								--palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
                             'showitem' => '
 								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
 								--palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
                             'showitem' => '
 								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 								--palette--;;filePalette'
-                        )
-                    )
-                )
+                        ]
+                    ]
+                ]
             )
-        ),
-        'is_siteroot' => array(
+        ],
+        'is_siteroot' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.is_siteroot',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    )
-                )
-            )
-        ),
-        'mount_pid_ol' => array(
+                    ]
+                ]
+            ]
+        ],
+        'mount_pid_ol' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol',
-            'config' => array(
+            'config' => [
                 'type' => 'radio',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol.I.0',
                         0
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol.I.1',
                         1
-                    )
-                )
-            )
-        ),
-        'module' => array(
+                    ]
+                ]
+            ]
+        ],
+        'module' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         '',
                         '',
                         ''
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module.I.4',
                         'fe_users',
                         'status-user-frontend'
-                    )
-                ),
+                    ]
+                ],
                 'default' => '',
-            )
-        ),
-        'fe_login_mode' => array(
+            ]
+        ],
+        'fe_login_mode' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode.enable',
                         0
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode.disableAll',
                         1
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode.disableGroups',
                         3
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode.enableAgain',
                         2
-                    )
-                )
-            )
-        ),
-        'l18n_cfg' => array(
+                    ]
+                ]
+            ]
+        ],
+        'l18n_cfg' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1',
                         ''
-                    ),
-                    array(
+                    ],
+                    [
                         $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] ? 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2a' : 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2',
                         ''
-                    )
-                )
-            )
-        ),
-        'backend_layout' => array(
+                    ]
+                ]
+            ]
+        ],
+        'backend_layout' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_formlabel',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', ''),
-                    array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.none', -1)
-                ),
+                'items' => [
+                    ['', ''],
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.none', -1]
+                ],
                 'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->addBackendLayoutItems',
                 'showIconTable' => true,
                 'selicon_cols' => 5,
                 'size' => 1,
                 'maxitems' => 1,
-            )
-        ),
-        'backend_layout_next_level' => array(
+            ]
+        ],
+        'backend_layout_next_level' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_next_level_formlabel',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', ''),
-                    array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.none', -1)
-                ),
+                'items' => [
+                    ['', ''],
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.none', -1]
+                ],
                 'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->addBackendLayoutItems',
                 'showIconTable' => true,
                 'selicon_cols' => 5,
                 'size' => 1,
                 'maxitems' => 1,
-            )
-        ),
-        'tsconfig_includes' => array(
+            ]
+        ],
+        'tsconfig_includes' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 10,
                 'maxitems' => 100,
-                'items' => array(),
+                'items' => [],
                 'enableMultiSelectFilterTextfield' => true,
                 'softref' => 'ext_fileref'
-            )
-        ),
-    ),
-    'types' => array(
+            ]
+        ],
+    ],
+    'types' => [
         // normal
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
@@ -850,9 +850,9 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.config;config,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
-        ),
+        ],
         // external URL
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.external;external,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
@@ -872,9 +872,9 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.config;config,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
-        ),
+        ],
         // shortcut
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.shortcut;shortcut,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.shortcutpage;shortcutpage,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
@@ -895,9 +895,9 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.config;config,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 				'
-        ),
+        ],
         // mount page
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.mountpoint;mountpoint,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.mountpage;mountpage,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
@@ -918,9 +918,9 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.config;config,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
-        ),
+        ],
         // spacer
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
@@ -930,9 +930,9 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.miscellaneous;adminsonly,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 			'
-        ),
+        ],
         // Folder
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
@@ -947,9 +947,9 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.config;config,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
-        ),
+        ],
         // Trash
-        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
+        (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => [
             'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
@@ -958,104 +958,104 @@ return array(
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.miscellaneous;adminsonly,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
-        )
-    ),
-    'palettes' => array(
-        '1' => array(
+        ]
+    ],
+    'palettes' => [
+        '1' => [
             'showitem' => 'starttime, endtime, extendToSubpages'
-        ),
-        '2' => array(
+        ],
+        '2' => [
             'showitem' => 'layout, lastUpdated, newUntil, no_search'
-        ),
-        '3' => array(
+        ],
+        '3' => [
             'showitem' => 'alias, target, no_cache, cache_timeout, cache_tags, url_scheme'
-        ),
-        '5' => array(
+        ],
+        '5' => [
             'showitem' => 'author, author_email',
-        ),
-        '6' => array(
+        ],
+        '6' => [
             'showitem' => 'php_tree_stop, editlock'
-        ),
-        '7' => array(
+        ],
+        '7' => [
             'showitem' => 'is_siteroot'
-        ),
-        '8' => array(
+        ],
+        '8' => [
             'showitem' => 'backend_layout_next_level'
-        ),
-        'standard' => array(
+        ],
+        'standard' => [
             'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel',
-        ),
-        'shortcut' => array(
+        ],
+        'shortcut' => [
             'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel, shortcut_mode;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode_formlabel',
-        ),
-        'shortcutpage' => array(
+        ],
+        'shortcutpage' => [
             'showitem' => 'shortcut;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_formlabel',
-        ),
-        'mountpoint' => array(
+        ],
+        'mountpoint' => [
             'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel, mount_pid_ol;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol_formlabel',
-        ),
-        'mountpage' => array(
+        ],
+        'mountpage' => [
             'showitem' => 'mount_pid;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_formlabel',
-        ),
-        'external' => array(
+        ],
+        'external' => [
             'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel, urltype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel',
-        ),
-        'title' => array(
+        ],
+        'title' => [
             'showitem' => 'title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle_formlabel',
-        ),
-        'titleonly' => array(
+        ],
+        'titleonly' => [
             'showitem' => 'title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel',
-        ),
-        'visibility' => array(
+        ],
+        'visibility' => [
             'showitem' => 'hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_formlabel, nav_hide;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide_formlabel',
-        ),
-        'hiddenonly' => array(
+        ],
+        'hiddenonly' => [
             'showitem' => 'hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_formlabel',
-        ),
-        'access' => array(
+        ],
+        'access' => [
             'showitem' => 'starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.starttime_formlabel, endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.endtime_formlabel, extendToSubpages;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.extendToSubpages_formlabel, --linebreak--, fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_group_formlabel, --linebreak--, fe_login_mode;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode_formlabel',
-        ),
-        'abstract' => array(
+        ],
+        'abstract' => [
             'showitem' => 'abstract;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.abstract_formlabel',
-        ),
-        'metatags' => array(
+        ],
+        'metatags' => [
             'showitem' => 'keywords;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.keywords_formlabel, --linebreak--, description;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.description_formlabel',
-        ),
-        'editorial' => array(
+        ],
+        'editorial' => [
             'showitem' => 'author;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.author_formlabel, author_email;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.author_email_formlabel, lastUpdated;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.lastUpdated_formlabel',
-        ),
-        'layout' => array(
+        ],
+        'layout' => [
             'showitem' => 'layout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.layout_formlabel, newUntil;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.newUntil_formlabel, --linebreak--, backend_layout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_formlabel, backend_layout_next_level;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_next_level_formlabel',
-        ),
-        'backend_layout' => array(
+        ],
+        'backend_layout' => [
             'showitem' => 'backend_layout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_formlabel, backend_layout_next_level;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_next_level_formlabel',
-        ),
-        'module' => array(
+        ],
+        'module' => [
             'showitem' => 'module;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module_formlabel',
-        ),
-        'replace' => array(
+        ],
+        'replace' => [
             'showitem' => 'content_from_pid;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid_formlabel',
-        ),
-        'links' => array(
+        ],
+        'links' => [
             'showitem' => 'alias;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias_formlabel, --linebreak--, target;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target_formlabel, --linebreak--, url_scheme;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme_formlabel',
-        ),
-        'caching' => array(
+        ],
+        'caching' => [
             'showitem' => 'cache_timeout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout_formlabel, cache_tags, no_cache;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache_formlabel',
-        ),
-        'language' => array(
+        ],
+        'language' => [
             'showitem' => 'l18n_cfg;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg_formlabel',
-        ),
-        'miscellaneous' => array(
+        ],
+        'miscellaneous' => [
             'showitem' => 'is_siteroot;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.is_siteroot_formlabel, no_search;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search_formlabel, editlock;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.editlock_formlabel, php_tree_stop;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.php_tree_stop_formlabel',
-        ),
-        'adminsonly' => array(
+        ],
+        'adminsonly' => [
             'showitem' => 'editlock;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.editlock_formlabel',
-        ),
-        'media' => array(
+        ],
+        'media' => [
             'showitem' => 'media;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.media_formlabel',
-        ),
-        'config' => array(
+        ],
+        'config' => [
             'showitem' => 'tsconfig_includes;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes, --linebreak--, TSconfig;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.TSconfig_formlabel',
-        )
-    )
-);
+        ]
+    ]
+];

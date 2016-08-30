@@ -37,12 +37,12 @@ class CacheManager implements SingletonInterface
     /**
      * @var FrontendInterface[]
      */
-    protected $caches = array();
+    protected $caches = [];
 
     /**
      * @var array
      */
-    protected $cacheConfigurations = array();
+    protected $cacheConfigurations = [];
 
     /**
      * Used to flush caches of a specific group
@@ -52,17 +52,17 @@ class CacheManager implements SingletonInterface
      *
      * @var array
      */
-    protected $cacheGroups = array();
+    protected $cacheGroups = [];
 
     /**
      * @var array Default cache configuration as fallback
      */
-    protected $defaultCacheConfiguration = array(
+    protected $defaultCacheConfiguration = [
         'frontend' => VariableFrontend::class,
         'backend' => Typo3DatabaseBackend::class,
-        'options' => array(),
-        'groups' => array('all')
-    );
+        'options' => [],
+        'groups' => ['all']
+    ];
 
     /**
      * Sets configurations for caches. The key of each entry specifies the
@@ -262,7 +262,7 @@ class CacheManager implements SingletonInterface
         }
         foreach ($assignedGroups as $groupIdentifier) {
             if (!isset($this->cacheGroups[$groupIdentifier])) {
-                $this->cacheGroups[$groupIdentifier] = array();
+                $this->cacheGroups[$groupIdentifier] = [];
             }
             $this->cacheGroups[$groupIdentifier][] = $identifier;
         }
@@ -274,7 +274,7 @@ class CacheManager implements SingletonInterface
         if (!$backendInstance instanceof BackendInterface) {
             throw new InvalidBackendException('"' . $backend . '" is not a valid cache backend object.', 1464550977);
         }
-        if (is_callable(array($backendInstance, 'initializeObject'))) {
+        if (is_callable([$backendInstance, 'initializeObject'])) {
             $backendInstance->initializeObject();
         }
 
@@ -283,7 +283,7 @@ class CacheManager implements SingletonInterface
         if (!$frontendInstance instanceof FrontendInterface) {
             throw new InvalidCacheException('"' . $frontend . '" is not a valid cache frontend object.', 1464550984);
         }
-        if (is_callable(array($frontendInstance, 'initializeObject'))) {
+        if (is_callable([$frontendInstance, 'initializeObject'])) {
             $frontendInstance->initializeObject();
         }
 

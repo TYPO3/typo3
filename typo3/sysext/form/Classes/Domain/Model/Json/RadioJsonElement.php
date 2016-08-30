@@ -31,24 +31,24 @@ class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(
+    public $configuration = [
+        'attributes' => [
             'type' => 'radio'
-        ),
-        'filters' => array(),
-        'label' => array(
+        ],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'back',
-        'validation' => array()
-    );
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -73,5 +73,5 @@ class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
         'required',
         'type',
         'value'
-    );
+    ];
 }

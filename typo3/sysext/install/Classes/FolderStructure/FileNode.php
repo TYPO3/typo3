@@ -91,7 +91,7 @@ class FileNode extends AbstractNode implements NodeInterface
      */
     public function getStatus()
     {
-        $result = array();
+        $result = [];
         if (!$this->exists()) {
             $status = new Status\WarningStatus();
             $status->setTitle('File ' . $this->getRelativePathBelowSiteRoot() . ' does not exist');
@@ -123,7 +123,7 @@ class FileNode extends AbstractNode implements NodeInterface
      */
     protected function fixSelf()
     {
-        $result = array();
+        $result = [];
         if (!$this->exists()) {
             $resultCreateFile = $this->createFile();
             $result[] = $resultCreateFile;
@@ -193,7 +193,7 @@ class FileNode extends AbstractNode implements NodeInterface
      */
     protected function getSelfStatus()
     {
-        $result = array();
+        $result = [];
         if (!$this->isFile()) {
             $status = new Status\ErrorStatus();
             $status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not a file');

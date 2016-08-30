@@ -143,11 +143,11 @@ class Language extends AbstractEntity
      */
     public function toArray()
     {
-        return array(
+        return [
             'locale'   => $this->getLocale(),
             'label' => $this->getLabel(),
             'selected' => $this->getSelected(),
             'lastUpdate' => $this->getLastUpdate(),
-        );
+        ];
     }
 }

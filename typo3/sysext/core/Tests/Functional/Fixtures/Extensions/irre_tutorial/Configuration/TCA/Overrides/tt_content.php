@@ -8,60 +8,60 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
-    array(
-        'tx_irretutorial_1nff_hotels' => array(
+    [
+        'tx_irretutorial_1nff_hotels' => [
             'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_1nff_hotels',
-            'config' => array(
+            'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_irretutorial_1nff_hotel',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'maxitems' => 10,
-                'appearance' => array(
+                'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
-                ),
-                'behaviour' => array(
+                ],
+                'behaviour' => [
                     'localizationMode' => 'select',
                     'localizeChildrenAtParentLocalization' => true,
-                ),
-            )
-        ),
-        'tx_irretutorial_1ncsv_hotels' => array(
+                ],
+            ]
+        ],
+        'tx_irretutorial_1ncsv_hotels' => [
             'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_1ncsv_hotels',
-            'config' => array(
+            'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_irretutorial_1ncsv_hotel',
                 'maxitems' => 10,
-                'appearance' => array(
+                'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
-                ),
-                'behaviour' => array(
+                ],
+                'behaviour' => [
                     'localizationMode' => 'select',
                     'localizeChildrenAtParentLocalization' => true,
-                ),
+                ],
                 'default' => '',
-            )
-        ),
-        'tx_irretutorial_flexform' => array(
+            ]
+        ],
+        'tx_irretutorial_flexform' => [
             'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_flexform',
-            'config' => array(
+            'config' => [
                 'type' => 'flex',
-                'ds' => array(
+                'ds' => [
                     'default' => 'FILE:EXT:irre_tutorial/Configuration/FlexForms/tt_content_flexform.xml',
-                ),
+                ],
                 'default' => '',
-            )
-        ),
-    )
+            ]
+        ],
+    ]
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(

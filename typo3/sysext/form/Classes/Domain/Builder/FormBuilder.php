@@ -268,9 +268,9 @@ class FormBuilder
                     $userConfiguredElementTypoScript['cObj']
                 );
             }
-            $element->setAdditionalArguments(array(
+            $element->setAdditionalArguments([
                 'content' => $attributeValue,
-            ));
+            ]);
         } else {
             $this->setAttributes($elementBuilder, $element, $userConfiguredElementTypoScript);
             $userConfiguredElementTypoScript = $elementBuilder->getUserConfiguredElementTyposcript();
@@ -279,7 +279,7 @@ class FormBuilder
             $this->signalSlotDispatcher->dispatch(
                 __CLASS__,
                 'txFormAfterElementCreation',
-                array($element, $this)
+                [$element, $this]
             );
                 // create all child elements
             $this->setChildElementsByIntegerKey($element, $userConfiguredElementTypoScript);
@@ -308,7 +308,7 @@ class FormBuilder
                     if (isset($userConfiguredElementTypoScript[$key . '.'])) {
                         $concreteChildElementTypoScript = $userConfiguredElementTypoScript[$key . '.'];
                     } else {
-                        $concreteChildElementTypoScript = array();
+                        $concreteChildElementTypoScript = [];
                     }
                     $this->distinguishElementType($element, $concreteChildElementTypoScript, $elementType);
                 }
@@ -334,10 +334,10 @@ class FormBuilder
         if (in_array($elementType, $this->typoScriptRepository->getRegisteredElementTypes())) {
             $this->addChildElement($element, $userConfiguredElementTypoScript, $elementType);
         } elseif ($this->configuration->getContentElementRendering()) {
-            $contentObject = array(
+            $contentObject = [
                 'cObj' => $elementType,
                 'cObj.' => $userConfiguredElementTypoScript
-            );
+            ];
             $this->addChildElement($element, $contentObject, 'CONTENTELEMENT');
         }
     }
@@ -439,7 +439,7 @@ class FormBuilder
 
         if ($this->getIncomingData()->getIncomingField($elementName) !== null) {
             /* filter values and set it back to incoming fields */
-            $filters = isset($userConfiguredElementTypoScript['filters.']) ? $userConfiguredElementTypoScript['filters.'] : array();
+            $filters = isset($userConfiguredElementTypoScript['filters.']) ? $userConfiguredElementTypoScript['filters.'] : [];
             if (!empty($filters)) {
                 $keys = ArrayUtility::filterAndSortByNumericKeys($filters);
                 foreach ($keys as $key) {
@@ -481,12 +481,12 @@ class FormBuilder
         $this->signalSlotDispatcher->dispatch(
             __CLASS__,
             'txFormHandleIncomingValues',
-            array(
+            [
                 $element,
                 $this->getIncomingData(),
                 $modelValue,
                 $this
-            )
+            ]
         );
     }
 
@@ -508,7 +508,7 @@ class FormBuilder
         ) {
             /** @var \TYPO3\CMS\Extbase\Error\Error[] $errors */
             $errors = $this->getValidationErrors()->forProperty($elementName)->getErrors();
-            $errorMessages = array();
+            $errorMessages = [];
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();
             }

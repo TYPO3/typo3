@@ -27,7 +27,7 @@ class HtmlParser
     /**
      * @var array
      */
-    protected $caseShift_cache = array();
+    protected $caseShift_cache = [];
 
     // Void elements that do not have closing tags, as defined by HTML5, except link element
     const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
@@ -56,7 +56,7 @@ class HtmlParser
         });
         $regexStr = '/\\<\\/?(' . implode('|', $tags) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
         $parts = preg_split($regexStr, $content);
-        $newParts = array();
+        $newParts = [];
         $pointer = strlen($parts[0]);
         $buffer = $parts[0];
         $nested = 0;
@@ -126,7 +126,7 @@ class HtmlParser
         foreach ($parts as $k => $v) {
             if ($k % 2) {
                 $firstTagName = $this->getFirstTagName($v, true);
-                $tagsArray = array();
+                $tagsArray = [];
                 $tagsArray['tag_start'] = $this->getFirstTag($v);
                 $tagsArray['tag_end'] = '</' . $firstTagName . '>';
                 $tagsArray['tag_name'] = strtolower($firstTagName);
@@ -163,7 +163,7 @@ class HtmlParser
         $regexStr = '/\\<(' . implode('|', $tags) . ')(\\s[^>]*)?\\/?>/si';
         $parts = preg_split($regexStr, $content);
         $pointer = strlen($parts[0]);
-        $newParts = array();
+        $newParts = [];
         $newParts[] = $parts[0];
         reset($parts);
         // We skip the first element in foreach loop
@@ -223,7 +223,7 @@ class HtmlParser
      */
     public function getFirstTagName($str, $preserveCase = false)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match('/^\\s*\\<([^\\s\\>]+)(\\s|\\>)/', $str, $matches) === 1) {
             if (!$preserveCase) {
                 return strtoupper($matches[1]);
@@ -251,8 +251,8 @@ class HtmlParser
         // Attribute name is stored here
         $name = '';
         $valuemode = false;
-        $attributes = array();
-        $attributesMeta = array();
+        $attributes = [];
+        $attributesMeta = [];
         if (is_array($components)) {
             foreach ($components as $key => $val) {
                 // Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
@@ -266,7 +266,7 @@ class HtmlParser
                     } else {
                         if ($namekey = preg_replace('/[^[:alnum:]_\\:\\-]/', '', $val)) {
                             $name = strtolower($namekey);
-                            $attributesMeta[$name] = array();
+                            $attributesMeta[$name] = [];
                             $attributesMeta[$name]['origTag'] = $namekey;
                             $attributes[$name] = '';
                         }
@@ -276,7 +276,7 @@ class HtmlParser
                     $valuemode = true;
                 }
             }
-            return array($attributes, $attributesMeta);
+            return [$attributes, $attributesMeta];
         }
     }
 
@@ -296,14 +296,14 @@ class HtmlParser
      */
     public function split_tag_attributes($tag)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match('/(\\<[^\\s]+\\s+)?(.*?)\\s*(\\>)?$/s', $tag, $matches) !== 1) {
-            return array(array(), array());
+            return [[], []];
         }
         $tag_tmp = $matches[2];
-        $metaValue = array();
-        $value = array();
-        $matches = array();
+        $metaValue = [];
+        $value = [];
+        $matches = [];
         if (preg_match_all('/("[^"]*"|\'[^\']*\'|[^\\s"\'\\=]+|\\=)/s', $tag_tmp, $matches) > 0) {
             foreach ($matches[1] as $part) {
                 $firstChar = $part[0];
@@ -316,7 +316,7 @@ class HtmlParser
                 }
             }
         }
-        return array($value, $metaValue);
+        return [$value, $metaValue];
     }
 
     /*********************************
@@ -360,16 +360,16 @@ class HtmlParser
      * @param array $addConfig Configuration array send along as $conf to the internal functions
      * @return string Processed HTML content
      */
-    public function HTMLcleaner($content, $tags = array(), $keepAll = 0, $hSC = 0, $addConfig = array())
+    public function HTMLcleaner($content, $tags = [], $keepAll = 0, $hSC = 0, $addConfig = [])
     {
-        $newContent = array();
+        $newContent = [];
         $tokArr = explode('<', $content);
         $newContent[] = $this->bidir_htmlspecialchars(current($tokArr), $hSC);
         // We skip the first element in foreach loop
         $tokArrSliced = array_slice($tokArr, 1, null, true);
         $c = 1;
-        $tagRegister = array();
-        $tagStack = array();
+        $tagRegister = [];
+        $tagStack = [];
         $inComment = false;
         $inCdata = false;
         $skipTag = false;
@@ -450,7 +450,7 @@ class HtmlParser
                                     } elseif (trim($tagParts[1])) {
                                         $tagAttrib = $this->get_tag_attributes($tagParts[1]);
                                         $tagParts[1] = '';
-                                        $newTagAttrib = array();
+                                        $newTagAttrib = [];
                                         if (!($tList = $tags[$tagName]['_allowedAttribs'])) {
                                             // Just explode attribts for tag once
                                             $tList = ($tags[$tagName]['_allowedAttribs'] = GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), true));
@@ -501,7 +501,7 @@ class HtmlParser
                                                 // For the class attribute, remove from the attribute value any class not in the list
                                                 // Classes are case sensitive
                                                 if ($attr == 'class') {
-                                                    $newClasses = array();
+                                                    $newClasses = [];
                                                     $classes = GeneralUtility::trimExplode(' ', $tagAttrib[0][$attr], true);
                                                     foreach ($classes as $class) {
                                                         if (in_array($class, $params['list'])) {
@@ -581,7 +581,7 @@ class HtmlParser
                                 }
                                 if ($tags[$tagName]['nesting']) {
                                     if (!is_array($tagRegister[$tagName])) {
-                                        $tagRegister[$tagName] = array();
+                                        $tagRegister[$tagName] = [];
                                     }
                                     if ($endTag) {
                                         $correctTag = 1;
@@ -687,7 +687,7 @@ class HtmlParser
      * @param string $suffix Suffix string (put after the resource).
      * @return string Processed HTML content
      */
-    public function prefixResourcePath($main_prefix, $content, $alternatives = array(), $suffix = '')
+    public function prefixResourcePath($main_prefix, $content, $alternatives = [], $suffix = '')
     {
         $parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a,param', $content);
         foreach ($parts as $k => $v) {
@@ -836,9 +836,9 @@ class HtmlParser
      * @return string Imploded attributes, eg: 'attribute="value" attrib2="value2"'
      * @access private
      */
-    public function compileTagAttribs($tagAttrib, $meta = array())
+    public function compileTagAttribs($tagAttrib, $meta = [])
     {
-        $accu = array();
+        $accu = [];
         foreach ($tagAttrib as $k => $v) {
             $attr = $meta[$k]['origTag'] ?: $k;
             if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
@@ -858,7 +858,7 @@ class HtmlParser
      * @return array
      * @access private
      */
-    public function HTMLparserConfig($TSconfig, $keepTags = array())
+    public function HTMLparserConfig($TSconfig, $keepTags = [])
     {
         // Allow tags (base list, merged with incoming array)
         $alTags = array_flip(GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags']), true));
@@ -879,14 +879,14 @@ class HtmlParser
                 if (is_array($tagC) && $key == strtolower($key)) {
                     $key = substr($key, 0, -1);
                     if (!is_array($keepTags[$key])) {
-                        $keepTags[$key] = array();
+                        $keepTags[$key] = [];
                     }
                     if (is_array($tagC['fixAttrib.'])) {
                         foreach ($tagC['fixAttrib.'] as $atName => $atConfig) {
                             if (is_array($atConfig)) {
                                 $atName = substr($atName, 0, -1);
                                 if (!is_array($keepTags[$key]['fixAttrib'][$atName])) {
-                                    $keepTags[$key]['fixAttrib'][$atName] = array();
+                                    $keepTags[$key]['fixAttrib'][$atName] = [];
                                 }
                                 $keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
                                 if ((string)$keepTags[$key]['fixAttrib'][$atName]['range'] !== '') {
@@ -913,7 +913,7 @@ class HtmlParser
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
                     if (!is_array($keepTags[$tn])) {
-                        $keepTags[$tn] = array();
+                        $keepTags[$tn] = [];
                     }
                     $keepTags[$tn]['nesting'] = 1;
                 }
@@ -924,7 +924,7 @@ class HtmlParser
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
                     if (!is_array($keepTags[$tn])) {
-                        $keepTags[$tn] = array();
+                        $keepTags[$tn] = [];
                     }
                     $keepTags[$tn]['nesting'] = 'global';
                 }
@@ -935,7 +935,7 @@ class HtmlParser
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
                     if (!is_array($keepTags[$tn])) {
-                        $keepTags[$tn] = array();
+                        $keepTags[$tn] = [];
                     }
                     $keepTags[$tn]['rmTagIfNoAttrib'] = 1;
                     if (empty($keepTags[$tn]['nesting'])) {
@@ -949,7 +949,7 @@ class HtmlParser
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
                     if (!is_array($keepTags[$tn])) {
-                        $keepTags[$tn] = array();
+                        $keepTags[$tn] = [];
                     }
                     $keepTags[$tn]['allowedAttribs'] = 0;
                 }
@@ -958,25 +958,25 @@ class HtmlParser
         if ($TSconfig['removeTags']) {
             $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), true);
             foreach ($lN as $tn) {
-                $keepTags[$tn] = array();
+                $keepTags[$tn] = [];
                 $keepTags[$tn]['allowedAttribs'] = 0;
                 $keepTags[$tn]['rmTagIfNoAttrib'] = 1;
             }
         }
         // Create additional configuration:
-        $addConfig = array();
+        $addConfig = [];
         if (isset($TSconfig['stripEmptyTags'])) {
             $addConfig['stripEmptyTags'] = $TSconfig['stripEmptyTags'];
             if (isset($TSconfig['stripEmptyTags.'])) {
                 $addConfig['stripEmptyTags.'] = $TSconfig['stripEmptyTags.'];
             }
         }
-        return array(
+        return [
             $keepTags,
             '' . $TSconfig['keepNonMatchedTags'],
             (int)$TSconfig['htmlSpecialChars'],
             $addConfig
-        );
+        ];
     }
 
     /**

@@ -139,7 +139,7 @@ class CommandLineBackend extends AbstractBackend
         // Prepare the command
         $command = $this->opensslPath . ' rsautl -inkey ' . escapeshellarg($privateKeyFile) . ' -in ' . escapeshellarg($dataFile) . ' -decrypt';
         // Execute the command and capture the result
-        $output = array();
+        $output = [];
         CommandUtility::exec($command, $output);
         // Remove the file
         @unlink($privateKeyFile);

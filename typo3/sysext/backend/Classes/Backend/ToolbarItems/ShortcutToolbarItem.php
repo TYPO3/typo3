@@ -91,13 +91,13 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 
         // By default, 5 groups are set
-        $this->shortcutGroups = array(
+        $this->shortcutGroups = [
             1 => '1',
             2 => '1',
             3 => '1',
             4 => '1',
             5 => '1'
-        );
+        ];
         $this->shortcutGroups = $this->initShortcutGroups();
         $this->shortcuts = $this->initShortcuts();
 
@@ -230,7 +230,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -253,7 +253,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $backendUser = $this->getBackendUser();
         // Traverse shortcuts
         $lastGroup = 0;
-        $shortcuts = array();
+        $shortcuts = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_be_shortcuts');
         $result = $queryBuilder->select('*')
@@ -272,7 +272,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             ->execute();
 
         while ($row = $result->fetch()) {
-            $shortcut = array('raw' => $row);
+            $shortcut = ['raw' => $row];
 
             list($row['module_name'], $row['M_module_name']) = explode('|', $row['module_name']);
 
@@ -389,7 +389,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getShortcutsByGroup($groupId)
     {
-        $shortcuts = array();
+        $shortcuts = [];
         foreach ($this->shortcuts as $shortcut) {
             if ($shortcut['group'] == $groupId) {
                 $shortcuts[] = $shortcut;
@@ -783,7 +783,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getGlobalShortcutGroups()
     {
-        $globalGroups = array();
+        $globalGroups = [];
         foreach ($this->shortcutGroups as $groupId => $groupLabel) {
             if ($groupId < 0) {
                 $globalGroups[$groupId] = $groupLabel;
@@ -799,7 +799,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getGroupsFromShortcuts()
     {
-        $groups = array();
+        $groups = [];
         foreach ($this->shortcuts as $shortcut) {
             $groups[$shortcut['group']] = $this->shortcutGroups[$shortcut['group']];
         }
@@ -859,7 +859,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
 
                     $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, (array)$row, Icon::SIZE_SMALL)->render() . '</span>';
                 } elseif ($shortcut['type'] == 'new') {
-                    $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</span>';
+                    $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 break;
             case 'file_edit':

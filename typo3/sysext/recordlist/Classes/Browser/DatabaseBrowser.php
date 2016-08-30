@@ -69,7 +69,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $this->expandPage = (int)$data['expandPage'];
             $store = false;
         }
-        return array($data, $store);
+        return [$data, $store];
     }
 
     /**
@@ -150,7 +150,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') === 0) {
             return '';
         }
-        $link = '<p><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '" class="btn btn-primary">'
+        $link = '<p><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['setTempDBmount' => 0])) . '" class="btn btn-primary">'
             . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount')) . '</a></p>';
 
         return $link;

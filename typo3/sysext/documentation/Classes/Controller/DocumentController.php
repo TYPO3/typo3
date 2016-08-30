@@ -85,7 +85,7 @@ class DocumentController extends ActionController
             $menu->setIdentifier('DocumentationModuleMenu');
 
             $isListActive = $this->request->getControllerActionName() === 'list' ? true : false;
-            $uri = $uriBuilder->reset()->uriFor('list', array(), 'Document');
+            $uri = $uriBuilder->reset()->uriFor('list', [], 'Document');
             $listMenuItem = $menu->makeMenuItem()
                 ->setTitle($this->getLanguageService()
                     ->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:showDocumentation'))
@@ -97,7 +97,7 @@ class DocumentController extends ActionController
                 $isDownloadActive = $this->request->getControllerActionName() ===
                 'download' ? true : false;
                 $uri =
-                    $uriBuilder->reset()->uriFor('download', array(), 'Document');
+                    $uriBuilder->reset()->uriFor('download', [], 'Document');
                 $downloadMenuItem = $menu->makeMenuItem()
                     ->setTitle($this->getLanguageService()
                         ->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:downloadDocumentation'))
@@ -197,10 +197,10 @@ class DocumentController extends ActionController
         $this->signalSlotDispatcher->dispatch(
             __CLASS__,
             'afterInitializeDocuments',
-            array(
+            [
                 $language,
                 &$documents,
-            )
+            ]
         );
         return $documents;
     }
@@ -272,11 +272,11 @@ class DocumentController extends ActionController
                 LocalizationUtility::translate(
                     'downloadFailedDetails',
                     'documentation',
-                    array(
+                    [
                         $key,
                         $e->getMessage(),
                         $e->getCode()
-                    )
+                    ]
                 ),
                 LocalizationUtility::translate(
                     'downloadFailed',

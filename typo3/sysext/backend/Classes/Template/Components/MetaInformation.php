@@ -126,7 +126,7 @@ class MetaInformation
                         $resourceObject,
                         Icon::SIZE_SMALL,
                         null,
-                        array('mount-root' => true)
+                        ['mount-root' => true]
                     )->render() . '</span>';
                 } else {
                     $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(

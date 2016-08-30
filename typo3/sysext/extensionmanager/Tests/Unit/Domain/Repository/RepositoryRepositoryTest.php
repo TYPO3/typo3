@@ -35,8 +35,8 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->mockObjectManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
         /** @var $subject \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class)
-            ->setMethods(array('findAll'))
-            ->setConstructorArgs(array($this->mockObjectManager))
+            ->setMethods(['findAll'])
+            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
     }
 
@@ -48,7 +48,7 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject
             ->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->assertNull($this->subject->findOneTypo3OrgRepository());
     }
@@ -72,7 +72,7 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject
             ->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array($mockModelOne, $mockModelTwo)));
+            ->will($this->returnValue([$mockModelOne, $mockModelTwo]));
 
         $this->assertSame($mockModelTwo, $this->subject->findOneTypo3OrgRepository());
     }

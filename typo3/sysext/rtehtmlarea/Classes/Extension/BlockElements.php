@@ -41,7 +41,7 @@ class BlockElements extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'formatblock' => 'FormatBlock',
         'indent' => 'Indent',
         'outdent' => 'Outdent',
@@ -55,14 +55,14 @@ class BlockElements extends RteHtmlAreaApi
         'orderedlist' => 'InsertOrderedList',
         'unorderedlist' => 'InsertUnorderedList',
         'line' => 'InsertHorizontalRule'
-    );
+    ];
 
     /**
      * List of default block elements
      *
      * @var array
      */
-    protected $defaultBlockElements = array(
+    protected $defaultBlockElements = [
         'none' => 'No block',
         'p' => 'Paragraph',
         'h1' => 'Heading 1',
@@ -81,7 +81,7 @@ class BlockElements extends RteHtmlAreaApi
         'header' => 'Header',
         'nav' => 'Navigation',
         'section' => 'Section'
-    );
+    ];
 
     /**
      * Default order of block elements
@@ -97,15 +97,15 @@ class BlockElements extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         if (in_array('formatblock', $this->toolbar)) {
             if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.']['formatblock.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.formatblock = new Object();';
             }
             // Default block elements
-            $hideItems = array();
-            $addItems = array();
-            $restrictTo = array('*');
+            $hideItems = [];
+            $addItems = [];
+            $restrictTo = ['*'];
             $blockElementsOrder = $this->defaultBlockElementsOrder;
             $prefixLabelWithTag = false;
             $postfixLabelWithTag = false;
@@ -134,11 +134,11 @@ class BlockElements extends RteHtmlAreaApi
             $blockElementsOrder = array_merge(GeneralUtility::trimExplode(',', $this->cleanList($blockElementsOrder), true), $addItems);
             // Add div element if indent is configured in the toolbar
             if (in_array('indent', $this->toolbar) || in_array('outdent', $this->toolbar)) {
-                $blockElementsOrder = array_merge($blockElementsOrder, array('div'));
+                $blockElementsOrder = array_merge($blockElementsOrder, ['div']);
             }
             // Add blockquote element if blockquote is configured in the toolbar
             if (in_array('blockquote', $this->toolbar)) {
-                $blockElementsOrder = array_merge($blockElementsOrder, array('blockquote'));
+                $blockElementsOrder = array_merge($blockElementsOrder, ['blockquote']);
             }
             // Remove items
             $blockElementsOrder = array_diff($blockElementsOrder, $hideItems);
@@ -147,8 +147,8 @@ class BlockElements extends RteHtmlAreaApi
                 $blockElementsOrder = array_intersect($blockElementsOrder, $restrictTo);
             }
             // Localizing the options
-            $blockElementsOptions = array();
-            $labels = array();
+            $blockElementsOptions = [];
+            $labels = [];
             if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['formatblock.']) && is_array($this->configuration['thisConfig']['buttons.']['formatblock.']['items.'])) {
                 $labels = $this->configuration['thisConfig']['buttons.']['formatblock.']['items.'];
             }
@@ -168,10 +168,10 @@ class BlockElements extends RteHtmlAreaApi
                 asort($blockElementsOptions);
             }
             // Generating the javascript options
-            $JSBlockElements = array();
-            $JSBlockElements[] = array($first, 'none');
+            $JSBlockElements = [];
+            $JSBlockElements[] = [$first, 'none'];
             foreach ($blockElementsOptions as $item => $label) {
-                $JSBlockElements[] = array($label, $item);
+                $JSBlockElements[] = [$label, $item];
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
         }

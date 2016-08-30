@@ -32,7 +32,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, array('dummy'));
+        $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['dummy']);
     }
 
     /**
@@ -50,15 +50,15 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setControllerContextWithSubpackageKeySetsExpectedControllerContext()
     {
         $renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
-            ->setMethods(array('setControllerAction', 'setControllerName'))
+            ->setMethods(['setControllerAction', 'setControllerName'])
             ->getMock();
         $request = $this->getMockBuilder(Request::class)
-            ->setMethods(array('getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'))
+            ->setMethods(['getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'])
             ->getMock();
         $request->expects($this->exactly(2))->method('getControllerSubpackageKey')->willReturn('test1');
         $request->expects($this->once())->method('getControllerName')->willReturn('test2');
         $controllerContext = $this->getMockBuilder(ControllerContext::class)
-            ->setMethods(array('getRequest'))
+            ->setMethods(['getRequest'])
             ->getMock();
         $controllerContext->expects($this->once())->method('getRequest')->willReturn($request);
         $renderingContext->expects($this->once())->method('setControllerName')->with('test1\\test2');
@@ -81,7 +81,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function controllerContextCanBeReadCorrectly()
     {
         $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
-            ->setMethods(array('getRequest'))
+            ->setMethods(['getRequest'])
             ->disableOriginalConstructor()
             ->getMock();
         $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));

@@ -46,7 +46,7 @@ class LinkHandler extends AbstractLinktype
     {
         $response = true;
         $errorType = '';
-        $errorParams = array();
+        $errorParams = [];
         $parts = explode(':', $url);
         if (count($parts) !== 3) {
             return $response;

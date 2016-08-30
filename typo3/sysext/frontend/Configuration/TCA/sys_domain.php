@@ -1,94 +1,94 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'domainName',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'sortby' => 'sorting',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-content-domain'
-        ),
+        ],
         'searchFields' => 'domainName,redirectTo'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'hidden,domainName,redirectTo'
-    ),
-    'columns' => array(
-        'domainName' => array(
+    ],
+    'columns' => [
+        'domainName' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.domainName',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 35,
                 'max' => 80,
                 'eval' => 'required,unique,lower,trim,domainname',
                 'softref' => 'substitute'
-            )
-        ),
-        'redirectTo' => array(
+            ]
+        ],
+        'redirectTo' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectTo',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 35,
                 'max' => 255,
                 'default' => '',
                 'eval' => 'trim',
                 'softref' => 'substitute'
-            )
-        ),
-        'redirectHttpStatusCode' => array(
+            ]
+        ],
+        'redirectHttpStatusCode' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.301', '301'),
-                    array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.302', '302'),
-                    array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.303', '303'),
-                    array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.307', '307')
-                ),
+                'items' => [
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.301', '301'],
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.302', '302'],
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.303', '303'],
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.307', '307']
+                ],
                 'size' => 1,
                 'maxitems' => 1
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'prepend_params' => array(
+            ]
+        ],
+        'prepend_params' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.prepend_params',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'forced' => array(
+            ]
+        ],
+        'forced' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.forced',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        )
-    ),
-    'types' => array(
-        '1' => array(
+            ]
+        ]
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'hidden, domainName, --palette--;;1, prepend_params, forced',
-        ),
-    ),
-    'palettes' => array(
-        '1' => array(
+        ],
+    ],
+    'palettes' => [
+        '1' => [
             'showitem' => 'redirectTo, redirectHttpStatusCode',
-        ),
-    )
-);
+        ],
+    ]
+];

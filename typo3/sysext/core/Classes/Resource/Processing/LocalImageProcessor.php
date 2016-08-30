@@ -47,7 +47,7 @@ class LocalImageProcessor implements ProcessorInterface
     public function canProcessTask(TaskInterface $task)
     {
         $canProcessTask = $task->getType() === 'Image';
-        $canProcessTask = $canProcessTask & in_array($task->getName(), array('Preview', 'CropScaleMask'));
+        $canProcessTask = $canProcessTask & in_array($task->getName(), ['Preview', 'CropScaleMask']);
         return $canProcessTask;
     }
 
@@ -76,7 +76,7 @@ class LocalImageProcessor implements ProcessorInterface
                 $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($result['filePath']);
                 $task->getTargetFile()->setName($task->getTargetFileName());
                 $task->getTargetFile()->updateProperties(
-                    array('width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']), 'checksum' => $task->getConfigurationChecksum())
+                    ['width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']), 'checksum' => $task->getConfigurationChecksum()]
                 );
                 $task->getTargetFile()->updateWithLocalFile($result['filePath']);
 
@@ -85,7 +85,7 @@ class LocalImageProcessor implements ProcessorInterface
                 $task->setExecuted(true);
                 $task->getTargetFile()->setUsesOriginalFile();
                 $task->getTargetFile()->updateProperties(
-                    array('width' => $result['width'], 'height' => $result['height'], 'size' => $task->getSourceFile()->getSize(), 'checksum' => $task->getConfigurationChecksum())
+                    ['width' => $result['width'], 'height' => $result['height'], 'size' => $task->getSourceFile()->getSize(), 'checksum' => $task->getConfigurationChecksum()]
                 );
 
             // Seems we have no valid processing result
@@ -121,12 +121,12 @@ class LocalImageProcessor implements ProcessorInterface
             $localProcessedFile = $storage->getFileForLocalProcessing($task->getTargetFile(), false);
             $task->setExecuted(true);
             $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($localProcessedFile);
-            $properties = array(
+            $properties = [
                 'width' => $imageDimensions[0],
                 'height' => $imageDimensions[1],
                 'size' => filesize($localProcessedFile),
                 'checksum' => $task->getConfigurationChecksum()
-            );
+            ];
             $task->getTargetFile()->updateProperties($properties);
 
             return true;

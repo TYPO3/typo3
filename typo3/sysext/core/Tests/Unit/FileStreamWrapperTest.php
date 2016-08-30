@@ -42,14 +42,14 @@ class FileStreamWrapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $content = file_get_contents($file);
         $this->assertSame('Baz', $content);
 
-        $expectedFileSystem = array(
-            'root' => array(
-                'fileadmin' => array(
+        $expectedFileSystem = [
+            'root' => [
+                'fileadmin' => [
                     'ext_typoscript_setup.txt' => 'test.Core.TypoScript = 1',
-                    'test' => array('Foo.bar' => 'Baz'),
-                ),
-            ),
-        );
+                    'test' => ['Foo.bar' => 'Baz'],
+                ],
+            ],
+        ];
         $this->assertEquals($expectedFileSystem, vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
         FileStreamWrapper::destroy();
     }
@@ -65,11 +65,11 @@ class FileStreamWrapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin');
 
         touch($cRoot . 'fileadmin\\someFile.txt');
-        $expectedFileStructure = array(
-            'root' => array(
-                'fileadmin' => array('someFile.txt' => null),
-            ),
-        );
+        $expectedFileStructure = [
+            'root' => [
+                'fileadmin' => ['someFile.txt' => null],
+            ],
+        ];
 
         $this->assertEquals($expectedFileStructure, vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
         FileStreamWrapper::destroy();

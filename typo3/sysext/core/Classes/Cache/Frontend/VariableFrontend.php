@@ -33,7 +33,7 @@ class VariableFrontend extends AbstractFrontend
      * @throws \InvalidArgumentException if the identifier or tag is not valid
      * @api
      */
-    public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $variable, array $tags = [], $lifetime = null)
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException(
@@ -48,12 +48,12 @@ class VariableFrontend extends AbstractFrontend
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'] as $_funcRef) {
-                $params = array(
+                $params = [
                     'entryIdentifier' => &$entryIdentifier,
                     'variable' => &$variable,
                     'tags' => &$tags,
                     'lifetime' => &$lifetime
-                );
+                ];
                 GeneralUtility::callUserFunction($_funcRef, $params, $this);
             }
         }
@@ -99,7 +99,7 @@ class VariableFrontend extends AbstractFrontend
         if (!$this->isValidTag($tag)) {
             throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058312);
         }
-        $entries = array();
+        $entries = [];
         $identifiers = $this->backend->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
             $rawResult = $this->backend->get($identifier);

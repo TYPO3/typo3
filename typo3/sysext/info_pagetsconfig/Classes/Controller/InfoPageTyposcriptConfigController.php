@@ -58,8 +58,8 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
     public function modMenu()
     {
         $lang = $this->getLanguageService();
-        $modMenuAdd = array(
-            'tsconf_parts' => array(
+        $modMenuAdd = [
+            'tsconf_parts' => [
                 0 => $lang->getLL('tsconf_parts_0'),
                 1 => $lang->getLL('tsconf_parts_1'),
                 '1a' => $lang->getLL('tsconf_parts_1a'),
@@ -75,9 +75,9 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 3 => 'TSFE.',
                 4 => 'user.',
                 99 => $lang->getLL('tsconf_configFields')
-            ),
+            ],
             'tsconf_alphaSort' => '1'
-        );
+        ];
         if (!$this->getBackendUser()->isAdmin()) {
             unset($modMenuAdd['tsconf_parts'][99]);
         }
@@ -99,12 +99,12 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
         } else {
             if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
                 $TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, null, true);
-                $lines = array();
-                $pUids = array();
+                $lines = [];
+                $pUids = [];
 
                 foreach ($TSparts as $k => $v) {
                     if ($k != 'uid_0') {
-                        $line = array();
+                        $line = [];
                         if ($k == 'defaultPageTSconfig') {
                             $line['defaultPageTSconfig'] = 1;
                         } else {
@@ -211,7 +211,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 
                 $modTSconfig = $modTSconfig['properties'];
                 if (!is_array($modTSconfig)) {
-                    $modTSconfig = array();
+                    $modTSconfig = [];
                 }
 
                 $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', null, '|'));
@@ -273,7 +273,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
         array_shift($rootlineArray);
         if (!empty($rootlineArray)) {
             if (!isset($hierarchicArray[$currentElement['uid'] . '.'])) {
-                $hierarchicArray[$currentElement['uid'] . '.'] = array();
+                $hierarchicArray[$currentElement['uid'] . '.'] = [];
             }
             $this->setInPageArray($hierarchicArray[$currentElement['uid'] . '.'], $rootlineArray, $row);
         } else {
@@ -289,7 +289,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      */
     protected function extractLinesFromTSConfig(array $row)
     {
-        $out = array();
+        $out = [];
         $includeLines = 0;
         $out['uid'] = $row['uid'];
         $lines = GeneralUtility::trimExplode("\r\n", $row['TSconfig']);
@@ -312,7 +312,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      * @param int $pageDepth The level of the current $pageArray being processed
      * @return array
      */
-    protected function getList($pageArray, $lines = array(), $pageDepth = 0)
+    protected function getList($pageArray, $lines = [], $pageDepth = 0)
     {
         if (!is_array($pageArray)) {
             return $lines;
@@ -322,10 +322,10 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
             if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
                 continue;
             }
-            $line = array();
+            $line = [];
             $line['padding'] = ($pageDepth * 20);
             if (isset($pageArray[$identifier . '_'])) {
-                $line['link'] = htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $identifier)));
+                $line['link'] = htmlspecialchars(GeneralUtility::linkThisScript(['id' => $identifier]));
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = htmlspecialchars('ID: ' . $identifier);
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30);
@@ -374,9 +374,9 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Layouts')));
-        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Partials')));
-        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Templates')));
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Templates')]);
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:info_pagetsconfig/Resources/Private/Templates/Main.html'));
 

@@ -28,7 +28,7 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
      *
      * @var array
      */
-    private static $tagAttributes = array();
+    private static $tagAttributes = [];
 
     /**
      * name of the tag to be created by this view helper

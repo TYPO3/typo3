@@ -5,11 +5,11 @@ defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
-     array(
-         'tx_testdatahandler_select' => array(
+     [
+         'tx_testdatahandler_select' => [
             'exclude' => true,
             'label' => 'DataHandler Test Select',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_testdatahandler_element',
@@ -17,12 +17,12 @@ defined('TYPO3_MODE') or die();
                 'maxitems' => 10,
                 'autoSizeMax' => 10,
                 'default' => '',
-            ),
-        ),
-         'tx_testdatahandler_group' => array(
+            ],
+        ],
+         'tx_testdatahandler_group' => [
             'exclude' => true,
             'label' => 'DataHandler Test Group',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_testdatahandler_element',
@@ -30,33 +30,33 @@ defined('TYPO3_MODE') or die();
                 'maxitems' => 10,
                 'autoSizeMax' => 10,
                 'default' => '',
-            ),
-        ),
-         'tx_testdatahandler_radio' => array(
+            ],
+        ],
+         'tx_testdatahandler_radio' => [
             'exclude' => true,
             'label' => 'DataHandler Test Radio',
-            'config' => array(
+            'config' => [
                 'type' => 'radio',
-                'items' => array(
-                    array('predefined label', 'predefined value')
-                ),
+                'items' => [
+                    ['predefined label', 'predefined value']
+                ],
                 'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\RadioElementItems->getItems',
                 'default' => '',
-            ),
-        ),
-         'tx_testdatahandler_checkbox' => array(
+            ],
+        ],
+         'tx_testdatahandler_checkbox' => [
              'exclude' => true,
              'label' => 'DataHandler Test Checkbox',
-             'config' => array(
+             'config' => [
                  'type' => 'check',
-                 'items' => array(
-                     array('predefined label', 'predefined value')
-                 ),
+                 'items' => [
+                     ['predefined label', 'predefined value']
+                 ],
                  'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\CheckboxElementItems->getItems',
                  'default' => '',
-             ),
-         ),
-    )
+             ],
+         ],
+    ]
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(

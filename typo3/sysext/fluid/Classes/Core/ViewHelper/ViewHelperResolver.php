@@ -45,12 +45,12 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
      *
      * @var array
      */
-    protected $namespaces = array(
-        'f' => array(
+    protected $namespaces = [
+        'f' => [
             'TYPO3Fluid\\Fluid\\ViewHelpers',
             'TYPO3\\CMS\\Fluid\\ViewHelpers'
-        )
-    );
+        ]
+    ];
 
     /**
      * @param string $viewHelperClassName

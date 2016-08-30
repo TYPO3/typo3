@@ -47,7 +47,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
     {
         /** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
         $storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class)->findAll();
-        $options = array();
+        $options = [];
         foreach ($storages as $storage) {
             if ($task != null && $task->storageUid === $storage->getUid()) {
                 $options[] = '<option value="' . $storage->getUid() . '" selected="selected">' . $storage->getName() . '</option>';
@@ -60,12 +60,12 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
         $fieldId = 'scheduler_fileStorageIndexing_storage';
         $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
 
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $fieldConfiguration;
     }
 

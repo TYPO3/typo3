@@ -58,7 +58,7 @@ class ModuleLinkViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $moduleArguments = array();
+        $moduleArguments = [];
         $moduleArguments['SET']['function'] = $arguments['controller'];
         $moduleArguments['CMD'] = $arguments['action'];
         if (!empty($arguments['arguments'])) {

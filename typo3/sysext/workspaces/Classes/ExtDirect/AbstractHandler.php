@@ -40,13 +40,13 @@ abstract class AbstractHandler
     protected function getErrorResponse($errorLabel, $errorCode = 0, $successFlagValue = false)
     {
         $localLangFile = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
-        $response = array(
-            'error' => array(
+        $response = [
+            'error' => [
                 'code' => $errorCode,
                 'message' => $GLOBALS['LANG']->sL($localLangFile . ':' . $errorLabel)
-            ),
+            ],
             'success' => $successFlagValue
-        );
+        ];
         return $response;
     }
 
@@ -87,7 +87,7 @@ abstract class AbstractHandler
      */
     protected function getAffectedElements(\stdClass $parameters)
     {
-        $affectedElements = array();
+        $affectedElements = [];
         if ($parameters->type === 'selection') {
             foreach ((array)$parameters->selection as $element) {
                 $affectedElements[] = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::create($element->table, $element->liveId, $element->versionId);

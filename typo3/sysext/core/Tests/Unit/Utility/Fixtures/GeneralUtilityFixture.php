@@ -73,6 +73,6 @@ class GeneralUtilityFixture extends GeneralUtility
      */
     public static function resetFinalClassNameCache()
     {
-        static::$finalClassNameCache = array();
+        static::$finalClassNameCache = [];
     }
 }

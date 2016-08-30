@@ -169,10 +169,10 @@ class Command
     {
         $lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
         array_shift($lines);
-        $descriptionLines = array();
+        $descriptionLines = [];
         foreach ($lines as $line) {
             $trimmedLine = trim($line);
-            if ($descriptionLines !== array() || $trimmedLine !== '') {
+            if ($descriptionLines !== [] || $trimmedLine !== '') {
                 $descriptionLines[] = $trimmedLine;
             }
         }
@@ -199,9 +199,9 @@ class Command
     public function getArgumentDefinitions()
     {
         if (!$this->hasArguments()) {
-            return array();
+            return [];
         }
-        $commandArgumentDefinitions = array();
+        $commandArgumentDefinitions = [];
         $commandMethodReflection = $this->getCommandMethodReflection();
         $annotations = $commandMethodReflection->getTagsValues();
         $commandParameters = $this->reflectionService->getMethodParameters($this->controllerClassName, $this->controllerCommandName . 'Command');
@@ -260,9 +260,9 @@ class Command
     {
         $commandMethodReflection = $this->getCommandMethodReflection();
         if (!$commandMethodReflection->isTaggedWith('see')) {
-            return array();
+            return [];
         }
-        $relatedCommandIdentifiers = array();
+        $relatedCommandIdentifiers = [];
         foreach ($commandMethodReflection->getTagValues('see') as $tagValue) {
             if (preg_match('/^[\\w\\d\\.]+:[\\w\\d]+:[\\w\\d]+$/', $tagValue) === 1) {
                 $relatedCommandIdentifiers[] = $tagValue;

@@ -29,11 +29,11 @@ class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonT
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
         $nodeArray = parent::getNodeArray($node);
-        $nodeArray = array_merge($nodeArray, array(
+        $nodeArray = array_merge($nodeArray, [
             'expanded' => $node->getExpanded(),
             'expandable' => $node->hasChildNodes(),
             'checked' => $node->getSelected()
-        ));
+        ]);
         if (!$node->getSelectable()) {
             unset($nodeArray['checked']);
         }

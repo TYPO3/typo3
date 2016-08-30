@@ -31,7 +31,7 @@ class MirrorListUtility implements \SplObserver
      *
      * @var array
      */
-    protected $arrTmpMirrors = array();
+    protected $arrTmpMirrors = [];
 
     /**
      * Class constructor.
@@ -64,7 +64,7 @@ class MirrorListUtility implements \SplObserver
         /** @var $objRepositoryMirrors \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors */
         $objRepositoryMirrors = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors::class);
         $objRepositoryMirrors->setMirrors($this->arrTmpMirrors);
-        $this->arrTmpMirrors = array();
+        $this->arrTmpMirrors = [];
         return $objRepositoryMirrors;
     }
 

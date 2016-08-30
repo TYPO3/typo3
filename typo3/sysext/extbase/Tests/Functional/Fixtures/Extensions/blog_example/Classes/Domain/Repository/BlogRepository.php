@@ -19,10 +19,10 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
  */
 class BlogRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    protected $defaultOrderings = array(
+    protected $defaultOrderings = [
         'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
         'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-    );
+    ];
 
     /**
      * Life cycle method.

@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'title',
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
@@ -11,33 +11,33 @@ return array(
         'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
         'adminOnly' => true,
         'rootLevel' => 1,
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'status-user-group-backend'
-        ),
-        'enablecolumns' => array(
+        ],
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
+        ],
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups',
         'useColumnsForDefaultValues' => 'lockToDomain, file_permissions',
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'title'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'title, db_mountpoints, file_mountpoints, file_permissions, tables_select, tables_modify, pagetypes_select, non_exclude_fields, groupMods, lockToDomain, description'
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 50,
                 'eval' => 'trim,required'
-            )
-        ),
-        'db_mountpoints' => array(
+            ]
+        ],
+        'db_mountpoints' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:db_mountpoints',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
@@ -45,16 +45,16 @@ return array(
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
                 'show_thumbs' => true,
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        'file_mountpoints' => array(
+                    ]
+                ]
+            ]
+        ],
+        'file_mountpoints' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'sys_filemounts',
@@ -62,213 +62,213 @@ return array(
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'wizards' => array(
+                'wizards' => [
                     '_VERTICAL' => 1,
-                    'edit' => array(
+                    'edit' => [
                         'type' => 'popup',
                         'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_edit_title',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_edit',
-                        ),
+                        ],
                         'popup_onlyOpenIfSelected' => true,
                         'icon' => 'actions-open',
                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
-                    ),
-                    'add' => array(
+                    ],
+                    'add' => [
                         'type' => 'script',
                         'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_add_title',
                         'icon' => 'actions-add',
-                        'params' => array(
+                        'params' => [
                             'table' => 'sys_filemounts',
                             'pid' => 0,
                             'setValue' => 'prepend'
-                        ),
-                        'module' => array(
+                        ],
+                        'module' => [
                             'name' => 'wizard_add'
-                        )
-                    ),
-                    'list' => array(
+                        ]
+                    ],
+                    'list' => [
                         'type' => 'script',
                         'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_list_title',
                         'icon' => 'actions-system-list-open',
-                        'params' => array(
+                        'params' => [
                             'table' => 'sys_filemounts',
                             'pid' => 0
-                        ),
-                        'module' => array(
+                        ],
+                        'module' => [
                             'name' => 'wizard_list'
-                        )
-                    )
-                )
-            )
-        ),
-        'file_permissions' => array(
+                        ]
+                    ]
+                ]
+            ]
+        ],
+        'file_permissions' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.fileoper_perms',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder', '--div--', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_read', 'readFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_write', 'writeFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_add', 'addFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_rename', 'renameFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_move', 'moveFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_copy', 'copyFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_delete', 'deleteFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_recursivedelete', 'recursivedeleteFolder', 'apps-filetree-folder-default'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files', '--div--', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_read', 'readFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_write', 'writeFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_add', 'addFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_rename', 'renameFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_replace', 'replaceFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_move', 'moveFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_copy', 'copyFile', 'mimetypes-other-other'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other')
-                ),
+                'items' => [
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder', '--div--', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_read', 'readFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_write', 'writeFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_add', 'addFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_rename', 'renameFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_move', 'moveFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_copy', 'copyFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_delete', 'deleteFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_recursivedelete', 'recursivedeleteFolder', 'apps-filetree-folder-default'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files', '--div--', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_read', 'readFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_write', 'writeFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_add', 'addFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_rename', 'renameFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_replace', 'replaceFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_move', 'moveFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_copy', 'copyFile', 'mimetypes-other-other'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other']
+                ],
                 'size' => 17,
                 'maxitems' => 17,
                 'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile'
-            )
-        ),
-        'workspace_perms' => array(
+            ]
+        ],
+        'workspace_perms' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:workspace_perms',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_tca.xlf:workspace_perms_live', 0)
-                ),
+                'items' => [
+                    ['LLL:EXT:lang/locallang_tca.xlf:workspace_perms_live', 0]
+                ],
                 'default' => 0
-            )
-        ),
-        'pagetypes_select' => array(
+            ]
+        ],
+        'pagetypes_select' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.pagetypes_select',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'pagetypes',
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 20,
-            )
-        ),
-        'tables_modify' => array(
+            ]
+        ],
+        'tables_modify' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.tables_modify',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'tables',
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-            )
-        ),
-        'tables_select' => array(
+            ]
+        ],
+        'tables_select' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.tables_select',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'tables',
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-            )
-        ),
-        'non_exclude_fields' => array(
+            ]
+        ],
+        'non_exclude_fields' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.non_exclude_fields',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'exclude',
                 'size' => 25,
                 'maxitems' => 1000,
                 'autoSizeMax' => 50,
-            )
-        ),
-        'explicit_allowdeny' => array(
+            ]
+        ],
+        'explicit_allowdeny' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.explicit_allowdeny',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'explicitValues',
                 'maxitems' => 1000,
-            )
-        ),
-        'allowed_languages' => array(
+            ]
+        ],
+        'allowed_languages' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:allowed_languages',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'languages',
                 'maxitems' => 1000,
-            )
-        ),
-        'custom_options' => array(
+            ]
+        ],
+        'custom_options' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.custom_options',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'custom',
                 'maxitems' => 1000,
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'lockToDomain' => array(
+            ]
+        ],
+        'lockToDomain' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:lockToDomain',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 50,
                 'softref' => 'substitute'
-            )
-        ),
-        'groupMods' => array(
+            ]
+        ],
+        'groupMods' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:userMods',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'modListGroup',
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 30,
                 'max' => 2000,
-            )
-        ),
-        'TSconfig' => array(
+            ]
+        ],
+        'TSconfig' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:TSconfig',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 5
-            ),
+            ],
             'defaultExtras' => 'fixed-font : enable-tab'
-        ),
-        'hide_in_lists' => array(
+        ],
+        'hide_in_lists' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.hide_in_lists',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'subgroup' => array(
+            ]
+        ],
+        'subgroup' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.subgroup',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
@@ -276,34 +276,34 @@ return array(
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 20,
-            )
-        ),
-        'category_perms' => array(
+            ]
+        ],
+        'category_perms' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:category_perms',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
-                'treeConfig' => array(
+                'treeConfig' => [
                     'parentField' => 'parent',
-                    'appearance' => array(
+                    'appearance' => [
                         'expandAll' => false,
                         'showHeader' => false,
                         'maxLevels' => 99,
-                    ),
-                ),
+                    ],
+                ],
                 'size' => 20,
                 'minitems' => 0,
                 'maxitems' => 9999
-            )
-        )
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden, title, description, subgroup,
+            ]
+        ]
+    ],
+    'types' => [
+        '0' => ['showitem' => 'hidden, title, description, subgroup,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.base_rights, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.mounts_and_workspaces, workspace_perms, db_mountpoints, file_mountpoints, file_permissions, category_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.options, lockToDomain, hide_in_lists, TSconfig,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.extended'),
-    )
-);
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.extended'],
+    ]
+];

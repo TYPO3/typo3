@@ -9,7 +9,7 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:rtehtmlarea/Resources/Private/Language/locallang_csh_abbreviation.xlf');
 
 // Add contextual help files
-$htmlAreaRteContextHelpFiles = array(
+$htmlAreaRteContextHelpFiles = [
     'General' => 'EXT:rtehtmlarea/Resources/Private/Language/locallang_csh.xlf',
     'Abbreviation' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/Abbreviation/locallang_csh.xlf',
     'EditElement' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/EditElement/locallang_csh.xlf',
@@ -18,7 +18,7 @@ $htmlAreaRteContextHelpFiles = array(
     'PlainText' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_csh.xlf',
     'RemoveFormat' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/RemoveFormat/locallang_csh.xlf',
     'TableOperations' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/TableOperations/locallang_csh.xlf'
-);
+];
 foreach ($htmlAreaRteContextHelpFiles as $key => $file) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xEXT_rtehtmlarea_' . $key, $file);
 }
@@ -32,39 +32,39 @@ if (TYPO3_MODE === 'BE') {
 
 // Extend TYPO3 User Settings Configuration
 if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
-    $GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge($GLOBALS['TYPO3_USER_SETTINGS']['columns'], array(
-        'rteWidth' => array(
+    $GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge($GLOBALS['TYPO3_USER_SETTINGS']['columns'], [
+        'rteWidth' => [
             'type' => 'text',
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteWidth',
             'csh' => 'xEXT_rtehtmlarea_General:rteWidth'
-        ),
-        'rteHeight' => array(
+        ],
+        'rteHeight' => [
             'type' => 'text',
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteHeight',
             'csh' => 'xEXT_rtehtmlarea_General:rteHeight'
-        ),
-        'rteResize' => array(
+        ],
+        'rteResize' => [
             'type' => 'check',
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteResize',
             'csh' => 'xEXT_rtehtmlarea_General:rteResize'
-        ),
-        'rteMaxHeight' => array(
+        ],
+        'rteMaxHeight' => [
             'type' => 'text',
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteMaxHeight',
             'csh' => 'xEXT_rtehtmlarea_General:rteMaxHeight'
-        ),
-        'rteCleanPasteBehaviour' => array(
+        ],
+        'rteCleanPasteBehaviour' => [
             'type' => 'select',
             'renderType' => 'selectSingle',
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_js.xlf:rteCleanPasteBehaviour',
-            'items' => array(
+            'items' => [
                 'plainText' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_js.xlf:plainText',
                 'pasteStructure' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_js.xlf:pasteStructure',
                 'pasteFormat' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_js.xlf:pasteFormat'
-            ),
+            ],
             'csh' => 'xEXT_rtehtmlarea_PlainText:behaviour'
-        )
-    ));
+        ]
+    ]);
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings(
         '--div--;LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour'

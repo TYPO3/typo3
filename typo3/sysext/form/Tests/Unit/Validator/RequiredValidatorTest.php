@@ -29,20 +29,20 @@ class RequiredValidatorTest extends AbstractValidatorTest
      */
     public function validDataProvider()
     {
-        return array(
-            'string "a"'   => array('a'),
-            'string "a b"' => array('a b'),
-            'string "0"'   => array('0'),
-            'value 0'      => array(0),
-            'array with string "a"'   => array(array('a')),
-            'array with string "a b"' => array(array('a b')),
-            'array with string "0"'   => array(array('0')),
-            'array with value 0'      => array(array(0)),
-            'array with strings "a" and "b"' => array(array('a', 'b')),
-            'array with empty string and "a"' => array(array('', 'a')),
-            'array with empty string and "0"' => array(array('', '0')),
-            'array with empty string and 0' => array(array('', 0)),
-        );
+        return [
+            'string "a"'   => ['a'],
+            'string "a b"' => ['a b'],
+            'string "0"'   => ['0'],
+            'value 0'      => [0],
+            'array with string "a"'   => [['a']],
+            'array with string "a b"' => [['a b']],
+            'array with string "0"'   => [['0']],
+            'array with value 0'      => [[0]],
+            'array with strings "a" and "b"' => [['a', 'b']],
+            'array with empty string and "a"' => [['', 'a']],
+            'array with empty string and "0"' => [['', '0']],
+            'array with empty string and 0' => [['', 0]],
+        ];
     }
 
     /**
@@ -50,11 +50,11 @@ class RequiredValidatorTest extends AbstractValidatorTest
      */
     public function invalidDataProvider()
     {
-        return array(
-            'empty string'            => array(''),
-            'array with empty string' => array(array('')),
-            'array with empty strings' => array(array('', ''))
-        );
+        return [
+            'empty string'            => [''],
+            'array with empty string' => [['']],
+            'array with empty strings' => [['', '']]
+        ];
     }
 
     /**
@@ -63,7 +63,7 @@ class RequiredValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidDataHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -77,7 +77,7 @@ class RequiredValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidDataHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

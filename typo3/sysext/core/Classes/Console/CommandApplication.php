@@ -39,10 +39,10 @@ class CommandApplication implements ApplicationInterface
      * All available request handlers that can deal with a CLI Request
      * @var array
      */
-    protected $availableRequestHandlers = array(
+    protected $availableRequestHandlers = [
         \TYPO3\CMS\Core\Console\CommandRequestHandler::class,
         \TYPO3\CMS\Backend\Console\CliRequestHandler::class
-    );
+    ];
 
     /**
      * Constructor setting up legacy constants and register available Request Handlers

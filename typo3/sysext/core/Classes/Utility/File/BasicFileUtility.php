@@ -53,7 +53,7 @@ class BasicFileUtility
      * Allowed and denied file extensions
      * @var array
      */
-    protected $fileExtensionPermissions = array();
+    protected $fileExtensionPermissions = [];
 
     /**********************************
      *

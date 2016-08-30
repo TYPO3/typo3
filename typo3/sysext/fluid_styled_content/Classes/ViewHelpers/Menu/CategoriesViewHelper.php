@@ -70,9 +70,9 @@ class CategoriesViewHelper extends AbstractMenuViewHelper
             return '';
         }
 
-        return $this->renderChildrenWithVariables(array(
+        return $this->renderChildrenWithVariables([
             $as => $this->findByCategories($categoryUids, $this->arguments['relationField'], $this->arguments['table'])
-        ));
+        ]);
     }
 
     /**
@@ -86,7 +86,7 @@ class CategoriesViewHelper extends AbstractMenuViewHelper
      */
     protected function findByCategories($categoryUids, $relationField, $tableName = 'pages')
     {
-        $result = array();
+        $result = [];
 
         foreach ($categoryUids as $categoryUid) {
             try {

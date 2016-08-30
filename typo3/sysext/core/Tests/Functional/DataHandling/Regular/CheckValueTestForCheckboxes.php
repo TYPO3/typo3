@@ -42,9 +42,9 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
     public function checkBoxValueMustBeDefinedInTcaItems()
     {
         // pid 88 comes from LiveDefaultPages
-        $result = $this->actionService->createNewRecord('tt_content', 88, array(
+        $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_checkbox' => '1'
-        ));
+        ]);
         $recordUid = $result['tt_content'][0];
 
         $record = BackendUtility::getRecord('tt_content', $recordUid);
@@ -58,9 +58,9 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
     public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems()
     {
         // pid 88 comes from LiveDefaultPages
-        $result = $this->actionService->createNewRecord('tt_content', 88, array(
+        $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_checkbox' => '2'
-        ));
+        ]);
         $recordUid = $result['tt_content'][0];
 
         $record = BackendUtility::getRecord('tt_content', $recordUid);

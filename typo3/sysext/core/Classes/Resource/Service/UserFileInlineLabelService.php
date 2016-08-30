@@ -35,7 +35,7 @@ class UserFileInlineLabelService
     {
         $sysFileFields = isset($params['options']['sys_file']) && is_array($params['options']['sys_file'])
             ? $params['options']['sys_file']
-            : array();
+            : [];
 
         if (empty($sysFileFields)) {
             // Nothing to do
@@ -49,7 +49,7 @@ class UserFileInlineLabelService
         $fileRecord = BackendUtility::getRecord($fileInfo[0], $fileInfo[1]);
 
         // Configuration
-        $title = array();
+        $title = [];
         foreach ($sysFileFields as $field) {
             $value = '';
             if ($field === 'title') {

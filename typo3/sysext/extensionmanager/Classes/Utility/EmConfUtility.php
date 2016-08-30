@@ -98,7 +98,7 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
                 $emConf['constraints']['conflicts'] = $this->stringToDependency($emConf['conflicts']);
             }
             if (!isset($emConf['constraints']) || !isset($emConf['constraints']['suggests'])) {
-                $emConf['constraints']['suggests'] = array();
+                $emConf['constraints']['suggests'] = [];
             }
         }
 
@@ -136,7 +136,7 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
      */
     public function stringToDependency($dependency)
     {
-        $constraint = array();
+        $constraint = [];
         if (is_string($dependency) && $dependency !== '') {
             $dependency = explode(',', $dependency);
             foreach ($dependency as $v) {

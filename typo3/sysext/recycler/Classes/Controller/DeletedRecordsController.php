@@ -52,9 +52,9 @@ class DeletedRecordsController
     public function transform($deletedRowsArray, $totalDeleted)
     {
         $total = 0;
-        $jsonArray = array(
-            'rows' => array()
-        );
+        $jsonArray = [
+            'rows' => []
+        ];
 
         if (is_array($deletedRowsArray)) {
             $lang = $this->getLanguageService();
@@ -65,7 +65,7 @@ class DeletedRecordsController
                 foreach ($rows as $row) {
                     $pageTitle = $this->getPageTitle((int)$row['pid']);
                     $backendUser = BackendUtility::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', false);
-                    $jsonArray['rows'][] = array(
+                    $jsonArray['rows'][] = [
                         'uid' => $row['uid'],
                         'pid' => $row['pid'],
                         'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
@@ -79,7 +79,7 @@ class DeletedRecordsController
                         'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
                         'path' => RecyclerUtility::getRecordPath($row['pid']),
                         'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false
-                    );
+                    ];
                 }
             }
         }

@@ -47,12 +47,12 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      *
      * @var array
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * @var array
      */
-    protected $exceedingArguments = array();
+    protected $exceedingArguments = [];
 
     /**
      * If this request has been changed and needs to be dispatched again

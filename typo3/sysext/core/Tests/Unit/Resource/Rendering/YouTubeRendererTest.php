@@ -42,10 +42,10 @@ class YouTubeRendererTest extends UnitTestCase
         $_SERVER['REQUEST_URI'] = '/test-page/';
 
         /** @var YouTubeHelper|\PHPUnit_Framework_MockObject_MockObject $youTubeHelper */
-        $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, array('getOnlineMediaId'), array('youtube'));
+        $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youTubeHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331'));
 
-        $this->subject = $this->getAccessibleMock(YouTubeRenderer::class, array('getOnlineMediaHelper'), array());
+        $this->subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
         $this->subject ->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($youTubeHelper));
     }
 
@@ -110,7 +110,7 @@ class YouTubeRendererTest extends UnitTestCase
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('loop' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
 
@@ -124,7 +124,7 @@ class YouTubeRendererTest extends UnitTestCase
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 
@@ -157,7 +157,7 @@ class YouTubeRendererTest extends UnitTestCase
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('controls' => 0, 'autoplay' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
         );
     }
 }

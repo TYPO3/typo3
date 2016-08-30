@@ -62,7 +62,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function applyProcessingInstructions($image, $processingInstructions)
     {
-        if (is_callable(array($image, 'getOriginalFile'))) {
+        if (is_callable([$image, 'getOriginalFile'])) {
             // Get the original file from the file reference
             $image = $image->getOriginalFile();
         }
@@ -124,7 +124,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (is_null($image)) {
             $image = $this->getImageFromSourceString($src, $treatIdAsReference);
-        } elseif (is_callable(array($image, 'getOriginalResource'))) {
+        } elseif (is_callable([$image, 'getOriginalResource'])) {
             // We have a domain model, so we need to fetch the FAL resource object from there
             $image = $image->getOriginalResource();
         }
@@ -191,7 +191,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
             $compatibilityImageResourceValues = $GLOBALS['TSFE']->tmpl->fileCache[$hash];
         } else {
-            $compatibilityImageResourceValues = array(
+            $compatibilityImageResourceValues = [
                 0 => $processedImage->getProperty('width'),
                 1 => $processedImage->getProperty('height'),
                 2 => $processedImage->getExtension(),
@@ -203,7 +203,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
                 'originalFile' => $processedImage->getOriginalFile(),
                 'processedFile' => $processedImage,
                 'fileCacheHash' => $hash
-            );
+            ];
         }
         return $compatibilityImageResourceValues;
     }

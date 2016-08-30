@@ -32,7 +32,7 @@ class ActionToolbarItem implements ToolbarItemInterface
     /**
      * @var array List of action entries
      */
-    protected $actionEntries = array();
+    protected $actionEntries = [];
 
     /**
      * @var IconFactory
@@ -67,7 +67,7 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $actionMenu = array();
+        $actionMenu = [];
         $actionMenu[] = '<ul class="dropdown-list">';
         foreach ($this->actionEntries as $linkConf) {
             $actionMenu[] = '<li>';
@@ -153,7 +153,7 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**

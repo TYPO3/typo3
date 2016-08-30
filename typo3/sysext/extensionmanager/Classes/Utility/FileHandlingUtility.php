@@ -101,7 +101,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function extractDirectoriesFromExtensionData(array $files)
     {
-        $directories = array();
+        $directories = [];
         foreach ($files as $filePath => $file) {
             preg_match('/(.*)\\//', $filePath, $matches);
             if (!empty($matches[0])) {
@@ -262,7 +262,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getAbsolutePathsToConfiguredDirectories(array $extension)
     {
-        $requestedDirectories = array();
+        $requestedDirectories = [];
         $requestUploadFolder = isset($extension['uploadfolder']) ? (bool)$extension['uploadfolder'] : false;
         if ($requestUploadFolder) {
             $requestedDirectories[] = $this->getAbsolutePath($this->getPathToUploadFolder($extension));
@@ -324,13 +324,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function writeEmConfToFile(array $extensionData, $rootPath, Extension $extension = null)
     {
-        $emConfFileData = array();
+        $emConfFileData = [];
         if (file_exists($rootPath . 'ext_emconf.php')) {
             $emConfFileData = $this->emConfUtility->includeEmConf(
-                array(
+                [
                     'key' => $extensionData['extKey'],
                     'siteRelPath' => PathUtility::stripPathSitePrefix($rootPath)
-                )
+                ]
             );
         }
         $extensionData['EM_CONF'] = array_replace_recursive($emConfFileData, $extensionData['EM_CONF']);
@@ -438,7 +438,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
 
         // Get all the files of the extension, but exclude the ones specified in the excludePattern
         $files = GeneralUtility::getAllFilesAndFoldersInPath(
-            array(),            // No files pre-added
+            [],            // No files pre-added
             $extensionPath,        // Start from here
             '',                    // Do not filter files by extension
             true,                // Include subdirectories

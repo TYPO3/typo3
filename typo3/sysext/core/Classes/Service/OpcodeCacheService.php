@@ -29,10 +29,10 @@ class OpcodeCacheService
      */
     public function getAllActive()
     {
-        $supportedCaches = array(
+        $supportedCaches = [
             // The ZendOpcache aka OPcache since PHP 5.5
             // http://php.net/manual/de/book.opcache.php
-            'OPcache' => array(
+            'OPcache' => [
                 'active' => extension_loaded('Zend OPcache') && ini_get('opcache.enable') === '1',
                 'version' => phpversion('Zend OPcache'),
                 'canReset' => true, // opcache_reset() ... it seems that it doesn't reset for current run.
@@ -49,10 +49,10 @@ class OpcodeCacheService
                         opcache_reset();
                     }
                 }
-            ),
-        );
+            ],
+        ];
 
-        $activeCaches = array();
+        $activeCaches = [];
         foreach ($supportedCaches as $opcodeCache => $properties) {
             if ($properties['active']) {
                 $activeCaches[$opcodeCache] = $properties;

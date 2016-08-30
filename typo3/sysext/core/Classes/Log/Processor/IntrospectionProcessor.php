@@ -109,22 +109,22 @@ class IntrospectionProcessor extends AbstractProcessor
             // This is required in case we have shifted entries and the first entry
             // is now a call_user_func that does not contain the line and file information.
             if (!isset($trace[0]['line'])) {
-                $trace[0] = array('line' => $this->precedingBacktraceLine) + $trace[0];
+                $trace[0] = ['line' => $this->precedingBacktraceLine] + $trace[0];
             }
             if (!isset($trace[0]['file'])) {
-                $trace[0] = array('file' => $this->precedingBacktraceFile) + $trace[0];
+                $trace[0] = ['file' => $this->precedingBacktraceFile] + $trace[0];
             }
 
-            $logRecord->addData(array(
+            $logRecord->addData([
                 'backtrace' => $trace
-            ));
+            ]);
         } else {
-            $logRecord->addData(array(
+            $logRecord->addData([
                 'file' => isset($trace[0]['file']) ? $trace[0]['file'] : null,
                 'line' => isset($trace[0]['line']) ? $trace[0]['line'] : null,
                 'class' => isset($trace[0]['class']) ? $trace[0]['class'] : null,
                 'function' => isset($trace[0]['function']) ? $trace[0]['function'] : null
-            ));
+            ]);
         }
 
         return $logRecord;

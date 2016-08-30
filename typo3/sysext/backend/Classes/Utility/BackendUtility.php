@@ -62,7 +62,7 @@ class BackendUtility
      * @var array
      * @see self::getTCAtypes()
      */
-    protected static $tcaTableTypeConfigurationCache = array();
+    protected static $tcaTableTypeConfigurationCache = [];
 
     /*******************************************
      *
@@ -298,7 +298,7 @@ class BackendUtility
     public static function splitTable_Uid($str)
     {
         list($uid, $table) = explode('_', strrev($str), 2);
-        return array(strrev($table), strrev($uid));
+        return [strrev($table), strrev($uid)];
     }
 
     /**
@@ -314,7 +314,7 @@ class BackendUtility
     public static function getSQLselectableList($in_list, $tablename, $default_tablename)
     {
         GeneralUtility::logDeprecatedFunction();
-        $list = array();
+        $list = [];
         if ((string)trim($in_list) != '') {
             $tempItemArray = explode(',', trim($in_list));
             foreach ($tempItemArray as $key => $val) {
@@ -345,8 +345,8 @@ class BackendUtility
     public static function BEenableFields($table, $inv = false)
     {
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-        $query = array();
-        $invQuery = array();
+        $query = [];
+        $invQuery = [];
         if (is_array($ctrl)) {
             if (is_array($ctrl['enablecolumns'])) {
                 if ($ctrl['enablecolumns']['disabled']) {
@@ -434,15 +434,15 @@ class BackendUtility
      */
     public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
     {
-        static $BEgetRootLine_cache = array();
-        $output = array();
+        static $BEgetRootLine_cache = [];
+        $output = [];
         $pid = $uid;
         $ident = $pid . '-' . $clause . '-' . $workspaceOL;
         if (is_array($BEgetRootLine_cache[$ident])) {
             $output = $BEgetRootLine_cache[$ident];
         } else {
             $loopCheck = 100;
-            $theRowArray = array();
+            $theRowArray = [];
             while ($uid != 0 && $loopCheck) {
                 $loopCheck--;
                 $row = self::getPageForRootline($uid, $clause, $workspaceOL);
@@ -454,12 +454,12 @@ class BackendUtility
                 }
             }
             if ($uid == 0) {
-                $theRowArray[] = array('uid' => 0, 'title' => '');
+                $theRowArray[] = ['uid' => 0, 'title' => ''];
             }
             $c = count($theRowArray);
             foreach ($theRowArray as $val) {
                 $c--;
-                $output[$c] = array(
+                $output[$c] = [
                     'uid' => $val['uid'],
                     'pid' => $val['pid'],
                     'title' => $val['title'],
@@ -472,7 +472,7 @@ class BackendUtility
                     't3ver_state' => $val['t3ver_state'],
                     't3ver_stage' => $val['t3ver_stage'],
                     'backend_layout_next_level' => $val['backend_layout_next_level']
-                );
+                ];
                 if (isset($val['_ORIG_pid'])) {
                     $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
                 }
@@ -493,7 +493,7 @@ class BackendUtility
      */
     protected static function getPageForRootline($uid, $clause, $workspaceOL)
     {
-        static $getPageForRootline_cache = array();
+        static $getPageForRootline_cache = [];
         $ident = $uid . '-' . $clause . '-' . $workspaceOL;
         if (is_array($getPageForRootline_cache[$ident])) {
             $row = $getPageForRootline_cache[$ident];
@@ -557,7 +557,7 @@ class BackendUtility
         $beUser = static::getBackendUserAuthentication();
         // Get current expansion data:
         if ($clearExpansion) {
-            $expandedPages = array();
+            $expandedPages = [];
         } else {
             $expandedPages = unserialize($beUser->uc['browseTrees']['browsePages']);
         }
@@ -613,7 +613,7 @@ class BackendUtility
             }
         }
         if ($fullTitleLimit) {
-            return array($output, $fullOutput);
+            return [$output, $fullOutput];
         } else {
             return $output;
         }
@@ -750,7 +750,7 @@ class BackendUtility
                 }
             }
 
-            $altFieldList = array();
+            $altFieldList = [];
             // Traverse fields in types config and parse the configuration into a nice array:
             foreach ($fieldList as $k => $v) {
                 list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $v);
@@ -763,13 +763,13 @@ class BackendUtility
                     $defaultExtras = $GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'];
                 }
                 $specConfParts = self::getSpecConfParts($defaultExtras);
-                $fieldList[$k] = array(
+                $fieldList[$k] = [
                     'field' => $pFieldName,
                     'title' => $pAltTitle,
                     'palette' => $pPalette,
                     'spec' => $specConfParts,
                     'origString' => $v
-                );
+                ];
                 if ($useFieldNameAsKey) {
                     $altFieldList[$fieldList[$k]['field']] = $fieldList[$k];
                 }
@@ -866,20 +866,20 @@ class BackendUtility
     public static function getSpecConfParts($defaultExtrasString)
     {
         $specConfParts = GeneralUtility::trimExplode(':', $defaultExtrasString, true);
-        $reg = array();
+        $reg = [];
         if (!empty($specConfParts)) {
             foreach ($specConfParts as $k2 => $v2) {
                 unset($specConfParts[$k2]);
                 if (preg_match('/(.*)\\[(.*)\\]/', $v2, $reg)) {
-                    $specConfParts[trim($reg[1])] = array(
+                    $specConfParts[trim($reg[1])] = [
                         'parameters' => GeneralUtility::trimExplode('|', $reg[2], true)
-                    );
+                    ];
                 } else {
                     $specConfParts[trim($v2)] = 1;
                 }
             }
         } else {
-            $specConfParts = array();
+            $specConfParts = [];
         }
         return $specConfParts;
     }
@@ -893,7 +893,7 @@ class BackendUtility
      */
     public static function getSpecConfParametersFromArray($pArr)
     {
-        $out = array();
+        $out = [];
         if (is_array($pArr)) {
             foreach ($pArr as $k => $v) {
                 $parts = explode('=', $v, 2);
@@ -1106,7 +1106,7 @@ class BackendUtility
     {
         /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-        $cacheManager->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), 0);
+        $cacheManager->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], 0);
     }
 
     /**
@@ -1146,8 +1146,8 @@ class BackendUtility
      */
     public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
     {
-        static $pagesTSconfig_cacheReference = array();
-        static $combinedTSconfig_cache = array();
+        static $pagesTSconfig_cacheReference = [];
+        static $combinedTSconfig_cache = [];
 
         $id = (int)$id;
         if ($returnPartArray === false
@@ -1156,7 +1156,7 @@ class BackendUtility
         ) {
             return $combinedTSconfig_cache[$pagesTSconfig_cacheReference[$id]];
         } else {
-            $TSconfig = array();
+            $TSconfig = [];
             if (!is_array($rootLine)) {
                 $useCacheForCurrentPageId = true;
                 $rootLine = self::BEgetRootLine($id, '', true);
@@ -1166,7 +1166,7 @@ class BackendUtility
 
             // Order correctly
             ksort($rootLine);
-            $TSdataArray = array();
+            $TSdataArray = [];
             // Setting default configuration
             $TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
             foreach ($rootLine as $k => $v) {
@@ -1536,7 +1536,7 @@ class BackendUtility
             return null;
         }
 
-        $fileReferences = array();
+        $fileReferences = [];
         /** @var $relationHandler RelationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         if ($workspaceId !== null) {
@@ -1557,7 +1557,7 @@ class BackendUtility
             try {
                 $fileReference = ResourceFactory::getInstance()->getFileReferenceObject(
                     $referenceUid,
-                    array(),
+                    [],
                     ($workspaceId === 0)
                 );
                 $fileReferences[$fileReference->getUid()] = $fileReference;
@@ -1610,7 +1610,7 @@ class BackendUtility
     ) {
         // Check and parse the size parameter
         $size = trim($size);
-        $sizeParts = array(64, 64);
+        $sizeParts = [64, 64];
         if ($size) {
             $sizeParts = explode('x', $size . 'x' . $size);
         }
@@ -1644,11 +1644,11 @@ class BackendUtility
                 ) {
                     $processedImage = $fileObject->process(
                         ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-                        array(
+                        [
                             'width' => $sizeParts[0],
                             'height' => $sizeParts[1] . 'c',
                             'crop' => $fileReferenceObject->getProperty('crop')
-                        )
+                        ]
                     );
                     $imageUrl = $processedImage->getPublicUrl(true);
                     $imgTag = '<img src="' . $imageUrl . '" '
@@ -1708,10 +1708,10 @@ class BackendUtility
                     ) {
                         $imageUrl = $fileObject->process(
                             ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                            array(
+                            [
                                 'width' => $sizeParts[0],
                                 'height' => $sizeParts[1]
-                            )
+                            ]
                         )->getPublicUrl(true);
 
                         $image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
@@ -1750,7 +1750,7 @@ class BackendUtility
     public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true)
     {
         $lang = static::getLanguageService();
-        $parts = array();
+        $parts = [];
         $parts[] = 'id=' . $row['uid'];
         if ($row['alias']) {
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['alias']['label']) . ' ' . $row['alias'];
@@ -1817,7 +1817,7 @@ class BackendUtility
                 . self::dateTimeAge($row['endtime'], -1, 'date');
         }
         if ($row['fe_group']) {
-            $fe_groups = array();
+            $fe_groups = [];
             foreach (GeneralUtility::intExplode(',', $row['fe_group']) as $fe_group) {
                 if ($fe_group < 0) {
                     $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', $fe_group));
@@ -1981,7 +1981,7 @@ class BackendUtility
      * @param array $columnTsConfig page TSConfig for $column (TCEMAIN.<table>.<column>)
      * @return string Comma-separated list of localized labels
      */
-    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = array())
+    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [])
     {
         // Check if there is an "items" array
         if (
@@ -1993,7 +1993,7 @@ class BackendUtility
         }
 
         $keys = GeneralUtility::trimExplode(',', $keyList, true);
-        $labels = array();
+        $labels = [];
         // Loop on all selected values
         foreach ($keys as $key) {
             $label = null;
@@ -2115,7 +2115,7 @@ class BackendUtility
                     && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$recordTitle === '')
                 ) {
                     $altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true);
-                    $tA = array();
+                    $tA = [];
                     if (!empty($recordTitle)) {
                         $tA[] = $recordTitle;
                     }
@@ -2252,7 +2252,7 @@ class BackendUtility
                         if ($noRecordLookup) {
                             $MMfield = $theColConf['foreign_table'] . '.uid';
                         } else {
-                            $MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
+                            $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
                             foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], true) as $f) {
                                 $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
                             }
@@ -2309,7 +2309,7 @@ class BackendUtility
                         $l = 'N/A';
                     }
                 } else {
-                    $columnTsConfig = array();
+                    $columnTsConfig = [];
                     if ($pid) {
                         $pageTsConfig = self::getPagesTSconfig($pid);
                         if (isset($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'])) {
@@ -2321,7 +2321,7 @@ class BackendUtility
                         if ($noRecordLookup) {
                             $l = $value;
                         } else {
-                            $rParts = array();
+                            $rParts = [];
                             if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
                                 $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
                                 $queryBuilder->getRestrictions()
@@ -2364,7 +2364,7 @@ class BackendUtility
                             if (empty($rParts)) {
                                 $rParts = GeneralUtility::trimExplode(',', $value, true);
                             }
-                            $lA = array();
+                            $lA = [];
                             foreach ($rParts as $rVal) {
                                 $rVal = (int)$rVal;
                                 $r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
@@ -2393,7 +2393,7 @@ class BackendUtility
                             if ($noRecordLookup) {
                                 $MMfield = $theColConf['foreign_table'] . '.uid';
                             } else {
-                                $MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
+                                $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
                                 $altLabelFields = explode(
                                     ',',
                                     $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt']
@@ -2457,7 +2457,7 @@ class BackendUtility
                             $l = 'N/A';
                         }
                     } else {
-                        $finalValues = array();
+                        $finalValues = [];
                         $relationTableName = $theColConf['allowed'];
                         $explodedValues = GeneralUtility::trimExplode(',', $value, true);
 
@@ -2481,7 +2481,7 @@ class BackendUtility
                 if (!is_array($theColConf['items']) || count($theColConf['items']) === 1) {
                     $l = $value ? $lang->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:lang/locallang_common.xlf:no');
                 } else {
-                    $lA = array();
+                    $lA = [];
                     foreach ($theColConf['items'] as $key => $val) {
                         if ($value & pow(2, $key)) {
                             $lA[] = $lang->sL($val[0]);
@@ -2570,10 +2570,10 @@ class BackendUtility
             // Create NULL-reference
             $null = null;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
-                $params = array(
+                $params = [
                     'value' => $l,
                     'colConf' => $theColConf
-                );
+                ];
                 $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
             }
         }
@@ -2632,7 +2632,7 @@ class BackendUtility
      * @param array $fields Preset fields (must include prefix if that is used)
      * @return string List of fields.
      */
-    public static function getCommonSelectFields($table, $prefix = '', $fields = array())
+    public static function getCommonSelectFields($table, $prefix = '', $fields = [])
     {
         $fields[] = $prefix . 'uid';
         if (isset($GLOBALS['TCA'][$table]['ctrl']['label']) && $GLOBALS['TCA'][$table]['ctrl']['label'] != '') {
@@ -2690,7 +2690,7 @@ class BackendUtility
     {
         GeneralUtility::logDeprecatedFunction();
         $params = $defaults;
-        $lines = array();
+        $lines = [];
         if (is_array($configArray)) {
             foreach ($configArray as $fname => $config) {
                 if (is_array($config)) {
@@ -2709,7 +2709,7 @@ class BackendUtility
                             $formEl = '';
                             break;
                         case 'select':
-                            $opt = array();
+                            $opt = [];
                             foreach ($config[3] as $k => $v) {
                                 $opt[] = '<option value="' . htmlspecialchars($k) . '"' . ($params[$fname] == $k ? ' selected="selected"' : '') . '>' . htmlspecialchars($v) . '</option>';
                             }
@@ -2755,11 +2755,11 @@ class BackendUtility
         if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
             static::getLanguageService()->loadSingleTableDescription($table);
         }
-        $output = array(
+        $output = [
             'description' => null,
             'title' => null,
             'moreInfo' => false
-        );
+        ];
         if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
             $data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
             // Add alternative title, if defined
@@ -2822,7 +2822,7 @@ class BackendUtility
      * @param array $overloadHelpText Array with text to overload help text
      * @return string the HTML code ready to render
      */
-    public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = array())
+    public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = [])
     {
         if (!ExtensionManagementUtility::isLoaded('context_help')) {
             return $text;
@@ -3027,14 +3027,14 @@ class BackendUtility
         $enDisItems = '',
         $returnTagParameters = false
     ) {
-        $tagParameters = array(
+        $tagParameters = [
             'class' => 't3-js-clickmenutrigger',
             'data-table' => $table,
             'data-uid' => (int)$uid !== 0 ? (int)$uid : '',
             'data-listframe' => $listFrame,
             'data-iteminfo' => str_replace('+', '%2B', $enDisItems),
             'data-parameters' => $addParams,
-        );
+        ];
 
         if ($returnTagParameters) {
             return $tagParameters;
@@ -3224,7 +3224,7 @@ class BackendUtility
             return '';
         }
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
-        $options = array();
+        $options = [];
         foreach ($menuItems as $value => $label) {
             $options[] = '<option value="'
                 . htmlspecialchars($value) . '"'
@@ -3271,7 +3271,7 @@ class BackendUtility
             return '';
         }
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
-        $options = array();
+        $options = [];
         foreach ($menuItems as $value => $label) {
             $options[] = '<option value="'
                 . htmlspecialchars($value) . '"'
@@ -3365,7 +3365,7 @@ class BackendUtility
     protected static function buildScriptUrl($mainParams, $addParams, $script = '')
     {
         if (!is_array($mainParams)) {
-            $mainParams = array('id' => $mainParams);
+            $mainParams = ['id' => $mainParams];
         }
         if (!$script) {
             $script = basename(PATH_thisScript);
@@ -3426,13 +3426,13 @@ class BackendUtility
             'ses'
         );
         if ($set) {
-            $modData[$set] = array(
+            $modData[$set] = [
                 'set' => $set,
                 'parameter' => $params
-            );
+            ];
         } else {
             // clear the module data
-            $modData = array();
+            $modData = [];
         }
         $beUser->pushModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', $modData);
     }
@@ -3447,7 +3447,7 @@ class BackendUtility
      */
     public static function getUpdateSignalCode()
     {
-        $signals = array();
+        $signals = [];
         $modData = static::getBackendUserAuthentication()->getModuleData(
             \TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal',
             'ses'
@@ -3459,12 +3459,12 @@ class BackendUtility
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'])) {
             $updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'];
         } else {
-            $updateSignals = array();
+            $updateSignals = [];
         }
         // Loop through all setUpdateSignals and get the JS code
         foreach ($modData as $set => $val) {
             if (isset($updateSignals[$set])) {
-                $params = array('set' => $set, 'parameter' => $val['parameter'], 'JScode' => '');
+                $params = ['set' => $set, 'parameter' => $val['parameter'], 'JScode' => ''];
                 $ref = null;
                 GeneralUtility::callUserFunction($updateSignals[$set], $params, $ref);
                 $signals[] = $params['JScode'];
@@ -3526,7 +3526,7 @@ class BackendUtility
             $changed = 0;
             if (!is_array($settings)) {
                 $changed = 1;
-                $settings = array();
+                $settings = [];
             }
             if (is_array($MOD_MENU)) {
                 foreach ($MOD_MENU as $key => $var) {
@@ -3579,7 +3579,7 @@ class BackendUtility
      * @param array $urlParameters URL parameters that should be added as key value pairs
      * @return string Calculated URL
      */
-    public static function getModuleUrl($moduleName, $urlParameters = array())
+    public static function getModuleUrl($moduleName, $urlParameters = [])
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -3604,7 +3604,7 @@ class BackendUtility
      * @return string Calculated URL
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the UriBuilder directly.
      */
-    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = array())
+    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = [])
     {
         GeneralUtility::logDeprecatedFunction();
         /** @var UriBuilder $uriBuilder */
@@ -3628,7 +3628,7 @@ class BackendUtility
      * @return string A complete <a href=""> tag
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use getModuleUrl and IconFactory methods directly
      */
-    public static function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '')
+    public static function getListViewLink($urlParameters = [], $linkTitle = '', $linkText = '')
     {
         GeneralUtility::logDeprecatedFunction();
         /** @var IconFactory $iconFactory */
@@ -3661,7 +3661,7 @@ class BackendUtility
         if (isset($beUser->user['uid'])) {
             $userId = (int)$beUser->user['uid'];
             if ($table && $uid) {
-                $fieldsValues = array(
+                $fieldsValues = [
                     'userid' => $userId,
                     'feuserid' => 0,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -3669,7 +3669,7 @@ class BackendUtility
                     'record_uid' => $uid,
                     'username' => $beUser->user['username'],
                     'record_pid' => $pid
-                );
+                ];
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable('sys_lockedrecords')
                     ->insert(
@@ -3774,7 +3774,7 @@ class BackendUtility
     public static function getTCEFORM_TSconfig($table, $row)
     {
         self::fixVersioningPid($table, $row);
-        $res = array();
+        $res = [];
         // Get main config for the table
         list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
         if ($TScID >= 0) {
@@ -3882,7 +3882,7 @@ class BackendUtility
         static $firstLevelCache;
 
         if (!is_array($firstLevelCache)) {
-            $firstLevelCache = array();
+            $firstLevelCache = [];
         }
 
         $key = $table . ':' . $uid . ':' . $pid;
@@ -3909,7 +3909,7 @@ class BackendUtility
         $cPid = self::getTSconfig_pidValue($table, $uid, $pid);
         // $TScID is the id of $table = pages, else it's the pid of the record.
         $TScID = self::getPidForModTSconfig($table, $uid, $cPid);
-        return array($TScID, $cPid);
+        return [$TScID, $cPid];
     }
 
     /**
@@ -3996,7 +3996,7 @@ class BackendUtility
      */
     public static function RTEsetup($RTEprop, $table, $field, $type = '')
     {
-        $thisConfig = is_array($RTEprop['default.']) ? $RTEprop['default.'] : array();
+        $thisConfig = is_array($RTEprop['default.']) ? $RTEprop['default.'] : [];
         $thisFieldConf = $RTEprop['config.'][$table . '.'][$field . '.'];
         if (is_array($thisFieldConf)) {
             unset($thisFieldConf['types.']);
@@ -4072,9 +4072,9 @@ class BackendUtility
 
         // Otherwise parse the list:
         $keyList = GeneralUtility::trimExplode(',', $parserList, true);
-        $output = array();
+        $output = [];
         foreach ($keyList as $val) {
-            $reg = array();
+            $reg = [];
             if (preg_match('/^([[:alnum:]_-]+)\\[(.*)\\]$/', $val, $reg)) {
                 $output[$reg[1]] = GeneralUtility::trimExplode(';', $reg[2], true);
             } else {
@@ -4093,7 +4093,7 @@ class BackendUtility
      */
     public static function isModuleSetInTBE_MODULES($modName)
     {
-        $loaded = array();
+        $loaded = [];
         foreach ($GLOBALS['TBE_MODULES'] as $mkey => $list) {
             $loaded[$mkey] = 1;
             if (!is_array($list) && trim($list)) {
@@ -4221,7 +4221,7 @@ class BackendUtility
         $row = null
     ) {
         $realPid = 0;
-        $outputRows = array();
+        $outputRows = [];
         if ($GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
             if (is_array($row) && !$includeDeletedRecords) {
                 $row['_CURRENT_VERSION'] = true;
@@ -4731,7 +4731,7 @@ class BackendUtility
     public static function processParams($params)
     {
         GeneralUtility::logDeprecatedFunction();
-        $paramArr = array();
+        $paramArr = [];
         $lines = explode(LF, $params);
         foreach ($lines as $val) {
             $val = trim($val);
@@ -4785,7 +4785,7 @@ class BackendUtility
      */
     public static function getTcaFieldConfiguration($table, $field)
     {
-        $configuration = array();
+        $configuration = [];
         if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
             $configuration = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
         }

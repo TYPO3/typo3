@@ -22,7 +22,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * Sets up this testcase
@@ -46,26 +46,26 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $objectContainer \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject */
         $objectContainer = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
-            ->setMethods(array('registerImplementation'))
+            ->setMethods(['registerImplementation'])
             ->getMock();
         $objectContainer->expects($this->once())->method('registerImplementation')->with(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class, 'TYPO3\CMS\Extbase\Persistence\Reddis\PersistenceManager');
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class, $objectContainer);
 
-        $frameworkSettings['objects'] = array(
-            'TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface.' => array(
+        $frameworkSettings['objects'] = [
+            'TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface.' => [
                 'className' => 'TYPO3\CMS\Extbase\Persistence\Reddis\PersistenceManager'
-            )
-        );
+            ]
+        ];
 
         /** @var $configurationManagerMock \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $configurationManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, array('getConfiguration'));
+        $configurationManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, ['getConfiguration']);
         $configurationManagerMock->expects($this->any())->method('getConfiguration')->with('Framework')->will($this->returnValue($frameworkSettings));
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject  $objectManager */
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 
         /** @var $bootstrapMock \TYPO3\CMS\Extbase\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $bootstrapMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Core\Bootstrap::class, array('inject'));
+        $bootstrapMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Core\Bootstrap::class, ['inject']);
         $bootstrapMock->_set('objectManager', $objectManager);
         $bootstrapMock->_set('configurationManager', $configurationManagerMock);
         $bootstrapMock->configureObjectManager();

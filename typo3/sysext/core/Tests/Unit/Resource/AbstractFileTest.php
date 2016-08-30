@@ -40,7 +40,7 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(array('getFolderIdentifierFromFileIdentifier', 'getFolder'))
+            ->setMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
@@ -66,7 +66,7 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
         $mockedStorage->expects($this->never())->method('getFileInfoByIdentifier')->with('/foo', 'mimetype');
-        $subject = new File(array('identifier' => '/foo', 'mime_type' => 'my/mime-type'), $mockedStorage);
+        $subject = new File(['identifier' => '/foo', 'mime_type' => 'my/mime-type'], $mockedStorage);
 
         $this->assertEquals('my/mime-type', $subject->getMimeType());
     }

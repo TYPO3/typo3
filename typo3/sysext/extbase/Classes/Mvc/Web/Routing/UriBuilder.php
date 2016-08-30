@@ -51,14 +51,14 @@ class UriBuilder
     /**
      * @var array
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * Arguments which have been used for building the last URI
      *
      * @var array
      */
-    protected $lastArguments = array();
+    protected $lastArguments = [];
 
     /**
      * @var string
@@ -88,7 +88,7 @@ class UriBuilder
     /**
      * @var array
      */
-    protected $argumentsToBeExcludedFromQueryString = array();
+    protected $argumentsToBeExcludedFromQueryString = [];
 
     /**
      * @var bool
@@ -518,13 +518,13 @@ class UriBuilder
      */
     public function reset()
     {
-        $this->arguments = array();
+        $this->arguments = [];
         $this->section = '';
         $this->format = '';
         $this->createAbsoluteUri = false;
         $this->addQueryString = false;
         $this->addQueryStringMethod = null;
-        $this->argumentsToBeExcludedFromQueryString = array();
+        $this->argumentsToBeExcludedFromQueryString = [];
         $this->linkAccessRestrictedPages = false;
         $this->targetPageUid = null;
         $this->targetPageType = 0;
@@ -547,7 +547,7 @@ class UriBuilder
      * @api
      * @see build()
      */
-    public function uriFor($actionName = null, $controllerArguments = array(), $controllerName = null, $extensionName = null, $pluginName = null)
+    public function uriFor($actionName = null, $controllerArguments = [], $controllerName = null, $extensionName = null, $pluginName = null)
     {
         if ($actionName !== null) {
             $controllerArguments['action'] = $actionName;
@@ -576,10 +576,10 @@ class UriBuilder
             $controllerArguments['format'] = $this->format;
         }
         if ($this->argumentPrefix !== null) {
-            $prefixedControllerArguments = array($this->argumentPrefix => $controllerArguments);
+            $prefixedControllerArguments = [$this->argumentPrefix => $controllerArguments];
         } else {
             $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
-            $prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
+            $prefixedControllerArguments = [$pluginNamespace => $controllerArguments];
         }
         ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $prefixedControllerArguments);
         return $this->build();
@@ -665,10 +665,10 @@ class UriBuilder
                 $arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
             }
         } else {
-            $arguments = array(
+            $arguments = [
                 'M' => GeneralUtility::_GP('M'),
                 'id' => GeneralUtility::_GP('id')
-            );
+            ];
         }
         ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
         $arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
@@ -714,7 +714,7 @@ class UriBuilder
      */
     protected function buildTypolinkConfiguration()
     {
-        $typolinkConfiguration = array();
+        $typolinkConfiguration = [];
         $typolinkConfiguration['parameter'] = $this->targetPageUid !== null ? $this->targetPageUid : $GLOBALS['TSFE']->id;
         if ($this->targetPageType !== 0) {
             $typolinkConfiguration['parameter'] .= ',' . $this->targetPageType;
@@ -730,9 +730,9 @@ class UriBuilder
         if ($this->addQueryString === true) {
             $typolinkConfiguration['addQueryString'] = 1;
             if (!empty($this->argumentsToBeExcludedFromQueryString)) {
-                $typolinkConfiguration['addQueryString.'] = array(
+                $typolinkConfiguration['addQueryString.'] = [
                     'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
-                );
+                ];
             }
             if ($this->addQueryStringMethod) {
                 $typolinkConfiguration['addQueryString.']['method'] = $this->addQueryStringMethod;
@@ -811,7 +811,7 @@ class UriBuilder
      */
     public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object)
     {
-        $result = array();
+        $result = [];
         foreach ($object->_getProperties() as $propertyName => $propertyValue) {
             if ($propertyValue instanceof \Iterator) {
                 $propertyValue = $this->convertIteratorToArray($propertyValue);

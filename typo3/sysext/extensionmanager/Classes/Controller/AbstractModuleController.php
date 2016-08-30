@@ -45,11 +45,11 @@ class AbstractModuleController extends AbstractController
     protected function resolveView()
     {
         $view = parent::resolveView();
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'extensionName' => $this->request->getControllerExtensionName(),
             'controllerName' => $this->request->getControllerName(),
             'actionName' => $this->request->getControllerActionName()
-        ));
+        ]);
         return $view;
     }
 

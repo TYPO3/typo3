@@ -22,12 +22,12 @@ class DependencyEntityFactory
     /**
      * @var array
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
      * @var array
      */
-    protected $references = array();
+    protected $references = [];
 
     /**
      * Gets and registers a new element.
@@ -38,7 +38,7 @@ class DependencyEntityFactory
      * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
      * @return \TYPO3\CMS\Version\Dependency\ElementEntity
      */
-    public function getElement($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
+    public function getElement($table, $id, array $data = [], \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
     {
         /** @var $element ElementEntity */
         $element = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\ElementEntity::class, $table, $id, $data, $dependency);
@@ -77,7 +77,7 @@ class DependencyEntityFactory
      * @see getElement
      * @see getReference
      */
-    public function getReferencedElement($table, $id, $field, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
+    public function getReferencedElement($table, $id, $field, array $data = [], \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
     {
         return $this->getReference($this->getElement($table, $id, $data, $dependency), $field);
     }

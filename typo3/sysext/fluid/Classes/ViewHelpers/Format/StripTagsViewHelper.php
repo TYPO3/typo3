@@ -82,10 +82,10 @@ unction');
         $allowedTags = $this->arguments['allowedTags'];
 
         return static::renderStatic(
-            array(
+            [
                 'value' => $value,
                 'allowedTags' => $allowedTags
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

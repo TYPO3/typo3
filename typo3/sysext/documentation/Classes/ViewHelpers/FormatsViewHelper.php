@@ -79,11 +79,11 @@ class FormatsViewHelper extends AbstractViewHelper
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $emptyIcon = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render();
-        $icons = array(
+        $icons = [
             'html' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>',
             'pdf' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>',
             'sxw' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>'
-        );
+        ];
         $formats = $documentTranslation->getFormats();
 
         foreach ($formats as $format) {

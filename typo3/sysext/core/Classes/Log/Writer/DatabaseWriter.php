@@ -70,14 +70,14 @@ class DatabaseWriter extends AbstractWriter
             $data = '- ' . json_encode($recordData);
         }
 
-        $fieldValues = array(
+        $fieldValues = [
             'request_id' => $record->getRequestId(),
             'time_micro' => $record->getCreated(),
             'component' => $record->getComponent(),
             'level' => $record->getLevel(),
             'message' => $record->getMessage(),
             'data' => $data
-        );
+        ];
 
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($this->logTable)

@@ -83,7 +83,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      */
     protected function callRenderMethod()
     {
-        $renderMethodParameters = array();
+        $renderMethodParameters = [];
         foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
             if ($argumentDefinition instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition && $argumentDefinition->isMethodParameter()) {
                 $renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
@@ -91,10 +91,10 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
         }
 
         try {
-            return call_user_func_array(array($this, 'render'), $renderMethodParameters);
+            return call_user_func_array([$this, 'render'], $renderMethodParameters);
         } catch (Exception $exception) {
             if (GeneralUtility::getApplicationContext()->isProduction()) {
-                $this->getLogger()->error('A Fluid ViewHelper Exception was captured: ' . $exception->getMessage() . ' (' . $exception->getCode() . ')', array('exception' => $exception));
+                $this->getLogger()->error('A Fluid ViewHelper Exception was captured: ' . $exception->getMessage() . ' (' . $exception->getCode() . ')', ['exception' => $exception]);
                 return '';
             } else {
                 throw $exception;
@@ -125,7 +125,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
 
         $methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
 
-        $paramAnnotations = array();
+        $paramAnnotations = [];
         if (isset($methodTags['param'])) {
             $paramAnnotations = $methodTags['param'];
         }

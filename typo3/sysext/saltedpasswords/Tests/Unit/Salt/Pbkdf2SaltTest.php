@@ -37,7 +37,7 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->objectInstance = $this->getMockBuilder(Pbkdf2Salt::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         // Speed up the tests by reducing the iteration count
         $this->objectInstance->setHashCount(1000);

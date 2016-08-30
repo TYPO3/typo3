@@ -40,10 +40,10 @@ class DefaultLink extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'link' => 'CreateLink',
         'unlink' => 'UnLink'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

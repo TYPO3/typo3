@@ -54,7 +54,7 @@ class ContentDataProcessor
                     );
                 }
 
-                $processorConfiguration = isset($processors[$key . '.']) ? $processors[$key . '.'] : array();
+                $processorConfiguration = isset($processors[$key . '.']) ? $processors[$key . '.'] : [];
 
                 $variables = GeneralUtility::makeInstance($className)->process(
                     $cObject,

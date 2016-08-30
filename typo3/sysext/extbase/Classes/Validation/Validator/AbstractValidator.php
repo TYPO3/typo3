@@ -37,12 +37,12 @@ abstract class AbstractValidator implements ValidatorInterface
      *
      * @var array
      */
-    protected $supportedOptions = array();
+    protected $supportedOptions = [];
 
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Error\Result
@@ -56,10 +56,10 @@ abstract class AbstractValidator implements ValidatorInterface
      * @throws InvalidValidationOptionsException
      * @api
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         // check for options given but not supported
-        if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== array()) {
+        if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== []) {
             throw new InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1379981890);
         }
 
@@ -121,7 +121,7 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param string $title title of the error
      * @return void
      */
-    protected function addError($message, $code, array $arguments = array(), $title = '')
+    protected function addError($message, $code, array $arguments = [], $title = '')
     {
         $this->result->addError(new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title));
     }
@@ -154,7 +154,7 @@ abstract class AbstractValidator implements ValidatorInterface
      *
      * @return NULL|string
      */
-    protected function translateErrorMessage($translateKey, $extensionName, $arguments = array())
+    protected function translateErrorMessage($translateKey, $extensionName, $arguments = [])
     {
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
             $translateKey,

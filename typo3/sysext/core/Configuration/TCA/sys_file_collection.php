@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -15,192 +15,192 @@ return array(
         'delete' => 'deleted',
         'type' => 'type',
         'typeicon_column' => 'type',
-        'typeicon_classes' => array(
+        'typeicon_classes' => [
             'default' => 'apps-filetree-folder-media',
             'static' => 'apps-clipboard-images',
             'folder' => 'apps-filetree-folder-media'
-        ),
+        ],
         'requestUpdate' => 'storage',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime'
-        ),
+        ],
         'searchFields' => 'files,title'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,files,title'
-    ),
-    'columns' => array(
-        't3ver_label' => array(
+    ],
+    'columns' => [
+        't3ver_label' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 30
-            )
-        ),
-        'sys_language_uid' => array(
+            ]
+        ],
+        'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
-                ),
+                'items' => [
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
+                ],
                 'default' => 0,
                 'showIconTable' => true,
-            )
-        ),
-        'l10n_parent' => array(
+            ]
+        ],
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0)
-                ),
+                'items' => [
+                    ['', 0]
+                ],
                 'foreign_table' => 'sys_file_collection',
                 'foreign_table_where' => 'AND sys_file_collection.pid=###CURRENT_PID### AND sys_file_collection.sys_language_uid IN (-1,0)'
-            )
-        ),
-        'l10n_diffsource' => array(
-            'config' => array(
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough',
                 'default' => ''
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'starttime' => array(
+            ]
+        ],
+        'starttime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 8,
                 'max' => 20,
                 'eval' => 'date',
                 'default' => 0,
-            )
-        ),
-        'endtime' => array(
+            ]
+        ],
+        'endtime' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 8,
                 'max' => 20,
                 'eval' => 'date',
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
-                )
-            )
-        ),
-        'type' => array(
+                ]
+            ]
+        ],
+        'type' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.0', 'static'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.1', 'folder'),
-                    array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.2', 'category')
-                )
-            )
-        ),
-        'files' => array(
+                'items' => [
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.0', 'static'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.1', 'folder'],
+                    ['LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.2', 'category']
+                ]
+            ]
+        ],
+        'files' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.files',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('files')
-        ),
-        'title' => array(
+        ],
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'required'
-            )
-        ),
-        'storage' => array(
+            ]
+        ],
+        'storage' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.storage',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0)
-                ),
+                'items' => [
+                    ['', 0]
+                ],
                 'foreign_table' => 'sys_file_storage',
                 'foreign_table_where' => 'ORDER BY sys_file_storage.name',
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1
-            )
-        ),
-        'folder' => array(
+            ]
+        ],
+        'folder' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.folder',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(),
+                'items' => [],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Core\\Resource\\Service\\UserFileMountService->renderTceformsSelectDropdown',
                 'default' => '',
-            )
-        ),
-        'recursive' => array(
+            ]
+        ],
+        'recursive' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.recursive',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'category' => array(
+            ]
+        ],
+        'category' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.category',
-            'config' => array(
+            'config' => [
                 'minitems' => 0,
                 'maxitems' => 1,
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
-                'treeConfig' => array(
+                'treeConfig' => [
                     'parentField' => 'parent',
-                    'appearance' => array(
+                    'appearance' => [
                         'expandAll' => true,
                         'showHeader' => true,
-                    )
-                )
-            )
-        )
-    ),
-    'types' => array(
-        '0' => array(
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'types' => [
+        '0' => [
             'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, files',
-        ),
-        'static' => array(
+        ],
+        'static' => [
             'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, files',
-        ),
-        'folder' => array(
+        ],
+        'folder' => [
             'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, storage, folder, recursive',
-        ),
-        'category' => array(
+        ],
+        'category' => [
             'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, category',
-        ),
-    ),
-    'palettes' => array(
-        '1' => array(
+        ],
+    ],
+    'palettes' => [
+        '1' => [
             'showitem' => 'hidden, starttime, endtime',
-        ),
-    ),
-);
+        ],
+    ],
+];

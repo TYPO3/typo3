@@ -82,7 +82,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1236518298);
 
-        $subject->set('identifier', array('iAmAnArray'));
+        $subject->set('identifier', ['iAmAnArray']);
     }
 
     /**
@@ -184,6 +184,6 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
-        $subject->flushByTag(array());
+        $subject->flushByTag([]);
     }
 }

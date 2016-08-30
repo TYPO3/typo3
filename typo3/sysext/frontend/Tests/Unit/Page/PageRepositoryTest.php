@@ -24,8 +24,8 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected $pageSelectObject;
 
-    protected $defaultTcaForPages = array(
-        'ctrl' => array(
+    protected $defaultTcaForPages = [
+        'ctrl' => [
             'label' => 'title',
             'tstamp' => 'tstamp',
             'sortby' => 'sorting',
@@ -33,15 +33,15 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'versioningWS' => true,
             'origUid' => 't3_origuid',
             'delete' => 'deleted',
-            'enablecolumns' => array(
+            'enablecolumns' => [
                 'disabled' => 'hidden',
                 'starttime' => 'starttime',
                 'endtime' => 'endtime',
                 'fe_group' => 'fe_group'
-            ),
-        ),
-        'columns' => array()
-    );
+            ],
+        ],
+        'columns' => []
+    ];
 
     /**
      * Sets up this testcase
@@ -49,9 +49,9 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
-            ->setMethods(array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result', 'exec_SELECTgetSingleRow'))
+            ->setMethods(['exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result', 'exec_SELECTgetSingleRow'])
             ->getMock();
-        $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getMultipleGroupsWhereClause'));
+        $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, ['getMultipleGroupsWhereClause']);
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
     }
 
@@ -63,7 +63,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPathFromRootLineForEmptyRootLineReturnsEmptyString()
     {
-        $this->assertEquals('', $this->pageSelectObject->getPathFromRootline(array()));
+        $this->assertEquals('', $this->pageSelectObject->getPathFromRootline([]));
     }
 
     ///////////////////////////////
@@ -74,11 +74,11 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getExtUrlForDokType3AndUrlType1AddsHttpSchemeToUrl()
     {
-        $this->assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL(array(
+        $this->assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL([
             'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
             'urltype' => 1,
             'url' => 'www.example.com'
-        )));
+        ]));
     }
 
     /**
@@ -86,11 +86,11 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getExtUrlForDokType3AndUrlType0PrependsSiteUrl()
     {
-        $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL(array(
+        $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
             'urltype' => 0,
             'url' => 'hello/world/'
-        )));
+        ]));
     }
 
     /////////////////////////////////////////
@@ -102,32 +102,32 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function shouldFieldBeOverlaid($field, $table, $value, $expected, $comment = '')
     {
-        $GLOBALS['TCA']['fake_table']['columns'] = array(
-            'exclude' => array(
+        $GLOBALS['TCA']['fake_table']['columns'] = [
+            'exclude' => [
                 'l10n_mode' => 'exclude',
-                'config' => array('type' => 'input'),
-            ),
-            'mergeIfNotBlank' => array(
+                'config' => ['type' => 'input'],
+            ],
+            'mergeIfNotBlank' => [
                 'l10n_mode' => 'mergeIfNotBlank',
-                'config' => array('type' => 'input'),
-            ),
-            'mergeIfNotBlank_group' => array(
+                'config' => ['type' => 'input'],
+            ],
+            'mergeIfNotBlank_group' => [
                 'l10n_mode' => 'mergeIfNotBlank',
-                'config' => array('type' => 'group'),
-            ),
-            'default' => array(
+                'config' => ['type' => 'group'],
+            ],
+            'default' => [
                 // no l10n_mode set
-                'config' => array('type' => 'input'),
-            ),
-            'noCopy' => array(
+                'config' => ['type' => 'input'],
+            ],
+            'noCopy' => [
                 'l10n_mode' => 'noCopy',
-                'config' => array('type' => 'input'),
-            ),
-            'prefixLangTitle' => array(
+                'config' => ['type' => 'input'],
+            ],
+            'prefixLangTitle' => [
                 'l10n_mode' => 'prefixLangTitle',
-                'config' => array('type' => 'input'),
-            ),
-        );
+                'config' => ['type' => 'input'],
+            ],
+        ];
 
         $result = $this->pageSelectObject->_call('shouldFieldBeOverlaid', $table, $field, $value);
         unset($GLOBALS['TCA']['fake_table']);
@@ -140,28 +140,28 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getShouldFieldBeOverlaidData()
     {
-        return array(
-            array('default',               'fake_table', 'foobar', true,  'default is to merge non-empty string'),
-            array('default',               'fake_table', '',       true,  'default is to merge empty string'),
+        return [
+            ['default',               'fake_table', 'foobar', true,  'default is to merge non-empty string'],
+            ['default',               'fake_table', '',       true,  'default is to merge empty string'],
 
-            array('exclude',               'fake_table', '',       false, 'exclude field with empty string'),
-            array('exclude',               'fake_table', 'foobar', false, 'exclude field with non-empty string'),
+            ['exclude',               'fake_table', '',       false, 'exclude field with empty string'],
+            ['exclude',               'fake_table', 'foobar', false, 'exclude field with non-empty string'],
 
-            array('mergeIfNotBlank',       'fake_table', '',       false, 'mergeIfNotBlank is not merged with empty string'),
-            array('mergeIfNotBlank',       'fake_table', 0,        true,  'mergeIfNotBlank is merged with 0'),
-            array('mergeIfNotBlank',       'fake_table', '0',      true,  'mergeIfNotBlank is merged with "0"'),
-            array('mergeIfNotBlank',       'fake_table', 'foobar', true,  'mergeIfNotBlank is merged with non-empty string'),
+            ['mergeIfNotBlank',       'fake_table', '',       false, 'mergeIfNotBlank is not merged with empty string'],
+            ['mergeIfNotBlank',       'fake_table', 0,        true,  'mergeIfNotBlank is merged with 0'],
+            ['mergeIfNotBlank',       'fake_table', '0',      true,  'mergeIfNotBlank is merged with "0"'],
+            ['mergeIfNotBlank',       'fake_table', 'foobar', true,  'mergeIfNotBlank is merged with non-empty string'],
 
-            array('mergeIfNotBlank_group', 'fake_table', '',       false, 'mergeIfNotBlank on group is not merged empty string'),
-            array('mergeIfNotBlank_group', 'fake_table', 0,        false, 'mergeIfNotBlank on group is not merged with 0'),
-            array('mergeIfNotBlank_group', 'fake_table', '0',      false, 'mergeIfNotBlank on group is not merged with "0"'),
-            array('mergeIfNotBlank_group', 'fake_table', 'foobar', true,  'mergeIfNotBlank on group is merged with non-empty string'),
+            ['mergeIfNotBlank_group', 'fake_table', '',       false, 'mergeIfNotBlank on group is not merged empty string'],
+            ['mergeIfNotBlank_group', 'fake_table', 0,        false, 'mergeIfNotBlank on group is not merged with 0'],
+            ['mergeIfNotBlank_group', 'fake_table', '0',      false, 'mergeIfNotBlank on group is not merged with "0"'],
+            ['mergeIfNotBlank_group', 'fake_table', 'foobar', true,  'mergeIfNotBlank on group is merged with non-empty string'],
 
-            array('noCopy',                'fake_table', 'foobar', true,  'noCopy is merged with non-empty string'),
-            array('noCopy',                'fake_table', '',       true,  'noCopy is merged with empty string'),
+            ['noCopy',                'fake_table', 'foobar', true,  'noCopy is merged with non-empty string'],
+            ['noCopy',                'fake_table', '',       true,  'noCopy is merged with empty string'],
 
-            array('prefixLangTitle',       'fake_table', 'foobar', true,  'prefixLangTitle is merged with non-empty string'),
-            array('prefixLangTitle',       'fake_table', '',       true,  'prefixLangTitle is merged with empty string'),
-        );
+            ['prefixLangTitle',       'fake_table', 'foobar', true,  'prefixLangTitle is merged with non-empty string'],
+            ['prefixLangTitle',       'fake_table', '',       true,  'prefixLangTitle is merged with empty string'],
+        ];
     }
 }

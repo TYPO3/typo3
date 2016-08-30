@@ -40,9 +40,9 @@ class InsertSmiley extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'emoticon' => 'InsertSmiley'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

@@ -32,7 +32,7 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $logTable = $this->getUniqueId('logtable_');
         /** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setLogTable($logTable);
@@ -53,7 +53,7 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
         $logRecordMock = $this->createMock(\TYPO3\CMS\Core\Log\LogRecord::class);
         $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setLogTable($logTable);

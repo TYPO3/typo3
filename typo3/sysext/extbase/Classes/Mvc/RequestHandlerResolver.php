@@ -68,7 +68,7 @@ class RequestHandlerResolver
     public function resolveRequestHandler()
     {
         $availableRequestHandlerClassNames = $this->getRegisteredRequestHandlerClassNames();
-        $suitableRequestHandlers = array();
+        $suitableRequestHandlers = [];
         foreach ($availableRequestHandlerClassNames as $requestHandlerClassName) {
             $requestHandler = $this->objectManager->get($requestHandlerClassName);
             if ($requestHandler->canHandleRequest()) {
@@ -94,6 +94,6 @@ class RequestHandlerResolver
     public function getRegisteredRequestHandlerClassNames()
     {
         $settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : array();
+        return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : [];
     }
 }

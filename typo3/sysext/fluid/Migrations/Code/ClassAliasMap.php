@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
     'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler' => \TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\InterceptorInterface' => \TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface::class,
@@ -26,4 +26,4 @@ return array(
 
     // Semi API level classes; mainly used in unit tests
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder' => \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class
-);
+];

@@ -218,7 +218,7 @@ class DependencyOrderingService
     public function findRootIds(array $dependencyGraph)
     {
         // Filter nodes with no incoming edge (aka root nodes)
-        $rootIds = array();
+        $rootIds = [];
         foreach ($dependencyGraph as $id => $_) {
             if (!$this->getIncomingEdgeCount($dependencyGraph, $id)) {
                 $rootIds[] = $id;
@@ -239,7 +239,7 @@ class DependencyOrderingService
     {
         foreach (array_filter($graph[$from]) as $node => $_) {
             if ($node === $to) {
-                return array($from, $to);
+                return [$from, $to];
             } else {
                 $subPath = $this->findPathInGraph($graph, $node, $to);
                 if (!empty($subPath)) {
@@ -248,7 +248,7 @@ class DependencyOrderingService
                 }
             }
         }
-        return array();
+        return [];
     }
 
     /**

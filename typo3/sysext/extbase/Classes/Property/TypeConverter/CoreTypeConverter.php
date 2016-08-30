@@ -34,7 +34,7 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('string', 'integer', 'float', 'boolean', 'array');
+    protected $sourceTypes = ['string', 'integer', 'float', 'boolean', 'array'];
 
     /**
      * @var string
@@ -65,7 +65,7 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return object the target type
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         try {
             return new $targetType($source);

@@ -22,16 +22,16 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
     /**
      * @var array
      */
-    protected $additionalFoldersToCreate = array(
+    protected $additionalFoldersToCreate = [
         '/uploads/tx_impexpgroupfiles'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
-    );
+    ];
 
     /**
      * @var string
@@ -91,9 +91,9 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
         $this->assertFileNotExists(PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
 
-        $expectedErrors = array(
+        $expectedErrors = [
             'Error: Record type tx_impexpgroupfiles_item is not allowed on pid 0'
-        );
+        ];
         $errors = $this->import->errorLog;
         $this->assertSame($expectedErrors, $errors);
     }

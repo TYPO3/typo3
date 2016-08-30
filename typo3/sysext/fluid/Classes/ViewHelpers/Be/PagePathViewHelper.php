@@ -50,7 +50,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

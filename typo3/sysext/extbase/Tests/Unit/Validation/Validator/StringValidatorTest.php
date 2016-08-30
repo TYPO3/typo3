@@ -33,7 +33,7 @@ class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
     public function setup()
     {
         $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(array('translateErrorMessage'))
+            ->setMethods(['translateErrorMessage'])
             ->getMock();
     }
 

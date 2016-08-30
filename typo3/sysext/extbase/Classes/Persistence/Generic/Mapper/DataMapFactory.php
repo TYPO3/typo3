@@ -119,9 +119,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException('Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.');
         }
         $recordType = null;
-        $subclasses = array();
+        $subclasses = [];
         $tableName = $this->resolveTableName($className);
-        $columnMapping = array();
+        $columnMapping = [];
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $classSettings = $frameworkConfiguration['persistence']['classes'][$className];
         if ($classSettings !== null) {
@@ -134,9 +134,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($classSettings['mapping']['tableName']) && $classSettings['mapping']['tableName'] !== '') {
                 $tableName = $classSettings['mapping']['tableName'];
             }
-            $classHierarchy = array_merge(array($className), class_parents($className));
+            $classHierarchy = array_merge([$className], class_parents($className));
             foreach ($classHierarchy as $currentClassName) {
-                if (in_array($currentClassName, array(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class, \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class))) {
+                if (in_array($currentClassName, [\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class, \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class])) {
                     break;
                 }
                 $currentClassSettings = $frameworkConfiguration['persistence']['classes'][$currentClassName];
@@ -207,7 +207,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function resolveSubclassesRecursive(array $classesConfiguration, array $subclasses)
     {
-        $allSubclasses = array();
+        $allSubclasses = [];
         foreach ($subclasses as $subclass) {
             $allSubclasses[] = $subclass;
             if (isset($classesConfiguration[$subclass]['subclasses']) && is_array($classesConfiguration[$subclass]['subclasses'])) {
@@ -237,7 +237,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getColumnsDefinition($tableName)
     {
-        return is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : array();
+        return is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : [];
     }
 
     /**
@@ -351,7 +351,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (!empty($columnConfiguration['eval'])) {
             $fieldEvaluations = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['eval'], true);
-            $dateTimeEvaluations = array('date', 'datetime');
+            $dateTimeEvaluations = ['date', 'datetime'];
 
             if (!empty(array_intersect($dateTimeEvaluations, $fieldEvaluations)) && !empty($columnConfiguration['dbType'])) {
                 $columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);

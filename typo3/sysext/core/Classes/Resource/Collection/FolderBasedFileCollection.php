@@ -91,13 +91,13 @@ class FolderBasedFileCollection extends AbstractFileCollection
      */
     protected function getPersistableDataArray()
     {
-        return array(
+        return [
             'title' => $this->getTitle(),
             'type' => self::$type,
             'description' => $this->getDescription(),
             'folder' => $this->folder->getIdentifier(),
             'storage' => $this->folder->getStorage()->getUid()
-        );
+        ];
     }
 
     /**

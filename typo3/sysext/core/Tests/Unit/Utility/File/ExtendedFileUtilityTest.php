@@ -34,7 +34,7 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $GLOBALS['LANG'] = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)
-            ->setMethods(array('sL'))
+            ->setMethods(['sL'])
             ->getMock();
         $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
     }
@@ -46,23 +46,23 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $fileUid = 1;
         $file = $this->getMockBuilder(File::class)
-            ->setMethods(array('getUid'))
+            ->setMethods(['getUid'])
             ->disableOriginalConstructor()
             ->getMock();
         $file->expects($this->once())->method('getUid')->will($this->returnValue($fileUid));
 
         $folder = $this->getMockBuilder(Folder::class)
-            ->setMethods(array('getFiles'))
+            ->setMethods(['getFiles'])
             ->disableOriginalConstructor()
             ->getMock();
         $folder->expects($this->once())
             ->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)
-            ->will($this->returnValue(array($file))
+            ->will($this->returnValue([$file])
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class)
-            ->setMethods(array('addFlashMessage'))
+            ->setMethods(['addFlashMessage'])
             ->getMock();
 
         // prophetizing the DB query
@@ -101,16 +101,16 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function folderHasFilesInUseReturnsFalseIfItHasNoFiles()
     {
         $folder = $this->getMockBuilder(Folder::class)
-            ->setMethods(array('getFiles'))
+            ->setMethods(['getFiles'])
             ->disableOriginalConstructor()
             ->getMock();
         $folder->expects($this->once())->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)->will(
-            $this->returnValue(array())
+            $this->returnValue([])
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class)
-            ->setMethods(array('addFlashMessage'))
+            ->setMethods(['addFlashMessage'])
             ->getMock();
         $this->assertFalse($subject->folderHasFilesInUse($folder));
     }

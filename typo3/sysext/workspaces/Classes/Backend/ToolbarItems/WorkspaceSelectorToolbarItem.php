@@ -90,10 +90,10 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         $activeWorkspace = (int)$backendUser->workspace;
         $stateCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
         $stateUncheckedIcon = '<span title="' . htmlspecialchars($languageService->getLL('bookmark_inactive')) . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-        $workspaceSections = array(
-            'top' => array(),
-            'items' => array(),
-        );
+        $workspaceSections = [
+            'top' => [],
+            'items' => [],
+        ];
 
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;
@@ -101,7 +101,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
             $classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
             $sectionName = ($index++ === 0 ? 'top' : 'items');
             $workspaceSections[$sectionName][] = '<li' . $classValue . '>'
-                . '<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('main', array('changeWorkspace' => $workspaceId))) . '" data-workspaceid="' . $workspaceId . '" class="dropdown-list-link tx-workspaces-switchlink">'
+                . '<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('main', ['changeWorkspace' => $workspaceId])) . '" data-workspaceid="' . $workspaceId . '" class="dropdown-list-link tx-workspaces-switchlink">'
                 . $iconState . ' ' . htmlspecialchars($label)
                 . '</a></li>';
         }
@@ -119,13 +119,13 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
             $workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . htmlspecialchars($languageService->getLL('bookmark_noWSfound')) . '</li>';
         }
 
-        $workspaceMenu = array(
+        $workspaceMenu = [
             '<ul class="dropdown-list">' ,
                 implode(LF, $workspaceSections['top']),
                 (!empty($workspaceSections['items']) ? '<li class="divider"></li>' : ''),
                 implode(LF, $workspaceSections['items']),
             '</ul>'
-        );
+        ];
 
         return implode(LF, $workspaceMenu);
     }
@@ -137,7 +137,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**

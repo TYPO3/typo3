@@ -153,7 +153,7 @@ class RecordCollectionRepository
      * @param array $conditions Conditions concatenated with AND for query
      * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
      */
-    protected function queryMultipleRecords(array $conditions = array())
+    protected function queryMultipleRecords(array $conditions = [])
     {
         $result = null;
 
@@ -204,7 +204,7 @@ class RecordCollectionRepository
      */
     protected function createMultipleDomainObjects(array $data)
     {
-        $collections = array();
+        $collections = [];
         foreach ($data as $collection) {
             $collections[] = $this->createDomainObject($collection);
         }

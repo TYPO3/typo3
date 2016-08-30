@@ -25,7 +25,7 @@ class BackendConfigurationOptionFixture extends BackendFixture
      * @param string $context FLOW3's application context
      * @param array $options Configuration options - depends on the actual backend
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         $testOptions = [
             'anOption' => 'anOptionValue',

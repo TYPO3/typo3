@@ -25,9 +25,9 @@ class Oci8Specifics extends AbstractSpecifics
      *
      * @var array
      */
-    protected $specificProperties = array(
+    protected $specificProperties = [
         self::TABLE_MAXLENGTH => 30,
         self::FIELD_MAXLENGTH => 30,
         self::LIST_MAXEXPRESSIONS => 1000
-    );
+    ];
 }

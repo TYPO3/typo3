@@ -19,11 +19,11 @@ class AlphanumericValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'allowWhiteSpace' => array('', 'Whitespaces are allowed', 'boolean', false),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'allowWhiteSpace' => ['', 'Whitespaces are allowed', 'boolean', false],
+    ];
 
     /**
      * Constant for localisation

@@ -31,7 +31,7 @@ class ExtractorRegistryTest extends UnitTestCase
             ->setMockClassName($extractorClass)
             ->getMock();
 
-        $extractorRegistry = $this->getMockExtractorRegistry(array(array($extractorClass, $extractorObject)));
+        $extractorRegistry = $this->getMockExtractorRegistry([[$extractorClass, $extractorObject]]);
 
         $extractorRegistry->registerExtractionService($extractorClass);
         $this->assertContains($extractorObject, $extractorRegistry->getExtractors(), '', false, false);
@@ -86,11 +86,11 @@ class ExtractorRegistryTest extends UnitTestCase
             ->getMock();
         $extractorObject3->expects($this->any())->method('getPriority')->will($this->returnValue(2));
 
-        $createdExtractorInstances = array(
-            array($extractorClass1, $extractorObject1),
-            array($extractorClass2, $extractorObject2),
-            array($extractorClass3, $extractorObject3),
-        );
+        $createdExtractorInstances = [
+            [$extractorClass1, $extractorObject1],
+            [$extractorClass2, $extractorObject2],
+            [$extractorClass3, $extractorObject3],
+        ];
 
         $extractorRegistry = $this->getMockExtractorRegistry($createdExtractorInstances);
         $extractorRegistry->registerExtractionService($extractorClass1);
@@ -121,10 +121,10 @@ class ExtractorRegistryTest extends UnitTestCase
             ->getMock();
         $extractorObject2->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
-        $createdExtractorInstances = array(
-            array($extractorClass1, $extractorObject1),
-            array($extractorClass2, $extractorObject2),
-        );
+        $createdExtractorInstances = [
+            [$extractorClass1, $extractorObject1],
+            [$extractorClass2, $extractorObject2],
+        ];
 
         $extractorRegistry = $this->getMockExtractorRegistry($createdExtractorInstances);
         $extractorRegistry->registerExtractionService($extractorClass1);
@@ -141,10 +141,10 @@ class ExtractorRegistryTest extends UnitTestCase
      * @param array $createsExtractorInstances
      * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry
      */
-    protected function getMockExtractorRegistry(array $createsExtractorInstances = array())
+    protected function getMockExtractorRegistry(array $createsExtractorInstances = [])
     {
         $extractorRegistry = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class)
-            ->setMethods(array('createExtractorInstance'))
+            ->setMethods(['createExtractorInstance'])
             ->getMock();
 
         if (!empty($createsExtractorInstances)) {

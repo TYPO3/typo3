@@ -42,182 +42,182 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function executeValueModifierDataProvider()
     {
-        return array(
-            'prependString with string' => array(
+        return [
+            'prependString with string' => [
                 'prependString',
                 'abc',
                 '!',
                 '!abc'
-            ),
-            'prependString with empty string' => array(
+            ],
+            'prependString with empty string' => [
                 'prependString',
                 'foo',
                 '',
                 'foo',
-            ),
-            'appendString with string' => array(
+            ],
+            'appendString with string' => [
                 'appendString',
                 'abc',
                 '!',
                 'abc!',
-            ),
-            'appendString with empty string' => array(
+            ],
+            'appendString with empty string' => [
                 'appendString',
                 'abc',
                 '',
                 'abc',
-            ),
-            'removeString removes simple string' => array(
+            ],
+            'removeString removes simple string' => [
                 'removeString',
                 'abcdef',
                 'bc',
                 'adef',
-            ),
-            'removeString removes nothing if no match' => array(
+            ],
+            'removeString removes nothing if no match' => [
                 'removeString',
                 'abcdef',
                 'foo',
                 'abcdef',
-            ),
-            'removeString removes multiple matches' => array(
+            ],
+            'removeString removes multiple matches' => [
                 'removeString',
                 'FooBarFoo',
                 'Foo',
                 'Bar',
-            ),
-            'replaceString replaces simple match' => array(
+            ],
+            'replaceString replaces simple match' => [
                 'replaceString',
                 'abcdef',
                 'bc|123',
                 'a123def',
-            ),
-            'replaceString replaces simple match with nothing' => array(
+            ],
+            'replaceString replaces simple match with nothing' => [
                 'replaceString',
                 'abcdef',
                 'bc',
                 'adef',
-            ),
-            'replaceString replaces multiple matches' => array(
+            ],
+            'replaceString replaces multiple matches' => [
                 'replaceString',
                 'FooBarFoo',
                 'Foo|Bar',
                 'BarBarBar',
-            ),
-            'addToList adds at end of existing list' => array(
+            ],
+            'addToList adds at end of existing list' => [
                 'addToList',
                 '123,456',
                 '789',
                 '123,456,789',
-            ),
-            'addToList adds at end of existing list including white-spaces' => array(
+            ],
+            'addToList adds at end of existing list including white-spaces' => [
                 'addToList',
                 '123,456',
                 ' 789 , 32 , 12 ',
                 '123,456, 789 , 32 , 12 ',
-            ),
-            'addToList adds nothing' => array(
+            ],
+            'addToList adds nothing' => [
                 'addToList',
                 '123,456',
                 '',
                 '123,456,', // This result is probably not what we want (appended comma) ... fix it?
-            ),
-            'addToList adds to empty list' => array(
+            ],
+            'addToList adds to empty list' => [
                 'addToList',
                 '',
                 'foo',
                 'foo',
-            ),
-            'removeFromList removes value from list' => array(
+            ],
+            'removeFromList removes value from list' => [
                 'removeFromList',
                 '123,456,789,abc',
                 '456',
                 '123,789,abc',
-            ),
-            'removeFromList removes value at beginning of list' => array(
+            ],
+            'removeFromList removes value at beginning of list' => [
                 'removeFromList',
                 '123,456,abc',
                 '123',
                 '456,abc',
-            ),
-            'removeFromList removes value at end of list' => array(
+            ],
+            'removeFromList removes value at end of list' => [
                 'removeFromList',
                 '123,456,abc',
                 'abc',
                 '123,456',
-            ),
-            'removeFromList removes multiple values from list' => array(
+            ],
+            'removeFromList removes multiple values from list' => [
                 'removeFromList',
                 'foo,123,bar,123',
                 '123',
                 'foo,bar',
-            ),
-            'removeFromList removes empty values' => array(
+            ],
+            'removeFromList removes empty values' => [
                 'removeFromList',
                 'foo,,bar',
                 '',
                 'foo,bar',
-            ),
-            'uniqueList removes duplicates' => array(
+            ],
+            'uniqueList removes duplicates' => [
                 'uniqueList',
                 '123,456,abc,456,456',
                 '',
                 '123,456,abc',
-            ),
-            'uniqueList removes duplicate empty list values' => array(
+            ],
+            'uniqueList removes duplicate empty list values' => [
                 'uniqueList',
                 '123,,456,,abc',
                 '',
                 '123,,456,abc',
-            ),
-            'reverseList returns list reversed' => array(
+            ],
+            'reverseList returns list reversed' => [
                 'reverseList',
                 '123,456,abc,456',
                 '',
                 '456,abc,456,123',
-            ),
-            'reverseList keeps empty values' => array(
+            ],
+            'reverseList keeps empty values' => [
                 'reverseList',
                 ',123,,456,abc,,456',
                 '',
                 '456,,abc,456,,123,',
-            ),
-            'reverseList does not change single element' => array(
+            ],
+            'reverseList does not change single element' => [
                 'reverseList',
                 '123',
                 '',
                 '123',
-            ),
-            'sortList sorts a list' => array(
+            ],
+            'sortList sorts a list' => [
                 'sortList',
                 '10,100,0,20,abc',
                 '',
                 '0,10,20,100,abc',
-            ),
-            'sortList sorts a list numeric' => array(
+            ],
+            'sortList sorts a list numeric' => [
                 'sortList',
                 '10,0,100,-20',
                 'numeric',
                 '-20,0,10,100',
-            ),
-            'sortList sorts a list descending' => array(
+            ],
+            'sortList sorts a list descending' => [
                 'sortList',
                 '10,100,0,20,abc,-20',
                 'descending',
                 'abc,100,20,10,0,-20',
-            ),
-            'sortList sorts a list numeric descending' => array(
+            ],
+            'sortList sorts a list numeric descending' => [
                 'sortList',
                 '10,100,0,20,-20',
                 'descending,numeric',
                 '100,20,10,0,-20',
-            ),
-            'sortList ignores invalid modifier arguments' => array(
+            ],
+            'sortList ignores invalid modifier arguments' => [
                 'sortList',
                 '10,100,20',
                 'foo,descending,bar',
                 '100,20,10',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -237,18 +237,18 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function executeValueModifierInvalidDataProvider()
     {
-        return array(
-            'sortList sorts a list numeric' => array(
+        return [
+            'sortList sorts a list numeric' => [
                 'sortList',
                 '10,0,100,-20,abc',
                 'numeric',
-            ),
-            'sortList sorts a list numeric descending' => array(
+            ],
+            'sortList sorts a list numeric descending' => [
                 'sortList',
                 '10,100,0,20,abc,-20',
                 'descending,numeric',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -335,420 +335,420 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typoScriptIsParsedToArrayDataProvider()
     {
-        return array(
-            'simple assignment' => array(
+        return [
+            'simple assignment' => [
                 'key = value',
-                array(
+                [
                     'key' => 'value',
-                )
-            ),
-            'simple assignment with escaped dot at the beginning' => array(
+                ]
+            ],
+            'simple assignment with escaped dot at the beginning' => [
                 '\\.key = value',
-                array(
+                [
                     '.key' => 'value',
-                )
-            ),
-            'simple assignment with protected escaped dot at the beginning' => array(
+                ]
+            ],
+            'simple assignment with protected escaped dot at the beginning' => [
                 '\\\\.key = value',
-                array(
-                    '\\.' => array(
+                [
+                    '\\.' => [
                         'key' => 'value',
-                    ),
-                )
-            ),
-            'nested assignment' => array(
+                    ],
+                ]
+            ],
+            'nested assignment' => [
                 'lib.key = value',
-                array(
-                    'lib.' => array(
+                [
+                    'lib.' => [
                         'key' => 'value',
-                    ),
-                ),
-            ),
-            'nested assignment with escaped key' => array(
+                    ],
+                ],
+            ],
+            'nested assignment with escaped key' => [
                 'lib\\.key = value',
-                array(
+                [
                     'lib.key' => 'value',
-                ),
-            ),
-            'nested assignment with escaped key and escaped dot at the beginning' => array(
+                ],
+            ],
+            'nested assignment with escaped key and escaped dot at the beginning' => [
                 '\\.lib\\.key = value',
-                array(
+                [
                     '.lib.key' => 'value',
-                ),
-            ),
-            'nested assignment with protected escaped key' => array(
+                ],
+            ],
+            'nested assignment with protected escaped key' => [
                 'lib\\\\.key = value',
-                array(
-                    'lib\\.' => array('key' => 'value'),
-                ),
-            ),
-            'nested assignment with protected escaped key and protected escaped dot at the beginning' => array(
+                [
+                    'lib\\.' => ['key' => 'value'],
+                ],
+            ],
+            'nested assignment with protected escaped key and protected escaped dot at the beginning' => [
                 '\\\\.lib\\\\.key = value',
-                array(
-                    '\\.' => array(
-                        'lib\\.' => array('key' => 'value'),
-                    ),
-                ),
-            ),
-            'assignment with escaped an non escaped keys' => array(
+                [
+                    '\\.' => [
+                        'lib\\.' => ['key' => 'value'],
+                    ],
+                ],
+            ],
+            'assignment with escaped an non escaped keys' => [
                 'firstkey.secondkey\\.thirdkey.setting = value',
-                array(
-                    'firstkey.' => array(
-                        'secondkey.thirdkey.' => array(
+                [
+                    'firstkey.' => [
+                        'secondkey.thirdkey.' => [
                             'setting' => 'value'
-                        )
-                    )
-                )
-            ),
-            'nested structured assignment' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'nested structured assignment' => [
                 'lib {' . LF .
                     'key = value' . LF .
                 '}',
-                array(
-                    'lib.' => array(
+                [
+                    'lib.' => [
                         'key' => 'value',
-                    ),
-                ),
-            ),
-            'nested structured assignment with escaped key inside' => array(
+                    ],
+                ],
+            ],
+            'nested structured assignment with escaped key inside' => [
                 'lib {' . LF .
                     'key\\.nextkey = value' . LF .
                 '}',
-                array(
-                    'lib.' => array(
+                [
+                    'lib.' => [
                         'key.nextkey' => 'value',
-                    ),
-                ),
-            ),
-            'nested structured assignment with escaped key inside and escaped dots at the beginning' => array(
+                    ],
+                ],
+            ],
+            'nested structured assignment with escaped key inside and escaped dots at the beginning' => [
                 '\\.lib {' . LF .
                     '\\.key\\.nextkey = value' . LF .
                 '}',
-                array(
-                    '.lib.' => array(
+                [
+                    '.lib.' => [
                         '.key.nextkey' => 'value',
-                    ),
-                ),
-            ),
-            'nested structured assignment with protected escaped key inside' => array(
+                    ],
+                ],
+            ],
+            'nested structured assignment with protected escaped key inside' => [
                 'lib {' . LF .
                 'key\\\\.nextkey = value' . LF .
                 '}',
-                array(
-                    'lib.' => array(
-                        'key\\.' => array('nextkey' => 'value'),
-                    ),
-                ),
-            ),
-            'nested structured assignment with protected escaped key inside and protected escaped dots at the beginning' => array(
+                [
+                    'lib.' => [
+                        'key\\.' => ['nextkey' => 'value'],
+                    ],
+                ],
+            ],
+            'nested structured assignment with protected escaped key inside and protected escaped dots at the beginning' => [
                 '\\\\.lib {' . LF .
                     '\\\\.key\\\\.nextkey = value' . LF .
                 '}',
-                array(
-                    '\\.' => array(
-                        'lib.' => array(
-                            '\\.' => array(
-                                'key\\.' => array('nextkey' => 'value'),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            'nested structured assignment with escaped key' => array(
+                [
+                    '\\.' => [
+                        'lib.' => [
+                            '\\.' => [
+                                'key\\.' => ['nextkey' => 'value'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'nested structured assignment with escaped key' => [
                 'lib\\.anotherkey {' . LF .
                     'key = value' . LF .
                 '}',
-                array(
-                    'lib.anotherkey.' => array(
+                [
+                    'lib.anotherkey.' => [
                         'key' => 'value',
-                    ),
-                ),
-            ),
-            'nested structured assignment with protected escaped key' => array(
+                    ],
+                ],
+            ],
+            'nested structured assignment with protected escaped key' => [
                 'lib\\\\.anotherkey {' . LF .
                 'key = value' . LF .
                 '}',
-                array(
-                    'lib\\.' => array(
-                        'anotherkey.' => array(
+                [
+                    'lib\\.' => [
+                        'anotherkey.' => [
                             'key' => 'value',
-                        ),
-                    ),
-                ),
-            ),
-            'multiline assignment' => array(
+                        ],
+                    ],
+                ],
+            ],
+            'multiline assignment' => [
                 'key (' . LF .
                     'first' . LF .
                     'second' . LF .
                 ')',
-                array(
+                [
                     'key' => 'first' . LF . 'second',
-                ),
-            ),
-            'multiline assignment with escaped key' => array(
+                ],
+            ],
+            'multiline assignment with escaped key' => [
                 'key\\.nextkey (' . LF .
                     'first' . LF .
                     'second' . LF .
                 ')',
-                array(
+                [
                     'key.nextkey' => 'first' . LF . 'second',
-                ),
-            ),
-            'multiline assignment with protected escaped key' => array(
+                ],
+            ],
+            'multiline assignment with protected escaped key' => [
                 'key\\\\.nextkey (' . LF .
                 'first' . LF .
                 'second' . LF .
                 ')',
-                array(
-                    'key\\.' => array('nextkey' => 'first' . LF . 'second'),
-                ),
-            ),
-            'copying values' => array(
+                [
+                    'key\\.' => ['nextkey' => 'first' . LF . 'second'],
+                ],
+            ],
+            'copying values' => [
                 'lib.default = value' . LF .
                 'lib.copy < lib.default',
-                array(
-                    'lib.' => array(
+                [
+                    'lib.' => [
                         'default' => 'value',
                         'copy' => 'value',
-                    ),
-                ),
-            ),
-            'copying values with escaped key' => array(
+                    ],
+                ],
+            ],
+            'copying values with escaped key' => [
                 'lib\\.default = value' . LF .
                 'lib.copy < lib\\.default',
-                array(
+                [
                     'lib.default' => 'value',
-                    'lib.' => array(
+                    'lib.' => [
                         'copy' => 'value',
-                    ),
-                ),
-            ),
-            'copying values with protected escaped key' => array(
+                    ],
+                ],
+            ],
+            'copying values with protected escaped key' => [
                 'lib\\\\.default = value' . LF .
                 'lib.copy < lib\\\\.default',
-                array(
-                    'lib\\.' => array('default' => 'value'),
-                    'lib.' => array(
+                [
+                    'lib\\.' => ['default' => 'value'],
+                    'lib.' => [
                         'copy' => 'value',
-                    ),
-                ),
-            ),
-            'one-line hash comment' => array(
+                    ],
+                ],
+            ],
+            'one-line hash comment' => [
                 'first = 1' . LF .
                 '# ignore = me' . LF .
                 'second = 2',
-                array(
+                [
                     'first' => '1',
                     'second' => '2',
-                ),
-            ),
-            'one-line slash comment' => array(
+                ],
+            ],
+            'one-line slash comment' => [
                 'first = 1' . LF .
                 '// ignore = me' . LF .
                 'second = 2',
-                array(
+                [
                     'first' => '1',
                     'second' => '2',
-                ),
-            ),
-            'multi-line slash comment' => array(
+                ],
+            ],
+            'multi-line slash comment' => [
                 'first = 1' . LF .
                 '/*' . LF .
                     'ignore = me' . LF .
                 '*/' . LF .
                 'second = 2',
-                array(
+                [
                     'first' => '1',
                     'second' => '2',
-                ),
-            ),
-            'nested assignment repeated segment names' => array(
+                ],
+            ],
+            'nested assignment repeated segment names' => [
                 'test.test.test = 1',
-                array(
-                    'test.' => array(
-                        'test.' => array(
+                [
+                    'test.' => [
+                        'test.' => [
                             'test' => '1',
-                        ),
-                    )
-                ),
-            ),
-            'simple assignment operator with tab character before "="' => array(
+                        ],
+                    ]
+                ],
+            ],
+            'simple assignment operator with tab character before "="' => [
                 'test	 = someValue',
-                array(
+                [
                     'test' => 'someValue',
-                ),
-            ),
-            'simple assignment operator character as value "="' => array(
+                ],
+            ],
+            'simple assignment operator character as value "="' => [
                 'test ==TEST=',
-                array(
+                [
                     'test' => '=TEST=',
-                ),
-            ),
-            'nested assignment operator character as value "="' => array(
+                ],
+            ],
+            'nested assignment operator character as value "="' => [
                 'test.test ==TEST=',
-                array(
-                    'test.' => array(
+                [
+                    'test.' => [
                         'test' => '=TEST=',
-                    ),
-                ),
-            ),
-            'simple assignment character as value "<"' => array(
+                    ],
+                ],
+            ],
+            'simple assignment character as value "<"' => [
                 'test =<TEST>',
-                array(
+                [
                     'test' => '<TEST>',
-                ),
-            ),
-            'nested assignment character as value "<"' => array(
+                ],
+            ],
+            'nested assignment character as value "<"' => [
                 'test.test =<TEST>',
-                array(
-                    'test.' => array(
+                [
+                    'test.' => [
                         'test' => '<TEST>',
-                    ),
-                ),
-            ),
-            'simple assignment character as value ">"' => array(
+                    ],
+                ],
+            ],
+            'simple assignment character as value ">"' => [
                 'test =>TEST<',
-                array(
+                [
                     'test' => '>TEST<',
-                ),
-            ),
-            'nested assignment character as value ">"' => array(
+                ],
+            ],
+            'nested assignment character as value ">"' => [
                 'test.test =>TEST<',
-                array(
-                    'test.' => array(
+                [
+                    'test.' => [
                         'test' => '>TEST<',
-                    ),
-                ),
-            ),
-            'nested assignment repeated segment names with whitespaces' => array(
+                    ],
+                ],
+            ],
+            'nested assignment repeated segment names with whitespaces' => [
                 'test.test.test = 1' . " \t",
-                array(
-                    'test.' => array(
-                        'test.' => array(
+                [
+                    'test.' => [
+                        'test.' => [
                             'test' => '1',
-                        ),
-                    )
-                ),
-            ),
-            'simple assignment operator character as value "=" with whitespaces' => array(
+                        ],
+                    ]
+                ],
+            ],
+            'simple assignment operator character as value "=" with whitespaces' => [
                 'test = =TEST=' . " \t",
-                array(
+                [
                     'test' => '=TEST=',
-                ),
-            ),
-            'nested assignment operator character as value "=" with whitespaces' => array(
+                ],
+            ],
+            'nested assignment operator character as value "=" with whitespaces' => [
                 'test.test = =TEST=' . " \t",
-                array(
-                    'test.' => array(
+                [
+                    'test.' => [
                         'test' => '=TEST=',
-                    ),
-                ),
-            ),
-            'simple assignment character as value "<" with whitespaces' => array(
+                    ],
+                ],
+            ],
+            'simple assignment character as value "<" with whitespaces' => [
                 'test = <TEST>' . " \t",
-                array(
+                [
                     'test' => '<TEST>',
-                ),
-            ),
-            'nested assignment character as value "<" with whitespaces' => array(
+                ],
+            ],
+            'nested assignment character as value "<" with whitespaces' => [
                 'test.test = <TEST>' . " \t",
-                array(
-                    'test.' => array(
+                [
+                    'test.' => [
                         'test' => '<TEST>',
-                    ),
-                ),
-            ),
-            'simple assignment character as value ">" with whitespaces' => array(
+                    ],
+                ],
+            ],
+            'simple assignment character as value ">" with whitespaces' => [
                 'test = >TEST<' . " \t",
-                array(
+                [
                     'test' => '>TEST<',
-                ),
-            ),
-            'nested assignment character as value ">" with whitespaces' => array(
+                ],
+            ],
+            'nested assignment character as value ">" with whitespaces' => [
                 'test.test = >TEST<',
-                array(
-                    'test.' => array(
+                [
+                    'test.' => [
                         'test' => '>TEST<',
-                    ),
-                ),
-            ),
-            'CSC example #1' => array(
+                    ],
+                ],
+            ],
+            'CSC example #1' => [
                 'linkParams.ATagParams.dataWrap =  class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"',
-                array(
-                    'linkParams.' => array(
-                        'ATagParams.' => array(
+                [
+                    'linkParams.' => [
+                        'ATagParams.' => [
                             'dataWrap' => 'class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"',
-                        ),
-                    ),
-                ),
-            ),
-            'CSC example #2' => array(
+                        ],
+                    ],
+                ],
+            ],
+            'CSC example #2' => [
                 'linkParams.ATagParams {' . LF .
                     'dataWrap = class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"' . LF .
                 '}',
-                array(
-                    'linkParams.' => array(
-                        'ATagParams.' => array(
+                [
+                    'linkParams.' => [
+                        'ATagParams.' => [
                             'dataWrap' => 'class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"',
-                        ),
-                    ),
-                ),
-            ),
-            'CSC example #3' => array(
+                        ],
+                    ],
+                ],
+            ],
+            'CSC example #3' => [
                 'linkParams.ATagParams.dataWrap (' . LF .
                     'class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"' . LF .
                 ')',
-                array(
-                    'linkParams.' => array(
-                        'ATagParams.' => array(
+                [
+                    'linkParams.' => [
+                        'ATagParams.' => [
                             'dataWrap' => 'class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"',
-                        ),
-                    ),
-                ),
-            ),
-            'key with colon' => array(
+                        ],
+                    ],
+                ],
+            ],
+            'key with colon' => [
                 'some:key = is valid',
-                array(
+                [
                     'some:key' => 'is valid'
-                )
-            ),
-            'special operator' => array(
+                ]
+            ],
+            'special operator' => [
                 'some := addToList(a)',
-                array(
+                [
                     'some' => 'a'
-                )
-            ),
-            'special operator with white-spaces' => array(
+                ]
+            ],
+            'special operator with white-spaces' => [
                 'some := addToList (a)',
-                array(
+                [
                     'some' => 'a'
-                )
-            ),
-            'special operator with tabs' => array(
+                ]
+            ],
+            'special operator with tabs' => [
                 'some :=	addToList	(a)',
-                array(
+                [
                     'some' => 'a'
-                )
-            ),
-            'special operator with white-spaces and tabs in value' => array(
+                ]
+            ],
+            'special operator with white-spaces and tabs in value' => [
                 'some := addToList( a, b,	c )',
-                array(
+                [
                     'some' => 'a, b,	c'
-                )
-            ),
-            'special operator and colon, no spaces' => array(
+                ]
+            ],
+            'special operator and colon, no spaces' => [
                 'some:key:=addToList(a)',
-                array(
+                [
                     'some:key' => 'a'
-                )
-            ),
-            'key with all special symbols' => array(
+                ]
+            ],
+            'key with all special symbols' => [
                 'someSpecial\\_:-\\.Chars = is valid',
-                array(
+                [
                     'someSpecial\\_:-.Chars' => 'is valid'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -757,8 +757,8 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setValCanBeCalledWithArrayValueParameter()
     {
         $string = '';
-        $setup = array();
-        $value = array();
+        $setup = [];
+        $value = [];
         $this->typoScriptParser->setVal($string, $setup, $value);
     }
 
@@ -768,7 +768,7 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setValCanBeCalledWithStringValueParameter()
     {
         $string = '';
-        $setup = array();
+        $setup = [];
         $value = '';
         $this->typoScriptParser->setVal($string, $setup, $value);
     }
@@ -789,58 +789,58 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider()
     {
-        return array(
-            'key without separator' => array(
+        return [
+            'key without separator' => [
                 'testkey',
                 'testkey',
                 ''
-            ),
-            'key with normal separator' => array(
+            ],
+            'key with normal separator' => [
                 'test.key',
                 'test',
                 'key'
-            ),
-            'key with multiple normal separators' => array(
+            ],
+            'key with multiple normal separators' => [
                 'test.key.subkey',
                 'test',
                 'key.subkey'
-            ),
-            'key with separator and escape character' => array(
+            ],
+            'key with separator and escape character' => [
                 'te\\st.test',
                 'te\\st',
                 'test'
-            ),
-            'key with escaped separators' => array(
+            ],
+            'key with escaped separators' => [
                 'test\\.key\\.subkey',
                 'test.key.subkey',
                 ''
-            ),
-            'key with escaped and unescaped separator 1' => array(
+            ],
+            'key with escaped and unescaped separator 1' => [
                 'test.test\\.key',
                 'test',
                 'test\\.key'
-            ),
-            'key with escaped and unescaped separator 2' => array(
+            ],
+            'key with escaped and unescaped separator 2' => [
                 'test\\.test.key\\.key2',
                 'test.test',
                 'key\\.key2'
-            ),
-            'key with escaped escape character' => array(
+            ],
+            'key with escaped escape character' => [
                 'test\\\\.key',
                 'test\\',
                 'key'
-            ),
-            'key with escaped separator and additional escape character' => array(
+            ],
+            'key with escaped separator and additional escape character' => [
                 'test\\\\\\.key',
                 'test\\\\',
                 'key'
-            ),
+            ],
 
-            'multiple escape characters within the key are preserved' => array(
+            'multiple escape characters within the key are preserved' => [
                 'te\\\\st\\\\.key',
                 'te\\\\st\\',
                 'key'
-            )
-        );
+            ]
+        ];
     }
 }

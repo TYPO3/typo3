@@ -221,10 +221,10 @@ class Testbase
      */
     public function setUpInstanceCoreLinks($instancePath)
     {
-        $linksToSet = array(
+        $linksToSet = [
             ORIGINAL_ROOT . 'typo3' => $instancePath . '/typo3',
             ORIGINAL_ROOT . 'index.php' => $instancePath . '/index.php'
-        );
+        ];
         foreach ($linksToSet as $from => $to) {
             $success = symlink($from, $to);
             if (!$success) {
@@ -428,31 +428,31 @@ class Testbase
         array $additionalCoreExtensionsToLoad,
         array $testExtensionPaths
     ) {
-        $packageStates = array(
-            'packages' => array(),
+        $packageStates = [
+            'packages' => [],
             'version' => 5,
-        );
+        ];
 
         // Register default list of extensions and set active
         foreach ($defaultCoreExtensionsToLoad as $extensionName) {
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/'
-            );
+            ];
         }
 
         // Register additional core extensions and set active
         foreach ($additionalCoreExtensionsToLoad as $extensionName) {
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/'
-            );
+            ];
         }
 
         // Activate test extensions that have been symlinked before
         foreach ($testExtensionPaths as $extensionPath) {
             $extensionName = basename($extensionPath);
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'packagePath' => 'typo3conf/ext/' . $extensionName . '/'
-            );
+            ];
         }
 
         $result = $this->writeFile(
@@ -633,11 +633,11 @@ class Testbase
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $xml = simplexml_load_string($fileContent);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
-        $foreignKeys = array();
+        $foreignKeys = [];
 
         /** @var $table \SimpleXMLElement */
         foreach ($xml->children() as $table) {
-            $insertArray = array();
+            $insertArray = [];
 
             /** @var $column \SimpleXMLElement */
             foreach ($table->children() as $column) {

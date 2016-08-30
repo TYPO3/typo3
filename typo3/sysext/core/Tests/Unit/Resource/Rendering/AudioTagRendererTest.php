@@ -91,7 +91,7 @@ class AudioTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertSame(
             '<audio controls loop><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200', array('loop' => 1))
+            $audioTagRenderer->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
 
@@ -108,7 +108,7 @@ class AudioTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertSame(
             '<audio controls autoplay><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $audioTagRenderer->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 
@@ -125,7 +125,7 @@ class AudioTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertSame(
             '<audio autoplay><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200', array('controls' => 0, 'autoplay' => 1))
+            $audioTagRenderer->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
         );
     }
 }

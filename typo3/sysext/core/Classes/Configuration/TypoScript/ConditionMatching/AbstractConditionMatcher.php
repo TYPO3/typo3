@@ -53,7 +53,7 @@ abstract class AbstractConditionMatcher
      *
      * @var array
      */
-    protected $simulateMatchConditions = array();
+    protected $simulateMatchConditions = [];
 
     /**
      * Sets the id of the page to evaluate conditions for.
@@ -135,13 +135,13 @@ abstract class AbstractConditionMatcher
      */
     protected function normalizeExpression($expression)
     {
-        $normalizedExpression = preg_replace(array(
+        $normalizedExpression = preg_replace([
             '/\\]\\s*(OR|\\|\\|)?\\s*\\[/i',
             '/\\]\\s*(AND|&&)\\s*\\[/i'
-        ), array(
+        ], [
             ']||[',
             ']&&['
-        ), trim($expression));
+        ], trim($expression));
         return $normalizedExpression;
     }
 
@@ -339,10 +339,10 @@ abstract class AbstractConditionMatcher
                 return false;
                 break;
             case 'userFunc':
-                $matches = array();
+                $matches = [];
                 preg_match_all('/^\s*([^\(\s]+)\s*(?:\((.*)\))?\s*$/', $value, $matches);
                 $funcName = $matches[1][0];
-                $funcValues = trim($matches[2][0]) !== '' ? $this->parseUserFuncArguments($matches[2][0]) : array();
+                $funcValues = trim($matches[2][0]) !== '' ? $this->parseUserFuncArguments($matches[2][0]) : [];
                 if (is_callable($funcName) && call_user_func_array($funcName, $funcValues)) {
                     return true;
                 }
@@ -395,7 +395,7 @@ abstract class AbstractConditionMatcher
      */
     protected function parseUserFuncArguments($arguments)
     {
-        $result = array();
+        $result = [];
         $arguments = trim($arguments);
         while ($arguments !== '') {
             if ($arguments[0] === ',') {
@@ -546,10 +546,10 @@ abstract class AbstractConditionMatcher
                 // Regular expression, only "//" is allowed as delimiter
                 $regex = $needle;
             } else {
-                $needle = str_replace(array('*', '?'), array('###MANY###', '###ONE###'), $needle);
+                $needle = str_replace(['*', '?'], ['###MANY###', '###ONE###'], $needle);
                 $regex = '/^' . preg_quote($needle, '/') . '$/';
                 // Replace the marker with .* to match anything (wildcard)
-                $regex = str_replace(array('###MANY###', '###ONE###'), array('.*', '.'), $regex);
+                $regex = str_replace(['###MANY###', '###ONE###'], ['.*', '.'], $regex);
             }
             $result = (bool)preg_match($regex, $haystack);
         }

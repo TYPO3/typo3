@@ -51,7 +51,7 @@ class SuggestWizard
             $fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
             $flexformField = str_replace($fieldPattern, '', $fieldname);
             $flexformField = substr($flexformField, 0, -1);
-            $field = str_replace(array(']['), '|', $flexformField);
+            $field = str_replace([']['], '|', $flexformField);
         }
 
         // Get minimumCharacters from TCA
@@ -141,7 +141,7 @@ class SuggestWizard
         $queryTables = $this->getTablesToQueryFromFieldConfiguration($fieldConfig);
         $whereClause = $this->getWhereClause($fieldConfig);
 
-        $resultRows = array();
+        $resultRows = [];
 
         // fetch the records for each query table. A query table is a table from which records are allowed to
         // be added to the TCEForm selector, originally fetched from the "allowed" config option in the TCA
@@ -158,10 +158,10 @@ class SuggestWizard
                 $config['addWhere'] = $whereClause;
             }
             if (isset($config['addWhere'])) {
-                $replacement = array(
+                $replacement = [
                     '###THIS_UID###' => (int)$uid,
                     '###CURRENT_PID###' => (int)$pageId
-                );
+                ];
                 if (isset($TSconfig['TCEFORM.'][$table . '.'][$field . '.'])) {
                     $fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'];
                     if (isset($fieldTSconfig['PAGE_TSCONFIG_ID'])) {
@@ -186,7 +186,7 @@ class SuggestWizard
                 $receiverClassName = SuggestWizardDefaultReceiver::class;
             }
             $receiverObj = GeneralUtility::makeInstance($receiverClassName, $queryTable, $config);
-            $params = array('value' => $search);
+            $params = ['value' => $search];
             $rows = $receiverObj->queryTable($params);
             if (empty($rows)) {
                 continue;
@@ -317,7 +317,7 @@ class SuggestWizard
      */
     protected function getSubConfigurationForSections(array $dataStructure, $fieldName)
     {
-        $fieldConfig = array();
+        $fieldConfig = [];
         $elements = $dataStructure['ROOT']['el'] ? $dataStructure['ROOT']['el'] : $dataStructure['el'];
         if (is_array($elements)) {
             foreach ($elements as $k => $ds) {
@@ -345,7 +345,7 @@ class SuggestWizard
      */
     protected function getNestedDsFieldConfig(array $dataStructure, $fieldName)
     {
-        $fieldConfig = array();
+        $fieldConfig = [];
         $elements = $dataStructure['ROOT']['el'] ? $dataStructure['ROOT']['el'] : $dataStructure['el'];
         if (is_array($elements)) {
             foreach ($elements as $k => $ds) {
@@ -434,12 +434,12 @@ class SuggestWizard
     protected function createListItemsFromResultRow(array $resultRows, $maxItems)
     {
         if (empty($resultRows)) {
-            return array();
+            return [];
         }
-        $listItems = array();
+        $listItems = [];
 
         // traverse all found records and sort them
-        $rowsSort = array();
+        $rowsSort = [];
         foreach ($resultRows as $key => $row) {
             $rowsSort[$key] = $row['text'];
         }
@@ -462,7 +462,7 @@ class SuggestWizard
      */
     protected function getTablesToQueryFromFieldConfiguration(array $fieldConfig)
     {
-        $queryTables = array();
+        $queryTables = [];
 
         if (isset($fieldConfig['allowed'])) {
             if ($fieldConfig['allowed'] !== '*') {
@@ -479,7 +479,7 @@ class SuggestWizard
             }
         } elseif (isset($fieldConfig['foreign_table'])) {
             // use the foreign table
-            $queryTables = array($fieldConfig['foreign_table']);
+            $queryTables = [$fieldConfig['foreign_table']];
         }
 
         return $queryTables;

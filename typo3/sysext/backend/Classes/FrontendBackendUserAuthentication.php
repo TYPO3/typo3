@@ -61,7 +61,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      *
      * @var array
      */
-    public $extPageInTreeInfo = array();
+    public $extPageInTreeInfo = [];
 
     /**
      * General flag which is set if the adminpanel is enabled at all.
@@ -83,7 +83,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
     /**
      * @var array
      */
-    public $extAdminConfig = array();
+    public $extAdminConfig = [];
 
     /**
      * Initializes the admin panel.
@@ -260,7 +260,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
             while ($row = $result->fetch()) {
                 if ($begin <= 0) {
                     $theList .= $row['uid'] . ',';
-                    $this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
+                    $this->extPageInTreeInfo[] = [$row['uid'], htmlspecialchars($row['title'], $depth)];
                 }
                 if ($depth > 1) {
                     $theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
@@ -304,7 +304,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
         if (!is_array($GLOBALS['LOCAL_LANG'])) {
             $this->getLanguageService()->includeLLFile('EXT:lang/locallang_tsfe.xlf');
             if (!is_array($GLOBALS['LOCAL_LANG'])) {
-                $GLOBALS['LOCAL_LANG'] = array();
+                $GLOBALS['LOCAL_LANG'] = [];
             }
         }
         // Return the label string in the default backend output charset.

@@ -34,8 +34,8 @@ class MailPostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         parent::setUp();
         $this->mailPostProcessor = $this->getAccessibleMock(
             \TYPO3\CMS\Form\PostProcess\MailPostProcessor::class,
-            array('__none'),
-            array(),
+            ['__none'],
+            [],
             '',
             false
         );
@@ -49,43 +49,43 @@ class MailPostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function filterValidEmailsProvider()
     {
-        return array(
-            'empty string' => array(
+        return [
+            'empty string' => [
                 '',
-                array(),
-            ),
-            'string not representing an email' => array(
+                [],
+            ],
+            'string not representing an email' => [
                 'notAnAddress',
-                array(),
-            ),
-            'simple single valid address' => array(
+                [],
+            ],
+            'simple single valid address' => [
                 'someone@example.com',
-                array(
+                [
                     'someone@example.com',
-                ),
-            ),
-            'multiple valid simple addresses' => array(
+                ],
+            ],
+            'multiple valid simple addresses' => [
                 'someone@example.com, foo@bar.com',
-                array(
+                [
                     'someone@example.com',
                     'foo@bar.com',
-                ),
-            ),
-            'multiple addresses with personal part' => array(
+                ],
+            ],
+            'multiple addresses with personal part' => [
                 'Foo <foo@example.com>, <bar@example.com>, "Foo, bar" <foo.bar@example.com>',
-                array(
+                [
                     'bar@example.com',
                     'foo@example.com' => 'Foo',
                     'foo.bar@example.com' => '"Foo, bar"',
-                ),
-            ),
-            'list with invalid addresses is filtered' => array(
+                ],
+            ],
+            'list with invalid addresses is filtered' => [
                 'invalid, @invalid, someone@example.com',
-                array(
+                [
                     'someone@example.com',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

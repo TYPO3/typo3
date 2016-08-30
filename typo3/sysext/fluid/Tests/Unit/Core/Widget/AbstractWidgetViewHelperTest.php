@@ -64,7 +64,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, array('validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, ['validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext']);
         $this->mockExtensionService = $this->createMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
         $this->viewHelper->_set('extensionService', $this->mockExtensionService);
         $this->ajaxWidgetContextHolder = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class);
@@ -77,7 +77,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
         $this->renderingContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class)
-            ->setMethods(array('getControllerContext'))
+            ->setMethods(['getControllerContext'])
             ->getMock();
         $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->viewHelper->_set('renderingContext', $this->renderingContext);
@@ -143,7 +143,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $renderingContext = $this->createMock(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class);
         $this->viewHelper->_set('renderingContext', $renderingContext);
         $this->widgetContext->expects($this->once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
-        $this->viewHelper->setChildNodes(array($node1, $node2, $node3));
+        $this->viewHelper->setChildNodes([$node1, $node2, $node3]);
     }
 
     /**
@@ -178,18 +178,18 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // and the action name is exctracted from the namespace.
         $this->controllerContext->expects($this->once())->method('getRequest')->will($this->returnValue($this->request));
         $this->widgetContext->expects($this->once())->method('getWidgetIdentifier')->will($this->returnValue('widget-1'));
-        $this->request->expects($this->once())->method('getArguments')->will($this->returnValue(array(
+        $this->request->expects($this->once())->method('getArguments')->will($this->returnValue([
             'k1' => 'k2',
-            'widget-1' => array(
+            'widget-1' => [
                 'arg1' => 'val1',
                 'arg2' => 'val2',
                 'action' => 'myAction'
-            )
-        )));
-        $widgetRequest->expects($this->once())->method('setArguments')->with(array(
+            ]
+        ]));
+        $widgetRequest->expects($this->once())->method('setArguments')->with([
             'arg1' => 'val1',
             'arg2' => 'val2'
-        ));
+        ]);
         $widgetRequest->expects($this->once())->method('setControllerActionName')->with('myAction');
         // Controller is called
         $controller->expects($this->once())->method('processRequest')->with($widgetRequest, $response);
@@ -204,10 +204,10 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getWidgetConfigurationReturnsArgumentsProperty()
     {
         $viewHelper = $this->getMockBuilder(AbstractWidgetViewHelper::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
-        $viewHelper->setArguments(array('foo' => 'bar'));
-        $this->assertEquals(array('foo' => 'bar'), $this->callInaccessibleMethod($viewHelper, 'getWidgetConfiguration'));
+        $viewHelper->setArguments(['foo' => 'bar']);
+        $this->assertEquals(['foo' => 'bar'], $this->callInaccessibleMethod($viewHelper, 'getWidgetConfiguration'));
     }
 
     /**
@@ -216,14 +216,14 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function compileDisablesTemplateCompiler()
     {
         $viewHelper = $this->getMockBuilder(AbstractWidgetViewHelper::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
         $node = $this->getMockBuilder(ViewHelperNode::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $compiler = $this->getMockBuilder(TemplateCompiler::class)
-            ->setMethods(array('disable'))
+            ->setMethods(['disable'])
             ->getMock();
         $compiler->expects($this->once())->method('disable');
         $code = ''; // referenced

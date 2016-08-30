@@ -26,12 +26,12 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('sv', 'extbase', 'fluid');
+    protected $coreExtensionsToLoad = ['sv', 'extbase', 'fluid'];
 
     /**
      * Sets up this test suite.
@@ -45,7 +45,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs-with-fe_groups.xml');
 
-        $this->setUpFrontendRootPage(1, array('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.ts'));
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.ts']);
     }
 
     /**

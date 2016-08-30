@@ -57,10 +57,10 @@ class MagicImageService
         // Create the magic image
         $magicImage = $imageFileObject->process(
             Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-            array(
+            [
                 'width' => $maxWidth . 'm',
                 'height' => $maxHeight . 'm'
-            )
+            ]
         );
         return $magicImage;
     }
@@ -74,7 +74,7 @@ class MagicImageService
     public function setMagicImageMaximumDimensions(array $rteConfiguration)
     {
         // Get maximum dimensions from the configuration of the RTE image button
-        $imageButtonConfiguration = (is_array($rteConfiguration['buttons.']) && is_array($rteConfiguration['buttons.']['image.'])) ? $rteConfiguration['buttons.']['image.'] : array();
+        $imageButtonConfiguration = (is_array($rteConfiguration['buttons.']) && is_array($rteConfiguration['buttons.']['image.'])) ? $rteConfiguration['buttons.']['image.'] : [];
         if (is_array($imageButtonConfiguration['options.']) && is_array($imageButtonConfiguration['options.']['magic.'])) {
             if ((int)$imageButtonConfiguration['options.']['magic.']['maxWidth'] > 0) {
                 $this->magicImageMaximumWidth = (int)$imageButtonConfiguration['options.']['magic.']['maxWidth'];

@@ -60,12 +60,12 @@ class SaltFactory
      */
     protected static function getDefaultSaltMethods()
     {
-        return array(
+        return [
             \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class,
             \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class,
             \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
             \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class
-        );
+        ];
     }
 
     /**
@@ -118,7 +118,7 @@ class SaltFactory
         $defaultReference = $registeredMethods[$defaultClassName];
         unset($registeredMethods[$defaultClassName]);
         // place the default method first in the order
-        $registeredMethods = array($defaultClassName => $defaultReference) + $registeredMethods;
+        $registeredMethods = [$defaultClassName => $defaultReference] + $registeredMethods;
         $methodFound = false;
         foreach ($registeredMethods as $method) {
             $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method);

@@ -92,8 +92,8 @@ class TreeNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function compareNodes()
     {
-        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => '15'));
-        $otherNode = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => '5'));
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => '15']);
+        $otherNode = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => '5']);
         $compareResult = $node->compareTo($otherNode);
         $otherNode->setId('25');
         $compareResult = $node->compareTo($otherNode);

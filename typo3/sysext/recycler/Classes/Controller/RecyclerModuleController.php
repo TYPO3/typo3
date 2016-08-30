@@ -39,7 +39,7 @@ class RecyclerModuleController extends ActionController
     /**
      * @var array
      */
-    protected $pageRecord = array();
+    protected $pageRecord = [];
 
     /**
      * @var bool
@@ -154,7 +154,7 @@ class RecyclerModuleController extends ActionController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = array('id', 'M', $modulePrefix);
+            $getVars = ['id', 'M', $modulePrefix];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
@@ -176,7 +176,7 @@ class RecyclerModuleController extends ActionController
      */
     protected function getJavaScriptConfiguration()
     {
-        $configuration = array(
+        $configuration = [
             'pagingSize' => $this->recordsPageLimit,
             'showDepthMenu' => 1,
             'startUid' => (int)GeneralUtility::_GP('id'),
@@ -185,7 +185,7 @@ class RecyclerModuleController extends ActionController
             'depthSelection' => $this->getDataFromSession('depthSelection', 0),
             'tableSelection' => $this->getDataFromSession('tableSelection', ''),
             'States' => $this->getBackendUser()->uc['moduleData']['web_recycler']['States']
-        );
+        ];
         return $configuration;
     }
 

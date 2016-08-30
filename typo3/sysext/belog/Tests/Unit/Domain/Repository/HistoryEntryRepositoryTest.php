@@ -38,8 +38,8 @@ class HistoryEntryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(false);
         $fixture = $this->getMockBuilder(\TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository::class)
-            ->setMethods(array('setDefaultQuerySettings'))
-            ->setConstructorArgs(array($this->objectManager))
+            ->setMethods(['setDefaultQuerySettings'])
+            ->setConstructorArgs([$this->objectManager])
             ->getMock();
         $fixture->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
         $fixture->initializeObject();

@@ -93,7 +93,7 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
     /**
      * @var array
      */
-    protected $recordOffset = array();
+    protected $recordOffset = [];
 
     /**
      * Constructor

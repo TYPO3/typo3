@@ -38,50 +38,50 @@ class ServerRequestFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
-        $_FILES = array(
-            'tx_uploadexample_piexample' => array(
-                'name' => array(
-                    'newExample' => array(
+        $_FILES = [
+            'tx_uploadexample_piexample' => [
+                'name' => [
+                    'newExample' => [
                         'image' => 'o51pb.jpg',
-                        'imageCollection' => array(
+                        'imageCollection' => [
                             0 => 'composer.json',
-                        ),
-                    ),
-                    ),
-                    'type' => array(
-                        'newExample' => array(
+                        ],
+                    ],
+                    ],
+                    'type' => [
+                        'newExample' => [
                             'image' => 'image/jpeg',
-                            'imageCollection' => array(
+                            'imageCollection' => [
                                 0 => 'application/json'
-                            )
-                        )
-                    ),
-                    'tmp_name' => array(
-                        'newExample' => array(
+                            ]
+                        ]
+                    ],
+                    'tmp_name' => [
+                        'newExample' => [
                             'image' => '/Applications/MAMP/tmp/php/phphXdbcd',
-                            'imageCollection' => array(
+                            'imageCollection' => [
                                 0 => '/Applications/MAMP/tmp/php/phpgrZ4bb'
-                            )
-                        )
-                    ),
-                    'error' => array(
-                        'newExample' => array(
+                            ]
+                        ]
+                    ],
+                    'error' => [
+                        'newExample' => [
                                 'image' => 0,
-                                'imageCollection' => array(
+                                'imageCollection' => [
                                     0 => 0
-                                )
-                        )
-                    ),
-                    'size' => array(
-                        'newExample' => array(
+                                ]
+                        ]
+                    ],
+                    'size' => [
+                        'newExample' => [
                             'image' => 59065,
-                            'imageCollection' => array(
+                            'imageCollection' => [
                                 0 => 683
-                            )
-                        )
-                    )
-            )
-        );
+                            ]
+                        ]
+                    ]
+            ]
+        ];
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
@@ -98,7 +98,7 @@ class ServerRequestFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
-        $_FILES = array();
+        $_FILES = [];
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
@@ -112,14 +112,14 @@ class ServerRequestFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
-        $_FILES = array(
-            'tx_uploadexample_piexample' => array(
+        $_FILES = [
+            'tx_uploadexample_piexample' => [
                 'name' => '',
                 'tmp_name' => '',
                 'error' => 4,
                 'size' => 0,
-            ),
-        );
+            ],
+        ];
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 

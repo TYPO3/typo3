@@ -32,12 +32,12 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
@@ -96,7 +96,7 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     public function betweenSetsBoundariesCorrectly()
     {
         $query = $this->postRepository->createQuery();
-        $query->setOrderings(array('uid' => QueryInterface::ORDER_ASCENDING));
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
         $query->matching(
             $query->between('uid', 3, 5)
@@ -106,6 +106,6 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             function ($row) { return $row['uid']; },
             $query->execute(true)
         );
-        $this->assertEquals(array(3, 4, 5), $result);
+        $this->assertEquals([3, 4, 5], $result);
     }
 }

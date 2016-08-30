@@ -41,7 +41,7 @@ class PhpInfoViewHelper extends AbstractViewHelper
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -103,6 +103,6 @@ class PhpInfoViewHelper extends AbstractViewHelper
         $html = preg_replace('#\s(cellpadding|border|width)="[^"]+"#', '', $html);
 
         // Replace font tag with span
-        return str_replace(array('<font', '</font>'), array('<span', '</span>'), $html);
+        return str_replace(['<font', '</font>'], ['<span', '</span>'], $html);
     }
 }

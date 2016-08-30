@@ -104,12 +104,12 @@ class CropViewHelper extends AbstractViewHelper
         $respectHtml = $this->arguments['respectHtml'];
 
         return static::renderStatic(
-            array(
+            [
                 'maxCharacters' => $maxCharacters,
                 'append' => $append,
                 'respectWordBoundaries' => $respectWordBoundaries,
                 'respectHtml' => $respectHtml,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

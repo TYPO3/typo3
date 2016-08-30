@@ -7,12 +7,12 @@ if (TYPO3_MODE === 'BE') {
         'txdbalM1',
         '',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Dbal\Controller\ModuleController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'tools_txdbalM1',
             'icon' => 'EXT:dbal/Resources/Public/Icons/module-dbal.svg',
             'labels' => 'LLL:EXT:dbal/Resources/Private/Language/locallang_mod.xlf'
-        )
+        ]
     );
 }

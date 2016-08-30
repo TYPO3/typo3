@@ -39,7 +39,7 @@ abstract class AbstractNode
     /**
      * @var array Directories and root may have children, files and link always empty array
      */
-    protected $children = array();
+    protected $children = [];
 
     /**
      * Get name

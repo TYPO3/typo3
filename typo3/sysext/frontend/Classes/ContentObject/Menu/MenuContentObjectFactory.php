@@ -29,12 +29,12 @@ class MenuContentObjectFactory implements SingletonInterface
      *
      * @var array
      */
-    protected $menuTypeToClassMapping = array(
+    protected $menuTypeToClassMapping = [
         'GMENU' => GraphicalMenuContentObject::class,
         'TMENU' => TextMenuContentObject::class,
         'IMGMENU' => ImageMenuContentObject::class,
         'JSMENU' => JavaScriptMenuContentObject::class,
-    );
+    ];
 
     /**
      * Gets a typo script string like 'TMENU' and returns an object of this type

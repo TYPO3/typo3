@@ -36,7 +36,7 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->objectInstance = $this->getMockBuilder(\TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
     }
 

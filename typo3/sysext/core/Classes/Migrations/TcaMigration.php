@@ -29,7 +29,7 @@ class TcaMigration
      *
      * @var array
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * Migrate old TCA to new TCA.
@@ -140,31 +140,31 @@ class TcaMigration
                     continue;
                 }
                 $itemList = GeneralUtility::trimExplode(',', $typeArray['showitem'], true);
-                $newFieldStrings = array();
+                $newFieldStrings = [];
                 foreach ($itemList as $fieldString) {
                     $fieldString = rtrim($fieldString, ';');
                     // Unpack the field definition, migrate and remove as much as possible
                     // Keep empty parameters in trimExplode here (third parameter FALSE), so position is not changed
                     $fieldArray = GeneralUtility::trimExplode(';', $fieldString);
-                    $fieldArray = array(
+                    $fieldArray = [
                         'fieldName' => isset($fieldArray[0]) ? $fieldArray[0] : '',
                         'fieldLabel' => isset($fieldArray[1]) ? $fieldArray[1] : null,
                         'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : null,
                         'fieldExtra' => isset($fieldArray[3]) ? $fieldArray[3] : null,
-                    );
+                    ];
                     $fieldName = $fieldArray['fieldName'];
                     if (!empty($fieldArray['fieldExtra'])) {
                         // Move fieldExtra "specConf" to columnsOverrides "defaultExtras"
                         if (!isset($newTca[$table]['types'][$typeName]['columnsOverrides'])) {
-                            $newTca[$table]['types'][$typeName]['columnsOverrides'] = array();
+                            $newTca[$table]['types'][$typeName]['columnsOverrides'] = [];
                         }
                         if (!isset($newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldArray['fieldName']])) {
-                            $newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldArray['fieldName']] = array();
+                            $newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldArray['fieldName']] = [];
                         }
                         // Merge with given defaultExtras from columns.
                         // They will be the first part of the string, so if "specConf" from types changes the same settings,
                         // those will override settings from defaultExtras of columns
-                        $newDefaultExtras = array();
+                        $newDefaultExtras = [];
                         if (!empty($tca[$table]['columns'][$fieldArray['fieldName']]['defaultExtras'])) {
                             $newDefaultExtras[] = $tca[$table]['columns'][$fieldArray['fieldName']]['defaultExtras'];
                         }
@@ -240,14 +240,14 @@ class TcaMigration
                                 }
                                 $defaultExtras = $typeArray['columnsOverrides'][$fieldName]['defaultExtras'];
                                 $defaultExtrasArray = GeneralUtility::trimExplode(':', $defaultExtras, true);
-                                $newDefaultExtrasArray = array();
+                                $newDefaultExtrasArray = [];
                                 foreach ($defaultExtrasArray as $fieldExtraField) {
                                     // There might be multiple enabled wizards separated by | ... split them
                                     if (substr($fieldExtraField, 0, 8) === 'wizards[') {
                                         $enabledWizards = substr($fieldExtraField, 8, strlen($fieldExtraField) - 8); // Cut off "wizards[
                                         $enabledWizards = substr($enabledWizards, 0, strlen($enabledWizards) - 1);
                                         $enabledWizardsArray = GeneralUtility::trimExplode('|', $enabledWizards, true);
-                                        $newEnabledWizardsArray = array();
+                                        $newEnabledWizardsArray = [];
                                         foreach ($enabledWizardsArray as $enabledWizardName) {
                                             if ($enabledWizardName === $wizardName) {
                                                 // Found a columnsOverrides configuration that has this wizard enabled
@@ -317,14 +317,14 @@ class TcaMigration
                     continue;
                 }
                 $itemList = GeneralUtility::trimExplode(',', $typeArray['showitem'], true);
-                $newFieldStrings = array();
+                $newFieldStrings = [];
                 foreach ($itemList as $fieldString) {
                     $fieldArray = GeneralUtility::trimExplode(';', $fieldString);
-                    $fieldArray = array(
+                    $fieldArray = [
                         'fieldName' => isset($fieldArray[0]) ? $fieldArray[0] : '',
                         'fieldLabel' => isset($fieldArray[1]) ? $fieldArray[1] : null,
                         'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : null,
-                    );
+                    ];
                     if ($fieldArray['fieldName'] !== '--palette--' && $fieldArray['paletteName'] !== null) {
                         if ($fieldArray['fieldLabel']) {
                             $fieldString = $fieldArray['fieldName'] . ';' . $fieldArray['fieldLabel'];
@@ -365,7 +365,7 @@ class TcaMigration
     {
         $newTca = $tca;
 
-        $oldFileNames = array(
+        $oldFileNames = [
             'add.gif',
             'link_popup.gif',
             'wizard_rte2.gif',
@@ -373,9 +373,9 @@ class TcaMigration
             'edit2.gif',
             'list.gif',
             'wizard_forms.gif',
-        );
+        ];
 
-        $newFileLocations = array(
+        $newFileLocations = [
             'add.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
             'link_popup.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
             'wizard_rte2.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
@@ -383,7 +383,7 @@ class TcaMigration
             'edit2.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
             'list.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
             'wizard_forms.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif',
-        );
+        ];
 
         foreach ($tca as $table => $tableDefinition) {
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {

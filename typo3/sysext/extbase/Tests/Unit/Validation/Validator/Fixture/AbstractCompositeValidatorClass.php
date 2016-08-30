@@ -31,10 +31,10 @@ class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Vali
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'requiredOption' => array(0, 'Some value', 'integer', true),
-        'demoOption' => array(PHP_INT_MAX, 'Some value', 'integer'),
-    );
+    protected $supportedOptions = [
+        'requiredOption' => [0, 'Some value', 'integer', true],
+        'demoOption' => [PHP_INT_MAX, 'Some value', 'integer'],
+    ];
 
     /**
      * Check if $value is valid. If it is not valid, needs to add an error

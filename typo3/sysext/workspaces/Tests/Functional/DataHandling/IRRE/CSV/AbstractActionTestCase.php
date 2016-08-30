@@ -46,11 +46,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array(
+    protected $coreExtensionsToLoad = [
         'fluid',
         'version',
         'workspaces',
-    );
+    ];
 
     protected function setUp()
     {
@@ -59,7 +59,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->importScenarioDataSet('LiveDefaultElements');
         $this->importScenarioDataSet('ReferenceIndex');
 
-        $this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts']);
         $this->backendUser->workspace = self::VALUE_WorkspaceId;
     }
 
@@ -72,7 +72,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function createParentContent()
     {
-        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
@@ -81,7 +81,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyParentContent()
     {
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, array('header' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
     }
 
     /**
@@ -202,7 +202,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyPage()
     {
-        $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, array('title' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 
     /**
@@ -232,7 +232,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         // Ensure hotels get processed first
         $GLOBALS['TCA'] = array_merge(
-            array(self::TABLE_Hotel => $GLOBALS['TCA'][self::TABLE_Hotel]),
+            [self::TABLE_Hotel => $GLOBALS['TCA'][self::TABLE_Hotel]],
             $GLOBALS['TCA']
         );
 
@@ -253,11 +253,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
-                self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
-                self::TABLE_Offer => array('title' => 'Offer #1'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'],
+                self::TABLE_Offer => ['title' => 'Offer #1'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
@@ -270,11 +270,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         // @todo Copying the new child records is broken in the Core
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
-                self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
-                self::TABLE_Offer => array('title' => 'Offer #1'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'],
+                self::TABLE_Offer => ['title' => 'Offer #1'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
@@ -291,11 +291,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         // @todo Copying the new child records is broken in the Core
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
-                self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
-                self::TABLE_Offer => array('title' => 'Offer #1'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'],
+                self::TABLE_Offer => ['title' => 'Offer #1'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds['tt_content'][0];
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
@@ -312,11 +312,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         // @todo Localizing the new child records is broken in the Core
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
-                self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
-                self::TABLE_Offer => array('title' => 'Offer #1'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'],
+                self::TABLE_Offer => ['title' => 'Offer #1'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
@@ -332,11 +332,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
-                self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
-                self::TABLE_Offer => array('title' => 'Offer #1'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'],
+                self::TABLE_Offer => ['title' => 'Offer #1'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $this->recordIds['versionedNewContentId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -353,11 +353,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         // @todo Localizing the new child records is broken in the Core
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
-                self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
-                self::TABLE_Offer => array('title' => 'Offer #1'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'],
+                self::TABLE_Offer => ['title' => 'Offer #1'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
@@ -371,7 +371,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyOnlyHotelChild()
     {
-        $this->actionService->modifyRecord(self::TABLE_Hotel, 4, array('title' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Hotel, 4, ['title' => 'Testing #1']);
     }
 
     /**
@@ -379,7 +379,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyParentAndChangeHotelChildrenSorting()
     {
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array(self::FIELD_ContentHotel => '4,3'));
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, [self::FIELD_ContentHotel => '4,3']);
     }
 
     /**
@@ -389,10 +389,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'),
-                self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'],
+                self::TABLE_Hotel => ['uid' => 4, 'title' => 'Testing #1'],
+            ]
         );
     }
 
@@ -403,10 +403,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'),
-                self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'],
+                self::TABLE_Hotel => ['uid' => 4, 'title' => 'Testing #1'],
+            ]
         );
         $modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $modifiedContentId);
@@ -419,18 +419,18 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'),
-                self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'],
+                self::TABLE_Hotel => ['uid' => 4, 'title' => 'Testing #1'],
+            ]
         );
         $modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $modifiedHotelId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 4);
         $this->actionService->clearWorkspaceRecords(
-                array(
-                    self::TABLE_Content => array($modifiedContentId),
-                    self::TABLE_Hotel => array($modifiedHotelId),
-                )
+                [
+                    self::TABLE_Content => [$modifiedContentId],
+                    self::TABLE_Hotel => [$modifiedHotelId],
+                ]
         );
     }
 
@@ -441,10 +441,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdLast, self::FIELD_ContentHotel => '5,__nextUid'),
-                self::TABLE_Hotel => array('uid' => '__NEW', 'title' => 'Hotel #2'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdLast, self::FIELD_ContentHotel => '5,__nextUid'],
+                self::TABLE_Hotel => ['uid' => '__NEW', 'title' => 'Hotel #2'],
+            ]
         );
     }
 
@@ -456,8 +456,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             self::VALUE_ContentIdFirst,
-            array(self::FIELD_ContentHotel => '3'),
-            array(self::TABLE_Hotel => array(4))
+            [self::FIELD_ContentHotel => '3'],
+            [self::TABLE_Hotel => [4]]
         );
     }
 
@@ -468,26 +468,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'header' => 'Testing #1', self::FIELD_ContentHotel => '3,4'),
-                self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdFirst, 'header' => 'Testing #1', self::FIELD_ContentHotel => '3,4'],
+                self::TABLE_Hotel => ['uid' => 4, 'title' => 'Testing #1'],
+            ]
         );
         $this->recordIds['versionedContentId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->recordIds['versionedHotelIdFirst'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 3);
         $this->recordIds['versionedHotelIdSecond'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 4);
         $this->actionService->clearWorkspaceRecords(
-            array(
-                self::TABLE_Content => array($this->recordIds['versionedContentId']),
-                self::TABLE_Hotel => array($this->recordIds['versionedHotelIdSecond']),
-            )
+            [
+                self::TABLE_Content => [$this->recordIds['versionedContentId']],
+                self::TABLE_Hotel => [$this->recordIds['versionedHotelIdSecond']],
+            ]
         );
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'header' => 'Testing #2', self::FIELD_ContentHotel => '3,4'),
-                self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #2'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdFirst, 'header' => 'Testing #2', self::FIELD_ContentHotel => '3,4'],
+                self::TABLE_Hotel => ['uid' => 4, 'title' => 'Testing #2'],
+            ]
         );
     }
 }

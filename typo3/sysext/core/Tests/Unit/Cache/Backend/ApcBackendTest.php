@@ -118,7 +118,7 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+        $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
         $this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
@@ -133,10 +133,10 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->setUpBackend();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
-        $backend->set($identifier, $data, array('UnitTestTag%tag3'));
+        $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tagX']);
+        $backend->set($identifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
-        $this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
+        $this->assertEquals([], $retrieved, 'Found entry which should no longer exist.');
     }
 
     /**
@@ -152,12 +152,12 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var $backendMock \PHPUnit_Framework_MockObject_MockObject|ApcBackend */
         $backendMock = $this->getMockBuilder(ApcBackend::class)
-            ->setMethods(array('setIdentifierPrefix', 'getCurrentUserData', 'getPathSite'))
-            ->setConstructorArgs(array('testcontext'))
+            ->setMethods(['setIdentifierPrefix', 'getCurrentUserData', 'getPathSite'])
+            ->setConstructorArgs(['testcontext'])
             ->getMock();
 
         $backendMock->expects($this->once())->method('getCurrentUserData')->will(
-            $this->returnValue(array('name' => 'testname'))
+            $this->returnValue(['name' => 'testname'])
         );
 
         $backendMock->expects($this->once())->method('getPathSite')->will(
@@ -198,9 +198,9 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
-        $backend->set('BackendAPCTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-        $backend->set('BackendAPCTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-        $backend->set('BackendAPCTest3', $data, array('UnitTestTag%test'));
+        $backend->set('BackendAPCTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendAPCTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendAPCTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
         $this->assertTrue($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
         $this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
@@ -267,7 +267,7 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setTagsOnlyOnceToIdentifier()
     {
         $identifier = $this->getUniqueId('MyIdentifier');
-        $tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+        $tags = ['UnitTestTag%test', 'UnitTestTag%boring'];
 
         $backend = $this->setUpBackend(true);
         $backend->_call('addIdentifierToTags', $identifier, $tags);

@@ -36,12 +36,12 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)
-            ->setMethods(array('sL'))
+            ->setMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
         $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
         $this->subject = $this->getMockBuilder(CleanerFieldProvider::class)
-            ->setMethods(array('getLanguageService'))
+            ->setMethods(['getLanguageService'])
             ->getMock();
         $this->subject->expects($this->any())->method('getLanguageService')->willReturn($languageServiceMock);
     }
@@ -50,15 +50,15 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param array $mockedMethods
      * @return \PHPUnit_Framework_MockObject_MockObject|SchedulerModuleController
      */
-    protected function getScheduleModuleControllerMock($mockedMethods = array())
+    protected function getScheduleModuleControllerMock($mockedMethods = [])
     {
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)
-            ->setMethods(array('sL'))
+            ->setMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
         $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
 
-        $mockedMethods = array_merge(array('getLanguageService'), $mockedMethods);
+        $mockedMethods = array_merge(['getLanguageService'], $mockedMethods);
         $scheduleModuleMock = $this->getMockBuilder(SchedulerModuleController::class)
             ->setMethods($mockedMethods)
             ->disableOriginalConstructor()
@@ -73,14 +73,14 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateAdditionalFieldsLogsPeriodErrorDataProvider()
     {
-        return array(
-            array('abc'),
-            array($this->getMockBuilder(CleanerTask::class)->disableOriginalConstructor()->getMock()),
-            array(null),
-            array(''),
-            array(0),
-            array('1234abc')
-        );
+        return [
+            ['abc'],
+            [$this->getMockBuilder(CleanerTask::class)->disableOriginalConstructor()->getMock()],
+            [null],
+            [''],
+            [0],
+            ['1234abc']
+        ];
     }
 
     /**
@@ -90,12 +90,12 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateAdditionalFieldsLogsPeriodError($period)
     {
-        $submittedData = array(
+        $submittedData = [
             'RecyclerCleanerPeriod' => $period,
-            'RecyclerCleanerTCA' => array('pages')
-        );
+            'RecyclerCleanerTCA' => ['pages']
+        ];
 
-        $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock(array('addMessage'));
+        $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock(['addMessage']);
         $scheduleModuleControllerMock->expects($this->atLeastOnce())
             ->method('addMessage')
             ->with($this->equalTo('titleTest'), FlashMessage::ERROR);
@@ -108,12 +108,12 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateAdditionalFieldsDataProvider()
     {
-        return array(
-            array('abc'),
-            array($this->getMockBuilder(CleanerTask::class)->disableOriginalConstructor()->getMock()),
-            array(null),
-            array(123)
-        );
+        return [
+            ['abc'],
+            [$this->getMockBuilder(CleanerTask::class)->disableOriginalConstructor()->getMock()],
+            [null],
+            [123]
+        ];
     }
 
     /**
@@ -123,10 +123,10 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateAdditionalFieldsLogsTableError($table)
     {
-        $submittedData = array(
+        $submittedData = [
             'RecyclerCleanerPeriod' => 14,
             'RecyclerCleanerTCA' => $table
-        );
+        ];
 
         $this->subject->validateAdditionalFields($submittedData, $this->getScheduleModuleControllerMock(['addMessage']));
     }
@@ -136,13 +136,13 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateAdditionalFieldsIsTrueIfValid()
     {
-        $submittedData = array(
+        $submittedData = [
             'RecyclerCleanerPeriod' => 14,
-            'RecyclerCleanerTCA' => array('pages')
-        );
+            'RecyclerCleanerTCA' => ['pages']
+        ];
 
         $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
-        $GLOBALS['TCA']['pages'] = array('foo' => 'bar');
+        $GLOBALS['TCA']['pages'] = ['foo' => 'bar'];
         $this->assertTrue($this->subject->validateAdditionalFields($submittedData, $scheduleModuleControllerMock));
     }
 
@@ -151,16 +151,16 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function saveAdditionalFieldsSavesFields()
     {
-        $submittedData = array(
+        $submittedData = [
             'RecyclerCleanerPeriod' => 14,
-            'RecyclerCleanerTCA' => array('pages')
-        );
+            'RecyclerCleanerTCA' => ['pages']
+        ];
 
         $taskMock = $this->getMockBuilder(CleanerTask::class)->getMock();
 
         $taskMock->expects($this->once())
             ->method('setTcaTables')
-            ->with($this->equalTo(array('pages')));
+            ->with($this->equalTo(['pages']));
 
         $taskMock->expects($this->once())
             ->method('setPeriod')

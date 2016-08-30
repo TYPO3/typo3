@@ -41,7 +41,7 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(array('float', 'integer', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals(['float', 'integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
@@ -86,7 +86,7 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getConfigurationValue')
             ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::CONFIGURATION_DECIMAL_POINT)
             ->willReturn(',');
-        $this->assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', array(), $mockMappingConfiguration));
+        $this->assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
     }
 
     /**
@@ -126,6 +126,6 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
-        $this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+        $this->assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }
 }

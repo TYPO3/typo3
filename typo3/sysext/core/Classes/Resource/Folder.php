@@ -58,7 +58,7 @@ class Folder implements FolderInterface
      *
      * @var callable[]
      */
-    protected $fileAndFolderNameFilters = array();
+    protected $fileAndFolderNameFilters = [];
 
     /**
      * Modes for filter usage in getFiles()/getFolders()
@@ -220,7 +220,7 @@ class Folder implements FolderInterface
         // Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
         if ($filterMode === false) {
             $useFilters = false;
-            $backedUpFilters = array();
+            $backedUpFilters = [];
         } else {
             list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
         }
@@ -241,7 +241,7 @@ class Folder implements FolderInterface
      * @return int
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    public function getFileCount(array $filterMethods = array(), $recursive = false)
+    public function getFileCount(array $filterMethods = [], $recursive = false)
     {
         return $this->storage->countFilesInFolder($this, true, $recursive);
     }
@@ -470,7 +470,7 @@ class Folder implements FolderInterface
 
                 break;
         }
-        return array($backedUpFilters, $useFilters);
+        return [$backedUpFilters, $useFilters];
     }
 
     /**

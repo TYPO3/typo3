@@ -31,7 +31,7 @@ class CleanerTask extends AbstractTask
     /**
      * @var array The tables to clean
      */
-    protected $tcaTables = array();
+    protected $tcaTables = [];
 
     /**
      * The main method of the task. Iterates through
@@ -141,7 +141,7 @@ class CleanerTask extends AbstractTask
      *
      * @param array $tcaTables
      */
-    public function setTcaTables($tcaTables = array())
+    public function setTcaTables($tcaTables = [])
     {
         $this->tcaTables = $tcaTables;
     }
@@ -209,7 +209,7 @@ class CleanerTask extends AbstractTask
      */
     protected function getFileResourceFields($table)
     {
-        $result = array();
+        $result = [];
         if (isset($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldConfiguration) {
                 if ($fieldConfiguration['config']['type'] === 'group'

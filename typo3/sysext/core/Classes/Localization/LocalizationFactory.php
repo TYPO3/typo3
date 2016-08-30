@@ -106,7 +106,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
             $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey, $charset);
         } catch (Exception\FileNotFoundException $exception) {
             // Source localization file not found, set empty data as there could be an override
-            $this->store->setData($fileReference, $languageKey, array());
+            $this->store->setData($fileReference, $languageKey, []);
             $LOCAL_LANG = $this->store->getData($fileReference);
         }
 
@@ -138,7 +138,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function localizationOverride($fileReference, $languageKey, $charset, $errorMode, array &$LOCAL_LANG)
     {
-        $overrides = array();
+        $overrides = [];
         $fileReferenceWithoutExtension = $this->store->getFileReferenceWithoutExtension($fileReference);
         $locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
         foreach ($this->store->getSupportedExtensions() as $extension) {

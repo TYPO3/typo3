@@ -136,14 +136,14 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
      *
      * @var array
      */
-    protected $record = array();
+    protected $record = [];
 
     /**
      * Context Info
      *
      * @var array
      */
-    protected $contextInfo = array();
+    protected $contextInfo = [];
 
     /**
      * Indicator if the label is editable
@@ -577,7 +577,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
      */
     public function toArray($addChildNodes = true)
     {
-        $arrayRepresentation = array(
+        $arrayRepresentation = [
             'serializeClassName' => get_class($this),
             'id' => $this->getId(),
             'type' => $this->getType(),
@@ -598,7 +598,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
             't3ContextInfo' => $this->getContextInfo(),
             'editable' => $this->isLabelEditable(),
             'allowChildren' => $this->canHaveChildren()
-        );
+        ];
         // only set the leaf attribute if the node has children's,
         // otherwise you cannot add child's to real leaf nodes
         if (!$this->isLeafNode()) {

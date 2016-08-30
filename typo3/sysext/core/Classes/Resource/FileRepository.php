@@ -165,7 +165,7 @@ class FileRepository extends AbstractRepository
 
         $fileRecords = $this->getFileIndexRepository()->findByFolders($folders, false, $fileName);
 
-        $files = array();
+        $files = [];
         foreach ($fileRecords as $fileRecord) {
             try {
                 $files[] = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);

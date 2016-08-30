@@ -24,7 +24,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function containsMultipleTypesReturnsFalseOnEmptyArray()
     {
-        $this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array()));
+        $this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes([]));
     }
 
     /**
@@ -32,7 +32,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function containsMultipleTypesReturnsFalseOnArrayWithIntegers()
     {
-        $this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array(1, 2, 3)));
+        $this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes([1, 2, 3]));
     }
 
     /**
@@ -40,7 +40,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function containsMultipleTypesReturnsFalseOnArrayWithObjects()
     {
-        $this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array(new \stdClass(), new \stdClass(), new \stdClass())));
+        $this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes([new \stdClass(), new \stdClass(), new \stdClass()]));
     }
 
     /**
@@ -48,7 +48,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function containsMultipleTypesReturnsTrueOnMixedArray()
     {
-        $this->assertTrue(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array(1, 'string', 1.25, new \stdClass())));
+        $this->assertTrue(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes([1, 'string', 1.25, new \stdClass()]));
     }
 
     /**
@@ -56,8 +56,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getValueByPathReturnsTheValueOfANestedArrayByFollowingTheGivenSimplePath()
     {
-        $array = array('Foo' => 'the value');
-        $this->assertSame('the value', \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo')));
+        $array = ['Foo' => 'the value'];
+        $this->assertSame('the value', \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, ['Foo']));
     }
 
     /**
@@ -65,8 +65,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getValueByPathReturnsTheValueOfANestedArrayByFollowingTheGivenPath()
     {
-        $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-        $this->assertSame('the value', \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo', 'Bar', 'Baz', 2)));
+        $array = ['Foo' => ['Bar' => ['Baz' => [2 => 'the value']]]];
+        $this->assertSame('the value', \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, ['Foo', 'Bar', 'Baz', 2]));
     }
 
     /**
@@ -75,7 +75,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getValueByPathReturnsTheValueOfANestedArrayByFollowingTheGivenPathIfPathIsString()
     {
         $path = 'Foo.Bar.Baz.2';
-        $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
+        $array = ['Foo' => ['Bar' => ['Baz' => [2 => 'the value']]]];
         $expectedResult = 'the value';
         $actualResult = \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, $path);
         $this->assertSame($expectedResult, $actualResult);
@@ -88,7 +88,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1304950007);
-        $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
+        $array = ['Foo' => ['Bar' => ['Baz' => [2 => 'the value']]]];
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, null);
     }
 
@@ -97,8 +97,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getValueByPathReturnsNullIfTheSegementsOfThePathDontExist()
     {
-        $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-        $this->assertNull(\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo', 'Bar', 'Bax', 2)));
+        $array = ['Foo' => ['Bar' => ['Baz' => [2 => 'the value']]]];
+        $this->assertNull(\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, ['Foo', 'Bar', 'Bax', 2]));
     }
 
     /**
@@ -106,8 +106,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getValueByPathReturnsNullIfThePathHasMoreSegmentsThanTheGivenArray()
     {
-        $array = array('Foo' => array('Bar' => array('Baz' => 'the value')));
-        $this->assertNull(\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo', 'Bar', 'Baz', 'Bux')));
+        $array = ['Foo' => ['Bar' => ['Baz' => 'the value']]];
+        $this->assertNull(\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, ['Foo', 'Bar', 'Baz', 'Bux']));
     }
 
     /**
@@ -119,20 +119,20 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $object->a = 'v';
         $object->b = new \stdClass();
         $object->b->c = 'w';
-        $object->d = array('i' => 'foo', 'j' => 12, 'k' => true, 'l' => new \stdClass());
+        $object->d = ['i' => 'foo', 'j' => 12, 'k' => true, 'l' => new \stdClass()];
         $array = \TYPO3\CMS\Extbase\Utility\ArrayUtility::convertObjectToArray($object);
-        $expected = array(
+        $expected = [
             'a' => 'v',
-            'b' => array(
+            'b' => [
                 'c' => 'w'
-            ),
-            'd' => array(
+            ],
+            'd' => [
                 'i' => 'foo',
                 'j' => 12,
                 'k' => true,
-                'l' => array()
-            )
-        );
+                'l' => []
+            ]
+        ];
         $this->assertSame($expected, $array);
     }
 
@@ -141,9 +141,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setValueByPathSetsValueRecursivelyIfPathIsArray()
     {
-        $array = array();
-        $path = array('foo', 'bar', 'baz');
-        $expectedValue = array('foo' => array('bar' => array('baz' => 'The Value')));
+        $array = [];
+        $path = ['foo', 'bar', 'baz'];
+        $expectedValue = ['foo' => ['bar' => ['baz' => 'The Value']]];
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, $path, 'The Value');
         $this->assertSame($expectedValue, $actualValue);
     }
@@ -153,9 +153,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setValueByPathSetsValueRecursivelyIfPathIsString()
     {
-        $array = array();
+        $array = [];
         $path = 'foo.bar.baz';
-        $expectedValue = array('foo' => array('bar' => array('baz' => 'The Value')));
+        $expectedValue = ['foo' => ['bar' => ['baz' => 'The Value']]];
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, $path, 'The Value');
         $this->assertSame($expectedValue, $actualValue);
     }
@@ -165,9 +165,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setValueByPathRecursivelyMergesAnArray()
     {
-        $array = array('foo' => array('bar' => 'should be overriden'), 'bar' => 'Baz');
-        $path = array('foo', 'bar', 'baz');
-        $expectedValue = array('foo' => array('bar' => array('baz' => 'The Value')), 'bar' => 'Baz');
+        $array = ['foo' => ['bar' => 'should be overriden'], 'bar' => 'Baz'];
+        $path = ['foo', 'bar', 'baz'];
+        $expectedValue = ['foo' => ['bar' => ['baz' => 'The Value']], 'bar' => 'Baz'];
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, $path, 'The Value');
         $this->assertSame($expectedValue, $actualValue);
     }
@@ -179,7 +179,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1305111499);
-        $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
+        $array = ['Foo' => ['Bar' => ['Baz' => [2 => 'the value']]]];
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, null, 'Some Value');
     }
 
@@ -210,7 +210,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setValueByLeavesInputArrayUnchanged()
     {
-        $subject = ($subjectBackup = array('foo' => 'bar'));
+        $subject = ($subjectBackup = ['foo' => 'bar']);
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($subject, 'foo', 'baz');
         $this->assertSame($subject, $subjectBackup);
     }
@@ -220,8 +220,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unsetValueByPathDoesNotModifyAnArrayIfThePathWasNotFound()
     {
-        $array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
-        $path = array('foo', 'bar', 'nonExistingKey');
+        $array = ['foo' => ['bar' => ['baz' => 'Some Value']], 'bar' => 'Baz'];
+        $path = ['foo', 'bar', 'nonExistingKey'];
         $expectedValue = $array;
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
         $this->assertSame($expectedValue, $actualValue);
@@ -232,9 +232,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unsetValueByPathRemovesSpecifiedKey()
     {
-        $array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
-        $path = array('foo', 'bar', 'baz');
-        $expectedValue = array('foo' => array('bar' => array()), 'bar' => 'Baz');
+        $array = ['foo' => ['bar' => ['baz' => 'Some Value']], 'bar' => 'Baz'];
+        $path = ['foo', 'bar', 'baz'];
+        $expectedValue = ['foo' => ['bar' => []], 'bar' => 'Baz'];
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
         $this->assertSame($expectedValue, $actualValue);
     }
@@ -244,9 +244,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unsetValueByPathRemovesSpecifiedKeyIfPathIsString()
     {
-        $array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
+        $array = ['foo' => ['bar' => ['baz' => 'Some Value']], 'bar' => 'Baz'];
         $path = 'foo.bar.baz';
-        $expectedValue = array('foo' => array('bar' => array()), 'bar' => 'Baz');
+        $expectedValue = ['foo' => ['bar' => []], 'bar' => 'Baz'];
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
         $this->assertSame($expectedValue, $actualValue);
     }
@@ -256,9 +256,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unsetValueByPathRemovesSpecifiedBranch()
     {
-        $array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
-        $path = array('foo');
-        $expectedValue = array('bar' => 'Baz');
+        $array = ['foo' => ['bar' => ['baz' => 'Some Value']], 'bar' => 'Baz'];
+        $path = ['foo'];
+        $expectedValue = ['bar' => 'Baz'];
         $actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
         $this->assertSame($expectedValue, $actualValue);
     }
@@ -270,7 +270,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1305111513);
-        $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
+        $array = ['Foo' => ['Bar' => ['Baz' => [2 => 'the value']]]];
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, null);
     }
 
@@ -279,8 +279,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeEmptyElementsRecursivelyRemovesNullValues()
     {
-        $array = array('EmptyElement' => null, 'Foo' => array('Bar' => array('Baz' => array('NotNull' => '', 'AnotherEmptyElement' => null))));
-        $expectedResult = array('Foo' => array('Bar' => array('Baz' => array('NotNull' => ''))));
+        $array = ['EmptyElement' => null, 'Foo' => ['Bar' => ['Baz' => ['NotNull' => '', 'AnotherEmptyElement' => null]]]];
+        $expectedResult = ['Foo' => ['Bar' => ['Baz' => ['NotNull' => '']]]];
         $actualResult = \TYPO3\CMS\Extbase\Utility\ArrayUtility::removeEmptyElementsRecursively($array);
         $this->assertSame($expectedResult, $actualResult);
     }
@@ -290,106 +290,106 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeEmptyElementsRecursivelyRemovesEmptySubArrays()
     {
-        $array = array('EmptyElement' => array(), 'Foo' => array('Bar' => array('Baz' => array('AnotherEmptyElement' => null))), 'NotNull' => 123);
-        $expectedResult = array('NotNull' => 123);
+        $array = ['EmptyElement' => [], 'Foo' => ['Bar' => ['Baz' => ['AnotherEmptyElement' => null]]], 'NotNull' => 123];
+        $expectedResult = ['NotNull' => 123];
         $actualResult = \TYPO3\CMS\Extbase\Utility\ArrayUtility::removeEmptyElementsRecursively($array);
         $this->assertSame($expectedResult, $actualResult);
     }
 
     public function arrayMergeRecursiveOverruleData()
     {
-        return array(
-            'simple usage' => array(
-                'inputArray1' => array(
+        return [
+            'simple usage' => [
+                'inputArray1' => [
                     'k1' => 'v1',
                     'k2' => 'v2'
-                ),
-                'inputArray2' => array(
+                ],
+                'inputArray2' => [
                     'k2' => 'v2a',
                     'k3' => 'v3'
-                ),
+                ],
                 'dontAddNewKeys' => false,
                 // default
                 'emptyValuesOverride' => true,
                 // default
-                'expected' => array(
+                'expected' => [
                     'k1' => 'v1',
                     'k2' => 'v2a',
                     'k3' => 'v3'
-                )
-            ),
-            'simple usage with recursion' => array(
-                'inputArray1' => array(
+                ]
+            ],
+            'simple usage with recursion' => [
+                'inputArray1' => [
                     'k1' => 'v1',
-                    'k2' => array(
+                    'k2' => [
                         'k2.1' => 'v2.1',
                         'k2.2' => 'v2.2'
-                    )
-                ),
-                'inputArray2' => array(
-                    'k2' => array(
+                    ]
+                ],
+                'inputArray2' => [
+                    'k2' => [
                         'k2.2' => 'v2.2a',
                         'k2.3' => 'v2.3'
-                    ),
+                    ],
                     'k3' => 'v3'
-                ),
+                ],
                 'dontAddNewKeys' => false,
                 // default
                 'emptyValuesOverride' => true,
                 // default
-                'expected' => array(
+                'expected' => [
                     'k1' => 'v1',
-                    'k2' => array(
+                    'k2' => [
                         'k2.1' => 'v2.1',
                         'k2.2' => 'v2.2a',
                         'k2.3' => 'v2.3'
-                    ),
+                    ],
                     'k3' => 'v3'
-                )
-            ),
-            'simple type should override array (k2)' => array(
-                'inputArray1' => array(
+                ]
+            ],
+            'simple type should override array (k2)' => [
+                'inputArray1' => [
                     'k1' => 'v1',
-                    'k2' => array(
+                    'k2' => [
                         'k2.1' => 'v2.1'
-                    )
-                ),
-                'inputArray2' => array(
+                    ]
+                ],
+                'inputArray2' => [
                     'k2' => 'v2a',
                     'k3' => 'v3'
-                ),
+                ],
                 'dontAddNewKeys' => false,
                 // default
                 'emptyValuesOverride' => true,
                 // default
-                'expected' => array(
+                'expected' => [
                     'k1' => 'v1',
                     'k2' => 'v2a',
                     'k3' => 'v3'
-                )
-            ),
-            'null should override array (k2)' => array(
-                'inputArray1' => array(
+                ]
+            ],
+            'null should override array (k2)' => [
+                'inputArray1' => [
                     'k1' => 'v1',
-                    'k2' => array(
+                    'k2' => [
                         'k2.1' => 'v2.1'
-                    )
-                ),
-                'inputArray2' => array(
+                    ]
+                ],
+                'inputArray2' => [
                     'k2' => null,
                     'k3' => 'v3'
-                ),
+                ],
                 'dontAddNewKeys' => false,
                 // default
                 'emptyValuesOverride' => true,
                 // default
-                'expected' => array(
+                'expected' => [
                     'k1' => 'v1',
                     'k2' => null,
                     'k3' => 'v3'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -414,7 +414,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function integerExplodeReturnsArrayOfIntegers()
     {
         $inputString = '1,2,3,4,5,6';
-        $expected = array(1, 2, 3, 4, 5, 6);
+        $expected = [1, 2, 3, 4, 5, 6];
         $this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $inputString));
     }
 
@@ -424,7 +424,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function integerExplodeReturnsZeroForStringValues()
     {
         $inputString = '1,abc,3,,5';
-        $expected = array(1, 0, 3, 0, 5);
+        $expected = [1, 0, 3, 0, 5];
         $this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $inputString));
     }
 
@@ -435,44 +435,44 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sortArrayWithIntegerKeysDataProvider()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     '20' => 'test1',
                     '11' => 'test2',
                     '16' => 'test3',
-                ),
-                array(
+                ],
+                [
                     '11' => 'test2',
                     '16' => 'test3',
                     '20' => 'test1',
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     '20' => 'test1',
                     '16.5' => 'test2',
                     '16' => 'test3',
-                ),
-                array(
+                ],
+                [
                     '20' => 'test1',
                     '16.5' => 'test2',
                     '16' => 'test3',
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     '20' => 'test20',
                     'somestring' => 'teststring',
                     '16' => 'test16',
-                ),
-                array(
+                ],
+                [
                     '20' => 'test20',
                     'somestring' => 'teststring',
                     '16' => 'test16',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

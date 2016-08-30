@@ -211,7 +211,7 @@ abstract class AbstractController extends ActionController
      */
     protected function groupLogEntriesByPageAndDay(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $logEntries, $groupByPage = false)
     {
-        $targetStructure = array();
+        $targetStructure = [];
         /** @var $entry \TYPO3\CMS\Belog\Domain\Model\LogEntry */
         foreach ($logEntries as $entry) {
             // Create page split list or flat list
@@ -222,12 +222,12 @@ abstract class AbstractController extends ActionController
             }
             // Create array if it is not defined yet
             if (!is_array($targetStructure[$pid])) {
-                $targetStructure[$pid] = array();
+                $targetStructure[$pid] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
             $timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()));
             if (!is_array($targetStructure[$pid][$timestampDay])) {
-                $targetStructure[$pid][$timestampDay] = array();
+                $targetStructure[$pid][$timestampDay] = [];
             }
             // Add row
             $targetStructure[$pid][$timestampDay][] = $entry;
@@ -245,7 +245,7 @@ abstract class AbstractController extends ActionController
      */
     protected function createUserAndGroupListForSelectOptions()
     {
-        $userGroupArray = array();
+        $userGroupArray = [];
         // Two meta entries: 'all' and 'self'
         $userGroupArray[0] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('allUsers', 'Belog');
         $userGroupArray[-1] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('self', 'Belog');
@@ -270,9 +270,9 @@ abstract class AbstractController extends ActionController
     protected function createWorkspaceListForSelectOptions()
     {
         if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-            return array();
+            return [];
         }
-        $workspaceArray = array();
+        $workspaceArray = [];
         // Two meta entries: 'all' and 'live'
         $workspaceArray[-99] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('any', 'Belog');
         $workspaceArray[0] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', 'Belog');
@@ -310,14 +310,14 @@ abstract class AbstractController extends ActionController
      */
     protected function createPageDepthOptions()
     {
-        $options = array(
+        $options = [
             0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_0', 'lang'),
             1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_1', 'lang'),
             2 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_2', 'lang'),
             3 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_3', 'lang'),
             4 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_4', 'lang'),
             999 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi', 'lang')
-        );
+        ];
         return $options;
     }
 

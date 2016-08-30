@@ -58,7 +58,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
     {
         /** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
         $storages = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class)->findAll();
-        $options = array();
+        $options = [];
         foreach ($storages as $storage) {
             if ($task !== null && $task->storageUid === $storage->getUid()) {
                 $options[] = '<option value="' . $storage->getUid() . '" selected="selected">' . $storage->getName() . '</option>';
@@ -71,12 +71,12 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         $fieldId = 'scheduler_fileStorageIndexing_storage';
         $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
 
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $fieldConfiguration;
     }
 
@@ -93,12 +93,12 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         $fieldValue = $task !== null ? (int)$task->maxFileCount : 100;
         $fieldHtml = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
 
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.fileCount',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $fieldConfiguration;
     }
 
@@ -120,7 +120,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         } else {
             // Assemble the extractor bullet list first.
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.extractor';
-            $bullets = array();
+            $bullets = [];
             foreach ($extractors as $extractor) {
                 $bullets[] = sprintf(
                     '<li title="%s">%s</li>',
@@ -136,12 +136,12 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
             $content .= '<ul>' . implode(LF, $bullets) . '</ul>';
         }
 
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => $content,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => 'scheduler_fileStorageIndexing_registeredExtractors'
-        );
+        ];
         return $fieldConfiguration;
     }
 

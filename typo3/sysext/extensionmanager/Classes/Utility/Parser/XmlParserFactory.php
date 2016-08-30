@@ -25,7 +25,7 @@ class XmlParserFactory
      *
      * @var array
      */
-    protected static $instance = array();
+    protected static $instance = [];
 
     /**
      * Keeps array of all available parsers.
@@ -35,16 +35,16 @@ class XmlParserFactory
      *
      * @var array
      */
-    protected static $parsers = array(
-        'extension' => array(
+    protected static $parsers = [
+        'extension' => [
             \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlPushParser::class => 'ExtensionXmlPushParser.php',
             \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlPullParser::class => 'ExtensionXmlPullParser.php',
-        ),
-        'mirror' => array(
+        ],
+        'mirror' => [
             \TYPO3\CMS\Extensionmanager\Utility\Parser\MirrorXmlPushParser::class => 'MirrorXmlPushParser.php',
             \TYPO3\CMS\Extensionmanager\Utility\Parser\MirrorXmlPullParser::class=> 'MirrorXmlPullParser.php',
-        )
-    );
+        ]
+    ];
 
     /**
      * Obtains a xml parser instance.

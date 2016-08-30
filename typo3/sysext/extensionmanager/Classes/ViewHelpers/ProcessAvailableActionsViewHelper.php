@@ -73,10 +73,10 @@ class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
         $this->signalSlotDispatcher->dispatch(
             __CLASS__,
             static::SIGNAL_ProcessActions,
-            array(
+            [
                 $extension,
                 &$actions,
-            )
+            ]
         );
         return $actions;
     }

@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 System Services',
     'description' => 'The core/default services. This includes the default authentication services for now.',
     'category' => 'services',
@@ -11,11 +11,11 @@ $EM_CONF[$_EXTKEY] = array(
     'author_email' => 'r.fritz@colorcube.de',
     'author_company' => 'Colorcube',
     'version' => '8.3.0',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '8.3.0-8.3.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

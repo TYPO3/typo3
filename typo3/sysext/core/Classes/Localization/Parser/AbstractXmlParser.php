@@ -63,7 +63,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
                 throw new FileNotFoundException('Localization file does not exist', 1306332397);
             }
         }
-        $LOCAL_LANG = array();
+        $LOCAL_LANG = [];
         $LOCAL_LANG[$languageKey] = $this->parseXmlFile();
         return $LOCAL_LANG;
     }

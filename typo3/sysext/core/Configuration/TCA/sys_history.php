@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_history',
         'label' => 'tablename',
         'tstamp' => 'tstamp',
@@ -8,60 +8,60 @@ return array(
         'rootLevel' => true,
         'hideTable' => true,
         'default_sortby' => 'uid DESC',
-    ),
-    'columns' => array(
-        'sys_log_uid' => array(
+    ],
+    'columns' => [
+        'sys_log_uid' => [
             'label' => 'sys_log_uid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'history_data' => array(
+            ]
+        ],
+        'history_data' => [
             'label' => 'history_data',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'fieldlist' => array(
+            ]
+        ],
+        'fieldlist' => [
             'label' => 'fieldlist',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'recuid' => array(
+            ]
+        ],
+        'recuid' => [
             'label' => 'recuid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'tablename' => array(
+            ]
+        ],
+        'tablename' => [
             'label' => 'tablename',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'tstamp' => array(
+            ]
+        ],
+        'tstamp' => [
             'label' => 'tstamp',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'history_files' => array(
+            ]
+        ],
+        'history_files' => [
             'label' => 'history_files',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'snapshot' => array(
+            ]
+        ],
+        'snapshot' => [
             'label' => 'snapshot',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        )
-    ),
-    'types' => array(
-        '1' => array(
+            ]
+        ]
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'sys_log_uid, history_data, fieldlist, recuid, tablename, tstamp, history_files, snapshot'
-        )
-    )
-);
+        ]
+    ]
+];

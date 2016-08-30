@@ -33,7 +33,7 @@ class OptimizeDatabaseTableTask extends AbstractTask
      *
      * @var array Selected tables to optimize
      */
-    public $selectedTables = array();
+    public $selectedTables = [];
 
     /**
      * Execute table optimization, called by scheduler.

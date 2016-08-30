@@ -203,10 +203,10 @@ class DefaultDataProvider implements DataProviderInterface
      */
     protected function getPageTSconfigIds(array $pageTsConfig)
     {
-        $pageTsConfigIds = array(
+        $pageTsConfigIds = [
             'backend_layout' => 0,
             'backend_layout_next_level' => 0,
-        );
+        ];
 
         if (!empty($pageTsConfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID'])) {
             $pageTsConfigIds['backend_layout'] = (int)$pageTsConfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID'];

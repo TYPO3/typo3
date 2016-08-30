@@ -25,7 +25,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Empty string (the cObject only sets internal data!)
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
         if (!$width) {

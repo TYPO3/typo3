@@ -32,12 +32,12 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $selectedCombinedIdentifier = array();
+    protected $selectedCombinedIdentifier = [];
 
     /**
      * @var array
      */
-    protected $selectedBackendLayout = array();
+    protected $selectedBackendLayout = [];
 
     /**
      * Creates this object and initializes data providers.
@@ -124,11 +124,11 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
                     continue;
                 }
 
-                $parameters['items'][] = array(
+                $parameters['items'][] = [
                     $this->getLanguageService()->sL($backendLayout->getTitle()),
                     $combinedIdentifier,
                     $backendLayout->getIconPath(),
-                );
+                ];
             }
         }
     }
@@ -216,7 +216,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getIdentifiersToBeExcluded(array $pageTSconfig)
     {
-        $identifiersToBeExcluded = array();
+        $identifiersToBeExcluded = [];
 
         if (ArrayUtility::isValidPath($pageTSconfig, 'options./backendLayout./exclude')) {
             $identifiersToBeExcluded = GeneralUtility::trimExplode(
@@ -314,7 +314,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
                 } else {
                     $icon = '';
                 }
-                $items[] = array($languageService->sL($label), $value, $icon);
+                $items[] = [$languageService->sL($label), $value, $icon];
             }
         }
         return $items;
@@ -353,11 +353,11 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
             $conditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
             $parser->parse($parser->checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
 
-            $backendLayoutData = array();
+            $backendLayoutData = [];
             $backendLayoutData['config'] = $backendLayout->getConfiguration();
             $backendLayoutData['__config'] = $parser->setup;
-            $backendLayoutData['__items'] = array();
-            $backendLayoutData['__colPosList'] = array();
+            $backendLayoutData['__items'] = [];
+            $backendLayoutData['__colPosList'] = [];
 
             // create items and colPosList
             if (!empty($backendLayoutData['__config']['backend_layout.']['rows.'])) {

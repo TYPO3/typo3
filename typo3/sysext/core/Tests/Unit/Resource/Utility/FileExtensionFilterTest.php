@@ -22,7 +22,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter
@@ -52,10 +52,10 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
         $this->tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)
-            ->setMethods(array('deleteAction'))
+            ->setMethods(['deleteAction'])
             ->getMock();
         $this->fileFactoryMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\ResourceFactory::class)
-            ->setMethods(array('getFileReferenceObject'))
+            ->setMethods(['getFileReferenceObject'])
             ->getMock();
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $this->fileFactoryMock);
     }
@@ -74,11 +74,11 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidInlineChildrenFilterParametersDataProvider()
     {
-        return array(
-            array(null, null, null),
-            array('', '', array(0, '', null, false)),
-            array(null, null, array(0, '', null, false))
-        );
+        return [
+            [null, null, null],
+            ['', '', [0, '', null, false]],
+            [null, null, [0, '', null, false]]
+        ];
     }
 
     /**
@@ -90,11 +90,11 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function areInlineChildrenFilteredWithInvalidParameters($allowed, $disallowed, $values)
     {
-        $this->parameters = array(
+        $this->parameters = [
             'allowedFileExtensions' => $allowed,
             'disallowedFileExtensions' => $disallowed,
             'values' => $values
-        );
+        ];
         $this->tceMainMock->expects($this->never())->method('deleteAction');
         $this->fileFactoryMock->expects($this->never())->method('getFileReferenceObject');
         $this->filter->filterInlineChildren($this->parameters, $this->tceMainMock);
@@ -105,23 +105,23 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider()
     {
-        return array(
-            'Allowed extensions' => array(
+        return [
+            'Allowed extensions' => [
                 'ext1', 'EXT1', '', true
-            ),
-            'Allowed extensions, lower and upper case mix' => array(
+            ],
+            'Allowed extensions, lower and upper case mix' => [
                 'ext1', 'ext2, ExT1, Ext3', '', true
-            ),
-            'Disallowed extensions' => array(
+            ],
+            'Disallowed extensions' => [
                 'ext1', '', 'EXT1', false
-            ),
-            'Disallowed extensions, lower and upper case mix' => array(
+            ],
+            'Disallowed extensions, lower and upper case mix' => [
                 'ext1', '', 'ext2, ExT1, Ext3', false
-            ),
-            'Combine allowed / disallowed extensions' => array(
+            ],
+            'Combine allowed / disallowed extensions' => [
                 'ext1', 'EXT1', 'EXT1', false
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -135,7 +135,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extensionFilterIgnoresCaseInAllowedExtensionCheck($fileExtension, $allowedExtensions, $disallowedExtensions, $isAllowed)
     {
         /** @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter $filter */
-        $filter = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class, array('dummy'));
+        $filter = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class, ['dummy']);
         $filter->setAllowedFileExtensions($allowedExtensions);
         $filter->setDisallowedFileExtensions($disallowedExtensions);
         $result = $filter->_call('isAllowed', 'file.' . $fileExtension);

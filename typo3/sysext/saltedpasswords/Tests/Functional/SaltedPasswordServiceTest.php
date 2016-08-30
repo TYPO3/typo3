@@ -59,7 +59,7 @@ class SaltedPasswordServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function checkIfServiceUpdatesBackendUserPassword()
     {
-        $newPassword = array('password' => '008c5926ca861023c1d2a36653fd88e2');
+        $newPassword = ['password' => '008c5926ca861023c1d2a36653fd88e2'];
 
         $this->subject->pObj = new \stdClass();
         $this->subject->pObj->user_table = 'be_users';

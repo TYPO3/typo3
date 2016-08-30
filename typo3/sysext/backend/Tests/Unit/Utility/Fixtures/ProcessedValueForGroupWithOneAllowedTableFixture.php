@@ -27,10 +27,10 @@ class ProcessedValueForGroupWithOneAllowedTableFixture extends \TYPO3\CMS\Backen
         static $called = 0;
         ++$called;
         if ($called === 1) {
-            return array('title' => 'Page 1');
+            return ['title' => 'Page 1'];
         }
         if ($called === 2) {
-            return array('title' => 'Page 2');
+            return ['title' => 'Page 2'];
         }
     }
 

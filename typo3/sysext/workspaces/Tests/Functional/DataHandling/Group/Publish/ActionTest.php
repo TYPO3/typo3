@@ -121,10 +121,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
     {
         parent::createContentAndCreateElementRelation();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array($this->recordIds['newContentId']),
-                self::TABLE_Element => array($this->recordIds['newElementId']),
-            )
+            [
+                self::TABLE_Content => [$this->recordIds['newContentId']],
+                self::TABLE_Element => [$this->recordIds['newElementId']],
+            ]
         );
         $this->assertAssertionDataSet('createContentNCreateRelation');
 
@@ -175,10 +175,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
     {
         parent::modifyBothSidesOfRelation();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array(self::VALUE_ContentIdFirst),
-                self::TABLE_Element => array(self::VALUE_ElementIdFirst),
-            )
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdFirst],
+                self::TABLE_Element => [self::VALUE_ElementIdFirst],
+            ]
         );
         $this->assertAssertionDataSet('modifyBothSidesOfRelation');
 

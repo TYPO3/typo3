@@ -120,8 +120,8 @@ class ConfigurationView extends BaseScriptClass
         // If array, then it's a selector box menu
         // If empty string it's just a variable, that'll be saved.
         // Values NOT in this array will not be saved in the settings-array for the module.
-        $this->MOD_MENU = array(
-            'function' => array(
+        $this->MOD_MENU = [
+            'function' => [
                 0 => LocalizationUtility::translate('typo3ConfVars', 'lowlevel'),
                 1 => LocalizationUtility::translate('tca', 'lowlevel'),
                 2 => LocalizationUtility::translate('tcaDescr', 'lowlevel'),
@@ -133,10 +133,10 @@ class ConfigurationView extends BaseScriptClass
                 8 => LocalizationUtility::translate('beUser', 'lowlevel'),
                 9 => LocalizationUtility::translate('usersettings', 'lowlevel'),
                 10 => LocalizationUtility::translate('routes', 'lowlevel')
-            ),
+            ],
             'regexsearch' => '',
             'fixedLgd' => ''
-        );
+        ];
         // CLEANSE SETTINGS
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
     }
@@ -224,7 +224,7 @@ class ConfigurationView extends BaseScriptClass
                 $arrayBrowser->varName = 'BackendRoutes';
                 break;
             default:
-                $theVar = array();
+                $theVar = [];
         }
         // Update node:
         $update = 0;
@@ -245,7 +245,7 @@ class ConfigurationView extends BaseScriptClass
 
         // If any POST-vars are send, update the condition array
         if (GeneralUtility::_POST('search') && trim($search_field)) {
-            $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
+            $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, []);
         }
 
         // mask sensitive information

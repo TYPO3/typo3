@@ -30,7 +30,7 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Database\RelationHandler::class)
-            ->setMethods(array('purgeVersionedIds', 'purgeLiveVersionedIds'))
+            ->setMethods(['purgeVersionedIds', 'purgeLiveVersionedIds'])
             ->getMock();
     }
 
@@ -49,9 +49,9 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = false;
 
-        $this->subject->tableArray = array(
-            'sys_category' => array(1, 2, 3),
-        );
+        $this->subject->tableArray = [
+            'sys_category' => [1, 2, 3],
+        ];
 
         $this->assertFalse($this->subject->purgeItemArray(0));
     }
@@ -63,14 +63,14 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = true;
 
-        $this->subject->tableArray = array(
-            'sys_category' => array(1, 2, 3),
-        );
+        $this->subject->tableArray = [
+            'sys_category' => [1, 2, 3],
+        ];
 
         $this->subject->expects($this->once())
             ->method('purgeVersionedIds')
-            ->with('sys_category', array(1, 2, 3))
-            ->will($this->returnValue(array(2)));
+            ->with('sys_category', [1, 2, 3])
+            ->will($this->returnValue([2]));
 
         $this->assertTrue($this->subject->purgeItemArray(0));
     }

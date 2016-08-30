@@ -191,7 +191,7 @@ abstract class AbstractFile implements FileInterface
             throw new \RuntimeException('File has been deleted.', 1329821480);
         }
         if (empty($this->properties['size'])) {
-            $size = array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), array('size')));
+            $size = array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), ['size']));
         } else {
             $size = $this->properties['size'];
         }
@@ -271,7 +271,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getMimeType()
     {
-        return $this->properties['mime_type'] ?: array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), array('mimetype')));
+        return $this->properties['mime_type'] ?: array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), ['mimetype']));
     }
 
     /**

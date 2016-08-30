@@ -60,7 +60,7 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
         $this->registerArgument('label', 'string', 'label of the option tag', true);
         $this->registerArgument('controller', 'string', 'controller to be associated with this ActionMenuItem', true);
         $this->registerArgument('action', 'string', 'the action to be associated with this ActionMenuItem', true);
-        $this->registerArgument('arguments', 'array', 'additional controller arguments to be passed to the action when this ActionMenuItem is selected', false, array());
+        $this->registerArgument('arguments', 'array', 'additional controller arguments to be passed to the action when this ActionMenuItem is selected', false, []);
     }
 
     /**

@@ -76,21 +76,21 @@ abstract class AbstractRecordList
      *
      * @var array
      */
-    public $fieldArray = array();
+    public $fieldArray = [];
 
     /**
      * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
      *
      * @var array
      */
-    public $addElement_tdParams = array();
+    public $addElement_tdParams = [];
 
     /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
      *
      * @var array
      */
-    public $addElement_tdCssClass = array();
+    public $addElement_tdCssClass = [];
 
     /**
      * Not used in this class - but maybe extension classes...
@@ -152,14 +152,14 @@ abstract class AbstractRecordList
      *
      * @var array
      */
-    public $pageOverlays = array();
+    public $pageOverlays = [];
 
     /**
      * Contains sys language icons and titles
      *
      * @var array
      */
-    public $languageIconTitles = array();
+    public $languageIconTitles = [];
 
     /**
      * @var TranslationConfigurationProvider
@@ -267,7 +267,7 @@ abstract class AbstractRecordList
                 if ($lastKey) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey];
                     if ($this->oddColumnsCssClass && $ccount % 2 == 0) {
-                        $cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
+                        $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
                     }
                     $out .= '
 						<' . $colType . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
@@ -290,7 +290,7 @@ abstract class AbstractRecordList
         if ($lastKey) {
             $cssClass = $this->addElement_tdCssClass[$lastKey];
             if ($this->oddColumnsCssClass) {
-                $cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
+                $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
             }
             $out .= '
 				<' . $colType . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
@@ -323,21 +323,21 @@ abstract class AbstractRecordList
         if ($this->eCounter >= $this->firstElementNumber && $this->eCounter < $this->firstElementNumber + $this->iLimit) {
             if ($this->firstElementNumber && $this->eCounter == $this->firstElementNumber) {
                 // 	Reverse
-                $theData = array();
+                $theData = [];
                 $titleCol = $this->fieldArray[0];
                 $theData[$titleCol] = $this->fwd_rwd_HTML('fwd', $this->eCounter, $table);
                 $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
             }
-            return array(1, $code);
+            return [1, $code];
         } else {
             if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
                 // 	Forward
-                $theData = array();
+                $theData = [];
                 $titleCol = $this->fieldArray[0];
                 $theData[$titleCol] = $this->fwd_rwd_HTML('rwd', $this->eCounter, $table);
                 $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
             }
-            return array(0, $code);
+            return [0, $code];
         }
     }
 

@@ -27,7 +27,7 @@ class ArrayToValidationElementConverter extends AbstractTypeConverter
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('array');
+    protected $sourceTypes = ['array'];
 
     /**
      * @var string
@@ -61,7 +61,7 @@ class ArrayToValidationElementConverter extends AbstractTypeConverter
      * @return ValidationElement
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
         /** @var ValidationElement $validationElement */
         $validationElement = GeneralUtility::makeInstance(ValidationElement::class);
@@ -78,7 +78,7 @@ class ArrayToValidationElementConverter extends AbstractTypeConverter
              */
             foreach ($source as $propertyName => $value) {
                 if (is_array($value)) {
-                    $uploadedFiles = array();
+                    $uploadedFiles = [];
                     if (
                         isset($value['name'])
                         && isset($value['type'])

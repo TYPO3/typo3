@@ -81,10 +81,10 @@ class UserSettingsController
                 break;
             case 'clear':
                 $this->clear();
-                $content = array('result' => true);
+                $content = ['result' => true];
                 break;
             default:
-                $content = array('result' => false);
+                $content = ['result' => false];
         }
 
         return $content;

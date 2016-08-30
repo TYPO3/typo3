@@ -75,9 +75,9 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query = $this->createQuery();
         $query = $this->addDefaultConstraints($query);
         $query->setOrderings(
-            array(
+            [
                 'lastUpdated' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-            )
+            ]
         );
         return $query->execute();
     }
@@ -92,7 +92,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
         $query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->greaterThanOrEqual('reviewState', 0)));
-        $query->setOrderings(array('version' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING));
+        $query->setOrderings(['version' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
         return $query->execute();
     }
 
@@ -223,9 +223,9 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($constraint) {
             $query->matching($query->logicalAnd($constraint, $query->greaterThanOrEqual('reviewState', 0)));
         }
-        $query->setOrderings(array(
+        $query->setOrderings([
             'integerVersion' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ));
+        ]);
         return $query->execute();
     }
 
@@ -245,9 +245,9 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             )
         );
 
-        $query->setOrderings(array(
+        $query->setOrderings([
             'alldownloadcounter' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ));
+        ]);
 
         return $query->execute();
     }
@@ -268,9 +268,9 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             )
         );
 
-        $query->setOrderings(array(
+        $query->setOrderings([
             'alldownloadcounter' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ));
+        ]);
 
         return $query->execute();
     }
@@ -298,9 +298,9 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
         $query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->greaterThanOrEqual('reviewState', 0)));
-        $query->setOrderings(array(
+        $query->setOrderings([
             'integerVersion' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ));
+        ]);
         return $query->setLimit(1)->execute()->getFirst();
     }
 

@@ -56,7 +56,7 @@ class QueryView
     /**
      * @var array
      */
-    public $hookArray = array();
+    public $hookArray = [];
 
     /**
      * @var string
@@ -122,7 +122,7 @@ class QueryView
         // Load/Save
         $storeArray = $this->initStoreArray();
 
-        $opt = array();
+        $opt = [];
         foreach ($storeArray as $k => $v) {
             $opt[] = '<option value="' . $k . '">' . htmlspecialchars($v) . '</option>';
         }
@@ -166,9 +166,9 @@ class QueryView
      */
     public function initStoreArray()
     {
-        $storeArray = array(
+        $storeArray = [
             '0' => '[New]'
-        );
+        ];
         $savedStoreArray = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeArray']);
         if (is_array($savedStoreArray)) {
             $storeArray = array_merge($storeArray, $savedStoreArray);
@@ -205,7 +205,7 @@ class QueryView
     public function addToStoreQueryConfigs($storeQueryConfigs, $index)
     {
         $keyArr = explode(',', $this->storeList);
-        $storeQueryConfigs[$index] = array();
+        $storeQueryConfigs[$index] = [];
         foreach ($keyArr as $k) {
             $storeQueryConfigs[$index][$k] = $GLOBALS['SOBE']->MOD_SETTINGS[$k];
         }
@@ -222,7 +222,7 @@ class QueryView
     {
         if (ExtensionManagementUtility::isLoaded('sys_action')) {
             $keyArr = explode(',', $this->storeList);
-            $saveArr = array();
+            $saveArr = [];
             foreach ($keyArr as $k) {
                 $saveArr[$k] = $GLOBALS['SOBE']->MOD_SETTINGS[$k];
             }
@@ -290,7 +290,7 @@ class QueryView
         $storeControl = GeneralUtility::_GP('storeControl');
         $storeIndex = (int)$storeControl['STORE'];
         $saveStoreArray = 0;
-        $writeArray = array();
+        $writeArray = [];
         $msg = '';
         if (is_array($storeControl)) {
             if ($storeControl['LOAD']) {
@@ -305,7 +305,7 @@ class QueryView
                     $actionRecord = BackendUtility::getRecord('sys_action', abs($storeIndex));
                     if (is_array($actionRecord)) {
                         $dA = unserialize($actionRecord['t2_data']);
-                        $dbSC = array();
+                        $dbSC = [];
                         if (is_array($dA['qC'])) {
                             $dbSC[0] = $dA['qC'];
                         }
@@ -558,7 +558,7 @@ class QueryView
      * @param string $table
      * @return string A single line of CSV
      */
-    public function csvValues($row, $delim = ',', $quote = '"', $conf = array(), $table = '')
+    public function csvValues($row, $delim = ',', $quote = '"', $conf = [], $table = '')
     {
         $valueArray = $row;
         if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] && $table) {
@@ -728,7 +728,7 @@ class QueryView
                 ])) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
         }
-        $_params = array($table => $row);
+        $_params = [$table => $row];
         if (is_array($this->hookArray['additionalButtons'])) {
             foreach ($this->hookArray['additionalButtons'] as $_funcRef) {
                 $out .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -1151,7 +1151,7 @@ class QueryView
     public function resultRowTitles($row, $conf, $table)
     {
         $SET = $GLOBALS['SOBE']->MOD_SETTINGS;
-        $tableHeader = array();
+        $tableHeader = [];
         // Start header row
         $tableHeader[] = '<thead><tr>';
         // Iterate over given columns

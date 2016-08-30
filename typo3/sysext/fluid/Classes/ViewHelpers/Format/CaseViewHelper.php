@@ -123,10 +123,10 @@ class CaseViewHelper extends AbstractViewHelper
     public function render()
     {
         return static::renderStatic(
-            array(
+            [
                 'value' => $this->arguments['value'],
                 'mode' => $this->arguments['mode']
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

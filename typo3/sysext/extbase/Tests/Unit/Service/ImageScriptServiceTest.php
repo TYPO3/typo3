@@ -53,13 +53,13 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fileIsUnwrappedFromReferenceForProcessing()
     {
-        $reference = $this->getAccessibleMock(FileReference::class, array(), array(), '', false);
+        $reference = $this->getAccessibleMock(FileReference::class, [], [], '', false);
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('process')->willReturn($this->createMock(ProcessedFile::class));
         $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
         $reference->_set('file', $file);
 
-        $this->subject->applyProcessingInstructions($reference, array());
+        $this->subject->applyProcessingInstructions($reference, []);
     }
 
     /**
@@ -67,11 +67,11 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUriDataProvider()
     {
-        return array(
-            'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-            'scheme relative' => array('//foo.bar/img.jpg', '//foo.bar/img.jpg'),
-            'without scheme' => array('foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'),
-        );
+        return [
+            'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
+            'scheme relative' => ['//foo.bar/img.jpg', '//foo.bar/img.jpg'],
+            'without scheme' => ['foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'],
+        ];
     }
 
     /**
@@ -95,11 +95,11 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider()
     {
-        return array(
-            'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-            'scheme relative' => array('//foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-            'without scheme' => array('foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'),
-        );
+        return [
+            'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
+            'scheme relative' => ['//foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
+            'without scheme' => ['foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'],
+        ];
     }
 
     /**

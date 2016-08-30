@@ -31,7 +31,7 @@ class UsernameViewHelper extends AbstractViewHelper
      *
      * @var array
      */
-    protected static $usernameRuntimeCache = array();
+    protected static $usernameRuntimeCache = [];
 
     /**
      * Initializes the arguments

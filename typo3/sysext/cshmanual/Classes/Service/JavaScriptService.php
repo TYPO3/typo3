@@ -38,12 +38,12 @@ class JavaScriptService
         if ($beUser && !empty($beUser->user)) {
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', array(
-                'tx_cshmanual_help_cshmanualcshmanual' => array(
+            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', [
+                'tx_cshmanual_help_cshmanualcshmanual' => [
                     'controller' => 'Help',
                     'action' => 'detail'
-                )
-            )));
+                ]
+            ]));
         }
     }
 

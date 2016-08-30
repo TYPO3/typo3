@@ -64,7 +64,7 @@ class IntegerValidatorTest extends AbstractValidatorTest
     {
         setlocale(LC_NUMERIC, $locale);
 
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -97,7 +97,7 @@ class IntegerValidatorTest extends AbstractValidatorTest
     {
         setlocale(LC_NUMERIC, $locale);
 
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

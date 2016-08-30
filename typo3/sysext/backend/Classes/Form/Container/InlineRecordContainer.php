@@ -48,7 +48,7 @@ class InlineRecordContainer extends AbstractContainer
      *
      * @var array
      */
-    protected $inlineData = array();
+    protected $inlineData = [];
 
     /**
      * @var InlineStackProcessor
@@ -60,7 +60,7 @@ class InlineRecordContainer extends AbstractContainer
      *
      * @var array
      */
-    protected $hookObjects = array();
+    protected $hookObjects = [];
 
     /**
      * @var IconFactory
@@ -342,7 +342,7 @@ class InlineRecordContainer extends AbstractContainer
                     if (!empty($rec['crop'])) {
                         $imageSetup['crop'] = $rec['crop'];
                     }
-                    $imageSetup = array_merge(array('width' => '45', 'height' => '45c'), $imageSetup);
+                    $imageSetup = array_merge(['width' => '45', 'height' => '45c'], $imageSetup);
                     $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup);
                     // Only use a thumbnail if the processing process was successful by checking if image width is set
                     if ($processedImage->getProperty('width')) {
@@ -385,8 +385,8 @@ class InlineRecordContainer extends AbstractContainer
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUserAuthentication();
         // Initialize:
-        $cells = array();
-        $additionalCells = array();
+        $cells = [];
+        $additionalCells = [];
         $isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
         $isParentExisting = MathUtility::canBeInterpretedAsInteger($data['inlineParentUid']);
         $tcaTableCtrl = $GLOBALS['TCA'][$foreignTable]['ctrl'];
@@ -484,10 +484,10 @@ class InlineRecordContainer extends AbstractContainer
                     ->execute()
                     ->fetch();
                 if ($backendUser->check('tables_modify', 'sys_file_metadata')) {
-                    $url = BackendUtility::getModuleUrl('record_edit', array(
+                    $url = BackendUtility::getModuleUrl('record_edit', [
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                    ));
+                    ]);
                     $title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
                     $cells['editmetadata'] = '
 						<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
@@ -587,7 +587,7 @@ class InlineRecordContainer extends AbstractContainer
      */
     protected function initHookObjects()
     {
-        $this->hookObjects = array();
+        $this->hookObjects = [];
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'])) {
             $tceformsInlineHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
             if (is_array($tceformsInlineHook)) {

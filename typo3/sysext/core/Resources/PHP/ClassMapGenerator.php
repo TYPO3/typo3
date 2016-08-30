@@ -37,7 +37,7 @@ class ClassMapGenerator
      */
     public static function dump($dirs, $file)
     {
-        $maps = array();
+        $maps = [];
 
         foreach ($dirs as $dir) {
             $maps = array_merge($maps, static::createMap($dir));
@@ -61,7 +61,7 @@ class ClassMapGenerator
     {
         if (is_string($path)) {
             if (is_file($path)) {
-                $path = array(new \SplFileInfo($path));
+                $path = [new \SplFileInfo($path)];
             } elseif (is_dir($path)) {
                 $path = Finder::create()->files()->followLinks()->name('/\.(php|inc|hh)$/')->in($path);
             } else {
@@ -72,12 +72,12 @@ class ClassMapGenerator
             }
         }
 
-        $map = array();
+        $map = [];
 
         foreach ($path as $file) {
             $filePath = $file->getRealPath();
 
-            if (!in_array(pathinfo($filePath, PATHINFO_EXTENSION), array('php', 'inc', 'hh'))) {
+            if (!in_array(pathinfo($filePath, PATHINFO_EXTENSION), ['php', 'inc', 'hh'])) {
                 continue;
             }
 
@@ -137,7 +137,7 @@ class ClassMapGenerator
 
         // return early if there is no chance of matching anything in this file
         if (!preg_match('{\b(?:class|interface' . $extraTypes . ')\s}i', $contents)) {
-            return array();
+            return [];
         }
 
         // strip heredocs/nowdocs
@@ -148,7 +148,7 @@ class ClassMapGenerator
         if (substr($contents, 0, 2) !== '<?') {
             $contents = preg_replace('{^.+?<\?}s', '<?', $contents, 1, $replacements);
             if ($replacements === 0) {
-                return array();
+                return [];
             }
         }
         // strip non-php blocks in the file
@@ -166,17 +166,17 @@ class ClassMapGenerator
             )
         }ix', $contents, $matches);
 
-        $classes = array();
+        $classes = [];
         $namespace = '';
 
         for ($i = 0, $len = count($matches['type']); $i < $len; $i++) {
             if (!empty($matches['ns'][$i])) {
-                $namespace = str_replace(array(' ', "\t", "\r", "\n"), '', $matches['nsname'][$i]) . '\\';
+                $namespace = str_replace([' ', "\t", "\r", "\n"], '', $matches['nsname'][$i]) . '\\';
             } else {
                 $name = $matches['name'][$i];
                 if ($name[0] === ':') {
                     // This is an XHP class, https://github.com/facebook/xhp
-                    $name = 'xhp' . substr(str_replace(array('-', ':'), array('_', '__'), $name), 1);
+                    $name = 'xhp' . substr(str_replace(['-', ':'], ['_', '__'], $name), 1);
                 } elseif ($matches['type'][$i] === 'enum') {
                     // In Hack, something like:
                     //   enum Foo: int { HERP = '123'; }

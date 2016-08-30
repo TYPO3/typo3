@@ -57,7 +57,7 @@ interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterfa
      * @param array $configuration The new configuration
      * @return void
      */
-    public function setConfiguration(array $configuration = array());
+    public function setConfiguration(array $configuration = []);
 
     /**
      * Returns TRUE if a certain feature, identified by $featureName

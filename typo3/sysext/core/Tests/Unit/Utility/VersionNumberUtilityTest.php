@@ -29,14 +29,14 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validVersionNumberDataProvider()
     {
-        return array(
-            array('4003003', '4.3.3'),
-            array('4012003', '4.12.3'),
-            array('5000000', '5.0.0'),
-            array('5000001', '5.0.1'),
-            array('3008001', '3.8.1'),
-            array('1012', '0.1.12')
-        );
+        return [
+            ['4003003', '4.3.3'],
+            ['4012003', '4.12.3'],
+            ['5000000', '5.0.0'],
+            ['5000001', '5.0.1'],
+            ['3008001', '3.8.1'],
+            ['1012', '0.1.12']
+        ];
     }
 
     /**
@@ -47,17 +47,17 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidVersionNumberDataProvider()
     {
-        return array(
-            'boolean' => array(true),
-            'float' => array(5.4),
-            'array' => array(array()),
-            'string' => array('300ABCD'),
-            'object' => array(new \stdClass()),
-            'NULL' => array(null),
-            'function' => array(function () {
+        return [
+            'boolean' => [true],
+            'float' => [5.4],
+            'array' => [[]],
+            'string' => ['300ABCD'],
+            'object' => [new \stdClass()],
+            'NULL' => [null],
+            'function' => [function () {
 
-            })
-        );
+            }]
+        ];
     }
 
     /**
@@ -96,32 +96,32 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getNumericTypo3VersionNumberDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 '6.0-dev',
                 '6.0.0'
-            ),
-            array(
+            ],
+            [
                 '4.5-alpha',
                 '4.5.0'
-            ),
-            array(
+            ],
+            [
                 '4.5-beta',
                 '4.5.0'
-            ),
-            array(
+            ],
+            [
                 '4.5-RC',
                 '4.5.0'
-            ),
-            array(
+            ],
+            [
                 '6.0.1',
                 '6.0.1'
-            ),
-            array(
+            ],
+            [
                 '6.2.0beta5',
                 '6.2.0'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -146,29 +146,29 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider()
     {
-        return array(
-            'everything ok' => array(
+        return [
+            'everything ok' => [
                 '4.2.0-4.4.99',
-                array(
+                [
                     '4.2.0',
                     '4.4.99'
-                )
-            ),
-            'too high value' => array(
+                ]
+            ],
+            'too high value' => [
                 '4.2.0-4.4.2990',
-                array(
+                [
                     '4.2.0',
                     '4.4.999'
-                )
-            ),
-            'empty high value' => array(
+                ]
+            ],
+            'empty high value' => [
                 '4.2.0-0.0.0',
-                array(
+                [
                     '4.2.0',
                     ''
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

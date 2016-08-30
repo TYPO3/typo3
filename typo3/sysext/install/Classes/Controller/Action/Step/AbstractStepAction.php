@@ -67,7 +67,7 @@ abstract class AbstractStepAction extends \TYPO3\CMS\Install\Controller\Action\A
      */
     protected function assignSteps()
     {
-        $steps = array();
+        $steps = [];
         $currentStep = $this->getCurrentStep();
         $totalSteps = $this->getTotalSteps();
         for ($i = 1; $i <= $totalSteps; $i++) {
@@ -77,12 +77,12 @@ abstract class AbstractStepAction extends \TYPO3\CMS\Install\Controller\Action\A
             } elseif ($i < $currentStep) {
                 $class = 'prev';
             }
-            $steps[] = array(
+            $steps[] = [
                 'number' => $i,
                 'class' => $class,
                 'total' => $totalSteps,
                 'percent' => floor((100 * $i) / $totalSteps)
-            );
+            ];
         }
         $this->view->assign('steps', $steps);
         $this->view->assign('currentStep', $steps[$currentStep-1]);

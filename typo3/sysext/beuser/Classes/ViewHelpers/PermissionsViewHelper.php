@@ -36,7 +36,7 @@ class PermissionsViewHelper extends AbstractViewHelper
     /**
      * @var array Cached labels for a single permission mask like "Delete page"
      */
-    protected static $permissionLabels = array();
+    protected static $permissionLabels = [];
 
     /**
      * Initializes the arguments
@@ -70,7 +70,7 @@ class PermissionsViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $masks = array(1, 16, 2, 4, 8);
+        $masks = [1, 16, 2, 4, 8];
 
         if (empty(static::$permissionLabels)) {
             foreach ($masks as $mask) {

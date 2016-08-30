@@ -45,7 +45,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
         $pagesCount = count($pages);
         $description = '<p>The RTE "acronym" button is deprecated and replaced by the "abbreviation" button since TYPO3 CMS 7.0.</p>' . LF . '<p>Page TSconfig currently includes the string "acronym" on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
         if ($pagesCount) {
-            $pagesUids = array();
+            $pagesUids = [];
             foreach ($pages as $page) {
                 $pagesUids[] = $page['uid'];
             }

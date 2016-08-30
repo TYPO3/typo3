@@ -27,7 +27,7 @@ abstract class AbstractNode implements NodeInterface
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Set data to data array.
@@ -62,18 +62,18 @@ abstract class AbstractNode implements NodeInterface
      */
     protected function initializeResultArray()
     {
-        return array(
-            'additionalJavaScriptPost' => array(),
-            'additionalJavaScriptSubmit' => array(),
-            'additionalHiddenFields' => array(),
-            'additionalInlineLanguageLabelFiles' => array(),
-            'stylesheetFiles' => array(),
+        return [
+            'additionalJavaScriptPost' => [],
+            'additionalJavaScriptSubmit' => [],
+            'additionalHiddenFields' => [],
+            'additionalInlineLanguageLabelFiles' => [],
+            'stylesheetFiles' => [],
             // can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
-            'requireJsModules' => array(),
+            'requireJsModules' => [],
             'extJSCODE' => '',
-            'inlineData' => array(),
+            'inlineData' => [],
             'html' => '',
-        );
+        ];
     }
 
     /**
@@ -142,43 +142,43 @@ abstract class AbstractNode implements NodeInterface
      */
     protected function getValidationDataAsJsonString(array $config)
     {
-        $validationRules = array();
+        $validationRules = [];
         if (!empty($config['eval'])) {
             $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
             unset($config['eval']);
             foreach ($evalList as $evalType) {
-                $validationRules[] = array(
+                $validationRules[] = [
                     'type' => $evalType,
                     'config' => $config
-                );
+                ];
             }
         }
         if (!empty($config['range'])) {
-            $validationRules[] = array(
+            $validationRules[] = [
                 'type' => 'range',
                 'config' => $config['range']
-            );
+            ];
         }
         if (!empty($config['maxitems']) || !empty($config['minitems'])) {
             $minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
             $maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;
             $type = ($config['type']) ?: 'range';
             if ($config['type'] === 'select' && $config['renderType'] !== 'selectTree' && $maxItems <= 1 && $minItems > 0) {
-                $validationRules[] = array(
+                $validationRules[] = [
                     'type' => $type,
                     'minItems' => 1,
                     'maxItems' => 100000
-                );
+                ];
             } else {
-                $validationRules[] = array(
+                $validationRules[] = [
                     'type' => $type,
                     'minItems' => $minItems,
                     'maxItems' => $maxItems
-                );
+                ];
             }
         }
         if (!empty($config['required'])) {
-            $validationRules[] = array('type' => 'required');
+            $validationRules[] = ['type' => 'required'];
         }
         return json_encode($validationRules);
     }

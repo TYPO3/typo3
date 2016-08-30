@@ -34,7 +34,7 @@ class ClassReflection extends \ReflectionClass
      */
     public function getMethods($filter = null)
     {
-        $extendedMethods = array();
+        $extendedMethods = [];
         $methods = $filter === null ? parent::getMethods() : parent::getMethods($filter);
         foreach ($methods as $method) {
             $extendedMethods[] = new MethodReflection($this->getName(), $method->getName());
@@ -85,7 +85,7 @@ class ClassReflection extends \ReflectionClass
      */
     public function getProperties($filter = null)
     {
-        $extendedProperties = array();
+        $extendedProperties = [];
         $properties = $filter === null ? parent::getProperties() : parent::getProperties($filter);
         foreach ($properties as $property) {
             $extendedProperties[] = new PropertyReflection($this->getName(), $property->getName());
@@ -115,7 +115,7 @@ class ClassReflection extends \ReflectionClass
      */
     public function getInterfaces()
     {
-        $extendedInterfaces = array();
+        $extendedInterfaces = [];
         $interfaces = parent::getInterfaces();
         foreach ($interfaces as $interface) {
             $extendedInterfaces[] = new ClassReflection($interface->getName());

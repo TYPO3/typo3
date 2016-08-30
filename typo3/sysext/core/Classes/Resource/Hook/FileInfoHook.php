@@ -71,7 +71,7 @@ class FileInfoHook
         $lang = $GLOBALS['LANG'];
 
         if ($file !== null) {
-            $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
+            $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
             $previewImage = $processedFile->getPublicUrl(true);
             $content = '';
             if ($file->isMissing()) {

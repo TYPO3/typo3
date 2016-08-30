@@ -99,7 +99,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
             $moduleName = $currentRequest->getPluginName();
             if (count($getVars) === 0) {
                 $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-                $getVars = array('id', 'M', $modulePrefix);
+                $getVars = ['id', 'M', $modulePrefix];
             }
             $getList = implode(',', $getVars);
             $setList = implode(',', $setVars);

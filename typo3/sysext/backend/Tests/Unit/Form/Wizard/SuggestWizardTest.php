@@ -90,7 +90,7 @@ class SuggestWizardTest extends UnitTestCase
         ];
 
         /** @var SuggestWizard|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizard::class, array('getNestedDsFieldConfig'), array(), '', false);
+        $subject = $this->getAccessibleMock(SuggestWizard::class, ['getNestedDsFieldConfig'], [], '', false);
         $subject
             ->expects($this->once())
             ->method('getNestedDsFieldConfig')
@@ -140,7 +140,7 @@ class SuggestWizardTest extends UnitTestCase
         ];
 
         /** @var SuggestWizard|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizard::class, array('getNestedDsFieldConfig'), array(), '', false);
+        $subject = $this->getAccessibleMock(SuggestWizard::class, ['getNestedDsFieldConfig'], [], '', false);
         $subject
             ->expects($this->once())
             ->method('getNestedDsFieldConfig')
@@ -155,18 +155,18 @@ class SuggestWizardTest extends UnitTestCase
      */
     public function isTableHiddenIsProperlyRetrieved($expected, $array)
     {
-        $subject = $this->getAccessibleMock(SuggestWizard::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(SuggestWizard::class, ['dummy'], [], '', false);
         $this->assertEquals($expected, $subject->_call('isTableHidden', $array));
     }
 
     public function isTableHiddenIsProperlyRetrievedDataProvider()
     {
         return [
-          'notSetValue' => [false, array('ctrl' => array('hideTable' => null))],
-          'true' => [true, array('ctrl' => array('hideTable' => true))],
-          'false' => [false, array('ctrl' => array('hideTable' => false))],
-          'string with true' => [true, array('ctrl' => array('hideTable' => '1'))],
-          'string with false' => [false, array('ctrl' => array('hideTable' => '0'))],
+          'notSetValue' => [false, ['ctrl' => ['hideTable' => null]]],
+          'true' => [true, ['ctrl' => ['hideTable' => true]]],
+          'false' => [false, ['ctrl' => ['hideTable' => false]]],
+          'string with true' => [true, ['ctrl' => ['hideTable' => '1']]],
+          'string with false' => [false, ['ctrl' => ['hideTable' => '0']]],
         ];
     }
 }

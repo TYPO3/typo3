@@ -32,10 +32,10 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->taskExecutor = $this->getMockBuilder(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class)
-            ->setMethods(array('execute'))
+            ->setMethods(['execute'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->task = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Scheduler\Task::class, array('logException', '__wakeup'), array(), '', false);
+        $this->task = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Scheduler\Task::class, ['logException', '__wakeup'], [], '', false);
     }
 
     /**
@@ -83,8 +83,8 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setArgumentsSetsArgumentsCorrectly()
     {
-        $this->task->setArguments(array('Foo'));
-        $this->assertSame(array('Foo'), $this->task->_get('arguments'));
+        $this->task->setArguments(['Foo']);
+        $this->assertSame(['Foo'], $this->task->_get('arguments'));
     }
 
     /**
@@ -92,8 +92,8 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getArgumentsReturnsCorrectArguments()
     {
-        $this->task->_set('arguments', array('Foo'));
-        $this->assertSame(array('Foo'), $this->task->getArguments());
+        $this->task->_set('arguments', ['Foo']);
+        $this->assertSame(['Foo'], $this->task->getArguments());
     }
 
     /**
@@ -101,8 +101,8 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setDefaultsSetsDefaultsCorrectly()
     {
-        $this->task->setDefaults(array('Foo'));
-        $this->assertSame(array('Foo'), $this->task->_get('defaults'));
+        $this->task->setDefaults(['Foo']);
+        $this->assertSame(['Foo'], $this->task->_get('defaults'));
     }
 
     /**
@@ -110,8 +110,8 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDefaultsReturnsCorrectDefaults()
     {
-        $this->task->_set('defaults', array('Foo'));
-        $this->assertSame(array('Foo'), $this->task->getDefaults());
+        $this->task->_set('defaults', ['Foo']);
+        $this->assertSame(['Foo'], $this->task->getDefaults());
     }
 
     /**
@@ -119,7 +119,7 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addDefaultValueAddsDefaultToDefaults()
     {
-        $defaults = array('foo' => 'bar');
+        $defaults = ['foo' => 'bar'];
         $this->task->_set('defaults', $defaults);
 
         $defaults['baz'] = 'qux';
@@ -133,7 +133,7 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addDefaultValueConvertsBooleanValuesToInteger()
     {
-        $defaults = array('foo' => 'bar');
+        $defaults = ['foo' => 'bar'];
         $this->task->_set('defaults', $defaults);
 
         $defaults['baz'] = 1;
@@ -148,8 +148,8 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getAdditionalInformationRespectsArguments()
     {
         $this->task->_set('commandIdentifier', 'foo');
-        $this->task->_set('defaults', array('bar' => 'baz'));
-        $this->task->_set('arguments', array('qux' => 'quux'));
+        $this->task->_set('defaults', ['bar' => 'baz']);
+        $this->task->_set('arguments', ['qux' => 'quux']);
 
         $this->assertSame('foo qux=quux', $this->task->getAdditionalInformation());
     }

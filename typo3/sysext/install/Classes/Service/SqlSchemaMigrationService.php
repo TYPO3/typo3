@@ -33,7 +33,7 @@ class SqlSchemaMigrationService
     /**
      * @var array Caching output of $GLOBALS['TYPO3_DB']->admin_get_charsets()
      */
-    protected $character_sets = array();
+    protected $character_sets = [];
 
     /**
      * Set prefix of deleted tables
@@ -65,7 +65,7 @@ class SqlSchemaMigrationService
     {
         $lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $fileContent, true);
         $table = '';
-        $total = array();
+        $total = [];
         foreach ($lines as $value) {
             if ($value[0] === '#') {
                 // Ignore comments
@@ -82,7 +82,7 @@ class SqlSchemaMigrationService
                 }
             } else {
                 if ($value[0] === ')' && substr($value, -1) === ';') {
-                    $ttype = array();
+                    $ttype = [];
                     if (preg_match('/(ENGINE|TYPE)[ ]*=[ ]*([a-zA-Z]*)/', $value, $ttype)) {
                         $total[$table]['extra']['ENGINE'] = $ttype[2];
                     }
@@ -126,8 +126,8 @@ class SqlSchemaMigrationService
                         $total[$table]['fields'][$key] = $parts[1];
                     } else {
                         // Key definition
-                        $search = array('/UNIQUE (INDEX|KEY)/', '/FULLTEXT (INDEX|KEY)/', '/SPATIAL (INDEX|KEY)/', '/INDEX/');
-                        $replace = array('UNIQUE', 'FULLTEXT', 'SPATIAL', 'KEY');
+                        $search = ['/UNIQUE (INDEX|KEY)/', '/FULLTEXT (INDEX|KEY)/', '/SPATIAL (INDEX|KEY)/', '/INDEX/'];
+                        $replace = ['UNIQUE', 'FULLTEXT', 'SPATIAL', 'KEY'];
                         $lineV = preg_replace($search, $replace, $lineV);
                         if (preg_match('/PRIMARY|UNIQUE|FULLTEXT|SPATIAL/', $parts[0])) {
                             $parts[1] = preg_replace('/^(KEY|INDEX) /', '', $parts[1]);
@@ -162,7 +162,7 @@ class SqlSchemaMigrationService
                 $this->character_sets = $databaseConnection->admin_get_charsets();
             } else {
                 // Add empty element to avoid that the check will be repeated
-                $this->character_sets[$charset] = array();
+                $this->character_sets[$charset] = [];
             }
         }
         $collation = '';
@@ -179,9 +179,9 @@ class SqlSchemaMigrationService
      */
     public function getFieldDefinitions_database()
     {
-        $total = array();
-        $tempKeys = array();
-        $tempKeysPrefix = array();
+        $total = [];
+        $tempKeys = [];
+        $tempKeysPrefix = [];
         $databaseConnection = $this->getDatabaseConnection();
         $databaseConnection->connectDB();
         echo $databaseConnection->sql_error();
@@ -219,10 +219,10 @@ class SqlSchemaMigrationService
             }
             // Table status (storage engine, collaction, etc.)
             if (is_array($tableStatus)) {
-                $tableExtraFields = array(
+                $tableExtraFields = [
                     'Engine' => 'ENGINE',
                     'Collation' => 'COLLATE'
-                );
+                ];
                 foreach ($tableExtraFields as $mysqlKey => $internalKey) {
                     if (isset($tableStatus[$mysqlKey])) {
                         $total[$tableName]['extra'][$internalKey] = $tableStatus[$mysqlKey];
@@ -254,8 +254,8 @@ class SqlSchemaMigrationService
      */
     public function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList = '', $ignoreNotNullWhenComparing = false)
     {
-        $extraArr = array();
-        $diffArr = array();
+        $extraArr = [];
+        $diffArr = [];
         if (is_array($FDsrc)) {
             foreach ($FDsrc as $table => $info) {
                 if ($onlyTableList === '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($onlyTableList, $table)) {
@@ -295,8 +295,8 @@ class SqlSchemaMigrationService
                                         if ($this->isDbalEnabled()) {
                                             // Ignore nonstandard MySQL numeric field attributes UNSIGNED and ZEROFILL
                                             if (preg_match('/^(TINYINT|SMALLINT|MEDIUMINT|INT|INTEGER|BIGINT|REAL|DOUBLE|FLOAT|DECIMAL|NUMERIC)\([^\)]+\)\s+(UNSIGNED|ZEROFILL)/i', $fieldC)) {
-                                                $fieldC = str_ireplace(array(' UNSIGNED', ' ZEROFILL'), '', $fieldC);
-                                                $FDcomp[$table][$theKey][$fieldN] = str_ireplace(array(' UNSIGNED', ' ZEROFILL'), '', $FDcomp[$table][$theKey][$fieldN]);
+                                                $fieldC = str_ireplace([' UNSIGNED', ' ZEROFILL'], '', $fieldC);
+                                                $FDcomp[$table][$theKey][$fieldN] = str_ireplace([' UNSIGNED', ' ZEROFILL'], '', $FDcomp[$table][$theKey][$fieldN]);
                                             }
 
                                             // Replace field and index definitions with functionally equivalent statements
@@ -327,11 +327,11 @@ class SqlSchemaMigrationService
                 }
             }
         }
-        $output = array(
+        $output = [
             'extra' => $extraArr,
             'diff' => $diffArr,
             'diff_currentValues' => $diffArr_cur
-        );
+        ];
         return $output;
     }
 
@@ -344,7 +344,7 @@ class SqlSchemaMigrationService
      */
     public function getUpdateSuggestions($diffArr, $keyList = 'extra,diff')
     {
-        $statements = array();
+        $statements = [];
         $deletedPrefixKey = $this->deletedPrefixKey;
         $deletedPrefixLength = strlen($deletedPrefixKey);
         $remove = 0;
@@ -356,7 +356,7 @@ class SqlSchemaMigrationService
         foreach ($keyList as $theKey) {
             if (is_array($diffArr[$theKey])) {
                 foreach ($diffArr[$theKey] as $table => $info) {
-                    $whole_table = array();
+                    $whole_table = [];
                     if (isset($info['keys']) && is_array($info['keys'])) {
                         foreach ($info['keys'] as $fN => $fV) {
                             if (!$info['whole_table'] && $theKey === 'extra' && $remove) {
@@ -428,8 +428,8 @@ class SqlSchemaMigrationService
                         }
                     }
                     if (is_array($info['extra'])) {
-                        $extras = array();
-                        $extras_currentValue = array();
+                        $extras = [];
+                        $extras_currentValue = [];
                         $clear_table = false;
                         foreach ($info['extra'] as $fN => $fV) {
                             // Only consider statements which are missing in the database but don't remove existing properties
@@ -508,7 +508,7 @@ class SqlSchemaMigrationService
      */
     public function assembleFieldDefinition($row)
     {
-        $field = array($row['Type']);
+        $field = [$row['Type']];
         if ($row['Null'] == 'NO') {
             $field[] = 'NOT NULL';
         }
@@ -543,7 +543,7 @@ class SqlSchemaMigrationService
     {
         $sqlcodeArr = explode(LF, $sqlcode);
         // Based on the assumption that the sql-dump has
-        $statementArray = array();
+        $statementArray = [];
         $statementArrayPointer = 0;
         foreach ($sqlcodeArr as $line => $lineContent) {
             $lineContent = trim($lineContent);
@@ -580,10 +580,10 @@ class SqlSchemaMigrationService
      */
     public function getCreateTables($statements, $insertCountFlag = false)
     {
-        $crTables = array();
-        $insertCount = array();
+        $crTables = [];
+        $insertCount = [];
         foreach ($statements as $line => $lineContent) {
-            $reg = array();
+            $reg = [];
             if (preg_match('/^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i', substr($lineContent, 0, 100), $reg)) {
                 $table = trim($reg[1]);
                 if ($table) {
@@ -605,7 +605,7 @@ class SqlSchemaMigrationService
                 $insertCount[$nTable]++;
             }
         }
-        return array($crTables, $insertCount);
+        return [$crTables, $insertCount];
     }
 
     /**
@@ -617,9 +617,9 @@ class SqlSchemaMigrationService
      */
     public function getTableInsertStatements($statements, $table)
     {
-        $outStatements = array();
+        $outStatements = [];
         foreach ($statements as $line => $lineContent) {
-            $reg = array();
+            $reg = [];
             if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i', substr($lineContent, 0, 100), $reg)) {
                 $nTable = trim($reg[1]);
                 if ($nTable && $table === $nTable) {
@@ -639,7 +639,7 @@ class SqlSchemaMigrationService
      */
     public function performUpdateQueries($arr, $keyArr)
     {
-        $result = array();
+        $result = [];
         if (is_array($arr)) {
             $databaseConnection = $this->getDatabaseConnection();
             foreach ($arr as $key => $string) {

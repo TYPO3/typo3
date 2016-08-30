@@ -39,10 +39,10 @@ abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+    ];
 
     /**
      * This validator always needs to be executed even if the given value is empty.

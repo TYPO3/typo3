@@ -36,44 +36,44 @@ class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function encodeEncodesCorrectlyDataProvider()
     {
-        return array(
-            'Immune characters are returned as is' => array(
+        return [
+            'Immune characters are returned as is' => [
                 '._,',
                 '._,'
-            ),
-            'Alphanumerical characters are returned as is' => array(
+            ],
+            'Alphanumerical characters are returned as is' => [
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-            ),
-            'Angel brackets and ampersand are encoded' => array(
+            ],
+            'Angel brackets and ampersand are encoded' => [
                 '<>&',
                 '\\x3C\\x3E\\x26'
-            ),
-            'Quotes and slashes are encoded' => array(
+            ],
+            'Quotes and slashes are encoded' => [
                 '"\'\\/',
                 '\\x22\\x27\\x5C\\x2F'
-            ),
-            'Empty string stays empty' => array(
+            ],
+            'Empty string stays empty' => [
                 '',
                 ''
-            ),
-            'Exclamation mark and space are properly encoded' => array(
+            ],
+            'Exclamation mark and space are properly encoded' => [
                 'Hello World!',
                 'Hello\\x20World\\x21'
-            ),
-            'Whitespaces are properly encoded' => array(
+            ],
+            'Whitespaces are properly encoded' => [
                 TAB . LF . CR . ' ',
                 '\\x09\\x0A\\x0D\\x20'
-            ),
-            'Null byte is properly encoded' => array(
+            ],
+            'Null byte is properly encoded' => [
                 chr(0),
                 '\\x00'
-            ),
-            'Umlauts are properly encoded' => array(
+            ],
+            'Umlauts are properly encoded' => [
                 'ÜüÖöÄä',
                 '\\xDC\\xFC\\xD6\\xF6\\xC4\\xE4'
-            )
-        );
+            ]
+        ];
     }
 
     /**

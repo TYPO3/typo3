@@ -53,13 +53,13 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validSourceTypes()
     {
-        return array(
-            array('someString', 'string'),
-            array(42, 'integer'),
-            array(3.5, 'float'),
-            array(true, 'boolean'),
-            array(array(), 'array')
-        );
+        return [
+            ['someString', 'string'],
+            [42, 'integer'],
+            [3.5, 'float'],
+            [true, 'boolean'],
+            [[], 'array']
+        ];
     }
 
     /**
@@ -71,7 +71,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function sourceTypeCanBeCorrectlyDetermined($source, $sourceType)
     {
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->assertEquals($sourceType, $propertyMapper->_call('determineSourceType', $source));
     }
 
@@ -80,11 +80,11 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidSourceTypes()
     {
-        return array(
-            array(null),
-            array(new \stdClass()),
-            array(new \ArrayObject())
-        );
+        return [
+            [null],
+            [new \stdClass()],
+            [new \ArrayObject()]
+        ];
     }
 
     /**
@@ -97,7 +97,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(InvalidSourceException::class);
         $this->expectExceptionCode(1297773150);
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $propertyMapper->_call('determineSourceType', $source);
     }
 
@@ -108,7 +108,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param string $typeOfSubObject
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockTypeConverter($name = '', $canConvertFrom = true, $properties = array(), $typeOfSubObject = '')
+    protected function getMockTypeConverter($name = '', $canConvertFrom = true, $properties = [], $typeOfSubObject = '')
     {
         $mockTypeConverter = $this->createMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
         $mockTypeConverter->_name = $name;
@@ -127,7 +127,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockTypeConverter = $this->getMockTypeConverter();
         $this->mockConfiguration->expects($this->any())->method('getTypeConverter')->will($this->returnValue($mockTypeConverter));
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->assertSame($mockTypeConverter, $propertyMapper->_call('findTypeConverter', 'someSource', 'someTargetType', $this->mockConfiguration));
     }
 
@@ -137,40 +137,40 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function dataProviderForFindTypeConverter()
     {
-        return array(
-            array('someStringSource', 'string', array(
-                'string' => array(
-                    'string' => array(
+        return [
+            ['someStringSource', 'string', [
+                'string' => [
+                    'string' => [
                         10 => $this->getMockTypeConverter('string2string,prio10'),
                         1 => $this->getMockTypeConverter('string2string,prio1'),
-                    )
-                )), 'string2string,prio10'
-            ),
-            array(array('some' => 'array'), 'string', array(
-                'array' => array(
-                    'string' => array(
+                    ]
+                ]], 'string2string,prio10'
+            ],
+            [['some' => 'array'], 'string', [
+                'array' => [
+                    'string' => [
                         10 => $this->getMockTypeConverter('array2string,prio10'),
                         1 => $this->getMockTypeConverter('array2string,prio1'),
-                    )
-                )), 'array2string,prio10'
-            ),
-            array('someStringSource', 'bool', array(
-                'string' => array(
-                    'boolean' => array(
+                    ]
+                ]], 'array2string,prio10'
+            ],
+            ['someStringSource', 'bool', [
+                'string' => [
+                    'boolean' => [
                         10 => $this->getMockTypeConverter('string2boolean,prio10'),
                         1 => $this->getMockTypeConverter('string2boolean,prio1'),
-                    )
-                )), 'string2boolean,prio10'
-            ),
-            array('someStringSource', 'int', array(
-                'string' => array(
-                    'integer' => array(
+                    ]
+                ]], 'string2boolean,prio10'
+            ],
+            ['someStringSource', 'int', [
+                'string' => [
+                    'integer' => [
                         10 => $this->getMockTypeConverter('string2integer,prio10'),
                         1 => $this->getMockTypeConverter('string2integer,prio1'),
-                    ),
-                )), 'string2integer,prio10'
-            )
-        );
+                    ],
+                ]], 'string2integer,prio10'
+            ]
+        ];
     }
 
     /**
@@ -183,7 +183,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter)
     {
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $propertyMapper->_set('typeConverters', $typeConverters);
         $actualTypeConverter = $propertyMapper->_call('findTypeConverter', $source, $targetType, $this->mockConfiguration);
         $this->assertSame($expectedTypeConverter, $actualTypeConverter->_name);
@@ -194,7 +194,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function dataProviderForObjectTypeConverters()
     {
-        $data = array();
+        $data = [];
 
         $className2 = DataProviderTwo::class;
         $className3 = DataProviderThree::class;
@@ -204,106 +204,106 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $interfaceName3 = DataProviderThreeInterface::class;
 
         // The most specific converter should win
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Class3Converter',
-            'typeConverters' => array(
-                $className2 => array(0 => $this->getMockTypeConverter('Class2Converter')),
-                $className3 => array(0 => $this->getMockTypeConverter('Class3Converter')),
+            'typeConverters' => [
+                $className2 => [0 => $this->getMockTypeConverter('Class2Converter')],
+                $className3 => [0 => $this->getMockTypeConverter('Class3Converter')],
 
-                $interfaceName1 => array(0 => $this->getMockTypeConverter('Interface1Converter')),
-                $interfaceName2 => array(0 => $this->getMockTypeConverter('Interface2Converter')),
-                $interfaceName3 => array(0 => $this->getMockTypeConverter('Interface3Converter')),
-            )
-        );
+                $interfaceName1 => [0 => $this->getMockTypeConverter('Interface1Converter')],
+                $interfaceName2 => [0 => $this->getMockTypeConverter('Interface2Converter')],
+                $interfaceName3 => [0 => $this->getMockTypeConverter('Interface3Converter')],
+            ]
+        ];
 
         // In case the most specific converter does not want to handle this conversion, the second one is taken.
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Class2Converter',
-            'typeConverters' => array(
-                $className2 => array(0 => $this->getMockTypeConverter('Class2Converter')),
-                $className3 => array(0 => $this->getMockTypeConverter('Class3Converter', false)),
+            'typeConverters' => [
+                $className2 => [0 => $this->getMockTypeConverter('Class2Converter')],
+                $className3 => [0 => $this->getMockTypeConverter('Class3Converter', false)],
 
-                $interfaceName1 => array(0 => $this->getMockTypeConverter('Interface1Converter')),
-                $interfaceName2 => array(0 => $this->getMockTypeConverter('Interface2Converter')),
-                $interfaceName3 => array(0 => $this->getMockTypeConverter('Interface3Converter')),
-            )
-        );
+                $interfaceName1 => [0 => $this->getMockTypeConverter('Interface1Converter')],
+                $interfaceName2 => [0 => $this->getMockTypeConverter('Interface2Converter')],
+                $interfaceName3 => [0 => $this->getMockTypeConverter('Interface3Converter')],
+            ]
+        ];
 
         // In case there is no most-specific-converter, we climb ub the type hierarchy
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Class2Converter-HighPriority',
-            'typeConverters' => array(
-                $className2 => array(0 => $this->getMockTypeConverter('Class2Converter'), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority'))
-            )
-        );
+            'typeConverters' => [
+                $className2 => [0 => $this->getMockTypeConverter('Class2Converter'), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority')]
+            ]
+        ];
 
         // If no parent class converter wants to handle it, we ask for all interface converters.
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Interface1Converter',
-            'typeConverters' => array(
-                $className2 => array(0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)),
+            'typeConverters' => [
+                $className2 => [0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)],
 
-                $interfaceName1 => array(4 => $this->getMockTypeConverter('Interface1Converter')),
-                $interfaceName2 => array(1 => $this->getMockTypeConverter('Interface2Converter')),
-                $interfaceName3 => array(2 => $this->getMockTypeConverter('Interface3Converter')),
-            )
-        );
+                $interfaceName1 => [4 => $this->getMockTypeConverter('Interface1Converter')],
+                $interfaceName2 => [1 => $this->getMockTypeConverter('Interface2Converter')],
+                $interfaceName3 => [2 => $this->getMockTypeConverter('Interface3Converter')],
+            ]
+        ];
 
         // If two interface converters have the same priority, an exception is thrown.
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Interface1Converter',
-            'typeConverters' => array(
-                $className2 => array(0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)),
+            'typeConverters' => [
+                $className2 => [0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)],
 
-                $interfaceName1 => array(4 => $this->getMockTypeConverter('Interface1Converter')),
-                $interfaceName2 => array(2 => $this->getMockTypeConverter('Interface2Converter')),
-                $interfaceName3 => array(2 => $this->getMockTypeConverter('Interface3Converter')),
-            ),
+                $interfaceName1 => [4 => $this->getMockTypeConverter('Interface1Converter')],
+                $interfaceName2 => [2 => $this->getMockTypeConverter('Interface2Converter')],
+                $interfaceName3 => [2 => $this->getMockTypeConverter('Interface3Converter')],
+            ],
             'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException::class
-        );
+        ];
 
         // If no interface converter wants to handle it, a converter for "object" is looked up.
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'GenericObjectConverter-HighPriority',
-            'typeConverters' => array(
-                $className2 => array(0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)),
+            'typeConverters' => [
+                $className2 => [0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)],
 
-                $interfaceName1 => array(4 => $this->getMockTypeConverter('Interface1Converter', false)),
-                $interfaceName2 => array(3 => $this->getMockTypeConverter('Interface2Converter', false)),
-                $interfaceName3 => array(2 => $this->getMockTypeConverter('Interface3Converter', false)),
-                'object' => array(1 => $this->getMockTypeConverter('GenericObjectConverter'), 10 => $this->getMockTypeConverter('GenericObjectConverter-HighPriority'))
-            ),
-        );
+                $interfaceName1 => [4 => $this->getMockTypeConverter('Interface1Converter', false)],
+                $interfaceName2 => [3 => $this->getMockTypeConverter('Interface2Converter', false)],
+                $interfaceName3 => [2 => $this->getMockTypeConverter('Interface3Converter', false)],
+                'object' => [1 => $this->getMockTypeConverter('GenericObjectConverter'), 10 => $this->getMockTypeConverter('GenericObjectConverter-HighPriority')]
+            ],
+        ];
 
         // If the target is no valid class name and no simple type, an exception is thrown
-        $data[] = array(
+        $data[] = [
             'target' => 'SomeNotExistingClassName',
             'expectedConverter' => 'GenericObjectConverter-HighPriority',
-            'typeConverters' => array(),
+            'typeConverters' => [],
             'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException::class
-        );
+        ];
 
         // if the type converter is not found, we expect an exception
-        $data[] = array(
+        $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Class3Converter',
-            'typeConverters' => array(),
+            'typeConverters' => [],
             'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException::class
-        );
+        ];
 
         // If The target type is no string, we expect an exception.
-        $data[] = array(
+        $data[] = [
             'target' => new \stdClass(),
             'expectedConverter' => '',
-            'typeConverters' => array(),
+            'typeConverters' => [],
             'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException::class
-        );
+        ];
         return $data;
     }
 
@@ -319,8 +319,8 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = false)
     {
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
-        $propertyMapper->_set('typeConverters', array('string' => $typeConverters));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
+        $propertyMapper->_set('typeConverters', ['string' => $typeConverters]);
         try {
             $actualTypeConverter = $propertyMapper->_call('findTypeConverter', 'someSourceString', $targetClass, $this->mockConfiguration);
             if ($shouldFailWithException) {
@@ -340,17 +340,17 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertShouldAskConfigurationBuilderForDefaultConfiguration()
     {
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->inject($propertyMapper, 'configurationBuilder', $this->mockConfigurationBuilder);
 
         $this->mockConfigurationBuilder->expects($this->once())->method('build')->will($this->returnValue($this->mockConfiguration));
 
         $converter = $this->getMockTypeConverter('string2string');
-        $typeConverters = array(
-            'string' => array(
-                'string' => array(10 => $converter)
-            )
-        );
+        $typeConverters = [
+            'string' => [
+                'string' => [10 => $converter]
+            ]
+        ];
 
         $propertyMapper->_set('typeConverters', $typeConverters);
         $this->assertEquals('string2string', $propertyMapper->convert('source', 'string'));
@@ -362,7 +362,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function findFirstEligibleTypeConverterInObjectHierarchyShouldReturnNullIfSourceTypeIsUnknown()
     {
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', \TYPO3\CMS\Extbase\Core\Bootstrap::class));
     }
 
@@ -374,7 +374,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $source = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class;
         $propertyPath = '';
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
     }
 
@@ -386,7 +386,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $source = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class . '<SomeEntity>';
         $propertyPath = '';
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
     }
 
@@ -395,18 +395,18 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertSkipsPropertiesIfConfiguredTo()
     {
-        $source = array('firstProperty' => 1, 'secondProperty' => 2);
-        $typeConverters = array(
-            'array' => array(
-                'stdClass' => array(10 => $this->getMockTypeConverter('array2object', true, $source, 'integer'))
-            ),
-            'integer' => array(
-                'integer' => array(10 => $this->getMockTypeConverter('integer2integer'))
-            )
-        );
+        $source = ['firstProperty' => 1, 'secondProperty' => 2];
+        $typeConverters = [
+            'array' => [
+                'stdClass' => [10 => $this->getMockTypeConverter('array2object', true, $source, 'integer')]
+            ],
+            'integer' => [
+                'integer' => [10 => $this->getMockTypeConverter('integer2integer')]
+            ]
+        ];
         $configuration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $propertyMapper->_set('typeConverters', $typeConverters);
 
         $propertyMapper->convert($source, 'stdClass', $configuration->allowProperties('firstProperty')->skipProperties('secondProperty'));
@@ -417,18 +417,18 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertSkipsUnknownPropertiesIfConfiguredTo()
     {
-        $source = array('firstProperty' => 1, 'secondProperty' => 2);
-        $typeConverters = array(
-            'array' => array(
-                'stdClass' => array(10 => $this->getMockTypeConverter('array2object', true, $source, 'integer'))
-            ),
-            'integer' => array(
-                'integer' => array(10 => $this->getMockTypeConverter('integer2integer'))
-            )
-        );
+        $source = ['firstProperty' => 1, 'secondProperty' => 2];
+        $typeConverters = [
+            'array' => [
+                'stdClass' => [10 => $this->getMockTypeConverter('array2object', true, $source, 'integer')]
+            ],
+            'integer' => [
+                'integer' => [10 => $this->getMockTypeConverter('integer2integer')]
+            ]
+        ];
         $configuration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $propertyMapper->_set('typeConverters', $typeConverters);
 
         $propertyMapper->convert($source, 'stdClass', $configuration->allowProperties('firstProperty')->skipUnknownProperties());

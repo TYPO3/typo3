@@ -57,7 +57,7 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
      *
      * @var array
      */
-    protected $childNodes = array();
+    protected $childNodes = [];
 
     /**
      * Setter for ChildNodes - as defined in ChildNodeAccessInterface

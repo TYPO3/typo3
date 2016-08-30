@@ -27,7 +27,7 @@ class AjaxWidgetContextHolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder */
         $ajaxWidgetContextHolder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -40,10 +40,10 @@ class CharacterMap extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'insertcharacter' => 'InsertCharacter',
         'insertsofthyphen' => 'InsertSoftHyphen'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

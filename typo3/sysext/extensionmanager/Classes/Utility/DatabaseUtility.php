@@ -75,7 +75,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function dumpTableHeader($table, array $fieldKeyInfo, $dropTableIfExists = false)
     {
-        $lines = array();
+        $lines = [];
         $dump = '';
         // Create field definitions
         if (is_array($fieldKeyInfo['fields'])) {
@@ -116,9 +116,9 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected function dumpTableContent($table, array $fieldStructure)
     {
         // Substitution of certain characters (borrowed from phpMySQL):
-        $search = array('\\', '\'', "\0", "\n", "\r", "\x1A");
-        $replace = array('\\\\', '\\\'', '\\0', '\\n', '\\r', '\\Z');
-        $lines = array();
+        $search = ['\\', '\'', "\0", "\n", "\r", "\x1A"];
+        $replace = ['\\\\', '\\\'', '\\0', '\\n', '\\r', '\\Z'];
+        $lines = [];
         // Select all rows from the table:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
@@ -129,7 +129,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface
             ->execute();
         // Traverse the selected rows and dump each row as a line in the file:
         while ($row = $result->fetch()) {
-            $values = array();
+            $values = [];
             foreach ($fieldStructure as $field => $structure) {
                 $values[] = isset($row[$field]) ? '\'' . str_replace($search, $replace, $row[$field]) . '\'' : 'NULL';
             }

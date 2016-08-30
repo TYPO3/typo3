@@ -110,7 +110,7 @@ class FlashMessageQueue extends \SplQueue
         $queuedFlashMessagesFromSession = $this->getFlashMessagesFromSession();
         $queuedFlashMessages = array_merge($queuedFlashMessagesFromSession, $this->toArray());
         if ($severity !== null) {
-            $filteredFlashMessages = array();
+            $filteredFlashMessages = [];
             foreach ($queuedFlashMessages as $message) {
                 if ($message->getSeverity() === $severity) {
                     $filteredFlashMessages[] = $message;
@@ -181,7 +181,7 @@ class FlashMessageQueue extends \SplQueue
     protected function getFlashMessagesFromSession()
     {
         $flashMessages = $this->getUserByContext()->getSessionData($this->identifier);
-        return is_array($flashMessages) ? $flashMessages : array();
+        return is_array($flashMessages) ? $flashMessages : [];
     }
 
     /**
@@ -220,7 +220,7 @@ class FlashMessageQueue extends \SplQueue
      */
     public function toArray()
     {
-        $array = array();
+        $array = [];
         $this->rewind();
         while ($this->valid()) {
             $array[] = $this->current();
@@ -243,7 +243,7 @@ class FlashMessageQueue extends \SplQueue
                 parent::dequeue();
             }
         } else {
-            $keysToRemove = array();
+            $keysToRemove = [];
             while ($cur = $this->current()) {
                 if ($cur->getSeverity() === $severity) {
                     $keysToRemove[] = $this->key();

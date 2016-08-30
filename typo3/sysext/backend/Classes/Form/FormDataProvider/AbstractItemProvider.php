@@ -131,7 +131,7 @@ abstract class AbstractItemProvider
                 ) {
                     $icon = $addItemsArray[$value . '.']['icon'];
                 }
-                $items[] = array($label, $value, $icon);
+                $items[] = [$label, $value, $icon];
             }
         }
         return $items;
@@ -206,7 +206,7 @@ abstract class AbstractItemProvider
                         // Add header if not yet set for plugin section
                         if (!isset($items[$excludeArray['sectionHeader']])) {
                             // there is no icon handling for plugins - we take the icon from the table
-                            $icon = $iconFactory->mapRecordTypeToIconIdentifier($excludeArray['table'], array());
+                            $icon = $iconFactory->mapRecordTypeToIconIdentifier($excludeArray['table'], []);
                             $items[$excludeArray['sectionHeader']] = [
                                 $excludeArray['sectionHeader'],
                                 '--div--',
@@ -216,7 +216,7 @@ abstract class AbstractItemProvider
                     } else {
                         // Add header if not yet set for table
                         if (!isset($items[$excludeArray['table']])) {
-                            $icon = $iconFactory->mapRecordTypeToIconIdentifier($excludeArray['table'], array());
+                            $icon = $iconFactory->mapRecordTypeToIconIdentifier($excludeArray['table'], []);
                             $items[$excludeArray['table']] = [
                                 $GLOBALS['TCA'][$excludeArray['table']]['ctrl']['title'],
                                 '--div--',
@@ -232,12 +232,12 @@ abstract class AbstractItemProvider
                         $helpText['description'] = $helpTextArray['description'];
                     }
                     // Item configuration:
-                    $items[] = array(
+                    $items[] = [
                         rtrim($excludeArray['origin'] === 'flexForm' ? $excludeArray['fieldLabel'] : $languageService->sL($GLOBALS['TCA'][$excludeArray['table']]['columns'][$excludeArray['fieldName']]['label']), ':') . ' (' . $excludeArray['fieldName'] . ')',
                         $excludeArray['table'] . ':' . $excludeArray['fullField'] ,
                         'empty-empty',
                         $helpText
-                    );
+                    ];
                 }
                 break;
             case ($special === 'explicitValues'):

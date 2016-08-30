@@ -90,7 +90,7 @@ class ActionController extends AbstractController
                     $this->installUtility->enrichExtensionWithDetails($extensionKey)
                 );
                 if ($this->managementService->installExtension($extension) === false) {
-                    $this->redirect('unresolvedDependencies', 'List', null, array('extensionKey' => $extensionKey));
+                    $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
         } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
@@ -98,7 +98,7 @@ class ActionController extends AbstractController
         } catch (\TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException $e) {
             $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
         }
-        $this->redirect('index', 'List', null, array(self::TRIGGER_RefreshModuleMenu => true));
+        $this->redirect('index', 'List', null, [self::TRIGGER_RefreshModuleMenu => true]);
     }
 
     /**
@@ -110,7 +110,7 @@ class ActionController extends AbstractController
     public function installExtensionWithoutSystemDependencyCheckAction($extensionKey)
     {
         $this->managementService->setSkipDependencyCheck(true);
-        $this->forward('toggleExtensionInstallationState', null, null, array('extensionKey' => $extensionKey));
+        $this->forward('toggleExtensionInstallationState', null, null, ['extensionKey' => $extensionKey]);
     }
 
     /**
@@ -127,9 +127,9 @@ class ActionController extends AbstractController
                 \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
                     'extensionList.remove.message',
                     'extensionmanager',
-                    array(
+                    [
                         'extension' => $extension,
-                    )
+                    ]
                 )
             );
         } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {

@@ -7,13 +7,13 @@ if (TYPO3_MODE === 'BE') {
         'ts',
         '',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'web_ts',
             'icon' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
             'labels' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf'
-        )
+        ]
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(

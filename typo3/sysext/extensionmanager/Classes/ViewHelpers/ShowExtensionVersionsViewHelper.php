@@ -48,9 +48,9 @@ class ShowExtensionVersionsViewHelper extends Link\ActionViewHelper
 
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $action = 'showAllVersions';
-        $uri = $uriBuilder->reset()->uriFor($action, array(
+        $uri = $uriBuilder->reset()->uriFor($action, [
             'extensionKey' => $extension->getExtensionKey(),
-        ), 'List');
+        ], 'List');
         $this->tag->addAttribute('href', $uri);
 
         // Set class

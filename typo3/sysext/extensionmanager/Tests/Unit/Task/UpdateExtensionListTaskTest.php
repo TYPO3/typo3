@@ -23,7 +23,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
@@ -85,7 +85,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
         $task = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $task->execute();
@@ -117,7 +117,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var \TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask|PHPUnit_Framework_MockObject_MockObject $task */
         $task = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $task->execute();

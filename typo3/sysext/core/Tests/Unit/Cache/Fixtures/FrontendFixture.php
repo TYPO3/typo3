@@ -37,7 +37,7 @@ class FrontendFixture implements FrontendInterface
     {
     }
 
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
     }
 

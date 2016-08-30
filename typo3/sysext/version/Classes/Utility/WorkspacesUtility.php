@@ -36,7 +36,7 @@ class WorkspacesUtility
     public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0)
     {
         $wsid = (int)$wsid;
-        $cmd = array();
+        $cmd = [];
         if ($wsid >= -1 && $wsid !== 0) {
             // Define stage to select:
             $stage = -99;
@@ -52,11 +52,11 @@ class WorkspacesUtility
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
                     // Build the cmd Array:
-                    $cmd[$table][$rec['t3ver_oid']]['version'] = array(
+                    $cmd[$table][$rec['t3ver_oid']]['version'] = [
                         'action' => 'swap',
                         'swapWith' => $rec['uid'],
                         'swapIntoWS' => $doSwap ? 1 : 0
-                    );
+                    ];
                 }
             }
         }
@@ -80,7 +80,7 @@ class WorkspacesUtility
         $filter = (int)$filter;
         $pageId = (int)$pageId;
         $stage = (int)$stage;
-        $output = array();
+        $output = [];
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
@@ -197,7 +197,7 @@ class WorkspacesUtility
             // $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
             // Execute CMD array:
             $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->start(array(), $cmd);
+            $tce->start([], $cmd);
             $tce->process_cmdmap();
         }
         // Restore admin status

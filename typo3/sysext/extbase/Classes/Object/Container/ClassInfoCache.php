@@ -22,7 +22,7 @@ class ClassInfoCache
     /**
      * @var array
      */
-    private $level1Cache = array();
+    private $level1Cache = [];
 
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend

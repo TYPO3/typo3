@@ -30,7 +30,7 @@ class MiscUtility
     public static function getExtensionMetaData($extensionKey)
     {
         $_EXTKEY = $extensionKey;
-        $EM_CONF = array();
+        $EM_CONF = [];
         $extPath = ExtensionManagementUtility::extPath($extensionKey);
         include($extPath . 'ext_emconf.php');
 

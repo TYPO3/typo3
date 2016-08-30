@@ -54,7 +54,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->importScenarioDataSet('LiveDefaultElements');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
 
-        $this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts']);
         $this->backendUser->workspace = 0;
     }
 
@@ -67,7 +67,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyContent()
     {
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, array('header' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
     }
 
     /**
@@ -132,10 +132,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid'),
-                self::TABLE_FileReference => array('title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid'],
+                self::TABLE_FileReference => ['title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
@@ -147,10 +147,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdLast, 'header' => 'Testing #1', self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileLast . ',' . self::VALUE_FileReferenceContentLastFileFirst),
-                self::TABLE_FileReference => array('uid' => self::VALUE_FileReferenceContentLastFileFirst, 'title' => 'Image #1'),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdLast, 'header' => 'Testing #1', self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileLast . ',' . self::VALUE_FileReferenceContentLastFileFirst],
+                self::TABLE_FileReference => ['uid' => self::VALUE_FileReferenceContentLastFileFirst, 'title' => 'Image #1'],
+            ]
         );
     }
 
@@ -161,10 +161,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('uid' => self::VALUE_ContentIdLast, self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileLast . ',' . self::VALUE_FileReferenceContentLastFileFirst . ',__nextUid'),
-                self::TABLE_FileReference => array('uid' => '__NEW', 'title' => 'Image #3', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst),
-            )
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdLast, self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileLast . ',' . self::VALUE_FileReferenceContentLastFileFirst . ',__nextUid'],
+                self::TABLE_FileReference => ['uid' => '__NEW', 'title' => 'Image #3', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst],
+            ]
         );
     }
 
@@ -176,8 +176,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
-            array(self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileFirst),
-            array(self::TABLE_FileReference => array(self::VALUE_FileReferenceContentLastFileLast))
+            [self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileFirst],
+            [self::TABLE_FileReference => [self::VALUE_FileReferenceContentLastFileLast]]
         );
     }
 
@@ -189,8 +189,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
-            array(self::FIELD_ContentImage => ''),
-            array(self::TABLE_FileReference => array(self::VALUE_FileReferenceContentLastFileFirst, self::VALUE_FileReferenceContentLastFileLast))
+            [self::FIELD_ContentImage => ''],
+            [self::TABLE_FileReference => [self::VALUE_FileReferenceContentLastFileFirst, self::VALUE_FileReferenceContentLastFileLast]]
         );
     }
 }

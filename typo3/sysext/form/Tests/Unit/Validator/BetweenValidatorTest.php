@@ -29,14 +29,14 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function validNonInclusiveDataProvider()
     {
-        return array(
-            '3 < 5 < 7'      => array(array(3, 5, 7)),
-            '0 < 10 < 20'    => array(array(0, 10, 20)),
-            '-10 < 0 < 10'   => array(array(-10, 0, 10)),
-            '-20 < -10 < 0'  => array(array(-20, -10, 0)),
-            '1 < 2 < 3'      => array(array(1, 2, 3)),
-            '1 < 1.01 < 1.1' => array(array(1, 1.01, 1.1)),
-        );
+        return [
+            '3 < 5 < 7'      => [[3, 5, 7]],
+            '0 < 10 < 20'    => [[0, 10, 20]],
+            '-10 < 0 < 10'   => [[-10, 0, 10]],
+            '-20 < -10 < 0'  => [[-20, -10, 0]],
+            '1 < 2 < 3'      => [[1, 2, 3]],
+            '1 < 1.01 < 1.1' => [[1, 1.01, 1.1]],
+        ];
     }
 
     /**
@@ -44,14 +44,14 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function invalidNonInclusiveDataProvider()
     {
-        return array(
-            '1 < 1 < 2'                 => array(array(1, 1, 2)),
-            '1 < 2 < 2'                 => array(array(1, 2, 2)),
-            '1.1 < 1.1 < 1.2'           => array(array(1.1, 1.1, 1.2)),
-            '1.1 < 1.2 < 1.2'           => array(array(1.1, 1.2, 1.2)),
-            '-10.1234 < -10.12340 < 10' => array(array(-10.1234, -10.12340, 10)),
-            '100 < 0 < -100'            => array(array(100, 0, -100))
-        );
+        return [
+            '1 < 1 < 2'                 => [[1, 1, 2]],
+            '1 < 2 < 2'                 => [[1, 2, 2]],
+            '1.1 < 1.1 < 1.2'           => [[1.1, 1.1, 1.2]],
+            '1.1 < 1.2 < 1.2'           => [[1.1, 1.2, 1.2]],
+            '-10.1234 < -10.12340 < 10' => [[-10.1234, -10.12340, 10]],
+            '100 < 0 < -100'            => [[100, 0, -100]]
+        ];
     }
 
     /**
@@ -59,19 +59,19 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function validInclusiveDataProvider()
     {
-        return array(
-            '1 ≤ 1 ≤ 1'                 => array(array(1,1,1)),
-            '-10.1234 ≤ -10.12340 ≤ 10' => array(array(-10.1234, -10.12340, 10)),
-            '-10.1234 ≤ -10 ≤ 10'       => array(array(-10.1234, -10.12340, 10)),
-        );
+        return [
+            '1 ≤ 1 ≤ 1'                 => [[1,1,1]],
+            '-10.1234 ≤ -10.12340 ≤ 10' => [[-10.1234, -10.12340, 10]],
+            '-10.1234 ≤ -10 ≤ 10'       => [[-10.1234, -10.12340, 10]],
+        ];
     }
 
     public function invalidInclusiveDataProvider()
     {
-        return array(
-            '-10.1234 ≤ -10.12345 ≤ 10' => array(array(-10.1234, -10.12345, 10)),
-            '100 ≤ 0 ≤ -100'            => array(array(100, 0, -100))
-        );
+        return [
+            '-10.1234 ≤ -10.12345 ≤ 10' => [[-10.1234, -10.12345, 10]],
+            '100 ≤ 0 ≤ -100'            => [[100, 0, -100]]
+        ];
     }
 
     /**
@@ -81,7 +81,7 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function validateWithValidInputAndWithoutInclusiveHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[2];
         $subject = $this->createSubject($options);
@@ -98,7 +98,7 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function validateWithValidInputAndWithInclusiveHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[2];
         $options['inclusive'] = true;
@@ -116,7 +116,7 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function validateWithInvalidInputAndWithoutInclusiveHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[2];
         $subject = $this->createSubject($options);
@@ -133,7 +133,7 @@ class BetweenValidatorTest extends AbstractValidatorTest
      */
     public function validateWithInvalidInputAndWithInclusiveHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[2];
         $options['inclusive'] = true;

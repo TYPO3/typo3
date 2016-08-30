@@ -33,7 +33,7 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
     public function setup()
     {
         $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(array('translateErrorMessage'))
+            ->setMethods(['translateErrorMessage'])
             ->getMock();
     }
 
@@ -77,7 +77,7 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
     public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities()
     {
         // we only test for the error code, after the translation Method for message is mocked anyway
-        $expected = array(new \TYPO3\CMS\Extbase\Validation\Error(null, 1221565786));
+        $expected = [new \TYPO3\CMS\Extbase\Validation\Error(null, 1221565786)];
         $this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
     }
 }

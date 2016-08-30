@@ -22,22 +22,22 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array Parameters that are relevant for cacheHash calculation. Optional.
      */
-    protected $cachedParametersWhiteList = array();
+    protected $cachedParametersWhiteList = [];
 
     /**
      * @var array Parameters that are not relevant for cacheHash calculation.
      */
-    protected $excludedParameters = array();
+    protected $excludedParameters = [];
 
     /**
      * @var array Parameters that forces a presence of a valid cacheHash.
      */
-    protected $requireCacheHashPresenceParameters = array();
+    protected $requireCacheHashPresenceParameters = [];
 
     /**
      * @var array Parameters that need a value to be relevant for cacheHash calculation
      */
-    protected $excludedParametersIfEmpty = array();
+    protected $excludedParametersIfEmpty = [];
 
     /**
      * @var bool Whether to exclude all empty parameters for cacheHash calculation
@@ -107,7 +107,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
     public function getRelevantParameters($queryString)
     {
         $parameters = $this->splitQueryStringToArray($queryString);
-        $relevantParameters = array();
+        $relevantParameters = [];
         foreach ($parameters as $parameterName => $parameterValue) {
             if ($this->isAdminPanelParameter($parameterName) || $this->isExcludedParameter($parameterName) || $this->isCoreParameter($parameterName)) {
                 continue;
@@ -140,7 +140,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
     protected function splitQueryStringToArray($queryString)
     {
         $parameters = array_filter(explode('&', ltrim($queryString, '?')));
-        $parameterArray = array();
+        $parameterArray = [];
         foreach ($parameters as $parameter) {
             list($parameterName, $parameterValue) = explode('=', $parameter);
             $parameterArray[rawurldecode($parameterName)] = rawurldecode($parameterValue);

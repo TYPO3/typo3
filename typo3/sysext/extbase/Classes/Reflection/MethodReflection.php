@@ -43,9 +43,9 @@ class MethodReflection extends \ReflectionMethod
      */
     public function getParameters()
     {
-        $extendedParameters = array();
+        $extendedParameters = [];
         foreach (parent::getParameters() as $parameter) {
-            $extendedParameters[] = new ParameterReflection(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
+            $extendedParameters[] = new ParameterReflection([$this->getDeclaringClass()->getName(), $this->getName()], $parameter->getName());
         }
         return $extendedParameters;
     }

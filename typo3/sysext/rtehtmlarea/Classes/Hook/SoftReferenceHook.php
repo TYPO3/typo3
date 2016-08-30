@@ -55,7 +55,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex
         // Start HTML parser and split content by image tag
         $htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         $imgTags = $htmlParser->splitTags('img', $content);
-        $elements = array();
+        $elements = [];
         // Traverse splitted parts
         foreach ($imgTags as $k => $v) {
             if ($k % 2) {
@@ -66,25 +66,25 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex
                 if ($fileUid) {
                     // Initialize the element entry with info text here
                     $tokenID = $this->makeTokenID($k);
-                    $elements[$k] = array();
+                    $elements[$k] = [];
                     $elements[$k]['matchString'] = $v;
                     // Token and substitute value
                     $imgTags[$k] = str_replace('data-htmlarea-file-uid="' . $fileUid . '"', 'data-htmlarea-file-uid="{softref:' . $tokenID . '}"', $imgTags[$k]);
-                    $elements[$k]['subst'] = array(
+                    $elements[$k]['subst'] = [
                         'type' => 'db',
                         'recordRef' => 'sys_file:' . $fileUid,
                         'tokenID' => $tokenID,
                         'tokenValue' => $fileUid
-                    );
+                    ];
                 }
             }
         }
         // Assemble result array
         if (!empty($elements)) {
-            $retVal = array(
+            $retVal = [
                 'content' => implode('', $imgTags),
                 'elements' => $elements
-            );
+            ];
         }
         return $retVal;
     }

@@ -27,7 +27,7 @@ class TreeNodeCollection extends \ArrayObject
      *
      * @param array $data
      */
-    public function __construct(array $data = array())
+    public function __construct(array $data = [])
     {
         if (!empty($data)) {
             $this->dataFromArray($data);
@@ -41,7 +41,7 @@ class TreeNodeCollection extends \ArrayObject
      */
     public function asort()
     {
-        $this->uasort(array($this, 'nodeCompare'));
+        $this->uasort([$this, 'nodeCompare']);
     }
 
     /**
@@ -89,9 +89,9 @@ class TreeNodeCollection extends \ArrayObject
      */
     public function toArray()
     {
-        $arrayRepresentation = array(
+        $arrayRepresentation = [
             'serializeClassName' => get_class($this)
-        );
+        ];
         $iterator = $this->getIterator();
         while ($iterator->valid()) {
             $arrayRepresentation[] = $iterator->current()->toArray();

@@ -25,7 +25,7 @@ class EditPanelContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $theValue = '';
         if ($GLOBALS['TSFE']->beUserLogin) {

@@ -112,12 +112,12 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
             $this->emitPackagesMayHaveChangedSignal();
             foreach ($this->packageManager->getAvailablePackages() as $package) {
                 $installationType = $this->getInstallTypeForPackage($package);
-                $this->availableExtensions[$package->getPackageKey()] = array(
+                $this->availableExtensions[$package->getPackageKey()] = [
                     'siteRelPath' => str_replace(PATH_site, '', $package->getPackagePath()),
                     'type' => $installationType,
                     'key' => $package->getPackageKey(),
                     'ext_icon' => ExtensionManagementUtility::getExtensionIcon($package->getPackagePath()),
-                );
+                ];
             }
         }
 

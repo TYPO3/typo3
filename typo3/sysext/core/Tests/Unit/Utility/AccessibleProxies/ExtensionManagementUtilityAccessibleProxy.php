@@ -69,7 +69,7 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
 
     public static function buildBaseTcaFromSingleFiles()
     {
-        $GLOBALS['TCA'] = array();
+        $GLOBALS['TCA'] = [];
     }
 
     public static function emitTcaIsBeingBuiltSignal(array $tca)

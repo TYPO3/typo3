@@ -332,274 +332,274 @@ class DependencyOrderingServiceTest extends UnitTestCase
                     ],
                 ]
             ],
-            'TYPO3 Flow Packages' => array(
-                array( // dependencies
-                    'TYPO3.Flow' => array(
+            'TYPO3 Flow Packages' => [
+                [ // dependencies
+                    'TYPO3.Flow' => [
                         'before' => [],
-                        'after' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
-                    ),
-                    'Doctrine.ORM' => array(
+                        'after' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                    ],
+                    'Doctrine.ORM' => [
                         'before' => [],
-                        'after' => array('Doctrine.Common', 'Doctrine.DBAL')
-                    ),
-                    'Doctrine.Common' => array(
+                        'after' => ['Doctrine.Common', 'Doctrine.DBAL']
+                    ],
+                    'Doctrine.Common' => [
                         'before' => [],
-                        'after' => array()
-                    ),
-                    'Doctrine.DBAL' => array(
+                        'after' => []
+                    ],
+                    'Doctrine.DBAL' => [
                         'before' => [],
-                        'after' => array('Doctrine.Common')
-                    ),
-                    'Symfony.Component.Yaml' => array(
+                        'after' => ['Doctrine.Common']
+                    ],
+                    'Symfony.Component.Yaml' => [
                         'before' => [],
-                        'after' => array()
-                    ),
-                ),
-                array( // graph
-                    'TYPO3.Flow' => array(
+                        'after' => []
+                    ],
+                ],
+                [ // graph
+                    'TYPO3.Flow' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => true,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => true,
                         'Symfony.Component.Yaml' => true,
-                    ),
-                    'Doctrine.ORM' => array(
+                    ],
+                    'Doctrine.ORM' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => true,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                    'Doctrine.Common' => array(
+                    ],
+                    'Doctrine.Common' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => false,
                         'Doctrine.DBAL' => false,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                    'Doctrine.DBAL' => array(
+                    ],
+                    'Doctrine.DBAL' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => false,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                    'Symfony.Component.Yaml' => array(
+                    ],
+                    'Symfony.Component.Yaml' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => false,
                         'Doctrine.DBAL' => false,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                ),
-            ),
-            'TYPO3 CMS Extensions' => array(
-                array( // dependencies
-                    'core' => array(
+                    ],
+                ],
+            ],
+            'TYPO3 CMS Extensions' => [
+                [ // dependencies
+                    'core' => [
                         'before' => [],
-                        'after' => array(),
-                    ),
-                    'openid' => array(
+                        'after' => [],
+                    ],
+                    'openid' => [
                         'before' => [],
-                        'after' => array('core', 'setup')
-                    ),
-                    'scheduler' => array(
+                        'after' => ['core', 'setup']
+                    ],
+                    'scheduler' => [
                         'before' => [],
-                        'after' => array('core'),
-                    ),
-                    'setup' => array(
+                        'after' => ['core'],
+                    ],
+                    'setup' => [
                         'before' => [],
-                        'after' => array('core'),
-                    ),
-                    'sv' => array(
+                        'after' => ['core'],
+                    ],
+                    'sv' => [
                         'before' => [],
-                        'after' => array('core'),
-                    ),
-                ),
-                array( // graph
-                    'core' => array(
+                        'after' => ['core'],
+                    ],
+                ],
+                [ // graph
+                    'core' => [
                         'core' => false,
                         'setup' => false,
                         'sv' => false,
                         'scheduler' => false,
                         'openid' => false,
-                    ),
-                    'openid' => array(
+                    ],
+                    'openid' => [
                         'core' => true,
                         'setup' => true,
                         'sv' => false,
                         'scheduler' => false,
                         'openid' => false,
-                    ),
-                    'scheduler' => array(
+                    ],
+                    'scheduler' => [
                         'core' => true,
                         'setup' => false,
                         'sv' => false,
                         'scheduler' => false,
                         'openid' => false,
-                    ),
-                    'setup' => array(
+                    ],
+                    'setup' => [
                         'core' => true,
                         'setup' => false,
                         'sv' => false,
                         'scheduler' => false,
                         'openid' => false,
-                    ),
-                    'sv' => array(
+                    ],
+                    'sv' => [
                         'core' => true,
                         'setup' => false,
                         'sv' => false,
                         'scheduler' => false,
                         'openid' => false,
-                    ),
-                ),
-            ),
-            'Dummy Packages' => array(
-                array( // dependencies
-                    'A' => array(
+                    ],
+                ],
+            ],
+            'Dummy Packages' => [
+                [ // dependencies
+                    'A' => [
                         'before' => [],
-                        'after' => array('B', 'D', 'C'),
-                    ),
-                    'B' => array(
+                        'after' => ['B', 'D', 'C'],
+                    ],
+                    'B' => [
                         'before' => [],
-                        'after' => array()
-                    ),
-                    'C' => array(
+                        'after' => []
+                    ],
+                    'C' => [
                         'before' => [],
-                        'after' => array('E')
-                    ),
-                    'D' => array(
+                        'after' => ['E']
+                    ],
+                    'D' => [
                         'before' => [],
-                        'after' => array('E'),
-                    ),
-                    'E' => array(
+                        'after' => ['E'],
+                    ],
+                    'E' => [
                         'before' => [],
-                        'after' => array(),
-                    ),
-                    'F' => array(
+                        'after' => [],
+                    ],
+                    'F' => [
                         'before' => [],
-                        'after' => array(),
-                    ),
-                ),
-                array( // graph
-                    'A' => array(
+                        'after' => [],
+                    ],
+                ],
+                [ // graph
+                    'A' => [
                         'A' => false,
                         'B' => true,
                         'C' => true,
                         'D' => true,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'B' => array(
+                    ],
+                    'B' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'C' => array(
+                    ],
+                    'C' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => true,
                         'F' => false,
-                    ),
-                    'D' => array(
+                    ],
+                    'D' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => true,
                         'F' => false,
-                    ),
-                    'E' => array(
+                    ],
+                    'E' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'F' => array(
+                    ],
+                    'F' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                ),
-            ),
-            'Suggestions without reverse dependency' => array(
-                array( // dependencies
-                    'A' => array(
+                    ],
+                ],
+            ],
+            'Suggestions without reverse dependency' => [
+                [ // dependencies
+                    'A' => [
                         'before' => [],
                         'after' => [],
-                        'after-resilient' => array('B') // package suggestion
-                    ),
-                    'B' => array(
+                        'after-resilient' => ['B'] // package suggestion
+                    ],
+                    'B' => [
                         'before' => [],
                         'after' => [],
-                    ),
-                    'C' => array(
+                    ],
+                    'C' => [
                         'before' => [],
-                        'after' => array('A')
-                    ),
-                ),
-                array( // graph
-                    'A' => array(
+                        'after' => ['A']
+                    ],
+                ],
+                [ // graph
+                    'A' => [
                         'A' => false,
                         'B' => true,
                         'C' => false,
-                    ),
-                    'B' => array(
+                    ],
+                    'B' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
-                    ),
-                    'C' => array(
+                    ],
+                    'C' => [
                         'A' => true,
                         'B' => false,
                         'C' => false,
-                    ),
-                ),
-            ),
-            'Suggestions with reverse dependency' => array(
-                array( // dependencies
-                    'A' => array(
+                    ],
+                ],
+            ],
+            'Suggestions with reverse dependency' => [
+                [ // dependencies
+                    'A' => [
                         'before' => [],
                         'after' => [],
-                        'after-resilient' => array('B'), // package suggestion
-                    ),
-                    'B' => array(
+                        'after-resilient' => ['B'], // package suggestion
+                    ],
+                    'B' => [
                         'before' => [],
-                        'after' => array('A')
-                    ),
-                    'C' => array(
+                        'after' => ['A']
+                    ],
+                    'C' => [
                         'before' => [],
-                        'after' => array('A')
-                    ),
-                ),
-                array( // graph
-                    'A' => array(
+                        'after' => ['A']
+                    ],
+                ],
+                [ // graph
+                    'A' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
-                    ),
-                    'B' => array(
+                    ],
+                    'B' => [
                         'A' => true,
                         'B' => false,
                         'C' => false,
-                    ),
-                    'C' => array(
+                    ],
+                    'C' => [
                         'A' => true,
                         'B' => false,
                         'C' => false,
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -686,38 +686,38 @@ class DependencyOrderingServiceTest extends UnitTestCase
      */
     public function findPathInGraphReturnsCorrectPathDataProvider()
     {
-        return array(
-            'Simple path' => array(
-                array(
-                    'A' => array('A' => false, 'B' => false, 'C' => false, 'Z' => true),
-                    'B' => array('A' => false, 'B' => false, 'C' => false, 'Z' => false),
-                    'C' => array('A' => false, 'B' => false, 'C' => false, 'Z' => false),
-                    'Z' => array('A' => false, 'B' => false, 'C' => false, 'Z' => false)
-                ),
+        return [
+            'Simple path' => [
+                [
+                    'A' => ['A' => false, 'B' => false, 'C' => false, 'Z' => true],
+                    'B' => ['A' => false, 'B' => false, 'C' => false, 'Z' => false],
+                    'C' => ['A' => false, 'B' => false, 'C' => false, 'Z' => false],
+                    'Z' => ['A' => false, 'B' => false, 'C' => false, 'Z' => false]
+                ],
                 'A', 'Z',
-                array('A', 'Z')
-            ),
-            'No path' => array(
-                array(
-                    'A' => array('A' => false, 'B' => true, 'C' => false, 'Z' => false),
-                    'B' => array('A' => false, 'B' => false, 'C' => false, 'Z' => false),
-                    'C' => array('A' => false, 'B' => true, 'C' => false, 'Z' => false),
-                    'Z' => array('A' => false, 'B' => true, 'C' => false, 'Z' => false)
-                ),
+                ['A', 'Z']
+            ],
+            'No path' => [
+                [
+                    'A' => ['A' => false, 'B' => true, 'C' => false, 'Z' => false],
+                    'B' => ['A' => false, 'B' => false, 'C' => false, 'Z' => false],
+                    'C' => ['A' => false, 'B' => true, 'C' => false, 'Z' => false],
+                    'Z' => ['A' => false, 'B' => true, 'C' => false, 'Z' => false]
+                ],
                 'A', 'C',
-                array()
-            ),
-            'Longer path' => array(
-                array(
-                    'A' => array('A' => false, 'B' => true, 'C' => true, 'Z' => true),
-                    'B' => array('A' => false, 'B' => false, 'C' => false, 'Z' => false),
-                    'C' => array('A' => false, 'B' => false, 'C' => false, 'Z' => true),
-                    'Z' => array('A' => false, 'B' => false, 'C' => false, 'Z' => false)
-                ),
+                []
+            ],
+            'Longer path' => [
+                [
+                    'A' => ['A' => false, 'B' => true, 'C' => true, 'Z' => true],
+                    'B' => ['A' => false, 'B' => false, 'C' => false, 'Z' => false],
+                    'C' => ['A' => false, 'B' => false, 'C' => false, 'Z' => true],
+                    'Z' => ['A' => false, 'B' => false, 'C' => false, 'Z' => false]
+                ],
                 'A', 'Z',
-                array('A', 'C', 'Z')
-            ),
-        );
+                ['A', 'C', 'Z']
+            ],
+        ];
     }
 
     /**

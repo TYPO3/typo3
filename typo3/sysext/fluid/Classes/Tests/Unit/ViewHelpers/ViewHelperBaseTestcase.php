@@ -98,13 +98,13 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
         $this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
-        $this->arguments = array();
-        $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class, array('getControllerContext'));
+        $this->arguments = [];
+        $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class, ['getControllerContext']);
         $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->renderingContext->setVariableProvider($this->templateVariableContainer);
         $this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer->reveal());
         $this->renderingContext->setControllerContext($this->controllerContext);
-        $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, array('dummy'));
+        $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, ['dummy']);
     }
 
     /**

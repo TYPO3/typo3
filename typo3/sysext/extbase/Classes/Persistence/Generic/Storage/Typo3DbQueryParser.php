@@ -76,7 +76,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $tablePropertyMap = array();
+    protected $tablePropertyMap = [];
 
     /**
      * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
@@ -94,18 +94,18 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function parseQuery(QueryInterface $query)
     {
-        $this->tablePropertyMap = array();
-        $sql = array();
-        $sql['keywords'] = array();
-        $sql['tables'] = array();
-        $sql['unions'] = array();
-        $sql['fields'] = array();
-        $sql['where'] = array();
-        $sql['additionalWhereClause'] = array();
-        $sql['orderings'] = array();
+        $this->tablePropertyMap = [];
+        $sql = [];
+        $sql['keywords'] = [];
+        $sql['tables'] = [];
+        $sql['unions'] = [];
+        $sql['fields'] = [];
+        $sql['where'] = [];
+        $sql['additionalWhereClause'] = [];
+        $sql['orderings'] = [];
         $sql['limit'] = ((int)$query->getLimit() ?: null);
         $sql['offset'] = ((int)$query->getOffset() ?: null);
-        $sql['tableAliasMap'] = array();
+        $sql['tableAliasMap'] = [];
         $source = $query->getSource();
         $this->parseSource($source, $sql);
         $this->parseConstraint($query->getConstraint(), $source, $sql);
@@ -396,7 +396,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
         if ($className !== null) {
             $dataMap = $this->dataMapper->getDataMap($className);
             if ($dataMap->getRecordTypeColumnName() !== null) {
-                $recordTypes = array();
+                $recordTypes = [];
                 if ($dataMap->getRecordType() !== null) {
                     $recordTypes[] = $dataMap->getRecordType();
                 }
@@ -407,7 +407,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                     }
                 }
                 if (!empty($recordTypes)) {
-                    $recordTypeStatements = array();
+                    $recordTypeStatements = [];
                     foreach ($recordTypes as $recordType) {
                         $tableName = $dataMap->getTableName();
                         $recordTypeStatements[] = $tableName . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, $tableName);
@@ -434,7 +434,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
 
         $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
         if (is_array($relationTableMatchFields) && !empty($relationTableMatchFields)) {
-            $additionalWhere = array();
+            $additionalWhere = [];
             foreach ($relationTableMatchFields as $fieldName => $value) {
                 $additionalWhere[] = $childTableAlias . '.' . $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($value, $childTableName);
             }
@@ -521,7 +521,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * @return string
      * @throws InconsistentQuerySettingsException
      */
-    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = array(), $includeDeleted)
+    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = [], $includeDeleted)
     {
         $statement = '';
         if ($ignoreEnableFields && !$includeDeleted) {

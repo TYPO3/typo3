@@ -35,10 +35,10 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
     {
         $subject = new XmlnsNamespaceTemplatePreProcessor();
         $resolver = $this->getMockBuilder(ViewHelperResolver::class)
-            ->setMethods(array('addNamespace'))
+            ->setMethods(['addNamespace'])
             ->getMock();
         $context = $this->getMockBuilder(RenderingContextFixture::class)
-            ->setMethods(array('getViewHelperResolver'))
+            ->setMethods(['getViewHelperResolver'])
             ->getMock();
         if (empty($expectedNamespaces)) {
             $context->expects($this->never())->method('getViewHelperResolver');
@@ -67,56 +67,56 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
     public function preProcessSourceExtractsNamespacesAndRemovesTagsAndAttributesDataProvider()
     {
         return [
-            'Empty source raises no errors' => array(
+            'Empty source raises no errors' => [
                 '',
                 [],
                 null,
-            ),
-            'Tags without xmlns remain untouched' => array(
+            ],
+            'Tags without xmlns remain untouched' => [
                 '<div class="not-touched">...</div>',
                 [],
                 null
-            ),
-            'Third-party namespace not detected' => array(
+            ],
+            'Third-party namespace not detected' => [
                 '<html xmlns:notdetected="http://thirdparty.org/ns/Foo/Bar/ViewHelpers">...</html>',
                 [],
                 null
-            ),
-            'Detects and removes Fluid namespaces by namespace URL' => array(
+            ],
+            'Detects and removes Fluid namespaces by namespace URL' => [
                 '<html xmlns:detected="http://typo3.org/ns/Foo/Bar/ViewHelpers" data-namespace-typo3-fluid="true">...</html>',
                 [
                     ['detected', 'Foo\\Bar\\ViewHelpers']
                 ],
                 '...'
-            ),
-            'Skips fluid namespace if namespace URL is not the correct case' => array(
+            ],
+            'Skips fluid namespace if namespace URL is not the correct case' => [
                 '<html xmlns:detected="http://typo3.org/Ns/Foo/Bar/ViewHelpers" data-namespace-typo3-fluid="true">...</html>',
                 [],
                 null
-            ),
-            'Skips fluid namespace if attribute is not the correct case' => array(
+            ],
+            'Skips fluid namespace if attribute is not the correct case' => [
                 '<html xmlNS:detected="http://typo3.org/ns/Foo/Bar/ViewHelpers" data-namespace-typo3-fluid="true">...</html>',
                 [],
                 null
-            ),
-            'Skips namespace if attribute before xmlns attribute without space in between' => array(
+            ],
+            'Skips namespace if attribute before xmlns attribute without space in between' => [
                 '<html lang="de"xmlns:detected="http://typo3.org/ns/Foo/Bar/ViewHelpers" data-namespace-typo3-fluid="true">...</html>',
                 [],
                 null
-            ),
-            'Removes tag if data attribute set and non xmlns attributes are used prior to xmlns' => array(
+            ],
+            'Removes tag if data attribute set and non xmlns attributes are used prior to xmlns' => [
                 '<html lang="de" xmlns:detected="http://typo3.org/ns/Foo/Bar/ViewHelpers" data-namespace-typo3-fluid="true">...</html>',
                 [
                     ['detected', 'Foo\\Bar\\ViewHelpers']
                 ],
                 '...'
-            ),
-            'Skips invalid namespace prefixes' => array(
+            ],
+            'Skips invalid namespace prefixes' => [
                 '<html xmlns:bad-prefix="http://typo3.org/ns/Foo/Bar/ViewHelpers">...</html>',
                 [],
                 null
-            ),
-            'Detect and remove multiple ViewHelper attributes' => array(
+            ],
+            'Detect and remove multiple ViewHelper attributes' => [
                 '<div xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers">' . "\n"
                         . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
@@ -128,8 +128,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                 '<div >' . "\n"
                     . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</div>'
-            ),
-            'ViewHelpers found with non ViewHelper xmlns at beginning' => array(
+            ],
+            'ViewHelpers found with non ViewHelper xmlns at beginning' => [
                 '<div xmlns:z="http://www.typo3.org/foo"' . "\n"
                     . "\t" . 'xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers">' . "\n"
@@ -142,8 +142,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                 '<div xmlns:z="http://www.typo3.org/foo" >' . "\n"
                     . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</div>'
-            ),
-            'ViewHelpers found with non ViewHelper xmlns at end' => array(
+            ],
+            'ViewHelpers found with non ViewHelper xmlns at end' => [
                 '<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:z="http://www.typo3.org/foo">' . "\n"
@@ -156,8 +156,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                 '<div xmlns:z="http://www.typo3.org/foo">' . "\n"
                     . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</div>',
-            ),
-            'Xmlns ViewHelpers found with multiple non ViewHelper xmlns attributes' => array(
+            ],
+            'Xmlns ViewHelpers found with multiple non ViewHelper xmlns attributes' => [
                 '<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:y="http://www.typo3.org/bar"' . "\n"
                     . "\t" . 'xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"' . "\n"
@@ -171,8 +171,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                 '<div xmlns:y="http://www.typo3.org/bar" xmlns:z="http://www.typo3.org/foo">' . "\n"
                     . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</div>'
-            ),
-            'Xmlns ViewHelpers found with non ViewHelpers between' => array(
+            ],
+            'Xmlns ViewHelpers found with non ViewHelpers between' => [
                 '<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"' . "\n"
                 . "\t" . 'xmlns:z="http://www.typo3.org/foo"' . "\n"
                 . "\t" . 'xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">' . "\n"
@@ -185,15 +185,15 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                 '<div xmlns:z="http://www.typo3.org/foo" >' . "\n"
                     . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</div>'
-            ),
-            'Do not remove Html tag with data attribute but no xmlns ViewHelpers found' => array(
+            ],
+            'Do not remove Html tag with data attribute but no xmlns ViewHelpers found' => [
                 '<html data-namespace-typo3-fluid="true">' . "\n"
                     . "\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</html>',
                 [],
                 null
-            ),
-            'Keep html tag if data attribute is not set and remove ViewHelper attributes' => array(
+            ],
+            'Keep html tag if data attribute is not set and remove ViewHelper attributes' => [
                 '<html xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:z="http://www.typo3.org/foo">' . "\n"
@@ -206,8 +206,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                 '<html xmlns:z="http://www.typo3.org/foo">' . "\n"
                     . "\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                 . '</html>',
-            ),
-            'Remove html tag because xmlns ViewHelpers found and data attribute set' => array(
+            ],
+            'Remove html tag because xmlns ViewHelpers found and data attribute set' => [
                 '<html data-namespace-typo3-fluid="true"' . "\n"
                     . "\t" . 'xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"' . "\n"
                     . "\t" . 'xmlns:z="http://www.typo3.org/foo">' . "\n"
@@ -217,8 +217,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                     ['fe', 'TYPO3\\CMS\\Frontend\\ViewHelpers']
                 ],
                 "\n\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
-            ),
-            'Test with big markup template' => array(
+            ],
+            'Test with big markup template' => [
                 file_get_contents(GeneralUtility::getFileAbsFileName('EXT:fluid/Tests/Unit/Core/Fixtures/TestNamespaceTemplateBig.html')),
                 [
                     ['f', 'TYPO3\\CMS\\Fluid\\ViewHelpers'],
@@ -226,8 +226,8 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                     ['fl', 'TYPO3\\CMS\\Filelist\\ViewHelpers']
                 ],
                 file_get_contents(GeneralUtility::getFileAbsFileName('EXT:fluid/Tests/Unit/Core/Fixtures/TestNamespaceTemplateBigExpectedResult.html'))
-            ),
-            'Only handle first tag with xmlns ViewHelpers found' => array(
+            ],
+            'Only handle first tag with xmlns ViewHelpers found' => [
                 '<div xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">' . "\n"
                     . "\t" . '<div data-namespace-typo3-fluid="true" xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"' . "\n"
                         . "\t\t" . 'xmlns:z="http://www.typo3.org/foo">' . "\n"
@@ -243,7 +243,7 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                             . "\t\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
                     . "\t" . '</div>' . "\n"
                 . '</div>'
-            )
+            ]
         ];
     }
 }

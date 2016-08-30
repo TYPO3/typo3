@@ -34,7 +34,7 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
      *
      * @var array
      */
-    protected static $workspaceTitleRuntimeCache = array();
+    protected static $workspaceTitleRuntimeCache = [];
 
     /**
      * Initializes the arguments

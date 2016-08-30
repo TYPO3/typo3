@@ -82,7 +82,7 @@ class PreviewProcessing
         switch ($taskType) {
             case 'Image.Preview':
                 // Merge custom configuration with default configuration
-                $configuration = array_merge(array('width' => 64, 'height' => 64), $configuration);
+                $configuration = array_merge(['width' => 64, 'height' => 64], $configuration);
                 $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
                 $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
                 $this->resizeImage($temporaryFileName, $temporaryFileNameForResizedThumb, $configuration);
@@ -97,12 +97,12 @@ class PreviewProcessing
             $processedFile->setName($this->getTargetFileName($processedFile));
             list($width, $height) = getimagesize($temporaryFileNameForResizedThumb);
             $processedFile->updateProperties(
-                array(
+                [
                     'width' => $width,
                     'height' => $height,
                     'size' => filesize($temporaryFileNameForResizedThumb),
                     'checksum' => $processedFile->getTask()->getConfigurationChecksum()
-                )
+                ]
             );
             $processedFile->updateWithLocalFile($temporaryFileNameForResizedThumb);
             GeneralUtility::unlink_tempfile($temporaryFileNameForResizedThumb);
@@ -213,7 +213,7 @@ class PreviewProcessing
         if (!empty($configuration['useSample'])) {
             $gifBuilder->scalecmd = '-sample';
         }
-        $options = array();
+        $options = [];
         if (!empty($configuration['maxWidth'])) {
             $options['maxW'] = $configuration['maxWidth'];
         }

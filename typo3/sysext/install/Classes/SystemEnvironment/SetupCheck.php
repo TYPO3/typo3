@@ -287,7 +287,7 @@ class SetupCheck
      */
     protected function checkLibXmlBug()
     {
-        $sampleArray = array('Test>><<Data');
+        $sampleArray = ['Test>><<Data'];
         $xmlContent = '<numIndex index="0">Test&gt;&gt;&lt;&lt;Data</numIndex>' . LF;
         $xml = GeneralUtility::array2xml($sampleArray, '', -1);
 

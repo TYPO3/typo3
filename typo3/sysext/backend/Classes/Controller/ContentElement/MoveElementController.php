@@ -142,7 +142,7 @@ class MoveElementController extends AbstractModule
             $headerLine = '<span ' . BackendUtility::getRecordToolTip($elRow, $this->table) . '>' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
             $headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, true);
             // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy))) . ';';
+            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy])) . ';';
             $headerLine .= '<div><input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . htmlspecialchars($lang->getLL('makeCopy')) . '</label></div>';
             // Add the header-content to the module content:
             $this->content .= '<div>' . $headerLine . '</div>';
@@ -161,7 +161,7 @@ class MoveElementController extends AbstractModule
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
+                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid])) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
                             } else {
                                 $code .= $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
                             }
@@ -198,7 +198,7 @@ class MoveElementController extends AbstractModule
                     // SHARED page-TSconfig settings.
                     // $modTSconfig_SHARED = BackendUtility::getModTSconfig($this->pageId, 'mod.SHARED');
                     $colPosArray = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->page_id, $this);
-                    $colPosIds = array();
+                    $colPosIds = [];
                     foreach ($colPosArray as $colPos) {
                         $colPosIds[] = $colPos[1];
                     }
@@ -213,10 +213,10 @@ class MoveElementController extends AbstractModule
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array(
+                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript([
                                     'uid' => (int)$pageInfo['pid'],
                                     'moveUid' => $this->moveUid
-                                ))) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
+                                ])) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
                             } else {
                                 $code .= $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
                             }

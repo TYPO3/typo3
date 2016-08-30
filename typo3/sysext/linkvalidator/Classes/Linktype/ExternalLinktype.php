@@ -29,21 +29,21 @@ class ExternalLinktype extends AbstractLinktype
      *
      * @var array $urlReports
      */
-    protected $urlReports = array();
+    protected $urlReports = [];
 
     /**
      * Cached list of all error parameters of the URLs, which were already checked for the current processing
      *
      * @var array $urlErrorParams
      */
-    protected $urlErrorParams = array();
+    protected $urlErrorParams = [];
 
     /**
      * List of headers to be used for matching an URL for the current processing
      *
      * @var array $additionalHeaders
      */
-    protected $additionalHeaders = array();
+    protected $additionalHeaders = [];
 
     /**
      * Checks a given URL for validity
@@ -55,7 +55,7 @@ class ExternalLinktype extends AbstractLinktype
      */
     public function checkLink($url, $softRefEntry, $reference)
     {
-        $errorParams = array();
+        $errorParams = [];
         $isValidUrl = true;
         if (isset($this->urlReports[$url])) {
             if (!$this->urlReports[$url]) {
@@ -66,10 +66,10 @@ class ExternalLinktype extends AbstractLinktype
             return $this->urlReports[$url];
         }
 
-        $options = array(
+        $options = [
             'cookies' => GeneralUtility::makeInstance(CookieJar::class),
             'allow_redirects' => ['strict' => true]
-        );
+        ];
 
         /** @var RequestFactory $requestFactory */
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);

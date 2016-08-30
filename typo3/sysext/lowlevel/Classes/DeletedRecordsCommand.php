@@ -29,9 +29,9 @@ class DeletedRecordsCommand extends CleanerCommand
     {
         parent::__construct();
         // Setting up help:
-        $this->cli_options[] = array('--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.');
-        $this->cli_options[] = array('--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)');
-        $this->cli_options[] = array('--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.');
+        $this->cli_options[] = ['--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.'];
+        $this->cli_options[] = ['--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)'];
+        $this->cli_options[] = ['--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.'];
         $this->cli_help['name'] = 'deleted -- To find and flush deleted records in the page tree';
         $this->cli_help['description'] = trim('
 Traversing page tree and finding deleted records
@@ -51,13 +51,13 @@ Although deleted records are not errors to be repaired, this tool allows you to 
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'deleted' => array('Index of deleted records', 'These are records from the page tree having the deleted-flag set. The --AUTOFIX option will flush them completely!', 1)
-            ),
-            'deleted' => array()
-        );
+            'headers' => [
+                'deleted' => ['Index of deleted records', 'These are records from the page tree having the deleted-flag set. The --AUTOFIX option will flush them completely!', 1]
+            ],
+            'deleted' => []
+        ];
         $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
         $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
@@ -97,7 +97,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
                 } else {
                     // Execute CMD array:
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->start(array(), array());
+                    $tce->start([], []);
                     // Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they
                     // should also be included in the set of deleted pages of course (no un-deleted record can exist
                     // under a deleted page...)

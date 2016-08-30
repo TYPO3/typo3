@@ -29,7 +29,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
@@ -62,8 +62,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         )->getMock();
         $this->subject = $this->getAccessibleMock(
             \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
-            array('initializeStandaloneViewInstance'),
-            array($this->contentObjectRenderer)
+            ['initializeStandaloneViewInstance'],
+            [$this->contentObjectRenderer]
         );
         /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $tsfe = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
@@ -111,7 +111,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject
             ->expects($this->once())
             ->method('initializeStandaloneViewInstance');
-        $this->subject->render(array());
+        $this->subject->render([]);
     }
 
     /**
@@ -126,7 +126,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->any())
             ->method('getFileName')
             ->with('foo');
-        $this->subject->render(array('file' => 'foo'));
+        $this->subject->render(['file' => 'foo']);
     }
 
     /**
@@ -138,8 +138,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->any())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $this->subject->render(array('file' => 'foo', 'file.' => array('bar' => 'baz')));
+            ->with('foo', ['bar' => 'baz']);
+        $this->subject->render(['file' => 'foo', 'file.' => ['bar' => 'baz']]);
     }
 
     /**
@@ -151,24 +151,24 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->at(0))
             ->method('stdWrap')
-            ->with('dummyPath', array('wrap' => '|5/'));
+            ->with('dummyPath', ['wrap' => '|5/']);
         $this->contentObjectRenderer
             ->expects($this->at(1))
             ->method('stdWrap')
-            ->with('', array('field' => 'someField'));
-        $this->subject->render(array(
+            ->with('', ['field' => 'someField']);
+        $this->subject->render([
                 'templateName' => 'foobar',
-                'templateRootPaths.' => array(
+                'templateRootPaths.' => [
                     10 => 'dummyPath',
-                    '10.' => array(
+                    '10.' => [
                         'wrap' => '|5/',
-                    ),
+                    ],
                     15 => 'dummyPath6/',
-                    '25.' => array(
+                    '25.' => [
                         'field' => 'someField',
-                    ),
-                )
-            )
+                    ],
+                ]
+            ]
         );
     }
 
@@ -189,7 +189,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->any())
             ->method('setTemplatePathAndFilename')
             ->with(PATH_site . 'bar');
-        $this->subject->render(array('file' => 'foo'));
+        $this->subject->render(['file' => 'foo']);
     }
 
     /**
@@ -202,7 +202,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->any())
             ->method('cObjGetSingle')
-            ->with('FILE', array('file' => PATH_site . 'foo/bar.html'))
+            ->with('FILE', ['file' => PATH_site . 'foo/bar.html'])
             ->will($this->returnValue('baz'));
 
         $this->standaloneView
@@ -210,12 +210,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('setTemplateSource')
             ->with('baz');
 
-        $this->subject->render(array(
+        $this->subject->render([
             'template' => 'FILE',
-            'template.' => array(
+            'template.' => [
                 'file' => PATH_site . 'foo/bar.html'
-            )
-        ));
+            ]
+        ]);
     }
 
     /**
@@ -234,12 +234,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('setTemplate')
             ->with('foo');
 
-        $this->subject->render(array(
+        $this->subject->render([
             'templateName' => 'foo',
-            'templateRootPaths.' => array(
+            'templateRootPaths.' => [
                 0 => 'dummyPath1/',
-                1 => 'dummyPath2/')
-            )
+                1 => 'dummyPath2/']
+            ]
         );
     }
 
@@ -253,7 +253,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('TEXT', array('value' => 'bar'))
+            ->with('TEXT', ['value' => 'bar'])
             ->will($this->returnValue('bar'));
         $this->standaloneView
             ->expects($this->any())
@@ -264,13 +264,13 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('setTemplate')
             ->with('bar');
 
-        $this->subject->render(array(
+        $this->subject->render([
             'templateName' => 'TEXT',
-            'templateName.' => array('value' => 'bar'),
-            'templateRootPaths.' => array(
+            'templateName.' => ['value' => 'bar'],
+            'templateRootPaths.' => [
                 0 => 'dummyPath1/',
-                1 => 'dummyPath2/')
-            )
+                1 => 'dummyPath2/']
+            ]
         );
     }
 
@@ -283,8 +283,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with(array(PATH_site . 'foo/bar.html'));
-        $this->subject->render(array('layoutRootPath' => 'foo/bar.html'));
+            ->with([PATH_site . 'foo/bar.html']);
+        $this->subject->render(['layoutRootPath' => 'foo/bar.html']);
     }
 
     /**
@@ -296,8 +296,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $this->subject->render(array('layoutRootPath' => 'foo', 'layoutRootPath.' => array('bar' => 'baz')));
+            ->with('foo', ['bar' => 'baz']);
+        $this->subject->render(['layoutRootPath' => 'foo', 'layoutRootPath.' => ['bar' => 'baz']]);
     }
 
     /**
@@ -309,17 +309,17 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->at(0))
             ->method('stdWrap')
-            ->with('FILE', array('file' => 'foo/bar.html'));
+            ->with('FILE', ['file' => 'foo/bar.html']);
         $this->subject->render(
-            array(
-                'layoutRootPaths.' => array(
+            [
+                'layoutRootPaths.' => [
                     10 => 'FILE',
-                    '10.' => array(
+                    '10.' => [
                         'file' => 'foo/bar.html',
-                    ),
+                    ],
                     20 => 'foo/bar2.html',
-                )
-            )
+                ]
+            ]
         );
     }
 
@@ -332,8 +332,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with(array(10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
-        $this->subject->render(array('layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
+            ->with([10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html']);
+        $this->subject->render(['layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
     }
 
     /**
@@ -345,8 +345,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with(array(0 => PATH_site . 'foo/main.html', 10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
-        $this->subject->render(array('layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
+            ->with([0 => PATH_site . 'foo/main.html', 10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html']);
+        $this->subject->render(['layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
     }
 
     /**
@@ -358,8 +358,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with(array(PATH_site . 'foo/bar.html'));
-        $this->subject->render(array('partialRootPath' => 'foo/bar.html'));
+            ->with([PATH_site . 'foo/bar.html']);
+        $this->subject->render(['partialRootPath' => 'foo/bar.html']);
     }
 
     /**
@@ -371,17 +371,17 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->at(0))
             ->method('stdWrap')
-            ->with('FILE', array('file' => 'foo/bar.html'));
+            ->with('FILE', ['file' => 'foo/bar.html']);
         $this->subject->render(
-            array(
-                'partialRootPaths.' => array(
+            [
+                'partialRootPaths.' => [
                     10 => 'FILE',
-                    '10.' => array(
+                    '10.' => [
                         'file' => 'foo/bar.html',
-                    ),
+                    ],
                     20 => 'foo/bar2.html',
-                )
-            )
+                ]
+            ]
         );
     }
 
@@ -394,8 +394,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $this->subject->render(array('partialRootPath' => 'foo', 'partialRootPath.' => array('bar' => 'baz')));
+            ->with('foo', ['bar' => 'baz']);
+        $this->subject->render(['partialRootPath' => 'foo', 'partialRootPath.' => ['bar' => 'baz']]);
     }
 
     /**
@@ -407,8 +407,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with(array(10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
-        $this->subject->render(array('partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
+            ->with([10 => PATH_site . 'foo', 20 => PATH_site . 'bar']);
+        $this->subject->render(['partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
     }
 
     /**
@@ -420,8 +420,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with(array(0 => PATH_site . 'main', 10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
-        $this->subject->render(array('partialRootPath' => 'main', 'partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
+            ->with([0 => PATH_site . 'main', 10 => PATH_site . 'foo', 20 => PATH_site . 'bar']);
+        $this->subject->render(['partialRootPath' => 'main', 'partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
     }
 
     /**
@@ -434,7 +434,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('setFormat')
             ->with('xml');
-        $this->subject->render(array('format' => 'xml'));
+        $this->subject->render(['format' => 'xml']);
     }
 
     /**
@@ -446,8 +446,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $this->subject->render(array('format' => 'foo', 'format.' => array('bar' => 'baz')));
+            ->with('foo', ['bar' => 'baz']);
+        $this->subject->render(['format' => 'foo', 'format.' => ['bar' => 'baz']]);
     }
 
     /**
@@ -460,11 +460,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('setPluginName')
             ->with('foo');
-        $configuration = array(
-            'extbase.' => array(
+        $configuration = [
+            'extbase.' => [
                 'pluginName' => 'foo',
-            ),
-        );
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -477,15 +477,15 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $configuration = array(
-            'extbase.' => array(
+            ->with('foo', ['bar' => 'baz']);
+        $configuration = [
+            'extbase.' => [
                 'pluginName' => 'foo',
-                'pluginName.' => array(
+                'pluginName.' => [
                     'bar' => 'baz',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -499,11 +499,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('setControllerExtensionName')
             ->with('foo');
-        $configuration = array(
-            'extbase.' => array(
+        $configuration = [
+            'extbase.' => [
                 'controllerExtensionName' => 'foo',
-            ),
-        );
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -516,15 +516,15 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $configuration = array(
-            'extbase.' => array(
+            ->with('foo', ['bar' => 'baz']);
+        $configuration = [
+            'extbase.' => [
                 'controllerExtensionName' => 'foo',
-                'controllerExtensionName.' => array(
+                'controllerExtensionName.' => [
                     'bar' => 'baz',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -538,11 +538,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('setControllerName')
             ->with('foo');
-        $configuration = array(
-            'extbase.' => array(
+        $configuration = [
+            'extbase.' => [
                 'controllerName' => 'foo',
-            ),
-        );
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -555,15 +555,15 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $configuration = array(
-            'extbase.' => array(
+            ->with('foo', ['bar' => 'baz']);
+        $configuration = [
+            'extbase.' => [
                 'controllerName' => 'foo',
-                'controllerName.' => array(
+                'controllerName.' => [
                     'bar' => 'baz',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -577,11 +577,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('setControllerActionName')
             ->with('foo');
-        $configuration = array(
-            'extbase.' => array(
+        $configuration = [
+            'extbase.' => [
                 'controllerActionName' => 'foo',
-            ),
-        );
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -594,15 +594,15 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('foo', array('bar' => 'baz'));
-        $configuration = array(
-            'extbase.' => array(
+            ->with('foo', ['bar' => 'baz']);
+        $configuration = [
+            'extbase.' => [
                 'controllerActionName' => 'foo',
-                'controllerActionName.' => array(
+                'controllerActionName.' => [
                     'bar' => 'baz',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->subject->render($configuration);
     }
 
@@ -613,21 +613,21 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->addMockViewToSubject();
 
-        $configuration = array(
-            'settings.' => array(
+        $configuration = [
+            'settings.' => [
                 'foo' => 'value',
-                'bar.' => array(
+                'bar.' => [
                     'baz' => 'value2',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
-        $expectedSettingsToBeSet = array(
+        $expectedSettingsToBeSet = [
             'foo' => 'value',
-            'bar' => array(
+            'bar' => [
                 'baz' => 'value2',
-            ),
-        );
+            ],
+        ];
 
         /** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
         $typoScriptServiceMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\TypoScriptService::class)->getMock();
@@ -652,14 +652,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderThrowsExceptionForNotAllowedVariableData()
     {
         $this->addMockViewToSubject();
-        $configuration = array(
-            'variables.' => array(
+        $configuration = [
+            'variables.' => [
                 'data' => 'foo',
-                'data.' => array(
+                'data.' => [
                     'bar' => 'baz',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288095720);
         $this->subject->render($configuration);
@@ -671,14 +671,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderThrowsExceptionForNotAllowedVariableCurrent()
     {
         $this->addMockViewToSubject();
-        $configuration = array(
-            'variables.' => array(
+        $configuration = [
+            'variables.' => [
                 'current' => 'foo',
-                'current.' => array(
+                'current.' => [
                     'bar' => 'baz',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288095720);
         $this->subject->render($configuration);
@@ -690,18 +690,18 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderCallsCObjGetSingleForAllowedVariable()
     {
         $this->addMockViewToSubject();
-        $configuration = array(
-            'variables.' => array(
+        $configuration = [
+            'variables.' => [
                 'aVar' => 'TEXT',
-                'aVar.' => array(
+                'aVar.' => [
                     'value' => 'foo',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('cObjGetSingle')
-            ->with('TEXT', array('value' => 'foo'));
+            ->with('TEXT', ['value' => 'foo']);
         $this->subject->render($configuration);
     }
 
@@ -711,14 +711,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderAssignsRenderedContentObjectVariableToView()
     {
         $this->addMockViewToSubject();
-        $configuration = array(
-            'variables.' => array(
+        $configuration = [
+            'variables.' => [
                 'aVar' => 'TEXT',
-                'aVar.' => array(
+                'aVar.' => [
                     'value' => 'foo',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('cObjGetSingle')
@@ -726,7 +726,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('assignMultiple')
-            ->with(array('aVar' => 'foo', 'data' => array(), 'current' => null));
+            ->with(['aVar' => 'foo', 'data' => [], 'current' => null]);
         $this->subject->render($configuration);
     }
 
@@ -736,12 +736,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderAssignsContentObjectRendererDataToView()
     {
         $this->addMockViewToSubject();
-        $this->contentObjectRenderer->data = array('foo');
+        $this->contentObjectRenderer->data = ['foo'];
         $this->standaloneView
             ->expects($this->once())
             ->method('assignMultiple')
-            ->with(array('data' => array('foo'), 'current' => null));
-        $this->subject->render(array());
+            ->with(['data' => ['foo'], 'current' => null]);
+        $this->subject->render([]);
     }
 
     /**
@@ -750,13 +750,13 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderAssignsContentObjectRendererCurrentValueToView()
     {
         $this->addMockViewToSubject();
-        $this->contentObjectRenderer->data = array('currentKey' => 'currentValue');
+        $this->contentObjectRenderer->data = ['currentKey' => 'currentValue'];
         $this->contentObjectRenderer->currentValKey = 'currentKey';
         $this->standaloneView
             ->expects($this->once())
             ->method('assignMultiple')
-            ->with(array('data' => array('currentKey' => 'currentValue'), 'current' => 'currentValue'));
-        $this->subject->render(array());
+            ->with(['data' => ['currentKey' => 'currentValue'], 'current' => 'currentValue']);
+        $this->subject->render([]);
     }
 
     /**
@@ -768,7 +768,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->standaloneView
             ->expects($this->once())
             ->method('render');
-        $this->subject->render(array());
+        $this->subject->render([]);
     }
 
     /**
@@ -777,11 +777,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration()
     {
         $this->addMockViewToSubject();
-        $configuration = array(
-            'stdWrap.' => array(
+        $configuration = [
+            'stdWrap.' => [
                 'foo' => 'bar',
-            ),
-        );
+            ],
+        ];
         $this->standaloneView
             ->expects($this->any())
             ->method('render')
@@ -789,7 +789,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->once())
             ->method('stdWrap')
-            ->with('baz', array('foo' => 'bar'));
+            ->with('baz', ['foo' => 'bar']);
         $this->subject->render($configuration);
     }
 }

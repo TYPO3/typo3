@@ -101,7 +101,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         ) {
             $config['appearance']['levelLinksPosition'] = 'none';
         } elseif (!isset($config['appearance']['levelLinksPosition'])
-            || !in_array($config['appearance']['levelLinksPosition'], array('top', 'bottom', 'both', 'none'), true)
+            || !in_array($config['appearance']['levelLinksPosition'], ['top', 'bottom', 'both', 'none'], true)
         ) {
             $config['appearance']['levelLinksPosition'] = 'top';
         }

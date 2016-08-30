@@ -268,7 +268,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)
                 ->disableOriginalConstructor()
-                ->getMock(array('getUid'));
+                ->getMock(['getUid']);
             $storage->method('getUid')->willReturn($folderData[0]);
             $folderObject->expects($this->any())->method('getStorage')->willReturn($storage);
             $folderObject->expects($this->any())->method('getIdentifier')->willReturn($folderData[1]);

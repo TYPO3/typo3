@@ -136,7 +136,7 @@ abstract class AbstractFrontend implements FrontendInterface
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'] as $_funcRef) {
-                $params = array('tag' => $tag);
+                $params = ['tag' => $tag];
                 GeneralUtility::callUserFunction($_funcRef, $params, $this);
             }
         }

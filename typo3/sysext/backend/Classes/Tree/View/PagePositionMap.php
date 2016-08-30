@@ -79,12 +79,12 @@ class PagePositionMap
     /**
      * @var array
      */
-    public $getModConfigCache = array();
+    public $getModConfigCache = [];
 
     /**
      * @var array
      */
-    public $checkNewPageCache = array();
+    public $checkNewPageCache = [];
 
     // Label keys:
     /**
@@ -154,10 +154,10 @@ class PagePositionMap
         // Create page tree, in $this->depth levels.
         $pageTree->getTree($pageinfo['pid'], $this->depth);
         // Initialize variables:
-        $saveLatestUid = array();
+        $saveLatestUid = [];
         $latestInvDepth = $this->depth;
         // Traverse the tree:
-        $lines = array();
+        $lines = [];
         foreach ($pageTree->tree as $cc => $dat) {
             // Make link + parameters.
             $latestInvDepth = $dat['invertedDepth'];
@@ -341,7 +341,7 @@ class PagePositionMap
         $this->R_URI = $R_URI;
         $this->moveUid = $moveUid;
         $colPosArray = GeneralUtility::trimExplode(',', $colPosList, true);
-        $lines = array();
+        $lines = [];
         foreach ($colPosArray as $kk => $vv) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
@@ -365,7 +365,7 @@ class PagePositionMap
             }
 
             $res = $queryBuilder->execute();
-            $lines[$vv] = array();
+            $lines[$vv] = [];
             $lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
 
             while ($row = $res->fetch()) {
@@ -582,7 +582,7 @@ class PagePositionMap
      */
     public function wrapRecordTitle($str, $row)
     {
-        return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$row['uid'], 'moveUid' => ''))) . '">' . $str . '</a>';
+        return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['uid' => (int)$row['uid'], 'moveUid' => ''])) . '">' . $str . '</a>';
     }
 
     /**

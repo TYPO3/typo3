@@ -55,7 +55,7 @@ class Extension extends AbstractEntity
     /**
      * @var array
      */
-    protected $updateResult = array();
+    protected $updateResult = [];
 
     /**
      * Constructor of the extension model.
@@ -227,13 +227,13 @@ class Extension extends AbstractEntity
      */
     public function toArray()
     {
-        return array(
+        return [
             'key'     => $this->getKey(),
             'title'   => $this->getTitle(),
             'icon'    => $this->getIcon(),
             'version' => $this->getVersion(),
             'width'   => $this->getIconWidth(),
             'height'  => $this->getIconHeight()
-        );
+        ];
     }
 }

@@ -42,9 +42,9 @@ class UserElements extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'user' => 'UserElements'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension
@@ -53,7 +53,7 @@ class UserElements extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $button = 'user';
         if (in_array($button, $this->toolbar)) {
             if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {

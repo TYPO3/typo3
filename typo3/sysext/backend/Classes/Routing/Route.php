@@ -29,7 +29,7 @@ class Route
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructor setting up the required path and options

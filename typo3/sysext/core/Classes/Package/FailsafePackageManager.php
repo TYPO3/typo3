@@ -38,7 +38,7 @@ class FailsafePackageManager extends PackageManager
             parent::loadPackageStates();
         } catch (Exception\PackageStatesUnavailableException $exception) {
             $this->inFailsafeMode = true;
-            $this->packageStatesConfiguration = array();
+            $this->packageStatesConfiguration = [];
             $this->scanAvailablePackages();
         }
     }

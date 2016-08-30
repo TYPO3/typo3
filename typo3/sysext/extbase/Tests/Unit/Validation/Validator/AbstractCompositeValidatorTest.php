@@ -36,12 +36,12 @@ class AbstractCompositeValidatorTest extends UnitTestCase
      */
     public function validatorAcceptsSupportedOptions()
     {
-        $inputOptions = array(
+        $inputOptions = [
             'requiredOption' => 666,
             'demoOption' => 42
-        );
+        ];
         $expectedOptions = $inputOptions;
-        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, array('dummy'), array($inputOptions));
+        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, ['dummy'], [$inputOptions]);
         $this->assertSame($expectedOptions, $validator->_get('options'));
     }
 
@@ -50,12 +50,12 @@ class AbstractCompositeValidatorTest extends UnitTestCase
      */
     public function validatorHasDefaultOptions()
     {
-        $inputOptions = array('requiredOption' => 666);
-        $expectedOptions = array(
+        $inputOptions = ['requiredOption' => 666];
+        $expectedOptions = [
             'requiredOption' => 666,
             'demoOption' => PHP_INT_MAX
-        );
-        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, array('dummy'), array($inputOptions));
+        ];
+        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, ['dummy'], [$inputOptions]);
         $this->assertSame($expectedOptions, $validator->_get('options'));
     }
 
@@ -64,10 +64,10 @@ class AbstractCompositeValidatorTest extends UnitTestCase
      */
     public function validatorThrowsExceptionOnNotSupportedOptions()
     {
-        $inputOptions = array('invalidoption' => 42);
+        $inputOptions = ['invalidoption' => 42];
         $this->expectException(\TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1339079804);
-        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, array('dummy'), array($inputOptions));
+        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, ['dummy'], [$inputOptions]);
     }
 
     /**
@@ -75,9 +75,9 @@ class AbstractCompositeValidatorTest extends UnitTestCase
      */
     public function validatorThrowsExceptionOnMissingRequiredOptions()
     {
-        $inputOptions = array();
+        $inputOptions = [];
         $this->expectException(\TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1339163922);
-        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, array('dummy'), array($inputOptions));
+        $validator = $this->getAccessibleMock(AbstractCompositeValidatorClass::class, ['dummy'], [$inputOptions]);
     }
 }

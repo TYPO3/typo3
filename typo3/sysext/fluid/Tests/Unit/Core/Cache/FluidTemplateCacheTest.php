@@ -39,7 +39,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     public function getDelegatesToRequireOnce()
     {
         $instance = $this->getMockBuilder(FluidTemplateCache::class)
-            ->setMethods(array('requireOnce'))
+            ->setMethods(['requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
         $instance->expects($this->once())->method('requireOnce')->with('foobar');
@@ -55,11 +55,11 @@ class FluidTemplateCacheTest extends UnitTestCase
         $backend->expects($this->once())->method('set')->with(
             'test',
             '<?php' . LF . 'test' . LF . '#',
-            array('foobar'),
+            ['foobar'],
             $this->anything()
         );
         $instance = new FluidTemplateCache('dummy', $backend);
-        $instance->set('test', 'test', array('foobar'));
+        $instance->set('test', 'test', ['foobar']);
     }
 
     /**
@@ -71,10 +71,10 @@ class FluidTemplateCacheTest extends UnitTestCase
         $backend->expects($this->once())->method('set')->with(
             'test',
             '<?php' . LF . 'test' . LF . '#',
-            array('foobar'),
+            ['foobar'],
             $this->anything()
         );
         $instance = new FluidTemplateCache('dummy', $backend);
-        $instance->set('test', '<?php' . LF . 'test', array('foobar'));
+        $instance->set('test', '<?php' . LF . 'test', ['foobar']);
     }
 }

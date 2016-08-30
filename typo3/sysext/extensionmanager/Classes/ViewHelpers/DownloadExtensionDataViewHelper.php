@@ -52,9 +52,9 @@ class DownloadExtensionDataViewHelper extends Link\ActionViewHelper
         }
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $uriBuilder->reset();
-        $uri = $uriBuilder->uriFor('downloadExtensionData', array(
+        $uri = $uriBuilder->uriFor('downloadExtensionData', [
             'extension' => $extension['key']
-        ), 'Action');
+        ], 'Action');
         $this->tag->addAttribute('href', $uri);
         $cssClass = 'downloadExtensionData btn btn-default';
         $this->tag->addAttribute('class', $cssClass);

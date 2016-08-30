@@ -47,7 +47,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->importScenarioDataSet('LiveDefaultElements');
         $this->importScenarioDataSet('ReferenceIndex');
 
-        $this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts']);
     }
 
     /**
@@ -61,7 +61,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function addElementRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, array(self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird)
+            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
         );
     }
 
@@ -72,7 +72,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function deleteElementRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, array(self::VALUE_ElementIdFirst)
+            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst]
         );
     }
 
@@ -92,7 +92,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function changeElementRelationSorting()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, array(self::VALUE_ElementIdSecond, self::VALUE_ElementIdFirst)
+            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, [self::VALUE_ElementIdSecond, self::VALUE_ElementIdFirst]
         );
     }
 
@@ -103,7 +103,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function createContentAndAddElementRelation()
     {
         $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1', self::FIELD_ContentElement => self::VALUE_ElementIdFirst)
+            self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1', self::FIELD_ContentElement => self::VALUE_ElementIdFirst]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
@@ -114,10 +114,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function createContentAndCreateElementRelation()
     {
-        $newElementIds = $this->actionService->createNewRecord(self::TABLE_Element, self::VALUE_PageId, array('title' => 'Testing #1'));
+        $newElementIds = $this->actionService->createNewRecord(self::TABLE_Element, self::VALUE_PageId, ['title' => 'Testing #1']);
         $this->recordIds['newElementId'] = $newElementIds[self::TABLE_Element][0];
         // It's not possible to use "NEW..." values for the TCA type 'select' in a workspace, in live it would have been fine
-        $newContentIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1', self::FIELD_ContentElement => $this->recordIds['newElementId']));
+        $newContentIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1', self::FIELD_ContentElement => $this->recordIds['newElementId']]);
         $this->recordIds['newContentId'] = $newContentIds[self::TABLE_Content][0];
     }
 
@@ -127,7 +127,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyElementOfRelation()
     {
-        $this->actionService->modifyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, array('title' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, ['title' => 'Testing #1']);
     }
 
     /**
@@ -136,7 +136,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyContentOfRelation()
     {
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
     /**
@@ -145,8 +145,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyBothSidesOfRelation()
     {
-        $this->actionService->modifyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, array('title' => 'Testing #1'));
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, ['title' => 'Testing #1']);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
     /**

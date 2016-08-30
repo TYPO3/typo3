@@ -39,12 +39,12 @@ class LanguageRepository
     /**
      * @var \TYPO3\CMS\Lang\Domain\Model\Language[]
      */
-    protected $selectedLocales = array();
+    protected $selectedLocales = [];
 
     /**
      * @var \TYPO3\CMS\Lang\Domain\Model\Language[]
      */
-    protected $languages = array();
+    protected $languages = [];
 
     /**
      * @var string
@@ -92,7 +92,7 @@ class LanguageRepository
         } catch (\Exception $e) {
             $configurationManager->setLocalConfigurationValueByPath(
                 $this->configurationPath,
-                array('availableLanguages' => array())
+                ['availableLanguages' => []]
             );
         }
     }
@@ -140,7 +140,7 @@ class LanguageRepository
     public function findSelected()
     {
         $languages = $this->findAll();
-        $result = array();
+        $result = [];
         foreach ($languages as $language) {
             if ($language->getSelected()) {
                 $result[] = $language;
@@ -158,7 +158,7 @@ class LanguageRepository
     public function updateSelectedLanguages($languages)
     {
         // Add possible dependencies for selected languages
-        $dependencies = array();
+        $dependencies = [];
         foreach ($languages as $language) {
             $dependencies = array_merge($dependencies, $this->locales->getLocaleDependencies($language));
         }
@@ -169,14 +169,14 @@ class LanguageRepository
         $diff = $dir < 0 ? array_diff($this->selectedLocales, $languages) : array_diff($languages, $this->selectedLocales);
         GeneralUtility::makeInstance(ConfigurationManager::class)->setLocalConfigurationValueByPath(
             $this->configurationPath,
-            array('availableLanguages' => $languages)
+            ['availableLanguages' => $languages]
         );
-        return array(
+        return [
             'success' => !empty($diff),
             'dir' => $dir,
             'diff' => array_values($diff),
             'languages' => $languages
-        );
+        ];
     }
 
     /**
@@ -188,7 +188,7 @@ class LanguageRepository
     public function activateByLocale($locale)
     {
         $languages = $this->findAll();
-        $locales = array();
+        $locales = [];
         foreach ($languages as $language) {
             if ($language->getSelected() || $language->getLocale() === $locale) {
                 $locales[] = $language->getLocale();
@@ -206,7 +206,7 @@ class LanguageRepository
     public function deactivateByLocale($locale)
     {
         $languages = $this->findAll();
-        $locales = array();
+        $locales = [];
         foreach ($languages as $language) {
             if ($language->getSelected() && $language->getLocale() !== $locale) {
                 $locales[] = $language->getLocale();

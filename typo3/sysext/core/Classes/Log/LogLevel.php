@@ -98,7 +98,7 @@ class LogLevel
      *
      * @var array
      */
-    protected static $levels = array(
+    protected static $levels = [
         self::EMERGENCY => 'EMERGENCY',
         self::ALERT => 'ALERT',
         self::CRITICAL => 'CRITICAL',
@@ -107,7 +107,7 @@ class LogLevel
         self::NOTICE => 'NOTICE',
         self::INFO => 'INFO',
         self::DEBUG => 'DEBUG'
-    );
+    ];
 
     /**
      * Resolves the name of a log level.

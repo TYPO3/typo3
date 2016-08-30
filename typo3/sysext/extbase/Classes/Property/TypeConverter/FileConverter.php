@@ -24,7 +24,7 @@ class FileConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFi
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('integer', 'string');
+    protected $sourceTypes = ['integer', 'string'];
 
     /**
      * @var string

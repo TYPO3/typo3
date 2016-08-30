@@ -70,7 +70,7 @@ class ImageInfo extends FileInfo
             // In case the image size could not be retrieved, log the incident as a warning.
             if (empty($this->imageSizes)) {
                 $this->getLogger()->warning('I could not retrieve the image size for file ' . $this->getPathname());
-                $this->imageSizes = array(0, 0);
+                $this->imageSizes = [0, 0];
             }
         }
         return $this->imageSizes;
@@ -84,7 +84,7 @@ class ImageInfo extends FileInfo
      */
     protected function extractSvgImageSizes()
     {
-        $imagesSizes = array();
+        $imagesSizes = [];
 
         $fileContent = file_get_contents($this->getPathname());
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
@@ -95,15 +95,15 @@ class ImageInfo extends FileInfo
 
         // First check if width+height are set
         if (!empty($xmlAttributes['width']) && !empty($xmlAttributes['height'])) {
-            $imagesSizes = array((int)$xmlAttributes['width'], (int)$xmlAttributes['height']);
+            $imagesSizes = [(int)$xmlAttributes['width'], (int)$xmlAttributes['height']];
 
         // Fallback to viewBox
         } elseif (!empty($xmlAttributes['viewBox'])) {
             $viewBox = explode(' ', $xmlAttributes['viewBox']);
-            $imagesSizes = array((int)$viewBox[2], (int)$viewBox[3]);
+            $imagesSizes = [(int)$viewBox[2], (int)$viewBox[3]];
         }
 
-        return $imagesSizes !== array() ? $imagesSizes : false;
+        return $imagesSizes !== [] ? $imagesSizes : false;
     }
 
     /**

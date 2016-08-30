@@ -49,41 +49,41 @@ class DatabaseIntegrityCheck
     /**
      * @var array Will hold id/rec pairs from genTree()
      */
-    public $page_idArray = array();
+    public $page_idArray = [];
 
     /**
      * @var array
      */
-    public $rec_idArray = array();
+    public $rec_idArray = [];
 
     /**
      * @var array
      */
-    public $checkFileRefs = array();
+    public $checkFileRefs = [];
 
     /**
      * @var array From the select-fields
      */
-    public $checkSelectDBRefs = array();
+    public $checkSelectDBRefs = [];
 
     /**
      * @var array From the group-fields
      */
-    public $checkGroupDBRefs = array();
+    public $checkGroupDBRefs = [];
 
     /**
      * @var array Statistics
      */
-    public $recStats = array(
-        'allValid' => array(),
-        'published_versions' => array(),
-        'deleted' => array()
-    );
+    public $recStats = [
+        'allValid' => [],
+        'published_versions' => [],
+        'deleted' => []
+    ];
 
     /**
      * @var array
      */
-    public $lRecords = array();
+    public $lRecords = [];
 
     /**
      * @var string
@@ -331,7 +331,7 @@ class DatabaseIntegrityCheck
      */
     public function getGroupFields($mode)
     {
-        $result = array();
+        $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
@@ -359,12 +359,12 @@ class DatabaseIntegrityCheck
      */
     public function getFileFields($uploadfolder)
     {
-        $result = array();
+        $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'file' && $config['config']['uploadfolder'] == $uploadfolder) {
-                    $result[] = array($table, $field);
+                    $result[] = [$table, $field];
                 }
             }
         }
@@ -379,16 +379,16 @@ class DatabaseIntegrityCheck
      */
     public function getDBFields($theSearchTable)
     {
-        $result = array();
+        $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'db') {
                     if (trim($config['config']['allowed']) == '*' || strstr($config['config']['allowed'], $theSearchTable)) {
-                        $result[] = array($table, $field);
+                        $result[] = [$table, $field];
                     }
                 } elseif ($config['config']['type'] == 'select' && $config['config']['foreign_table'] == $theSearchTable) {
-                    $result[] = array($table, $field);
+                    $result[] = [$table, $field];
                 }
             }
         }
@@ -512,9 +512,9 @@ class DatabaseIntegrityCheck
      */
     public function testFileRefs()
     {
-        $output = array();
+        $output = [];
         // Handle direct references with upload folder setting (workaround)
-        $newCheckFileRefs = array();
+        $newCheckFileRefs = [];
         foreach ($this->checkFileRefs as $folder => $files) {
             // Only direct references without a folder setting
             if ($folder !== '') {
@@ -547,13 +547,13 @@ class DatabaseIntegrityCheck
                                 foreach ($temp as $inf) {
                                     $tempList .= '[' . $inf['table'] . '][' . $inf['uid'] . '][' . $inf['field'] . '] (pid:' . $inf['pid'] . ') - ';
                                 }
-                                $output['moreReferences'][] = array($path, $entry, $fileArr[$entry], $tempList);
+                                $output['moreReferences'][] = [$path, $entry, $fileArr[$entry], $tempList];
                             }
                             unset($fileArr[$entry]);
                         } else {
                             // Contains workaround for direct references
                             if (!strstr($entry, 'index.htm') && !preg_match(('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/'), $folder)) {
-                                $output['noReferences'][] = array($path, $entry);
+                                $output['noReferences'][] = [$path, $entry];
                             }
                         }
                     }
@@ -573,10 +573,10 @@ class DatabaseIntegrityCheck
                         $tempList .= '[' . $inf['table'] . '][' . $inf['uid'] . '][' . $inf['field'] . '] (pid:' . $inf['pid'] . ') - ';
                     }
                     $tempCounter++;
-                    $output['noFile'][substr($path, -3) . '_' . substr($file, 0, 3) . '_' . $tempCounter] = array($path, $file, $tempList);
+                    $output['noFile'][substr($path, -3) . '_' . substr($file, 0, 3) . '_' . $tempCounter] = [$path, $file, $tempList];
                 }
             } else {
-                $output['error'][] = array($path);
+                $output['error'][] = [$path];
             }
         }
         return $output;

@@ -61,7 +61,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      *
      * @var array
      */
-    protected $pageTSConfigCache = array();
+    protected $pageTSConfigCache = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -361,7 +361,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 1465223252
             );
         }
-        return array(
+        return [
             'selectFields' => implode(' ', $statementParts['keywords']) . ' ' . implode(',', $statementParts['fields']),
             'fromTable'    => implode(' ', $statementParts['tables']) . ' ' . implode(' ', $statementParts['unions']),
             'whereClause'  => (!empty($statementParts['where']) ? implode('', $statementParts['where']) : '1=1')
@@ -372,7 +372,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             'orderBy'      => (!empty($statementParts['orderings']) ? implode(', ', $statementParts['orderings']) : ''),
             'limit'        => ($statementParts['offset'] ? $statementParts['offset'] . ', ' : '')
                 . ($statementParts['limit'] ? $statementParts['limit'] : '')
-        );
+        ];
     }
 
     /**
@@ -417,7 +417,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $result = $this->databaseHandle->sql_query($realStatement);
             $this->checkSqlErrors();
 
-            $rows = array();
+            $rows = [];
             while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
                 if (is_array($row)) {
                     $rows[] = $row;
@@ -565,11 +565,11 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     . ' AND t3ver_move_id=' . $rows[0]['uid']
             );
             if (!empty($movePlaceholder)) {
-                $rows = array($movePlaceholder);
+                $rows = [$movePlaceholder];
             }
         }
 
-        $overlaidRows = array();
+        $overlaidRows = [];
         foreach ($rows as $row) {
             // If current row is a translation select its parent
             if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
@@ -595,7 +595,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
                 && !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
             ) {
-                if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
+                if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], [-1, 0])) {
                     $overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
                     $row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getLanguageUid(), $overlayMode);
                 }
@@ -658,7 +658,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             // if disabled, return
             return;
         }
-        $pageIdsToClear = array();
+        $pageIdsToClear = [];
         $storagePage = null;
         $columns = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($tableName)

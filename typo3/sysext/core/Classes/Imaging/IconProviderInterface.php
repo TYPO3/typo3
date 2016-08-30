@@ -25,5 +25,5 @@ interface IconProviderInterface
      * @param Icon $icon
      * @param array $options
      */
-    public function prepareIconMarkup(Icon $icon, array $options = array());
+    public function prepareIconMarkup(Icon $icon, array $options = []);
 }

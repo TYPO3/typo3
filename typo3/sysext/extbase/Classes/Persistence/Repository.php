@@ -41,7 +41,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     /**
      * @var array
      */
-    protected $defaultOrderings = array();
+    protected $defaultOrderings = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
@@ -214,7 +214,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     public function createQuery()
     {
         $query = $this->persistenceManager->createQueryForType($this->objectType);
-        if ($this->defaultOrderings !== array()) {
+        if ($this->defaultOrderings !== []) {
             $query->setOrderings($this->defaultOrderings);
         }
         if ($this->defaultQuerySettings !== null) {

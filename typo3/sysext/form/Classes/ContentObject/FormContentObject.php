@@ -37,7 +37,7 @@ class FormContentObject extends AbstractContentObject
      * @return string HTML output
      * @throws \InvalidArgumentException
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $mergedTypoScript = null;
         // If the FORM configuration is retrieved from the database
@@ -90,26 +90,26 @@ class FormContentObject extends AbstractContentObject
      */
     protected function prepareNonCacheableUserFunction($typoScript)
     {
-        $configuration = array(
+        $configuration = [
             'userFunc' => 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run',
             'pluginName' => 'Form',
             'extensionName' => 'Form',
             'vendorName' => 'TYPO3\\CMS',
             'controller' => 'Frontend',
             'action' => 'show',
-            'settings' => array('typoscript' => $typoScript),
-            'persistence' => array(),
-            'view' => array(),
-        );
+            'settings' => ['typoscript' => $typoScript],
+            'persistence' => [],
+            'view' => [],
+        ];
 
         $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
         $substKey = 'INT_SCRIPT.' . $this->getTypoScriptFrontendController()->uniqueHash();
         $content = '<!--' . $substKey . '-->';
-        $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = array(
+        $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = [
             'conf' => $configuration,
             'cObj' => serialize($this->cObj),
             'type' => 'FUNC'
-        );
+        ];
         $this->cObj->setUserObjectType(false);
         return $content;
     }

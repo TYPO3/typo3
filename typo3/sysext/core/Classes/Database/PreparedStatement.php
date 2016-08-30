@@ -160,12 +160,12 @@ class PreparedStatement
      * @param array $precompiledQueryParts Components of the query to be executed
      * @access private
      */
-    public function __construct($query, $table, array $precompiledQueryParts = array())
+    public function __construct($query, $table, array $precompiledQueryParts = [])
     {
         $this->query = $query;
         $this->precompiledQueryParts = $precompiledQueryParts;
         $this->table = $table;
-        $this->parameters = array();
+        $this->parameters = [];
 
         // Test if named placeholders are used
         if ($this->hasNamedPlaceholders($query) || !empty($precompiledQueryParts)) {
@@ -254,10 +254,10 @@ class PreparedStatement
             throw new \InvalidArgumentException('Parameter names must start with ":" followed by an arbitrary number of alphanumerical characters.', 1395055513);
         }
         $key = is_int($parameter) ? $parameter - 1 : $parameter;
-        $this->parameters[$key] = array(
+        $this->parameters[$key] = [
             'value' => $value,
             'type' => $data_type == self::PARAM_AUTOTYPE ? $this->guessValueType($value) : $data_type
-        );
+        ];
         return $this;
     }
 
@@ -290,16 +290,16 @@ class PreparedStatement
      * @throws \InvalidArgumentException
      * @api
      */
-    public function execute(array $input_parameters = array())
+    public function execute(array $input_parameters = [])
     {
         $parameterValues = $this->parameters;
         if (!empty($input_parameters)) {
-            $parameterValues = array();
+            $parameterValues = [];
             foreach ($input_parameters as $key => $value) {
-                $parameterValues[$key] = array(
+                $parameterValues[$key] = [
                     'value' => $value,
                     'type' => $this->guessValueType($value)
-                );
+                ];
             }
         }
 
@@ -328,7 +328,7 @@ class PreparedStatement
         }
 
         $combinedTypes = '';
-        $values = array();
+        $values = [];
         foreach ($parameterValues as $parameterValue) {
             switch ($parameterValue['type']) {
                 case self::PARAM_NULL:
@@ -357,14 +357,14 @@ class PreparedStatement
 
         // ->bind_param requires second up to last arguments as references
         if (!empty($combinedTypes)) {
-            $bindParamArguments = array();
+            $bindParamArguments = [];
             $bindParamArguments[] = $combinedTypes;
             $numberOfExtraParamArguments = count($values);
             for ($i = 0; $i < $numberOfExtraParamArguments; $i++) {
                 $bindParamArguments[] = &$values[$i];
             }
 
-            call_user_func_array(array($this->statement, 'bind_param'), $bindParamArguments);
+            call_user_func_array([$this->statement, 'bind_param'], $bindParamArguments);
         }
 
         $success = $this->statement->execute();
@@ -396,7 +396,7 @@ class PreparedStatement
         $this->buffer = null;
 
         // Empty binding parameters
-        $this->parameters = array();
+        $this->parameters = [];
 
         // Return the success flag
         return $success;
@@ -417,14 +417,14 @@ class PreparedStatement
 
         if ($this->statement instanceof \mysqli_stmt) {
             if ($this->buffer === null) {
-                $variables = array();
-                $this->buffer = array();
+                $variables = [];
+                $this->buffer = [];
                 foreach ($this->fields as $field) {
                     $this->buffer[$field] = null;
                     $variables[] = &$this->buffer[$field];
                 }
 
-                call_user_func_array(array($this->statement, 'bind_result'), $variables);
+                call_user_func_array([$this->statement, 'bind_result'], $variables);
             }
             $success = $this->statement->fetch();
             $columns = $this->buffer;
@@ -434,7 +434,7 @@ class PreparedStatement
         }
 
         if ($success) {
-            $row = array();
+            $row = [];
             foreach ($columns as $key => $value) {
                 switch ($fetch_style) {
                     case self::FETCH_ASSOC:
@@ -480,7 +480,7 @@ class PreparedStatement
      */
     public function fetchAll($fetch_style = 0)
     {
-        $rows = array();
+        $rows = [];
         while (($row = $this->fetch($fetch_style)) !== false) {
             $rows[] = $row;
         }
@@ -533,10 +533,10 @@ class PreparedStatement
      */
     public function errorInfo()
     {
-        return array(
+        return [
             $this->statement->errno,
             $this->statement->error
-        );
+        ];
     }
 
     /**
@@ -601,7 +601,7 @@ class PreparedStatement
     protected function convertNamedPlaceholdersToQuestionMarks(&$query, array &$parameterValues, array &$precompiledQueryParts)
     {
         $queryPartsCount = count($precompiledQueryParts['queryParts']);
-        $newParameterValues = array();
+        $newParameterValues = [];
         $hasNamedPlaceholders = false;
 
         if ($queryPartsCount === 0) {

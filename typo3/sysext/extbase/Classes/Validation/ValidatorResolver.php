@@ -72,7 +72,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $baseValidatorConjunctions = array();
+    protected $baseValidatorConjunctions = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -99,7 +99,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $validatorOptions Options to be passed to the validator
      * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface Validator or NULL if none found.
      */
-    public function createValidator($validatorType, array $validatorOptions = array())
+    public function createValidator($validatorType, array $validatorOptions = [])
     {
         try {
             /**
@@ -155,7 +155,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
     public function buildMethodArgumentsValidatorConjunctions($className, $methodName, array $methodParameters = null, array $methodValidateAnnotations = null)
     {
         /** @var ConjunctionValidator[] $validatorConjunctions */
-        $validatorConjunctions = array();
+        $validatorConjunctions = [];
 
         if ($methodParameters === null) {
             $methodParameters = $this->reflectionService->getMethodParameters($className, $methodName);
@@ -188,11 +188,11 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
         if ($methodValidateAnnotations === null) {
             $validateAnnotations = $this->getMethodValidateAnnotations($className, $methodName);
             $methodValidateAnnotations = array_map(function ($validateAnnotation) {
-                return array(
+                return [
                     'type' => $validateAnnotation['validatorName'],
                     'options' => $validateAnnotation['validatorOptions'],
                     'argumentName' => $validateAnnotation['argumentName'],
-                );
+                ];
             }, $validateAnnotations);
         }
 
@@ -225,11 +225,11 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function buildSubObjectValidator(array $objectPath, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $propertyValidator)
     {
-        $rootObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
+        $rootObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, []);
         $parentObjectValidator = $rootObjectValidator;
 
         while (count($objectPath) > 1) {
-            $subObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
+            $subObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, []);
             $subPropertyName = array_shift($objectPath);
             $parentObjectValidator->addPropertyValidator($subPropertyName, $subObjectValidator);
             $parentObjectValidator = $subObjectValidator;
@@ -263,7 +263,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      * @throws \InvalidArgumentException
      */
-    protected function buildBaseValidatorConjunction($indexKey, $targetClassName, array $validationGroups = array())
+    protected function buildBaseValidatorConjunction($indexKey, $targetClassName, array $validationGroups = [])
     {
         $conjunctionValidator = new ConjunctionValidator();
         $this->baseValidatorConjunctions[$indexKey] = $conjunctionValidator;
@@ -272,7 +272,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
         if (!TypeHandlingUtility::isSimpleType($targetClassName) && class_exists($targetClassName)) {
             // Model based validator
             /** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
-            $objectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
+            $objectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, []);
             foreach ($this->reflectionService->getClassPropertyNames($targetClassName) as $classPropertyName) {
                 $classPropertyTagsValues = $this->reflectionService->getPropertyTagsValues($targetClassName, $classPropertyName);
 
@@ -288,7 +288,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                 // note: the outer simpleType check reduces lookups to the class loader
                 if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
                     if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
-                        $collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
+                        $collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, ['elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups]);
                         $objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
                     } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
                         $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName);
@@ -298,18 +298,18 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                     }
                 }
 
-                $validateAnnotations = array();
+                $validateAnnotations = [];
                 // @todo: Resolve annotations via reflectionService once its available
                 if (isset($classPropertyTagsValues['validate']) && is_array($classPropertyTagsValues['validate'])) {
                     foreach ($classPropertyTagsValues['validate'] as $validateValue) {
                         $parsedAnnotations = $this->parseValidatorAnnotation($validateValue);
 
                         foreach ($parsedAnnotations['validators'] as $validator) {
-                            array_push($validateAnnotations, array(
+                            array_push($validateAnnotations, [
                                 'argumentName' => $parsedAnnotations['argumentName'],
                                 'validatorName' => $validator['validatorName'],
                                 'validatorOptions' => $validator['validatorOptions']
-                            ));
+                            ]);
                         }
                     }
                 }
@@ -369,21 +369,21 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function parseValidatorAnnotation($validateValue)
     {
-        $matches = array();
+        $matches = [];
         if ($validateValue[0] === '$') {
             $parts = explode(' ', $validateValue, 2);
-            $validatorConfiguration = array('argumentName' => ltrim($parts[0], '$'), 'validators' => array());
+            $validatorConfiguration = ['argumentName' => ltrim($parts[0], '$'), 'validators' => []];
             preg_match_all(self::PATTERN_MATCH_VALIDATORS, $parts[1], $matches, PREG_SET_ORDER);
         } else {
-            $validatorConfiguration = array('validators' => array());
+            $validatorConfiguration = ['validators' => []];
             preg_match_all(self::PATTERN_MATCH_VALIDATORS, $validateValue, $matches, PREG_SET_ORDER);
         }
         foreach ($matches as $match) {
-            $validatorOptions = array();
+            $validatorOptions = [];
             if (isset($match['validatorOptions'])) {
                 $validatorOptions = $this->parseValidatorOptions($match['validatorOptions']);
             }
-            $validatorConfiguration['validators'][] = array('validatorName' => $match['validatorName'], 'validatorOptions' => $validatorOptions);
+            $validatorConfiguration['validators'][] = ['validatorName' => $match['validatorName'], 'validatorOptions' => $validatorOptions];
         }
         return $validatorConfiguration;
     }
@@ -397,13 +397,13 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function parseValidatorOptions($rawValidatorOptions)
     {
-        $validatorOptions = array();
-        $parsedValidatorOptions = array();
+        $validatorOptions = [];
+        $parsedValidatorOptions = [];
         preg_match_all(self::PATTERN_MATCH_VALIDATOROPTIONS, $rawValidatorOptions, $validatorOptions, PREG_SET_ORDER);
         foreach ($validatorOptions as $validatorOption) {
             $parsedValidatorOptions[trim($validatorOption['optionName'])] = trim($validatorOption['optionValue']);
         }
-        array_walk($parsedValidatorOptions, array($this, 'unquoteString'));
+        array_walk($parsedValidatorOptions, [$this, 'unquoteString']);
         return $parsedValidatorOptions;
     }
 
@@ -526,18 +526,18 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getMethodValidateAnnotations($className, $methodName)
     {
-        $validateAnnotations = array();
+        $validateAnnotations = [];
         $methodTagsValues = $this->reflectionService->getMethodTagsValues($className, $methodName);
         if (isset($methodTagsValues['validate']) && is_array($methodTagsValues['validate'])) {
             foreach ($methodTagsValues['validate'] as $validateValue) {
                 $parsedAnnotations = $this->parseValidatorAnnotation($validateValue);
 
                 foreach ($parsedAnnotations['validators'] as $validator) {
-                    array_push($validateAnnotations, array(
+                    array_push($validateAnnotations, [
                         'argumentName' => $parsedAnnotations['argumentName'],
                         'validatorName' => $validator['validatorName'],
                         'validatorOptions' => $validator['validatorOptions']
-                    ));
+                    ]);
                 }
             }
         }

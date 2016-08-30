@@ -36,7 +36,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
      *
      * @var array
      */
-    protected $loggers = array();
+    protected $loggers = [];
 
     /**
      * Default / global / root logger.
@@ -61,7 +61,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
      */
     public function reset()
     {
-        $this->loggers = array();
+        $this->loggers = [];
     }
 
     /**
@@ -81,7 +81,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
         /** @var $logger \TYPO3\CMS\Core\Log\Logger */
         $logger = null;
         // Transform namespaces and underscore class names to the dot-name style
-        $separators = array('_', '\\');
+        $separators = ['_', '\\'];
         $name = str_replace($separators, '.', $name);
         if (isset($this->loggers[$name])) {
             $logger = $this->loggers[$name];
@@ -184,7 +184,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
         // for these keys, for example "writerConfiguration"
         $configurationKey = $configurationType . 'Configuration';
         $configuration = $GLOBALS['TYPO3_CONF_VARS']['LOG'];
-        $result = $configuration[$configurationKey] ?: array();
+        $result = $configuration[$configurationKey] ?: [];
         // Walk from general to special (t3lib, t3lib.db, t3lib.db.foo)
         // and search for the most specific configuration
         foreach ($explodedName as $partOfClassName) {

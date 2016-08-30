@@ -51,60 +51,60 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var array
      */
-    public $categories = array(
-        'basic' => array(),
+    public $categories = [
+        'basic' => [],
         // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features. The most basic constants, which you would almost always want to configure.
-        'menu' => array(),
+        'menu' => [],
         // Menu setup. This includes fontfiles, sizes, background images. Depending on the menutype.
-        'content' => array(),
+        'content' => [],
         // All constants related to the display of pagecontent elements
-        'page' => array(),
+        'page' => [],
         // General configuration like metatags, link targets
-        'advanced' => array(),
+        'advanced' => [],
         // Advanced functions, which are used very seldomly.
-        'all' => array()
-    );
+        'all' => []
+    ];
 
     /**
      * Translated categories
      *
      * @var array
      */
-    protected $categoryLabels = array();
+    protected $categoryLabels = [];
 
     /**
      * This will be filled with the available categories of the current template.
      *
      * @var array
      */
-    public $subCategories = array(
+    public $subCategories = [
         // Standard categories:
-        'enable' => array('Enable features', 'a'),
-        'dims' => array('Dimensions, widths, heights, pixels', 'b'),
-        'file' => array('Files', 'c'),
-        'typo' => array('Typography', 'd'),
-        'color' => array('Colors', 'e'),
-        'links' => array('Links and targets', 'f'),
-        'language' => array('Language specific constants', 'g'),
+        'enable' => ['Enable features', 'a'],
+        'dims' => ['Dimensions, widths, heights, pixels', 'b'],
+        'file' => ['Files', 'c'],
+        'typo' => ['Typography', 'd'],
+        'color' => ['Colors', 'e'],
+        'links' => ['Links and targets', 'f'],
+        'language' => ['Language specific constants', 'g'],
         // subcategories based on the default content elements
-        'cheader' => array('Content: \'Header\'', 'ma'),
-        'cheader_g' => array('Content: \'Header\', Graphical', 'ma'),
-        'ctext' => array('Content: \'Text\'', 'mb'),
-        'cimage' => array('Content: \'Image\'', 'md'),
-        'ctextmedia' => array('Content: \'Textmedia\'', 'ml'),
-        'cbullets' => array('Content: \'Bullet list\'', 'me'),
-        'ctable' => array('Content: \'Table\'', 'mf'),
-        'cuploads' => array('Content: \'Filelinks\'', 'mg'),
-        'cmultimedia' => array('Content: \'Multimedia\'', 'mh'),
-        'cmedia' => array('Content: \'Media\'', 'mr'),
-        'cmailform' => array('Content: \'Form\'', 'mi'),
-        'csearch' => array('Content: \'Search\'', 'mj'),
-        'clogin' => array('Content: \'Login\'', 'mk'),
-        'cmenu' => array('Content: \'Menu/Sitemap\'', 'mm'),
-        'cshortcut' => array('Content: \'Insert records\'', 'mn'),
-        'clist' => array('Content: \'List of records\'', 'mo'),
-        'chtml' => array('Content: \'HTML\'', 'mq')
-    );
+        'cheader' => ['Content: \'Header\'', 'ma'],
+        'cheader_g' => ['Content: \'Header\', Graphical', 'ma'],
+        'ctext' => ['Content: \'Text\'', 'mb'],
+        'cimage' => ['Content: \'Image\'', 'md'],
+        'ctextmedia' => ['Content: \'Textmedia\'', 'ml'],
+        'cbullets' => ['Content: \'Bullet list\'', 'me'],
+        'ctable' => ['Content: \'Table\'', 'mf'],
+        'cuploads' => ['Content: \'Filelinks\'', 'mg'],
+        'cmultimedia' => ['Content: \'Multimedia\'', 'mh'],
+        'cmedia' => ['Content: \'Media\'', 'mr'],
+        'cmailform' => ['Content: \'Form\'', 'mi'],
+        'csearch' => ['Content: \'Search\'', 'mj'],
+        'clogin' => ['Content: \'Login\'', 'mk'],
+        'cmenu' => ['Content: \'Menu/Sitemap\'', 'mm'],
+        'cshortcut' => ['Content: \'Insert records\'', 'mn'],
+        'clist' => ['Content: \'List of records\'', 'mo'],
+        'chtml' => ['Content: \'HTML\'', 'mq']
+    ];
 
     /**
      * @var bool
@@ -123,12 +123,12 @@ class ExtendedTemplateService extends TemplateService
      *
      * @var array
      */
-    public $tsbrowser_searchKeys = array();
+    public $tsbrowser_searchKeys = [];
 
     /**
      * @var array
      */
-    public $tsbrowser_depthKeys = array();
+    public $tsbrowser_depthKeys = [];
 
     /**
      * @var string
@@ -163,7 +163,7 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var array
      */
-    public $ext_listOfTemplatesArr = array();
+    public $ext_listOfTemplatesArr = [];
 
     /**
      * @var string
@@ -197,7 +197,7 @@ class ExtendedTemplateService extends TemplateService
      *
      * @var array
      */
-    public $templateTitles = array();
+    public $templateTitles = [];
 
     /**
      * @var array|NULL
@@ -232,7 +232,7 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var array
      */
-    public $helpConfig = array();
+    public $helpConfig = [];
 
     /**
      * @var bool
@@ -242,12 +242,12 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var int[]
      */
-    protected $objReg = array();
+    protected $objReg = [];
 
     /**
      * @var array
      */
-    public $raw = array();
+    public $raw = [];
 
     /**
      * @var int
@@ -283,7 +283,7 @@ class ExtendedTemplateService extends TemplateService
     public function substituteConstants($all)
     {
         $this->Cmarker = substr(md5(uniqid('', true)), 0, 6);
-        return preg_replace_callback('/\\{\\$(.[^}]+)\\}/', array($this, 'substituteConstantsCallBack'), $all);
+        return preg_replace_callback('/\\{\\$(.[^}]+)\\}/', [$this, 'substituteConstantsCallBack'], $all);
     }
 
     /**
@@ -323,8 +323,8 @@ class ExtendedTemplateService extends TemplateService
             case 'const':
             case 'subst':
                 $all = str_replace(
-                    array('##' . $this->Cmarker . '_B##', '##' . $this->Cmarker . '_E##'),
-                    array('<strong style="color: green;">', '</strong>'),
+                    ['##' . $this->Cmarker . '_B##', '##' . $this->Cmarker . '_E##'],
+                    ['<strong style="color: green;">', '</strong>'],
                     $all
                 );
                 break;
@@ -347,14 +347,14 @@ class ExtendedTemplateService extends TemplateService
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         // Register comments!
         $constants->regComments = 1;
-        $constants->setup = $this->mergeConstantsFromPageTSconfig(array());
+        $constants->setup = $this->mergeConstantsFromPageTSconfig([]);
         /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         // Matches ALL conditions in TypoScript
         $matchObj->setSimulateMatchResult(true);
         $c = 0;
         $cc = count($this->constants);
-        $defaultConstants = array();
+        $defaultConstants = [];
         foreach ($this->constants as $str) {
             $c++;
             if ($c == $cc) {
@@ -363,13 +363,13 @@ class ExtendedTemplateService extends TemplateService
                     $str = $parts[1];
                     $constants->parse($parts[0], $matchObj);
                 }
-                $this->flatSetup = array();
+                $this->flatSetup = [];
                 $this->flattenSetup($constants->setup, '');
                 $defaultConstants = $this->flatSetup;
             }
             $constants->parse($str, $matchObj);
         }
-        $this->flatSetup = array();
+        $this->flatSetup = [];
         $this->flattenSetup($constants->setup, '');
         $this->setup['constants'] = $constants->setup;
         return $this->ext_compareFlatSetups($defaultConstants);
@@ -387,13 +387,13 @@ class ExtendedTemplateService extends TemplateService
             if (trim($parts[1]) !== '') {
                 return $this->ext_getSetup($theSetup[$parts[0] . '.'], trim($parts[1]));
             } else {
-                return array($theSetup[$parts[0] . '.'], $theSetup[$parts[0]]);
+                return [$theSetup[$parts[0] . '.'], $theSetup[$parts[0]]];
             }
         } else {
             if (trim($theKey) !== '') {
-                return array(array(), $theSetup[$theKey]);
+                return [[], $theSetup[$theKey]];
             } else {
-                return array($theSetup, '');
+                return [$theSetup, ''];
             }
         }
     }
@@ -415,8 +415,8 @@ class ExtendedTemplateService extends TemplateService
         if ($alphaSort == '1') {
             ksort($arr);
         }
-        $keyArr_num = array();
-        $keyArr_alpha = array();
+        $keyArr_num = [];
+        $keyArr_alpha = [];
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
             if (substr($key, -2) != '..') {
@@ -444,10 +444,10 @@ class ExtendedTemplateService extends TemplateService
                 $PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
                 $HTML .= $depthData . '<li>';
                 if ($PM !== 'join') {
-                    $urlParameters = array(
+                    $urlParameters = [
                         'id' => $GLOBALS['SOBE']->id,
                         'tsbr[' . $depth . ']' => $deeper ? 0 : 1
-                    );
+                    ];
                     if (GeneralUtility::_GP('breakPointLN')) {
                         $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
                     }
@@ -460,10 +460,10 @@ class ExtendedTemplateService extends TemplateService
                     $label = '<span style="color: #666666;">' . $label . '</span>';
                 } else {
                     if ($this->linkObjects) {
-                        $urlParameters = array(
+                        $urlParameters = [
                             'id' => $GLOBALS['SOBE']->id,
                             'sObj' => $depth
-                        );
+                        ];
                         if (GeneralUtility::_GP('breakPointLN')) {
                             $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
                         }
@@ -539,7 +539,7 @@ class ExtendedTemplateService extends TemplateService
     {
         // On the first call, construct the lnToScript array.
         if (!is_array($this->lnToScript)) {
-            $this->lnToScript = array();
+            $this->lnToScript = [];
 
             // aggregatedTotalLineCount
             $c = 0;
@@ -575,7 +575,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
     {
-        $keyArr = array();
+        $keyArr = [];
         foreach ($arr as $key => $value) {
             $key = preg_replace('/\\.$/', '', $key);
             if (substr($key, -1) != '.') {
@@ -659,7 +659,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_getTemplateHierarchyArr($arr, $depthData, $keyArray, $first = 0)
     {
-        $keyArr = array();
+        $keyArr = [];
         foreach ($arr as $key => $value) {
             $key = preg_replace('/\\.$/', '', $key);
             if (substr($key, -1) != '.') {
@@ -684,10 +684,10 @@ class ExtendedTemplateService extends TemplateService
                 ? '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
                 : '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
             if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
-                $urlParameters = array(
+                $urlParameters = [
                     'id' => $GLOBALS['SOBE']->id,
                     'template' => $row['templateID']
-                );
+                ];
                 $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
                 $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
                 $A_E = '</a>';
@@ -739,7 +739,7 @@ class ExtendedTemplateService extends TemplateService
             unset($this->clearList_const_temp[$row['templateID']]);
             $this->templateTitles[$row['templateID']] = $row['title'];
             if ($row['templateID'] == $this->hierarchyInfo[$pointer - 1]['templateParent']) {
-                $depthDataArr[$row['templateID'] . '.'] = $this->ext_process_hierarchyInfo(array(), $pointer);
+                $depthDataArr[$row['templateID'] . '.'] = $this->ext_process_hierarchyInfo([], $pointer);
             }
         }
         return $depthDataArr;
@@ -767,7 +767,7 @@ class ExtendedTemplateService extends TemplateService
             $tsparser = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
             $tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
             $tsparser->parentObject = $this;
-            return $tsparser->doSyntaxHighlight($all, $lineNumbers ? array($this->ext_lineNumberOffset + 1) : '', $syntaxHLBlockmode);
+            return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '', $syntaxHLBlockmode);
         } else {
             return $this->ext_formatTS($all, $lineNumbers, $comments, $crop);
         }
@@ -927,7 +927,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_compareFlatSetups($default)
     {
-        $editableComments = array();
+        $editableComments = [];
         $counter = 0;
         foreach ($this->flatSetup as $const => $value) {
             if (substr($const, -2) === '..' || !isset($this->flatSetup[$const . '..'])) {
@@ -1034,7 +1034,7 @@ class ExtendedTemplateService extends TemplateService
     public function ext_getCategoryLabelArray()
     {
         // Returns array used for labels in the menu.
-        $retArr = array();
+        $retArr = [];
         foreach ($this->categories as $k => $v) {
             if (!empty($v)) {
                 $retArr[$k] = strtoupper($k) . ' (' . count($v) . ')';
@@ -1049,7 +1049,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_getTypeData($type)
     {
-        $retArr = array();
+        $retArr = [];
         $type = trim($type);
         if (!$type) {
             $retArr['type'] = 'string';
@@ -1059,7 +1059,7 @@ class ExtendedTemplateService extends TemplateService
             $types = ['int' => 1, 'options' => 1, 'file' => 1, 'boolean' => 1, 'offset' => 1, 'user' => 1];
             if (isset($types[$retArr['type']])) {
                 $p = trim(substr($type, $m));
-                $reg = array();
+                $reg = [];
                 preg_match('/\\[(.*)\\]/', $p, $reg);
                 $p = trim($reg[1]);
                 if ($p) {
@@ -1091,7 +1091,7 @@ class ExtendedTemplateService extends TemplateService
     public function ext_getTSCE_config($category)
     {
         $catConf = $this->setup['constants']['TSConstantEditor.'][$category . '.'];
-        $out = array();
+        $out = [];
         if (is_array($catConf)) {
             foreach ($catConf as $key => $val) {
                 switch ($key) {
@@ -1130,7 +1130,7 @@ class ExtendedTemplateService extends TemplateService
             $fV = '';
         }
         $fV = htmlspecialchars($fV);
-        return array($fN, $fV, $params, $idName);
+        return [$fN, $fV, $params, $idName];
     }
 
     /**
@@ -1278,7 +1278,7 @@ class ExtendedTemplateService extends TemplateService
                             break;
                         case 'user':
                             $userFunction = $typeDat['paramstr'];
-                            $userFunctionParams = array('fieldName' => $fN, 'fieldValue' => $fV);
+                            $userFunctionParams = ['fieldName' => $fN, 'fieldValue' => $fV];
                             $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
                             break;
                         case 'small':
@@ -1381,7 +1381,7 @@ class ExtendedTemplateService extends TemplateService
         $this->raw = explode(LF, $constants);
         $this->rawP = 0;
         // Resetting the objReg if the divider is found!!
-        $this->objReg = array();
+        $this->objReg = [];
         $this->ext_regObjects('');
     }
 
@@ -1396,7 +1396,7 @@ class ExtendedTemplateService extends TemplateService
             $line = ltrim($this->raw[$this->rawP]);
             if (strstr($line, $this->edit_divider)) {
                 // Resetting the objReg if the divider is found!!
-                $this->objReg = array();
+                $this->objReg = [];
             }
             $this->rawP++;
             if ($line) {
@@ -1472,7 +1472,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_depthKeys($arr, $settings)
     {
-        $tsbrArray = array();
+        $tsbrArray = [];
         foreach ($arr as $theK => $theV) {
             $theKeyParts = explode('.', $theK);
             $depth = '';
@@ -1533,7 +1533,7 @@ class ExtendedTemplateService extends TemplateService
                                 $var = max(0, (int)$var);
                                 break;
                             case 'color':
-                                $col = array();
+                                $col = [];
                                 if ($var) {
                                     $var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
                                     $useFulHex = strlen($var) > 3;
@@ -1624,7 +1624,7 @@ class ExtendedTemplateService extends TemplateService
                 return $p;
             }
         }
-        return array();
+        return [];
     }
 
     /**
@@ -1632,7 +1632,7 @@ class ExtendedTemplateService extends TemplateService
      */
     protected function getRootLine()
     {
-        return isset($GLOBALS['rootLine']) ? $GLOBALS['rootLine'] : array();
+        return isset($GLOBALS['rootLine']) ? $GLOBALS['rootLine'] : [];
     }
 
     /**

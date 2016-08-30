@@ -43,7 +43,7 @@ class MetaDataRepository implements SingletonInterface
      *
      * @var array
      */
-    protected $tableFields = array();
+    protected $tableFields = [];
 
     /**
      * Wrapper method for getting DatabaseConnection
@@ -75,10 +75,10 @@ class MetaDataRepository implements SingletonInterface
 
                 $imageInfo = GeneralUtility::makeInstance(FileType\ImageInfo::class, $fileNameAndPath);
 
-                $additionalMetaInformation = array(
+                $additionalMetaInformation = [
                     'width' => $imageInfo->getWidth(),
                     'height' => $imageInfo->getHeight(),
-                );
+                ];
 
                 $this->update($file->getUid(), $additionalMetaInformation);
             }
@@ -133,16 +133,16 @@ class MetaDataRepository implements SingletonInterface
      * @param array $additionalFields
      * @return array
      */
-    public function createMetaDataRecord($fileUid, array $additionalFields = array())
+    public function createMetaDataRecord($fileUid, array $additionalFields = [])
     {
-        $emptyRecord =  array(
+        $emptyRecord =  [
             'file' => (int)$fileUid,
             'pid' => 0,
             'crdate' => $GLOBALS['EXEC_TIME'],
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
             'l10n_diffsource' => ''
-        );
+        ];
         $emptyRecord = array_merge($emptyRecord, $additionalFields);
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
@@ -246,7 +246,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordPostRetrievalSignal(\ArrayObject $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordPostRetrieval', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordPostRetrieval', [$data]);
     }
 
     /**
@@ -257,7 +257,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordUpdated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordUpdated', [$data]);
     }
 
     /**
@@ -268,7 +268,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordCreatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordCreated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordCreated', [$data]);
     }
 
     /**
@@ -279,7 +279,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordDeletedSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordDeleted', array($fileUid));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordDeleted', [$fileUid]);
     }
 
     /**

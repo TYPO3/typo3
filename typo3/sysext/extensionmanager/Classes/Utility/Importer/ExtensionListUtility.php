@@ -40,14 +40,14 @@ class ExtensionListUtility implements \SplObserver
      *
      * @var array
      */
-    protected $arrRows = array();
+    protected $arrRows = [];
 
     /**
      * Keeps fieldnames of tx_extensionmanager_domain_model_extension table.
      *
      * @var array
      */
-    protected static $fieldNames = array(
+    protected static $fieldNames = [
         'extension_key',
         'version',
         'integer_version',
@@ -68,14 +68,14 @@ class ExtensionListUtility implements \SplObserver
         'description',
         'serialized_dependencies',
         'update_comment'
-    );
+    ];
 
     /**
      * Keeps indexes of fields that should not be quoted.
      *
      * @var array
      */
-    protected static $fieldIndicesNoQuote = array(2, 3, 5, 11, 13, 14, 15, 16);
+    protected static $fieldIndicesNoQuote = [2, 3, 5, 11, 13, 14, 15, 16];
 
     /**
      * Keeps repository UID.
@@ -171,11 +171,11 @@ class ExtensionListUtility implements \SplObserver
                     $this->arrRows,
                     self::$fieldNames
                 );
-            $this->arrRows = array();
+            $this->arrRows = [];
         }
         $versionRepresentations = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionStringToArray($subject->getVersion());
         // order must match that of self::$fieldNames!
-        $this->arrRows[] = array(
+        $this->arrRows[] = [
             $subject->getExtkey(),
             $subject->getVersion(),
             $versionRepresentations['version_int'],
@@ -197,7 +197,7 @@ class ExtensionListUtility implements \SplObserver
             $subject->getDescription() ?: '',
             $subject->getDependencies() ?: '',
             $subject->getUploadcomment() ?: ''
-        );
+        ];
         ++$this->sumRecords;
     }
 

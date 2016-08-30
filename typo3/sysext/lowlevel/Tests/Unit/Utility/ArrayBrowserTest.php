@@ -37,7 +37,7 @@ class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function depthKeysWithEmptyFirstParameterAddsNothing()
     {
-        $this->assertEquals(array(), $this->subject->depthKeys(array(), array()));
+        $this->assertEquals([], $this->subject->depthKeys([], []));
     }
 
     /**
@@ -45,6 +45,6 @@ class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray()
     {
-        $this->assertEquals(array(0 => 1), $this->subject->depthKeys(array('foo'), array()));
+        $this->assertEquals([0 => 1], $this->subject->depthKeys(['foo'], []));
     }
 }

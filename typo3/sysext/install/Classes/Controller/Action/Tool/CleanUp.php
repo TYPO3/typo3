@@ -33,7 +33,7 @@ class CleanUp extends Action\AbstractAction
      *
      * @var array
      */
-    protected $actionMessages = array();
+    protected $actionMessages = [];
 
     /**
      * Executes the tool
@@ -74,54 +74,54 @@ class CleanUp extends Action\AbstractAction
      */
     protected function getCleanableTableList()
     {
-        $tableCandidates = array(
-            array(
+        $tableCandidates = [
+            [
                 'name' => 'be_sessions',
                 'description' => 'Backend user sessions'
-            ),
-            array(
+            ],
+            [
                 'name' => 'cache_md5params',
                 'description' => 'Frontend redirects',
-            ),
-            array(
+            ],
+            [
                 'name' => 'fe_sessions',
                 'description' => 'Frontend user sessions',
-            ),
-            array(
+            ],
+            [
                 'name' => 'fe_session_data',
                 'description' => 'Frontend user session data',
-            ),
-            array(
+            ],
+            [
                 'name' => 'sys_history',
                 'description' => 'Tracking of database record changes through TYPO3 backend forms',
-            ),
-            array(
+            ],
+            [
                 'name' => 'sys_lockedrecords',
                 'description' => 'Record locking of backend user editing',
-            ),
-            array(
+            ],
+            [
                 'name' => 'sys_log',
                 'description' => 'General log table',
-            ),
-            array(
+            ],
+            [
                 'name' => 'sys_preview',
                 'description' => 'Workspace preview links',
-            ),
-            array(
+            ],
+            [
                 'name' => 'tx_extensionmanager_domain_model_extension',
                 'description' => 'List of TER extensions',
-            ),
-            array(
+            ],
+            [
                 'name' => 'tx_rsaauth_keys',
                 'description' => 'Login process key storage'
-            ),
-        );
+            ],
+        ];
 
         $tables = [];
         foreach ($tableCandidates as $candidate) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                ->getConnectionForTable($candidate['name']);
-            if ($connection->getSchemaManager()->tablesExist(array($candidate['name']))) {
+            if ($connection->getSchemaManager()->tablesExist([$candidate['name']])) {
                 $candidate['rows'] = $connection->count(
                     '*',
                     $candidate['name'],
@@ -140,7 +140,7 @@ class CleanUp extends Action\AbstractAction
      */
     protected function clearSelectedTables()
     {
-        $clearedTables = array();
+        $clearedTables = [];
         if (isset($this->postValues['values']) && is_array($this->postValues['values'])) {
             foreach ($this->postValues['values'] as $tableName => $selected) {
                 if ($selected == 1) {
@@ -189,7 +189,7 @@ class CleanUp extends Action\AbstractAction
      */
     protected function getTypo3TempStatistics()
     {
-        $data = array();
+        $data = [];
         $pathTypo3Temp = PATH_site . 'typo3temp/';
         $postValues = $this->postValues['values'];
 
@@ -210,7 +210,7 @@ class CleanUp extends Action\AbstractAction
         $fileCounter = 0;
         $deleteCounter = 0;
         $criteriaMatch = 0;
-        $timeMap = array('day' => 1, 'week' => 7, 'month' => 30);
+        $timeMap = ['day' => 1, 'week' => 7, 'month' => 30];
         $directory = @dir($pathTypo3Temp . $subDirectory);
         if (is_object($directory)) {
             while ($entry = $directory->read()) {
@@ -269,12 +269,12 @@ class CleanUp extends Action\AbstractAction
         $data['selectedSubDirectory'] = $subDirectory;
 
         // Set up sub directory data
-        $data['subDirectories'] = array(
-            '' => array(
+        $data['subDirectories'] = [
+            '' => [
                 'name' => '',
                 'filesNumber' => count(GeneralUtility::getFilesInDir($pathTypo3Temp)),
-            ),
-        );
+            ],
+        ];
         $directories = dir($pathTypo3Temp);
         if (is_object($directories)) {
             while ($entry = $directories->read()) {

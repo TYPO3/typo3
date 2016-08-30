@@ -120,7 +120,7 @@ class RecyclerUtility
             }
         }
         if ($fullTitleLimit) {
-            return array($output, $fullOutput);
+            return [$output, $fullOutput];
         } else {
             return $output;
         }

@@ -69,7 +69,7 @@ class RemoveXSS
         }
 
         // Now the only remaining whitespace attacks are \t, \n, and \r
-        $allKeywords = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed',
+        $allKeywords = ['javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed',
             'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base', 'video', 'audio', 'track',
             'canvas', 'onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut',
             'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate',
@@ -84,10 +84,10 @@ class RemoveXSS
             'onpause', 'onplay', 'onplaying', 'onpopstate', 'onprogress', 'onpropertychange', 'onratechange', 'onreadystatechange',
             'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted',
             'onscroll', 'onseeked', 'onseeking','onselect', 'onselectionchange', 'onselectstart', 'onshow', 'onstalled', 'onstart',
-            'onstop', 'onstorage', 'onsubmit', 'onsuspend', 'ontimeupdate', 'onunload', 'onvolumechange', 'onwaiting');
-        $tagKeywords = array('applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame',
-            'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base', 'video', 'audio', 'track', 'canvas');
-        $attributeKeywords = array('style', 'onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate',
+            'onstop', 'onstorage', 'onsubmit', 'onsuspend', 'ontimeupdate', 'onunload', 'onvolumechange', 'onwaiting'];
+        $tagKeywords = ['applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame',
+            'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base', 'video', 'audio', 'track', 'canvas'];
+        $attributeKeywords = ['style', 'onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate',
             'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint',
             'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncanplay', 'oncanplaythrough', 'oncellchange', 'onchange',
             'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncuechange', 'oncut', 'ondataavailable', 'ondatasetchanged',
@@ -101,12 +101,12 @@ class RemoveXSS
             'onpropertychange', 'onratechange', 'onreadystatechange', 'onredo', 'onreset', 'onresize', 'onresizeend',
             'onresizestart','onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onseeked', 'onseeking',
             'onselect', 'onselectionchange', 'onselectstart', 'onshow', 'onstalled', 'onstart', 'onstop', 'onstorage', 'onsubmit',
-            'onsuspend', 'ontimeupdate', 'onundo', 'onunload', 'onvolumechange', 'onwaiting');
-        $protocolKeywords = array('javascript', 'vbscript', 'expression');
+            'onsuspend', 'ontimeupdate', 'onundo', 'onunload', 'onvolumechange', 'onwaiting'];
+        $protocolKeywords = ['javascript', 'vbscript', 'expression'];
 
         // Remove the potential &#xxx; stuff for testing
         $valueForQuickCheck = preg_replace('/(&#[xX]?0{0,8}(9|10|13|a|b);?)*\s*/i', '', $value);
-        $potentialKeywords = array();
+        $potentialKeywords = [];
 
         foreach ($allKeywords as $keyword) {
             // Stripos is faster than the regular expressions used later and because the words we're looking for only have
@@ -114,13 +114,13 @@ class RemoveXSS
             if (stripos($valueForQuickCheck, $keyword) !== false) {
                 //keep list of potential words that were found
                 if (in_array($keyword, $protocolKeywords, true)) {
-                    $potentialKeywords[] = array($keyword, 'protocol');
+                    $potentialKeywords[] = [$keyword, 'protocol'];
                 }
                 if (in_array($keyword, $tagKeywords, true)) {
-                    $potentialKeywords[] = array($keyword, 'tag');
+                    $potentialKeywords[] = [$keyword, 'tag'];
                 }
                 if (in_array($keyword, $attributeKeywords, true)) {
-                    $potentialKeywords[] = array($keyword, 'attribute');
+                    $potentialKeywords[] = [$keyword, 'attribute'];
                 }
                 // Some keywords appear in more than one array.
                 // These get multiple entries in $potentialKeywords, each with the appropriate type

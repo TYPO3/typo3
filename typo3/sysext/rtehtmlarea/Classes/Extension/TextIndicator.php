@@ -40,9 +40,9 @@ class TextIndicator extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'textindicator' => 'TextIndicator'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

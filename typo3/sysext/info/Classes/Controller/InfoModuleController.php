@@ -75,9 +75,9 @@ class InfoModuleController extends BaseScriptClass
 
         $this->backendUser = $GLOBALS['BE_USER'];
 
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName,
-        );
+        ];
     }
 
     /**
@@ -99,7 +99,7 @@ class InfoModuleController extends BaseScriptClass
         $access = is_array($this->pageinfo);
         if ($this->id && $access || $this->backendUser->user['admin'] && !$this->id) {
             if ($this->backendUser->user['admin'] && !$this->id) {
-                $this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
+                $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(
@@ -238,9 +238,9 @@ class InfoModuleController extends BaseScriptClass
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Layouts')));
-        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Partials')));
-        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates')));
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates')]);
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates/Main.html'));
 

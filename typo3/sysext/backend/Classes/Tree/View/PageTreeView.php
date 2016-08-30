@@ -24,7 +24,7 @@ class PageTreeView extends AbstractTreeView
     /**
      * @var array
      */
-    public $fieldArray = array(
+    public $fieldArray = [
         'uid',
         'pid',
         'title',
@@ -41,7 +41,7 @@ class PageTreeView extends AbstractTreeView
         'module',
         'extendToSubpages',
         'nav_hide'
-    );
+    ];
 
     /**
      * override to use this treeName
@@ -111,7 +111,7 @@ class PageTreeView extends AbstractTreeView
      */
     public function initializePositionSaving()
     {
-        $this->stored = array();
+        $this->stored = [];
     }
 
     /**

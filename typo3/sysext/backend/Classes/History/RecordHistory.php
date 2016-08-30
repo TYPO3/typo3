@@ -78,7 +78,7 @@ class RecordHistory
     /**
      * @var array
      */
-    public $changeLog = array();
+    public $changeLog = [];
 
     /**
      * @var bool
@@ -88,12 +88,12 @@ class RecordHistory
     /**
      * @var array
      */
-    protected $recordCache = array();
+    protected $recordCache = [];
 
     /**
      * @var array
      */
-    protected $pageAccessCache = array();
+    protected $pageAccessCache = [];
 
     /**
      * @var IconFactory
@@ -203,8 +203,8 @@ class RecordHistory
         $rollbackData = explode(':', $this->rollbackFields);
         // PROCESS INSERTS AND DELETES
         // rewrite inserts and deletes
-        $cmdmapArray = array();
-        $data = array();
+        $cmdmapArray = [];
+        $data = [];
         if ($diff['insertsDeletes']) {
             switch (count($rollbackData)) {
                 case 1:
@@ -242,7 +242,7 @@ class RecordHistory
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->debug = 0;
             $tce->dontProcessTransformations = 1;
-            $tce->start(array(), $cmdmapArray);
+            $tce->start([], $cmdmapArray);
             $tce->process_cmdmap();
             unset($tce);
             if (isset($cmdmapArray['pages'])) {
@@ -251,7 +251,7 @@ class RecordHistory
         }
         // PROCESS CHANGES
         // create an array for process_datamap
-        $diffModified = array();
+        $diffModified = [];
         foreach ($diff['oldData'] as $key => $value) {
             $splitKey = explode(':', $key);
             $diffModified[$splitKey[0]][$splitKey[1]] = $value;
@@ -276,7 +276,7 @@ class RecordHistory
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         $tce->debug = 0;
         $tce->dontProcessTransformations = 1;
-        $tce->start($data, array());
+        $tce->start($data, []);
         $tce->process_datamap();
         unset($tce);
         if (isset($data['pages'])) {
@@ -302,7 +302,7 @@ class RecordHistory
         // Get current selection from UC, merge data, write it back to UC
         $currentSelection = is_array($this->getBackendUser()->uc['moduleData']['history'])
             ? $this->getBackendUser()->uc['moduleData']['history']
-            : array('maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'showInsertDelete' => 1);
+            : ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'showInsertDelete' => 1];
         $currentSelectionOverride = $this->getArgument('settings');
         if ($currentSelectionOverride) {
             $currentSelection = array_merge($currentSelection, $currentSelectionOverride);
@@ -310,50 +310,50 @@ class RecordHistory
             $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
         }
         // Display selector for number of history entries
-        $selector['maxSteps'] = array(
-            10 => array(
+        $selector['maxSteps'] = [
+            10 => [
                 'value' => 10
-            ),
-            20 => array(
+            ],
+            20 => [
                 'value' => 20
-            ),
-            50 => array(
+            ],
+            50 => [
                 'value' => 50
-            ),
-            100 => array(
+            ],
+            100 => [
                 'value' => 100
-            ),
-            999 => array(
+            ],
+            999 => [
                 'value' => 'maxSteps_all'
-            ),
-            'marked' => array(
+            ],
+            'marked' => [
                 'value' => 'maxSteps_marked'
-            )
-        );
-        $selector['showDiff'] = array(
-            0 => array(
+            ]
+        ];
+        $selector['showDiff'] = [
+            0 => [
                 'value' => 'showDiff_no'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'value' => 'showDiff_inline'
-            )
-        );
-        $selector['showSubElements'] = array(
-            0 => array(
+            ]
+        ];
+        $selector['showSubElements'] = [
+            0 => [
                 'value' => 'no'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'value' => 'yes'
-            )
-        );
-        $selector['showInsertDelete'] = array(
-            0 => array(
+            ]
+        ];
+        $selector['showInsertDelete'] = [
+            0 => [
                 'value' => 'no'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'value' => 'yes'
-            )
-        );
+            ]
+        ];
 
         $scriptUrl = GeneralUtility::linkThisScript();
         $languageService = $this->getLanguageService();
@@ -385,7 +385,7 @@ class RecordHistory
             $pid = $this->getRecord($elParts[0], $elParts[1]);
 
             if ($this->hasPageAccess('pages', $pid['pid'])) {
-                $this->view->assign('fullHistoryLink', $this->linkPage(htmlspecialchars($languageService->getLL('elementHistory_link')), array('element' => 'pages:' . $pid['pid'])));
+                $this->view->assign('fullHistoryLink', $this->linkPage(htmlspecialchars($languageService->getLL('elementHistory_link')), ['element' => 'pages:' . $pid['pid']]));
             }
         }
     }
@@ -401,7 +401,7 @@ class RecordHistory
             return '';
         }
         $languageService = $this->getLanguageService();
-        $lines = array();
+        $lines = [];
         $beUserArray = BackendUtility::getUserNames();
 
         $i = 0;
@@ -418,7 +418,7 @@ class RecordHistory
             }
             $i++;
             // Build up single line
-            $singleLine = array();
+            $singleLine = [];
 
             // Get user names
             $userName = $entry['user'] ? $beUserArray[$entry['user']]['username'] : $languageService->getLL('externalChange');
@@ -432,7 +432,7 @@ class RecordHistory
 
             // Diff link
             $image = $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
-            $singleLine['rollbackLink']= $this->linkPage($image, array('diff' => $sysLogUid));
+            $singleLine['rollbackLink']= $this->linkPage($image, ['diff' => $sysLogUid]);
             // remove first link
             $singleLine['time'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
             // add time
@@ -441,7 +441,7 @@ class RecordHistory
 
             $singleLine['tableUid'] = $this->linkPage(
                 $this->generateTitle($entry['tablename'], $entry['recuid']),
-                array('element' => $entry['tablename'] . ':' . $entry['recuid']),
+                ['element' => $entry['tablename'] . ':' . $entry['recuid']],
                 '',
                 htmlspecialchars($languageService->getLL('linkRecordHistory'))
             );
@@ -480,7 +480,7 @@ class RecordHistory
                     $title = htmlspecialchars($languageService->getLL('markState'));
                     $image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL)->render();
                 }
-                $singleLine['markState'] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
+                $singleLine['markState'] = $this->linkPage($image, ['highlight' => $entry['uid']], '', $title);
             } else {
                 $singleLine['markState'] = '';
             }
@@ -490,7 +490,7 @@ class RecordHistory
         $this->view->assign('history', $lines);
 
         if ($this->lastSyslogId) {
-            $this->view->assign('fullViewLink', $this->linkPage(htmlspecialchars($languageService->getLL('fullView')), array('diff' => '')));
+            $this->view->assign('fullViewLink', $this->linkPage(htmlspecialchars($languageService->getLL('fullView')), ['diff' => '']));
         }
     }
 
@@ -506,9 +506,9 @@ class RecordHistory
         $arrayKeys = array_unique($arrayKeys);
         $languageService = $this->getLanguageService();
         if ($arrayKeys) {
-            $lines = array();
+            $lines = [];
             foreach ($arrayKeys as $key) {
-                $singleLine = array();
+                $singleLine = [];
                 $elParts = explode(':', $key);
                 // Turn around diff because it should be a "rollback preview"
                 if ((int)$diff['insertsDeletes'][$key] === 1) {
@@ -545,7 +545,7 @@ class RecordHistory
      */
     public function renderDiff($entry, $table, $rollbackUid = 0)
     {
-        $lines = array();
+        $lines = [];
         if (is_array($entry['newRecord'])) {
             /* @var DiffUtility $diffUtility */
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
@@ -558,11 +558,11 @@ class RecordHistory
                         BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, true),
                         BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, true)
                     );
-                    $lines[] = array(
+                    $lines[] = [
                         'title' => ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), htmlspecialchars($languageService->getLL('revertField')), 2) : '') . '
                           ' . htmlspecialchars($languageService->sL(BackendUtility::getItemLabel($table, $fN))),
                         'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres))
-                    );
+                    ];
                 }
             }
         }
@@ -585,9 +585,9 @@ class RecordHistory
      */
     public function createMultipleDiff()
     {
-        $insertsDeletes = array();
-        $newArr = array();
-        $differences = array();
+        $insertsDeletes = [];
+        $newArr = [];
+        $differences = [];
         if (!$this->changeLog) {
             return 0;
         }
@@ -633,11 +633,11 @@ class RecordHistory
                 unset($differences[$record]);
             }
         }
-        return array(
+        return [
             'newData' => $newArr,
             'oldData' => $differences,
             'insertsDeletes' => $insertsDeletes
-        );
+        ];
     }
 
     /**
@@ -722,7 +722,7 @@ class RecordHistory
             ->execute()
             ->fetchAll();
 
-        $changeLog = array();
+        $changeLog = [];
         if (!empty($rows)) {
             // Traversing the result, building up changesArray / changeLog:
             foreach ($rows as $row) {
@@ -778,7 +778,7 @@ class RecordHistory
                 if ($this->lastSyslogId && $row['uid'] < $this->lastSyslogId) {
                     continue;
                 }
-                $hisDat = array();
+                $hisDat = [];
                 $logData = unserialize($row['log_data']);
                 switch ($row['action']) {
                     case 1:
@@ -833,7 +833,7 @@ class RecordHistory
      */
     public function createRollbackLink($key, $alt = '', $type = 0)
     {
-        return $this->linkPage('<span class="btn btn-default" style="margin-right: 5px;">' . $alt . '</span>', array('rollbackFields' => $key));
+        return $this->linkPage('<span class="btn btn-default" style="margin-right: 5px;">' . $alt . '</span>', ['rollbackFields' => $key]);
     }
 
     /**
@@ -846,7 +846,7 @@ class RecordHistory
      * @return string Link.
      * @access private
      */
-    public function linkPage($str, $inparams = array(), $anchor = '', $title = '')
+    public function linkPage($str, $inparams = [], $anchor = '', $title = '')
     {
         // Setting default values based on GET parameters:
         $params['element'] = $this->element;
@@ -1022,7 +1022,7 @@ class RecordHistory
                 break;
             case 'settings':
                 if (!is_array($value)) {
-                    $value = array();
+                    $value = [];
                 }
                 break;
             default:
@@ -1049,9 +1049,9 @@ class RecordHistory
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')));
-        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')));
-        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')));
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/RecordHistory/Main.html'));
 

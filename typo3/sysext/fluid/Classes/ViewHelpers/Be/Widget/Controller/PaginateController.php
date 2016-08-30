@@ -22,7 +22,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     /**
      * @var array
      */
-    protected $configuration = array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'recordsLabel' => '');
+    protected $configuration = ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'recordsLabel' => ''];
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
@@ -91,9 +91,9 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             }
             $modifiedObjects = $query->execute();
         }
-        $this->view->assign('contentArguments', array(
+        $this->view->assign('contentArguments', [
             $this->widgetConfiguration['as'] => $modifiedObjects
-        ));
+        ]);
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('pagination', $this->buildPagination());
     }
@@ -109,14 +109,14 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         if ($endRecord > $this->numberOfObjects) {
             $endRecord = $this->numberOfObjects;
         }
-        $pagination = array(
+        $pagination = [
             'current' => $this->currentPage,
             'numberOfPages' => $this->numberOfPages,
             'hasLessPages' => $this->currentPage > 1,
             'hasMorePages' => $this->currentPage < $this->numberOfPages,
             'startRecord' => $this->offset + 1,
             'endRecord' => $endRecord
-        );
+        ];
         if ($this->currentPage < $this->numberOfPages) {
             $pagination['nextPage'] = $this->currentPage + 1;
         }

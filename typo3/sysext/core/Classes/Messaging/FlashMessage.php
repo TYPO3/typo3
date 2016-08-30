@@ -29,24 +29,24 @@ class FlashMessage extends AbstractMessage
     /**
      * @var string The message severity class names
      */
-    protected $classes = array(
+    protected $classes = [
         self::NOTICE => 'notice',
         self::INFO => 'info',
         self::OK => 'success',
         self::WARNING => 'warning',
         self::ERROR => 'danger'
-    );
+    ];
 
     /**
      * @var string The message severity icon names
      */
-    protected $icons = array(
+    protected $icons = [
         self::NOTICE => 'lightbulb-o',
         self::INFO => 'info',
         self::OK => 'check',
         self::WARNING => 'exclamation',
         self::ERROR => 'times'
-    );
+    ];
 
     /**
      * Constructor for a flash message

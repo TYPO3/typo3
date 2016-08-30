@@ -31,7 +31,7 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      *
      * @var array
      */
-    protected $onlineMediaIdCache = array();
+    protected $onlineMediaIdCache = [];
 
     /**
      * File extension bind to the OnlineMedia helper

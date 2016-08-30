@@ -48,13 +48,13 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
         // Write the code for the field
         $fieldID = 'task_sleepTime';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[sleepTime]" id="' . $fieldID . '" value="' . $taskInfo['sleepTime'] . '" size="10">';
-        $additionalFields = array();
-        $additionalFields[$fieldID] = array(
+        $additionalFields = [];
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.sleepTime',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldID
-        );
+        ];
         return $additionalFields;
     }
 

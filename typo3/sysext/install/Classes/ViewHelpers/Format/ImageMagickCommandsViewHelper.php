@@ -65,7 +65,7 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper
     {
         $commands = $arguments['commands'];
 
-        $result = array();
+        $result = [];
         foreach ($commands as $commandGroup) {
             $result[] = '<strong>Command:</strong>' . LF . htmlspecialchars($commandGroup[1]);
             // If 3 elements: last one is result

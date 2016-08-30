@@ -30,12 +30,12 @@ class ViewHelperResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function createViewHelperInstanceCreatesViewHelperInstanceUsingObjectManager()
     {
         $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(array('get'))
+            ->setMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
         $objectManager->expects($this->once())->method('get')->with('x')->willReturn('y');
         $resolver = $this->getMockBuilder(ViewHelperResolver::class)
-            ->setMethods(array('getObjectManager'))
+            ->setMethods(['getObjectManager'])
             ->getMock();
         $resolver->expects($this->once())->method('getObjectManager')->willReturn($objectManager);
         $this->assertEquals('y', $resolver->createViewHelperInstanceFromClassName('x'));
@@ -59,10 +59,10 @@ class ViewHelperResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getResolveViewHelperNameTestValues()
     {
-        return array(
-            array('f', 'cObject', CObjectViewHelper::class),
-            array('f', 'format.htmlentities', HtmlentitiesViewHelper::class),
-            array('f', 'render', RenderViewHelper::class)
-        );
+        return [
+            ['f', 'cObject', CObjectViewHelper::class],
+            ['f', 'format.htmlentities', HtmlentitiesViewHelper::class],
+            ['f', 'render', RenderViewHelper::class]
+        ];
     }
 }

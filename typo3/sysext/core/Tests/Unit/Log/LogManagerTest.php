@@ -79,11 +79,11 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $component = 'test';
         $writer = \TYPO3\CMS\Core\Log\Writer\NullWriter::class;
         $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
-        $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['writerConfiguration'] = array(
-            $level => array(
-                $writer => array()
-            )
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['writerConfiguration'] = [
+            $level => [
+                $writer => []
+            ]
+        ];
         /** @var $logger \TYPO3\CMS\Core\Log\Logger */
         $logger = $this->logManagerInstance->getLogger($component);
         $writers = $logger->getWriters();
@@ -98,11 +98,11 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $component = 'test';
         $processor = \TYPO3\CMS\Core\Log\Processor\NullProcessor::class;
         $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
-        $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['processorConfiguration'] = array(
-            $level => array(
-                $processor => array()
-            )
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['processorConfiguration'] = [
+            $level => [
+                $processor => []
+            ]
+        ];
         /** @var $logger \TYPO3\CMS\Core\Log\Logger */
         $logger = $this->logManagerInstance->getLogger($component);
         $processors = $logger->getProcessors();

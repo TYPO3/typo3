@@ -31,17 +31,17 @@ class FileMaximumSizeValidatorTest extends AbstractValidatorTest
 
     public function validSizesProvider()
     {
-        return array(
-            '11B for max. 12B' => array(array(12, 11)),
-            '12B for max. 12B' => array(array(12, 12))
-        );
+        return [
+            '11B for max. 12B' => [[12, 11]],
+            '12B for max. 12B' => [[12, 12]]
+        ];
     }
 
     public function invalidSizesProvider()
     {
-        return array(
-            '12B for max. 11B' => array(array(11, 12))
-        );
+        return [
+            '12B for max. 11B' => [[11, 12]]
+        ];
     }
 
     /**
@@ -50,7 +50,7 @@ class FileMaximumSizeValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['maximum'] = $input[0];
         $subject = $this->createSubject($options);
 
@@ -65,7 +65,7 @@ class FileMaximumSizeValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['maximum'] = $input[0];
         $subject = $this->createSubject($options);
 

@@ -125,7 +125,7 @@ class ImageViewHelper extends AbstractViewHelper
                 $crop = $image instanceof FileReference ? $image->getProperty('crop') : null;
             }
 
-            $processingInstructions = array(
+            $processingInstructions = [
                 'width' => $arguments['width'],
                 'height' => $arguments['height'],
                 'minWidth' => $arguments['minWidth'],
@@ -133,7 +133,7 @@ class ImageViewHelper extends AbstractViewHelper
                 'maxWidth' => $arguments['maxWidth'],
                 'maxHeight' => $arguments['maxHeight'],
                 'crop' => $crop,
-            );
+            ];
             $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
             return $imageService->getImageUri($processedImage, $absolute);
         } catch (ResourceDoesNotExistException $e) {

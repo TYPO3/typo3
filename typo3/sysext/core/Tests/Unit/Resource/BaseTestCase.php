@@ -28,7 +28,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected $mountDir;
 
-    protected $vfsContents = array();
+    protected $vfsContents = [];
 
     protected function setUp()
     {
@@ -36,7 +36,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->basedir = $this->getUniqueId('base-');
         vfsStream::setup($this->basedir);
         // Add an entry for the mount directory to the VFS contents
-        $this->vfsContents = array($this->mountDir => array());
+        $this->vfsContents = [$this->mountDir => []];
     }
 
     protected function getMountRootUrl()
@@ -65,7 +65,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function addToMount(array $dirStructure)
     {
-        $this->mergeToVfsContents(array($this->mountDir => $dirStructure));
+        $this->mergeToVfsContents([$this->mountDir => $dirStructure]);
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param array $mockedMethods the methods to mock
      * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getSimpleFileMock($identifier, $mockedMethods = array())
+    protected function getSimpleFileMock($identifier, $mockedMethods = [])
     {
         return $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\File::class, $identifier, $mockedMethods);
     }
@@ -147,7 +147,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param array $mockedMethods the methods to mock
      * @return \TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getSimpleFolderMock($identifier, $mockedMethods = array())
+    protected function getSimpleFolderMock($identifier, $mockedMethods = [])
     {
         return $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, $mockedMethods);
     }
@@ -161,9 +161,9 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param \TYPO3\CMS\Core\Resource\File[] $files
      * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getFolderMock($identifier, $mockedMethods = array(), $subfolders = array(), $files = array())
+    protected function getFolderMock($identifier, $mockedMethods = [], $subfolders = [], $files = [])
     {
-        $folder = $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, array_merge($mockedMethods, array('getFiles', 'getSubfolders')));
+        $folder = $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
         $folder->expects($this->any())->method('getSubfolders')->will($this->returnValue($subfolders));
         $folder->expects($this->any())->method('getFiles')->will($this->returnValue($files));
         return $folder;

@@ -57,7 +57,7 @@ class SingleFieldContainer extends AbstractContainer
             return $resultArray;
         }
 
-        $parameterArray = array();
+        $parameterArray = [];
         $parameterArray['fieldConf'] = $this->data['processedTca']['columns'][$fieldName];
 
         $isOverlay = false;
@@ -152,7 +152,7 @@ class SingleFieldContainer extends AbstractContainer
         }
 
         // JavaScript code for event handlers:
-        $parameterArray['fieldChangeFunc'] = array();
+        $parameterArray['fieldChangeFunc'] = [];
         $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($row['uid']) . ',' . GeneralUtility::quoteJSvalue($fieldName) . ',' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ');';
         $parameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
 
@@ -164,11 +164,11 @@ class SingleFieldContainer extends AbstractContainer
             $inlineDomObjectId = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
             $inlineObjectId = implode(
                 '-',
-                array(
+                [
                     $inlineDomObjectId,
                     $table,
                     $row['uid']
-                )
+                ]
             );
             $parameterArray['fieldChangeFunc']['inline'] = 'inline.handleChangedField(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ',' . GeneralUtility::quoteJSvalue($inlineObjectId) . ');';
         }
@@ -209,9 +209,9 @@ class SingleFieldContainer extends AbstractContainer
             $html = $this->renderDefaultLanguageDiff($table, $fieldName, $row, $html);
         }
 
-        $fieldItemClasses = array(
+        $fieldItemClasses = [
             't3js-formengine-field-item'
-        );
+        ];
 
         // NULL value and placeholder handling
         $nullControlNameAttribute = ' name="' . htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']') . '"';
@@ -239,7 +239,7 @@ class SingleFieldContainer extends AbstractContainer
                 'typo3form.fieldSetNull(' . GeneralUtility::quoteJSvalue($formElementName) . ', !this.checked)'
             );
 
-            $nullValueWrap = array();
+            $nullValueWrap = [];
             $nullValueWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
             $nullValueWrap[] =    '<div class="t3-form-field-disable"></div>';
             $nullValueWrap[] =    '<div class="checkbox t3-form-field-eval-null-checkbox">';
@@ -284,8 +284,8 @@ class SingleFieldContainer extends AbstractContainer
                 . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', ' . ($checked ? 'false' : 'true') . ');';
 
             // Renders an input or textarea field depending on type of "parent"
-            $options = array();
-            $options['databaseRow'] = array();
+            $options = [];
+            $options['databaseRow'] = [];
             $options['table'] = '';
             $options['parameterArray'] = $parameterArray;
             $options['parameterArray']['itemFormElValue'] = GeneralUtility::fixed_lgd_cs($placeholder, 30);
@@ -293,7 +293,7 @@ class SingleFieldContainer extends AbstractContainer
             $noneElementResult = $this->nodeFactory->create($options)->render();
             $noneElementHtml = $noneElementResult['html'];
 
-            $placeholderWrap = array();
+            $placeholderWrap = [];
             $placeholderWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
             $placeholderWrap[] =    '<div class="t3-form-field-disable"></div>';
             $placeholderWrap[] =    '<div class="checkbox">';
@@ -314,7 +314,7 @@ class SingleFieldContainer extends AbstractContainer
             $html = implode(LF, $placeholderWrap);
         } elseif ($parameterArray['fieldConf']['config']['type'] !== 'user' || empty($parameterArray['fieldConf']['config']['noTableWrapping'])) {
             // Add a casual wrap if the field is not of type user with no wrap requested.
-            $standardWrap = array();
+            $standardWrap = [];
             $standardWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
             $standardWrap[] =    '<div class="t3-form-field-disable"></div>';
             $standardWrap[] =    $html;
@@ -417,10 +417,10 @@ class SingleFieldContainer extends AbstractContainer
     {
         if (is_array($this->data['defaultLanguageDiffRow'][$table . ':' . $row['uid']])) {
             // Initialize:
-            $dLVal = array(
+            $dLVal = [
                 'old' => $this->data['defaultLanguageDiffRow'][$table . ':' . $row['uid']],
                 'new' => $this->data['defaultLanguageRow']
-            );
+            ];
             // There must be diff-data:
             if (isset($dLVal['old'][$field])) {
                 if ((string)$dLVal['old'][$field] !== (string)$dLVal['new'][$field]) {
@@ -493,30 +493,30 @@ class SingleFieldContainer extends AbstractContainer
 
         $skipThisField = false;
         if ($structureDepth > 0) {
-            $searchArray = array(
-                '%OR' => array(
-                    'config' => array(
-                        0 => array(
-                            '%AND' => array(
+            $searchArray = [
+                '%OR' => [
+                    'config' => [
+                        0 => [
+                            '%AND' => [
                                 'foreign_table' => $table,
-                                '%OR' => array(
-                                    '%AND' => array(
-                                        'appearance' => array('useCombination' => true),
+                                '%OR' => [
+                                    '%AND' => [
+                                        'appearance' => ['useCombination' => true],
                                         'foreign_selector' => $fieldName
-                                    ),
+                                    ],
                                     'MM' => $fieldConfig['MM']
-                                )
-                            )
-                        ),
-                        1 => array(
-                            '%AND' => array(
+                                ]
+                            ]
+                        ],
+                        1 => [
+                            '%AND' => [
                                 'foreign_table' => $fieldConfig['foreign_table'],
                                 'foreign_selector' => $fieldConfig['foreign_field']
-                            )
-                        )
-                    )
-                )
-            );
+                            ]
+                        ]
+                    ]
+                ]
+            ];
             // Get the parent record from structure stack
             $level = $inlineStackProcessor->getStructureLevel(-1);
             // If we have symmetric fields, check on which side we are and hide fields, that are set automatically:

@@ -9,17 +9,17 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
         'web',
         'workspaces',
         'before:info',
-        array(
+        [
             // An array holding the controller-action-combinations that are accessible
             'Review' => 'index,fullIndex,singleIndex',
             'Preview' => 'index,newPage'
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.svg',
             'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
             'navigationComponentId' => 'typo3-pagetree'
-        )
+        ]
     );
 
     // register ExtDirect

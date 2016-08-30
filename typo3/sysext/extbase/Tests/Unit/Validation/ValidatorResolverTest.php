@@ -34,7 +34,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('dummy'));
+        $this->validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['dummy']);
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->validatorResolver->_set('objectManager', $this->mockObjectManager);
     }
@@ -132,10 +132,10 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function namespacedShorthandValidatornames()
     {
-        return array(
-            array('TYPO3\\CMS\\Mypkg\\Validation\\Validator', 'MySecondValidator', 'TYPO3.CMS.Mypkg:MySecond'),
-            array('Acme\\Mypkg\\Validation\\Validator', 'MyThirdValidator', 'Acme.Mypkg:MyThird')
-        );
+        return [
+            ['TYPO3\\CMS\\Mypkg\\Validation\\Validator', 'MySecondValidator', 'TYPO3.CMS.Mypkg:MySecond'],
+            ['Acme\\Mypkg\\Validation\\Validator', 'MyThirdValidator', 'Acme.Mypkg:MyThird']
+        ];
     }
 
     /**
@@ -172,12 +172,12 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $className = $this->getUniqueId('Test');
         $mockValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface::class)
-            ->setMethods(array('validate', 'getOptions', 'setValidatedInstancesContainer'))
+            ->setMethods(['validate', 'getOptions', 'setValidatedInstancesContainer'])
             ->setMockClassName($className)
             ->getMock();
         $this->mockObjectManager->expects($this->any())->method('get')->with($className)->will($this->returnValue($mockValidator));
         /** @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver */
-        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('resolveValidatorObjectName'));
+        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['resolveValidatorObjectName']);
         $validatorResolver->_set('objectManager', $this->mockObjectManager);
         $validatorResolver->expects($this->once())->method('resolveValidatorObjectName')->with($className)->will($this->returnValue($className));
         $validator = $validatorResolver->createValidator($className);
@@ -204,7 +204,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->markTestSkipped('Functionality is different now.');
         $mockConjunctionValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class);
         $validatorResolver = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class)
-            ->setMethods(array('buildBaseValidatorConjunction'))
+            ->setMethods(['buildBaseValidatorConjunction'])
             ->disableOriginalConstructor()
             ->getMock();
         $validatorResolver->expects($this->once())->method('buildBaseValidatorConjunction')->with('Tx_Virtual_Foo')->will($this->returnValue($mockConjunctionValidator));
@@ -219,14 +219,14 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function buildMethodArgumentsValidatorConjunctionsReturnsEmptyArrayIfMethodHasNoArguments()
     {
-        $mockController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::class, array('fooAction'), array(), '', false);
-        $methodParameters = array();
+        $mockController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::class, ['fooAction'], [], '', false);
+        $methodParameters = [];
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
-        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('createValidator'));
+        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['createValidator']);
         $validatorResolver->_set('reflectionService', $mockReflectionService);
         $result = $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockController), 'fooAction');
-        $this->assertSame(array(), $result);
+        $this->assertSame([], $result);
     }
 
     /**
@@ -235,27 +235,27 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildMethodArgumentsValidatorConjunctionsBuildsAConjunctionFromValidateAnnotationsOfTheSpecifiedMethod()
     {
         $mockObject = $this->getMockBuilder('stdClass')
-            ->setMethods(array('fooMethod'))
+            ->setMethods(['fooMethod'])
             ->disableOriginalConstructor()
             ->getMock();
-        $methodParameters = array(
-            'arg1' => array(
+        $methodParameters = [
+            'arg1' => [
                 'type' => 'string'
-            ),
-            'arg2' => array(
+            ],
+            'arg2' => [
                 'type' => 'array'
-            )
-        );
-        $methodTagsValues = array(
-            'param' => array(
+            ]
+        ];
+        $methodTagsValues = [
+            'param' => [
                 'string $arg1',
                 'array $arg2'
-            ),
-            'validate' => array(
+            ],
+            'validate' => [
                 '$arg1 Foo(bar = baz), Bar',
                 '$arg2 VENDOR\\ModelCollection\\Domain\\Model\\Model'
-            )
-        );
+            ]
+        ];
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodTagsValues));
         $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodParameters));
@@ -274,17 +274,17 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockArguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $mockArguments->addArgument(new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('arg1', 'dummyValue'));
         $mockArguments->addArgument(new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('arg2', 'dummyValue'));
-        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('createValidator'));
+        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['createValidator']);
         $validatorResolver->expects($this->at(0))->method('createValidator')->with(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class)->will($this->returnValue($conjunction1));
         $validatorResolver->expects($this->at(1))->method('createValidator')->with('string')->will($this->returnValue($mockStringValidator));
         $validatorResolver->expects($this->at(2))->method('createValidator')->with(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class)->will($this->returnValue($conjunction2));
         $validatorResolver->expects($this->at(3))->method('createValidator')->with('array')->will($this->returnValue($mockArrayValidator));
-        $validatorResolver->expects($this->at(4))->method('createValidator')->with('Foo', array('bar' => 'baz'))->will($this->returnValue($mockFooValidator));
+        $validatorResolver->expects($this->at(4))->method('createValidator')->with('Foo', ['bar' => 'baz'])->will($this->returnValue($mockFooValidator));
         $validatorResolver->expects($this->at(5))->method('createValidator')->with('Bar')->will($this->returnValue($mockBarValidator));
         $validatorResolver->expects($this->at(6))->method('createValidator')->with('VENDOR\\ModelCollection\\Domain\\Model\\Model')->will($this->returnValue($mockQuuxValidator));
         $validatorResolver->_set('reflectionService', $mockReflectionService);
         $result = $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockObject), 'fooAction');
-        $this->assertEquals(array('arg1' => $conjunction1, 'arg2' => $conjunction2), $result);
+        $this->assertEquals(['arg1' => $conjunction1, 'arg2' => $conjunction2], $result);
     }
 
     /**
@@ -295,22 +295,22 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(InvalidValidationConfigurationException::class);
         $this->expectExceptionCode(1253172726);
         $mockObject = $this->getMockBuilder('stdClass')
-            ->setMethods(array('fooMethod'))
+            ->setMethods(['fooMethod'])
             ->disableOriginalConstructor()
             ->getMock();
-        $methodParameters = array(
-            'arg1' => array(
+        $methodParameters = [
+            'arg1' => [
                 'type' => 'string'
-            )
-        );
-        $methodTagsValues = array(
-            'param' => array(
+            ]
+        ];
+        $methodTagsValues = [
+            'param' => [
                 'string $arg1'
-            ),
-            'validate' => array(
+            ],
+            'validate' => [
                 '$arg2 VENDOR\\ModelCollection\\Domain\\Model\\Model'
-            )
-        );
+            ]
+        ];
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodTagsValues));
         $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodParameters));
@@ -318,7 +318,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockQuuxValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $conjunction1 = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class);
         $conjunction1->expects($this->at(0))->method('addValidator')->with($mockStringValidator);
-        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('createValidator'));
+        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['createValidator']);
         $validatorResolver->expects($this->at(0))->method('createValidator')->with(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class)->will($this->returnValue($conjunction1));
         $validatorResolver->expects($this->at(1))->method('createValidator')->with('string')->will($this->returnValue($mockStringValidator));
         $validatorResolver->expects($this->at(2))->method('createValidator')->with('VENDOR\\ModelCollection\\Domain\\Model\\Model')->will($this->returnValue($mockQuuxValidator));
@@ -333,36 +333,36 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $mockObject = $this->createMock('stdClass');
         $className = get_class($mockObject);
-        $propertyTagsValues = array(
-            'foo' => array(
-                'var' => array('string'),
-                'validate' => array(
+        $propertyTagsValues = [
+            'foo' => [
+                'var' => ['string'],
+                'validate' => [
                     'Foo(bar= baz), Bar',
                     'Baz'
-                )
-            ),
-            'bar' => array(
-                'var' => array('integer'),
-                'validate' => array(
+                ]
+            ],
+            'bar' => [
+                'var' => ['integer'],
+                'validate' => [
                     'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $mockReflectionService->expects($this->at(0))->method('getClassPropertyNames')->with($className)->will($this->returnValue(array('foo', 'bar')));
+        $mockReflectionService->expects($this->at(0))->method('getClassPropertyNames')->with($className)->will($this->returnValue(['foo', 'bar']));
         $mockReflectionService->expects($this->at(1))->method('getPropertyTagsValues')->with($className, 'foo')->will($this->returnValue($propertyTagsValues['foo']));
         $mockReflectionService->expects($this->at(2))->method('getPropertyTagsValues')->with($className, 'bar')->will($this->returnValue($propertyTagsValues['bar']));
         $mockObjectValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class)->will($this->returnValue($mockObjectValidator));
-        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('resolveValidatorObjectName', 'createValidator'));
+        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['resolveValidatorObjectName', 'createValidator']);
         $validatorResolver->_set('reflectionService', $mockReflectionService);
         $validatorResolver->_set('objectManager', $mockObjectManager);
-        $validatorResolver->expects($this->at(0))->method('createValidator')->with('Foo', array('bar' => 'baz'))->will($this->returnValue($mockObjectValidator));
+        $validatorResolver->expects($this->at(0))->method('createValidator')->with('Foo', ['bar' => 'baz'])->will($this->returnValue($mockObjectValidator));
         $validatorResolver->expects($this->at(1))->method('createValidator')->with('Bar')->will($this->returnValue($mockObjectValidator));
         $validatorResolver->expects($this->at(2))->method('createValidator')->with('Baz')->will($this->returnValue($mockObjectValidator));
         $validatorResolver->expects($this->at(3))->method('createValidator')->with('VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator')->will($this->returnValue($mockObjectValidator));
@@ -376,11 +376,11 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function modelNamesProvider()
     {
-        return array(
-            'no replace' => array('VENDOR\\ModelCollection\\Domain\\Model\\Model', 'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator'),
-            'replace in not namespaced class' => array('Tx_ModelCollection_Domain_Model_Model', 'Tx_ModelCollection_Domain_Validator_ModelValidator'),
-            'replace in namespaced class' => array('VENDOR\\ModelCollection\\Domain\\Model\\Model', 'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator')
-        );
+        return [
+            'no replace' => ['VENDOR\\ModelCollection\\Domain\\Model\\Model', 'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator'],
+            'replace in not namespaced class' => ['Tx_ModelCollection_Domain_Model_Model', 'Tx_ModelCollection_Domain_Validator_ModelValidator'],
+            'replace in namespaced class' => ['VENDOR\\ModelCollection\\Domain\\Model\\Model', 'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator']
+        ];
     }
 
     /**
@@ -393,7 +393,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildBaseValidatorConjunctionCreatesValidatorFromClassName($modelClassName, $validatorClassName)
     {
         $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('resolveValidatorObjectName', 'createValidator'));
+        $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['resolveValidatorObjectName', 'createValidator']);
         $validatorResolver->_set('objectManager', $mockObjectManager);
         $validatorResolver->expects($this->once())->method('createValidator')->with($validatorClassName)->will($this->returnValue(null));
         $validatorResolver->_call('buildBaseValidatorConjunction', $modelClassName, $modelClassName);
@@ -408,7 +408,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         eval('namespace TYPO3\CMS\Extbase\Validation\Validator;' . LF . 'class ' . $validatorName . 'Validator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 		public function validate($value){} public function getOptions(){}
 		}');
-        $mockValidatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('getValidatorType'));
+        $mockValidatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['getValidatorType']);
         $mockValidatorResolver->expects($this->once())->method('getValidatorType')->with($validatorName)->will($this->returnValue($validatorName));
 
         $mockValidatorResolver->_call('resolveValidatorObjectName', $validatorName);
@@ -446,139 +446,139 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validatorAnnotations()
     {
-        return array(
-            array(
+        return [
+            [
                 '$var Bar',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Bar', 'validatorOptions' => array())
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Bar', 'validatorOptions' => []]
+                    ]
+                ]
+            ],
+            [
                 '$var Bar, Foo',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Bar', 'validatorOptions' => array()),
-                        array('validatorName' => 'Foo', 'validatorOptions' => array())
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Bar', 'validatorOptions' => []],
+                        ['validatorName' => 'Foo', 'validatorOptions' => []]
+                    ]
+                ]
+            ],
+            [
                 '$var Baz (Foo=Bar)',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => 'Bar'))
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Baz', 'validatorOptions' => ['Foo' => 'Bar']]
+                    ]
+                ]
+            ],
+            [
                 '$var Buzz (Foo="B=a, r", Baz=1)',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Buzz', 'validatorOptions' => array('Foo' => 'B=a, r', 'Baz' => '1'))
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Buzz', 'validatorOptions' => ['Foo' => 'B=a, r', 'Baz' => '1']]
+                    ]
+                ]
+            ],
+            [
                 '$var Foo(Baz=1, Bar=Quux)',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Foo', 'validatorOptions' => array('Baz' => '1', 'Bar' => 'Quux'))
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Foo', 'validatorOptions' => ['Baz' => '1', 'Bar' => 'Quux']]
+                    ]
+                ]
+            ],
+            [
                 '$var Pax, Foo(Baz = \'1\', Bar = Quux)',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Pax', 'validatorOptions' => array()),
-                        array('validatorName' => 'Foo', 'validatorOptions' => array('Baz' => '1', 'Bar' => 'Quux'))
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Pax', 'validatorOptions' => []],
+                        ['validatorName' => 'Foo', 'validatorOptions' => ['Baz' => '1', 'Bar' => 'Quux']]
+                    ]
+                ]
+            ],
+            [
                 '$var Reg (P="[at]*(h|g)"), Quux',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Reg', 'validatorOptions' => array('P' => '[at]*(h|g)')),
-                        array('validatorName' => 'Quux', 'validatorOptions' => array())
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Reg', 'validatorOptions' => ['P' => '[at]*(h|g)']],
+                        ['validatorName' => 'Quux', 'validatorOptions' => []]
+                    ]
+                ]
+            ],
+            [
                 '$var Baz (Foo="B\\"ar")',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => 'B"ar'))
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Baz', 'validatorOptions' => ['Foo' => 'B"ar']]
+                    ]
+                ]
+            ],
+            [
                 '$var F3_TestPackage_Quux',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'F3_TestPackage_Quux', 'validatorOptions' => array())
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'F3_TestPackage_Quux', 'validatorOptions' => []]
+                    ]
+                ]
+            ],
+            [
                 '$var Baz(Foo="5"), Bar(Quux="123")',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => '5')),
-                        array('validatorName' => 'Bar', 'validatorOptions' => array('Quux' => '123'))
-                    )
-                )
-            ),
-            array(
+                    'validators' => [
+                        ['validatorName' => 'Baz', 'validatorOptions' => ['Foo' => '5']],
+                        ['validatorName' => 'Bar', 'validatorOptions' => ['Quux' => '123']]
+                    ]
+                ]
+            ],
+            [
                 '$var Baz(Foo="2"), Bar(Quux=123, Pax="a weird \\"string\\" with *freaky* \\stuff")',
-                array(
+                [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => '2')),
-                        array('validatorName' => 'Bar', 'validatorOptions' => array('Quux' => '123', 'Pax' => 'a weird "string" with *freaky* \\stuff'))
-                    )
-                )
-            ),
-            'namespaced validator class name' => array(
+                    'validators' => [
+                        ['validatorName' => 'Baz', 'validatorOptions' => ['Foo' => '2']],
+                        ['validatorName' => 'Bar', 'validatorOptions' => ['Quux' => '123', 'Pax' => 'a weird "string" with *freaky* \\stuff']]
+                    ]
+                ]
+            ],
+            'namespaced validator class name' => [
                 'annotation' => '$var F3\TestPackage\Quux',
-                'expected' => array(
+                'expected' => [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'F3\TestPackage\Quux', 'validatorOptions' => array())
-                    )
-                )
-            ),
-            'shorthand notation for system validator' => array(
+                    'validators' => [
+                        ['validatorName' => 'F3\TestPackage\Quux', 'validatorOptions' => []]
+                    ]
+                ]
+            ],
+            'shorthand notation for system validator' => [
                 'annotation' => '$var TYPO3.CMS.Mypkg:MySecond',
-                'expected' => array(
+                'expected' => [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'TYPO3.CMS.Mypkg:MySecond', 'validatorOptions' => array())
-                    )
-                )
-            ),
-            'shorthand notation for custom validator with parameter' => array(
+                    'validators' => [
+                        ['validatorName' => 'TYPO3.CMS.Mypkg:MySecond', 'validatorOptions' => []]
+                    ]
+                ]
+            ],
+            'shorthand notation for custom validator with parameter' => [
                 'annotation' => '$var Acme.Mypkg:MyThird(Foo="2")',
-                'expected' => array(
+                'expected' => [
                     'argumentName' => 'var',
-                    'validators' => array(
-                        array('validatorName' => 'Acme.Mypkg:MyThird', 'validatorOptions' => array('Foo' => '2'))
-                    )
-                )
-            ),
-        );
+                    'validators' => [
+                        ['validatorName' => 'Acme.Mypkg:MyThird', 'validatorOptions' => ['Foo' => '2']]
+                    ]
+                ]
+            ],
+        ];
     }
 
     /**

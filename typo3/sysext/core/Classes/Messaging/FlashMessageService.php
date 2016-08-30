@@ -24,7 +24,7 @@ class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $flashMessageQueues = array();
+    protected $flashMessageQueues = [];
 
     /**
      * Return the message queue for the given identifier.

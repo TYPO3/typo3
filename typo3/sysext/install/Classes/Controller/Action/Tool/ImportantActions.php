@@ -37,7 +37,7 @@ class ImportantActions extends Action\AbstractAction
             $this->setNewEncryptionKeyAndLogOut();
         }
 
-        $actionMessages = array();
+        $actionMessages = [];
         if (isset($this->postValues['set']['changeInstallToolPassword'])) {
             $actionMessages[] = $this->changeInstallToolPassword();
         }
@@ -266,13 +266,13 @@ class ImportantActions extends Action\AbstractAction
                 $message->setMessage('A user with username "' . $username . '" exists already.');
             } else {
                 $hashedPassword = $this->getHashedPassword($password);
-                $adminUserFields = array(
+                $adminUserFields = [
                     'username' => $username,
                     'password' => $hashedPassword,
                     'admin' => 1,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'crdate' => $GLOBALS['EXEC_TIME']
-                );
+                ];
                 $connectionPool->getConnectionForTable('be_users')
                     ->insert('be_users', $adminUserFields);
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
@@ -291,7 +291,7 @@ class ImportantActions extends Action\AbstractAction
      */
     protected function databaseAnalyzerExecute()
     {
-        $messages = array();
+        $messages = [];
 
         // Early return in case no update was selected
         if (empty($this->postValues['values'])) {
@@ -311,7 +311,7 @@ class ImportantActions extends Action\AbstractAction
 
         $statementHashesToPerform = $this->postValues['values'];
 
-        $results = array();
+        $results = [];
 
         // Difference from expected to current
         $addCreateChange = $schemaMigrationService->getDatabaseExtra($expectedSchema, $currentSchema);
@@ -366,36 +366,36 @@ class ImportantActions extends Action\AbstractAction
 
         $currentSchema = $schemaMigrationService->getFieldDefinitions_database();
 
-        $databaseAnalyzerSuggestion = array();
+        $databaseAnalyzerSuggestion = [];
 
         // Difference from expected to current
         $addCreateChange = $schemaMigrationService->getDatabaseExtra($expectedSchema, $currentSchema);
         $addCreateChange = $schemaMigrationService->getUpdateSuggestions($addCreateChange);
         if (isset($addCreateChange['create_table'])) {
-            $databaseAnalyzerSuggestion['addTable'] = array();
+            $databaseAnalyzerSuggestion['addTable'] = [];
             foreach ($addCreateChange['create_table'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['addTable'][$hash] = array(
+                $databaseAnalyzerSuggestion['addTable'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
             }
         }
         if (isset($addCreateChange['add'])) {
-            $databaseAnalyzerSuggestion['addField'] = array();
+            $databaseAnalyzerSuggestion['addField'] = [];
             foreach ($addCreateChange['add'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['addField'][$hash] = array(
+                $databaseAnalyzerSuggestion['addField'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
             }
         }
         if (isset($addCreateChange['change'])) {
-            $databaseAnalyzerSuggestion['change'] = array();
+            $databaseAnalyzerSuggestion['change'] = [];
             foreach ($addCreateChange['change'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['change'][$hash] = array(
+                $databaseAnalyzerSuggestion['change'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
                 if (isset($addCreateChange['change_currentValue'][$hash])) {
                     $databaseAnalyzerSuggestion['change'][$hash]['current'] = $addCreateChange['change_currentValue'][$hash];
                 }
@@ -406,42 +406,42 @@ class ImportantActions extends Action\AbstractAction
         $dropRename = $schemaMigrationService->getDatabaseExtra($currentSchema, $expectedSchema);
         $dropRename = $schemaMigrationService->getUpdateSuggestions($dropRename, 'remove');
         if (isset($dropRename['change_table'])) {
-            $databaseAnalyzerSuggestion['renameTableToUnused'] = array();
+            $databaseAnalyzerSuggestion['renameTableToUnused'] = [];
             foreach ($dropRename['change_table'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['renameTableToUnused'][$hash] = array(
+                $databaseAnalyzerSuggestion['renameTableToUnused'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
                 if (!empty($dropRename['tables_count'][$hash])) {
                     $databaseAnalyzerSuggestion['renameTableToUnused'][$hash]['count'] = $dropRename['tables_count'][$hash];
                 }
             }
         }
         if (isset($dropRename['change'])) {
-            $databaseAnalyzerSuggestion['renameTableFieldToUnused'] = array();
+            $databaseAnalyzerSuggestion['renameTableFieldToUnused'] = [];
             foreach ($dropRename['change'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['renameTableFieldToUnused'][$hash] = array(
+                $databaseAnalyzerSuggestion['renameTableFieldToUnused'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
             }
         }
         if (isset($dropRename['drop'])) {
-            $databaseAnalyzerSuggestion['deleteField'] = array();
+            $databaseAnalyzerSuggestion['deleteField'] = [];
             foreach ($dropRename['drop'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['deleteField'][$hash] = array(
+                $databaseAnalyzerSuggestion['deleteField'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
             }
         }
         if (isset($dropRename['drop_table'])) {
-            $databaseAnalyzerSuggestion['deleteTable'] = array();
+            $databaseAnalyzerSuggestion['deleteTable'] = [];
             foreach ($dropRename['drop_table'] as $hash => $statement) {
-                $databaseAnalyzerSuggestion['deleteTable'][$hash] = array(
+                $databaseAnalyzerSuggestion['deleteTable'][$hash] = [
                     'hash' => $hash,
                     'statement' => $statement,
-                );
+                ];
                 if (!empty($dropRename['tables_count'][$hash])) {
                     $databaseAnalyzerSuggestion['deleteTable'][$hash]['count'] = $dropRename['tables_count'][$hash];
                 }

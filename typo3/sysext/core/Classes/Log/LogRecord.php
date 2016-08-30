@@ -61,32 +61,32 @@ class LogRecord implements \ArrayAccess
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Gettable properties for ArrayAccess
      *
      * @var array
      */
-    private $gettableProperties = array(
+    private $gettableProperties = [
         'requestId',
         'created',
         'component',
         'level',
         'message',
         'data'
-    );
+    ];
 
     /**
      * Settable properties for ArrayAccess
      *
      * @var array
      */
-    private $settableProperties = array(
+    private $settableProperties = [
         'level',
         'message',
         'data'
-    );
+    ];
 
     /**
      * Constructor.
@@ -96,7 +96,7 @@ class LogRecord implements \ArrayAccess
      * @param string $message Log message
      * @param array $data Additional data
      */
-    public function __construct($component = '', $level, $message, array $data = array())
+    public function __construct($component = '', $level, $message, array $data = [])
     {
         $this->setRequestId(Bootstrap::getInstance()->getRequestId())
             ->setCreated(microtime(true))
@@ -292,14 +292,14 @@ class LogRecord implements \ArrayAccess
      */
     public function toArray()
     {
-        return array(
+        return [
             'requestId' => $this->requestId,
             'created' => $this->created,
             'component' => $this->component,
             'level' => $this->level,
             'message' => $this->message,
             'data' => $this->data
-        );
+        ];
     }
 
     /**

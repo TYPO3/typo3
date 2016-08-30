@@ -30,7 +30,7 @@ class ProductionExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Error\ProductionExceptionHandler::class)
-            ->setMethods(array('discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'))
+            ->setMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->subject->expects($this->any())->method('discloseExceptionInformation')->will($this->returnValue(true));
@@ -59,8 +59,8 @@ class ProductionExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $title = '<b>b</b><script>alert(1);</script>';
         /** @var $exception \Exception|\PHPUnit_Framework_MockObject_MockObject */
         $exception = $this->getMockBuilder('Exception')
-            ->setMethods(array('getTitle'))
-            ->setConstructorArgs(array('some message'))
+            ->setMethods(['getTitle'])
+            ->setConstructorArgs(['some message'])
             ->getMock();
         $exception->expects($this->any())->method('getTitle')->will($this->returnValue($title));
         ob_start();

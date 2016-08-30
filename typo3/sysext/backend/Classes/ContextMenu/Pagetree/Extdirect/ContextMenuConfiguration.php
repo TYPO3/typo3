@@ -72,7 +72,7 @@ class ContextMenuConfiguration
         $this->initDataProvider();
         $this->dataProvider->setContextMenuType('table.' . $node->getType());
         $actionCollection = $this->dataProvider->getActionsForNode($node);
-        $actions = array();
+        $actions = [];
         if ($actionCollection instanceof ContextMenuActionCollection) {
             $actions = $actionCollection->toArray();
         }

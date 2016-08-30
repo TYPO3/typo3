@@ -63,7 +63,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionKey Extension key
      * @return void
      */
-    public function writeConfiguration(array $configuration = array(), $extensionKey)
+    public function writeConfiguration(array $configuration = [], $extensionKey)
     {
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
@@ -81,7 +81,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
         $mergedConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
         // No objects allowed in extConf at all - it is safe to deny that during unserialize()
         $currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey], ['allowed_classes' => false]);
-        $currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : array();
+        $currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : [];
         $currentExtensionConfig = $this->convertNestedToValuedConfiguration($currentExtensionConfig);
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
             $mergedConfiguration,
@@ -121,7 +121,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $rawConfigurationString = $this->getDefaultConfigurationRawString($extensionKey);
 
-        $theConstants = array();
+        $theConstants = [];
 
         if ((string)$rawConfigurationString !== '') {
             /** @var ConfigurationForm $tsStyleConfig */
@@ -189,7 +189,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function convertValuedToNestedConfiguration(array $valuedConfiguration)
     {
-        $nestedConfiguration = array();
+        $nestedConfiguration = [];
         foreach ($valuedConfiguration as $name => $section) {
             $path = str_replace('.', './', $name);
             $nestedConfiguration = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($nestedConfiguration, $path, $section['value'], '/');
@@ -209,7 +209,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function convertNestedToValuedConfiguration(array $nestedConfiguration)
     {
         $flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($nestedConfiguration);
-        $valuedCurrentExtensionConfig = array();
+        $valuedCurrentExtensionConfig = [];
         foreach ($flatExtensionConfig as $key => $value) {
             $valuedCurrentExtensionConfig[$key]['value'] = $value;
         }

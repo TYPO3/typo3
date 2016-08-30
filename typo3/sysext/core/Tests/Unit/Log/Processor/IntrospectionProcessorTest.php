@@ -29,30 +29,30 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @var array
      */
-    protected $dummyBacktrace = array(
-        array(
+    protected $dummyBacktrace = [
+        [
             'file' => '/foo/filename1.php',
             'line' => 1,
             'class' => 'class1',
             'function' => 'function1'
-        ),
-        array(
+        ],
+        [
             'file' => '/foo/filename2.php',
             'line' => 2,
             'class' => 'class2',
             'function' => 'function2'
-        ),
-        array(
+        ],
+        [
             'class' => 'class3',
             'function' => 'function3'
-        ),
-        array(
+        ],
+        [
             'file' => '/foo/filename4.php',
             'line' => 4,
             'class' => 'class4',
             'function' => 'function4'
-        )
-    );
+        ]
+    ];
 
     /**
      * Sets up this testcase
@@ -61,7 +61,7 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->processor = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class,
-            array('getDebugBacktrace', 'formatDebugBacktrace')
+            ['getDebugBacktrace', 'formatDebugBacktrace']
         );
     }
 
@@ -88,18 +88,18 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dummyBacktrace = $this->dummyBacktrace;
         array_unshift(
             $dummyBacktrace,
-            array(
+            [
                 'file' => '/foo/Log.php',
                 'line' => 999,
                 'class' => 'TYPO3\CMS\Core\Log\Bar\Foo',
                 'function' => 'function999'
-            ),
-            array(
+            ],
+            [
                 'file' => '/foo/Log2.php',
                 'line' => 888,
                 'class' => 'TYPO3\CMS\Core\Log\Bar2\Foo2',
                 'function' => 'function888'
-            )
+            ]
         );
         $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($dummyBacktrace));
 
@@ -117,11 +117,11 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider()
     {
-        return array(
-            array('0'),
-            array('1'),
-            array('3')
-        );
+        return [
+            ['0'],
+            ['1'],
+            ['3']
+        ];
     }
 
     /**

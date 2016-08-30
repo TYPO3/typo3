@@ -24,12 +24,12 @@ class FeatureManager
     /**
      * @var array List of feature class names
      */
-    protected $featureRegistry = array(
+    protected $featureRegistry = [
         \TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
         \TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
         \TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
         \TYPO3\CMS\Install\Configuration\Mail\MailFeature::class,
-    );
+    ];
 
     /**
      * Get initialized list of features with possible presets
@@ -40,7 +40,7 @@ class FeatureManager
      */
     public function getInitializedFeatures(array $postValues)
     {
-        $features = array();
+        $features = [];
         foreach ($this->featureRegistry as $featureClass) {
             /** @var FeatureInterface $featureInstance */
             $featureInstance = GeneralUtility::makeInstance($featureClass);
@@ -65,7 +65,7 @@ class FeatureManager
      */
     public function getConfigurationForSelectedFeaturePresets(array $postValues)
     {
-        $localConfigurationValuesToSet = array();
+        $localConfigurationValuesToSet = [];
         $features = $this->getInitializedFeatures($postValues);
         foreach ($features as $feature) {
             /** @var FeatureInterface $feature */
@@ -96,8 +96,8 @@ class FeatureManager
      */
     public function getBestMatchingConfigurationForAllFeatures()
     {
-        $localConfigurationValuesToSet = array();
-        $features = $this->getInitializedFeatures(array());
+        $localConfigurationValuesToSet = [];
+        $features = $this->getInitializedFeatures([]);
         foreach ($features as $feature) {
             /** @var FeatureInterface $feature */
             $presets = $feature->getPresetsOrderedByPriority();

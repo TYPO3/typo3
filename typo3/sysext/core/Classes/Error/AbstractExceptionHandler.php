@@ -77,10 +77,10 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
             // Write error message to devlog
             // see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
             if (TYPO3_EXCEPTION_DLOG) {
-                GeneralUtility::devLog($logMessage, $logTitle, 3, array(
+                GeneralUtility::devLog($logMessage, $logTitle, 3, [
                     'TYPO3_MODE' => TYPO3_MODE,
                     'backtrace' => $backtrace
-                ));
+                ]);
             }
             // Write error message to sys_log table
             $this->writeLog($logTitle . ': ' . $logMessage);
@@ -104,7 +104,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
         }
         $userId = 0;
         $workspace = 0;
-        $data = array();
+        $data = [];
         $backendUser = $this->getBackendUser();
         if (is_object($backendUser)) {
             if (isset($backendUser->user['uid'])) {
@@ -147,7 +147,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
         if (method_exists($exception, 'getStatusHeaders')) {
             $headers = $exception->getStatusHeaders();
         } else {
-            $headers = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500);
+            $headers = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500];
         }
         if (!headers_sent()) {
             foreach ($headers as $header) {

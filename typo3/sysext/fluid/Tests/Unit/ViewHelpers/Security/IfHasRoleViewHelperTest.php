@@ -30,11 +30,11 @@ class IfHasRoleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vi
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->loginUser = 1;
         $GLOBALS['TSFE']->fe_user = new \stdClass();
-        $GLOBALS['TSFE']->fe_user->groupData = array(
-            'uid' => array(1, 2),
-            'title' => array('Editor', 'OtherRole')
-        );
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Security\IfHasRoleViewHelper::class, array('renderThenChild', 'renderElseChild'));
+        $GLOBALS['TSFE']->fe_user->groupData = [
+            'uid' => [1, 2],
+            'title' => ['Editor', 'OtherRole']
+        ];
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Security\IfHasRoleViewHelper::class, ['renderThenChild', 'renderElseChild']);
         $this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
         $this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
         $this->injectDependenciesIntoViewHelper($this->viewHelper);

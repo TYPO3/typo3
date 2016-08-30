@@ -48,7 +48,7 @@ class Request extends Message implements RequestInterface
      *
      * @var array
      */
-    protected $supportedMethods = array(
+    protected $supportedMethods = [
         'CONNECT',
         'DELETE',
         'GET',
@@ -66,7 +66,7 @@ class Request extends Message implements RequestInterface
         'PROPFIND',
         'PROPPATCH',
         'UNLOCK'
-    );
+    ];
 
     /**
      * An instance of the Uri object
@@ -83,7 +83,7 @@ class Request extends Message implements RequestInterface
      * @param array $headers Headers for the message, if any.
      * @throws \InvalidArgumentException for any invalid value.
      */
-    public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = array())
+    public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = [])
     {
 
         // Build a streamable object for the body
@@ -164,7 +164,7 @@ class Request extends Message implements RequestInterface
     public function getHeader($header)
     {
         if (!$this->hasHeader($header) && strtolower($header) === 'host' && ($this->uri && $this->uri->getHost())) {
-            return array($this->getHostFromUri());
+            return [$this->getHostFromUri()];
         }
         return parent::getHeader($header);
     }
@@ -342,7 +342,7 @@ class Request extends Message implements RequestInterface
         }
 
         $clonedObject->lowercasedHeaderNames['host'] = 'Host';
-        $clonedObject->headers['Host'] = array($host);
+        $clonedObject->headers['Host'] = [$host];
         return $clonedObject;
     }
 

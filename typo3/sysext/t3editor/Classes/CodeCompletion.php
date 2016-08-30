@@ -115,7 +115,7 @@ class CodeCompletion
      */
     private function treeWalkCleanup(array $treeBranch)
     {
-        $cleanedTreeBranch = array();
+        $cleanedTreeBranch = [];
         foreach ($treeBranch as $key => $value) {
             $dotCount = substr_count($key, '.');
             //type definition or value-assignment
@@ -125,7 +125,7 @@ class CodeCompletion
                         $value = substr($value, 0, 20);
                     }
                     if (!isset($cleanedTreeBranch[$key])) {
-                        $cleanedTreeBranch[$key] = array();
+                        $cleanedTreeBranch[$key] = [];
                     }
                     $cleanedTreeBranch[$key]['v'] = $value;
                 }
@@ -135,7 +135,7 @@ class CodeCompletion
                 if ($subBranch) {
                     $key = str_replace('.', '', $key);
                     if (!isset($cleanedTreeBranch[$key])) {
-                        $cleanedTreeBranch[$key] = array();
+                        $cleanedTreeBranch[$key] = [];
                     }
                     $cleanedTreeBranch[$key]['c'] = $subBranch;
                 }

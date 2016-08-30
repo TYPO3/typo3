@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 Core',
     'description' => 'The core library of TYPO3.',
     'category' => 'be',
@@ -11,9 +11,9 @@ $EM_CONF[$_EXTKEY] = array(
     'author_email' => 'kasperYYYY@typo3.com',
     'author_company' => '',
     'version' => '8.3.0',
-    'constraints' => array(
-        'depends' => array(),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+    'constraints' => [
+        'depends' => [],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

@@ -65,14 +65,14 @@ class AbstractController extends ActionController
         $this->pageId = (int)GeneralUtility::_GP('id');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
-        $icons = array(
+        $icons = [
             'language' => $iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
             'integrity' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
             'success' => $iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
             'info' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
             'warning' => $iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
             'error' => $iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
-        );
+        ];
         $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
         $this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
@@ -100,12 +100,12 @@ class AbstractController extends ActionController
      */
     protected function assignExtensionSettings()
     {
-        $extension = array(
-            'AdditionalColumn' => array(
-                'Definition' => array(),
-                'Handler' => array(),
-            ),
-        );
+        $extension = [
+            'AdditionalColumn' => [
+                'Definition' => [],
+                'Handler' => [],
+            ],
+        ];
 
         $extension['AdditionalColumn']['Definition'] = $this->getAdditionalColumnService()->getDefinition();
         $extension['AdditionalColumn']['Handler'] = $this->getAdditionalColumnService()->getHandler();

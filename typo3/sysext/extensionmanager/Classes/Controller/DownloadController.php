@@ -157,17 +157,17 @@ class DownloadController extends AbstractController
                             ];
                             $extensions .= $this->translate(
                                 'downloadExtension.dependencies.extensionWithVersion',
-                                array(
+                                [
                                     $extensionKey, $dependency->getVersion()
-                                )
+                                ]
                             ) . '<br />';
                         }
                         $message .= $this->translate(
                             'downloadExtension.dependencies.typeHeadline',
-                            array(
+                            [
                                 $this->translate('downloadExtension.dependencyType.' . $dependencyType),
                                 $extensions
-                            )
+                            ]
                         );
                     }
                     $title = $this->translate('downloadExtension.dependencies.resolveAutomatically');
@@ -224,7 +224,7 @@ class DownloadController extends AbstractController
     public function installExtensionWithoutSystemDependencyCheckAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension)
     {
         $this->managementService->setSkipDependencyCheck(true);
-        $this->forward('installFromTer', null, null, array('extension' => $extension, 'downloadPath' => 'Local'));
+        $this->forward('installFromTer', null, null, ['extension' => $extension, 'downloadPath' => 'Local']);
     }
 
     /**
@@ -248,7 +248,7 @@ class DownloadController extends AbstractController
                         \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
                             'distribution.error.headline',
                             'extensionmanager',
-                            array($extensionKey)
+                            [$extensionKey]
                         ),
                         \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
                     );
@@ -273,7 +273,7 @@ class DownloadController extends AbstractController
                 'show',
                 'Distribution',
                 null,
-                array('extension' => $extension)
+                ['extension' => $extension]
             );
         }
     }
@@ -303,7 +303,7 @@ class DownloadController extends AbstractController
                 $this->managementService->downloadMainExtension($extension);
             }
             $this->addFlashMessage(
-                $this->translate('extensionList.updateFlashMessage.body', array($extensionKey)),
+                $this->translate('extensionList.updateFlashMessage.body', [$extensionKey]),
                 $this->translate('extensionList.updateFlashMessage.title')
             );
         } catch (\Exception $e) {
@@ -325,7 +325,7 @@ class DownloadController extends AbstractController
         $extensionKey = $this->request->getArgument('extension');
         $versionStart = $this->request->getArgument('integerVersionStart');
         $versionStop = $this->request->getArgument('integerVersionStop');
-        $updateComments = array();
+        $updateComments = [];
         /** @var Extension[] $updatableVersions */
         $updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionKey,
@@ -362,7 +362,7 @@ class DownloadController extends AbstractController
     protected function installFromTer(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath = 'Local')
     {
         $result = false;
-        $errorMessages = array();
+        $errorMessages = [];
         try {
             $this->downloadUtility->setDownloadPath($downloadPath);
             $this->managementService->setAutomaticInstallationEnabled($this->configurationUtility->getCurrentConfiguration('extensionmanager')['automaticInstallation']['value']);
@@ -370,16 +370,16 @@ class DownloadController extends AbstractController
                 $errorMessages = $this->managementService->getDependencyErrors();
             }
         } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-            $errorMessages = array(
-                $extension->getExtensionKey() => array(
-                    array(
+            $errorMessages = [
+                $extension->getExtensionKey() => [
+                    [
                         'code' => $e->getCode(),
                         'message' => $e->getMessage(),
-                    )
-                ),
-            );
+                    ]
+                ],
+            ];
         }
 
-        return array($result, $errorMessages);
+        return [$result, $errorMessages];
     }
 }

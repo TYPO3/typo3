@@ -29,12 +29,12 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function validDataProviderWithoutWhitespace()
     {
-        return array(
-            'ascii without spaces' => array('thisismyinput4711'),
-            'accents without spaces' => array('éóéàèò4711'),
-            'umlauts without spaces' => array('üöä4711'),
-            'empty string' => array('')
-        );
+        return [
+            'ascii without spaces' => ['thisismyinput4711'],
+            'accents without spaces' => ['éóéàèò4711'],
+            'umlauts without spaces' => ['üöä4711'],
+            'empty string' => ['']
+        ];
     }
 
     /**
@@ -42,13 +42,13 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function validDataProviderWithWhitespace()
     {
-        return array(
-            'ascii with spaces' => array('This is my input 4711'),
-            'accents with spaces' => array('Sigur Rós 4711'),
-            'umlauts with spaces' => array('Hürriyet Daily News 4711'),
-            'space' => array(' '),
-            'empty string' => array('')
-        );
+        return [
+            'ascii with spaces' => ['This is my input 4711'],
+            'accents with spaces' => ['Sigur Rós 4711'],
+            'umlauts with spaces' => ['Hürriyet Daily News 4711'],
+            'space' => [' '],
+            'empty string' => ['']
+        ];
     }
 
     /**
@@ -56,12 +56,12 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function invalidDataProviderWithoutWhitespace()
     {
-        return array(
-            'ascii with dash' => array('my-name-4711'),
-            'accents with underscore' => array('Sigur_Rós_4711'),
-            'umlauts with periods' => array('Hürriyet.Daily.News.4711'),
-            'space' => array(' '),
-        );
+        return [
+            'ascii with dash' => ['my-name-4711'],
+            'accents with underscore' => ['Sigur_Rós_4711'],
+            'umlauts with periods' => ['Hürriyet.Daily.News.4711'],
+            'space' => [' '],
+        ];
     }
 
     /**
@@ -69,11 +69,11 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function invalidDataProviderWithWhitespace()
     {
-        return array(
-            'ascii with spaces and dashes' => array('This is my-name 4711'),
-            'accents with spaces and underscores' => array('Listen to Sigur_Rós_Band 4711'),
-            'umlauts with spaces and periods' => array('Go get the Hürriyet.Daily.News 4711')
-        );
+        return [
+            'ascii with spaces and dashes' => ['This is my-name 4711'],
+            'accents with spaces and underscores' => ['Listen to Sigur_Rós_Band 4711'],
+            'umlauts with spaces and periods' => ['Go get the Hürriyet.Daily.News 4711']
+        ];
     }
 
     /**
@@ -83,7 +83,7 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputWithoutAllowedWhitespaceHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -98,7 +98,7 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputWithAllowedWhitespaceHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'), 'allowWhiteSpace' => true);
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error'), 'allowWhiteSpace' => true];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -113,7 +113,7 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputWithoutAllowedWhitespaceHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(
@@ -128,7 +128,7 @@ class AlphanumericValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputWithAllowedWhitespaceHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'), 'allowWhiteSpace' => true);
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error'), 'allowWhiteSpace' => true];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

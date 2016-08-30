@@ -69,7 +69,7 @@ class DistributionController extends AbstractModuleController
             $action = 'showConfigurationForm';
             $configurationLink = $uriBuilder->reset()->uriFor(
                 $action,
-                array('extension' => array('key' => $extensionKey)),
+                ['extension' => ['key' => $extensionKey]],
                 'Configuration'
             );
         } else {

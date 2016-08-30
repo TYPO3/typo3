@@ -41,28 +41,28 @@ class AbstractAuthenticationService extends AbstractService
      *
      * @var array
      */
-    public $login = array();
+    public $login = [];
 
     /**
      * Various data
      *
      * @var array
      */
-    public $authInfo = array();
+    public $authInfo = [];
 
     /**
      * User db table definition
      *
      * @var array
      */
-    public $db_user = array();
+    public $db_user = [];
 
     /**
      * Usergroups db table definition
      *
      * @var array
      */
-    public $db_groups = array();
+    public $db_groups = [];
 
     /**
      * If the writelog() functions is called if a login-attempt has be tried without success

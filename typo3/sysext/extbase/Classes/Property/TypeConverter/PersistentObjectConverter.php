@@ -49,7 +49,7 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * @var array
      */
-    protected $sourceTypes = array('integer', 'string', 'array');
+    protected $sourceTypes = ['integer', 'string', 'array'];
 
     /**
      * @var string
@@ -95,7 +95,7 @@ class PersistentObjectConverter extends ObjectConverter
     public function getSourceChildPropertiesToBeConverted($source)
     {
         if (is_string($source) || is_int($source)) {
-            return array();
+            return [];
         }
         if (isset($source['__identity'])) {
             unset($source['__identity']);
@@ -139,7 +139,7 @@ class PersistentObjectConverter extends ObjectConverter
      * @return object the target type
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         if (is_array($source)) {
             if (

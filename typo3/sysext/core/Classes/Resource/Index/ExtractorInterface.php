@@ -79,5 +79,5 @@ interface ExtractorInterface
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(Resource\File $file, array $previousExtractedData = array());
+    public function extractMetaData(Resource\File $file, array $previousExtractedData = []);
 }

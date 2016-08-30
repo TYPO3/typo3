@@ -41,7 +41,7 @@ class IntegerConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(array('integer', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals(['integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('integer', $this->converter->getSupportedTargetType(), 'Target type does not match');
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
@@ -116,6 +116,6 @@ class IntegerConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
-        $this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+        $this->assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }
 }

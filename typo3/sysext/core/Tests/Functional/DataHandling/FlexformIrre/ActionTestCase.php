@@ -19,9 +19,9 @@ class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Abstr
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/DataHandling/FlexformIrre/Fixtures/fileadmin' => 'fileadmin/fixture',
-    );
+    ];
 
     /**
      * @var string

@@ -29,7 +29,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderMethodCallsResetInAnyCase()
     {
         $pageRenderer = $this->getMockBuilder(\TYPO3\CMS\Core\Page\PageRenderer::class)
-            ->setMethods(array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'))
+            ->setMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'])
             ->getMock();
         $pageRenderer->expects($this->exactly(3))->method('reset');
 
@@ -47,8 +47,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1341505305);
 
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
-        $subject->_set('availableLocalJqueryVersions', array('1.1.1'));
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
+        $subject->_set('availableLocalJqueryVersions', ['1.1.1']);
         $subject->loadJquery('2.2.2');
     }
 
@@ -61,7 +61,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1341571604);
 
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $subject->loadJquery(null, null, '12sd.12fsd');
         $subject->render();
     }
@@ -72,7 +72,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addBodyContentAddsContent()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $expectedReturnValue = 'ABCDE';
         $subject->addBodyContent('A');
         $subject->addBodyContent('B');
@@ -89,18 +89,18 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $fileReference = $this->getUniqueId('file_');
         $selectionPrefix = $this->getUniqueId('prefix_');
         $stripFromSelectionName = $this->getUniqueId('strip_');
         $errorMode = 0;
 
-        $expectedInlineLanguageLabelFile = array(
+        $expectedInlineLanguageLabelFile = [
             'fileRef' => $fileReference,
             'selectionPrefix' => $selectionPrefix,
             'stripFromSelectionName' => $stripFromSelectionName,
             'errorMode' => $errorMode
-        );
+        ];
 
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
         $actualResult = $subject->getInlineLanguageLabelFiles();
@@ -114,27 +114,27 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $fileReference1 = $this->getUniqueId('file1_');
         $selectionPrefix1 = $this->getUniqueId('prefix1_');
         $stripFromSelectionName1 = $this->getUniqueId('strip1_');
         $errorMode1 = 0;
-        $expectedInlineLanguageLabelFile1 = array(
+        $expectedInlineLanguageLabelFile1 = [
             'fileRef' => $fileReference1,
             'selectionPrefix' => $selectionPrefix1,
             'stripFromSelectionName' => $stripFromSelectionName1,
             'errorMode' => $errorMode1
-        );
+        ];
         $fileReference2 = $this->getUniqueId('file2_');
         $selectionPrefix2 = $this->getUniqueId('prefix2_');
         $stripFromSelectionName2 = $this->getUniqueId('strip2_');
         $errorMode2 = 0;
-        $expectedInlineLanguageLabelFile2 = array(
+        $expectedInlineLanguageLabelFile2 = [
             'fileRef' => $fileReference2,
             'selectionPrefix' => $selectionPrefix2,
             'stripFromSelectionName' => $stripFromSelectionName2,
             'errorMode' => $errorMode2
-        );
+        ];
 
         $subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1, $errorMode1);
         $subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2, $errorMode2);
@@ -150,7 +150,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $fileReference = $this->getUniqueId('file2_');
         $selectionPrefix = $this->getUniqueId('prefix2_');
         $stripFromSelectionName = $this->getUniqueId('strip2_');
@@ -170,7 +170,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1284906026);
 
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $subject->_set('charSet', 'utf-8');
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
     }
@@ -184,7 +184,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1284906026);
 
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
         $subject->_set('lang', 'default');
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
     }
@@ -195,13 +195,13 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['readLLfile'], [], '', false);
         $subject->_set('lang', 'default');
         $subject->_set('charSet', 'utf-8');
-        $subject->_set('inlineLanguageLabels', array());
+        $subject->_set('inlineLanguageLabels', []);
         $subject->method('readLLfile')->willReturn(false);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-        $this->assertEquals(array(), $subject->_get('inlineLanguageLabels'));
+        $this->assertEquals([], $subject->_get('inlineLanguageLabels'));
     }
 
     /**
@@ -209,49 +209,49 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider()
     {
-        $llFileContent = array(
-            'default' => array(
+        $llFileContent = [
+            'default' => [
                 'inline_label_first_Key' => 'first',
                 'inline_label_second_Key' => 'second',
                 'thirdKey' => 'third'
-            )
-        );
-        return array(
-            'No processing' => array(
+            ]
+        ];
+        return [
+            'No processing' => [
                 $llFileContent,
                 '',
                 '',
                 $llFileContent['default']
-            ),
-            'Respect $selectionPrefix' => array(
+            ],
+            'Respect $selectionPrefix' => [
                 $llFileContent,
                 'inline_',
                 '',
-                array(
+                [
                     'inline_label_first_Key' => 'first',
                     'inline_label_second_Key' => 'second'
-                )
-            ),
-            'Respect $stripFromSelectionName' => array(
+                ]
+            ],
+            'Respect $stripFromSelectionName' => [
                 $llFileContent,
                 '',
                 'inline_',
-                array(
+                [
                     'label_first_Key' => 'first',
                     'label_second_Key' => 'second',
                     'thirdKey' => 'third'
-                )
-            ),
-            'Respect $selectionPrefix and $stripFromSelectionName' => array(
+                ]
+            ],
+            'Respect $selectionPrefix and $stripFromSelectionName' => [
                 $llFileContent,
                 'inline_',
                 'inline_label_',
-                array(
+                [
                     'first_Key' => 'first',
                     'second_Key' => 'second'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -261,10 +261,10 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels($llFileContent, $selectionPrefix, $stripFromSelectionName, $expectation)
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['readLLfile'], [], '', false);
         $subject->_set('lang', 'default');
         $subject->_set('charSet', 'utf-8');
-        $subject->_set('inlineLanguageLabels', array());
+        $subject->_set('inlineLanguageLabels', []);
         $subject->method('readLLfile')->willReturn($llFileContent);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
         $this->assertEquals($expectation, $subject->_get('inlineLanguageLabels'));

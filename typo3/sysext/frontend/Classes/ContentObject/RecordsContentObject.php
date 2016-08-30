@@ -29,14 +29,14 @@ class RecordsContentObject extends AbstractContentObject
      *
      * @var array
      */
-    protected $itemArray = array();
+    protected $itemArray = [];
 
     /**
      * List of all selected records with full data, arranged per table
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Rendering the cObject, RECORDS
@@ -44,11 +44,11 @@ class RecordsContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         // Reset items and data
-        $this->itemArray = array();
-        $this->data = array();
+        $this->itemArray = [];
+        $this->data = [];
 
         $theValue = '';
         $originalRec = $GLOBALS['TSFE']->currentRecord;
@@ -178,8 +178,8 @@ class RecordsContentObject extends AbstractContentObject
         foreach ($tables as $table) {
 
             // Get the records for each selected category
-            $tableRecords = array();
-            $categoriesPerRecord = array();
+            $tableRecords = [];
+            $categoriesPerRecord = [];
             foreach ($selectedCategories as $aCategory) {
                 try {
                     $collection = CategoryCollection::load(
@@ -194,7 +194,7 @@ class RecordsContentObject extends AbstractContentObject
                             $tableRecords[$item['uid']] = $item;
                             // Keep track of all categories a given item belongs to
                             if (!isset($categoriesPerRecord[$item['uid']])) {
-                                $categoriesPerRecord[$item['uid']] = array();
+                                $categoriesPerRecord[$item['uid']] = [];
                             }
                             $categoriesPerRecord[$item['uid']][] = $aCategory;
                         }
@@ -211,12 +211,12 @@ class RecordsContentObject extends AbstractContentObject
             }
             // Store the resulting records into the itemArray and data results array
             if (!empty($tableRecords)) {
-                $this->data[$table] = array();
+                $this->data[$table] = [];
                 foreach ($tableRecords as $record) {
-                    $this->itemArray[] = array(
+                    $this->itemArray[] = [
                         'id' => $record['uid'],
                         'table' => $table
-                    );
+                    ];
                     // Add to the record the categories it belongs to
                     $record['_categories'] = implode(',', $categoriesPerRecord[$record['uid']]);
                     $this->data[$table][$record['uid']] = $record;

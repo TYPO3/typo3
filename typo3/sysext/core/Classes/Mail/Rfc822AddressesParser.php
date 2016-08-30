@@ -88,14 +88,14 @@ class Rfc822AddressesParser
      *
      * @var array $addresses
      */
-    private $addresses = array();
+    private $addresses = [];
 
     /**
      * The final array of parsed address information that we build up.
      *
      * @var array $structure
      */
-    private $structure = array();
+    private $structure = [];
 
     /**
      * The current error message, if any.
@@ -175,8 +175,8 @@ class Rfc822AddressesParser
         if (isset($limit)) {
             $this->limit = $limit;
         }
-        $this->structure = array();
-        $this->addresses = array();
+        $this->structure = [];
+        $this->addresses = [];
         $this->error = null;
         $this->index = null;
         // Unfold any long lines in $this->address.
@@ -242,10 +242,10 @@ class Rfc822AddressesParser
         }
         // $string now contains the first full address/group.
         // Add to the addresses array.
-        $this->addresses[] = array(
+        $this->addresses[] = [
             'address' => trim($string),
             'group' => $is_group
-        );
+        ];
         // Remove the now stored address from the initial line, the +1
         // is to account for the explode character.
         $address = trim(substr($address, strlen($string) + 1));
@@ -399,13 +399,13 @@ class Rfc822AddressesParser
     protected function _validateAddress($address)
     {
         $is_group = false;
-        $addresses = array();
+        $addresses = [];
         if ($address['group']) {
             $is_group = true;
             // Get the group part of the name
             $parts = explode(':', $address['address']);
             $groupname = $this->_splitCheck($parts, ':');
-            $structure = array();
+            $structure = [];
             // And validate the group part of the name.
             if (!$this->_validatePhrase($groupname)) {
                 $this->error = 'Group name did not validate.';
@@ -466,7 +466,7 @@ class Rfc822AddressesParser
     {
         // Splits on one or more Tab or space.
         $parts = preg_split('/[ \\x09]+/', $phrase, -1, PREG_SPLIT_NO_EMPTY);
-        $phrase_parts = array();
+        $phrase_parts = [];
         while (!empty($parts)) {
             $phrase_parts[] = $this->_splitCheck($parts, ' ');
             for ($i = 0; $i < $this->index + 1; $i++) {
@@ -553,7 +553,7 @@ class Rfc822AddressesParser
         // A couple of defaults.
         $phrase = '';
         $comment = '';
-        $comments = array();
+        $comments = [];
         // Catch any RFC822 comments and store them separately.
         $_mailbox = $mailbox;
         while (trim($_mailbox) !== '') {
@@ -599,7 +599,7 @@ class Rfc822AddressesParser
         $mbox = new \stdClass();
         // Add the phrase (even if empty) and comments
         $mbox->personal = $phrase;
-        $mbox->comment = isset($comments) ? $comments : array();
+        $mbox->comment = isset($comments) ? $comments : [];
         if (isset($route_addr)) {
             $mbox->mailbox = $route_addr['local_part'];
             $mbox->host = $route_addr['domain'];
@@ -774,7 +774,7 @@ class Rfc822AddressesParser
             return false;
         }
         // Got here so return successful.
-        return array('local_part' => $local_part, 'domain' => $domain);
+        return ['local_part' => $local_part, 'domain' => $domain];
     }
 
     /**
@@ -788,7 +788,7 @@ class Rfc822AddressesParser
     protected function _validateLocalPart($local_part)
     {
         $parts = explode('.', $local_part);
-        $words = array();
+        $words = [];
         // Split the local_part into words.
         while (!empty($parts)) {
             $words[] = $this->_splitCheck($parts, '.');

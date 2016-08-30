@@ -30,7 +30,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
@@ -52,13 +52,13 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TCA'] = array();
+        $GLOBALS['TCA'] = [];
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->backEndUser = $this->createMock(BackendUserAuthentication::class);
         $this->mockDatabaseConnection = $this->createMock(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->mockDatabaseConnection;
         $this->subject = $this->getAccessibleMock(DataHandler::class, ['dummy']);
-        $this->subject->start(array(), '', $this->backEndUser);
+        $this->subject->start([], '', $this->backEndUser);
     }
 
     /**
@@ -136,13 +136,13 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable()
     {
         $tableName = $this->getUniqueId('aTable');
-        $GLOBALS['TCA'] = array(
-            $tableName => array(
-                'ctrl' => array(
+        $GLOBALS['TCA'] = [
+            $tableName => [
+                'ctrl' => [
                     'adminOnly' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->subject->admin = false;
         $this->backEndUser->groupData['tables_modify'] = $tableName;
         $this->assertFalse($this->subject->checkModifyAccessList($tableName));
@@ -153,16 +153,16 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function evalCheckValueDouble2()
     {
-        $testData = array(
+        $testData = [
             '-0,5' => '-0.50',
             '1000' => '1000.00',
             '1000,10' => '1000.10',
             '1000,0' => '1000.00',
             '600.000.000,00' => '600000000.00',
             '60aaa00' => '6000.00'
-        );
+        ];
         foreach ($testData as $value => $expectedReturnValue) {
-            $returnValue = $this->subject->checkValue_input_Eval($value, array('double2'), '');
+            $returnValue = $this->subject->checkValue_input_Eval($value, ['double2'], '');
             $this->assertSame($returnValue['value'], $expectedReturnValue);
         }
     }
@@ -212,20 +212,20 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inputValuesStringsDataProvider()
     {
-        return array(
-            '"0" returns zero as integer' => array(
+        return [
+            '"0" returns zero as integer' => [
                 '0',
                 0
-            ),
-            '"-1999999" is interpreted correctly as -1999999 and is lot lower than -200000' => array(
+            ],
+            '"-1999999" is interpreted correctly as -1999999 and is lot lower than -200000' => [
                 '-1999999',
                 -1999999
-            ),
-            '"3000000" is interpreted correctly as 3000000 but is higher then 200000 and set to 200000' => array(
+            ],
+            '"3000000" is interpreted correctly as 3000000 but is higher then 200000 and set to 200000' => [
                 '3000000',
                 2000000
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -236,14 +236,14 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly($value, $expectedReturnValue)
     {
-        $tcaFieldConf = array(
-            'input' => array(),
+        $tcaFieldConf = [
+            'input' => [],
             'eval' => 'int',
-            'range' => array(
+            'range' => [
                 'lower' => '-2000000',
                 'upper' => '2000000'
-            )
-        );
+            ]
+        ];
         $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
         $this->assertSame($returnValue['value'], $expectedReturnValue);
     }
@@ -253,19 +253,19 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider()
     {
-        return array(
-            'tca without dbType' => array(
-                array(
-                    'input' => array()
-                )
-            ),
-            'tca with dbType != date/datetime' => array(
-                array(
-                    'input' => array(),
+        return [
+            'tca without dbType' => [
+                [
+                    'input' => []
+                ]
+            ],
+            'tca with dbType != date/datetime' => [
+                [
+                    'input' => [],
                     'dbType' => 'foo'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -305,7 +305,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $hookClass = $this->getUniqueId('tx_coretest');
         $hookMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface::class)
-            ->setMethods(array('checkModifyAccessList'))
+            ->setMethods(['checkModifyAccessList'])
             ->setMockClassName($hookClass)
             ->getMock();
         $hookMock->expects($this->once())->method('checkModifyAccessList');
@@ -335,10 +335,10 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var DataHandler $subject */
         $subject = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(array('newlog'))
+            ->setMethods(['newlog'])
             ->getMock();
         $this->backEndUser->workspace = 1;
-        $this->backEndUser->workspaceRec = array('freeze' => true);
+        $this->backEndUser->workspaceRec = ['freeze' => true];
         $subject->BE_USER = $this->backEndUser;
         $this->assertFalse($subject->process_datamap());
     }
@@ -348,25 +348,25 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processDatamapWhenEditingRecordInWorkspaceCreatesNewRecordInWorkspace()
     {
-        $GLOBALS['TCA'] = array(
-            'pages' => array(
-                'columns' => array(),
-            ),
-        );
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'columns' => [],
+            ],
+        ];
 
         /** @var $subject DataHandler|\PHPUnit_Framework_MockObject_MockObject */
         $subject = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess', 'recordInfo'))
+            ->setMethods(['newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess', 'recordInfo'])
             ->getMock();
 
         $subject->bypassWorkspaceRestrictions = false;
-        $subject->datamap = array(
-            'pages' => array(
-                '1' => array(
+        $subject->datamap = [
+            'pages' => [
+                '1' => [
                     'header' => 'demo'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $subject->expects($this->once())->method('recordInfo')->will($this->returnValue(null));
         $subject->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(true));
         $subject->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(false));
@@ -375,23 +375,23 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
         $backEndUser = $this->createMock(BackendUserAuthentication::class);
         $backEndUser->workspace = 1;
-        $backEndUser->workspaceRec = array('freeze' => false);
+        $backEndUser->workspaceRec = ['freeze' => false];
         $backEndUser->expects($this->once())->method('workspaceAllowAutoCreation')->will($this->returnValue(true));
         $backEndUser->expects($this->once())->method('workspaceCannotEditRecord')->will($this->returnValue(true));
         $backEndUser->expects($this->once())->method('recordEditAccessInternals')->with('pages', 1)->will($this->returnValue(true));
         $subject->BE_USER = $backEndUser;
         $createdTceMain = $this->createMock(DataHandler::class);
-        $createdTceMain->expects($this->once())->method('start')->with(array(), array(
-            'pages' => array(
-                1 => array(
-                    'version' => array(
+        $createdTceMain->expects($this->once())->method('start')->with([], [
+            'pages' => [
+                1 => [
+                    'version' => [
                         'action' => 'new',
                         'treeLevels' => -1,
                         'label' => 'Auto-created for WS #1'
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         $createdTceMain->expects($this->never())->method('process_datamap');
         $createdTceMain->expects($this->once())->method('process_cmdmap');
         GeneralUtility::addInstance(DataHandler::class, $createdTceMain);
@@ -405,7 +405,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $hookClass = $this->getUniqueId('tx_coretest');
         $hookMock = $this->getMockBuilder($hookClass)
-            ->setMethods(array('checkFlexFormValue_beforeMerge'))
+            ->setMethods(['checkFlexFormValue_beforeMerge'])
             ->getMock();
         $hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
@@ -448,7 +448,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $this->subject->BE_USER = $backendUser;
         $this->subject->enableLogging = true;
-        $this->subject->errorLog = array();
+        $this->subject->errorLog = [];
         $logDetailsUnique = $this->getUniqueId('details');
         $this->subject->log('', 23, 0, 42, 1, $logDetailsUnique);
         $this->assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
@@ -462,9 +462,9 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $this->subject->BE_USER = $backendUser;
         $this->subject->enableLogging = true;
-        $this->subject->errorLog = array();
+        $this->subject->errorLog = [];
         $logDetails = $this->getUniqueId('details');
-        $this->subject->log('', 23, 0, 42, 1, '%1$s' . $logDetails . '%2$s', -1, array('foo', 'bar'));
+        $this->subject->log('', 23, 0, 42, 1, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         $this->assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
@@ -494,180 +494,180 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function equalSubmittedAndStoredValuesAreDeterminedDataProvider()
     {
-        return array(
+        return [
             // String
-            'string value "" vs. ""' => array(
+            'string value "" vs. ""' => [
                 true,
                 '', '', 'string', false
-            ),
-            'string value 0 vs. "0"' => array(
+            ],
+            'string value 0 vs. "0"' => [
                 true,
                 0, '0', 'string', false
-            ),
-            'string value 1 vs. "1"' => array(
+            ],
+            'string value 1 vs. "1"' => [
                 true,
                 1, '1', 'string', false
-            ),
-            'string value "0" vs. ""' => array(
+            ],
+            'string value "0" vs. ""' => [
                 false,
                 '0', '', 'string', false
-            ),
-            'string value 0 vs. ""' => array(
+            ],
+            'string value 0 vs. ""' => [
                 false,
                 0, '', 'string', false
-            ),
-            'string value null vs. ""' => array(
+            ],
+            'string value null vs. ""' => [
                 true,
                 null, '', 'string', false
-            ),
+            ],
             // Integer
-            'integer value 0 vs. 0' => array(
+            'integer value 0 vs. 0' => [
                 true,
                 0, 0, 'int', false
-            ),
-            'integer value "0" vs. "0"' => array(
+            ],
+            'integer value "0" vs. "0"' => [
                 true,
                 '0', '0', 'int', false
-            ),
-            'integer value 0 vs. "0"' => array(
+            ],
+            'integer value 0 vs. "0"' => [
                 true,
                 0, '0', 'int', false
-            ),
-            'integer value "" vs. "0"' => array(
+            ],
+            'integer value "" vs. "0"' => [
                 true,
                 '', '0', 'int', false
-            ),
-            'integer value "" vs. 0' => array(
+            ],
+            'integer value "" vs. 0' => [
                 true,
                 '', 0, 'int', false
-            ),
-            'integer value "0" vs. 0' => array(
+            ],
+            'integer value "0" vs. 0' => [
                 true,
                 '0', 0, 'int', false
-            ),
-            'integer value 1 vs. 1' => array(
+            ],
+            'integer value 1 vs. 1' => [
                 true,
                 1, 1, 'int', false
-            ),
-            'integer value 1 vs. "1"' => array(
+            ],
+            'integer value 1 vs. "1"' => [
                 true,
                 1, '1', 'int', false
-            ),
-            'integer value "1" vs. "1"' => array(
+            ],
+            'integer value "1" vs. "1"' => [
                 true,
                 '1', '1', 'int', false
-            ),
-            'integer value "1" vs. 1' => array(
+            ],
+            'integer value "1" vs. 1' => [
                 true,
                 '1', 1, 'int', false
-            ),
-            'integer value "0" vs. "1"' => array(
+            ],
+            'integer value "0" vs. "1"' => [
                 false,
                 '0', '1', 'int', false
-            ),
+            ],
             // String with allowed NULL values
-            'string with allowed null value "" vs. ""' => array(
+            'string with allowed null value "" vs. ""' => [
                 true,
                 '', '', 'string', true
-            ),
-            'string with allowed null value 0 vs. "0"' => array(
+            ],
+            'string with allowed null value 0 vs. "0"' => [
                 true,
                 0, '0', 'string', true
-            ),
-            'string with allowed null value 1 vs. "1"' => array(
+            ],
+            'string with allowed null value 1 vs. "1"' => [
                 true,
                 1, '1', 'string', true
-            ),
-            'string with allowed null value "0" vs. ""' => array(
+            ],
+            'string with allowed null value "0" vs. ""' => [
                 false,
                 '0', '', 'string', true
-            ),
-            'string with allowed null value 0 vs. ""' => array(
+            ],
+            'string with allowed null value 0 vs. ""' => [
                 false,
                 0, '', 'string', true
-            ),
-            'string with allowed null value null vs. ""' => array(
+            ],
+            'string with allowed null value null vs. ""' => [
                 false,
                 null, '', 'string', true
-            ),
-            'string with allowed null value "" vs. null' => array(
+            ],
+            'string with allowed null value "" vs. null' => [
                 false,
                 '', null, 'string', true
-            ),
-            'string with allowed null value null vs. null' => array(
+            ],
+            'string with allowed null value null vs. null' => [
                 true,
                 null, null, 'string', true
-            ),
+            ],
             // Integer with allowed NULL values
-            'integer with allowed null value 0 vs. 0' => array(
+            'integer with allowed null value 0 vs. 0' => [
                 true,
                 0, 0, 'int', true
-            ),
-            'integer with allowed null value "0" vs. "0"' => array(
+            ],
+            'integer with allowed null value "0" vs. "0"' => [
                 true,
                 '0', '0', 'int', true
-            ),
-            'integer with allowed null value 0 vs. "0"' => array(
+            ],
+            'integer with allowed null value 0 vs. "0"' => [
                 true,
                 0, '0', 'int', true
-            ),
-            'integer with allowed null value "" vs. "0"' => array(
+            ],
+            'integer with allowed null value "" vs. "0"' => [
                 true,
                 '', '0', 'int', true
-            ),
-            'integer with allowed null value "" vs. 0' => array(
+            ],
+            'integer with allowed null value "" vs. 0' => [
                 true,
                 '', 0, 'int', true
-            ),
-            'integer with allowed null value "0" vs. 0' => array(
+            ],
+            'integer with allowed null value "0" vs. 0' => [
                 true,
                 '0', 0, 'int', true
-            ),
-            'integer with allowed null value 1 vs. 1' => array(
+            ],
+            'integer with allowed null value 1 vs. 1' => [
                 true,
                 1, 1, 'int', true
-            ),
-            'integer with allowed null value "1" vs. "1"' => array(
+            ],
+            'integer with allowed null value "1" vs. "1"' => [
                 true,
                 '1', '1', 'int', true
-            ),
-            'integer with allowed null value "1" vs. 1' => array(
+            ],
+            'integer with allowed null value "1" vs. 1' => [
                 true,
                 '1', 1, 'int', true
-            ),
-            'integer with allowed null value 1 vs. "1"' => array(
+            ],
+            'integer with allowed null value 1 vs. "1"' => [
                 true,
                 1, '1', 'int', true
-            ),
-            'integer with allowed null value "0" vs. "1"' => array(
+            ],
+            'integer with allowed null value "0" vs. "1"' => [
                 false,
                 '0', '1', 'int', true
-            ),
-            'integer with allowed null value null vs. ""' => array(
+            ],
+            'integer with allowed null value null vs. ""' => [
                 false,
                 null, '', 'int', true
-            ),
-            'integer with allowed null value "" vs. null' => array(
+            ],
+            'integer with allowed null value "" vs. null' => [
                 false,
                 '', null, 'int', true
-            ),
-            'integer with allowed null value null vs. null' => array(
+            ],
+            'integer with allowed null value null vs. null' => [
                 true,
                 null, null, 'int', true
-            ),
-            'integer with allowed null value null vs. "0"' => array(
+            ],
+            'integer with allowed null value null vs. "0"' => [
                 false,
                 null, '0', 'int', true
-            ),
-            'integer with allowed null value null vs. 0' => array(
+            ],
+            'integer with allowed null value null vs. 0' => [
                 false,
                 null, 0, 'int', true
-            ),
-            'integer with allowed null value "0" vs. null' => array(
+            ],
+            'integer with allowed null value "0" vs. null' => [
                 false,
                 '0', null, 'int', true
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -683,22 +683,22 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(
             DataHandler::class,
-            array('dummy')
+            ['dummy']
         );
 
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $subject->BE_USER = $backendUser;
         $subject->BE_USER->workspace = 1;
 
-        $GLOBALS['TCA'][$table] = array();
-        $GLOBALS['TCA'][$table]['ctrl'] = array('label' => 'dummy');
-        $GLOBALS['TCA'][$table]['columns'] = array(
-            'dummy' => array(
-                'config' => array(
+        $GLOBALS['TCA'][$table] = [];
+        $GLOBALS['TCA'][$table]['ctrl'] = ['label' => 'dummy'];
+        $GLOBALS['TCA'][$table]['columns'] = [
+            'dummy' => [
+                'config' => [
                     'eval' => $eval
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->assertEquals($expected, $subject->_call('getPlaceholderTitleForTableLabel', $table));
     }
@@ -708,24 +708,24 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 0.10,
                 'double2'
-            ),
-            array(
+            ],
+            [
                 0,
                 'int'
-            ),
-            array(
+            ],
+            [
                 '0',
                 'datetime'
-            ),
-            array(
+            ],
+            [
                 '[PLACEHOLDER, WS#1]',
                 ''
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -754,22 +754,22 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete()
     {
         $table = $this->getUniqueId('foo_');
-        $conf = array(
+        $conf = [
             'type' => 'inline',
             'foreign_table' => $this->getUniqueId('foreign_foo_'),
-            'behaviour' => array(
+            'behaviour' => [
                 'enableCascadingDelete' => 0,
-            )
-        );
+            ]
+        ];
 
         /** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
         $mockRelationHandler = $this->createMock(\TYPO3\CMS\Core\Database\RelationHandler::class);
-        $mockRelationHandler->itemArray = array(
-            '1' => array('table' => $this->getUniqueId('bar_'), 'id' => 67)
-        );
+        $mockRelationHandler->itemArray = [
+            '1' => ['table' => $this->getUniqueId('bar_'), 'id' => 67]
+        ];
 
         /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $mockDataHandler */
-        $mockDataHandler = $this->getAccessibleMock(DataHandler::class, array('getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'), array(), '', false);
+        $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
         $mockDataHandler->expects($this->once())->method('getInlineFieldType')->will($this->returnValue('field'));
         $mockDataHandler->expects($this->once())->method('createRelationHandlerInstance')->will($this->returnValue($mockRelationHandler));
         $mockDataHandler->expects($this->never())->method('deleteAction');
@@ -781,32 +781,32 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkValue_checkReturnsExpectedValuesDataProvider()
     {
-        return array(
-            'None item selected' => array(
+        return [
+            'None item selected' => [
                 0,
                 0
-            ),
-            'All items selected' => array(
+            ],
+            'All items selected' => [
                 7,
                 7
-            ),
-            'Item 1 and 2 are selected' => array(
+            ],
+            'Item 1 and 2 are selected' => [
                 3,
                 3
-            ),
-            'Value is higher than allowed (all checkboxes checked)' => array(
+            ],
+            'Value is higher than allowed (all checkboxes checked)' => [
                 15,
                 7
-            ),
-            'Value is higher than allowed (some checkboxes checked)' => array(
+            ],
+            'Value is higher than allowed (some checkboxes checked)' => [
                 11,
                 3
-            ),
-            'Negative value' => array(
+            ],
+            'Negative value' => [
                 -5,
                 0
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -818,17 +818,17 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkValue_checkReturnsExpectedValues($value, $expectedValue)
     {
-        $expectedResult = array(
+        $expectedResult = [
             'value' => $expectedValue
-        );
-        $result = array();
-        $tcaFieldConfiguration = array(
-            'items' => array(
-                array('Item 1', 0),
-                array('Item 2', 0),
-                array('Item 3', 0)
-            )
-        );
+        ];
+        $result = [];
+        $tcaFieldConfiguration = [
+            'items' => [
+                ['Item 1', 0],
+                ['Item 2', 0],
+                ['Item 3', 0]
+            ]
+        ];
         $this->assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
     }
 
@@ -840,8 +840,8 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $previousLanguageService = $GLOBALS['LANG'];
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
         $GLOBALS['LANG']->init('default');
-        $expectedResult = array('value' => '');
-        $this->assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, array('type' => 'string', 'max' => 40), 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
+        $expectedResult = ['value' => ''];
+        $this->assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'string', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
         $GLOBALS['LANG'] = $previousLanguageService;
     }
 
@@ -865,31 +865,31 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function referenceValuesAreCastedDataProvider()
     {
-        return array(
-            'all empty' => array(
-                '', array(), ''
-            ),
-            'cast zero with MM table' => array(
-                '', array('MM' => 'table'), 0
-            ),
-            'cast zero with MM table with default value' => array(
-                '', array('MM' => 'table', 'default' => 13), 0
-            ),
-            'cast zero with foreign field' => array(
-                '', array('foreign_field' => 'table', 'default' => 13), 0
-            ),
-            'cast zero with foreign field with default value' => array(
-                '', array('foreign_field' => 'table'), 0
-            ),
-            'pass zero' => array(
-                '0', array(), '0'
-            ),
-            'pass value' => array(
-                '1', array('default' => 13), '1'
-            ),
-            'use default value' => array(
-                '', array('default' => 13), 13
-            ),
-        );
+        return [
+            'all empty' => [
+                '', [], ''
+            ],
+            'cast zero with MM table' => [
+                '', ['MM' => 'table'], 0
+            ],
+            'cast zero with MM table with default value' => [
+                '', ['MM' => 'table', 'default' => 13], 0
+            ],
+            'cast zero with foreign field' => [
+                '', ['foreign_field' => 'table', 'default' => 13], 0
+            ],
+            'cast zero with foreign field with default value' => [
+                '', ['foreign_field' => 'table'], 0
+            ],
+            'pass zero' => [
+                '0', [], '0'
+            ],
+            'pass value' => [
+                '1', ['default' => 13], '1'
+            ],
+            'use default value' => [
+                '', ['default' => 13], 13
+            ],
+        ];
     }
 }

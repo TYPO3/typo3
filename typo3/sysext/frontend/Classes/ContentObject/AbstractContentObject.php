@@ -48,7 +48,7 @@ abstract class AbstractContentObject
      * @param array $conf
      * @return string
      */
-    abstract public function render($conf = array());
+    abstract public function render($conf = []);
 
     /**
      * Getter for current ContentObjectRenderer

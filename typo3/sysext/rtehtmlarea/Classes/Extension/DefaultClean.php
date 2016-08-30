@@ -41,9 +41,9 @@ class DefaultClean extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'cleanword' => 'CleanWord'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -65,7 +65,7 @@ class DefaultClean extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $button = 'cleanword';
         if (in_array($button, $this->toolbar)) {
             if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {

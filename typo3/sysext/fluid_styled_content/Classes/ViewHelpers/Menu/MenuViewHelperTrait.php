@@ -45,7 +45,7 @@ trait MenuViewHelperTrait
     protected function getPageConstraints($includeNotInMenu = false, $includeMenuSeparator = false)
     {
         GeneralUtility::logDeprecatedFunction();
-        $constraints = array();
+        $constraints = [];
 
         $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' . PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
 
@@ -83,9 +83,9 @@ trait MenuViewHelperTrait
                 if ($entryLevel < 0) {
                     $entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
                 }
-                $pageUids = array($typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']);
+                $pageUids = [$typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']];
             } else {
-                $pageUids = array($typoScriptFrontendController->id);
+                $pageUids = [$typoScriptFrontendController->id];
             }
         }
 

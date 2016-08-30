@@ -61,14 +61,14 @@ class SuggestWizardDefaultReceiver
      *
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * The list of pages that are allowed to perform the search for records on
      *
      * @var array Array of PIDs
      */
-    protected $allowedPages = array();
+    protected $allowedPages = [];
 
     /**
      * The maximum number of items to select.
@@ -80,7 +80,7 @@ class SuggestWizardDefaultReceiver
     /**
      * @var array
      */
-    protected $params = array();
+    protected $params = [];
 
     /**
      * @var IconFactory
@@ -150,7 +150,7 @@ class SuggestWizardDefaultReceiver
      */
     public function queryTable(&$params, $recursionCounter = 0)
     {
-        $rows = array();
+        $rows = [];
         $this->params = &$params;
         $start = $recursionCounter * 50;
         $this->prepareSelectStatement();
@@ -191,7 +191,7 @@ class SuggestWizardDefaultReceiver
                     $croppedPath = htmlspecialchars($path);
                 }
                 $label = $this->getLabel($row);
-                $entry = array(
+                $entry = [
                     'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
                     'table' => $this->mmForeignTable ? $this->mmForeignTable : $this->table,
@@ -201,7 +201,7 @@ class SuggestWizardDefaultReceiver
                     'style' => '',
                     'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : '',
                     'sprite' => $spriteIcon
-                );
+                ];
                 $rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
             }
 
@@ -267,9 +267,9 @@ class SuggestWizardDefaultReceiver
      */
     protected function getAllSubpagesOfPage($uid, $depth = 99)
     {
-        $pageIds = array($uid);
+        $pageIds = [$uid];
         $level = 0;
-        $pages = array($uid);
+        $pages = [$uid];
         $queryBuilder = $this->getQueryBuilderForTable('pages');
         $queryBuilder->select('uid')
             ->from('pages');
@@ -401,12 +401,12 @@ class SuggestWizardDefaultReceiver
     {
         // Call renderlet if available (normal pages etc. usually don't have one)
         if ($this->config['renderFunc'] != '') {
-            $params = array(
+            $params = [
                 'table' => $this->table,
                 'uid' => $row['uid'],
                 'row' => $row,
                 'entry' => &$entry
-            );
+            ];
             GeneralUtility::callUserFunction($this->config['renderFunc'], $params, $this);
         }
         return $entry;

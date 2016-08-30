@@ -26,21 +26,21 @@ class FlexFormToolsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField()
     {
-        $dataStruct = array(
-            'dummy_field' => array(
-                'TCEforms' => array(
-                    'config' => array(),
-                ),
-            ),
-        );
-        $pA = array(
-            'vKeys' => array('ES'),
+        $dataStruct = [
+            'dummy_field' => [
+                'TCEforms' => [
+                    'config' => [],
+                ],
+            ],
+        ];
+        $pA = [
+            'vKeys' => ['ES'],
             'callBackMethod_value' => 'dummy',
-        );
+        ];
         $editData = '';
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(FlexFormTools::class)
-            ->setMethods(array('executeCallBackMethod'))
+            ->setMethods(['executeCallBackMethod'])
             ->getMock();
         $subject->expects($this->never())->method('executeCallBackMethod');
         $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
@@ -51,21 +51,21 @@ class FlexFormToolsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingArrayField()
     {
-        $dataStruct = array(
-            'dummy_field' => array(
+        $dataStruct = [
+            'dummy_field' => [
                 'type' => 'array',
                 'el' => 'field_not_in_data',
-            ),
-        );
-        $pA = array(
-            'vKeys' => array('ES'),
+            ],
+        ];
+        $pA = [
+            'vKeys' => ['ES'],
             'callBackMethod_value' => 'dummy',
-        );
-        $editData = array(
-            'field' => array(
+        ];
+        $editData = [
+            'field' => [
                 'el' => 'dummy',
-            ),
-        );
+            ],
+        ];
         $editData2 = '';
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->createMock(FlexFormTools::class);

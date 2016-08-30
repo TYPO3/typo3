@@ -18,7 +18,7 @@
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
             return;
         }
-        if (is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debug'))) {
+        if (is_object($GLOBALS['error']) && @is_callable([$GLOBALS['error'], 'debug'])) {
             $GLOBALS['error']->debug($variable, $name, $line, $file, $recursiveDepth, $debugLevel);
         } else {
             $title = $name === '*variable*' ? '' : $name;
@@ -29,14 +29,14 @@
 
     function debugBegin()
     {
-        if (is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debugBegin'))) {
+        if (is_object($GLOBALS['error']) && @is_callable([$GLOBALS['error'], 'debugBegin'])) {
             $GLOBALS['error']->debugBegin();
         }
     }
 
     function debugEnd()
     {
-        if (is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debugEnd'))) {
+        if (is_object($GLOBALS['error']) && @is_callable([$GLOBALS['error'], 'debugEnd'])) {
             $GLOBALS['error']->debugEnd();
         }
     }

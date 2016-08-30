@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class ActionHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = array('version', 'workspaces');
+    protected $coreExtensionsToLoad = ['version', 'workspaces'];
 
     /**
      * Set up
@@ -49,13 +49,13 @@ class ActionHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         // Prepare parameter
         $parameter = new \stdClass();
         $parameter->additional = '';
-        $parameter->recipients = array();
+        $parameter->recipients = [];
         $parameter->comments = '';
 
         // Send to LIVE
         $parameter->affects = new \stdClass();
         $parameter->affects->nextStage = -20;
-        $parameter->affects->elements = array();
+        $parameter->affects->elements = [];
 
         // First and only affected element
         $elementOne = new \stdClass();

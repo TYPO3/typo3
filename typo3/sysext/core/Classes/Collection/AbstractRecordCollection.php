@@ -158,9 +158,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      */
     public function serialize()
     {
-        $data = array(
+        $data = [
             'uid' => $this->getIdentifier()
-        );
+        ];
         return serialize($data);
     }
 
@@ -365,18 +365,18 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     public function persist()
     {
         $uid = $this->getIdentifier() == 0 ? 'NEW' . rand(100000, 999999) : $this->getIdentifier();
-        $data = array(
-            trim(static::$storageTableName) => array(
+        $data = [
+            trim(static::$storageTableName) => [
                 $uid => $this->getPersistableDataArray()
-            )
-        );
+            ]
+        ];
         // New records always must have a pid
         if ($this->getIdentifier() == 0) {
             $data[trim(static::$storageTableName)][$uid]['pid'] = 0;
         }
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
         $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $tce->start($data, array());
+        $tce->start($data, []);
         $tce->process_datamap();
     }
 
@@ -401,7 +401,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      */
     protected function getItemUidList($includeTableName = true)
     {
-        $list = array();
+        $list = [];
         foreach ($this->storage as $entry) {
             $list[] = ($includeTableName ? $this->getItemTableName() . '_' : '') . $entry['uid'];
         }
@@ -415,17 +415,17 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      */
     public function toArray()
     {
-        $itemArray = array();
+        $itemArray = [];
         foreach ($this->storage as $item) {
             $itemArray[] = $item;
         }
-        return array(
+        return [
             'uid' => $this->getIdentifier(),
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'table_name' => $this->getItemTableName(),
             'items' => $itemArray
-        );
+        ];
     }
 
     /**

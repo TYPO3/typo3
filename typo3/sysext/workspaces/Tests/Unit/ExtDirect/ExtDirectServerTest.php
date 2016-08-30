@@ -42,7 +42,7 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Workspaces\ExtDirect\ExtDirectServer::class, array('__none'));
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Workspaces\ExtDirect\ExtDirectServer::class, ['__none']);
     }
 
     /**
@@ -60,60 +60,60 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareFileReferenceDifferencesAreCorrectDataProvider()
     {
-        return array(
+        return [
             // without thumbnails
-            'unchanged wo/thumbnails' => array('1,2,3,4', '1,2,3,4', false, null),
-            'front addition wo/thumbnails' => array('1,2,3,4', '99,1,2,3,4', false, array(
+            'unchanged wo/thumbnails' => ['1,2,3,4', '1,2,3,4', false, null],
+            'front addition wo/thumbnails' => ['1,2,3,4', '99,1,2,3,4', false, [
                 'live' => '/img/1.png /img/2.png /img/3.png /img/4.png',
                 'differences' => '<ins>/img/99.png </ins>/img/1.png /img/2.png /img/3.png /img/4.png',
-            )),
-            'end addition wo/thumbnails' => array('1,2,3,4', '1,2,3,4,99', false, array(
+            ]],
+            'end addition wo/thumbnails' => ['1,2,3,4', '1,2,3,4,99', false, [
                 'live' => '/img/1.png /img/2.png /img/3.png /img/4.png',
                 'differences' => '/img/1.png /img/2.png /img/3.png /img/4.png <ins>/img/99.png </ins>',
-            )),
-            'reorder wo/thumbnails' => array('1,2,3,4', '1,3,2,4', false, array(
+            ]],
+            'reorder wo/thumbnails' => ['1,2,3,4', '1,3,2,4', false, [
                 'live' => '/img/1.png /img/2.png /img/3.png /img/4.png',
                 'differences' => '/img/1.png <ins>/img/3.png </ins>/img/2.png <del>/img/3.png </del>/img/4.png',
-            )),
-            'move to end wo/thumbnails' => array('1,2,3,4', '2,3,4,1', false, array(
+            ]],
+            'move to end wo/thumbnails' => ['1,2,3,4', '2,3,4,1', false, [
                 'live' => '/img/1.png /img/2.png /img/3.png /img/4.png',
                 'differences' => '<del>/img/1.png </del>/img/2.png /img/3.png /img/4.png <ins>/img/1.png </ins>',
-            )),
-            'move to front wo/thumbnails' => array('1,2,3,4', '4,1,2,3', false, array(
+            ]],
+            'move to front wo/thumbnails' => ['1,2,3,4', '4,1,2,3', false, [
                 'live' => '/img/1.png /img/2.png /img/3.png /img/4.png',
                 'differences' => '<ins>/img/4.png </ins>/img/1.png /img/2.png /img/3.png <del>/img/4.png </del>',
-            )),
-            'keep last wo/thumbnails' => array('1,2,3,4', '4', false, array(
+            ]],
+            'keep last wo/thumbnails' => ['1,2,3,4', '4', false, [
                 'live' => '/img/1.png /img/2.png /img/3.png /img/4.png',
                 'differences' => '<del>/img/1.png /img/2.png /img/3.png </del>/img/4.png',
-            )),
+            ]],
             // with thumbnails
-            'unchanged w/thumbnails' => array('1,2,3,4', '1,2,3,4', true, null),
-            'front addition w/thumbnails' => array('1,2,3,4', '99,1,2,3,4', true, array(
+            'unchanged w/thumbnails' => ['1,2,3,4', '1,2,3,4', true, null],
+            'front addition w/thumbnails' => ['1,2,3,4', '99,1,2,3,4', true, [
                 'live' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
                 'differences' => '<ins><img src="/tmb/99.png" /> </ins><img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
-            )),
-            'end addition w/thumbnails' => array('1,2,3,4', '1,2,3,4,99', true, array(
+            ]],
+            'end addition w/thumbnails' => ['1,2,3,4', '1,2,3,4,99', true, [
                 'live' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
                 'differences' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" /> <ins><img src="/tmb/99.png" /> </ins>',
-            )),
-            'reorder w/thumbnails' => array('1,2,3,4', '1,3,2,4', true, array(
+            ]],
+            'reorder w/thumbnails' => ['1,2,3,4', '1,3,2,4', true, [
                 'live' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
                 'differences' => '<img src="/tmb/1.png" /> <ins><img src="/tmb/3.png" /> </ins><img src="/tmb/2.png" /> <del><img src="/tmb/3.png" /> </del><img src="/tmb/4.png" />',
-            )),
-            'move to end w/thumbnails' => array('1,2,3,4', '2,3,4,1', true, array(
+            ]],
+            'move to end w/thumbnails' => ['1,2,3,4', '2,3,4,1', true, [
                 'live' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
                 'differences' => '<del><img src="/tmb/1.png" /> </del><img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" /> <ins><img src="/tmb/1.png" /> </ins>',
-            )),
-            'move to front w/thumbnails' => array('1,2,3,4', '4,1,2,3', true, array(
+            ]],
+            'move to front w/thumbnails' => ['1,2,3,4', '4,1,2,3', true, [
                 'live' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
                 'differences' => '<ins><img src="/tmb/4.png" /> </ins><img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <del><img src="/tmb/4.png" /> </del>',
-            )),
-            'keep last w/thumbnails' => array('1,2,3,4', '4', true, array(
+            ]],
+            'keep last w/thumbnails' => ['1,2,3,4', '4', true, [
                 'live' => '<img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> <img src="/tmb/4.png" />',
                 'differences' => '<del><img src="/tmb/1.png" /> <img src="/tmb/2.png" /> <img src="/tmb/3.png" /> </del><img src="/tmb/4.png" />',
-            )),
-        );
+            ]],
+        ];
     }
 
     /**
@@ -145,7 +145,7 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getFileReferenceProphecies($idList)
     {
-        $fileReferenceProphecies = array();
+        $fileReferenceProphecies = [];
         $ids = GeneralUtility::trimExplode(',', $idList, true);
 
         foreach ($ids as $id) {

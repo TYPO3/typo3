@@ -39,14 +39,14 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
         GeneralUtility::flushInternalRuntimeCaches();
-        $GLOBALS[$this->testGlobalNamespace] = array();
+        $GLOBALS[$this->testGlobalNamespace] = [];
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $GLOBALS['TSFE']->tmpl->rootLine = array(
-            2 => array('uid' => 121, 'pid' => 111),
-            1 => array('uid' => 111, 'pid' => 101),
-            0 => array('uid' => 101, 'pid' => 0)
-        );
+        $GLOBALS['TSFE']->tmpl->rootLine = [
+            2 => ['uid' => 121, 'pid' => 111],
+            1 => ['uid' => 111, 'pid' => 101],
+            0 => ['uid' => 101, 'pid' => 0]
+        ];
         $this->matchCondition = GeneralUtility::makeInstance(ConditionMatcher::class);
     }
 
@@ -80,7 +80,7 @@ class ConditionMatcherTest extends UnitTestCase
     public function simulateEnabledMatchSpecificConditionsSucceeds()
     {
         $testCondition = '[' . $this->getUniqueId('test') . ' = Any condition to simulate a positive match]';
-        $this->matchCondition->setSimulateMatchConditions(array($testCondition));
+        $this->matchCondition->setSimulateMatchConditions([$testCondition]);
         $this->assertTrue($this->matchCondition->match($testCondition));
     }
 
@@ -342,8 +342,8 @@ class ConditionMatcherTest extends UnitTestCase
     public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero()
     {
         $testKey = $this->getUniqueId('test');
-        $_GET = array();
-        $_POST = array($testKey => 0);
+        $_GET = [];
+        $_POST = [$testKey => 0];
         $this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
         $this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
     }
@@ -357,8 +357,8 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $testKey = $this->getUniqueId('test');
         $testValue = '1';
-        $_GET = array();
-        $_POST = array($testKey => array('0' => $testValue));
+        $_GET = [];
+        $_POST = [$testKey => ['0' => $testValue]];
         $this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '|0=' . $testValue . ']'));
     }
 
@@ -381,8 +381,8 @@ class ConditionMatcherTest extends UnitTestCase
     public function globalStringConditionMatchesOnEmptyExpressionWithValueSetToEmptyString()
     {
         $testKey = $this->getUniqueId('test');
-        $_GET = array();
-        $_POST = array($testKey => '');
+        $_GET = [];
+        $_POST = [$testKey => ''];
         $this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . '=]'));
         $this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . ' = ]'));
     }
@@ -592,8 +592,8 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function genericGetVariablesSucceedsWithNamespaceGP()
     {
-        $_GET = array('testGet' => 'getTest');
-        $_POST = array('testPost' => 'postTest');
+        $_GET = ['testGet' => 'getTest'];
+        $_POST = ['testPost' => 'postTest'];
         $this->assertTrue($this->matchCondition->match('[globalString = GP:testGet = getTest]'));
         $this->assertTrue($this->matchCondition->match('[globalString = GP:testPost = postTest]'));
     }
@@ -642,10 +642,10 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function genericGetVariablesSucceedsWithAnyGlobalNamespace()
     {
-        $GLOBALS[$this->testGlobalNamespace] = array(
+        $GLOBALS[$this->testGlobalNamespace] = [
             'first' => 'testFirst',
-            'second' => array('third' => 'testThird')
-        );
+            'second' => ['third' => 'testThird']
+        ];
         $this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|first = testFirst]'));
         $this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'));
     }

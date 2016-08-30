@@ -53,7 +53,7 @@ class ConfigureExtensionViewHelper extends Link\ActionViewHelper
             $action = 'showConfigurationForm';
             $uri = $uriBuilder->reset()->uriFor(
                 $action,
-                array('extension' => array('key' => $extension['key'])),
+                ['extension' => ['key' => $extension['key']]],
                 'Configuration'
             );
             if ($showDescription) {

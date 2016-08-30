@@ -67,7 +67,7 @@ class FileReference implements FileInterface
      *
      * @var array
      */
-    protected $mergedProperties = array();
+    protected $mergedProperties = [];
 
     /**
      * Constructor for a file in use object. Should normally not be used
@@ -160,7 +160,7 @@ class FileReference implements FileInterface
                 true,
                 false
             );
-            array_walk($this->mergedProperties, array($this, 'restoreNonNullValuesCallback'));
+            array_walk($this->mergedProperties, [$this, 'restoreNonNullValuesCallback']);
         }
 
         return $this->mergedProperties;

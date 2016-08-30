@@ -30,7 +30,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array $extConf Settings from the extension manager
      */
-    public $extConf = array();
+    public $extConf = [];
 
     /**
      * Constructor, makes sure all derived client classes are included
@@ -61,13 +61,13 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     {
         $taskUid = $task->getTaskUid();
         if (empty($taskUid)) {
-            $fields = array(
+            $fields = [
                 'crdate' => $GLOBALS['EXEC_TIME'],
                 'disable' => (int)$task->isDisabled(),
                 'description' => $task->getDescription(),
                 'task_group' => $task->getTaskGroup(),
                 'serialized_task_object' => 'RESERVED'
-            );
+            ];
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('tx_scheduler_task');
             $result = $connection->insert('tx_scheduler_task', $fields);
@@ -204,7 +204,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         }
         /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $runInformation = array('start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type);
+        $runInformation = ['start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type];
         $registry->set('tx_scheduler', 'lastRun', $runInformation);
     }
 
@@ -250,13 +250,13 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                 $executionTime = 0;
             }
             $task->unsetScheduler();
-            $fields = array(
+            $fields = [
                 'nextexecution' => $executionTime,
                 'disable' => (int)$task->isDisabled(),
                 'description' => $task->getDescription(),
                 'task_group' => $task->getTaskGroup(),
                 'serialized_task_object' => serialize($task)
-            );
+            ];
             $result = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('tx_scheduler_task')
                 ->update('tx_scheduler_task', $fields, ['uid' => $taskUid]);
@@ -435,7 +435,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     {
         // Log only if enabled
         if (!empty($this->extConf['enableBELog'])) {
-            $GLOBALS['BE_USER']->writelog(4, 0, $status, $code, '[scheduler]: ' . $message, array());
+            $GLOBALS['BE_USER']->writelog(4, 0, $status, $code, '[scheduler]: ' . $message, []);
         }
     }
 
@@ -482,7 +482,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             }
             $cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
             list($cliDispatchPathEscaped, $startTimeEscaped) =
-                CommandUtility::escapeShellArguments(array($cliDispatchPath, $startTime));
+                CommandUtility::escapeShellArguments([$cliDispatchPath, $startTime]);
             $cmd = 'echo ' . $cliDispatchPathEscaped . ' scheduler | at ' . $startTimeEscaped . ' 2>&1';
             $output = shell_exec($cmd);
             $outputParts = '';

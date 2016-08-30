@@ -69,7 +69,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     public function getStatus()
     {
-        $result = array();
+        $result = [];
         if (!$this->exists()) {
             $status = new Status\WarningStatus();
             $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' does not exist');
@@ -126,7 +126,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     protected function fixSelf()
     {
-        $result = array();
+        $result = [];
         if (!$this->exists()) {
             $resultCreateDirectory = $this->createDirectory();
             $result[] = $resultCreateDirectory;
@@ -195,7 +195,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     protected function getSelfStatus()
     {
-        $result = array();
+        $result = [];
         if (!$this->isDirectory()) {
             $status = new Status\ErrorStatus();
             $status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not a directory');
@@ -238,7 +238,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     protected function getChildrenStatus()
     {
-        $result = array();
+        $result = [];
         foreach ($this->children as $child) {
             /** @var $child NodeInterface */
             $result = array_merge($result, $child->getStatus());

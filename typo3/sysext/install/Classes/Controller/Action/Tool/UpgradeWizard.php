@@ -49,14 +49,14 @@ class UpgradeWizard extends Action\AbstractAction
         $databaseCharsetUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class, 'databaseCharsetUpdate');
         if ($databaseCharsetUpdateObject->shouldRenderWizard()) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-                array('databaseCharsetUpdate' => \TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class),
+                ['databaseCharsetUpdate' => \TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class],
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
             );
         }
         $initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class, 'initialUpdateDatabaseSchema');
         if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-                array('initialUpdateDatabaseSchema' => \TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class),
+                ['initialUpdateDatabaseSchema' => \TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class],
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
             );
             $this->needsInitialUpdateDatabaseSchema = true;
@@ -71,7 +71,7 @@ class UpgradeWizard extends Action\AbstractAction
         // Perform silent cache framework table upgrade
         $this->silentCacheFrameworkTableSchemaMigration();
 
-        $actionMessages = array();
+        $actionMessages = [];
 
         if (isset($this->postValues['set']['getUserInput'])) {
             $actionMessages[] = $this->getUserInputForUpdate();
@@ -103,19 +103,19 @@ class UpgradeWizard extends Action\AbstractAction
             return $message;
         }
 
-        $availableUpdates = array();
+        $availableUpdates = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
             $updateObject = $this->getUpdateObjectInstance($className, $identifier);
             if ($updateObject->shouldRenderWizard()) {
                 // $explanation is changed by reference in Update objects!
                 $explanation = '';
                 $updateObject->checkForUpdate($explanation);
-                $availableUpdates[$identifier] = array(
+                $availableUpdates[$identifier] = [
                     'identifier' => $identifier,
                     'title' => $updateObject->getTitle(),
                     'explanation' => $explanation,
                     'renderNext' => false,
-                );
+                ];
                 if ($identifier === 'initialUpdateDatabaseSchema') {
                     $availableUpdates['initialUpdateDatabaseSchema']['renderNext'] = $this->needsInitialUpdateDatabaseSchema;
                     // initialUpdateDatabaseSchema is always the first update
@@ -167,11 +167,11 @@ class UpgradeWizard extends Action\AbstractAction
             $wizardHtml = $updateObject->getUserInput('install[values][' . $wizardIdentifier . ']');
         }
 
-        $updateData = array(
+        $updateData = [
             'identifier' => $wizardIdentifier,
             'title' => $updateObject->getTitle(),
             'wizardHtml' => $wizardHtml,
-        );
+        ];
 
         $this->view->assign('updateData', $updateData);
 
@@ -195,10 +195,10 @@ class UpgradeWizard extends Action\AbstractAction
         $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
         $updateObject = $this->getUpdateObjectInstance($className, $wizardIdentifier);
 
-        $wizardData = array(
+        $wizardData = [
             'identifier' => $wizardIdentifier,
             'title' => $updateObject->getTitle(),
-        );
+        ];
 
         // $wizardInputErrorMessage is given as reference to wizard object!
         $wizardInputErrorMessage = '';
@@ -218,7 +218,7 @@ class UpgradeWizard extends Action\AbstractAction
 
             // Both variables are used by reference in performUpdate()
             $customOutput = '';
-            $databaseQueries = array();
+            $databaseQueries = [];
             $performResult = $updateObject->performUpdate($databaseQueries, $customOutput);
 
             if ($performResult) {

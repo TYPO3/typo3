@@ -59,21 +59,21 @@ class LanguageService
      *
      * @var array
      */
-    public $moduleLabels = array();
+    public $moduleLabels = [];
 
     /**
      * Internal cache for read LL-files
      *
      * @var array
      */
-    public $LL_files_cache = array();
+    public $LL_files_cache = [];
 
     /**
      * Internal cache for ll-labels (filled as labels are requested)
      *
      * @var array
      */
-    public $LL_labels_cache = array();
+    public $LL_labels_cache = [];
 
     /**
      * instance of the "\TYPO3\CMS\Core\Charset\CharsetConverter" class. May be used by any application.
@@ -98,7 +98,7 @@ class LanguageService
      *
      * @var array
      */
-    protected $languageDependencies = array();
+    protected $languageDependencies = [];
 
     /**
      * LanguageService constructor.
@@ -167,7 +167,7 @@ class LanguageService
         if (is_array($arr)) {
             foreach ($arr as $k => $larr) {
                 if (!isset($this->moduleLabels[$k])) {
-                    $this->moduleLabels[$k] = array();
+                    $this->moduleLabels[$k] = [];
                 }
                 if (is_array($larr)) {
                     foreach ($larr as $l => $v) {
@@ -323,7 +323,7 @@ class LanguageService
             // and secondly there must be a references to locallang files available in [refs]
         if (is_array($GLOBALS['TCA_DESCR'][$table]) && !isset($GLOBALS['TCA_DESCR'][$table]['columns']) && is_array($GLOBALS['TCA_DESCR'][$table]['refs'])) {
             // Init $TCA_DESCR for $table-key
-            $GLOBALS['TCA_DESCR'][$table]['columns'] = array();
+            $GLOBALS['TCA_DESCR'][$table]['columns'] = [];
                 // Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
             foreach ($GLOBALS['TCA_DESCR'][$table]['refs'] as $llfile) {
                 $localLanguage = $this->includeLLFile($llfile, 0, 1);
@@ -385,7 +385,7 @@ class LanguageService
      */
     public function includeLLFile($fileRef, $setGlobal = true, $mergeLocalOntoDefault = false)
     {
-        $globalLanguage = array();
+        $globalLanguage = [];
             // Get default file
         $localLanguage = $this->readLLfile($fileRef);
         if (is_array($localLanguage) && !empty($localLanguage)) {
@@ -427,9 +427,9 @@ class LanguageService
         if ($this->lang !== 'default') {
             $languages = array_reverse($this->languageDependencies);
         } else {
-            $languages = array('default');
+            $languages = ['default'];
         }
-        $localLanguage = array();
+        $localLanguage = [];
         foreach ($languages as $language) {
             $tempLL = $languageFactory->getParsedData($fileRef, $language, 'utf-8');
             $localLanguage['default'] = $tempLL['default'];
@@ -458,7 +458,7 @@ class LanguageService
     {
         GeneralUtility::logDeprecatedFunction();
         if (!isset($GLOBALS['LOCAL_LANG'])) {
-            $GLOBALS['LOCAL_LANG'] = array();
+            $GLOBALS['LOCAL_LANG'] = [];
         }
         $GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'] = $value;
         if ($overrideDefault) {
@@ -476,7 +476,7 @@ class LanguageService
      */
     public function getLabelsWithPrefix($prefix, $strip = '')
     {
-        $extraction = array();
+        $extraction = [];
         $labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$this->lang]);
         // Regular expression to strip the selection prefix and possibly something from the label name:
         $labelPattern = '#^' . preg_quote($prefix, '#') . '(' . preg_quote($strip, '#') . ')?#';

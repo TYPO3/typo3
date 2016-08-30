@@ -25,17 +25,17 @@ class UserInternalContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
         $tsfe = $this->getTypoScriptFrontendController();
         $substKey = 'INT_SCRIPT.' . $tsfe->uniqueHash();
         $content = '<!--' . $substKey . '-->';
-        $tsfe->config['INTincScript'][$substKey] = array(
+        $tsfe->config['INTincScript'][$substKey] = [
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
             'type' => 'FUNC'
-        );
+        ];
         $this->cObj->setUserObjectType(false);
         return $content;
     }

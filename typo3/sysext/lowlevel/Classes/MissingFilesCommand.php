@@ -67,15 +67,15 @@ This will show you missing files in the TYPO3 system and only report back if err
     {
         // Initialize result array:
         $listExplain = ' Shows the relative filename of missing file as header and under a list of record fields in which the references are found. ' . $this->label_infoString;
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'managedFilesMissing' => array('List of missing files managed by TCEmain', $listExplain, 3),
-                'softrefFilesMissing' => array('List of missing files registered as a soft reference', $listExplain, 2)
-            ),
-            'managedFilesMissing' => array(),
-            'softrefFilesMissing' => array()
-        );
+            'headers' => [
+                'managedFilesMissing' => ['List of missing files managed by TCEmain', $listExplain, 3],
+                'softrefFilesMissing' => ['List of missing files registered as a soft reference', $listExplain, 2]
+            ],
+            'managedFilesMissing' => [],
+            'softrefFilesMissing' => []
+        ];
         // Select all files in the reference table
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');

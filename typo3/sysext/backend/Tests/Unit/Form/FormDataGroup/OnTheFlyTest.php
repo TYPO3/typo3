@@ -80,7 +80,7 @@ class OnTheFlyTest extends UnitTestCase
             FormDataProviderInterface::class,
         ];
         $this->subject->setProviderList($providerList);
-        $providerResult = array('foo');
+        $providerResult = ['foo'];
         $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
         $this->assertEquals($providerResult, $this->subject->compile([]));

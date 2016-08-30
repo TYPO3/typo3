@@ -29,11 +29,11 @@ class ImageFeature extends Configuration\AbstractFeature implements Configuratio
     /**
      * @var array List of preset classes
      */
-    protected $presetRegistry = array(
+    protected $presetRegistry = [
         \TYPO3\CMS\Install\Configuration\Image\GraphicsMagickPreset::class,
         \TYPO3\CMS\Install\Configuration\Image\ImageMagick6Preset::class,
         \TYPO3\CMS\Install\Configuration\Image\CustomPreset::class,
-    );
+    ];
 
     /**
      * Image feature can be feeded with an additional path to search for executables,

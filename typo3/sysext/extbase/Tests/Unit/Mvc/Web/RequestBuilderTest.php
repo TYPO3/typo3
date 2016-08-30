@@ -60,31 +60,31 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, array('dummy'));
-        $this->configuration = array(
+        $this->requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, ['dummy']);
+        $this->configuration = [
             'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
             'pluginName' => 'Pi1',
             'extensionName' => 'MyExtension',
             'controller' => 'TheFirstController',
             'action' => 'show',
-            'controllerConfiguration' => array(
-                'TheFirstController' => array(
-                    'actions' => array('show', 'index', 'new', 'create', 'delete', 'edit', 'update', 'setup', 'test')
-                ),
-                'TheSecondController' => array(
-                    'actions' => array('show', 'index')
-                ),
-                'TheThirdController' => array(
-                    'actions' => array('delete', 'create', 'onlyInThirdController')
-                )
-            )
-        );
+            'controllerConfiguration' => [
+                'TheFirstController' => [
+                    'actions' => ['show', 'index', 'new', 'create', 'delete', 'edit', 'update', 'setup', 'test']
+                ],
+                'TheSecondController' => [
+                    'actions' => ['show', 'index']
+                ],
+                'TheThirdController' => [
+                    'actions' => ['delete', 'create', 'onlyInThirdController']
+                ]
+            ]
+        ];
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $this->mockRequest = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockExtensionService = $this->createMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
         $this->mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
-            ->setMethods(array('getServerRequestMethod'))
+            ->setMethods(['getServerRequestMethod'])
             ->getMock();
     }
 
@@ -184,7 +184,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->injectDependencies();
         $expectedMethod = 'SomeRequestMethod';
         $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
-            ->setMethods(array('getServerRequestMethod'))
+            ->setMethods(['getServerRequestMethod'])
             ->getMock();
         $mockEnvironmentService->expects($this->once())->method('getServerRequestMethod')->will($this->returnValue($expectedMethod));
         $this->requestBuilder->_set('environmentService', $mockEnvironmentService);
@@ -269,7 +269,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
-        $this->configuration['controllerConfiguration'] = array();
+        $this->configuration['controllerConfiguration'] = [];
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
@@ -283,7 +283,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1295479651);
-        $this->configuration['controllerConfiguration']['TheFirstController'] = array();
+        $this->configuration['controllerConfiguration']['TheFirstController'] = [];
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
@@ -297,11 +297,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
-        $this->configuration['controllerConfiguration'] = array(
-            '' => array(
-                'actions' => array('foo')
-            )
-        );
+        $this->configuration['controllerConfiguration'] = [
+            '' => [
+                'actions' => ['foo']
+            ]
+        ];
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
@@ -316,30 +316,30 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->configuration['extensionName'] = 'SomeExtensionName';
         $this->configuration['pluginName'] = 'SomePluginName';
         $this->injectDependencies();
-        $_GET = array(
-            'tx_someotherextensionname_somepluginname' => array(
+        $_GET = [
+            'tx_someotherextensionname_somepluginname' => [
                 'foo' => 'bar'
-            ),
-            'tx_someextensionname_somepluginname' => array(
+            ],
+            'tx_someextensionname_somepluginname' => [
                 'parameter1' => 'valueGetsOverwritten',
-                'parameter2' => array(
+                'parameter2' => [
                     'parameter3' => 'value3'
-                )
-            )
-        );
-        $_POST = array(
-            'tx_someextensionname_someotherpluginname' => array(
+                ]
+            ]
+        ];
+        $_POST = [
+            'tx_someextensionname_someotherpluginname' => [
                 'foo' => 'bar'
-            ),
-            'tx_someextensionname_somepluginname' => array(
+            ],
+            'tx_someextensionname_somepluginname' => [
                 'parameter1' => 'value1',
-                'parameter2' => array(
+                'parameter2' => [
                     'parameter4' => 'value4'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->mockRequest->expects($this->at(8))->method('setArgument')->with('parameter1', 'value1');
-        $this->mockRequest->expects($this->at(9))->method('setArgument')->with('parameter2', array('parameter3' => 'value3', 'parameter4' => 'value4'));
+        $this->mockRequest->expects($this->at(9))->method('setArgument')->with('parameter2', ['parameter3' => 'value3', 'parameter4' => 'value4']);
         $this->requestBuilder->build();
     }
 
@@ -351,16 +351,16 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->configuration['extensionName'] = 'SomeExtensionName';
         $this->configuration['pluginName'] = 'SomePluginName';
         $this->injectDependencies();
-        $_GET = array(
-            'tx_someextensionname_somepluginname' => array(
+        $_GET = [
+            'tx_someextensionname_somepluginname' => [
                 'format' => 'GET'
-            )
-        );
-        $_POST = array(
-            'tx_someextensionname_somepluginname' => array(
+            ]
+        ];
+        $_POST = [
+            'tx_someextensionname_somepluginname' => [
                 'format' => 'POST'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->at(7))->method('setFormat')->with('POST');
         $this->requestBuilder->build();
     }
@@ -371,8 +371,8 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildCorrectlySetsAllowedControllerActions()
     {
         $this->injectDependencies();
-        $expectedResult = array(
-            'TheFirstController' => array(
+        $expectedResult = [
+            'TheFirstController' => [
                 'show',
                 'index',
                 'new',
@@ -382,17 +382,17 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'update',
                 'setup',
                 'test'
-            ),
-            'TheSecondController' => array(
+            ],
+            'TheSecondController' => [
                 'show',
                 'index'
-            ),
-            'TheThirdController' => array(
+            ],
+            'TheThirdController' => [
                 'delete',
                 'create',
                 'onlyInThirdController'
-            )
-        );
+            ]
+        ];
         $this->requestBuilder->build();
         $actualResult = $this->requestBuilder->_get('allowedControllerActions');
         $this->assertEquals($expectedResult, $actualResult);
@@ -405,7 +405,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
-        $this->configuration['controllerConfiguration'] = array();
+        $this->configuration['controllerConfiguration'] = [];
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
@@ -419,11 +419,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildSetsDefaultControllerIfNoControllerIsSpecified()
     {
         $this->injectDependencies();
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'foo' => 'bar'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
         $this->requestBuilder->build();
     }
@@ -434,11 +434,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildCorrectlySetsSpecifiedControllerNameIfItsAllowedForTheCurrentPlugin()
     {
         $this->injectDependencies();
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'TheSecondController'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheSecondController');
         $this->requestBuilder->build();
     }
@@ -454,11 +454,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'SomeInvalidController'
-            )
-        );
+            ]
+        ];
         $this->requestBuilder->build();
     }
 
@@ -474,11 +474,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'SomeInvalidController'
-            )
-        );
+            ]
+        ];
         $this->requestBuilder->build();
     }
 
@@ -490,11 +490,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = 1;
         $this->injectDependencies();
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'SomeInvalidController'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
         $this->requestBuilder->build();
     }
@@ -506,7 +506,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
-        $this->configuration['controllerConfiguration'] = array();
+        $this->configuration['controllerConfiguration'] = [];
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
@@ -520,11 +520,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildSetsDefaultActionOfTheCurrentControllerIfNoActionIsSpecified()
     {
         $this->injectDependencies();
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'TheThirdController'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('delete');
         $this->requestBuilder->build();
     }
@@ -535,11 +535,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildCorrectlySetsSpecifiedActionNameForTheDefaultControllerIfItsAllowedForTheCurrentPlugin()
     {
         $this->injectDependencies();
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'action' => 'create'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('create');
         $this->requestBuilder->build();
     }
@@ -550,12 +550,12 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildCorrectlySetsSpecifiedActionNameForTheSpecifiedControllerIfItsAllowedForTheCurrentPlugin()
     {
         $this->injectDependencies();
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'TheThirdController',
                 'action' => 'onlyInThirdController'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('onlyInThirdController');
         $this->requestBuilder->build();
     }
@@ -571,11 +571,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'action' => 'someInvalidAction'
-            )
-        );
+            ]
+        ];
         $this->requestBuilder->build();
     }
 
@@ -591,11 +591,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'action' => 'someInvalidAction'
-            )
-        );
+            ]
+        ];
         $this->requestBuilder->build();
     }
 
@@ -607,12 +607,12 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = 1;
         $this->injectDependencies();
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $_GET = array(
-            'tx_myextension_pi1' => array(
+        $_GET = [
+            'tx_myextension_pi1' => [
                 'controller' => 'TheThirdController',
                 'action' => 'someInvalidAction'
-            )
-        );
+            ]
+        ];
         $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheThirdController');
         $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('delete');
         $this->requestBuilder->build();
@@ -624,189 +624,189 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function untangleFilesArrayTransformsTheFilesSuperglobalIntoAManageableForm()
     {
-        $convolutedFiles = array(
-            'a0' => array(
-                'name' => array(
+        $convolutedFiles = [
+            'a0' => [
+                'name' => [
                     'a1' => 'a.txt'
-                ),
-                'type' => array(
+                ],
+                'type' => [
                     'a1' => 'text/plain'
-                ),
-                'tmp_name' => array(
+                ],
+                'tmp_name' => [
                     'a1' => '/private/var/tmp/phpbqXsYt'
-                ),
-                'error' => array(
+                ],
+                'error' => [
                     'a1' => 0
-                ),
-                'size' => array(
+                ],
+                'size' => [
                     'a1' => 100
-                )
-            ),
-            'b0' => array(
-                'name' => array(
+                ]
+            ],
+            'b0' => [
+                'name' => [
                     'b1' => 'b.txt'
-                ),
-                'type' => array(
+                ],
+                'type' => [
                     'b1' => 'text/plain'
-                ),
-                'tmp_name' => array(
+                ],
+                'tmp_name' => [
                     'b1' => '/private/var/tmp/phpvZ6oUD'
-                ),
-                'error' => array(
+                ],
+                'error' => [
                     'b1' => 0
-                ),
-                'size' => array(
+                ],
+                'size' => [
                     'b1' => 200
-                )
-            ),
-            'c' => array(
+                ]
+            ],
+            'c' => [
                 'name' => 'c.txt',
                 'type' => 'text/plain',
                 'tmp_name' => '/private/var/tmp/phpS9KMNw',
                 'error' => 0,
                 'size' => 300
-            ),
-            'd0' => array(
-                'name' => array(
-                    'd1' => array(
-                        'd2' => array(
+            ],
+            'd0' => [
+                'name' => [
+                    'd1' => [
+                        'd2' => [
                             'd3' => 'd.txt'
-                        )
-                    )
-                ),
-                'type' => array(
-                    'd1' => array(
-                        'd2' => array(
+                        ]
+                    ]
+                ],
+                'type' => [
+                    'd1' => [
+                        'd2' => [
                             'd3' => 'text/plain'
-                        )
-                    )
-                ),
-                'tmp_name' => array(
-                    'd1' => array(
-                        'd2' => array(
+                        ]
+                    ]
+                ],
+                'tmp_name' => [
+                    'd1' => [
+                        'd2' => [
                             'd3' => '/private/var/tmp/phprR3fax'
-                        )
-                    )
-                ),
-                'error' => array(
-                    'd1' => array(
-                        'd2' => array(
+                        ]
+                    ]
+                ],
+                'error' => [
+                    'd1' => [
+                        'd2' => [
                             'd3' => 0
-                        )
-                    )
-                ),
-                'size' => array(
-                    'd1' => array(
-                        'd2' => array(
+                        ]
+                    ]
+                ],
+                'size' => [
+                    'd1' => [
+                        'd2' => [
                             'd3' => 400
-                        )
-                    )
-                )
-            ),
-            'e0' => array(
-                'name' => array(
-                    'e1' => array(
-                        'e2' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'e0' => [
+                'name' => [
+                    'e1' => [
+                        'e2' => [
                             0 => 'e_one.txt',
                             1 => 'e_two.txt'
-                        )
-                    )
-                ),
-                'type' => array(
-                    'e1' => array(
-                        'e2' => array(
+                        ]
+                    ]
+                ],
+                'type' => [
+                    'e1' => [
+                        'e2' => [
                             0 => 'text/plain',
                             1 => 'text/plain'
-                        )
-                    )
-                ),
-                'tmp_name' => array(
-                    'e1' => array(
-                        'e2' => array(
+                        ]
+                    ]
+                ],
+                'tmp_name' => [
+                    'e1' => [
+                        'e2' => [
                             0 => '/private/var/tmp/php01fitB',
                             1 => '/private/var/tmp/phpUUB2cv'
-                        )
-                    )
-                ),
-                'error' => array(
-                    'e1' => array(
-                        'e2' => array(
+                        ]
+                    ]
+                ],
+                'error' => [
+                    'e1' => [
+                        'e2' => [
                             0 => 0,
                             1 => 0
-                        )
-                    )
-                ),
-                'size' => array(
-                    'e1' => array(
-                        'e2' => array(
+                        ]
+                    ]
+                ],
+                'size' => [
+                    'e1' => [
+                        'e2' => [
                             0 => 510,
                             1 => 520
-                        )
-                    )
-                )
-            )
-        );
-        $untangledFiles = array(
-            'a0' => array(
-                'a1' => array(
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $untangledFiles = [
+            'a0' => [
+                'a1' => [
                     'name' => 'a.txt',
                     'type' => 'text/plain',
                     'tmp_name' => '/private/var/tmp/phpbqXsYt',
                     'error' => 0,
                     'size' => 100
-                )
-            ),
-            'b0' => array(
-                'b1' => array(
+                ]
+            ],
+            'b0' => [
+                'b1' => [
                     'name' => 'b.txt',
                     'type' => 'text/plain',
                     'tmp_name' => '/private/var/tmp/phpvZ6oUD',
                     'error' => 0,
                     'size' => 200
-                )
-            ),
-            'c' => array(
+                ]
+            ],
+            'c' => [
                 'name' => 'c.txt',
                 'type' => 'text/plain',
                 'tmp_name' => '/private/var/tmp/phpS9KMNw',
                 'error' => 0,
                 'size' => 300
-            ),
-            'd0' => array(
-                'd1' => array(
-                    'd2' => array(
-                        'd3' => array(
+            ],
+            'd0' => [
+                'd1' => [
+                    'd2' => [
+                        'd3' => [
                             'name' => 'd.txt',
                             'type' => 'text/plain',
                             'tmp_name' => '/private/var/tmp/phprR3fax',
                             'error' => 0,
                             'size' => 400
-                        )
-                    )
-                )
-            ),
-            'e0' => array(
-                'e1' => array(
-                    'e2' => array(
-                        0 => array(
+                        ]
+                    ]
+                ]
+            ],
+            'e0' => [
+                'e1' => [
+                    'e2' => [
+                        0 => [
                             'name' => 'e_one.txt',
                             'type' => 'text/plain',
                             'tmp_name' => '/private/var/tmp/php01fitB',
                             'error' => 0,
                             'size' => 510
-                        ),
-                        1 => array(
+                        ],
+                        1 => [
                             'name' => 'e_two.txt',
                             'type' => 'text/plain',
                             'tmp_name' => '/private/var/tmp/phpUUB2cv',
                             'error' => 0,
                             'size' => 520
-                        )
-                    )
-                )
-            )
-        );
-        $requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, array('dummy'), array(), '', false);
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, ['dummy'], [], '', false);
         $result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
         $this->assertSame($untangledFiles, $result);
     }

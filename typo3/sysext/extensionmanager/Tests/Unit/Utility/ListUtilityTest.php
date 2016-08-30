@@ -31,18 +31,18 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
-            ->setMethods(array('emitPackagesMayHaveChangedSignal'))
+            ->setMethods(['emitPackagesMayHaveChangedSignal'])
             ->getMock();
         $packageManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)->getMock();
         $packageManagerMock
                 ->expects($this->any())
                 ->method('getActivePackages')
-                ->will($this->returnValue(array(
+                ->will($this->returnValue([
                     'lang' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
                     'news' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
                     'saltedpasswords' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
                     'rsaauth' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
-                )));
+                ]));
         $this->inject($this->subject, 'packageManager', $packageManagerMock);
     }
 
@@ -51,70 +51,70 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getAvailableAndInstalledExtensionsDataProvider()
     {
-        return array(
-            'same extension lists' => array(
-                array(
-                    'lang' => array(),
-                    'news' => array(),
-                    'saltedpasswords' => array(),
-                    'rsaauth' => array()
-                ),
-                array(
-                    'lang' => array('installed' => true),
-                    'news' => array('installed' => true),
-                    'saltedpasswords' => array('installed' => true),
-                    'rsaauth' => array('installed' => true)
-                )
-            ),
-            'different extension lists' => array(
-                array(
-                    'lang' => array(),
-                    'news' => array(),
-                    'saltedpasswords' => array(),
-                    'rsaauth' => array()
-                ),
-                array(
-                    'lang' => array('installed' => true),
-                    'news' => array('installed' => true),
-                    'saltedpasswords' => array('installed' => true),
-                    'rsaauth' => array('installed' => true)
-                )
-            ),
-            'different extension lists - set2' => array(
-                array(
-                    'lang' => array(),
-                    'news' => array(),
-                    'saltedpasswords' => array(),
-                    'rsaauth' => array(),
-                    'em' => array()
-                ),
-                array(
-                    'lang' => array('installed' => true),
-                    'news' => array('installed' => true),
-                    'saltedpasswords' => array('installed' => true),
-                    'rsaauth' => array('installed' => true),
-                    'em' => array()
-                )
-            ),
-            'different extension lists - set3' => array(
-                array(
-                    'lang' => array(),
-                    'fluid' => array(),
-                    'news' => array(),
-                    'saltedpasswords' => array(),
-                    'rsaauth' => array(),
-                    'em' => array()
-                ),
-                array(
-                    'lang' => array('installed' => true),
-                    'fluid' => array(),
-                    'news' => array('installed' => true),
-                    'saltedpasswords' => array('installed' => true),
-                    'rsaauth' => array('installed' => true),
-                    'em' => array()
-                )
-            )
-        );
+        return [
+            'same extension lists' => [
+                [
+                    'lang' => [],
+                    'news' => [],
+                    'saltedpasswords' => [],
+                    'rsaauth' => []
+                ],
+                [
+                    'lang' => ['installed' => true],
+                    'news' => ['installed' => true],
+                    'saltedpasswords' => ['installed' => true],
+                    'rsaauth' => ['installed' => true]
+                ]
+            ],
+            'different extension lists' => [
+                [
+                    'lang' => [],
+                    'news' => [],
+                    'saltedpasswords' => [],
+                    'rsaauth' => []
+                ],
+                [
+                    'lang' => ['installed' => true],
+                    'news' => ['installed' => true],
+                    'saltedpasswords' => ['installed' => true],
+                    'rsaauth' => ['installed' => true]
+                ]
+            ],
+            'different extension lists - set2' => [
+                [
+                    'lang' => [],
+                    'news' => [],
+                    'saltedpasswords' => [],
+                    'rsaauth' => [],
+                    'em' => []
+                ],
+                [
+                    'lang' => ['installed' => true],
+                    'news' => ['installed' => true],
+                    'saltedpasswords' => ['installed' => true],
+                    'rsaauth' => ['installed' => true],
+                    'em' => []
+                ]
+            ],
+            'different extension lists - set3' => [
+                [
+                    'lang' => [],
+                    'fluid' => [],
+                    'news' => [],
+                    'saltedpasswords' => [],
+                    'rsaauth' => [],
+                    'em' => []
+                ],
+                [
+                    'lang' => ['installed' => true],
+                    'fluid' => [],
+                    'news' => ['installed' => true],
+                    'saltedpasswords' => ['installed' => true],
+                    'rsaauth' => ['installed' => true],
+                    'em' => []
+                ]
+            ]
+        ];
     }
 
     /**
@@ -134,25 +134,25 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function enrichExtensionsWithEmConfInformationDataProvider()
     {
-        return array(
-            'simple key value array emconf' => array(
-                array(
-                    'lang' => array('property1' => 'oldvalue'),
-                    'news' => array(),
-                    'saltedpasswords' => array(),
-                    'rsaauth' => array()
-                ),
-                array(
+        return [
+            'simple key value array emconf' => [
+                [
+                    'lang' => ['property1' => 'oldvalue'],
+                    'news' => [],
+                    'saltedpasswords' => [],
+                    'rsaauth' => []
+                ],
+                [
                     'property1' => 'property value1'
-                ),
-                array(
-                    'lang' => array('property1' => 'oldvalue'),
-                    'news' => array('property1' => 'property value1'),
-                    'saltedpasswords' => array('property1' => 'property value1'),
-                    'rsaauth' => array('property1' => 'property value1')
-                )
-            )
-        );
+                ],
+                [
+                    'lang' => ['property1' => 'oldvalue'],
+                    'news' => ['property1' => 'property value1'],
+                    'saltedpasswords' => ['property1' => 'property value1'],
+                    'rsaauth' => ['property1' => 'property value1']
+                ]
+            ]
+        ];
     }
 
     /**
@@ -165,7 +165,7 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult)
     {
-        $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array('findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'), array(), '', false));
+        $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
         $emConfUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class)->getMock();
         $emConfUtilityMock->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
         $this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);

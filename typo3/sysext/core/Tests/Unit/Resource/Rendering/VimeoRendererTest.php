@@ -38,10 +38,10 @@ class VimeoRendererTest extends UnitTestCase
         parent::setUp();
 
         /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
-        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, array('getOnlineMediaId'), array('vimeo'));
+        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331'));
 
-        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, array('getOnlineMediaHelper'), array());
+        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
         $this->subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
     }
 
@@ -106,7 +106,7 @@ class VimeoRendererTest extends UnitTestCase
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('loop' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
 
@@ -120,7 +120,7 @@ class VimeoRendererTest extends UnitTestCase
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 
@@ -153,7 +153,7 @@ class VimeoRendererTest extends UnitTestCase
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 }

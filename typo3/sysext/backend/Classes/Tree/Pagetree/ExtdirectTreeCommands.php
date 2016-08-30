@@ -40,10 +40,10 @@ class ExtdirectTreeCommands
             $newNode->setLeaf($node->isLeafNode());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'error' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -64,10 +64,10 @@ class ExtdirectTreeCommands
             $newNode->setLeaf($node->isLeafNode());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -84,7 +84,7 @@ class ExtdirectTreeCommands
         $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::deleteNode($node);
-            $returnValue = array();
+            $returnValue = [];
             if (static::getBackendUser()->workspace) {
                 $record = Commands::getNodeRecord($node->getId());
                 if ($record['_ORIG_uid']) {
@@ -93,10 +93,10 @@ class ExtdirectTreeCommands
                 }
             }
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -117,10 +117,10 @@ class ExtdirectTreeCommands
             $newNode = Commands::getNode($node->getId());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -136,22 +136,22 @@ class ExtdirectTreeCommands
     public function updateLabel($nodeData, $updatedLabel)
     {
         if ($updatedLabel === '') {
-            return array();
+            return [];
         }
         /** @var $node PagetreeNode */
         $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::updateNodeLabel($node, $updatedLabel);
             $shortendedText = GeneralUtility::fixed_lgd_cs($updatedLabel, (int)static::getBackendUser()->uc['titleLen']);
-            $returnValue = array(
+            $returnValue = [
                 'editableText' => $updatedLabel,
                 'updatedText' => htmlspecialchars($shortendedText)
-            );
+            ];
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -170,7 +170,7 @@ class ExtdirectTreeCommands
         $access = BackendUtility::readPageAccess($node->getId(), $permissionClause);
         if ($access) {
             $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $dataHandler->start(array(), array());
+            $dataHandler->start([], []);
             $dataHandler->clear_cacheCmd($node->getId());
         }
     }
@@ -207,10 +207,10 @@ class ExtdirectTreeCommands
             $newNode->setLeaf($node->isLeafNode());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -232,10 +232,10 @@ class ExtdirectTreeCommands
             $newNode->setLeaf($node->isLeafNode());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -258,10 +258,10 @@ class ExtdirectTreeCommands
             $newNode->setLeaf($node->isLeafNode());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -284,10 +284,10 @@ class ExtdirectTreeCommands
             $newNode->setLeaf($node->isLeafNode());
             $returnValue = $newNode->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -307,10 +307,10 @@ class ExtdirectTreeCommands
             $newPageId = Commands::createNode($parentNode, $parentNode->getId(), $pageType);
             $returnValue = Commands::getNode($newPageId)->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -331,10 +331,10 @@ class ExtdirectTreeCommands
             $newPageId = Commands::createNode($parentNode, -$destination, $pageType);
             $returnValue = Commands::getNode($newPageId)->toArray();
         } catch (\Exception $exception) {
-            $returnValue = array(
+            $returnValue = [
                 'success' => false,
                 'message' => $exception->getMessage()
-            );
+            ];
         }
         return $returnValue;
     }
@@ -373,7 +373,7 @@ class ExtdirectTreeCommands
     {
         $mountPoints = array_map('intval', static::getBackendUser()->returnWebmounts());
         if (empty($mountPoints)) {
-            $mountPoints = array(0);
+            $mountPoints = [0];
         }
         if (!empty(static::getBackendUser()->uc['pageTree_temporaryMountPoint'])) {
             $mountPoints[] = (int)static::getBackendUser()->uc['pageTree_temporaryMountPoint'];
@@ -388,7 +388,7 @@ class ExtdirectTreeCommands
         }
         $state->stateHash = (object)$state->stateHash;
         $rootline = BackendUtility::BEgetRootLine($nodeId, '', (int)static::getBackendUser()->workspace !== 0);
-        $rootlineIds = array();
+        $rootlineIds = [];
         foreach ($rootline as $pageData) {
             $rootlineIds[] = (int)$pageData['uid'];
         }
@@ -426,20 +426,20 @@ class ExtdirectTreeCommands
      */
     public static function getNodePaths($pageId)
     {
-        $pagePaths = array();
+        $pagePaths = [];
         $mountPoints = array_map('intval', static::getBackendUser()->returnWebmounts());
         if (empty($mountPoints)) {
-            $mountPoints = array(0);
+            $mountPoints = [0];
         }
         $mountPoints[] = (int)static::getBackendUser()->uc['pageTree_temporaryMountPoint'];
         $mountPoints = array_unique($mountPoints);
         $rootLine = BackendUtility::BEgetRootLine($pageId, '', (int)static::getBackendUser()->workspace !== 0);
-        $rootLineIds = array();
+        $rootLineIds = [];
         foreach ($rootLine as $rootLineLevel) {
             $rootLineIds[] = (int)$rootLineLevel['uid'];
         }
         foreach ($mountPoints as $mountPoint) {
-            $pagePath = array();
+            $pagePath = [];
             if (!in_array($mountPoint, $rootLineIds, true)) {
                 continue;
             }
@@ -454,7 +454,7 @@ class ExtdirectTreeCommands
             // Attach valid partial root-lines
             if (!empty($pagePath)) {
                 if ($mountPoint !== 0) {
-                    array_unshift($pagePath, Commands::getNewNode(array('uid' => 0))->calculateNodeId());
+                    array_unshift($pagePath, Commands::getNewNode(['uid' => 0])->calculateNodeId());
                 }
                 $pagePaths[] = $pagePath;
             }

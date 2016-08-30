@@ -53,14 +53,14 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
      *
      * @var array<string>
      */
-    protected $hiddenRecords = array();
+    protected $hiddenRecords = [];
 
     /**
      * Process collection hook objects
      *
      * @var array<\TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface>
      */
-    protected $processCollectionHookObjects = array();
+    protected $processCollectionHookObjects = [];
 
     /**
      * Constructor
@@ -131,12 +131,12 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                     // using a virtual root node
                     // so then return the mount points here as "subpages" of the first node
                     $isVirtualRootNode = true;
-                    $subpages = array();
+                    $subpages = [];
                     foreach ($mountPoints as $webMountPoint) {
-                        $subpages[] = array(
+                        $subpages[] = [
                             'uid' => $webMountPoint,
                             'isMountPoint' => true
-                        );
+                        ];
                     }
                 }
             }
@@ -218,12 +218,12 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
             $mountPoints = array_unique($mountPoints);
         } else {
-            $mountPoints = array($mountPoints);
+            $mountPoints = [$mountPoints];
         }
         $isNumericSearchFilter = is_numeric($searchFilter) && $searchFilter > 0;
         $searchFilterQuoted = preg_quote($searchFilter, '/');
         $nodeId = (int)$node->getId();
-        $processedRecordIds = array();
+        $processedRecordIds = [];
         foreach ($records as $record) {
             if ((int)$record['t3ver_wsid'] !== (int)$GLOBALS['BE_USER']->workspace && (int)$record['t3ver_wsid'] !== 0) {
                 continue;
@@ -349,11 +349,11 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                 // use a virtual root
                 // the real mountpoints will be fetched in getNodes() then
                 // since those will be the "subpages" of the virtual root
-                $mountPoints = array(0);
+                $mountPoints = [0];
             }
         } else {
             $isTemporaryMountPoint = true;
-            $mountPoints = array($mountPoints);
+            $mountPoints = [$mountPoints];
         }
         if (empty($mountPoints)) {
             return $nodeCollection;
@@ -365,10 +365,10 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                 if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] !== '') {
                     $sitename = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
                 }
-                $record = array(
+                $record = [
                     'uid' => 0,
                     'title' => $sitename
-                );
+                ];
                 $subNode = Commands::getNewNode($record);
                 $subNode->setLabelIsEditable(false);
                 if ($rootNodeIsVirtual) {

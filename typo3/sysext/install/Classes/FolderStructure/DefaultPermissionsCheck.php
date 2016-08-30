@@ -29,18 +29,18 @@ class DefaultPermissionsCheck
      * For security reasons these are the recommended values nevertheless (no world-readable files).
      * It's up to the admins to decide if these recommended secure values can be applied to their installation.
      */
-    protected $recommended = array(
+    protected $recommended = [
         'fileCreateMask' => '0660',
         'folderCreateMask' => '2770',
-    );
+    ];
 
     /**
      * @var array Verbose names of the settings
      */
-    protected $names = array(
+    protected $names = [
         'fileCreateMask' => 'Default File permissions',
         'folderCreateMask' => 'Default Directory permissions',
-    );
+    ];
 
     /**
      * Checks a BE/*mask setting for it's security
@@ -58,7 +58,7 @@ class DefaultPermissionsCheck
     {
         $octal = '0' . $GLOBALS['TYPO3_CONF_VARS']['SYS'][$which];
         $dec = octdec($octal);
-        $perms = array(
+        $perms = [
             'ox' => (($dec & 001) == 001),
             'ow' => (($dec & 002) == 002),
             'or' => (($dec & 004) == 004),
@@ -69,7 +69,7 @@ class DefaultPermissionsCheck
             'uw' => (($dec & 0200) == 0200),
             'ur' => (($dec & 0400) == 0400),
             'setgid' => (($dec & 02000) == 02000),
-        );
+        ];
         $extraMessage = '';
         $groupPermissions = false;
         if (!$perms['uw'] || !$perms['ur']) {

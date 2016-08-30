@@ -47,9 +47,9 @@ class TcaDatabaseRecordTest extends UnitTestCase
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = [];
 
-        $input = array('foo');
+        $input = ['foo'];
 
         $this->assertEquals($input, $this->subject->compile($input));
     }
@@ -66,11 +66,11 @@ class TcaDatabaseRecordTest extends UnitTestCase
 
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = array(
-            FormDataProviderInterface::class => array(),
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = [
+            FormDataProviderInterface::class => [],
+        ];
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
-        $providerResult = array('foo');
+        $providerResult = ['foo'];
         $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
         $this->assertEquals($providerResult, $this->subject->compile([]));
@@ -88,9 +88,9 @@ class TcaDatabaseRecordTest extends UnitTestCase
 
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(\stdClass::class);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = array(
-            \stdClass::class => array(),
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = [
+            \stdClass::class => [],
+        ];
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
         $this->expectException(\UnexpectedValueException::class);

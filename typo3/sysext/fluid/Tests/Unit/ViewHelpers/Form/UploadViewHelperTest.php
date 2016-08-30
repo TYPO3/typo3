@@ -29,7 +29,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
@@ -53,7 +53,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('addAttribute', 'setContent', 'render'))
+            ->setMethods(['addAttribute', 'setContent', 'render'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'file');
@@ -65,9 +65,9 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->expects($this->at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
         $mockTagBuilder->expects($this->once())->method('render');
         $this->viewHelper->_set('tag', $mockTagBuilder);
-        $arguments = array(
+        $arguments = [
             'name' => 'someName'
-        );
+        ];
         $this->viewHelper->setArguments($arguments);
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
         $this->viewHelper->initialize();
@@ -92,10 +92,10 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
         $tagBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TagBuilder::class);
         $tagBuilder->addAttribute('multiple', 'multiple');
         $this->viewHelper->_set('tag', $tagBuilder);
-        $arguments = array(
+        $arguments = [
             'name' => 'someName',
             'multiple' => 'multiple'
-        );
+        ];
         $this->viewHelper->setArguments($arguments);
         $this->viewHelper->initialize();
         $result = $this->viewHelper->render();

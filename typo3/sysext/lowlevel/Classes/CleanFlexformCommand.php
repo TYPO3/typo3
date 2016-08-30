@@ -31,9 +31,9 @@ class CleanFlexformCommand extends CleanerCommand
     {
         parent::__construct();
         // Setting up help:
-        $this->cli_options[] = array('--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.');
-        $this->cli_options[] = array('--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)');
-        $this->cli_options[] = array('--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.');
+        $this->cli_options[] = ['--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.'];
+        $this->cli_options[] = ['--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)'];
+        $this->cli_options[] = ['--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.'];
         $this->cli_help['name'] = 'cleanflexform -- Find flexform fields with unclean XML';
         $this->cli_help['description'] = trim('
 Traversing page tree and finding records with FlexForm fields with XML that could be cleaned up. This will just remove obsolete data garbage.
@@ -53,13 +53,13 @@ Cleaning XML for FlexForm fields.
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'dirty' => array('', '', 2)
-            ),
-            'dirty' => array()
-        );
+            'headers' => [
+                'dirty' => ['', '', 2]
+            ],
+            'dirty' => []
+        ];
         $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
         $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->cleanFlexForm_dirtyFields = &$resultArray['dirty'];
@@ -125,7 +125,7 @@ Cleaning XML for FlexForm fields.
                 echo $bypass;
             } else {
                 // Clean XML:
-                $data = array();
+                $data = [];
                 $recRow = BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid);
                 $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
                 if ($recRow[$field]) {
@@ -137,7 +137,7 @@ Cleaning XML for FlexForm fields.
                 $tce->bypassWorkspaceRestrictions = true;
                 $tce->bypassFileHandling = true;
                 // Check has been done previously that there is a backend user which is Admin and also in live workspace
-                $tce->start($data, array());
+                $tce->start($data, []);
                 $tce->process_datamap();
                 // Return errors if any:
                 if (count($tce->errorLog)) {

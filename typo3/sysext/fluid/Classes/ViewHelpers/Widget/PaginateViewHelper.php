@@ -73,7 +73,7 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
         parent::initializeArguments();
         $this->registerArgument('objects', 'mixed', 'Object', true);
         $this->registerArgument('as', 'string', 'as', true);
-        $this->registerArgument('configuration', 'array', 'configuration', false, array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99));
+        $this->registerArgument('configuration', 'array', 'configuration', false, ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99]);
     }
 
     /**

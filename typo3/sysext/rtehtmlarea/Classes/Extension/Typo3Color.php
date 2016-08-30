@@ -40,10 +40,10 @@ class Typo3Color extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'textcolor' => 'ForeColor',
         'bgcolor' => 'HiliteColor'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -64,7 +64,7 @@ class Typo3Color extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $jsArray[] = 'RTEarea[editornumber].disableColorPicker = ' . (trim($this->configuration['thisConfig']['disableColorPicker']) ? 'true' : 'false') . ';';
 
         return implode(LF, $jsArray);

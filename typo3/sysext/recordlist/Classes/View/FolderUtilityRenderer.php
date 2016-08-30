@@ -64,7 +64,7 @@ class FolderUtilityRenderer
         $lang = $this->getLanguageService();
 
         $formAction = BackendUtility::getModuleUrl('tce_file');
-        $markup = array();
+        $markup = [];
         $markup[] = '<div class="element-browser-section element-browser-createfolder">';
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
@@ -122,7 +122,7 @@ class FolderUtilityRenderer
         $header = $folderObject->getIdentifier();
         $lang = $this->getLanguageService();
         // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
-        $fileExtList = array();
+        $fileExtList = [];
         foreach ($allowedExtensions as $fileExt) {
             if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
                 $fileExtList[] = '<span class="label label-success">'
@@ -131,7 +131,7 @@ class FolderUtilityRenderer
         }
         $formAction = BackendUtility::getModuleUrl('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
-        $markup = array();
+        $markup = [];
         $markup[] = '<div class="element-browser-section element-browser-upload">';
         $markup[] = '   <form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
@@ -181,7 +181,7 @@ class FolderUtilityRenderer
 
         // Add online media
         // Create a list of allowed file extensions in a readable format "youtube, vimeo" etc.
-        $fileExtList = array();
+        $fileExtList = [];
         $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
         foreach ($onlineMediaFileExt as $fileExt) {
             if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)
@@ -194,7 +194,7 @@ class FolderUtilityRenderer
         if (!empty($fileExtList)) {
             $formAction = BackendUtility::getModuleUrl('online_media');
 
-            $markup = array();
+            $markup = [];
             $markup[] = '<div class="element-browser-section element-browser-mediaurls">';
             $markup[] = '   <form action="' . htmlspecialchars($formAction)
                 . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';

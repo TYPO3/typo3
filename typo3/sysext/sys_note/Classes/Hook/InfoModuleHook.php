@@ -26,10 +26,10 @@ class InfoModuleHook
      * @param \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject
      * @return string
      */
-    public function render(array $params = array(), \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject)
+    public function render(array $params = [], \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject)
     {
         /** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
         $noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
-        return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->pObj->id));
+        return $noteBootstrap->run('Note', 'list', ['pids' => $parentObject->pObj->id]);
     }
 }

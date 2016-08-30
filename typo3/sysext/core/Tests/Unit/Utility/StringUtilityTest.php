@@ -28,14 +28,14 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function endsWithReturnsTrueForMatchingLastPartDataProvider()
     {
-        return array(
-            'match last part of string' => array('hello world', 'world'),
-            'match last char of string' => array('hellod world', 'd'),
-            'match whole string' => array('hello', 'hello'),
-            'integer is part of string with same number' => array('24', 24),
-            'string is part of integer with same number' => array(24, '24'),
-            'integer is part of string ending with same number' => array('please gimme beer, 24', 24)
-        );
+        return [
+            'match last part of string' => ['hello world', 'world'],
+            'match last char of string' => ['hellod world', 'd'],
+            'match whole string' => ['hello', 'hello'],
+            'integer is part of string with same number' => ['24', 24],
+            'string is part of integer with same number' => [24, '24'],
+            'integer is part of string ending with same number' => ['please gimme beer, 24', 24]
+        ];
     }
 
     /**
@@ -54,13 +54,13 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function endsWithReturnsFalseForNotMatchingLastPartDataProvider()
     {
-        return array(
-            'no string match' => array('hello', 'bye'),
-            'no case sensitive string match' => array('hello world', 'World'),
-            'string is part but not last part' => array('hello world', 'worl'),
-            'integer is not part of empty string' => array('', 0),
-            'longer string is not part of shorter string' => array('a', 'aa'),
-        );
+        return [
+            'no string match' => ['hello', 'bye'],
+            'no case sensitive string match' => ['hello world', 'World'],
+            'string is part but not last part' => ['hello world', 'worl'],
+            'integer is not part of empty string' => ['', 0],
+            'longer string is not part of shorter string' => ['a', 'aa'],
+        ];
     }
 
     /**
@@ -117,14 +117,14 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function beginsWithReturnsTrueForMatchingFirstPartDataProvider()
     {
-        return array(
-            'match first part of string' => array('hello world', 'hello'),
-            'match first char of string' => array('hello world', 'h'),
-            'match whole string' => array('hello', 'hello'),
-            'integer is part of string with same number' => array('24', 24),
-            'string is part of integer with same number' => array(24, '24'),
-            'integer is part of string starting with same number' => array('24, please gimme beer', 24),
-        );
+        return [
+            'match first part of string' => ['hello world', 'hello'],
+            'match first char of string' => ['hello world', 'h'],
+            'match whole string' => ['hello', 'hello'],
+            'integer is part of string with same number' => ['24', 24],
+            'string is part of integer with same number' => [24, '24'],
+            'integer is part of string starting with same number' => ['24, please gimme beer', 24],
+        ];
     }
 
     /**
@@ -143,11 +143,11 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function beginsWithReturnsFalseForNotMatchingFirstPartDataProvider()
     {
-        return array(
-            'no string match' => array('hello', 'bye'),
-            'no case sensitive string match' => array('hello world', 'Hello'),
-            'string in empty string' => array('', 'foo')
-        );
+        return [
+            'no string match' => ['hello', 'bye'],
+            'no case sensitive string match' => ['hello world', 'Hello'],
+            'string in empty string' => ['', 'foo']
+        ];
     }
 
     /**

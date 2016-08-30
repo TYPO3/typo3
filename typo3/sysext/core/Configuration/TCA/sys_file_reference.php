@@ -1,15 +1,15 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference',
         'label' => 'uid_local',
         'formattedLabel_userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Service\\UserFileInlineLabelService->getInlineLabel',
-        'formattedLabel_userFunc_options' => array(
-            'sys_file' => array(
+        'formattedLabel_userFunc_options' => [
+            'sys_file' => [
                 'title',
                 'name'
-            )
-        ),
+            ]
+        ],
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -24,75 +24,75 @@ return array(
         'rootLevel' => -1,
         // records can and should be edited in workspaces
         'shadowColumnsForMovePlaceholders' => 'tablenames,fieldname,uid_local,table_local,uid_foreign',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'mimetypes-other-other'
-        ),
-        'security' => array(
+        ],
+        'security' => [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
-        ),
+        ],
         'searchFields' => 'uid_local,uid_foreign,tablenames,fieldname,title,description'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'hidden,uid_local,uid_foreign,tablenames,fieldname,sorting_foreign,table_local,title,description'
-    ),
-    'columns' => array(
-        't3ver_label' => array(
+    ],
+    'columns' => [
+        't3ver_label' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 30
-            )
-        ),
-        'sys_language_uid' => array(
+            ]
+        ],
+        'sys_language_uid' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
-                ),
+                'items' => [
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
+                ],
                 'default' => 0,
                 'showIconTable' => true,
-            )
-        ),
-        'l10n_parent' => array(
+            ]
+        ],
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0)
-                ),
+                'items' => [
+                    ['', 0]
+                ],
                 'foreign_table' => 'sys_file_reference',
                 'foreign_table_where' => 'AND sys_file_reference.uid=###REC_FIELD_l10n_parent### AND sys_file_reference.sys_language_uid IN (-1,0)',
                 'default' => 0
-            )
-        ),
-        'l10n_diffsource' => array(
-            'config' => array(
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough',
                 'default' => ''
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'uid_local' => array(
+            ]
+        ],
+        'uid_local' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_local',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'size' => 1,
@@ -100,93 +100,93 @@ return array(
                 'maxitems' => 1,
                 'minitems' => 0,
                 'allowed' => 'sys_file'
-            )
-        ),
-        'uid_foreign' => array(
+            ]
+        ],
+        'uid_foreign' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_foreign',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 10,
                 'eval' => 'int'
-            )
-        ),
-        'tablenames' => array(
+            ]
+        ],
+        'tablenames' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.tablenames',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            )
-        ),
-        'fieldname' => array(
+            ]
+        ],
+        'fieldname' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.fieldname',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30
-            )
-        ),
-        'sorting_foreign' => array(
+            ]
+        ],
+        'sorting_foreign' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.sorting_foreign',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 4,
                 'max' => 4,
                 'eval' => 'int',
-                'range' => array(
+                'range' => [
                     'upper' => '1000',
                     'lower' => '10'
-                ),
+                ],
                 'default' => 0
-            )
-        ),
-        'table_local' => array(
+            ]
+        ],
+        'table_local' => [
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.table_local',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'default' => 'sys_file'
-            )
-        ),
-        'title' => array(
+            ]
+        ],
+        'title' => [
             'l10n_mode' => 'prefixLangTitle',
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'null',
                 'placeholder' => '__row|uid_local|metadata|title',
                 'mode' => 'useOrOverridePlaceholder',
                 'default' => null,
-            )
-        ),
-        'link' => array(
+            ]
+        ],
+        'link' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 1024,
-                'wizards' => array(
-                    'link' => array(
+                'wizards' => [
+                    'link' => [
                         'type' => 'popup',
                         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_link',
-                        ),
+                        ],
                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
-                    )
-                ),
+                    ]
+                ],
                 'softref' => 'typolink'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             // This is used for captions in the frontend
             'l10n_mode' => 'prefixLangTitle',
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 20,
                 'rows' => 5,
@@ -194,99 +194,99 @@ return array(
                 'placeholder' => '__row|uid_local|metadata|description',
                 'mode' => 'useOrOverridePlaceholder',
                 'default' => null,
-            )
-        ),
-        'alternative' => array(
+            ]
+        ],
+        'alternative' => [
             'l10n_mode' => 'prefixLangTitle',
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'null',
                 'placeholder' => '__row|uid_local|metadata|alternative',
                 'mode' => 'useOrOverridePlaceholder',
                 'default' => null,
-            ),
-        ),
-        'crop' => array(
+            ],
+        ],
+        'crop' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.crop',
-            'config' => array(
+            'config' => [
                 'type' => 'imageManipulation'
-            )
-        ),
-        'autoplay' => array(
+            ]
+        ],
+        'autoplay' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.autoplay',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-    ),
-    'types' => array(
+            ]
+        ],
+    ],
+    'types' => [
         // Note that at the moment we define the same fields for every media type.
         // We leave the extensive definition of each type here anyway, to make clear that you can use it to differentiate between the types.
-        '0' => array(
+        '0' => [
             'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
-        ),
-        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+        ],
+        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
             'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
-        ),
-        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+        ],
+        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
             'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
-        ),
-        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+        ],
+        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
             'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
-        ),
-        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+        ],
+        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
             'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
-        ),
-        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+        ],
+        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
             'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
-        )
-    ),
-    'palettes' => array(
+        ]
+    ],
+    'palettes' => [
         // Used for basic overlays: having a filelist etc
-        'basicoverlayPalette' => array(
+        'basicoverlayPalette' => [
             'showitem' => 'title,description',
-        ),
+        ],
         // Used for everything that is an image (because it has a link and an alternative text)
-        'imageoverlayPalette' => array(
+        'imageoverlayPalette' => [
             'showitem' => '
 				title,alternative,--linebreak--,
 				link,description,--linebreak--,crop
 				',
-        ),
+        ],
         // Used for everything that is a video
-        'videoOverlayPalette' => array(
+        'videoOverlayPalette' => [
             'showitem' => '
 				title,description,--linebreak--,autoplay
 				',
-        ),
+        ],
         // Used for everything that is a audio file
-        'audioOverlayPalette' => array(
+        'audioOverlayPalette' => [
             'showitem' => '
 				title,description,--linebreak--,autoplay
 				',
-        ),
+        ],
         // File palette, hidden but needs to be included all the time
-        'filePalette' => array(
+        'filePalette' => [
             'showitem' => 'uid_local, hidden, sys_language_uid, l10n_parent',
             'isHiddenPalette' => true,
-        ),
-    ),
-);
+        ],
+    ],
+];

@@ -50,7 +50,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
      * @param array $options Configuration options
      * @throws \TYPO3\CMS\Core\Cache\Exception If wincache PHP extension is not loaded
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('wincache')) {
             throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "wincache" must be installed and loaded in order to use the wincache backend.', 1343331520);
@@ -70,7 +70,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
      * @throws \InvalidArgumentException if the identifier is not valid
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1343331521);
@@ -139,7 +139,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
         $success = false;
         $identifiers = wincache_ucache_get($this->identifierPrefix . 'tag_' . $tag, $success);
         if ($success === false) {
-            return array();
+            return [];
         } else {
             return (array)$identifiers;
         }
@@ -156,7 +156,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
     {
         $success = false;
         $tags = wincache_ucache_get($this->identifierPrefix . 'ident_' . $identifier, $success);
-        return $success ? (array)$tags : array();
+        return $success ? (array)$tags : [];
     }
 
     /**

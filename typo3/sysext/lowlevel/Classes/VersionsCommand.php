@@ -34,10 +34,10 @@ class VersionsCommand extends CleanerCommand
     {
         parent::__construct();
         // Setting up help:
-        $this->cli_options[] = array('--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.');
-        $this->cli_options[] = array('--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)');
-        $this->cli_options[] = array('--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.');
-        $this->cli_options[] = array('--flush-live', 'If set, not only published versions from Live workspace are flushed, but ALL versions from Live workspace (which are offline of course)');
+        $this->cli_options[] = ['--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.'];
+        $this->cli_options[] = ['--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)'];
+        $this->cli_options[] = ['--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.'];
+        $this->cli_options[] = ['--flush-live', 'If set, not only published versions from Live workspace are flushed, but ALL versions from Live workspace (which are offline of course)'];
         $this->cli_help['name'] = 'versions -- To find information about versions and workspaces in the system';
         $this->cli_help['description'] = trim('
 Traversing page tree and finding versions, categorizing them by various properties.
@@ -60,21 +60,21 @@ Automatic Repair:
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'versions' => array('All versions', 'Showing all versions of records found', 0),
-                'versions_published' => array('All published versions', 'This is all records that has been published and can therefore be removed permanently', 1),
-                'versions_liveWS' => array('All versions in Live workspace', 'This is all records that are offline versions in the Live workspace. You may wish to flush these if you only use workspaces for versioning since then you might find lots of versions piling up in the live workspace which have simply been disconnected from the workspace before they were published.', 1),
-                'versions_lost_workspace' => array('Versions outside a workspace', 'Versions that has lost their connection to a workspace in TYPO3.', 3),
-                'versions_inside_versioned_page' => array('Versions in versions', 'Versions inside an already versioned page. Something that is confusing to users and therefore should not happen but is technically possible.', 2),
-                'versions_unused_placeholders' => array('Unused placeholder records', 'Placeholder records which are not used anymore by offline versions.', 2),
-                'versions_move_placeholders_ok' => array('Move placeholders', 'Move-to placeholder records which has good integrity', 0),
-                'versions_move_placeholders_bad' => array('Move placeholders with bad integrity', 'Move-to placeholder records which has bad integrity', 2),
-                'versions_move_id_check' => array('Checking if t3ver_move_id is correct', 't3ver_move_id must only be set with online records having t3ver_state=3.', 2)
-            ),
-            'versions' => array()
-        );
+            'headers' => [
+                'versions' => ['All versions', 'Showing all versions of records found', 0],
+                'versions_published' => ['All published versions', 'This is all records that has been published and can therefore be removed permanently', 1],
+                'versions_liveWS' => ['All versions in Live workspace', 'This is all records that are offline versions in the Live workspace. You may wish to flush these if you only use workspaces for versioning since then you might find lots of versions piling up in the live workspace which have simply been disconnected from the workspace before they were published.', 1],
+                'versions_lost_workspace' => ['Versions outside a workspace', 'Versions that has lost their connection to a workspace in TYPO3.', 3],
+                'versions_inside_versioned_page' => ['Versions in versions', 'Versions inside an already versioned page. Something that is confusing to users and therefore should not happen but is technically possible.', 2],
+                'versions_unused_placeholders' => ['Unused placeholder records', 'Placeholder records which are not used anymore by offline versions.', 2],
+                'versions_move_placeholders_ok' => ['Move placeholders', 'Move-to placeholder records which has good integrity', 0],
+                'versions_move_placeholders_bad' => ['Move placeholders with bad integrity', 'Move-to placeholder records which has bad integrity', 2],
+                'versions_move_id_check' => ['Checking if t3ver_move_id is correct', 't3ver_move_id must only be set with online records having t3ver_state=3.', 2]
+            ],
+            'versions' => []
+        ];
         $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
         $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
@@ -84,7 +84,7 @@ Automatic Repair:
         $resultArray['versions_lost_workspace'] = $this->recStats['versions_lost_workspace'];
         $resultArray['versions_inside_versioned_page'] = $this->recStats['versions_inside_versioned_page'];
         // Finding all placeholders with no records attached!
-        $resultArray['versions_unused_placeholders'] = array();
+        $resultArray['versions_unused_placeholders'] = [];
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($cfg['ctrl']['versioningWS']) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -112,8 +112,8 @@ Automatic Repair:
         }
         asort($resultArray['versions_unused_placeholders']);
         // Finding all move placeholders with inconsistencies:
-        $resultArray['versions_move_placeholders_ok'] = array();
-        $resultArray['versions_move_placeholders_bad'] = array();
+        $resultArray['versions_move_placeholders_ok'] = [];
+        $resultArray['versions_move_placeholders_bad'] = [];
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -138,23 +138,23 @@ Automatic Repair:
                         if (BackendUtility::movePlhOL($table, $placeholderRecord)) {
                             if ($wsAlt = BackendUtility::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $placeholderRecord['uid'], 'uid,pid,t3ver_state')) {
                                 if (!VersionState::cast($wsAlt['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
-                                    $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'State for version was not "4" as it should be!', $phrecCopy);
+                                    $resultArray['versions_move_placeholders_bad'][$shortID] = [$table . ':' . $placeholderRecord['uid'], 'State for version was not "4" as it should be!', $phrecCopy];
                                 } else {
-                                    $resultArray['versions_move_placeholders_ok'][$shortID] = array(
+                                    $resultArray['versions_move_placeholders_ok'][$shortID] = [
                                         $table . ':' . $placeholderRecord['uid'],
                                         'PLH' => $phrecCopy,
                                         'online' => $placeholderRecord,
                                         'PNT' => $wsAlt
-                                    );
+                                    ];
                                 }
                             } else {
-                                $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'No version was found for online record to be moved. A version must exist.', $phrecCopy);
+                                $resultArray['versions_move_placeholders_bad'][$shortID] = [$table . ':' . $placeholderRecord['uid'], 'No version was found for online record to be moved. A version must exist.', $phrecCopy];
                             }
                         } else {
-                            $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'Did not find online record for "t3ver_move_id" value ' . $placeholderRecord['t3ver_move_id'], $placeholderRecord);
+                            $resultArray['versions_move_placeholders_bad'][$shortID] = [$table . ':' . $placeholderRecord['uid'], 'Did not find online record for "t3ver_move_id" value ' . $placeholderRecord['t3ver_move_id'], $placeholderRecord];
                         }
                     } else {
-                        $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'Placeholder was not assigned a workspace value in t3ver_wsid.', $placeholderRecord);
+                        $resultArray['versions_move_placeholders_bad'][$shortID] = [$table . ':' . $placeholderRecord['uid'], 'Placeholder was not assigned a workspace value in t3ver_wsid.', $placeholderRecord];
                     }
                 }
             }
@@ -162,7 +162,7 @@ Automatic Repair:
         ksort($resultArray['versions_move_placeholders_ok']);
         ksort($resultArray['versions_move_placeholders_bad']);
         // Finding move_id_check inconsistencies:
-        $resultArray['versions_move_id_check'] = array();
+        $resultArray['versions_move_id_check'] = [];
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -182,10 +182,10 @@ Automatic Repair:
                     if (VersionState::cast($placeholderRecord['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
                         if ($placeholderRecord['pid'] != -1) {
                         } else {
-                            $resultArray['versions_move_id_check'][] = array($table . ':' . $placeholderRecord['uid'], 'Record was offline, must not be!', $placeholderRecord);
+                            $resultArray['versions_move_id_check'][] = [$table . ':' . $placeholderRecord['uid'], 'Record was offline, must not be!', $placeholderRecord];
                         }
                     } else {
-                        $resultArray['versions_move_id_check'][] = array($table . ':' . $placeholderRecord['uid'], 'Record had t3ver_move_id set to "' . $placeholderRecord['t3ver_move_id'] . '" while having t3ver_state=' . $placeholderRecord['t3ver_state'], $placeholderRecord);
+                        $resultArray['versions_move_id_check'][] = [$table . ':' . $placeholderRecord['uid'], 'Record had t3ver_move_id set to "' . $placeholderRecord['t3ver_move_id'] . '" while having t3ver_state=' . $placeholderRecord['t3ver_state'], $placeholderRecord];
                     }
                 }
             }
@@ -219,7 +219,7 @@ Automatic Repair:
                 } else {
                     // Execute CMD array:
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->start(array(), array());
+                    $tce->start([], []);
                     $tce->deleteEl($table, $uid, true, true);
                     // Return errors if any:
                     if (count($tce->errorLog)) {
@@ -261,7 +261,7 @@ Automatic Repair:
             } else {
                 // Execute CMD array:
                 $tce = GeneralUtility::makeInstance(DataHandler::class);
-                $tce->start(array(), array());
+                $tce->start([], []);
                 $tce->deleteAction($table, $uid);
                 // Return errors if any:
                 if (count($tce->errorLog)) {

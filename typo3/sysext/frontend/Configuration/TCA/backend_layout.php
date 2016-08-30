@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout',
         'label' => 'title',
         'descriptionColumn' => 'description',
@@ -11,55 +11,55 @@ return array(
         'origUid' => 't3_origuid',
         'sortby' => 'sorting',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-backend_layout'
-        ),
+        ],
         'selicon_field' => 'icon',
         'selicon_field_path' => 'uploads/media'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'title,config,description,hidden,icon'
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 255,
                 'eval' => 'required'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 25
-            )
-        ),
-        'config' => array(
+            ]
+        ],
+        'config' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.config',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'renderType' => 'belayoutwizard',
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0
-            )
-        ),
-        'icon' => array(
+            ]
+        ],
+        'icon' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.icon',
             'exclude' => true,
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'jpg,gif,png',
@@ -67,14 +67,14 @@ return array(
                 'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1
-            )
-        )
-    ),
-    'types' => array(
-        '1' => array(
+            ]
+        ]
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'title,icon,config,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.tabs.access, hidden,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.tabs.extended, description',
-        ),
-    )
-);
+        ],
+    ]
+];

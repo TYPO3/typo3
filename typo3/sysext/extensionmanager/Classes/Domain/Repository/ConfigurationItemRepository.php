@@ -59,11 +59,11 @@ class ConfigurationItemRepository
         $configurationUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
         $defaultConfiguration = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
 
-        $resultArray = array();
+        $resultArray = [];
         if (!empty($defaultConfiguration)) {
             $metaInformation = $this->addMetaInformation($defaultConfiguration);
             $configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extensionKey);
-            $hierarchicConfiguration = array();
+            $hierarchicConfiguration = [];
             foreach ($configuration as $configurationOption) {
                 $originalConfiguration = $this->buildConfigurationArray($configurationOption, $extensionKey);
                 ArrayUtility::mergeRecursiveWithOverrule($originalConfiguration, $hierarchicConfiguration);
@@ -100,7 +100,7 @@ class ConfigurationItemRepository
      */
     protected function buildConfigurationArray($configurationOption, $extensionKey)
     {
-        $hierarchicConfiguration = array();
+        $hierarchicConfiguration = [];
         if (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
             $configurationOption = $this->extractInformationForConfigFieldsOfTypeUser($configurationOption);
         } elseif (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
@@ -162,7 +162,7 @@ class ConfigurationItemRepository
      */
     protected function addMetaInformation(&$configuration)
     {
-        $metaInformation = $configuration['__meta__'] ?: array();
+        $metaInformation = $configuration['__meta__'] ?: [];
         unset($configuration['__meta__']);
         return $metaInformation;
     }
@@ -182,13 +182,13 @@ class ConfigurationItemRepository
                     ->getConfigurationValueByPath('EXT/extConf/' . $extensionKey)
             );
             if (!is_array($currentExtensionConfig)) {
-                $currentExtensionConfig = array();
+                $currentExtensionConfig = [];
             }
         } catch (\RuntimeException $e) {
-            $currentExtensionConfig = array();
+            $currentExtensionConfig = [];
         }
         $flatExtensionConfig = ArrayUtility::flatten($currentExtensionConfig);
-        $valuedCurrentExtensionConfig = array();
+        $valuedCurrentExtensionConfig = [];
         foreach ($flatExtensionConfig as $key => $value) {
             $valuedCurrentExtensionConfig[$key]['value'] = $value;
         }

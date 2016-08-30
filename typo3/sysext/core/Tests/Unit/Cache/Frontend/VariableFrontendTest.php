@@ -30,7 +30,7 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1233057566);
 
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
-            ->setMethods(array('isValidEntryIdentifier'))
+            ->setMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
@@ -44,7 +44,7 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $theString = 'Just some value';
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)));
@@ -58,9 +58,9 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setPassesSerializedArrayToBackend()
     {
-        $theArray = array('Just some value', 'and another one.');
+        $theArray = ['Just some value', 'and another one.'];
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theArray)));
@@ -77,13 +77,13 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $theString = 'Just some value';
         $theLifetime = 1234;
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)), $this->equalTo(array()), $this->equalTo($theLifetime));
+        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)), $this->equalTo([]), $this->equalTo($theLifetime));
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $cache->set('VariableCacheTest', $theString, array(), $theLifetime);
+        $cache->set('VariableCacheTest', $theString, [], $theLifetime);
     }
 
     /**
@@ -92,7 +92,7 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFetchesStringValueFromBackend()
     {
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('get')->will($this->returnValue(serialize('Just some value')));
@@ -106,9 +106,9 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFetchesArrayValueFromBackend()
     {
-        $theArray = array('Just some value', 'and another one.');
+        $theArray = ['Just some value', 'and another one.'];
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('get')->will($this->returnValue(serialize($theArray)));
@@ -123,7 +123,7 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFetchesFalseBooleanValueFromBackend()
     {
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('get')->will($this->returnValue(serialize(false)));
@@ -138,7 +138,7 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function hasReturnsResultFromBackend()
     {
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects($this->once())->method('has')->with($this->equalTo('VariableCacheTest'))->will($this->returnValue(true));
@@ -154,7 +154,7 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $cacheIdentifier = 'someCacheIdentifier';
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -183,10 +183,10 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getByTagCallsBackend()
     {
         $tag = 'sometag';
-        $identifiers = array('one', 'two');
-        $entries = array('one value', 'two value');
+        $identifiers = ['one', 'two'];
+        $entries = ['one value', 'two value'];
         $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'))
+            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
 

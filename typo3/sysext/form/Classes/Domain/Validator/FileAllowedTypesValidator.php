@@ -21,11 +21,11 @@ class FileAllowedTypesValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'types' => array('', 'The allowed file types', 'string', true),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'types' => ['', 'The allowed file types', 'string', true],
+    ];
 
     /**
      * Constant for localisation

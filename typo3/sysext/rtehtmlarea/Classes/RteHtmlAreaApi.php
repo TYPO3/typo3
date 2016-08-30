@@ -78,7 +78,7 @@ abstract class RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array();
+    protected $convertToolbarForHtmlAreaArray = [];
 
     /**
      * TRUE if the registered plugin requires the PageTSConfig Classes configuration
@@ -126,7 +126,7 @@ abstract class RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $pluginButtons = GeneralUtility::trimExplode(',', $this->pluginButtons, true);
         foreach ($pluginButtons as $button) {
             if (in_array($button, $this->toolbar)) {

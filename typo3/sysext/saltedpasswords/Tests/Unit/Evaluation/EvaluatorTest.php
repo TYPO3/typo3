@@ -33,7 +33,7 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(Evaluator::class)
-            ->setMethods(array('dummy'))
+            ->setMethods(['dummy'])
             ->getMock();
 
         // Make sure SaltedPasswordsUtility::isUsageEnabled() returns TRUE

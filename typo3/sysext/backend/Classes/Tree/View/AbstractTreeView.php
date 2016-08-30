@@ -143,7 +143,7 @@ abstract class AbstractTreeView
      * @see addField()
      * @var array
      */
-    public $fieldArray = array('uid', 'pid', 'title');
+    public $fieldArray = ['uid', 'pid', 'title'];
 
     /**
      * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
@@ -205,32 +205,32 @@ abstract class AbstractTreeView
     /**
      * @var array
      */
-    public $ids = array();
+    public $ids = [];
 
     // The hierarchy of element uids
     /**
      * @var array
      */
-    public $ids_hierarchy = array();
+    public $ids_hierarchy = [];
 
     // The hierarchy of versioned element uids
     /**
      * @var array
      */
-    public $orig_ids_hierarchy = array();
+    public $orig_ids_hierarchy = [];
 
     // Temporary, internal array
     /**
      * @var array
      */
-    public $buffer_idH = array();
+    public $buffer_idH = [];
 
     // For FOLDER trees:
     // Special UIDs for folders (integer-hashes of paths)
     /**
      * @var array
      */
-    public $specUIDmap = array();
+    public $specUIDmap = [];
 
     // For arrays:
     // Holds the input data array
@@ -250,13 +250,13 @@ abstract class AbstractTreeView
     /**
      * @var array
      */
-    public $tree = array();
+    public $tree = [];
 
     // Holds (session stored) information about which items in the tree are unfolded and which are not.
     /**
      * @var array
      */
-    public $stored = array();
+    public $stored = [];
 
     // Points to the current mountpoint key
     /**
@@ -268,7 +268,7 @@ abstract class AbstractTreeView
     /**
      * @var array
      */
-    public $recs = array();
+    public $recs = [];
 
     /**
      * Constructor
@@ -323,7 +323,7 @@ abstract class AbstractTreeView
         }
         if (!is_array($this->MOUNTS)) {
             // Dummy
-            $this->MOUNTS = array(0 => 0);
+            $this->MOUNTS = [0 => 0];
         }
         // Sets the tree name which is used to identify the tree, used for JavaScript and other things
         $this->treeName = str_replace('_', '', $this->treeName ?: $this->table);
@@ -353,11 +353,11 @@ abstract class AbstractTreeView
      */
     public function reset()
     {
-        $this->tree = array();
-        $this->recs = array();
-        $this->ids = array();
-        $this->ids_hierarchy = array();
-        $this->orig_ids_hierarchy = array();
+        $this->tree = [];
+        $this->recs = [];
+        $this->ids = [];
+        $this->ids_hierarchy = [];
+        $this->orig_ids_hierarchy = [];
     }
 
     /*******************************************
@@ -376,7 +376,7 @@ abstract class AbstractTreeView
         // Get stored tree structure AND updating it if needed according to incoming PM GET var.
         $this->initializePositionSaving();
         // Init done:
-        $treeArr = array();
+        $treeArr = [];
         // Traverse mounts:
         foreach ($this->MOUNTS as $idx => $uid) {
             // Set first:
@@ -403,7 +403,7 @@ abstract class AbstractTreeView
                 // In case it was swapped inside getRecord due to workspaces.
                 $uid = $rootRec['uid'];
                 // Add the root of the mount to ->tree
-                $this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen, 'bank' => $this->bank);
+                $this->tree[] = ['HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen, 'bank' => $this->bank];
                 // If the mount is expanded, go down:
                 if ($isOpen) {
                     $depthData = '<span class="treeline-icon treeline-icon-clear"></span>';
@@ -432,7 +432,7 @@ abstract class AbstractTreeView
             $treeArr = $this->tree;
         }
         $out = '';
-        $closeDepth = array();
+        $closeDepth = [];
         foreach ($treeArr as $treeItem) {
             $classAttr = '';
             if ($treeItem['isFirst']) {
@@ -575,7 +575,7 @@ abstract class AbstractTreeView
     public function wrapStop($str, $row)
     {
         if ($row['php_tree_stop']) {
-            $str .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="text-danger">+</a> ';
+            $str .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['setTempDBmount' => $row['uid']])) . '" class="text-danger">+</a> ';
         }
         return $str;
     }
@@ -742,7 +742,7 @@ abstract class AbstractTreeView
     public function getTree($uid, $depth = 999, $depthData = '')
     {
         // Buffer for id hierarchy is reset:
-        $this->buffer_idH = array();
+        $this->buffer_idH = [];
         // Init vars
         $depth = (int)$depth;
         $HTML = '';
@@ -750,7 +750,7 @@ abstract class AbstractTreeView
         $res = $this->getDataInit($uid);
         $c = $this->getDataCount($res);
         $crazyRecursionLimiter = 999;
-        $idH = array();
+        $idH = [];
         // Traverse the records:
         while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
             $pageUid = ($this->table === 'pages') ? $row['uid'] : $row['pid'];
@@ -766,7 +766,7 @@ abstract class AbstractTreeView
                 throw new \RuntimeException('Endless recursion detected: TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of ' . $this->table . ':0 to a new value. See http://forge.typo3.org/issues/16150 to get more information about a possible cause.', 1294586383);
             }
             // Reserve space.
-            $this->tree[] = array();
+            $this->tree[] = [];
             end($this->tree);
             // Get the key for this space
             $treeKey = key($this->tree);
@@ -799,7 +799,7 @@ abstract class AbstractTreeView
                 $HTML = $this->PMicon($row, $a, $c, $nextCount, $isOpen) . $this->wrapStop($this->getIcon($row), $row);
             }
             // Finally, add the row/HTML content to the ->tree array in the reserved key.
-            $this->tree[$treeKey] = array(
+            $this->tree[$treeKey] = [
                 'row' => $row,
                 'HTML' => $HTML,
                 'invertedDepth' => $depth,
@@ -808,7 +808,7 @@ abstract class AbstractTreeView
                 'hasSub' => $nextCount && $hasSub,
                 'isFirst' => $a === 1,
                 'isLast' => $a === $c,
-            );
+            ];
         }
 
         $this->getDataFree($res);
@@ -861,7 +861,7 @@ abstract class AbstractTreeView
      */
     public function getRootRecord()
     {
-        return array('title' => $this->title, 'uid' => 0);
+        return ['title' => $this->title, 'uid' => 0];
     }
 
     /**
@@ -999,7 +999,7 @@ abstract class AbstractTreeView
     {
         if (!$traverse) {
             $this->data = &$dataArr;
-            $this->dataLookup = array();
+            $this->dataLookup = [];
             // Add root
             $this->dataLookup[0][$this->subLevelID] = &$dataArr;
         }

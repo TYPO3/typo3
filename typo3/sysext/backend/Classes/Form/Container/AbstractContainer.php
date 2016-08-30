@@ -63,11 +63,11 @@ abstract class AbstractContainer extends AbstractNode
         if (empty($fieldArray[0])) {
             throw new \RuntimeException('Field must not be empty', 1426448465);
         }
-        return array(
+        return [
             'fieldName' => $fieldArray[0],
             'fieldLabel' => $fieldArray[1] ?: null,
             'paletteName' => $fieldArray[2] ?: null,
-        );
+        ];
     }
 
     /**
@@ -83,13 +83,13 @@ abstract class AbstractContainer extends AbstractNode
         $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/Tabs.html';
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'id' => $domId,
             'items' => $menuItems,
             'defaultTabIndex' => $defaultTabIndex,
             'wrapContent' => false,
             'storeLastActiveTab' => true,
-        ));
+        ]);
         return $view->render();
     }
 
@@ -113,12 +113,12 @@ abstract class AbstractContainer extends AbstractNode
             $itemArray = GeneralUtility::trimExplode(',', $value, true);
             // Showing thumbnails:
             $thumbnail = '';
-            $imgs = array();
+            $imgs = [];
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             foreach ($itemArray as $imgRead) {
                 $imgParts = explode('|', $imgRead);
                 $imgPath = rawurldecode($imgParts[0]);
-                $rowCopy = array();
+                $rowCopy = [];
                 $rowCopy[$field] = $imgPath;
                 // Icon + click menu:
                 $absFilePath = GeneralUtility::getFileAbsFileName($config['config']['uploadfolder'] ? $config['config']['uploadfolder'] . '/' . $imgPath : $imgPath);

@@ -71,12 +71,12 @@ class ConfigurationManager
      *
      * @var array
      */
-    protected $whiteListedLocalConfigurationPaths = array(
+    protected $whiteListedLocalConfigurationPaths = [
         'EXT/extConf',
         'EXTCONF',
         'DB',
         'SYS/caching/cacheConfigurations',
-    );
+    ];
 
     /**
      * Return default configuration array

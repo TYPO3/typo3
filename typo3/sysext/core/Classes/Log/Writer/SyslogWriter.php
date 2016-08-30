@@ -26,7 +26,7 @@ class SyslogWriter extends AbstractWriter
      *
      * @var int[] Facilities
      */
-    private $facilities = array(
+    private $facilities = [
         'auth' => LOG_AUTH,
         'authpriv' => LOG_AUTHPRIV,
         'cron' => LOG_CRON,
@@ -38,7 +38,7 @@ class SyslogWriter extends AbstractWriter
         'syslog' => LOG_SYSLOG,
         'user' => LOG_USER,
         'uucp' => LOG_UUCP
-    );
+    ];
 
     /**
      * Type of program that is logging to syslog.
@@ -54,7 +54,7 @@ class SyslogWriter extends AbstractWriter
      * @throws \RuntimeException if connection to syslog cannot be opened
      * @see \TYPO3\CMS\Core\Log\Writer\AbstractWriter
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         // additional facilities for *nix environments
         if (!defined('PHP_WINDOWS_VERSION_BUILD')) {

@@ -75,9 +75,9 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName,
-        );
+        ];
     }
 
     /**
@@ -145,11 +145,11 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $title = $this->getLanguageService()->getLL('title');
             $message = $this->getLanguageService()->getLL('clickAPage_content');
             $this->view = $this->getFluidTemplateObject('func', 'func', 'InfoBox');
-            $this->view->assignMultiple(array(
+            $this->view->assignMultiple([
                 'title' => $title,
                 'message' => $message,
                 'state' => InfoboxViewHelper::STATE_INFO
-            ));
+            ]);
             $this->content = $this->view->render();
             // Setting up the buttons and markers for docheader
             $this->getButtons();
@@ -248,9 +248,9 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Layouts')));
-        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Partials')));
-        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Templates')));
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Templates')]);
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Templates/' . $templateName . '.html'));
 

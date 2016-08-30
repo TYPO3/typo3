@@ -31,14 +31,14 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $hexMatrix = array();
+    protected $hexMatrix = [];
 
     /**
      * Characters that are immune (not dangerous) in the JavaScript context
      *
      * @var array
      */
-    protected $immuneCharacters = array(',', '.', '_');
+    protected $immuneCharacters = [',', '.', '_'];
 
     /**
      * TYPO3 charset encoding object

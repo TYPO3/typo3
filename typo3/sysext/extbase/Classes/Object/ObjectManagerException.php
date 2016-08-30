@@ -118,7 +118,7 @@ class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerI
         array_shift($arguments);
         if ($objectName === 'DateTime') {
             array_unshift($arguments, $objectName);
-            $instance = call_user_func_array(array(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'), $arguments);
+            $instance = call_user_func_array([\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'], $arguments);
         } else {
             $instance = $this->objectContainer->getInstance($objectName, $arguments);
         }

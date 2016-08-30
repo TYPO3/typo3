@@ -30,14 +30,14 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     private function analyzeUserAgentStrings($browserStrings, $expectedMembers)
     {
-        $actual = $expected = array();
+        $actual = $expected = [];
         foreach ($browserStrings as $browserString) {
             $infoArray = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($browserString);
             $expected[] = $expectedMembers;
-            $actual[] = array(
+            $actual[] = [
                 'browser' => $infoArray['browser'],
                 'version' => array_shift(explode('.', $infoArray['version']))
-            );
+            ];
         }
         $this->assertSame($expected, $actual);
     }
@@ -50,7 +50,7 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkBrowserInfoIE6()
     {
-        $browserStrings = array(
+        $browserStrings = [
             'Mozilla/4.0 (compatible; MSIE 6.1; Windows XP; .NET CLR 1.1.4322; .NET CLR 2.0.50727)',
             'Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)',
             'Mozilla/4.0 (compatible; MSIE 6.01; Windows NT 6.0)',
@@ -72,11 +72,11 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0) (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)',
             'Mozilla/4.0 (compatible; U; MSIE 6.0; Windows NT 5.1)',
             'Mozilla/4.0 (compatible; MSIE 6,0; Windows NT 5,1; SV1; Alexa Toolbar)'
-        );
-        $expectedMembers = array(
+        ];
+        $expectedMembers = [
             'browser' => 'msie',
             'version' => '6'
-        );
+        ];
         $this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
     }
 
@@ -85,7 +85,7 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkBrowserInfoIE7()
     {
-        $browserStrings = array(
+        $browserStrings = [
             'Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US)',
             'Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; el-GR)',
             'Mozilla/5.0 (MSIE 7.0; Macintosh; U; SunOS; X11; gu; SV1; InfoPath.2; .NET CLR 3.0.04506.30; .NET CLR 3.0.04506.648)',
@@ -108,11 +108,11 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; InfoPath.2; .NET CLR 3.5.30729; .NET CLR 3.0.30618; .NET CLR 1.1.4322)',
             'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; Trident/7.0; .NET4.0E; .NET4.0C)',
             'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/5.0)',
-        );
-        $expectedMembers = array(
+        ];
+        $expectedMembers = [
             'browser' => 'msie',
             'version' => '7'
-        );
+        ];
         $this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
     }
 
@@ -121,7 +121,7 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkBrowserInfoIE8()
     {
-        $browserStrings = array(
+        $browserStrings = [
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.2; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)',
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; Media Center PC 6.0; InfoPath.2; MS-RTC LM 8)',
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; InfoPath.2)',
@@ -143,11 +143,11 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)',
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; MRA 5.5 (build 02842); SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)',
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; SLCC1; .NET CLR 2.0.50727; .NET CLR 1.1.4322; .NET CLR 3.5.30729; .NET CLR 3.0.30729)'
-        );
-        $expectedMembers = array(
+        ];
+        $expectedMembers = [
             'browser' => 'msie',
             'version' => '8'
-        );
+        ];
         $this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
     }
 
@@ -156,13 +156,13 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkBrowserInfoIE9()
     {
-        $browserStrings = array(
+        $browserStrings = [
             'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)',
-        );
-        $expectedMembers = array(
+        ];
+        $expectedMembers = [
             'browser' => 'msie',
             'version' => '9'
-        );
+        ];
         $this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
     }
 
@@ -171,13 +171,13 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkBrowserInfoIE10()
     {
-        $browserStrings = array(
+        $browserStrings = [
             'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)',
-        );
-        $expectedMembers = array(
+        ];
+        $expectedMembers = [
             'browser' => 'msie',
             'version' => '10'
-        );
+        ];
         $this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
     }
 
@@ -186,14 +186,14 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkBrowserInfoIE11()
     {
-        $browserStrings = array(
+        $browserStrings = [
             'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko',
             'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; .NET4.0E; .NET4.0C; rv:11.0) like Gecko',
-        );
-        $expectedMembers = array(
+        ];
+        $expectedMembers = [
             'browser' => 'msie',
             'version' => '11'
-        );
+        ];
         $this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
     }
 
@@ -355,14 +355,14 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function androidUserAgentsProvider()
     {
-        $agents = array(
-            'defaultBrowser' => array(
+        $agents = [
+            'defaultBrowser' => [
                 'agent' => 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1'
-            ),
-            'operaMini' => array(
+            ],
+            'operaMini' => [
                 'agent' => 'Opera/9.80 (Android; Opera Mini/6.0.24556/24.816; U; en) Presto/2.5.25 Version/10.54'
-            )
-        );
+            ]
+        ];
         return $agents;
     }
 

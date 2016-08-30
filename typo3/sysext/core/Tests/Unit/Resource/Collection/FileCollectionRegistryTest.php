@@ -122,9 +122,9 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     {
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
         $type = substr($this->getUniqueId(), 0, 30);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className
-        );
+        ];
         $this->initializeTestSubject();
         $this->assertEquals($className, $this->testSubject->getFileCollectionClass($type));
     }
@@ -136,9 +136,9 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     {
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
         $type = 'foo';
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className
-        );
+        ];
         $this->initializeTestSubject();
         $this->assertTrue($this->testSubject->fileCollectionTypeExists($type));
         $this->assertFalse($this->testSubject->fileCollectionTypeExists('bar'));
@@ -149,7 +149,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     public function fileCollectionExistsReturnsFalseIfFileCollectionDoesNotExist()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = [];
         $this->initializeTestSubject();
         $this->assertFalse($this->testSubject->fileCollectionTypeExists($this->getUniqueId()));
     }
@@ -161,18 +161,18 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     {
 
         // Create a TCA fixture for sys_file_collection
-        $GLOBALS['TCA']['sys_file_collection'] = array(
-            'types' => array(
-                'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldD'),
-            ),
-            'columns' => array(
-                'type' => array(
-                    'config' => array(
-                        'items' => array('Type B', 'typeB')
-                    )
-                )
-            )
-        );
+        $GLOBALS['TCA']['sys_file_collection'] = [
+            'types' => [
+                'typeB' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldD'],
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'items' => ['Type B', 'typeB']
+                    ]
+                ]
+            ]
+        ];
 
         $type = 'my_type';
         $label = 'The Label';

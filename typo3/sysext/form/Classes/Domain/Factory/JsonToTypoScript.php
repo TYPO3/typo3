@@ -34,7 +34,7 @@ class JsonToTypoScript
      *
      * @var array
      */
-    protected $validationRules = array();
+    protected $validationRules = [];
 
     /**
      * Internal counter for the validation rules
@@ -55,7 +55,7 @@ class JsonToTypoScript
     public function convert($json)
     {
         $elements = json_decode((string)$json, true);
-        $typoscriptArray = array();
+        $typoscriptArray = [];
         $typoscript = null;
         $this->convertToTyposcriptArray($elements, $typoscriptArray);
         if ($typoscriptArray['10.'] && is_array($typoscriptArray['10.']) && !empty($typoscriptArray['10.'])) {
@@ -189,7 +189,7 @@ class JsonToTypoScript
         $contentObjectType = $this->getContentObjectType($element);
         if (is_null($contentObjectType) === false) {
             $parent[$elementCounter] = $contentObjectType;
-            $parent[$elementCounter . '.'] = array();
+            $parent[$elementCounter . '.'] = [];
             if ($element['configuration']) {
                 $this->setConfiguration($element, $parent, $elementCounter, $childrenWithParentName);
             }
@@ -338,7 +338,7 @@ class JsonToTypoScript
     protected function setFilters(array $filters, array &$parent, $elementCounter)
     {
         if (!empty($filters)) {
-            $parent[$elementCounter . '.']['filters'] = array();
+            $parent[$elementCounter . '.']['filters'] = [];
             $filterCounter = 1;
             foreach ($filters as $name => $filterConfiguration) {
                 $parent[$elementCounter . '.']['filters'][$filterCounter] = $name;
@@ -470,7 +470,7 @@ class JsonToTypoScript
     protected function setPostProcessor(array $postProcessors, array &$parent, $elementCounter)
     {
         if (!empty($postProcessors)) {
-            $parent[$elementCounter . '.']['postProcessor'] = array();
+            $parent[$elementCounter . '.']['postProcessor'] = [];
             $postProcessorCounter = 1;
             foreach ($postProcessors as $name => $postProcessorConfiguration) {
                 $parent[$elementCounter . '.']['postProcessor'][$postProcessorCounter] = $name;

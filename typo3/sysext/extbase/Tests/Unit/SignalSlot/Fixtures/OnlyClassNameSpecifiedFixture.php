@@ -30,6 +30,6 @@ class OnlyClassNameSpecifiedFixture
      */
     public function slot($foo, $baz)
     {
-        $this->arguments = array($foo, $baz);
+        $this->arguments = [$foo, $baz];
     }
 }

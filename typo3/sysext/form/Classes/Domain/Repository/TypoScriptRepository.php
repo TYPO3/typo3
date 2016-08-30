@@ -26,12 +26,12 @@ class TypoScriptRepository implements SingletonInterface
     /**
      * @var array
      */
-    protected $modelDefinitionTypoScript = array();
+    protected $modelDefinitionTypoScript = [];
 
     /**
      * @var array
      */
-    protected $registeredElementTypes = array();
+    protected $registeredElementTypes = [];
 
     /**
      * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
@@ -67,7 +67,7 @@ class TypoScriptRepository implements SingletonInterface
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function setRegisteredElementTypes(array $registeredElementTypes = array())
+    public function setRegisteredElementTypes(array $registeredElementTypes = [])
     {
         if (!empty($registeredElementTypes)) {
             $this->registeredElementTypes = $registeredElementTypes;
@@ -93,13 +93,13 @@ class TypoScriptRepository implements SingletonInterface
     public function getModelDefinedHtmlAttributes($elementType = '')
     {
         if ($elementType == '') {
-            return array();
+            return [];
         }
         $htmlAttributes = $this->getModelConfigurationByScope($elementType, 'htmlAttributes.');
         if (is_array($htmlAttributes)) {
             $htmlAttributes = array_fill_keys($htmlAttributes, null);
         } else {
-            $htmlAttributes = array();
+            $htmlAttributes = [];
         }
         $defaultHtmlAttributeValues = $this->getModelConfigurationByScope($elementType, 'defaultHtmlAttributeValues.');
         if (is_array($defaultHtmlAttributeValues)) {
@@ -107,7 +107,7 @@ class TypoScriptRepository implements SingletonInterface
                 $htmlAttributes[$defaultHtmlAttributeKey] = $defaultHtmlAttributeValue;
             }
         } elseif (!is_array($htmlAttributes)) {
-            $htmlAttributes = array();
+            $htmlAttributes = [];
         }
         return $htmlAttributes;
     }
@@ -169,7 +169,7 @@ class TypoScriptRepository implements SingletonInterface
      */
     protected function resolveTypoScriptReferences(array $typoScript)
     {
-        $ignoreKeys = array();
+        $ignoreKeys = [];
         foreach ($typoScript as $key => $value) {
             if (isset($ignoreKeys[$key])) {
                 continue;
@@ -179,7 +179,7 @@ class TypoScriptRepository implements SingletonInterface
                 if (isset($typoScript[$key . '.'])) {
                     $oldTypoScript = $typoScript[$key . '.'];
                 } else {
-                    $oldTypoScript = array();
+                    $oldTypoScript = [];
                 }
                 // detect search level
                 $referencePath = trim(substr($value, 1));
@@ -194,10 +194,10 @@ class TypoScriptRepository implements SingletonInterface
                     $typoScript[$key . '.'] = array_replace_recursive($arrayValue, $oldTypoScript);
                 }
                 if ($flatValue[0] === '<') {
-                    $temporaryTypoScript = array(
+                    $temporaryTypoScript = [
                         'temp' => $flatValue,
                         'temp.' => $typoScript[$key . '.'],
-                    );
+                    ];
                     $temporaryTypoScript = $this->resolveTypoScriptReferences($temporaryTypoScript);
                     $arrayValue = array_replace_recursive($temporaryTypoScript['temp.'], $arrayValue, $oldTypoScript);
                 }

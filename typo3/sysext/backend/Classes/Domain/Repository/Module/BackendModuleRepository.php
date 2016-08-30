@@ -51,7 +51,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $excludeGroupNames
      * @return \SplObjectStorage
      */
-    public function loadAllowedModules(array $excludeGroupNames = array())
+    public function loadAllowedModules(array $excludeGroupNames = [])
     {
         if (empty($excludeGroupNames)) {
             return $this->moduleStorage->getEntries();
@@ -241,7 +241,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
         $moduleLoader->load($GLOBALS['TBE_MODULES']);
         $loadedModules = $moduleLoader->modules;
 
-        $modules = array();
+        $modules = [];
 
         // Unset modules that are meant to be hidden from the menu.
         $loadedModules = $this->removeHiddenModules($loadedModules);
@@ -254,17 +254,17 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
             $moduleLink = GeneralUtility::resolveBackPath($moduleLink);
             $moduleLabels = $moduleLoader->getLabelsForModule($moduleName);
             $moduleKey = 'modmenu_' . $moduleName;
-            $modules[$moduleKey] = array(
+            $modules[$moduleKey] = [
                 'name' => $moduleName,
                 'title' => $moduleLabels['title'],
                 'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
                 'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                 'link' => $moduleLink,
                 'description' => $moduleLabels['shortdescription']
-            );
+            ];
             if (!is_array($moduleData['sub']) && $moduleData['script'] !== $dummyScript) {
                 // Work around for modules with own main entry, but being self the only submodule
-                $modules[$moduleKey]['subitems'][$moduleKey] = array(
+                $modules[$moduleKey]['subitems'][$moduleKey] = [
                     'name' => $moduleName,
                     'title' => $moduleLabels['title'],
                     'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
@@ -275,7 +275,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                     'navigationFrameScript' => null,
                     'navigationFrameScriptParam' => null,
                     'navigationComponentId' => null
-                );
+                ];
             } elseif (is_array($moduleData['sub'])) {
                 foreach ($moduleData['sub'] as $submoduleName => $submoduleData) {
                     if (isset($submoduleData['script'])) {
@@ -288,7 +288,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                     $submoduleDescription = $submoduleLabels['shortdescription'];
                     $originalLink = $submoduleLink;
                     $navigationFrameScript = $submoduleData['navFrameScript'];
-                    $modules[$moduleKey]['subitems'][$submoduleKey] = array(
+                    $modules[$moduleKey]['subitems'][$submoduleKey] = [
                         'name' => $moduleName . '_' . $submoduleName,
                         'title' => $submoduleLabels['title'],
                         'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
@@ -299,7 +299,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                         'navigationFrameScript' => $navigationFrameScript,
                         'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'],
                         'navigationComponentId' => $submoduleData['navigationComponentId']
-                    );
+                    ];
                     // if the main module has a navframe script, inherit to the submodule,
                     // but only if it is not disabled explicitly (option is set to FALSE)
                     if ($moduleData['navFrameScript'] && $submoduleData['inheritNavigationComponentFromMainModule'] !== false) {
