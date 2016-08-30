@@ -181,24 +181,6 @@ class DefaultFactory
                             ),
                         ),
                     ),
-                    array(
-                        'name' => 'pics',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                        'children' => array(
-                            array(
-                                'name' => 'index.html',
-                                'type' => FileNode::class,
-                                'targetPermission' => $filePermission,
-                                'targetContent' => '',
-                            ),
-                        ),
-                    ),
-                    array(
-                        'name' => 'tx_felogin',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
                 ),
             ),
             array(
