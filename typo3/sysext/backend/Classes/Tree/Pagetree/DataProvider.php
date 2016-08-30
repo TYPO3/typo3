@@ -297,7 +297,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                     if ($isNumericSearchFilter && (int)$rootlineElement['uid'] === (int)$searchFilter) {
                         $text = str_replace('$1', $refNode->getText(), $replacement);
                     } else {
-                        $text = preg_replace('/(' . $searchFilterQuoted . ')/i', $replacement, $refNode->getText());
+                        $text = preg_replace('/(' . $searchFilterQuoted . ')/iu', $replacement, $refNode->getText());
                     }
                     $refNode->setText($text, $refNode->getTextSourceField(), $refNode->getPrefix(), $refNode->getSuffix());
                     /** @var $childCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
