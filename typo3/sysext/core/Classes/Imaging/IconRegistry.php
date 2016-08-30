@@ -2813,7 +2813,6 @@ class IconRegistry implements SingletonInterface
 
     /**
      * @return array
-     * @internal
      */
     public function getAllRegisteredIconIdentifiers()
     {
