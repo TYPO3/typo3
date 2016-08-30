@@ -393,7 +393,9 @@ abstract class AbstractTreeView
             // Preparing rootRec for the mount
             if ($uid) {
                 $rootRec = $this->getRecord($uid);
-                $firstHtml .= $this->getIcon($rootRec);
+                if (is_array($rootRec)) {
+                    $firstHtml .= $this->getIcon($rootRec);
+                }
             } else {
                 // Artificial record for the tree root, id=0
                 $rootRec = $this->getRootRecord();
