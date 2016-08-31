@@ -310,7 +310,9 @@ class ClickMenu
 
             // Delete:
             $elInfo = [GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen'])];
-            if (!in_array('delete', $this->disabledItems, true) && !$root && !$DBmount && $this->backendUser->isPSet($lCP, $table, 'delete')) {
+            $disableDeleteTS = $this->backendUser->getTSConfig('options.disableDelete');
+            $disableDelete = (bool) trim(isset($disableDeleteTS['properties'][$table]) ? $disableDeleteTS['properties'][$table] : $disableDeleteTS['value']);
+            if (!in_array('delete', $this->disabledItems, true) && !$root && !$DBmount && $this->backendUser->isPSet($lCP, $table, 'delete') && !$disableDelete) {
                 $menuItems['spacer2'] = 'spacer';
                 $menuItems['delete'] = $this->DB_delete($table, $uid, $elInfo);
             }
