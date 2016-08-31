@@ -104,6 +104,7 @@ class GroupElement extends AbstractFormElement
             'readOnly' => $disabled,
             'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
             'noList' => $noList,
+            'hideAllowedTables' => GeneralUtility::inList($config['disable_controls'], 'allowedTables'),
         ];
 
         // Acting according to either "file" or "db" type:

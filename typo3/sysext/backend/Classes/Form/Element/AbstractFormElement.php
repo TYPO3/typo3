@@ -677,7 +677,7 @@ abstract class AbstractFormElement extends AbstractNode
 
         // Allowed Tables
         $allowedTables = '';
-        if (is_array($params['allowedTables']) && !empty($params['allowedTables'])) {
+        if (is_array($params['allowedTables']) && !empty($params['allowedTables']) && !$params['hideAllowedTables']) {
             $allowedTables .= '<div class="help-block">';
             foreach ($params['allowedTables'] as $key => $item) {
                 if (is_array($item)) {
