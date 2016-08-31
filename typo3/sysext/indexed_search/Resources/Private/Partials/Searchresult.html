@@ -1,8 +1,13 @@
 <div class="tx-indexedsearch-res">
-	<f:format.html><h3><span class="tx-indexedsearch-icon">{row.icon}</span> <f:if condition="{settings.displayResultNumber}"><span class="tx-indexedsearch-result-number">{row.result_number}</span></f:if> <span class="tx-indexedsearch-title{row.CSSsuffix}">{row.title}</span> <span class="tx-indexedsearch-percent">{row.rating}</span></h3></f:format.html>
+	<h3>
+		<span class="tx-indexedsearch-icon">{row.icon -> f:format.raw()}</span>
+		<f:if condition="{settings.displayResultNumber}"><span class="tx-indexedsearch-result-number">{row.result_number}</span></f:if>
+		<span class="tx-indexedsearch-title{row.CSSsuffix}">{row.title -> f:format.raw()}</span>
+		<span class="tx-indexedsearch-percent">{row.rating}</span>
+	</h3>
 
 	<f:if condition="{row.headerOnly} == 0">
-	<p class="tx-indexedsearch-description">{row.description}</p>
+	<p class="tx-indexedsearch-description">{row.description -> f:format.raw()}</p>
 	<dl class="tx-indexedsearch-info">
 		<dt class="tx-indexedsearch-text-item-size"><f:translate key="result.size" />&nbsp;</dt>
 		<dd class="tx-indexedsearch-text-item-size">{row.size}</dd>
@@ -19,7 +24,7 @@
 	</f:if>
 
 	<f:if condition="{row.headerOnly} == 1">
-		<p class="tx-indexedsearch-description">{row.description}</p>
+		<p class="tx-indexedsearch-description">{row.description -> f:format.raw()}</p>
 	</f:if>
 
 	<f:if condition="{row.subresults}">
