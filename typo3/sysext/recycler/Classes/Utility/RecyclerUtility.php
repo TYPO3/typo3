@@ -79,6 +79,10 @@ class RecyclerUtility
      */
     public static function getRecordPath($uid, $clause = '', $titleLimit = 1000, $fullTitleLimit = 0)
     {
+        if ($clause !== '' || (int)$titleLimit !== 1000 || (int)$fullTitleLimit !== 0) {
+            GeneralUtility::deprecationLog('The arguments "clause", "tileLimit" and "fullTitleLimit" ' .
+                'have been deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9');
+        }
         $uid = (int)$uid;
         $output = ($fullOutput = '/');
         if ($uid === 0) {
