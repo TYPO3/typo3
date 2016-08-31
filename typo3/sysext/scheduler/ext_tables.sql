@@ -21,7 +21,7 @@ CREATE TABLE tx_scheduler_task (
 # Table structure for table 'tx_scheduler_task_group'
 #
 CREATE TABLE tx_scheduler_task_group (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+	uid int(11) unsigned NOT NULL auto_increment,
 	pid int(11) unsigned DEFAULT '0' NOT NULL,
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
