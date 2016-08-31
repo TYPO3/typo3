@@ -841,7 +841,7 @@ class TemplateService
             }
         }
         // If "Include before all static templates if root-flag is set" is set:
-        if ($row['static_file_mode'] == 3 && substr($templateID, 0, 4) == 'sys_' && $row['root']) {
+        if ($row['static_file_mode'] == 3 && strpos($templateID, 'sys_') === 0 && $row['root']) {
             $this->addExtensionStatics($idList, $templateID, $pid, $row);
         }
         // Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
@@ -849,7 +849,7 @@ class TemplateService
             $include_static_fileArr = GeneralUtility::trimExplode(',', $row['include_static_file'], true);
             // Traversing list
             foreach ($include_static_fileArr as $ISF_file) {
-                if (substr($ISF_file, 0, 4) == 'EXT:') {
+                if (strpos($ISF_file, 'EXT:') === 0) {
                     list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
                     if ((string)$ISF_extKey !== '' && ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
                         $ISF_localPath = rtrim($ISF_localPath, '/') . '/';

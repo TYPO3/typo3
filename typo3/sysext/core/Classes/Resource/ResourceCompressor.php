@@ -429,9 +429,9 @@ class ResourceCompressor
             $filename = TYPO3_mainDir . $filename;
         }
         // build the file path relatively to the PATH_site
-        if (substr($filename, 0, 4) === 'EXT:') {
+        if (strpos($filename, 'EXT:') === 0) {
             $file = GeneralUtility::getFileAbsFileName($filename);
-        } elseif (substr($filename, 0, 3) === '../') {
+        } elseif (strpos($filename, '../') === 0) {
             $file = GeneralUtility::resolveBackPath(PATH_typo3 . $filename);
         } else {
             $file = PATH_site . ltrim($filename, '/');

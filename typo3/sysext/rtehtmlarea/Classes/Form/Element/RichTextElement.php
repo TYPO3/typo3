@@ -1090,7 +1090,7 @@ class RichTextElement extends AbstractFormElement
      */
     protected function getFullFileName($filename)
     {
-        if (substr($filename, 0, 4) === 'EXT:') {
+        if (strpos($filename, 'EXT:') === 0) {
             // extension
             list($extKey, $local) = explode('/', substr($filename, 4), 2);
             $newFilename = '';

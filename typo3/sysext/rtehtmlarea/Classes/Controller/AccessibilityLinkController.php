@@ -96,7 +96,7 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
      */
     protected function getFullFileName($filename)
     {
-        if (substr($filename, 0, 4) == 'EXT:') {
+        if (strpos($filename, 'EXT:') === 0) {
             list($extKey, $local) = explode('/', substr($filename, 4), 2);
             $newFilename = '';
             if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {

@@ -4291,7 +4291,7 @@ class TypoScriptFrontendController
         if (!isset($this->LL_labels_cache[$this->lang][$input])) {
             $restStr = trim(substr($input, 4));
             $extPrfx = '';
-            if (substr($restStr, 0, 4) === 'EXT:') {
+            if (strpos($restStr, 'EXT:') === 0) {
                 $restStr = trim(substr($restStr, 4));
                 $extPrfx = 'EXT:';
             }

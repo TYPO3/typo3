@@ -2744,7 +2744,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getStreamlinedFileName($file, $prepareForOutput = true)
     {
-        if (substr($file, 0, 4) === 'EXT:') {
+        if (strpos($file, 'EXT:') === 0) {
             $file = GeneralUtility::getFileAbsFileName($file);
             // as the path is now absolute, make it "relative" to the current script to stay compatible
             $file = PathUtility::getRelativePathTo($file);
