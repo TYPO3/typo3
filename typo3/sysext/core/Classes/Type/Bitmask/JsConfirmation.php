@@ -52,6 +52,13 @@ class JsConfirmation extends Enumeration
      */
     const ALL = 255;
 
+    const __default = self::ALL;
+
+    /**
+     * Bitmask of allowed values beside 255
+     *
+     * @var int
+     */
     protected static $allowedValues = self::TYPE_CHANGE | self::COPY_MOVE_PASTE | self::DELETE | self::FE_EDIT | self::OTHER;
 
     /**
@@ -63,7 +70,7 @@ class JsConfirmation extends Enumeration
     public function matches(JsConfirmation $value)
     {
         $value = (int)(string)$value;
-        $thisValue = (int)$this->value;
+        $thisValue = (int)(string)$this;
 
         return ($value & $thisValue) == $thisValue;
     }
