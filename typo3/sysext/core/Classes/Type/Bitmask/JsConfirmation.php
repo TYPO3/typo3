@@ -43,4 +43,23 @@ class JsConfirmation extends \TYPO3\CMS\Core\Type\Enumeration
      * @var int
      */
     const OTHER = 0b10000000;
+
+    /**
+     * @var int
+     */
+    const __default = 255;
+
+    /**
+     * Returns TRUE if a given value matches the internal value
+     *
+     * @param JsConfirmation $value Value to check
+     * @return bool
+     */
+    public function matches(JsConfirmation $value)
+    {
+        $value = (int)(string)$value;
+        $thisValue = (int)(string)$this;
+
+        return ($value & $thisValue) == $thisValue;
+    }
 }

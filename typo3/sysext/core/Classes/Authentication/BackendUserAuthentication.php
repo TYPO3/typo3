@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -1228,15 +1230,14 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      */
     public function jsConfirmation($bitmask)
     {
-        $alertPopup = $this->getTSConfig('options.alertPopups');
-        if (empty($alertPopup['value'])) {
-            // Default: show all warnings
-            $alertPopup = 255;
-        } else {
-            $alertPopup = (int)$alertPopup['value'];
+        try {
+            $alertPopupsSetting = trim((string)$this->getTSConfig('options.alertPopups')['value']);
+            $alertPopup = JsConfirmation::cast($alertPopupsSetting === '' ? null : (int)$alertPopupsSetting);
+        } catch (InvalidEnumerationValueException $e) {
+            $alertPopup = new JsConfirmation();
         }
-        // Show confirmation
-        return ($alertPopup & $bitmask) == $bitmask;
+
+        return JsConfirmation::cast($bitmask)->matches($alertPopup);
     }
 
     /**
