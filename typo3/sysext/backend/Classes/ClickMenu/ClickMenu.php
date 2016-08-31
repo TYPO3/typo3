@@ -80,13 +80,6 @@ class ClickMenu
     public $disabledItems = [];
 
     /**
-     * If TRUE, Show icons on the left.
-     *
-     * @var bool
-     */
-    public $leftIcons = false;
-
-    /**
      * Array of classes to be used for user processing of the menu content.
      * This is for the API of adding items to the menu from outside.
      *
@@ -187,7 +180,6 @@ class ClickMenu
         }
         $TSkey = ($this->isDBmenu ? 'page' : 'folder') . ($this->listFrame ? 'List' : 'Tree');
         $this->disabledItems = GeneralUtility::trimExplode(',', $this->backendUser->getTSConfigVal('options.contextMenu.' . $TSkey . '.disableItems'), true);
-        $this->leftIcons = (bool)$this->backendUser->getTSConfigVal('options.contextMenu.options.leftIcons');
         // &cmLevel flag detected (2nd level menu)
         if (!$this->cmLevel) {
             // Make 1st level clickmenu:

@@ -59,11 +59,6 @@ class FileSystemNavigationFrameController
     protected $scopeData;
 
     /**
-     * @var bool
-     */
-    public $doHighlight;
-
-    /**
      * ModuleTemplate Container
      *
      * @var ModuleTemplate
@@ -146,20 +141,14 @@ class FileSystemNavigationFrameController
      */
     public function initPage()
     {
-        // Setting highlight mode:
-        $this->doHighlight = !$this->getBackendUser()->getTSConfigVal('options.pageTree.disableTitleHighlight');
-
         $this->moduleTemplate->setBodyTag('<body id="ext-backend-Modules-FileSystemNavigationFrame-index-php">');
 
-        // Adding javascript code for drag&drop and the filetree as well as the click menu code
-        $dragDropCode = '';
-        if ($this->doHighlight) {
-            $hlClass = $this->getBackendUser()->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
-            $dragDropCode = '
-			Tree.highlightClass = "' . $hlClass . '";
-			Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
-			';
-        }
+        // Adding javascript code for drag&drop and the file tree as well as the click menu code
+        $hlClass = $this->getBackendUser()->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
+        $dragDropCode = '
+		Tree.highlightClass = "' . $hlClass . '";
+		Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
+		';
 
         // Adding javascript for drag & drop activation and highlighting
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
@@ -183,7 +172,7 @@ class FileSystemNavigationFrameController
 			top.fsMod.currentBank = bank;
 			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
-			' . ($this->doHighlight ? 'Tree.highlightActiveItem("file", highlightID + "_" + bank);' : '') . '
+			Tree.highlightActiveItem("file", highlightID + "_" + bank);
 			if (linkObj) { linkObj.blur(); }
 			return false;
 		}
