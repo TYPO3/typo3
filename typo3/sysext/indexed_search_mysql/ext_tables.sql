@@ -10,7 +10,7 @@ CREATE TABLE index_fulltext (
   phash int(11) DEFAULT '0' NOT NULL,
   fulltextdata mediumtext,
   metaphonedata mediumtext,
-  PRIMARY KEY (phash)
-  FULLTEXT fulltextdata (fulltextdata)
+  PRIMARY KEY (phash),
+  FULLTEXT fulltextdata (fulltextdata),
   FULLTEXT metaphonedata (metaphonedata)
 ) ENGINE=MyISAM;
