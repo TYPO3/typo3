@@ -730,8 +730,8 @@ class TemplateService
                     ->execute();
                 // make it an associative array with the UID as key
                 $subTemplates = [];
-                while ($row = $queryResult->fetch()) {
-                    $subTemplates[(int)$row['uid']] = $row;
+                while ($rowItem = $queryResult->fetch()) {
+                    $subTemplates[(int)$rowItem['uid']] = $rowItem;
                 }
                 // Traversing list again to ensure the sorting of the templates
                 foreach ($basedOnIds as $id) {
