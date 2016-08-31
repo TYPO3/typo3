@@ -1564,21 +1564,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . $this->iconFactory->getIcon('actions-edit-' . strtolower($label), Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Delete
-                $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
-                $confirm = $this->getLanguageService()->getLL('deleteWarning')
-                    . BackendUtility::translationCount('tt_content', $row['uid'], (' '
-                    . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')));
-                $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
-                    . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
-                    . ' data-content="' . htmlspecialchars($confirm) . '" '
-                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
-                    . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-                if ($out && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
-                    $out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
-                } else {
-                    $out = '';
+                $disableDeleteTS = $this->getBackendUser()->getTSConfig('options.disableDelete');
+                $disableDelete = (bool) trim(isset($disableDeleteTS['properties']['tt_content']) ? $disableDeleteTS['properties']['tt_content'] : $disableDeleteTS['value']);
+                if (!$disableDelete) {
+                    $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
+                    $confirm = $this->getLanguageService()->getLL('deleteWarning')
+                        . BackendUtility::translationCount('tt_content', $row['uid'], (' '
+                                                                                       . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')));
+                    $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
+                        . ' data-severity="warning"'
+                        . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
+                        . ' data-content="' . htmlspecialchars($confirm) . '" '
+                        . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
+                        . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
+                        . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+                    if ($out && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
+                        $out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
+                    } else {
+                        $out = '';
+                    }
                 }
                 if (!$disableMoveAndNewButtons) {
                     $moveButtonContent = '';
