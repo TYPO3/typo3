@@ -15,10 +15,9 @@ namespace TYPO3\CMS\Form\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility as ExtbaseArrayUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -108,7 +107,7 @@ class DataStructureIdentifierHook
                 $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
                 $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
                 $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
-                CoreArrayUtility::mergeRecursiveWithOverrule(
+                ArrayUtility::mergeRecursiveWithOverrule(
                     $dataStructure,
                     $newSheets
                 );
@@ -169,8 +168,8 @@ class DataStructureIdentifierHook
             foreach ($finisherValue['options'] as $optionKey => $optionValue) {
                 if (is_array($optionValue)) {
                     $optionKey = $optionKey . '.' . $this->extractDottedPathToLastElement($finisherValue['options'][$optionKey]);
-                    $elementConfiguration = ExtbaseArrayUtility::getValueByPath($finishersDefinition[$finisherIdentifier]['FormEngine']['elements'], $optionKey);
-                    $optionValue = ExtbaseArrayUtility::getValueByPath($finisherValue['options'], $optionKey);
+                    $elementConfiguration = ArrayUtility::getValueByPath($finishersDefinition[$finisherIdentifier]['FormEngine']['elements'], $optionKey);
+                    $optionValue = ArrayUtility::getValueByPath($finisherValue['options'], $optionKey);
                 } else {
                     $elementConfiguration = $finishersDefinition[$finisherIdentifier]['FormEngine']['elements'][$optionKey];
                 }
@@ -191,7 +190,7 @@ class DataStructureIdentifierHook
             ksort($sheetElements);
 
             $sheet[$sheetIdentifier]['ROOT']['el'] = $sheetElements;
-            CoreArrayUtility::mergeRecursiveWithOverrule($sheets['sheets'], $sheet);
+            ArrayUtility::mergeRecursiveWithOverrule($sheets['sheets'], $sheet);
         }
         if (empty($sheets['sheets'])) {
             return [];

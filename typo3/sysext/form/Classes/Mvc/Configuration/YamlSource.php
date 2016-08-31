@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
-use TYPO3\CMS\Form\Utility\ArrayUtility as FormArrayUtility;
 
 /**
  * Configuration source based on YAML files

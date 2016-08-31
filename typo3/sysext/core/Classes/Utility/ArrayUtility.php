@@ -20,6 +20,52 @@ namespace TYPO3\CMS\Core\Utility;
 class ArrayUtility
 {
     /**
+     * Validates the given $arrayToTest by checking if an element is not in $allowedArrayKeys.
+     *
+     * @param array $arrayToTest
+     * @param array $allowedArrayKeys
+     * @return void
+     * @throws \InvalidArgumentException if an element in $arrayToTest is not in $allowedArrayKeys
+     * @internal
+     */
+    public static function assertAllArrayKeysAreValid(array $arrayToTest, array $allowedArrayKeys)
+    {
+        $notAllowedArrayKeys = array_keys(array_diff_key($arrayToTest, array_flip($allowedArrayKeys)));
+        if (count($notAllowedArrayKeys) !== 0) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The options "%s" were not allowed (allowed were: "%s")',
+                    implode(', ', $notAllowedArrayKeys),
+                    implode(', ', $allowedArrayKeys)
+                ), 1325697085
+            );
+        }
+    }
+
+    /**
+     * Recursively convert 'true' and 'false' strings to boolean values.
+     *
+     * @param array $array
+     * @return array the modified array
+     */
+    public static function convertBooleanStringsToBooleanRecursive(array $array): array
+    {
+        $result = $array;
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = self::convertBooleanStringsToBooleanRecursive($value);
+            } else {
+                if ($value === 'true') {
+                    $result[$key] = true;
+                } elseif ($value === 'false') {
+                    $result[$key] = false;
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Reduce an array by a search value and keep the array structure.
      *
      * Comparison is type strict:
@@ -123,21 +169,23 @@ class ArrayUtility
      * must be enclosed by " (double quote), see unit tests for details
      *
      * @param array $array Input array
-     * @param string $path Path within the array
+     * @param array|string $path Path within the array
      * @param string $delimiter Defined path delimiter, default /
      * @return mixed
-     * @throws \RuntimeException
+     * @throws \RuntimeException if the path is empty, or if the path does not exist
+     * @throws \InvalidArgumentException if the path is neither array nor string
      */
     public static function getValueByPath(array $array, $path, $delimiter = '/')
     {
-        if (!is_string($path)) {
-            throw new \RuntimeException('Path must be a string', 1477699595);
-        }
-        if ($path === '') {
-            throw new \RuntimeException('Path must not be empty', 1341397767);
-        }
         // Extract parts of the path
-        $path = str_getcsv($path, $delimiter);
+        if (is_string($path)) {
+            if ($path === '') {
+                throw new \RuntimeException('Path must not be empty', 1341397767);
+            }
+            $path = str_getcsv($path, $delimiter);
+        } elseif (!is_array($path)) {
+            throw new \InvalidArgumentException('getValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1476557628);
+        }
         // Loop through each part and extract its value
         $value = $array;
         foreach ($path as $segment) {
@@ -150,6 +198,45 @@ class ArrayUtility
             }
         }
         return $value;
+    }
+
+    /**
+     * Reindex keys from the current nesting level if all keys within
+     * the current nesting level are integers.
+     *
+     * @param array $array
+     * @return array
+     */
+    public static function reIndexNumericArrayKeysRecursive(array $array): array
+    {
+        if (count(array_filter(array_keys($array), 'is_string')) === 0) {
+            $array = array_values($array);
+        }
+        foreach ($array as $key => $value) {
+            if (is_array($value) && !empty($value)) {
+                $array[$key] = self::reIndexNumericArrayKeysRecursive($value);
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * Recursively remove keys if their value are NULL.
+     *
+     * @param array $array
+     * @return array the modified array
+     */
+    public static function removeNullValuesRecursive(array $array): array
+    {
+        $result = $array;
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = self::removeNullValuesRecursive($value);
+            } elseif ($value === null) {
+                unset($result[$key]);
+            }
+        }
+        return $result;
     }
 
     /**
@@ -172,7 +259,7 @@ class ArrayUtility
      * );
      *
      * @param array $array Input array to manipulate
-     * @param string $path Path in array to search for
+     * @param string|array $path Path in array to search for
      * @param mixed $value Value to set at path location in array
      * @param string $delimiter Path delimiter
      * @return array Modified array
@@ -180,14 +267,15 @@ class ArrayUtility
      */
     public static function setValueByPath(array $array, $path, $value, $delimiter = '/')
     {
-        if (!is_string($path)) {
-            throw new \RuntimeException('Path must be a string', 1341406402);
+        if (is_string($path)) {
+            if ($path === '') {
+                throw new \RuntimeException('Path must not be empty', 1341406194);
+            }
+            // Extract parts of the path
+            $path = str_getcsv($path, $delimiter);
+        } elseif (!is_array($path) && !$path instanceof \ArrayAccess) {
+            throw new \InvalidArgumentException('setValueByPath() expects $path to be string, array or an object implementing \\ArrayAccess, "' . (is_object($path) ? get_class($path) : gettype($path)) . '" given.', 1478781081);
         }
-        if ($path === '') {
-            throw new \RuntimeException('Path must not be empty', 1341406194);
-        }
-        // Extract parts of the path
-        $path = str_getcsv($path, $delimiter);
         // Point to the root of the array
         $pointer = &$array;
         // Find path in given array
@@ -284,7 +372,7 @@ class ArrayUtility
             if (!isset($a[$key]) || !isset($b[$key])) {
                 throw new \RuntimeException('The specified sorting key "' . $key . '" is not available in the given array.', 1373727309);
             }
-            return ($ascending) ? strcasecmp($a[$key], $b[$key]) : strcasecmp($b[$key], $a[$key]);
+            return $ascending ? strcasecmp($a[$key], $b[$key]) : strcasecmp($b[$key], $a[$key]);
         });
         if (!$sortResult) {
             throw new \RuntimeException('The function uasort() failed for unknown reasons.', 1373727329);
@@ -389,7 +477,7 @@ class ArrayUtility
     {
         $flatArray = [];
         foreach ($array as $key => $value) {
-            // Ensure there is no trailling dot:
+            // Ensure there is no trailing dot:
             $key = rtrim($key, '.');
             if (!is_array($value)) {
                 $flatArray[$prefix . $key] = $value;
@@ -719,5 +807,59 @@ class ArrayUtility
         $filteredKeys = array_unique($filteredKeys);
         sort($filteredKeys);
         return $filteredKeys;
+    }
+
+    /**
+     * If the array contains numerical keys only, sort it in ascending order
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function sortArrayWithIntegerKeys(array $array)
+    {
+        if (count(array_filter(array_keys($array), 'is_string')) === 0) {
+            ksort($array);
+        }
+        return $array;
+    }
+
+    /**
+     * Sort keys from the current nesting level if all keys within the
+     * current nesting level are integers.
+     *
+     * @param array $array
+     * @return array
+     */
+    public static function sortArrayWithIntegerKeysRecursive(array $array): array
+    {
+        $array = static::sortArrayWithIntegerKeys($array);
+        foreach ($array as $key => $value) {
+            if (is_array($value) && !empty($value)) {
+                $array[$key] = self::sortArrayWithIntegerKeysRecursive($value);
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * Recursively translate values.
+     *
+     * @param array $array
+     * @return array the modified array
+     */
+    public static function stripTagsFromValuesRecursive(array $array): array
+    {
+        $result = $array;
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = self::stripTagsFromValuesRecursive($value);
+            } else {
+                if (!is_bool($value)) {
+                    $result[$key] = strip_tags($value);
+                }
+            }
+        }
+        return $result;
     }
 }

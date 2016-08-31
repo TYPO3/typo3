@@ -225,10 +225,10 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathThrowsExceptionIfPathIsNotString()
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1477699595);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1476557628);
 
-        ArrayUtility::getValueByPath([], ['']);
+        ArrayUtility::getValueByPath([], 123);
     }
 
     /**
@@ -478,10 +478,10 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function setValueByPathThrowsExceptionIfPathIsNotAString()
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1341406402);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1478781081);
 
-        ArrayUtility::setValueByPath([], ['foo'], null);
+        ArrayUtility::setValueByPath([], 123, null);
     }
 
     /**
@@ -2408,5 +2408,291 @@ class ArrayUtilityTest extends UnitTestCase
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input);
         $this->assertEquals($result, $expected);
+    }
+
+    /**
+     * dataProvider for sortArrayWithIntegerKeys
+     *
+     * @return array
+     */
+    public function sortArrayWithIntegerKeysDataProvider()
+    {
+        return [
+            [
+                [
+                    '20' => 'test1',
+                    '11' => 'test2',
+                    '16' => 'test3',
+                ],
+                [
+                    '11' => 'test2',
+                    '16' => 'test3',
+                    '20' => 'test1',
+                ]
+            ],
+            [
+                [
+                    '20' => 'test1',
+                    '16.5' => 'test2',
+                    '16' => 'test3',
+                ],
+                [
+                    '20' => 'test1',
+                    '16.5' => 'test2',
+                    '16' => 'test3',
+                ]
+            ],
+            [
+                [
+                    '20' => 'test20',
+                    'somestring' => 'teststring',
+                    '16' => 'test16',
+                ],
+                [
+                    '20' => 'test20',
+                    'somestring' => 'teststring',
+                    '16' => 'test16',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param array $arrayToSort
+     * @param array $expectedArray
+     *
+     * @dataProvider sortArrayWithIntegerKeysDataProvider
+     */
+    public function sortArrayWithIntegerKeysSortsNumericArrays(array $arrayToSort, array $expectedArray)
+    {
+        $sortedArray = ArrayUtility::sortArrayWithIntegerKeys($arrayToSort);
+        $this->assertSame($sortedArray, $expectedArray);
+    }
+
+    /**
+     * @test
+     */
+    public function assertAllArrayKeysAreValidThrowsExceptionOnNotAllowedArrayKeys()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1325697085);
+
+        $arrayToTest = [
+            'roger' => '',
+            'francine' => '',
+            'stan' => '',
+        ];
+
+        $allowedArrayKeys = [
+            'roger',
+            'francine',
+        ];
+
+        ArrayUtility::assertAllArrayKeysAreValid($arrayToTest, $allowedArrayKeys);
+    }
+
+    /**
+     * @test
+     */
+    public function assertAllArrayKeysAreValidReturnsNullOnAllowedArrayKeys()
+    {
+        $arrayToTest = [
+            'roger' => '',
+            'francine' => '',
+            'stan' => '',
+        ];
+
+        $allowedArrayKeys = [
+            'roger',
+            'francine',
+            'stan',
+        ];
+
+        $this->assertNull(ArrayUtility::assertAllArrayKeysAreValid($arrayToTest, $allowedArrayKeys));
+    }
+
+    /**
+     * @test
+     */
+    public function sortArrayWithIntegerKeysRecursiveExpectSorting()
+    {
+        $input = [
+            20 => 'b',
+            10 => 'a',
+            40 => 'd',
+            30 => 'c',
+            50 => [
+                20 => 'a',
+                10 => 'b',
+            ],
+        ];
+
+        $expected = [
+            10 => 'a',
+            20 => 'b',
+            30 => 'c',
+            40 => 'd',
+            50 => [
+                10 => 'b',
+                20 => 'a',
+            ],
+        ];
+
+        $this->assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
+    }
+
+    /**
+     * @test
+     */
+    public function sortArrayWithIntegerKeysRecursiveExpectNoSorting()
+    {
+        $input = [
+            'b' => 'b',
+            10 => 'a',
+            40 => 'd',
+            30 => 'c',
+        ];
+
+        $expected = [
+            'b' => 'b',
+            10 => 'a',
+            40 => 'd',
+            30 => 'c',
+        ];
+
+        $this->assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
+    }
+
+    /**
+     * @test
+     */
+    public function reIndexNumericArrayKeysRecursiveExpectReindexing()
+    {
+        $input = [
+            20 => 'b',
+            10 => 'a',
+            40 => 'd',
+            30 => 'c',
+            50 => [
+                20 => 'a',
+                10 => 'b',
+            ],
+        ];
+
+        $expected = [
+            0 => 'b',
+            1 => 'a',
+            2 => 'd',
+            3 => 'c',
+            4 => [
+                0 => 'a',
+                1 => 'b',
+            ],
+        ];
+
+        $this->assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
+    }
+
+    /**
+     * @test
+     */
+    public function reIndexNumericArrayKeysRecursiveExpectNoReindexing()
+    {
+        $input = [
+            'a' => 'b',
+            10 => 'a',
+            40 => 'd',
+            30 => 'c',
+            50 => [
+                20 => 'a',
+                10 => 'b',
+            ],
+        ];
+
+        $expected = [
+            'a' => 'b',
+            10 => 'a',
+            40 => 'd',
+            30 => 'c',
+            50 => [
+                0 => 'a',
+                1 => 'b',
+            ],
+        ];
+
+        $this->assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
+    }
+
+    /**
+     * @test
+     */
+    public function removeNullValuesRecursiveExpectRemoval()
+    {
+        $input = [
+            'a' => 'a',
+            'b' => [
+                'c' => null,
+                'd' => 'd',
+            ],
+        ];
+
+        $expected = [
+            'a' => 'a',
+            'b' => [
+                'd' => 'd',
+            ],
+        ];
+
+        $this->assertSame($expected, ArrayUtility::removeNullValuesRecursive($input));
+    }
+
+    /**
+     * @test
+     */
+    public function stripTagsFromValuesRecursiveExpectRemoval()
+    {
+        $input = [
+            'a' => 'a',
+            'b' => [
+                'c' => '<b>i am evil</b>',
+                'd' => 'd',
+            ],
+        ];
+
+        $expected = [
+            'a' => 'a',
+            'b' => [
+                'c' => 'i am evil',
+                'd' => 'd',
+            ],
+        ];
+
+        $this->assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
+    }
+
+    /**
+     * @test
+     */
+    public function convertBooleanStringsToBooleanRecursiveExpectConverting()
+    {
+        $input = [
+            'a' => 'a',
+            'b' => [
+                'c' => 'true',
+                'd' => 'd',
+            ],
+        ];
+
+        $expected = [
+            'a' => 'a',
+            'b' => [
+                'c' => true,
+                'd' => 'd',
+            ],
+        ];
+
+        $this->assertSame($expected, ArrayUtility::convertBooleanStringsToBooleanRecursive($input));
     }
 }

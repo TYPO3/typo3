@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -28,7 +28,6 @@ use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\CMS\Form\Utility\ArrayUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -127,7 +126,7 @@ class FormEditorController extends AbstractBackendController
             ]
         ];
 
-        CoreArrayUtility::mergeRecursiveWithOverrule(
+        $addInlineSettings = array_replace_recursive(
             $addInlineSettings,
             $this->prototypeConfiguration['formEditor']['addInlineSettings']
         );

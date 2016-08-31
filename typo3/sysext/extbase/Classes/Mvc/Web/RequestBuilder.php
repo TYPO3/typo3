@@ -158,7 +158,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($pluginNamespace);
         $files = $this->untangleFilesArray($_FILES);
         if (isset($files[$pluginNamespace]) && is_array($files[$pluginNamespace])) {
-            $parameters = \TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($parameters, $files[$pluginNamespace]);
+            $parameters = array_replace_recursive($parameters, $files[$pluginNamespace]);
         }
         $controllerName = $this->resolveControllerName($parameters);
         $actionName = $this->resolveActionName($controllerName, $parameters);
@@ -283,10 +283,14 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $fileInformation = [];
                 foreach ($convolutedFiles[$fieldPath[0]] as $key => $subStructure) {
-                    $fileInformation[$key] = \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
+                    try {
+                        $fileInformation[$key] = \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
+                    } catch (\RuntimeException $e) {
+                        // do nothing if the path is invalid
+                    }
                 }
             }
-            $untangledFiles = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
+            $untangledFiles = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
         }
         return $untangledFiles;
     }

@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 
 /**
@@ -143,7 +143,7 @@ class InheritancesResolverService
 
             if (is_array($configuration[$key])) {
                 if (isset($configuration[$key][self::INHERITANCE_OPERATOR])) {
-                    $inheritances = ArrayUtility::getValueByPath(
+                    $inheritances = static::getValueByPathHelper(
                         $this->referenceConfiguration,
                         $path . '.' . self::INHERITANCE_OPERATOR
                     );
@@ -187,7 +187,7 @@ class InheritancesResolverService
         $inheritedConfigurations = [];
         foreach ($inheritances as $inheritancePath) {
             $this->throwExceptionIfCycleInheritances($inheritancePath, $inheritancePath);
-            $inheritedConfiguration = ArrayUtility::getValueByPath(
+            $inheritedConfiguration = static::getValueByPathHelper(
                 $this->referenceConfiguration,
                 $inheritancePath
             );
@@ -240,24 +240,24 @@ class InheritancesResolverService
      */
     protected function throwExceptionIfCycleInheritances(string $path, string $pathToCheck)
     {
-        $configuration = ArrayUtility::getValueByPath(
+        $configuration = static::getValueByPathHelper(
             $this->referenceConfiguration,
             $path
         );
 
         if (isset($configuration[self::INHERITANCE_OPERATOR])) {
-            $inheritances = ArrayUtility::getValueByPath(
+            $inheritances = static::getValueByPathHelper(
                 $this->referenceConfiguration,
                 $path . '.' . self::INHERITANCE_OPERATOR
             );
             if (is_array($inheritances)) {
                 foreach ($inheritances as $inheritancePath) {
-                    $configuration = ArrayUtility::getValueByPath(
+                    $configuration = static::getValueByPathHelper(
                         $this->referenceConfiguration,
                         $inheritancePath
                     );
                     if (isset($configuration[self::INHERITANCE_OPERATOR])) {
-                        $_inheritances = ArrayUtility::getValueByPath(
+                        $_inheritances = static::getValueByPathHelper(
                             $this->referenceConfiguration,
                             $inheritancePath . '.' . self::INHERITANCE_OPERATOR
                         );
@@ -371,5 +371,21 @@ class InheritancesResolverService
         }
         reset($firstArray);
         return $firstArray;
+    }
+
+    /**
+     * Helper to return a specified path.
+     *
+     * @param array &$array The array to traverse as a reference
+     * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
+     * @return mixed The value found, NULL if the path didn't exist
+     */
+    protected static function getValueByPathHelper(array $array, $path)
+    {
+        try {
+            return ArrayUtility::getValueByPath($array, $path, '.');
+        } catch (\RuntimeException $e) {
+            return null;
+        }
     }
 }

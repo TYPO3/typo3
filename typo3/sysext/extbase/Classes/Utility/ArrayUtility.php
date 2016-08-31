@@ -13,9 +13,13 @@ namespace TYPO3\CMS\Extbase\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The array functions from good old GeneralUtility plus new code.
+ * This class has been deprecated as PHP's native functionality and the Core's own ArrayUtility
+ * provides the same functionality.
+ * Do not use it anymore, it will be removed in TYPO3 v9.
  *
  * @api
  */
@@ -29,9 +33,11 @@ class ArrayUtility
      * @param string $string The string to explode
      * @return array Exploded values, all converted to integers
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use GeneralUtility::intExplode()
      */
     public static function integerExplode($delimiter, $string)
     {
+        GeneralUtility::logDeprecatedFunction();
         $explodedValues = explode($delimiter, $string);
         foreach ($explodedValues as &$value) {
             $value = (int)$value;
@@ -49,9 +55,11 @@ class ArrayUtility
      * @param bool $onlyNonEmptyValues If set, all empty values (='') will NOT be set in output
      * @return array Exploded values
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use GeneralUtility::trimExplode() instead
      */
     public static function trimExplode($delimiter, $string, $onlyNonEmptyValues = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         $chunksArr = explode($delimiter, $string);
         $newChunksArr = [];
         foreach ($chunksArr as $value) {
@@ -73,9 +81,11 @@ class ArrayUtility
      * @param bool $emptyValuesOverride If set (which is the default), values from $secondArray will overrule if they are empty (according to PHP's empty() function)
      * @return array Resulting array where $secondArray values has overruled $firstArray values
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use array_replace_recursive() instead if possible, other see the ArrayUtility in EXT:core
      */
     public static function arrayMergeRecursiveOverrule(array $firstArray, array $secondArray, $dontAddNewKeys = false, $emptyValuesOverride = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         foreach ($secondArray as $key => $value) {
             if (array_key_exists($key, $firstArray) && is_array($firstArray[$key])) {
                 if (is_array($secondArray[$key])) {
@@ -108,9 +118,11 @@ class ArrayUtility
      * @param array $array Array to reorder
      * @return array The array with randomly ordered values
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function randomizeArrayOrder(array $array)
     {
+        GeneralUtility::logDeprecatedFunction();
         $reorderedArray = [];
         if (count($array) > 1) {
             $keysInRandomOrder = array_rand($array, count($array));
@@ -129,9 +141,11 @@ class ArrayUtility
      * @param array $array
      * @return bool
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function containsMultipleTypes(array $array)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!empty($array)) {
             foreach ($array as $value) {
                 if (!isset($previousType)) {
@@ -153,9 +167,11 @@ class ArrayUtility
      * @param mixed $initial the initial accumulator value
      * @return mixed
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function array_reduce(array $array, $function, $initial = null)
     {
+        GeneralUtility::logDeprecatedFunction();
         $accumlator = $initial;
         foreach ($array as $value) {
             $accumlator = $function($accumlator, $value);
@@ -164,16 +180,18 @@ class ArrayUtility
     }
 
     /**
-     * Returns the value of a nested array by following the specifed path.
+     * Returns the value of a nested array by following the specified path.
      *
      * @param array &$array The array to traverse as a reference
      * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
      * @throws \InvalidArgumentException
      * @return mixed The value found, NULL if the path didn't exist
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use ArrayUtility provided by EXT:core instead.
      */
     public static function getValueByPath(array &$array, $path)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (is_string($path)) {
             $path = explode('.', $path);
         } elseif (!is_array($path)) {
@@ -198,9 +216,11 @@ class ArrayUtility
      * @param mixed $value The value to set
      * @throws \InvalidArgumentException
      * @return array The modified array or object
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use ArrayUtility provided by EXT:core instead.
      */
     public static function setValueByPath($subject, $path, $value)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!is_array($subject) && !$subject instanceof \ArrayAccess) {
             throw new \InvalidArgumentException('setValueByPath() expects $subject to be array or an object implementing \\ArrayAccess, "' . (is_object($subject) ? get_class($subject) : gettype($subject)) . '" given.', 1306424308);
         }
@@ -228,9 +248,11 @@ class ArrayUtility
      * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
      * @throws \InvalidArgumentException
      * @return array The modified array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, see ArrayUtility::removeByPath()
      */
     public static function unsetValueByPath(array $array, $path)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (is_string($path)) {
             $path = explode('.', $path);
         } elseif (!is_array($path)) {
@@ -256,9 +278,11 @@ class ArrayUtility
      * @return bool TRUE on success, FALSE on failure
      * @see asort()
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function sortKeysRecursively(array &$array, $sortFlags = null)
     {
+        GeneralUtility::logDeprecatedFunction();
         foreach ($array as &$value) {
             if (is_array($value)) {
                 if (self::sortKeysRecursively($value, $sortFlags) === false) {
@@ -275,9 +299,11 @@ class ArrayUtility
      * @param mixed $subject An object or array of objects
      * @throws \InvalidArgumentException
      * @return array The subject represented as an array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function convertObjectToArray($subject)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!is_object($subject) && !is_array($subject)) {
             throw new \InvalidArgumentException('convertObjectToArray expects either array or object as input, ' . gettype($subject) . ' given.', 1287059709);
         }
@@ -297,9 +323,11 @@ class ArrayUtility
      *
      * @param array $array
      * @return array the modified array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function removeEmptyElementsRecursively(array $array)
     {
+        GeneralUtility::logDeprecatedFunction();
         $result = $array;
         foreach ($result as $key => $value) {
             if (is_array($value)) {
@@ -320,9 +348,11 @@ class ArrayUtility
      * @param array $array
      *
      * @return array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the same method provided in TYPO3\CMS\Core\Utility\ArrayUtility
      */
     public static function sortArrayWithIntegerKeys($array)
     {
+        GeneralUtility::logDeprecatedFunction();
         $containsNumericalKeysOnly = true;
         array_walk($array, function ($value, $key) use (&$containsNumericalKeysOnly) {
             if (!is_integer($key)) {

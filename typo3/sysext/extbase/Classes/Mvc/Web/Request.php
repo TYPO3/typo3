@@ -195,7 +195,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
                 $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['arguments'])));
             }
             $referringRequest = new ReferringRequest();
-            $referringRequest->setArguments(\TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($arguments, $referrerArray));
+            $referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
             return $referringRequest;
         }
         return null;

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * The current state of the form which is attached to the {@link FormRuntime}

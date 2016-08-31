@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
 /**
  * Generation of image manipulation TCEform element
@@ -62,7 +61,7 @@ class ImageManipulationElement extends AbstractFormElement
         if (isset($parameterArray['fieldConf']['config']['ratios'])) {
             unset($this->defaultConfig['ratios']);
         }
-        $config = ArrayUtility::arrayMergeRecursiveOverrule($this->defaultConfig, $parameterArray['fieldConf']['config']);
+        $config = array_replace_recursive($this->defaultConfig, $parameterArray['fieldConf']['config']);
 
         // By default we allow all image extensions that can be handled by the GFX functionality
         if ($config['allowedExtensions'] === null) {

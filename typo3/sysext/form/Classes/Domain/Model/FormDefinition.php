@@ -15,12 +15,10 @@ namespace TYPO3\CMS\Form\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -34,7 +32,6 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
-use TYPO3\CMS\Form\Utility\ArrayUtility as FormArrayUtility;
 
 /**
  * This class encapsulates a complete *Form Definition*, with all of its pages,
@@ -349,7 +346,7 @@ class FormDefinition extends AbstractCompositeRenderable
             foreach ($options['renderingOptions'] as $key => $value) {
                 if (is_array($value)) {
                     $currentValue = isset($this->getRenderingOptions()[$key]) ? $this->getRenderingOptions()[$key] : [];
-                    CoreArrayUtility::mergeRecursiveWithOverrule($currentValue, $value);
+                    ArrayUtility::mergeRecursiveWithOverrule($currentValue, $value);
                     $this->setRenderingOption($key, $currentValue);
                 } else {
                     $this->setRenderingOption($key, $value);
@@ -362,7 +359,10 @@ class FormDefinition extends AbstractCompositeRenderable
             }
         }
 
-        FormArrayUtility::assertAllArrayKeysAreValid($options, ['rendererClassName', 'renderingOptions', 'finishers', 'formEditor']);
+        ArrayUtility::assertAllArrayKeysAreValid(
+            $options,
+            ['rendererClassName', 'renderingOptions', 'finishers', 'formEditor']
+        );
     }
 
     /**
@@ -407,7 +407,10 @@ class FormDefinition extends AbstractCompositeRenderable
             }
         }
 
-        FormArrayUtility::assertAllArrayKeysAreValid($typeDefinition, ['implementationClassName', 'label', 'rendererClassName', 'renderingOptions', 'formEditor']);
+        ArrayUtility::assertAllArrayKeysAreValid(
+            $typeDefinition,
+            ['implementationClassName', 'label', 'rendererClassName', 'renderingOptions', 'formEditor']
+        );
 
         $this->addPage($page);
         return $page;
@@ -494,7 +497,7 @@ class FormDefinition extends AbstractCompositeRenderable
         if (isset($this->finishersDefinition[$finisherIdentifier]) && is_array($this->finishersDefinition[$finisherIdentifier]) && isset($this->finishersDefinition[$finisherIdentifier]['implementationClassName'])) {
             $implementationClassName = $this->finishersDefinition[$finisherIdentifier]['implementationClassName'];
             $defaultOptions = isset($this->finishersDefinition[$finisherIdentifier]['options']) ? $this->finishersDefinition[$finisherIdentifier]['options'] : [];
-            CoreArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
+            ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
             $finisher = $this->objectManager->get($implementationClassName);
             $finisher->setOptions($defaultOptions);

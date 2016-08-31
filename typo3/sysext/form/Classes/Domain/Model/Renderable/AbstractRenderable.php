@@ -23,7 +23,6 @@ use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Exception\ValidatorPresetNotFoundException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-use TYPO3\CMS\Form\Utility\ArrayUtility as FormArrayUtility;
 
 /**
  * Convenience base class which implements common functionality for most
@@ -160,7 +159,10 @@ abstract class AbstractRenderable implements RenderableInterface
             }
         }
 
-        FormArrayUtility::assertAllArrayKeysAreValid($options, ['label', 'defaultValue', 'properties', 'rendererClassName', 'renderingOptions', 'validators', 'formEditor']);
+        ArrayUtility::assertAllArrayKeysAreValid(
+            $options,
+            ['label', 'defaultValue', 'properties', 'rendererClassName', 'renderingOptions', 'validators', 'formEditor']
+        );
     }
 
     /**

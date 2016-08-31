@@ -15,10 +15,9 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager as ExtbaseConfigurationManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
-use TYPO3\CMS\Form\Utility\ArrayUtility;
 
 /**
  * Extend the ExtbaseConfigurationManager to read YAML configurations.
@@ -114,7 +113,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         $yamlSettings = is_array($yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName])
             ? $yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName]
             : [];
-        $yamlSettings = ArrayUtility::sortNumericArrayKeysRecursive($yamlSettings);
+        $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
         $yamlSettings = $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
 
         // 1st level cache
@@ -131,7 +130,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     {
         $typoScript = parent::getConfiguration(self::CONFIGURATION_TYPE_SETTINGS, $extensionName);
         if (is_array($typoScript['yamlSettingsOverrides']) && !empty($typoScript['yamlSettingsOverrides'])) {
-            CoreArrayUtility::mergeRecursiveWithOverrule(
+            ArrayUtility::mergeRecursiveWithOverrule(
                 $yamlSettings,
                 $typoScript['yamlSettingsOverrides']
             );
