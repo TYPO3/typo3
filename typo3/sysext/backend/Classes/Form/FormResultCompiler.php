@@ -169,15 +169,15 @@ class FormResultCompiler
     /**
      * JavaScript code added BEFORE the form is drawn:
      *
-     * @return string A <script></script> section with JavaScript.
+     * @return string
      */
     public function JStop()
     {
-        $stylesheetHtml = [];
+        $pageRenderer = $this->getPageRenderer();
         foreach ($this->stylesheetFiles as $stylesheetFile) {
-            $stylesheetHtml[] = '<link rel="stylesheet" type="text/css" href="' . $stylesheetFile . '" />';
+            $pageRenderer->addCssFile($stylesheetFile);
         }
-        return implode(LF, $stylesheetHtml);
+        return '';
     }
 
     /**
