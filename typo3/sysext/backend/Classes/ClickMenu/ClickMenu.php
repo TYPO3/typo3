@@ -354,9 +354,6 @@ class ClickMenu
                     if ($anyEnableColumnsFieldAllowed && !in_array('edit_access', $this->disabledItems, true)) {
                         $localItems['edit_access'] = $this->DB_editAccess($table, $uid);
                     }
-                    if ($table === 'pages' && $this->editPageIconSet && !in_array('edit_pageproperties', $this->disabledItems, true)) {
-                        $localItems['edit_pageproperties'] = $this->DB_editPageProperties($uid);
-                    }
                 }
                 // Find delete element among the input menu items and insert the local items just before that:
                 $c = 0;
@@ -734,9 +731,11 @@ class ClickMenu
      * @param int $uid page uid to edit (PID)
      * @return array Item array, element in $menuItems
      * @internal
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function DB_editPageProperties($uid)
     {
+        GeneralUtility::logDeprecatedFunction();
         $url = BackendUtility::getModuleUrl('record_edit', [
             'edit[pages][' . $uid . ']' => 'edit'
         ]);
