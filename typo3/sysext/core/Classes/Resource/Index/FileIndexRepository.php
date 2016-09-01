@@ -264,7 +264,7 @@ class FileIndexRepository implements SingletonInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->like(
                     'name',
-                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($fileName) . '%"')
+                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($fileName) . '%')
                 )
             );
         }
