@@ -89,7 +89,7 @@ class StorageRepository extends AbstractRepository
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table);
 
-            if ($this->getEnvironmentMode() === 'FE') {
+            if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             }
 
