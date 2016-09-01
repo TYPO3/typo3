@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Schema;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -27,9 +27,9 @@ use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Test case for \TYPO3\CMS\Core\Database\Schema\SchemaMigrationServiceTest
+ * Test case for \TYPO3\CMS\Core\Database\Schema\SchemaMigratorTest
  */
-class SchemaMigrationServiceTest extends FunctionalTestCase
+class SchemaMigratorTest extends FunctionalTestCase
 {
     /**
      * @var SqlReader
@@ -54,7 +54,7 @@ class SchemaMigrationServiceTest extends FunctionalTestCase
     /**
      * @var string
      */
-    protected $tableName = 'aTestTable';
+    protected $tableName = 'a_test_table';
 
     /**
      * Sets up this test suite.
@@ -84,8 +84,8 @@ class SchemaMigrationServiceTest extends FunctionalTestCase
         if ($this->schemaManager->tablesExist(['zzz_deleted_' . $this->tableName])) {
             $this->schemaManager->dropTable('zzz_deleted_' . $this->tableName);
         }
-        if ($this->schemaManager->tablesExist(['anotherTestTable'])) {
-            $this->schemaManager->dropTable('anotherTestTable');
+        if ($this->schemaManager->tablesExist(['another_test_table'])) {
+            $this->schemaManager->dropTable('another_test_table');
         }
     }
 
@@ -122,7 +122,7 @@ class SchemaMigrationServiceTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table']
         );
 
-        $this->assertTrue($this->schemaManager->tablesExist(['anotherTestTable']));
+        $this->assertTrue($this->schemaManager->tablesExist(['another_test_table']));
     }
 
     /**
@@ -288,7 +288,7 @@ class SchemaMigrationServiceTest extends FunctionalTestCase
         $statements = $this->readFixtureFile('addCreateChange');
         $this->subject->install($statements, true);
 
-        $this->assertContains('anotherTestTable', $this->schemaManager->listTableNames());
+        $this->assertContains('another_test_table', $this->schemaManager->listTableNames());
         $this->assertTrue($this->getTableDetails()->hasColumn('title'));
         $this->assertTrue($this->getTableDetails()->hasIndex('title'));
         $this->assertTrue($this->getTableDetails()->getIndex('title')->isUnique());
@@ -303,7 +303,7 @@ class SchemaMigrationServiceTest extends FunctionalTestCase
         $statements = $this->readFixtureFile('addCreateChange');
         $this->subject->install($statements);
 
-        $this->assertContains('anotherTestTable', $this->schemaManager->listTableNames());
+        $this->assertContains('another_test_table', $this->schemaManager->listTableNames());
         $this->assertTrue($this->getTableDetails()->hasColumn('title'));
         $this->assertTrue($this->getTableDetails()->hasIndex('title'));
         $this->assertTrue($this->getTableDetails()->getIndex('title')->isUnique());
@@ -332,7 +332,7 @@ class SchemaMigrationServiceTest extends FunctionalTestCase
         $statements = $this->sqlReader->getStatementArray($sqlCode);
         $this->subject->importStaticData($statements);
 
-        $this->assertNotContains('anotherTestTable', $this->schemaManager->listTableNames());
+        $this->assertNotContains('another_test_table', $this->schemaManager->listTableNames());
     }
 
     /**

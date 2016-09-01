@@ -1,3 +1,3 @@
-CREATE TABLE aTestTable (
+CREATE TABLE a_test_table (
 	aTestField DECIMAL (5, 2) UNSIGNED NULL DEFAULT NULL
 );

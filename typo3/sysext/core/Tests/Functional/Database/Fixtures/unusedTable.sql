@@ -1,4 +1,4 @@
-CREATE TABLE anotherTestTable (
+CREATE TABLE another_test_table (
 	uid     INT(11) UNSIGNED                NOT NULL AUTO_INCREMENT,
 	pid     INT(11) UNSIGNED DEFAULT '0'    NOT NULL,
 	tstamp  INT(11) UNSIGNED DEFAULT '0'    NOT NULL,
