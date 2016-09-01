@@ -874,7 +874,7 @@ class ClickMenu
     {
         return $this->linkItem(
             $this->label('tempMountPoint'),
-            $this->iconFactory->getIcon('apps-pagetree-page-mountpoint', Icon::SIZE_SMALL)->render(),
+            $this->iconFactory->getIcon('actions-pagetree-mountroot', Icon::SIZE_SMALL)->render(),
             'if (top.content.nav_frame) {
 				var node = top.TYPO3.Backend.NavigationContainer.PageTree.getSelected();
 				if (node === null) {
