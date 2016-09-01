@@ -282,60 +282,41 @@ th {
   margin-left: .3em;
 }
 .fa-spin {
-  -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear;
 }
 .fa-pulse {
-  -webkit-animation: fa-spin 1s infinite steps(8);
   animation: fa-spin 1s infinite steps(8);
-}
-@-webkit-keyframes fa-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
 }
 @keyframes fa-spin {
   0% {
-    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(359deg);
     transform: rotate(359deg);
   }
 }
 .fa-rotate-90 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 .fa-rotate-180 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
-  -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 .fa-rotate-270 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-  -webkit-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   transform: rotate(270deg);
 }
 .fa-flip-horizontal {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
-  -webkit-transform: scale(-1, 1);
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
 }
 .fa-flip-vertical {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
-  -webkit-transform: scale(1, -1);
   -ms-transform: scale(1, -1);
   transform: scale(1, -1);
 }
@@ -344,8 +325,7 @@ th {
 :root .fa-rotate-270,
 :root .fa-flip-horizontal,
 :root .fa-flip-vertical {
-  -webkit-filter: none;
-          filter: none;
+  filter: none;
 }
 .fa-stack {
   position: relative;
@@ -6149,14 +6129,6 @@ a.thumbnail.active {
 .alert-danger .alert-link {
   color: #e6e6e6;
 }
-@-webkit-keyframes progress-bar-stripes {
-  from {
-    background-position: 40px 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
 @keyframes progress-bar-stripes {
   from {
     background-position: 40px 0;
@@ -6192,7 +6164,6 @@ a.thumbnail.active {
 }
 .progress.active .progress-bar,
 .progress-bar.active {
-  -webkit-animation: progress-bar-stripes 2s linear infinite;
   animation: progress-bar-stripes 2s linear infinite;
 }
 .progress-bar-success {
@@ -6903,15 +6874,11 @@ button.close {
   outline: 0;
 }
 .modal.fade .modal-dialog {
-  -webkit-transform: translate(0, -25%);
   -ms-transform: translate(0, -25%);
   transform: translate(0, -25%);
-  transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
-  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
 }
 .modal.in .modal-dialog {
-  -webkit-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   transform: translate(0, 0);
 }
@@ -7268,30 +7235,24 @@ button.close {
 }
 @media all and (transform-3d), (-webkit-transform-3d) {
   .carousel-inner > .item {
-    transition: -webkit-transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out;
-    transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    -webkit-perspective: 1000px;
     perspective: 1000px;
   }
   .carousel-inner > .item.next,
   .carousel-inner > .item.active.right {
-    -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
     left: 0;
   }
   .carousel-inner > .item.prev,
   .carousel-inner > .item.active.left {
-    -webkit-transform: translate3d(-100%, 0, 0);
     transform: translate3d(-100%, 0, 0);
     left: 0;
   }
   .carousel-inner > .item.next.left,
   .carousel-inner > .item.prev.right,
   .carousel-inner > .item.active {
-    -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     left: 0;
   }
@@ -7656,7 +7617,6 @@ button.close {
   display: block;
   height: 100%;
   width: 100%;
-  -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 .icon * {
@@ -7684,26 +7644,13 @@ button.close {
   fill: currentColor;
 }
 .icon-spin .icon-markup {
-  -webkit-animation: icon-spin 2s infinite linear;
   animation: icon-spin 2s infinite linear;
-}
-@-webkit-keyframes icon-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
 }
 @keyframes icon-spin {
   0% {
-    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(359deg);
     transform: rotate(359deg);
   }
 }
@@ -8816,7 +8763,6 @@ button.close {
   height: 100%;
   box-shadow: 0 0 10px #ff8700, 0 0 5px #ff8700;
   opacity: 1.0;
-  -webkit-transform: rotate(3deg) translate(0px, -4px);
   -ms-transform: rotate(3deg) translate(0px, -4px);
   transform: rotate(3deg) translate(0px, -4px);
 }
@@ -8836,7 +8782,6 @@ button.close {
   border-top-color: #ff8700;
   border-left-color: #ff8700;
   border-radius: 50%;
-  -webkit-animation: nprogress-spinner 400ms linear infinite;
   animation: nprogress-spinner 400ms linear infinite;
 }
 .nprogress-custom-parent {
@@ -8847,22 +8792,12 @@ button.close {
 .nprogress-custom-parent #nprogress .bar {
   position: absolute;
 }
-@-webkit-keyframes nprogress-spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
 @keyframes nprogress-spinner {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 .t3-row-header {
@@ -9093,7 +9028,6 @@ iframe,
 .x-viewport body,
 .table-fit,
 .t3-page-ce {
-  -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 .collapse-horizontal {
@@ -9940,9 +9874,8 @@ ul.typo3-messages {
   position: absolute;
   right: 5px;
   top: 50%;
-  -webkit-transform: translate(0, -50%);
-      -ms-transform: translate(0, -50%);
-          transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+      transform: translate(0, -50%);
 }
 .typo3-pagetree-toppanel-item .x-form-field-wrap {
   width: 100%!important;
@@ -10017,9 +9950,8 @@ ul.typo3-messages {
 [id=typo3-pagetree-indicatorBar-temporaryMountPoint] .media-right {
   position: absolute;
   right: 16px;
-  -webkit-transform: translateY(-100%);
-      -ms-transform: translateY(-100%);
-          transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+      transform: translateY(-100%);
   background-color: #6daae0;
 }
 #typo3-browse-links-php {
@@ -10683,7 +10615,6 @@ fieldset[disabled] .table .btn-default.focus {
 }
 .panel-collapsed .panel-heading .caret {
   transition: all 0.25s ease-in-out;
-  -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
@@ -11105,6 +11036,9 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .list-tree-root > li:before {
   display: none;
 }
+.list-tree-root > li.list-tree-path {
+  margin-left: -20px;
+}
 .list-tree-root > li > .list-tree-group > .list-tree-control {
   margin-left: -20px;
 }
@@ -11425,9 +11359,8 @@ a.badge-danger:focus {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
-          transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+      transform: translate(0, 0);
   overflow: hidden;
   background-color: #eaeaea;
   color: #333333;
@@ -11468,9 +11401,8 @@ a.badge-danger:focus {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
-          transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+      transform: translate(0, 0);
 }
 .dropzone-hint-icon:before {
   content: "\f093";
@@ -12529,7 +12461,6 @@ iframe {
 }
 [id="typo3-menu"] .typo3-module-menu-group-title .caret {
   transition: all 0.25s ease-in-out;
-  -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
   position: absolute;
@@ -12537,7 +12468,6 @@ iframe {
   right: 18px;
 }
 [id="typo3-menu"] .expanded .typo3-module-menu-group-title .caret {
-  -webkit-transform: rotate(0deg);
   -ms-transform: rotate(0deg);
   transform: rotate(0deg);
 }

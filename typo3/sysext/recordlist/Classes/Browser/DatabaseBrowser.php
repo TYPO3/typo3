@@ -89,6 +89,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $pageTree->ext_pArrPages = $allowedTables === 'pages';
         $pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
         $pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+        $pageTree->ext_showPathAboveMounts = (bool)$backendUser->getTSConfigVal('options.pageTree.showPathAboveMounts');
         $pageTree->addField('nav_title');
         $tree = $pageTree->getBrowsableTree();
 

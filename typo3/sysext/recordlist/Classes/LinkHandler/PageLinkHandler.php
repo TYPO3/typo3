@@ -121,8 +121,9 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         /** @var ElementBrowserPageTreeView $pageTree */
         $pageTree = GeneralUtility::makeInstance(ElementBrowserPageTreeView::class);
         $pageTree->setLinkParameterProvider($this);
-        $pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
         $pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
+        $pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+        $pageTree->ext_showPathAboveMounts = (bool)$backendUser->getTSConfigVal('options.pageTree.showPathAboveMounts');
         $pageTree->addField('nav_title');
         $tree = $pageTree->getBrowsableTree();
 
