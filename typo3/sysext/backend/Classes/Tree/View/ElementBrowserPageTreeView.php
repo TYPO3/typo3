@@ -100,6 +100,11 @@ class ElementBrowserPageTreeView extends BrowseTreeView
         // so we know how many we have to close when all children are done rendering
         $closeDepth = [];
         foreach ($treeArr as $treeItem) {
+            if ($treeItem['isMountPointPath']) {
+                $out .= '<li class="list-tree-path">' . $treeItem['title'] . '</li>';
+                continue;
+            }
+
             $classAttr = $treeItem['row']['_CSSCLASS'];
             if ($treeItem['isFirst']) {
                 $out .= '<ul class="list-tree">';

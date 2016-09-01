@@ -396,6 +396,15 @@ abstract class AbstractTreeView
                 if (is_array($rootRec)) {
                     $firstHtml .= $this->getIcon($rootRec);
                 }
+
+                if ($this->ext_showPathAboveMounts) {
+                    $mountPointPid = $rootRec['pid'];
+                    if ($lastMountPointPid !== $mountPointPid) {
+                        $title = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getMountPointPath($mountPointPid);
+                        $this->tree[] = ['isMountPointPath' => true, 'title' => $title];
+                    }
+                    $lastMountPointPid = $mountPointPid;
+                }
             } else {
                 // Artificial record for the tree root, id=0
                 $rootRec = $this->getRootRecord();

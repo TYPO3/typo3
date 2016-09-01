@@ -11406,6 +11406,9 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .list-tree-root > li:before {
   display: none;
 }
+.list-tree-root > li.list-tree-path {
+  margin-left: -20px;
+}
 .list-tree-root > li > .list-tree-group > .list-tree-control {
   margin-left: -20px;
 }
