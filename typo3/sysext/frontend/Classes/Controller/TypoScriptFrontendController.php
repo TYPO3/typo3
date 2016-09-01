@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -4510,44 +4512,45 @@ class TypoScriptFrontendController
      */
     protected function getFirstTimeValueForRecord($tableDef, $now)
     {
+        $now = (int)$now;
         $result = PHP_INT_MAX;
         list($tableName, $pid) = GeneralUtility::trimExplode(':', $tableDef);
         if (empty($tableName) || empty($pid)) {
             throw new \InvalidArgumentException('Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.', 1307190365);
         }
-        // Additional fields
-        $showHidden = $tableName === 'pages' ? $this->showHiddenPage : $this->showHiddenRecords;
-        $enableFields = $this->sys_page->enableFields(
-            $tableName,
-            $showHidden,
-            ['starttime' => true, 'endtime' => true]
-        );
 
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()
+            ->removeByType(StartTimeRestriction::class)
+            ->removeByType(EndTimeRestriction::class);
         $timeFields = [];
-        $selectFields = [];
-        $whereConditions = [];
+        $timeConditions = $queryBuilder->expr()->orX();
         foreach (['starttime', 'endtime'] as $field) {
             if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
                 $timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
-                $selectFields[$field]
-                    = 'MIN('
-                        . 'CASE WHEN ' . $timeFields[$field] . ' <= ' . $now
-                        . ' THEN NULL ELSE ' . $timeFields[$field] . ' END'
-                        . ') AS ' . $field;
-                $whereConditions[$field] = $timeFields[$field] . '>' . $now;
+                $queryBuilder->addSelectLiteral(
+                    'MIN('
+                        . 'CASE WHEN ' . $queryBuilder->expr()->lte($timeFields[$field], $now)
+                        . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
+                        . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
+                );
+                $timeConditions->add($queryBuilder->expr()->gt($timeFields[$field], $now));
             }
         }
 
         // if starttime or endtime are defined, evaluate them
         if (!empty($timeFields)) {
             // find the timestamp, when the current page's content changes the next time
-            $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-                implode(', ', $selectFields),
-                $tableName,
-                'pid=' . (int)$pid
-                . ' AND (' . implode(' OR ', $whereConditions) . ')'
-                . $enableFields
-            );
+            $row = $queryBuilder
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$pid),
+                    $timeConditions
+                )
+                ->execute()
+                ->fetch();
+
             if ($row) {
                 foreach ($timeFields as $timeField => $_) {
                     // if a MIN value is found, take it into account for the
@@ -4766,16 +4769,6 @@ class TypoScriptFrontendController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
