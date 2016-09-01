@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Database\Schema;
+namespace TYPO3\CMS\Core\Database\Schema\EventListener;
 
 /*
  * This file is part of the TYPO3 CMS project.

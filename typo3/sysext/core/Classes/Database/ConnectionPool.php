@@ -20,7 +20,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Schema\SchemaColumnDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

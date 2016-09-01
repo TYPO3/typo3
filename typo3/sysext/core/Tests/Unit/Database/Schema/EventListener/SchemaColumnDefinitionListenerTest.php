@@ -22,7 +22,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\Schema\SchemaColumnDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
