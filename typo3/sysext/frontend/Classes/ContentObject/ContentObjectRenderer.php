@@ -2923,11 +2923,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_doubleBrTag($content = '', $conf = [])
     {
-        return preg_replace('/
-?
-[	 ]*
-?
-/', $conf['doubleBrTag'], $content);
+        return preg_replace('/\R{1,2}[\t\x20]*\R{1,2}/', $conf['doubleBrTag'], $content);
     }
 
     /**
