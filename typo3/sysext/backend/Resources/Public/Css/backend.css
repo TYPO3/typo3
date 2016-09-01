@@ -10175,6 +10175,12 @@ fieldset[disabled] .table .btn-default.focus {
 .table .col-min {
   min-width: 150px;
 }
+.table .col-responsive {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .table-fixed {
   word-wrap: break-word;
   word-break: break-all;

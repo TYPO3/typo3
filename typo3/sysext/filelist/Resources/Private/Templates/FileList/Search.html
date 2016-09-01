@@ -38,18 +38,18 @@
 						<td nowrap="nowrap" class="col-path">
 							{file.path}
 						</td>
-						<td nowrap="nowrap" class="col-title">
+						<td nowrap="nowrap" class="col-title col-responsive">
 							<f:if condition="{file.isMetadataEditable}">
 								<f:then>
 									<a href="#" class="filelist-file-title"
 										title="{f:translate( htmlEscape:'true', key:'LLL:EXT:lang/locallang_core.xlf:cm.editMetadata' )}"
 										data-url="{fl:uri.editSysFileMetadataRecord( uid:file.metadataUid, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } )}' )}"
 									>
-										{file.name->f:format.crop( maxCharacters:30 )}
+										{file.name}
 									</a>
 								</f:then>
 								<f:else>
-									{file.name->f:format.crop( maxCharacters:30 )}
+									{file.name}
 								</f:else>
 							</f:if>
 							<f:if condition="{file.isImage}">

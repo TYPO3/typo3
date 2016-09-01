@@ -1057,12 +1057,10 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $origCode = $code;
         // If the title is blank, make a "no title" label:
         if ((string)$code === '') {
-            $code = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
-                BackendUtility::getRecordTitle($table, $row),
-                $this->getBackendUserAuthentication()->uc['titleLen']
-            ));
+            $code = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</i> - '
+                . htmlspecialchars(BackendUtility::getRecordTitle($table, $row));
         } else {
-            $code = htmlspecialchars(GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', false);
+            $code = htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
             if ($code != htmlspecialchars($origCode)) {
                 $code = '<span title="' . htmlspecialchars($origCode, ENT_QUOTES, 'UTF-8', false) . '">' . $code . '</span>';
             }

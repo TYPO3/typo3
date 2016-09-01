@@ -989,7 +989,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $this->addToCSV($row);
         }
         // Add classes to table cells
-        $this->addElement_tdCssClass[$titleCol] = 'col-title' . $localizationMarkerClass;
+        $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $localizationMarkerClass;
+        $this->addElement_tdCssClass['__label'] = $this->addElement_tdCssClass[$titleCol];
         $this->addElement_tdCssClass['_CONTROL_'] = 'col-control';
         if ($this->getModule()->MOD_SETTINGS['clipBoard']) {
             $this->addElement_tdCssClass['_CLIPBOARD_'] = 'col-clipboard';

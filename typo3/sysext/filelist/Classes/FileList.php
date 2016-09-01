@@ -349,7 +349,7 @@ class FileList extends AbstractRecordList
             $this->fieldArray = explode(',', $rowlist);
 
             // Add classes to table cells
-            $this->addElement_tdCssClass[$titleCol] = 'col-title';
+            $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive';
             $this->addElement_tdCssClass['_LOCALIZATION_'] = 'col-localizationa';
 
             $folders = ListUtility::resolveSpecialFolderNames($folders);
@@ -584,7 +584,7 @@ class FileList extends AbstractRecordList
         $onclick = ' onclick="' . htmlspecialchars(('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
-            return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . GeneralUtility::fixed_lgd_cs($title, $this->fixedL) . '</a>';
+            return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
         } else {
             return '<a href="' . htmlspecialchars($href) . '"' . $onclick . '>' . $title . '</a>';
         }
@@ -612,7 +612,7 @@ class FileList extends AbstractRecordList
                 ];
                 $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
                 $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
-                $code = '<a href="' . htmlspecialchars($url) . '" title="' . $title . '">' . GeneralUtility::fixed_lgd_cs($code, $this->fixedL) . '</a>';
+                $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $code . '</a>';
             }
         } catch (\Exception $e) {
             // intentional fall-through

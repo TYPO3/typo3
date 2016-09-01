@@ -136,6 +136,13 @@ table {
 	.col-min {
 		min-width: 150px;
 	}
+	// Column contents are cut off with an ellipsis if they get too large.
+	.col-responsive {
+		max-width: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
 
 .table-fixed {
