@@ -402,7 +402,6 @@ class AbstractController
     }
 
     /**
-     * Require dbal ext_localconf if extension is loaded
      * Required extbase ext_localconf
      * Set caching to NullBackend, install tool must not cache anything
      *

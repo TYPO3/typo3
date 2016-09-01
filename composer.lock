@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "46a2263f63778c3f9e77f69e9fcccd66",
-    "content-hash": "ddec27f96ce9faecb83d4c9f8ae46d5b",
+    "hash": "eee83d589f64ac1a4a248ca86847381b",
+    "content-hash": "b8a638b8c136516c6ca50bf2636bd151",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2837,12 +2837,12 @@
             "version": "v1.1.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/site5/phantoman.git",
+                "url": "https://github.com/grantlucas/phantoman.git",
                 "reference": "6ac9bed985d023909966a5c5b82489ced62998d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/site5/phantoman/zipball/6ac9bed985d023909966a5c5b82489ced62998d1",
+                "url": "https://api.github.com/repos/grantlucas/phantoman/zipball/6ac9bed985d023909966a5c5b82489ced62998d1",
                 "reference": "6ac9bed985d023909966a5c5b82489ced62998d1",
                 "shasum": ""
             },
