@@ -270,4 +270,82 @@ class QueryHelperTest extends UnitTestCase
     {
         $this->assertSame($expectedResult, QueryHelper::parseGroupBy($input));
     }
+
+    /**
+     * Test cases for parsing JOIN fragments into table name, alias and conditions
+     *
+     * @return array
+     */
+    public function parseJoinDataProvider(): array
+    {
+        return [
+            'unquoted tableName' => [
+                'aTable ON aTable.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'aTable',
+                    'joinCondition' => 'aTable.uid = anotherTable.uid_foreign'
+                ],
+            ],
+            'quoted tableName' => [
+                '`aTable` ON aTable.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'aTable',
+                    'joinCondition' => 'aTable.uid = anotherTable.uid_foreign'
+                ],
+            ],
+            'quoted tableName with alias' => [
+                '`aTable` a ON a.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'a',
+                    'joinCondition' => 'a.uid = anotherTable.uid_foreign'
+                ],
+            ],
+            'quoted tableName with quoted alias' => [
+                '`aTable` `a` ON a.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'a',
+                    'joinCondition' => 'a.uid = anotherTable.uid_foreign'
+                ],
+            ],
+            'quoted tableName with AS alias' => [
+                '`aTable` AS anAlias ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign'
+                ],
+            ],
+            'quoted tableName with AS quoted alias' => [
+                '`aTable` AS `anAlias` ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign'
+                ],
+            ],
+            'unquoted tableName with AS quoted alias' => [
+                'aTable AS `anAlias` ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign'
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider parseJoinDataProvider
+     * @param string $input
+     * @param array $expected
+     */
+    public function parseJoinSplitsStatement(string $input, array $expected)
+    {
+        $this->assertSame($expected, QueryHelper::parseJoin($input));
+    }
 }

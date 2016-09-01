@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Doctrine\DBAL\Driver\Statement;
 
 /**
  * Test case
@@ -32,7 +33,6 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $proxyClassName = $this->buildAccessibleProxy(\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::class);
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)->getMock();
         $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
             ->setConstructorArgs([$GLOBALS['TYPO3_CONF_VARS'], 1, 1])
             ->getMock();
@@ -95,12 +95,14 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage()
     {
+        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet->fetch()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
+
         $this->prepareSectionIndexTest();
         $this->subject->mconf['sectionIndex.']['type'] = 'all';
         $GLOBALS['TSFE']->sys_language_contentOL = 1;
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
-        $GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue(['uid' => 0, 'header' => 'NOT_OVERLAID']), $this->returnValue(false)));
+        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
         $this->subject->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(['uid' => 0, 'header' => 'OVERLAID']));
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertEquals($result[0]['title'], 'OVERLAID');
@@ -155,11 +157,14 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sectionIndexFilters($expectedAmount, array $dataRow)
     {
+        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet->fetch()->willReturn($dataRow, false);
+
         $this->prepareSectionIndexTest();
         $this->subject->mconf['sectionIndex.']['type'] = 'header';
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
-        $GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue($dataRow), $this->returnValue(false)));
+        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')
+            ->willReturn($statementProphet->reveal());
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertCount($expectedAmount, $result);
     }
@@ -201,6 +206,9 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sectionIndexQueriesWithDifferentColPos($configuration, $whereClausePrefix)
     {
+        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet->fetch()->willReturn([]);
+
         $this->prepareSectionIndexTest();
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
         $this->subject->mconf['sectionIndex.'] = $configuration;
@@ -210,7 +218,9 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'languageField' => 'sys_language_uid',
             'where' => $whereClausePrefix
         ];
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->with('tt_content', $queryConfiguration)->will($this->returnValue(1));
+        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')
+            ->with('tt_content', $queryConfiguration)
+            ->willReturn($statementProphet->reveal());
         $this->subject->_call('sectionIndex', 'field', 12);
     }
 

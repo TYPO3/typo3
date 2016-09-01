@@ -69,7 +69,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                     'selectFields' => 'header,bodytext'
                 ],
                 [
-                    'SELECT' => 'header,bodytext, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state'
+                    'SELECT' => 'header,bodytext, `tt_content`.`uid` AS `uid`, `tt_content`.`pid` AS `pid`, `tt_content`.`t3ver_state` AS `t3ver_state`'
                 ]
             ],
             'testing #17284: no need to add' => [
@@ -97,7 +97,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                     'join' => 'be_users ON tt_content.cruser_id = be_users.uid'
                 ],
                 [
-                    'SELECT' => 'tt_content.header,be_users.username, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state'
+                    'SELECT' => 'tt_content.header,be_users.username, `tt_content`.`uid` AS `uid`, `tt_content`.`pid` AS `pid`, `tt_content`.`t3ver_state` AS `t3ver_state`'
                 ]
             ],
             'testing #34152: single count(*), add nothing' => [
@@ -256,7 +256,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
                 ],
-                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 GROUP BY tt_content.title ORDER BY tt_content.sorting',
+                'WHERE (`tt_content`.`uid` IN (42)) AND (`tt_content`.`pid` IN (43)) AND (tt_content.cruser_id=5) GROUP BY `tt_content`.`title` ORDER BY `tt_content`.`sorting`',
             ],
             [
                 [
@@ -283,7 +283,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
                 ],
-                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND (tt_content.sys_language_uid = 13)%s GROUP BY tt_content.title ORDER BY tt_content.sorting',
+                'WHERE (`tt_content`.`uid` IN (42)) AND (`tt_content`.`pid` IN (43)) AND (tt_content.cruser_id=5) AND (`tt_content`.`sys_language_uid` = 13) AND ((`tt_content`.`deleted` = 0) AND (`tt_content`.`hidden` = 0) AND (`tt_content`.`startdate` <= 4242) AND ((`tt_content`.`enddate` = 0) OR (`tt_content`.`enddate` > 4242))) GROUP BY `tt_content`.`title` ORDER BY `tt_content`.`sorting`',
             ],
             [
                 [
@@ -303,7 +303,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                     'where' => 'tt_content.cruser_id=5',
                     'languageField' => 0,
                 ],
-                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5',
+                'WHERE (`tt_content`.`uid` IN (42)) AND (`tt_content`.`pid` IN (43)) AND (tt_content.cruser_id=5)',
             ],
         ];
     }

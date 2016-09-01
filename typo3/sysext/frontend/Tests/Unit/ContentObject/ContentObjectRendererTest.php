@@ -3731,7 +3731,7 @@ class ContentObjectRendererTest extends UnitTestCase
         foreach (array_unique($processors) as $processor) {
             $count += 1;
             try {
-                $conf = [$processor => '', $processor . '.' => []];
+                $conf = [$processor => '', $processor . '.' => ['table' => 'tt_content']];
                 $method = 'stdWrap_' . $processor;
                 $this->subject->$method('', $conf);
             } catch (\Exception $e) {

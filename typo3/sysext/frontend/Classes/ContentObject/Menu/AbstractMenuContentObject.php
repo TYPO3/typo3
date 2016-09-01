@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -699,7 +698,6 @@ abstract class AbstractMenuContentObject
     protected function prepareMenuItemsForDirectoryMenu($specialValue, $sortingField)
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $databaseConnection = $this->getDatabaseConnection();
         $menuItems = [];
         if ($specialValue == '') {
             $specialValue = $tsfe->page['uid'];
@@ -720,8 +718,8 @@ abstract class AbstractMenuContentObject
                 $id = $mount_info['mount_pid'];
             }
             // Get sub-pages:
-            $res = $this->parent_cObj->exec_getQuery('pages', ['pidInList' => $id, 'orderBy' => $sortingField]);
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+            $statement = $this->parent_cObj->exec_getQuery('pages', ['pidInList' => $id, 'orderBy' => $sortingField]);
+            while ($row = $statement->fetch()) {
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (!empty($row)) {
                     // Keep mount point?
@@ -749,8 +747,8 @@ abstract class AbstractMenuContentObject
                     }
                 }
             }
-            $databaseConnection->sql_free_result($res);
         }
+
         return $menuItems;
     }
 
@@ -878,20 +876,20 @@ abstract class AbstractMenuContentObject
         if ($maxAge > 0) {
             $extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
         }
-        $res = $this->parent_cObj->exec_getQuery('pages', [
+        $statement = $this->parent_cObj->exec_getQuery('pages', [
             'pidInList' => '0',
             'uidInList' => $id_list,
             'where' => $sortField . '>=0' . $extraWhere,
             'orderBy' => $sortingField ?: $sortField . ' DESC',
             'max' => $limit
         ]);
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $tsfe->sys_page->versionOL('pages', $row, true);
             if (is_array($row)) {
                 $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
             }
         }
-        $this->getDatabaseConnection()->sql_free_result($res);
+
         return $menuItems;
     }
 
@@ -975,21 +973,21 @@ abstract class AbstractMenuContentObject
                 );
             }
             $where = empty($keyWordsWhereArr) ? '' : '(' . implode(' OR ', $keyWordsWhereArr) . ')';
-            $res = $this->parent_cObj->exec_getQuery('pages', [
+            $statement = $this->parent_cObj->exec_getQuery('pages', [
                 'pidInList' => '0',
                 'uidInList' => $id_list,
                 'where' => $where . $extraWhere,
                 'orderBy' => $sortingField ?: $sortField . ' desc',
                 'max' => $limit
             ]);
-            while (($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
+            while ($row = $statement->fetch()) {
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (is_array($row)) {
                     $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
                 }
             }
-            $this->getDatabaseConnection()->sql_free_result($res);
         }
+
         return $menuItems;
     }
 
@@ -2134,13 +2132,13 @@ abstract class AbstractMenuContentObject
             // the referenced page
             $selectSetup['pidInList'] = $basePageRow['content_from_pid'];
         }
-        $resource = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
-        if (!$resource) {
+        $statement = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
+        if (!$statement) {
             $message = 'SectionIndex: Query to fetch the content elements failed!';
             throw new \UnexpectedValueException($message, 1337334849);
         }
         $result = [];
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) {
+        while ($row = $statement->fetch()) {
             $this->sys_page->versionOL('tt_content', $row);
             if ($tsfe->sys_language_contentOL && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
                 $row = $this->sys_page->getRecordOverlay('tt_content', $row, $basePageRow['_PAGES_OVERLAY_LANGUAGE'], $tsfe->sys_language_contentOL);
@@ -2171,7 +2169,7 @@ abstract class AbstractMenuContentObject
                 $result[$uid]['sectionIndex_uid'] = $uid;
             }
         }
-        $this->getDatabaseConnection()->sql_free_result($resource);
+
         return $result;
     }
 
@@ -2193,14 +2191,6 @@ abstract class AbstractMenuContentObject
     public function getParentContentObject()
     {
         return $this->parent_cObj;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

@@ -102,6 +102,52 @@ class QueryHelper
     }
 
     /**
+     * Split a JOIN SQL fragment into table name, alias and join conditions.
+     *
+     * @param string $input eg. "JOIN tableName AS a ON a.uid = anotherTable.uid_foreign"
+     * @return array assoc array consisting of the keys tableName, tableAlias and joinCondition
+     */
+    public static function parseJoin(string $input): array
+    {
+        $input = trim($input);
+        $quoteCharacter = ' ';
+        // Check if the tableName is quoted
+        if ($input[0] === '`' || $input[0] === '"') {
+            $quoteCharacter .= $input[0];
+            $input = substr($input, 1);
+            $tableName = strtok($input, $quoteCharacter);
+        } else {
+            $tableName = strtok($input, $quoteCharacter);
+        }
+
+        $tableAlias = strtok($quoteCharacter);
+        if (strtolower($tableAlias) === 'as') {
+            $tableAlias = strtok($quoteCharacter);
+            // Skip the next token which must be ON
+            strtok(' ');
+            $joinCondition = strtok('');
+        } elseif (strtolower($tableAlias) === 'on') {
+            $tableAlias = null;
+            $joinCondition = strtok('');
+        } else {
+            // Skip the next token which must be ON
+            strtok(' ');
+            $joinCondition = strtok('');
+        }
+
+        // Catch the edge case that the table name is unquoted and the
+        // table alias is actually quoted. This will not work in the case
+        // that the quoted table alias contains whitespace.
+        if ($tableAlias[0] === '`' || $tableAlias[0] === '"') {
+            $tableAlias = substr($tableAlias, 1, -1);
+        }
+
+        $tableAlias = $tableAlias ?: $tableName;
+
+        return ['tableName' => $tableName, 'tableAlias' => $tableAlias, 'joinCondition' => $joinCondition];
+    }
+
+    /**
      * Removes the prefixes AND/OR from the input string.
      *
      * This function should be used when you can't guarantee that the string

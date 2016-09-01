@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -3509,24 +3511,16 @@ class ContentObjectRenderer
      * Implements the stdWrap "numRows" property
      *
      * @param array $conf TypoScript properties for the property (see link to "numRows")
-     * @return int|bool The number of rows found by the select (FALSE on error)
+     * @return int The number of rows found by the select
      * @access private
      * @see stdWrap()
      */
     public function numRows($conf)
     {
-        $result = false;
         $conf['select.']['selectFields'] = 'count(*)';
-        $res = $this->exec_getQuery($conf['table'], $conf['select.']);
-        $db = $this->getDatabaseConnection();
-        if ($error = $db->sql_error()) {
-            $this->getTimeTracker()->setTSlogMessage($error, 3);
-        } else {
-            $row = $db->sql_fetch_row($res);
-            $result = (int)$row[0];
-        }
-        $db->sql_free_result($res);
-        return $result;
+        $statement = $this->exec_getQuery($conf['table'], $conf['select.']);
+
+        return (int)$statement->fetchColumn(0);
     }
 
     /**
@@ -7381,13 +7375,15 @@ class ContentObjectRenderer
      *
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
-     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
+     * @return Statement
      * @see getQuery()
      */
     public function exec_getQuery($table, $conf)
     {
-        $queryParts = $this->getQuery($table, $conf, true);
-        return $this->getDatabaseConnection()->exec_SELECT_queryArray($queryParts);
+        $statement = $this->getQuery($table, $conf);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        return $connection->executeQuery($statement);
     }
 
     /**
@@ -7397,43 +7393,37 @@ class ContentObjectRenderer
      * @param string $tableName the name of the TCA database table
      * @param array $queryConfiguration The TypoScript configuration properties, see .select in TypoScript reference
      * @return array The records
+     * @throws \UnexpectedValueException
      */
     public function getRecords($tableName, array $queryConfiguration)
     {
         $records = [];
 
-        $res = $this->exec_getQuery($tableName, $queryConfiguration);
+        $statement = $this->exec_getQuery($tableName, $queryConfiguration);
 
-        $db = $this->getDatabaseConnection();
-        if ($error = $db->sql_error()) {
-            $this->getTimeTracker()->setTSlogMessage($error, 3);
-        } else {
-            $tsfe = $this->getTypoScriptFrontendController();
-            while (($row = $db->sql_fetch_assoc($res)) !== false) {
+        $tsfe = $this->getTypoScriptFrontendController();
+        while ($row = $statement->fetch()) {
+            // Versioning preview:
+            $tsfe->sys_page->versionOL($tableName, $row, true);
 
-                // Versioning preview:
-                $tsfe->sys_page->versionOL($tableName, $row, true);
-
-                // Language overlay:
-                if (is_array($row) && $tsfe->sys_language_contentOL) {
-                    if ($tableName === 'pages') {
-                        $row = $tsfe->sys_page->getPageOverlay($row);
-                    } else {
-                        $row = $tsfe->sys_page->getRecordOverlay(
-                            $tableName,
-                            $row,
-                            $tsfe->sys_language_content,
-                            $tsfe->sys_language_contentOL
-                        );
-                    }
-                }
-
-                // Might be unset in the sys_language_contentOL
-                if (is_array($row)) {
-                    $records[] = $row;
+            // Language overlay:
+            if (is_array($row) && $tsfe->sys_language_contentOL) {
+                if ($tableName === 'pages') {
+                    $row = $tsfe->sys_page->getPageOverlay($row);
+                } else {
+                    $row = $tsfe->sys_page->getRecordOverlay(
+                        $tableName,
+                        $row,
+                        $tsfe->sys_language_content,
+                        $tsfe->sys_language_contentOL
+                    );
                 }
             }
-            $db->sql_free_result($res);
+
+            // Might be unset in the sys_language_contentOL
+            if (is_array($row)) {
+                $records[] = $row;
+            }
         }
 
         return $records;
@@ -7447,6 +7437,8 @@ class ContentObjectRenderer
      * @param array $conf See ->exec_getQuery()
      * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
      * @return mixed A SELECT query if $returnQueryArray is FALSE, otherwise the SELECT query in an array as parts.
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      * @access private
      * @see CONTENT(), numRows()
      */
@@ -7503,6 +7495,7 @@ class ContentObjectRenderer
                 }
             }
         }
+
         // Construct WHERE clause:
         // Handle recursive function for the pidInList
         if (isset($conf['recursive'])) {
@@ -7532,117 +7525,247 @@ class ContentObjectRenderer
         if ((string)$conf['pidInList'] === '') {
             $conf['pidInList'] = 'this';
         }
-        $queryParts = $this->getWhere($table, $conf, true);
+
+        $queryParts = $this->getQueryConstraints($table, $conf);
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        // @todo Check against getQueryConstraints, can probably use FrontendRestrictions
+        // @todo here and remove enableFields there.
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->select('*')->from($table);
+
+        if ($queryParts['where']) {
+            $queryBuilder->where($queryParts['where']);
+        }
+
+        if ($queryParts['groupBy']) {
+            $queryBuilder->groupBy(...$queryParts['groupBy']);
+        }
+
         // Fields:
         if ($conf['selectFields']) {
-            $queryParts['SELECT'] = $this->sanitizeSelectPart($conf['selectFields'], $table);
-        } else {
-            $queryParts['SELECT'] = '*';
+            $queryBuilder->selectLiteral($this->sanitizeSelectPart($conf['selectFields'], $table));
         }
+
         // Setting LIMIT:
-        $db = $this->getDatabaseConnection();
-        $error = 0;
+        $error = false;
         if ($conf['max'] || $conf['begin']) {
             // Finding the total number of records, if used:
-            if (strstr(strtolower($conf['begin'] . $conf['max']), 'total')) {
-                $res = $db->exec_SELECTquery('count(*)', $table, $queryParts['WHERE'], $queryParts['GROUPBY']);
-                if ($error = $db->sql_error()) {
-                    $this->getTimeTracker()->setTSlogMessage($error);
-                } else {
-                    $row = $db->sql_fetch_row($res);
-                    $conf['max'] = str_ireplace('total', $row[0], $conf['max']);
-                    $conf['begin'] = str_ireplace('total', $row[0], $conf['begin']);
+            if (strpos(strtolower($conf['begin'] . $conf['max']), 'total') !== false) {
+                $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $countQueryBuilder->getRestrictions()->removeAll();
+                $countQueryBuilder->count('*')
+                    ->from($table)
+                    ->where($queryParts['where']);
+
+                if ($queryParts['groupBy']) {
+                    $countQueryBuilder->groupBy(...$queryParts['groupBy']);
                 }
-                $db->sql_free_result($res);
+
+                try {
+                    $count = $countQueryBuilder->execute()->fetchColumn(0);
+                    $conf['max'] = str_ireplace('total', $count, $conf['max']);
+                    $conf['begin'] = str_ireplace('total', $count, $conf['begin']);
+                } catch (DBALException $e) {
+                    $this->getTimeTracker()->setTSlogMessage($e->getPrevious()->getMessage());
+                    $error = true;
+                }
             }
+
             if (!$error) {
                 $conf['begin'] = MathUtility::forceIntegerInRange(ceil($this->calc($conf['begin'])), 0);
                 $conf['max'] = MathUtility::forceIntegerInRange(ceil($this->calc($conf['max'])), 0);
-                if ($conf['begin'] && !$conf['max']) {
-                    $conf['max'] = 100000;
+                if ($conf['begin'] > 0) {
+                    $queryBuilder->setFirstResult($conf['begin']);
                 }
-                if ($conf['begin'] && $conf['max']) {
-                    $queryParts['LIMIT'] = $conf['begin'] . ',' . $conf['max'];
-                } elseif (!$conf['begin'] && $conf['max']) {
-                    $queryParts['LIMIT'] = $conf['max'];
-                }
+                $queryBuilder->setMaxResults($conf['max'] ?: 100000);
             }
         }
+
         if (!$error) {
             // Setting up tablejoins:
-            $joinPart = '';
             if ($conf['join']) {
-                $joinPart = 'JOIN ' . $conf['join'];
+                $joinParts = QueryHelper::parseJoin($conf['join']);
+                $queryBuilder->join(
+                    $table,
+                    $joinParts['tableName'],
+                    $joinParts['tableAlias'],
+                    $joinParts['joinCondition']
+                );
             } elseif ($conf['leftjoin']) {
-                $joinPart = 'LEFT OUTER JOIN ' . $conf['leftjoin'];
+                $joinParts = QueryHelper::parseJoin($conf['leftjoin']);
+                $queryBuilder->leftJoin(
+                    $table,
+                    $joinParts['tableName'],
+                    $joinParts['tableAlias'],
+                    $joinParts['joinCondition']
+                );
             } elseif ($conf['rightjoin']) {
-                $joinPart = 'RIGHT OUTER JOIN ' . $conf['rightjoin'];
+                $joinParts = QueryHelper::parseJoin($conf['rightjoin']);
+                $queryBuilder->rightJoin(
+                    $table,
+                    $joinParts['tableName'],
+                    $joinParts['tableAlias'],
+                    $joinParts['joinCondition']
+                );
             }
-            // Compile and return query:
-            $queryParts['FROM'] = trim($table . ' ' . $joinPart);
-            // Replace the markers in the queryParts to handle stdWrap
-            // enabled properties
+
+            // Convert the QueryBuilder object into a SQL statement.
+            $query = $queryBuilder->getSQL();
+
+            // Replace the markers in the queryParts to handle stdWrap enabled properties
             foreach ($queryMarkers as $marker => $markerValue) {
+                // @todo Ugly hack that needs to be cleaned up, with the current architecture
+                // @todo for exec_Query / getQuery it's the best we can do.
+                $query = str_replace('###' . $marker . '###', $markerValue, $query);
                 foreach ($queryParts as $queryPartKey => &$queryPartValue) {
                     $queryPartValue = str_replace('###' . $marker . '###', $markerValue, $queryPartValue);
                 }
                 unset($queryPartValue);
             }
-            $query = $db->SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
-            return $returnQueryArray ? $queryParts : $query;
+
+            return $returnQueryArray ? $this->getQueryArray($queryBuilder) : $query;
         }
+
         return '';
     }
 
+    /**
+     * Helper to transform a QueryBuilder object into a queryParts array that can be used
+     * with exec_SELECT_queryArray
+     *
+     * @param \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder
+     * @return array
+     * @throws \RuntimeException
+     */
+    protected function getQueryArray(QueryBuilder $queryBuilder)
+    {
+        $fromClauses = [];
+        $knownAliases = [];
+        $queryParts = [];
+
+        // Loop through all FROM clauses
+        foreach ($queryBuilder->getQueryPart('from') as $from) {
+            if ($from['alias'] === null) {
+                $tableSql = $from['table'];
+                $tableReference = $from['table'];
+            } else {
+                $tableSql = $from['table'] . ' ' . $from['alias'];
+                $tableReference = $from['alias'];
+            }
+
+            $knownAliases[$tableReference] = true;
+
+            $fromClauses[$tableReference] = $tableSql . $this->getQueryArrayJoinHelper(
+                $tableReference,
+                $queryBuilder->getQueryPart('join'),
+                $knownAliases
+            );
+        }
+
+        $queryParts['SELECT'] = implode(', ', $queryBuilder->getQueryPart('select'));
+        $queryParts['FROM'] = implode(', ', $fromClauses);
+        $queryParts['WHERE'] = (string)$queryBuilder->getQueryPart('where') ?: '';
+        $queryParts['GROUPBY'] = implode(', ', $queryBuilder->getQueryPart('groupBy'));
+        $queryParts['ORDERBY'] = implode(', ', $queryBuilder->getQueryPart('orderBy'));
+        if ($queryBuilder->getFirstResult() > 0) {
+            $queryParts['LIMIT'] = $queryBuilder->getFirstResult() . ',' . $queryBuilder->getMaxResults();
+        } elseif ($queryBuilder->getMaxResults() > 0) {
+            $queryParts['LIMIT'] = $queryBuilder->getMaxResults();
+        }
+
+        return $queryParts;
+    }
+
+    /**
+     * Helper to transform the QueryBuilder join part into a SQL fragment.
+     *
+     * @param string $fromAlias
+     * @param array $joinParts
+     * @param array $knownAliases
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function getQueryArrayJoinHelper(string $fromAlias, array $joinParts, array &$knownAliases): string
+    {
+        $sql = '';
+
+        if (isset($joinParts['join'][$fromAlias])) {
+            foreach ($joinParts['join'][$fromAlias] as $join) {
+                if (array_key_exists($join['joinAlias'], $knownAliases)) {
+                    throw new \RuntimeException(
+                        'Non unique join alias: "' . $join['joinAlias'] . '" found.',
+                        1472748872
+                    );
+                }
+                $sql .= ' ' . strtoupper($join['joinType'])
+                    . ' JOIN ' . $join['joinTable'] . ' ' . $join['joinAlias']
+                    . ' ON ' . ((string)$join['joinCondition']);
+                $knownAliases[$join['joinAlias']] = true;
+            }
+
+            foreach ($joinParts['join'][$fromAlias] as $join) {
+                $sql .= $this->getQueryArrayJoinHelper($join['joinAlias'], $joinParts, $knownAliases);
+            }
+        }
+
+        return $sql;
+    }
     /**
      * Helper function for getQuery(), creating the WHERE clause of the SELECT query
      *
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
-     * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
-     * @return mixed A WHERE clause based on the relevant parts of the TypoScript properties for a "select" function in TypoScript, see link. If $returnQueryArray is FALSE the where clause is returned as a string with WHERE, GROUP BY and ORDER BY parts, otherwise as an array with these parts.
-     * @access private
+     * @return array Associative array containing the prepared data for WHERE, ORDER BY and GROUP BY fragments
+     * @throws \InvalidArgumentException
      * @see getQuery()
      */
-    public function getWhere($table, $conf, $returnQueryArray = false)
+    protected function getQueryConstraints(string $table, array $conf): array
     {
         // Init:
-        $query = '';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $expressionBuilder = $queryBuilder->expr();
+        $tsfe = $this->getTypoScriptFrontendController();
+        $constraints = [];
         $pid_uid_flag = 0;
         $enableFieldsIgnore = [];
         $queryParts = [
-            'SELECT' => '',
-            'FROM' => '',
-            'WHERE' => '',
-            'GROUPBY' => '',
-            'ORDERBY' => '',
-            'LIMIT' => ''
+            'where' => null,
+            'groupBy' => null,
+            'orderBy' => null,
         ];
-        $tsfe = $this->getTypoScriptFrontendController();
+
         $considerMovePlaceholders = (
             $tsfe->sys_page->versioningPreview && $table !== 'pages'
             && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
         );
+
         if (trim($conf['uidInList'])) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', $tsfe->contentPid, $conf['uidInList']));
-            if (count($listArr) === 1) {
-                $comparison = '=' . (int)$listArr[0];
-            } else {
-                $comparison = ' IN (' . implode(',', $listArr) . ')';
-            }
+
             // If move placeholder shall be considered, select via t3ver_move_id
             if ($considerMovePlaceholders) {
-                $movePlaceholderComparison = $table . '.t3ver_state=' . VersionState::cast(VersionState::MOVE_PLACEHOLDER) . ' AND ' . $table . '.t3ver_move_id' . $comparison;
-                $query .= ' AND (' . $table . '.uid' . $comparison . ' OR ' . $movePlaceholderComparison . ')';
+                $constraints[] = (string)$expressionBuilder->orX(
+                    $expressionBuilder->in($table . '.uid', $listArr),
+                    $expressionBuilder->andX(
+                        $expressionBuilder->eq(
+                            $table . '.t3ver_state',
+                            VersionState::cast(VersionState::MOVE_PLACEHOLDER)
+                        ),
+                        $expressionBuilder->in($table . '.t3ver_move_id', $listArr)
+                    )
+                );
             } else {
-                $query .= ' AND ' . $table . '.uid' . $comparison;
+                $constraints[] = (string)$expressionBuilder->in($table . '.uid', $listArr);
             }
             $pid_uid_flag++;
         }
+
         // Static_* tables are allowed to be fetched from root page
-        if (substr($table, 0, 7) === 'static_') {
+        if (StringUtility::beginsWith($table, 'static_')) {
             $pid_uid_flag++;
         }
+
         if (trim($conf['pidInList'])) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', $tsfe->contentPid, $conf['pidInList']));
             // Removes all pages which are not visible for the user!
@@ -7655,20 +7778,22 @@ class ContentObjectRenderer
                 $enableFieldsIgnore['pid'] = true;
             }
             if (!empty($listArr)) {
-                $query .= ' AND ' . $table . '.pid IN (' . implode(',', array_map('intval', $listArr)) . ')';
+                $constraints[] = $expressionBuilder->in($table . '.pid', array_map('intval', $listArr));
                 $pid_uid_flag++;
             } else {
                 // If not uid and not pid then uid is set to 0 - which results in nothing!!
                 $pid_uid_flag = 0;
             }
         }
+
         // If not uid and not pid then uid is set to 0 - which results in nothing!!
         if (!$pid_uid_flag) {
-            $query .= ' AND ' . $table . '.uid=0';
+            $constraints[] = $expressionBuilder->eq($table . '.uid', 0);
         }
+
         $where = isset($conf['where.']) ? trim($this->stdWrap($conf['where'], $conf['where.'])) : trim($conf['where']);
         if ($where) {
-            $query .= ' AND ' . $where;
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($where);
         }
 
         // Check if the table is translatable, and set the language field by default from the TCA information
@@ -7688,44 +7813,113 @@ class ContentObjectRenderer
             if ($tsfe->sys_language_contentOL && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
                 // Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
                 // OVERLAY the records with localized versions!
-                $languageQuery = $languageField . ' IN (0,-1)';
+                $languageQuery = $expressionBuilder->in($languageField, [0, -1]);
                 // Use this option to include records that don't have a default translation
                 // (originalpointerfield is 0 and the language field contains the requested language)
                 $includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.']) ?
                     $this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.']) :
                     $conf['includeRecordsWithoutDefaultTranslation'];
-                if (!empty(trim($includeRecordsWithoutDefaultTranslation))) {
-                    $languageQuery .= ' OR (' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ' = 0 AND ' .
-                        $languageField . ' = ' . $sys_language_content . ')';
+                if (trim($includeRecordsWithoutDefaultTranslation) !== '') {
+                    $languageQuery = $expressionBuilder->orX(
+                        $languageQuery,
+                        $expressionBuilder->andX(
+                            $expressionBuilder->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0),
+                            $expressionBuilder->eq($languageField, $sys_language_content)
+                        )
+                    );
                 }
             } else {
-                $languageQuery = $languageField . ' = ' . $sys_language_content;
+                $languageQuery = $expressionBuilder->eq($languageField, $sys_language_content);
             }
-            $query .= ' AND (' . $languageQuery . ')';
+            $constraints[] = $languageQuery;
         }
 
         // Enablefields
         if ($table === 'pages') {
-            $query .= ' ' . $tsfe->sys_page->where_hid_del . $tsfe->sys_page->where_groupAccess;
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->where_hid_del);
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->where_groupAccess);
         } else {
-            $query .= $this->enableFields($table, false, $enableFieldsIgnore);
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($this->enableFields($table, false, $enableFieldsIgnore));
         }
+
         // MAKE WHERE:
-        if ($query) {
-            // Stripping of " AND"...
-            $queryParts['WHERE'] = trim(substr($query, 4));
-            $query = 'WHERE ' . $queryParts['WHERE'];
+        if (count($constraints) !== 0) {
+            $queryParts['where'] = $expressionBuilder->andX(...$constraints);
         }
         // GROUP BY
         if (trim($conf['groupBy'])) {
-            $queryParts['GROUPBY'] = isset($conf['groupBy.']) ? trim($this->stdWrap($conf['groupBy'], $conf['groupBy.'])) : trim($conf['groupBy']);
-            $query .= ' GROUP BY ' . $queryParts['GROUPBY'];
+            $groupBy = isset($conf['groupBy.'])
+                ? trim($this->stdWrap($conf['groupBy'], $conf['groupBy.']))
+                : trim($conf['groupBy']);
+            $queryParts['groupBy'] = QueryHelper::parseGroupBy($groupBy);
         }
+
         // ORDER BY
         if (trim($conf['orderBy'])) {
-            $queryParts['ORDERBY'] = isset($conf['orderBy.']) ? trim($this->stdWrap($conf['orderBy'], $conf['orderBy.'])) : trim($conf['orderBy']);
+            $orderByString = isset($conf['orderBy.'])
+                ? trim($this->stdWrap($conf['orderBy'], $conf['orderBy.']))
+                : trim($conf['orderBy']);
+
+            $queryParts['orderBy'] = QueryHelper::parseOrderBy($orderByString);
+        }
+
+        // Return result:
+        return $queryParts;
+    }
+
+    /**
+     * Helper function for getQuery(), creating the WHERE clause of the SELECT query
+     *
+     * @param string $table The table name
+     * @param array $conf The TypoScript configuration properties
+     * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
+     * @return mixed A WHERE clause based on the relevant parts of the TypoScript properties for a "select" function in TypoScript, see link. If $returnQueryArray is FALSE the where clause is returned as a string with WHERE, GROUP BY and ORDER BY parts, otherwise as an array with these parts.
+     * @access private
+     * @see getQuery()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
+     */
+    public function getWhere($table, $conf, $returnQueryArray = false)
+    {
+        // Init:
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryConstraints = $this->getQueryConstraints($table, $conf);
+        $query = '';
+
+        $queryParts = [
+            'SELECT' => '',
+            'FROM' => '',
+            'WHERE' => '',
+            'GROUPBY' => '',
+            'ORDERBY' => '',
+            'LIMIT' => ''
+        ];
+
+        // MAKE WHERE:
+        if (!empty($queryConstraints['where'])) {
+            $queryParts['WHERE'] = (string)$queryConstraints['where'];
+            $query = 'WHERE ' . $queryParts['WHERE'];
+        }
+
+        // GROUP BY
+        if (!empty($queryConstraints['groupBy'])) {
+            $queryParts['GROUPBY'] = implode(
+                ', ',
+                array_map([$queryBuilder, 'quoteIdentifier'], $queryConstraints['groupBy'])
+            );
+            $query .= ' GROUP BY ' . $queryParts['GROUPBY'];
+        }
+
+        // ORDER BY
+        if (!empty($queryConstraints['orderBy'])) {
+            $orderBy = [];
+            foreach ($queryConstraints['orderBy'] as $orderPair) {
+                list($fieldName, $direction) = $orderPair;
+                $orderBy[] = trim($queryBuilder->quoteIdentifier($fieldName) . ' ' . $direction);
+            }
+            $queryParts['ORDERBY'] = implode(', ', $orderBy);
             $query .= ' ORDER BY ' . $queryParts['ORDERBY'];
         }
+
         // Return result:
         return $returnQueryArray ? $queryParts : $query;
     }
@@ -7744,6 +7938,8 @@ class ContentObjectRenderer
      */
     protected function sanitizeSelectPart($selectPart, $table)
     {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
         // Pattern matching parts
         $matchStart = '/(^\\s*|,\\s*|' . $table . '\\.)';
         $matchEnd = '(\\s*,|\\s*$)/';
@@ -7753,14 +7949,14 @@ class ContentObjectRenderer
             foreach ($necessaryFields as $field) {
                 $match = $matchStart . $field . $matchEnd;
                 if (!preg_match($match, $selectPart)) {
-                    $selectPart .= ', ' . $table . '.' . $field . ' as ' . $field;
+                    $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $field) . ' AS ' . $connection->quoteIdentifier($field);
                 }
             }
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                 foreach ($wsFields as $field) {
                     $match = $matchStart . $field . $matchEnd;
                     if (!preg_match($match, $selectPart)) {
-                        $selectPart .= ', ' . $table . '.' . $field . ' as ' . $field;
+                        $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $field) . ' AS ' . $connection->quoteIdentifier($field);
                     }
                 }
             }
@@ -8093,16 +8289,6 @@ class ContentObjectRenderer
     protected function getFrontendBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

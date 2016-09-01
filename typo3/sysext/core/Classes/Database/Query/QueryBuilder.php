@@ -301,7 +301,7 @@ class QueryBuilder
      */
     public function getFirstResult(): int
     {
-        return $this->concreteQueryBuilder->getFirstResult();
+        return (int)$this->concreteQueryBuilder->getFirstResult();
     }
 
     /**
