@@ -42,12 +42,28 @@
 </f:if>
 
 <f:if condition="{wizardsDone}">
-	<h2>Wizards done</h2>
-	<ul>
-		<f:for each="{wizardsDone}" as="wizardDone">
-			<li>{wizardDone.title}</li>
-		</f:for>
-	</ul>
+	<form method="post">
+		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+		<h2>Wizards done</h2>
+		<table class="table table-striped">
+			<tbody>
+			<f:for each="{wizardsDone}" as="wizardDone">
+				<tr>
+					<td>
+						<input id="t3-recheck-{wizardDone.identifier}" type="checkbox" name="install[values][recheck][{wizardDone.identifier}]" value="1" />
+					</td>
+					<td>
+						{wizardDone.title}
+					</td>
+				</tr>
+			</f:for>
+			</tbody>
+		</table>
+		<f:render
+			partial="Action/Common/SubmitButton"
+			arguments="{name:'recheckWizards', text:'Recheck chosen wizards'}"
+		/>
+	</form>
 </f:if>
 <hr />
 

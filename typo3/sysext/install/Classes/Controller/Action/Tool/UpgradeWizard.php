@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\Controller\Action;
@@ -92,6 +93,10 @@ class UpgradeWizard extends Action\AbstractAction
         } elseif (isset($this->postValues['set']['performUpdate'])) {
             $actionMessages[] = $this->performUpdate();
             $this->view->assign('updateAction', 'performUpdate');
+        } elseif (isset($this->postValues['set']['recheckWizards'])) {
+            $actionMessages[] = $this->recheckWizards();
+            $this->listUpdates();
+            $this->view->assign('updateAction', 'listUpdates');
         } else {
             $this->listUpdates();
             $this->view->assign('updateAction', 'listUpdates');
@@ -153,7 +158,11 @@ class UpgradeWizard extends Action\AbstractAction
             /** @var AbstractUpdate $updateObject */
             $updateObject = $this->getUpdateObjectInstance($className, $identifier);
             if ($updateObject->shouldRenderWizard() !== true) {
-                $wizardsDone[] = $updateObject;
+                $doneWizard = [
+                    'identifier' => $identifier,
+                    'title'      => $updateObject->getTitle()
+                ];
+                $wizardsDone[] = $doneWizard;
             }
         }
         $this->view->assign('wizardsDone', $wizardsDone);
@@ -191,6 +200,28 @@ class UpgradeWizard extends Action\AbstractAction
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
         $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Show wizard options');
+        return $message;
+    }
+
+    /**
+     * Rechecks whether the chosen wizards should be executed
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function recheckWizards()
+    {
+        if (empty($this->postValues['values']['recheck'])) {
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\NoticeStatus::class);
+            $message->setTitle('No wizards selected to recheck');
+            return $message;
+        }
+        foreach ($this->postValues['values']['recheck'] as $wizardIdentifier => $value) {
+            $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
+            $updateObject = $this->getUpdateObjectInstance($className, $wizardIdentifier);
+            GeneralUtility::makeInstance(Registry::class)->set('installUpdate', get_class($updateObject), 0);
+        }
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message->setTitle('Successfully rechecked');
         return $message;
     }
 
