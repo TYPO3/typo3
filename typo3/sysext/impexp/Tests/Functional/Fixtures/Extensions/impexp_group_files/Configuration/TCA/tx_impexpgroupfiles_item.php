@@ -148,7 +148,7 @@ return [
 															<link type="array">
 																<type>popup</type>
 																<title>Link</title>
-																<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+																<icon>actions-wizard-link</icon>
 																<module type="array">
 																	<name>wizard_link</name>
 																</module>

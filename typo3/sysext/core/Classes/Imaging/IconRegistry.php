@@ -939,7 +939,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-window-open.svg'
             ]
         ],
-
+        'actions-wizard-link' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'link'
+            ]
+        ],
+        'actions-wizard-rte' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'arrows-alt'
+            ]
+        ],
         // Apps
         'apps-clipboard-images' => [
             'provider' => SvgIconProvider::class,
