@@ -504,9 +504,15 @@ abstract class AbstractFormElement extends AbstractNode
             ? MathUtility::forceIntegerInRange($itemArrayC + 1, MathUtility::forceIntegerInRange($params['size'], 1), $params['autoSizeMax'])
             : $params['size'];
         if (!$selector) {
-            $isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
+            $maxItems = (int)($params['maxitems'] ?? 0);
+            $size = (int)($params['size'] ?? 0);
+            $classes = ['form-control', 'tceforms-multiselect'];
+            if ($maxItems === 1) {
+                $classes[] = 'form-select-no-siblings';
+            }
+            $isMultiple = $maxItems !== 1 && $size !== 1;
             $selector = '<select id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '" '
-                . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="form-control tceforms-multiselect"')
+                . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="' . implode(' ', $classes) . '"')
                 . ($isMultiple ? ' multiple="multiple"' : '')
                 . ' data-formengine-input-name="' . htmlspecialchars($fName) . '" ' . $this->getValidationDataAsDataAttribute($config) . $params['style'] . $disabled . '>' . implode('', $opt)
                 . '</select>';
