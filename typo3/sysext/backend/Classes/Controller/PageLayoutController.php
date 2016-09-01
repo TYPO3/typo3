@@ -543,6 +543,9 @@ class PageLayoutController
         $content = '';
         $lang = $this->getLanguageService();
 
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+
         // If page is a folder
         if ($this->pageinfo['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
             $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
@@ -552,14 +555,78 @@ class PageLayoutController
                 $title = $lang->getLL('goToListModule');
                 $message = '<p>' . $lang->getLL('goToListModuleMessage') . '</p>';
                 $message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $lang->getLL('goToListModule') . '</a>';
-                $view = GeneralUtility::makeInstance(StandaloneView::class);
-                $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
                 $view->assignMultiple([
                     'title' => $title,
                     'message' => $message,
                     'state' => InfoboxViewHelper::STATE_INFO
                 ]);
                 $content .= $view->render();
+            }
+        } elseif ($this->pageinfo['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
+            $shortcutMode = (int)$this->pageinfo['shortcut_mode'];
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            $targetPage = [];
+
+            if ($this->pageinfo['shortcut'] || $shortcutMode) {
+                switch ($shortcutMode) {
+                    case PageRepository::SHORTCUT_MODE_NONE:
+                        $targetPage = $pageRepository->getPage($this->pageinfo['shortcut']);
+                        break;
+                    case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
+                        $targetPage = reset($pageRepository->getMenu($this->pageinfo['shortcut'] ?: $this->pageinfo['uid']));
+                        break;
+                    case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
+                        $targetPage = $pageRepository->getPage($this->pageinfo['pid']);
+                        break;
+                }
+
+                $message = '';
+                if ($shortcutMode === PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+                    $message .= sprintf($lang->getLL('pageIsRandomInternalLinkMessage'));
+                } else {
+                    $linkToPid = $this->local_linkThisScript(['id' => $targetPage['uid']]);
+                    $path = BackendUtility::getRecordPath($targetPage['uid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 1000);
+                    $linkedPath = '<a href="' . $linkToPid . '">' . htmlspecialchars($path) . '</a>';
+                    $message .= sprintf($lang->getLL('pageIsInternalLinkMessage'), $linkedPath);
+                }
+
+                $message .= ' (' . htmlspecialchars($lang->sL(BackendUtility::getLabelFromItemlist('pages', 'shortcut_mode', $shortcutMode))) . ')';
+
+                $view->assignMultiple([
+                    'title' => $this->pageinfo['title'],
+                    'message' => $message,
+                    'state' => InfoboxViewHelper::STATE_INFO
+                ]);
+                $content .= $view->render();
+            } else {
+                if (empty($targetPage) && $shortcutMode !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+                    $view->assignMultiple([
+                        'title' => $this->pageinfo['title'],
+                        'message' => $lang->getLL('pageIsMisconfiguredInternalLinkMessage'),
+                        'state' => InfoboxViewHelper::STATE_ERROR
+                    ]);
+                    $content .= $view->render();
+                }
+            }
+        } elseif ($this->pageinfo['doktype'] === PageRepository::DOKTYPE_LINK) {
+            if (empty($this->pageinfo['url'])) {
+                $view->assignMultiple([
+                    'title' => $this->pageinfo['title'],
+                    'message' => $lang->getLL('pageIsMisconfiguredExternalLinkMessage'),
+                    'state' => InfoboxViewHelper::STATE_ERROR
+                ]);
+                $content .= $view->render();
+            } else {
+                $externalUrl = htmlspecialchars(GeneralUtility::makeInstance(PageRepository::class)->getExtURL($this->pageinfo));
+                if ($externalUrl !== false) {
+                    $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noopener">' . $externalUrl . '</a>';
+                    $view->assignMultiple([
+                        'title' => $this->pageinfo['title'],
+                        'message' => sprintf($lang->getLL('pageIsExternalLinkMessage'), $externalUrlHtml),
+                        'state' => InfoboxViewHelper::STATE_INFO
+                    ]);
+                    $content .= $view->render();
+                }
             }
         }
         // If content from different pid is displayed
@@ -569,8 +636,6 @@ class PageLayoutController
             $title = BackendUtility::getRecordTitle('pages', $contentPage);
             $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
             $message = sprintf($lang->getLL('content_from_pid_title'), $link);
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
             $view->assignMultiple([
                 'title' => $title,
                 'message' => $message,
