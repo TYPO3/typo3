@@ -691,7 +691,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             }
         }
         // Set LIMIT:
-        $limit = $this->iLimit ? ($this->firstElementNumber ? $this->firstElementNumber . ',' : '') . ($this->iLimit + 1) : '';
+        $limit = $this->iLimit ? ($this->firstElementNumber ? $this->firstElementNumber . ',' : '') . $this->iLimit : '';
         // Filtering on displayable pages (permissions):
         $pC = $table == 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
         // Adding search constraints:
@@ -810,7 +810,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             'groupBy' => null,
             'orderBy' => null,
             'firstResult' => $this->firstElementNumber ?: null,
-            'maxResults' => $this->iLimit ? ($this->iLimit + 1) : null,
+            'maxResults' => $this->iLimit ? $this->iLimit : null,
         ];
 
         if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
