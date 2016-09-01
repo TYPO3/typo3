@@ -160,7 +160,11 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                 $subNode = Commands::getNewNode($subpage, $mountPoint);
                 $subNode->setIsMountPoint($isMountPoint);
                 if ($isMountPoint && $this->showRootlineAboveMounts) {
-                    $rootline = Commands::getMountPointPath($subpage['uid']);
+                    if ($subpage['pid'] > 0) {
+                        $rootline = Commands::getMountPointPath($subpage['pid']);
+                    } else {
+                        $rootline = Commands::getMountPointPath($subpage['uid']);
+                    }
                     $subNode->setReadableRootline($rootline);
                 }
                 if ($this->nodeCounter < $this->nodeLimit) {
