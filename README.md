@@ -83,7 +83,17 @@ yourself involved.
 * Register: https://forger.typo3.org/slack/
 * Slack: https://typo3.slack.com/
 
-### Exchange information, get help
+### Exchange information, ask questions, get help
+
+Slack is nice for short discussions, but when asking questions, most
+answers are lost in the noise after a few minutes. To let everyone
+profit from an answer, we recommend to ask questions on StackOverflow.
+If you like, you can then post a link into the corresponding Slack
+channel to raise attention. And please, do not forget to tag your
+questions correctly with `TYPO3` (and possibly other tags like `Fluid`
+or `Extbase`).
+
+* [StackOverflow questions tagged "TYPO3"](https://stackoverflow.com/questions/tagged/typo3)
 
 The community and all TYPO3 teams communicate through newsgroups, which can
 also be accessed through mailing lists and forums. Any of these three ways
