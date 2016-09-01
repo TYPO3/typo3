@@ -224,13 +224,6 @@ define([
 
 	/**
 	 *
-	 */
-	TsCodeCompletion.click = function() {
-		TsCodeCompletion.endAutoCompletion();
-	};
-
-	/**
-	 *
 	 * @param cursorNode
 	 * @returns {*}
 	 */
@@ -309,6 +302,10 @@ define([
 				}
 			}
 		}
+	};
+
+	TsCodeCompletion.scroll = function(e) {
+		TsCodeCompletion.refreshCodeCompletionPosition();
 	};
 
 	/**
@@ -468,8 +465,8 @@ define([
 				$cursorNode = $(TsCodeCompletion.latestCursorNode),
 				nodeOffset = $cursorNode.offset();
 
-			var leftpos = Math.round(wrapOffset.left + nodeOffset.left + TsCodeCompletion.latestCursorNode.offsetWidth) + 'px',
-				toppos = Math.round($cursorNode.position().top + TsCodeCompletion.latestCursorNode.offsetHeight - $cursorNode.scrollTop()) + 'px';
+			var leftpos = Math.round(wrapOffset.left + nodeOffset.left + TsCodeCompletion.latestCursorNode.offsetWidth - $(TsCodeCompletion.codemirror.frame.contentDocument.body).scrollLeft()) + 'px',
+				toppos = Math.round($cursorNode.position().top + TsCodeCompletion.latestCursorNode.offsetHeight - $cursorNode.scrollTop() - $(TsCodeCompletion.codemirror.frame.contentDocument.body).scrollTop()) + 'px';
 
 			TsCodeCompletion.$codeCompleteBox.css({
 				left: leftpos,
@@ -490,6 +487,25 @@ define([
 			}
 		} else {
 			TsCodeCompletion.endAutoCompletion();
+		}
+	};
+
+	/**
+	 * refresh the position of the completion list (after scroll)
+	 */
+	TsCodeCompletion.refreshCodeCompletionPosition = function() {
+		if (TsCodeCompletion.proposals && TsCodeCompletion.proposals.length > 0) {
+			var wrapOffset = TsCodeCompletion.codemirror.options.originalTextarea.parent().find('.t3e_iframe_wrap').offset(),
+				$cursorNode = $(TsCodeCompletion.latestCursorNode),
+				nodeOffset = $cursorNode.offset();
+
+			var leftpos = Math.round(wrapOffset.left + nodeOffset.left + TsCodeCompletion.latestCursorNode.offsetWidth - $(TsCodeCompletion.codemirror.frame.contentDocument.body).scrollLeft()) + 'px',
+				toppos = Math.round($cursorNode.position().top + TsCodeCompletion.latestCursorNode.offsetHeight - $cursorNode.scrollTop() - $(TsCodeCompletion.codemirror.frame.contentDocument.body).scrollTop()) + 'px';
+
+			TsCodeCompletion.$codeCompleteBox.css({
+				left: leftpos,
+				top: toppos
+			});
 		}
 	};
 
@@ -615,6 +631,7 @@ define([
 
 		$(codemirror.win)
 			.on('click', TsCodeCompletion.click)
+			.on('scroll', TsCodeCompletion.scroll)
 			.on('mousemove', TsCodeCompletion.saveMousePos)
 			.on('keydown', function(e) {
 				TsCodeCompletion.codemirror = codemirror;
