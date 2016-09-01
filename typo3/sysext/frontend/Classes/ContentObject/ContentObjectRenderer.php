@@ -7383,7 +7383,7 @@ class ContentObjectRenderer
                 $theValue = $tsfe->csConvObj->conv_case($tsfe->renderCharset, $theValue, 'toLower');
                 break;
             case 'capitalize':
-                $theValue = ucwords($theValue);
+                $theValue = $tsfe->csConvObj->convCapitalize($tsfe->renderCharset, $theValue);
                 break;
             case 'ucfirst':
                 $theValue = $tsfe->csConvObj->convCaseFirst($tsfe->renderCharset, $theValue, 'toUpper');

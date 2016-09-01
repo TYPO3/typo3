@@ -1662,6 +1662,22 @@ class CharsetConverter
     }
 
     /**
+     * Capitalize the given string
+     *
+     * @param string $charset
+     * @param string $string
+     * @return string
+     */
+    public function convCapitalize($charset, $string)
+    {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+            return mb_convert_case($string, MB_CASE_TITLE, $charset);
+        } else {
+            return ucwords($string);
+        }
+    }
+
+    /**
      * Converts special chars (like æøåÆØÅ, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
      *
      * @param string $charset Character set of string
