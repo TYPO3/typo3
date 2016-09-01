@@ -137,6 +137,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             }
         }
         if (is_array($subpages) && !empty($subpages)) {
+            $lastRootline = [];
             foreach ($subpages as $subpage) {
                 if (in_array($subpage['uid'], $this->hiddenRecords)) {
                     continue;
@@ -159,7 +160,10 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                     } else {
                         $rootline = Commands::getMountPointPath($subpage['uid']);
                     }
-                    $subNode->setReadableRootline($rootline);
+                    if ($lastRootline !== $rootline) {
+                        $subNode->setReadableRootline($rootline);
+                    }
+                    $lastRootline = $rootline;
                 }
                 if ($this->nodeCounter < $this->nodeLimit) {
                     $childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
