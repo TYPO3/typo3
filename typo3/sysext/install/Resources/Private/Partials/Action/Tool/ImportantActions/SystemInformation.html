@@ -33,7 +33,10 @@
 							<li><strong>Port:</strong> {connection.port}</li>
 						</f:then>
 						<f:else>
-							<li><strong>Socket:</strong> {connection.socket}</li>
+							<li>
+								<strong>Socket:</strong>
+								{f:if(condition:connection.socket, then:connection.socket, else:'<em>PHP default</em>')}
+							</li>
 						</f:else>
 					</f:if>
 					<li><strong>Version:</strong> {connection.version}</li>
