@@ -965,7 +965,7 @@ class IndexSearchRepository
                 QueryHelper::stripLogicalOperatorPrefix($this->mediaTypeWhere()),
                 QueryHelper::stripLogicalOperatorPrefix($this->languageWhere()),
                 QueryHelper::stripLogicalOperatorPrefix($this->freeIndexUidWhere($freeIndexUid)),
-                $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('IR.phash'))
+                $queryBuilder->expr()->eq('ISEC.phash', $queryBuilder->quoteIdentifier('IP.phash'))
             )
             ->groupBy(
                 'IP.phash',
@@ -1015,7 +1015,7 @@ class IndexSearchRepository
             $queryBuilder->getRestrictions()->removeAll();
             $queryBuilder->from('pages');
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page')),
+                $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page_id')),
                 QueryHelper::stripLogicalOperatorPrefix($this->enableFields('pages')),
                 $queryBuilder->expr()->eq('pages.no_search', 0),
                 $queryBuilder->expr()->lt('pages.doktype', 200)
