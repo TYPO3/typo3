@@ -105,7 +105,7 @@ class DataHandlerHook
                 $queryBuilder->getRestrictions()
                     ->removeAll()
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, $workspaceId, false));
 
                 $result = $queryBuilder
                     ->select('uid')
