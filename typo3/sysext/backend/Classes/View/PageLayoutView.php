@@ -1172,9 +1172,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         );
 
         // Traverse any selected elements and render their display code:
-        $result = $queryBuilder->execute();
+        $results = $this->getResult($queryBuilder->execute());
 
-        while ($record = $result->fetch()) {
+        foreach ($results as $record) {
             $columnValue = $record['colPos'];
             $contentRecordsPerColumn[$columnValue][] = $record;
         }
