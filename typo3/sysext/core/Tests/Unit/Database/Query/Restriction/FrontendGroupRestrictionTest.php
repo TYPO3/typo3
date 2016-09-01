@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
  */
 
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
 {
@@ -56,23 +55,5 @@ class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
         $subject = new FrontendGroupRestriction([2, 3]);
         $expression = $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
         $this->assertSame('("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'2\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'3\', "aTable"."myGroupField"))', (string)$expression);
-    }
-
-    /**
-     * @test
-     */
-    public function handlesNullTypoScriptFrontendControllerGroupList()
-    {
-        $GLOBALS['TSFE'] = $this->prophesize(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->gr_list = null;
-
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'fe_group' => 'myGroupField',
-            ],
-        ];
-        $subject = new FrontendGroupRestriction();
-        $expression = $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
-        $this->assertSame('("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'\', "aTable"."myGroupField"))', (string)$expression);
     }
 }

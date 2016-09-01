@@ -33,7 +33,7 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
      */
     public function __construct(array $frontendGroupIds = null)
     {
-        $this->frontendGroupIds = $frontendGroupIds === null ? explode(',', $GLOBALS['TSFE']->gr_list ?? '') : $frontendGroupIds;
+        $this->frontendGroupIds = $frontendGroupIds === null ? explode(',', $GLOBALS['TSFE']->gr_list) : $frontendGroupIds;
     }
 
     /**
