@@ -1389,6 +1389,22 @@ class CharsetConverter implements SingletonInterface
     }
 
     /**
+     * Capitalize the given string
+     *
+     * @param string $charset
+     * @param string $string
+     * @return string
+     */
+    public function convCapitalize($charset, $string)
+    {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
+            return mb_convert_case($string, MB_CASE_TITLE, $charset);
+        } else {
+            return ucwords($string);
+        }
+    }
+
+    /**
      * Converts special chars (like æøåÆØÅ, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
      *
      * @param string $charset Character set of string

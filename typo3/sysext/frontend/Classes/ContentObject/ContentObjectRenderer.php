@@ -6757,7 +6757,6 @@ class ContentObjectRenderer
      */
     public function caseshift($theValue, $case)
     {
-        /** @var CharsetConverter $charsetConverter */
         $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         switch (strtolower($case)) {
             case 'upper':
@@ -6767,7 +6766,7 @@ class ContentObjectRenderer
                 $theValue = $charsetConverter->conv_case('utf-8', $theValue, 'toLower');
                 break;
             case 'capitalize':
-                $theValue = ucwords($theValue);
+                $theValue = $charsetConverter->convCapitalize('utf-8', $theValue);
                 break;
             case 'ucfirst':
                 $theValue = $charsetConverter->convCaseFirst('utf-8', $theValue, 'toUpper');
