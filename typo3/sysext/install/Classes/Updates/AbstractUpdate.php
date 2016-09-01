@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Tool\UpgradeWizard;
@@ -147,11 +148,12 @@ abstract class AbstractUpdate
      */
     public function checkIfTableExists($table)
     {
-        $databaseTables = $this->getDatabaseConnection()->admin_get_tables();
-        if (array_key_exists($table, $databaseTables)) {
-            return true;
-        }
-        return false;
+        $tableExists = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->getSchemaManager()
+            ->tablesExist([$table]);
+
+        return $tableExists;
     }
 
     /**
@@ -223,13 +225,5 @@ abstract class AbstractUpdate
         }
 
         return $done;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
