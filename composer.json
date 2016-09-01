@@ -82,7 +82,6 @@
 	},
 	"replace": {
 		"typo3/cms-about": "self.version",
-		"typo3/cms-adodb": "self.version",
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",
 		"typo3/cms-beuser": "self.version",

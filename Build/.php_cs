@@ -39,7 +39,6 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->exclude('vendor')
     ->exclude('typo3conf')
     ->exclude('typo3temp')
-    ->exclude('adodb')
     ->in(__DIR__ . '/../');
 
 // Return a Code Sniffing configuration using
