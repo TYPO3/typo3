@@ -175,7 +175,7 @@ abstract class Enumeration implements TypeInterface
      * Cast value to enumeration type
      *
      * @param mixed $value Value that has to be casted
-     * @return Enumeration
+     * @return self
      */
     public static function cast($value)
     {
