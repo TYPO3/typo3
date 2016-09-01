@@ -14,13 +14,14 @@ namespace TYPO3\CMS\Core\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Install\Service\SqlExpectedSchemaService;
-use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 
 /**
  * This is a helper class used by unit, functional and acceptance test
@@ -471,8 +472,8 @@ class Testbase
     }
 
     /**
-     * Populate $GLOBALS['TYPO3_DB'] and create test database
-     * For functional and acceptance tests
+     * Create a low level connection to dbms, without selecting the target database.
+     * Drop existing database if it exists and create a new one.
      *
      * @param string $databaseName Database name of this test instance
      * @param string $originalDatabaseName Original database name before suffix was added
@@ -482,33 +483,30 @@ class Testbase
     public function setUpTestDatabase($databaseName, $originalDatabaseName)
     {
         Bootstrap::getInstance()->initializeTypo3DbGlobal();
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-        if (!$database->sql_pconnect()) {
-            throw new Exception(
-                'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
-                . ' connection to the database was attempted to be established!',
-                1377620117
-            );
+
+        // Drop database if exists. Directly using the Doctrine DriverManager to
+        // work around connection caching in ConnectionPool
+        $connectionParameters = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
+        unset($connectionParameters['dbname']);
+        $schemaManager = DriverManager::getConnection($connectionParameters)->getSchemaManager();
+
+        if (in_array($databaseName, $schemaManager->listDatabases(), true)) {
+            $schemaManager->dropDatabase($databaseName);
         }
 
-        // Drop database if exists
-        $database->admin_query('DROP DATABASE IF EXISTS `' . $databaseName . '`');
-        $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $databaseName . '` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
-        if (!$createDatabaseResult) {
+        try {
+            $schemaManager->createDatabase($databaseName);
+        } catch (DBALException $e) {
             $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user'];
             $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'];
             throw new Exception(
                 'Unable to create database with name ' . $databaseName . '. This is probably a permission problem.'
                 . ' For this instance this could be fixed executing:'
-                . ' GRANT ALL ON `' . $originalDatabaseName . '_%`.* TO `' . $user . '`@`' . $host . '`;',
+                . ' GRANT ALL ON `' . $originalDatabaseName . '_%`.* TO `' . $user . '`@`' . $host . '`;'
+                . ' Original message thrown by database layer: ' . $e->getMessage(),
                 1376579070
             );
         }
-        $database->setDatabaseName($databaseName);
-
-       // On windows, this still works, but throws a warning, which we need to discard.
-        @$database->sql_select_db();
     }
 
     /**
@@ -536,7 +534,7 @@ class Testbase
     }
 
     /**
-     * Populate $GLOBALS['TYPO3_DB'] and truncate all tables.
+     * Truncate all tables.
      * For functional and acceptance tests.
      *
      * @throws Exception
@@ -545,19 +543,13 @@ class Testbase
     public function initializeTestDatabaseAndTruncateTables()
     {
         Bootstrap::getInstance()->initializeTypo3DbGlobal();
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-        if (!$database->sql_pconnect()) {
-            throw new Exception(
-                'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
-                . ' connection to the database was attempted to be established!',
-                1377620117
-            );
-        }
-        $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
-        $database->sql_select_db();
-        foreach ($database->admin_get_tables() as $table) {
-            $database->admin_query('TRUNCATE ' . $table['Name'] . ';');
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $schemaManager = $connection->getSchemaManager();
+
+        foreach ($schemaManager->listTables() as $table) {
+            $connection->truncate($table->getName());
         }
     }
 
@@ -580,36 +572,16 @@ class Testbase
      */
     public function createDatabaseStructure()
     {
-        /** @var SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = GeneralUtility::makeInstance(SqlSchemaMigrationService::class);
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = $objectManager->get(SqlExpectedSchemaService::class);
+        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $sqlCode = $sqlReader->getTablesDefinitionString(true);
 
-        // Raw concatenated ext_tables.sql and friends string
-        $expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(true);
-        $statements = $schemaMigrationService->getStatementArray($expectedSchemaString, true);
-        list($_, $insertCount) = $schemaMigrationService->getCreateTables($statements, true);
+        $createTableStatements = $sqlReader->getCreateTableStatementArray($sqlCode);
 
-        $fieldDefinitionsFile = $schemaMigrationService->getFieldDefinitions_fileContent($expectedSchemaString);
-        $fieldDefinitionsDatabase = $schemaMigrationService->getFieldDefinitions_database();
-        $difference = $schemaMigrationService->getDatabaseExtra($fieldDefinitionsFile, $fieldDefinitionsDatabase);
-        $updateStatements = $schemaMigrationService->getUpdateSuggestions($difference);
+        $schemaMigrationService->install($createTableStatements);
 
-        $schemaMigrationService->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
-        $schemaMigrationService->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
-        $schemaMigrationService->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
-
-        foreach ($insertCount as $table => $count) {
-            $insertStatements = $schemaMigrationService->getTableInsertStatements($statements, $table);
-            foreach ($insertStatements as $insertQuery) {
-                $insertQuery = rtrim($insertQuery, ';');
-                /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-                $database = $GLOBALS['TYPO3_DB'];
-                $database->admin_query($insertQuery);
-            }
-        }
+        $insertStatements = $sqlReader->getInsertStatementArray($sqlCode);
+        $schemaMigrationService->importStaticData($insertStatements);
     }
 
     /**
