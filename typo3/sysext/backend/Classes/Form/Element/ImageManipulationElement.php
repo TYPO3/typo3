@@ -118,17 +118,23 @@ class ImageManipulationElement extends AbstractFormElement
             ];
 
             $button = '<button class="btn btn-default t3js-image-manipulation-trigger"';
-            foreach ($buttonAttributes as $key => $value) {
-                $button .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
-            }
+            $button .= GeneralUtility::implodeAttributes($buttonAttributes, true, true);
             $button .= '><span class="t3-icon fa fa-crop"></span>';
             $button .= htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.open-editor'));
             $button .= '</button>';
 
-            $inputField = '<input type="hidden" '
-                . 'id="' . $formFieldId . '" '
-                . 'name="' . $parameterArray['itemFormElName'] . '" '
-                . 'value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
+            $attributes = [];
+            $attributes['type'] = 'hidden';
+            $attributes['id'] = $formFieldId;
+            $attributes['name'] = $parameterArray['itemFormElName'];
+            $attributes['value'] = $parameterArray['itemFormElValue'];
+
+            $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+            if (in_array('required', $evalList, true)) {
+                $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(['required' => true]);
+            }
+
+            $inputField = '<input ' . GeneralUtility::implodeAttributes($attributes, true, true) . '" />';
 
             $content .= $inputField . $button;
 

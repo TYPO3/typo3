@@ -255,6 +255,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 			$formGroup.find('.t3js-image-manipulation-preview').addClass('hide');
 		}
 		$formField.val(newValue);
+		$formField.trigger('change');
 		ImageManipulation.dismiss();
 	};
 
