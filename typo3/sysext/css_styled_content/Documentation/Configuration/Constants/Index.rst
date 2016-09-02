@@ -875,51 +875,6 @@ target
          {$PAGE\_TARGET}
 
 
-.. _constants-styles-content-loginform:
-
-styles.content.loginform
-""""""""""""""""""""""""
-
-
-.. _constants-styles-content-loginform-target:
-
-target
-~~~~~~
-
-.. container:: table-row
-
-   Property
-         target
-
-   Data type
-         string
-
-   Description
-         The login form target
-
-   Default
-         \_top
-
-
-.. _constants-styles-content-loginform-pid:
-
-pid
-~~~
-
-.. container:: table-row
-
-   Property
-         pid
-
-   Data type
-         int
-
-   Description
-         Enter the page-uid number (PID) of the sysFolder where you keep your
-         fe\_users that are supposed to login on this site. This setting is
-         necessary, if login is going to work (and you aren't using "felogin")!
-
-
 .. _constants-styles-content-searchform:
 
 styles.content.searchform
