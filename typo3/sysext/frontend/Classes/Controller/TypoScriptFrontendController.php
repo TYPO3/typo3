@@ -2982,7 +2982,8 @@ class TypoScriptFrontendController
         if ($type && MathUtility::canBeInterpretedAsInteger($type)) {
             $parameter .= ',' . $type;
         }
-        $redirectUrl = $cObj->typoLink_URL(['parameter' => $parameter]);
+        $redirectUrl = $cObj->typoLink_URL(['parameter' => $parameter, 'addQueryString' => true,
+            'addQueryString.' => ['exclude' => 'id']]);
 
         // Prevent redirection loop
         if (!empty($redirectUrl)) {
