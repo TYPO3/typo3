@@ -4877,14 +4877,6 @@ class BackendUtility
     }
 
     /**
-     * @return DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * @param string $table
      * @return Connection
      */
