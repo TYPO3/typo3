@@ -325,9 +325,9 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
             $line = [];
             $line['padding'] = ($pageDepth * 20);
             if (isset($pageArray[$identifier . '_'])) {
-                $line['link'] = htmlspecialchars(GeneralUtility::linkThisScript(['id' => $identifier]));
+                $line['link'] = GeneralUtility::linkThisScript(['id' => $identifier]);
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
-                $line['title'] = htmlspecialchars('ID: ' . $identifier);
+                $line['title'] = 'ID: ' . $identifier;
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30);
                 $line['includedFiles'] = ($pageArray[$identifier . '_']['includeLines'] === 0 ? '' : $pageArray[($identifier . '_')]['includeLines']);
                 $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
