@@ -28,7 +28,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
             toolbarSelector: '.tree-toolbar',
             collapseAllBtn: '.collapse-all-btn',
             expandAllBtn: '.expand-all-btn',
-            searchInput: '.search-input'
+            searchInput: '.search-input',
+            toggleHideUnchecked: '.hide-unchecked-btn'
         };
 
         /**
@@ -46,6 +47,14 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
         this.tree = null;
 
         /**
+         * State of the hide unchecked toggle button
+         *
+         * @type {boolean}
+         * @private
+         */
+        this._hideUncheckedState = false;
+
+        /**
          * Toolbar template
          *
          * @type {jQuery}
@@ -61,6 +70,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
                 '</div>' +
                 '<div class="btn-group">' +
                     '<button type="button" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
+                '</div>' +
+                '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
                 '</div>' +
             '</div>'
         )
@@ -102,12 +114,16 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
         Icons.getIcon('apps-pagetree-category-collapse-all', Icons.sizes.small).done(function(icon) {
             $toolbar.find('.collapse-all-btn').append(icon);
         });
+        Icons.getIcon('actions-document-select', Icons.sizes.small).done(function(icon) {
+            $toolbar.find('.hide-unchecked-btn').append(icon);
+        });
 
         $toolbar.find(this.settings.collapseAllBtn).on('click', this.collapseAll.bind(this));
         $toolbar.find(this.settings.expandAllBtn).on('click', this.expandAll.bind(this));
         $toolbar.find(this.settings.searchInput).on('input', function () {
             me.search.call(me, this);
         });
+        $toolbar.find(this.settings.toggleHideUnchecked).on('click', this.toggleHideUnchecked.bind(this));
     };
 
     /**
@@ -145,6 +161,36 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
                 node.open = false;
             }
         });
+        this.tree.prepareDataForVisibleNodes();
+        this.tree.update();
+    };
+
+    /**
+     * Show only checked items
+     *
+     * @param {HTMLElement} input
+     */
+    TreeToolbar.prototype.toggleHideUnchecked = function (input) {
+        var me = this;
+
+        this._hideUncheckedState = !this._hideUncheckedState;
+
+        if (this._hideUncheckedState) {
+            this.tree.rootNode.eachBefore(function (node, i) {
+                if (node.data.checked) {
+                    me.showParents(node);
+                    node.open = true;
+                    node.hidden = false;
+                } else {
+                    node.hidden = true;
+                    node.open = false;
+                }
+            });
+        } else {
+            this.tree.rootNode.eachBefore(function (node, i) {
+                node.hidden = false;
+            });
+        }
         this.tree.prepareDataForVisibleNodes();
         this.tree.update();
     };
