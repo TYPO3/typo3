@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Collection;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,7 +57,18 @@ class RecordCollectionRepository
     {
         $result = null;
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        if ($this->getEnvironmentMode() === 'FE') {
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            if ($GLOBALS['TSFE']->showHiddenRecords) {
+                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+            }
+        } else {
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+
         $data = $queryBuilder->select('*')
             ->from($this->table)
             ->where($queryBuilder->expr()->eq('uid', (int)$uid))
@@ -209,5 +222,16 @@ class RecordCollectionRepository
             $collections[] = $this->createDomainObject($collection);
         }
         return $collections;
+    }
+
+    /**
+     * Function to return the current TYPO3_MODE.
+     * This function can be mocked in unit tests to be able to test frontend behaviour.
+     *
+     * @return string
+     */
+    protected function getEnvironmentMode()
+    {
+        return TYPO3_MODE;
     }
 }
