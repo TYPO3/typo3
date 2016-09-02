@@ -155,18 +155,6 @@ function getModuleUrl(inUrl)	{	//
 	}
 }
 
-/**
- * Print properties of an object
- */
-function debugObj(obj,name)	{	//
-	var acc;
-	for (var i in obj) {
-		if (obj[i]) {
-			acc+=i+":  "+obj[i]+"\n";
-		}
-	}
-	alert("Object: "+name+"\n\n"+acc);
-}
 
 
 
