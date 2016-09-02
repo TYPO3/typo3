@@ -495,7 +495,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Regenerate the id, take seperate session data table into account
+     * Regenerate the id, take separate session data table into account
      * and set cookie again
      */
     protected function regenerateSessionId()

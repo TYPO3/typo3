@@ -128,7 +128,7 @@ class Formhandler
             $inputField = $fieldContext->findElement(\WebDriverBy::xpath($visibleFieldXpath));
             $internalInputField = $fieldContext->findElement(\WebDriverBy::xpath($internalFieldXpath));
 
-            // validate that the save was successfull
+            // validate that the save was successful
             $I->comment('Test value of "visible" field after the save');
             $I->canSeeInField($inputField, $testValue[1]);
             $I->comment('Test value of the internal field after the save');
@@ -156,7 +156,7 @@ class Formhandler
         $inputField = $fieldContext->findElement(\WebDriverBy::xpath($visibleFieldXpath));
         $internalInputField = $fieldContext->findElement(\WebDriverBy::xpath($internalFieldXpath));
 
-        // validate that the save was successfull
+        // validate that the save was successful
         $I->canSeeInField($inputField, isset($testData['cleared'][1]) ? $testData['cleared'][1] : '');
         $I->canSeeInField($internalInputField, isset($testData['cleared'][0]) ? $testData['cleared'][0] : '');
     }

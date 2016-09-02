@@ -220,7 +220,7 @@ define([
 
 	/**
 	 * The extension name column can contain various forms of HTML that
-	 * break a direct comparision of values
+	 * break a direct comparison of values
 	 *
 	 * @param {String} a
 	 * @param {String} b

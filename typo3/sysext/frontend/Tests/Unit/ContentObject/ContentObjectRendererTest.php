@@ -4859,7 +4859,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * Note 2:
      *
-     *   The second paramter to the debug function isn't used by the current
+     *   The second parameter to the debug function isn't used by the current
      *   implementation at all. It can't even indirectly be tested.
      *
      * @test
@@ -4910,7 +4910,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * Show:
      *
-     * - Calls the function debug with one paramter.
+     * - Calls the function debug with one parameter.
      * - The parameter is the given $content string.
      * - The string is casted to array before, if (int)$conf['debugFunc'] is 2.
      * - Returns $content as is.

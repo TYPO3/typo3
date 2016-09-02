@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Determine the wether the child is on symmetric side or not.
+ * Determine whether the child is on symmetric side or not.
  *
  * TCA ctrl fields like label and label_alt are evaluated and their
  * current values from databaseRow used to create the title.

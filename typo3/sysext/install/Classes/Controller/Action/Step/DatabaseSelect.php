@@ -164,7 +164,7 @@ class DatabaseSelect extends AbstractStepAction
      *
      * @todo this function is MySQL specific. If the core has migrated to Doctrine it should be reexamined
      * whether this function and the check in $this->checkExistingDatabase could be deleted and utf8 otherwise
-     * enforced (guaranteeing compatability with other database servers).
+     * enforced (guaranteeing compatibility with other database servers).
      *
      * @param string $dbName
      * @return string

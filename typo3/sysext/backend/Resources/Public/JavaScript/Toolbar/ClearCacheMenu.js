@@ -70,7 +70,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], 
 			complete: function(jqXHRObject, status) {
 				$(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector).replaceWith($existingIcon);
 				if (status !== 'success' || jqXHRObject.responseText !== '') {
-					Notification.error('An error occurs', 'An error occured while clearing the cache. It is likely not all caches were cleared as expected.', 0);
+					Notification.error('An error occurs', 'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.', 0);
 				}
 			}
 		});

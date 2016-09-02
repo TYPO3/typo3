@@ -460,7 +460,7 @@ class Message implements MessageInterface
     {
         $value = (string)$value;
 
-        // Any occurence of \r or \n is invalid
+        // Any occurrence of \r or \n is invalid
         if (strpbrk($value, "\r\n") !== false) {
             return false;
         }

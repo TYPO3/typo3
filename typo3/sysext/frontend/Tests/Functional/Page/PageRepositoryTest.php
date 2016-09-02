@@ -69,7 +69,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuMulipleUid()
+    public function getMenuMultipleUid()
     {
         $rows = $this->pageRepo->getMenu([2, 3], 'uid, title');
         $this->assertArrayHasKey(5, $rows);

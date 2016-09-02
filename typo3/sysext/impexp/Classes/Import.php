@@ -275,7 +275,7 @@ class Import extends ImportExport
     }
 
     /**
-     * Checks any prerequisites necessary to get fullfilled before import
+     * Checks any prerequisites necessary to get fulfilled before import
      *
      * @return array Messages explaining issues which need to get resolved before import
      */

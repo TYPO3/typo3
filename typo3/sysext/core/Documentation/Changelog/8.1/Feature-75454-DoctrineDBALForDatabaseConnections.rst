@@ -77,7 +77,7 @@ The :php:``ConnectionPool`` class can be used like this:
 
 .. code-block:: php
 
-   // Get a connection which can be used for muliple operations
+   // Get a connection which can be used for multiple operations
    /** @var \TYPO3\CMS\Core\Database\Connecction $conn */
    $conn = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('aTable');
    $affectedRows = $conn->insert(

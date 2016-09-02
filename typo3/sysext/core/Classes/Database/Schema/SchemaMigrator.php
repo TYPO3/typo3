@@ -184,7 +184,7 @@ class SchemaMigrator
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $createOnly Only perform changes that add fields or create tables
-     * @return array[] Error messages for statements that occured during the installation procedure.
+     * @return array[] Error messages for statements that occurred during the installation procedure.
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException

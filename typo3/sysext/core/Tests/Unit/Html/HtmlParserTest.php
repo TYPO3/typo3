@@ -333,7 +333,7 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @test
      * @dataProvider emptyTagsDataProvider
      * @param bool $stripOn TRUE if stripping should be activated.
-     * @param string $tagList Comma seperated list of tags that should be stripped.
+     * @param string $tagList Comma separated list of tags that should be stripped.
      * @param bool $treatNonBreakingSpaceAsEmpty If TRUE &nbsp; will be considered empty.
      * @param string $content The HTML code that should be modified.
      * @param string $expectedResult The expected HTML code result.

@@ -54,7 +54,7 @@ use TYPO3\CMS\Core\Resource\FileReference;
  * <img src="fileadmin/_processed_/1/2/csm_example_aabbcc112233.gif" width="200" height="284" alt="foo">
  * </output>
  *
- * <code title="Non-existant image">
+ * <code title="Non-existent image">
  * <f:image src="NonExistingImage.png" alt="foo" />
  * </code>
  * <output>
