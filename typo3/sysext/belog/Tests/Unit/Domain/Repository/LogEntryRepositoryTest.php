@@ -28,7 +28,6 @@ class LogEntryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $querySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->getMock();
         $objectManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
         $objectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->will($this->returnValue($querySettings));
-        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(false);
         /** @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository::class)

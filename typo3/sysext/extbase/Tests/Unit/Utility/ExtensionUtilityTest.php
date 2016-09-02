@@ -21,10 +21,6 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     protected function setUp()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
-            ->setMethods(['fullQuoteStr', 'exec_SELECTgetRows'])
-            ->getMock();
-
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $GLOBALS['TSFE']->tmpl->setup = [];

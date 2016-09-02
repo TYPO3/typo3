@@ -50,9 +50,6 @@ class ResourceStorageTest extends BaseTestCase
             FileRepository::class,
             $fileRepositoryMock
         );
-        $databaseMock = $this->createMock(DatabaseConnection::class);
-        $databaseMock->expects($this->any())->method('exec_SELECTgetRows')->with('*', 'sys_file_storage', '1=1', '', 'name', '', 'uid')->willReturn([]);
-        $GLOBALS['TYPO3_DB'] = $databaseMock;
     }
 
     protected function tearDown()

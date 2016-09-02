@@ -36,7 +36,6 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['LANG'] = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)
             ->setMethods(['sL'])
             ->getMock();
-        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
     }
 
     /**

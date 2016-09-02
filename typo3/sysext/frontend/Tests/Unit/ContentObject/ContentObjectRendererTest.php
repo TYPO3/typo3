@@ -135,8 +135,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock->page =  [];
         $this->frontendControllerMock->sys_page = $pageRepositoryMock;
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
-        $GLOBALS['TYPO3_DB'] =
-            $this->getMockBuilder(DatabaseConnection::class)->getMock();
 
         $this->subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,

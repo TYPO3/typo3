@@ -55,8 +55,6 @@ class ContentTypesToTextMediaUpdateTest extends BaseTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']);
         $prophet = new Prophet();
         $this->packageManagerProphecy = $prophet->prophesize(PackageManager::class);
-        $this->dbProphecy = $prophet->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
         $this->updateWizard = new UpdateWizard();
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
         ExtensionManagementUtility::setPackageManager($this->packageManagerProphecy->reveal());
