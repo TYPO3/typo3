@@ -973,6 +973,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task_group.uid = tx_scheduler_task.task_group
                 ',
             'WHERE' => '1=1',
+            'GROUPBY' => '',
             'ORDERBY' => 'tx_scheduler_task_group.sorting'
         ];
         $res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
@@ -1540,6 +1541,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             'WHERE' => '1=1'
                 . BackendUtility::BEenableFields('tx_scheduler_task_group')
                 . BackendUtility::deleteClause('tx_scheduler_task_group'),
+            'GROUPBY' => '',
             'ORDERBY' => 'sorting'
         ];
         $res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
