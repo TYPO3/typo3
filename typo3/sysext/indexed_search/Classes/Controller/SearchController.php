@@ -909,12 +909,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $searchData = $this->initialize($search);
         // Adding search field value
         $this->view->assign('sword', $this->sword);
-        // Additonal keyword => "Add to current search words"
-        $showAdditionalKeywordSearch = $this->settings['clearSearchBox'] && $this->settings['clearSearchBox']['enableSubSearchCheckBox'];
-        if ($showAdditionalKeywordSearch) {
-            $this->view->assign('previousSearchWord', $this->settings['clearSearchBox'] ? '' : $this->sword);
-        }
-        $this->view->assign('showAdditionalKeywordSearch', $showAdditionalKeywordSearch);
         // Extended search
         if ($search['extendedSearch']) {
             // "Search for"

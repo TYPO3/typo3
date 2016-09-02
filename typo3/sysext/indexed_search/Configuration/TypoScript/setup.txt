@@ -23,8 +23,6 @@ plugin.tx_indexedsearch {
 		displayLevel1Sections = 1
 		displayLevel2Sections = 0
 		displayLevelxAllTypes = 0
-		clearSearchBox = 0
-		clearSearchBox.enableSubSearchCheckBox = 1
 		displayForbiddenRecords = 0
 		alwaysShowPageLinks = 1
 		mediaList =
