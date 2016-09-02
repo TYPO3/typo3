@@ -20,6 +20,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
@@ -167,6 +168,13 @@ class ConnectionPool
         $conn->getDatabasePlatform()->getEventManager()->addEventListener(
             Events::onSchemaColumnDefinition,
             GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class)
+        );
+
+        // Handler for adding custom database platform options to ALTER TABLE
+        // requests in the SchemaManager
+        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaAlterTable,
+            GeneralUtility::makeInstance(SchemaAlterTableListener::class)
         );
 
         return $conn;

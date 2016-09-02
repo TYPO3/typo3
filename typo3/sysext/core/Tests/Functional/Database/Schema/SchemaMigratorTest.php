@@ -336,6 +336,29 @@ class SchemaMigratorTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function changeTableEngine()
+    {
+        $statements = $this->readFixtureFile('alterTableEngine');
+        $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
+
+        $index = array_keys($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'])[0];
+        $this->assertStringEndsWith(
+            'ENGINE = MyISAM',
+            $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'][$index]
+        );
+
+        $this->subject->migrate(
+            $statements,
+            $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']
+        );
+
+        $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
+        $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
+    }
+
+    /**
      * Create the base table for all migration tests
      */
     protected function prepareTestTable()

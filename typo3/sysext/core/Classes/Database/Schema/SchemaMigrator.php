@@ -20,13 +20,11 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
-use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\TableDiff;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -89,7 +87,8 @@ class SchemaMigrator
                     ['add' => [], 'create_table' => [], 'change' => [], 'change_currentValue' => []],
                     $this->getNewFieldUpdateSuggestions($schemaDiff, $connection),
                     $this->getNewTableUpdateSuggestions($schemaDiff, $connection),
-                    $this->getChangedFieldUpdateSuggestions($schemaDiff, $connection)
+                    $this->getChangedFieldUpdateSuggestions($schemaDiff, $connection),
+                    $this->getChangedTableOptions($schemaDiff, $connection)
                 );
             } else {
                 $updateSuggestions[$connectionName] = array_merge_recursive(
@@ -311,6 +310,18 @@ class SchemaMigrator
         // Build the schema definitions
         $fromSchema = $connection->getSchemaManager()->createSchema();
         $toSchema = $this->buildExpectedSchemaDefinitions($connectionName);
+
+        // Add current table options to the fromSchema
+        $tableOptions = $this->getTableOptions($connection, $fromSchema->getTableNames());
+        foreach ($fromSchema->getTables() as $table) {
+            $tableName = $table->getName();
+            if (!array_key_exists($tableName, $tableOptions)) {
+                continue;
+            }
+            foreach ($tableOptions[$tableName] as $optionName => $optionValue) {
+                $table->addOption($optionName, $optionValue);
+            }
+        }
 
         // Build SchemaDiff and handle renames of tables and colums
         $comparator = GeneralUtility::makeInstance(Comparator::class);
@@ -540,6 +551,57 @@ class SchemaMigrator
         $statements = $addFieldSchemaDiff->toSql($connection->getDatabasePlatform());
 
         return ['add' => $this->calculateUpdateSuggestionsHashes($statements)];
+    }
+
+    /**
+     * Extract update suggestions (SQL statements) for changed options (like ENGINE)
+     * from the complete schema diff.
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @return array
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     */
+    protected function getChangedTableOptions(SchemaDiff $schemaDiff, Connection $connection): array
+    {
+        $updateSuggestions = [];
+
+        foreach ($schemaDiff->changedTables as $tableDiff) {
+            // Skip processing if this is the base TableDiff class or hasn no table options set.
+            if (!$tableDiff instanceof TableDiff || count($tableDiff->getTableOptions()) === 0) {
+                continue;
+            }
+
+            $tableOptions = $tableDiff->getTableOptions();
+            $tableOptionsDiff = GeneralUtility::makeInstance(
+                TableDiff::class,
+                $tableDiff->name,
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                $tableDiff->fromTable
+            );
+            $tableOptionsDiff->setTableOptions($tableOptions);
+
+            $tableOptionsSchemaDiff = GeneralUtility::makeInstance(
+                SchemaDiff::class,
+                [],
+                [$tableOptionsDiff],
+                [],
+                $schemaDiff->fromSchema
+            );
+
+            $statements = $tableOptionsSchemaDiff->toSaveSql($connection->getDatabasePlatform());
+            foreach ($statements as $statement) {
+                $updateSuggestions['change'][md5($statement)] = $statement;
+            }
+        }
+
+        return $updateSuggestions;
     }
 
     /**
@@ -1136,6 +1198,7 @@ class SchemaMigrator
                             // may not be quoted.
                             return $columnName;
                         }
+
                         return $connection->quoteIdentifier(preg_replace('/\(\d+\)$/', '', $columnName));
                     },
                     $index->getUnquotedColumns()
@@ -1164,5 +1227,49 @@ class SchemaMigrator
         }
 
         return $tables;
+    }
+
+    /**
+     * Get COLLATION, ROW_FORMAT, COMMENT and ENGINE table options on MySQL connections.
+     *
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @param string[] $tableNames
+     * @return array[]
+     * @throws \InvalidArgumentException
+     */
+    protected function getTableOptions(Connection $connection, array $tableNames): array
+    {
+        $tableOptions = [];
+        if (!StringUtility::beginsWith($connection->getServerVersion(), 'MySQL')) {
+            foreach ($tableNames as $tableName) {
+                $tableOptions[$tableName] = [];
+            }
+
+            return $tableOptions;
+        }
+
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder
+            ->select(
+                'TABLE_NAME AS table',
+                'ENGINE AS engine',
+                'ROW_FORMAT AS row_format',
+                'TABLE_COLLATION AS collate',
+                'TABLE_COMMENT AS comment'
+            )
+            ->from('information_schema.TABLES')
+            ->where(
+                $queryBuilder->expr()->eq('TABLE_TYPE', $queryBuilder->quote('BASE TABLE')),
+                $queryBuilder->expr()->eq('TABLE_SCHEMA', $queryBuilder->quote($connection->getDatabase()))
+            )
+            ->execute();
+
+        while ($row = $result->fetch()) {
+            $index = $row['table'];
+            unset($row['table']);
+            $tableOptions[$index] = $row;
+        }
+
+        return $tableOptions;
     }
 }
