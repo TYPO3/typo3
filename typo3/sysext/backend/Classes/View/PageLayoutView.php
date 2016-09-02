@@ -512,7 +512,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $languageColumn = [];
         }
         $langListArr = GeneralUtility::intExplode(',', $langList);
-        $defLanguageCount = [];
+        $defaultLanguageElementsByColumn = [];
         $defLangBinding = [];
         // For each languages... :
         // If not languageMode, then we'll only be through this once.
@@ -535,20 +535,20 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             // Select content records per column
             $contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showLanguage);
             // For each column, render the content into a variable:
-            foreach ($cList as $key) {
-                if (!isset($this->contentElementCache[$lP][$key])) {
-                    $this->contentElementCache[$lP][$key] = [];
+            foreach ($cList as $columnId) {
+                if (!isset($this->contentElementCache[$lP][$columnId])) {
+                    $this->contentElementCache[$lP][$columnId] = [];
                 }
 
                 if (!$lP) {
-                    $defLanguageCount[$key] = [];
+                    $defaultLanguageElementsByColumn[$columnId] = [];
                 }
                 // Start wrapping div
-                $content[$key] .= '<div data-colpos="' . $key . '" data-language-uid="' . $lP . '" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $lP . ' t3-page-ce-wrapper';
-                if (empty($contentRecordsPerColumn[$key])) {
-                    $content[$key] .= ' t3-page-ce-empty';
+                $content[$columnId] .= '<div data-colpos="' . $columnId . '" data-language-uid="' . $lP . '" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $lP . ' t3-page-ce-wrapper';
+                if (empty($contentRecordsPerColumn[$columnId])) {
+                    $content[$columnId] .= ' t3-page-ce-empty';
                 }
-                $content[$key] .= '">';
+                $content[$columnId] .= '">';
                 // Add new content at the top most position
                 $link = '';
                 if ($this->getPageLayoutController()->contentIsNotLockedForEditors()
@@ -558,7 +558,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $urlParameters = [
                             'id' => $id,
                             'sys_language_uid' => $lP,
-                            'colPos' => $key,
+                            'colPos' => $columnId,
                             'uid_pid' => $id,
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
@@ -576,7 +576,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             ],
                             'defVals' => [
                                 'tt_content' => [
-                                    'colPos' => $key,
+                                    'colPos' => $columnId,
                                     'sys_language_uid' => $lP
                                 ]
                             ],
@@ -592,9 +592,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
                 }
                 if ($this->getBackendUser()->checkLanguageAccess($lP)) {
-                    $content[$key] .= '
+                    $content[$columnId] .= '
                     <div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
-                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
+                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
                             . $link
                             . '</div>
                         <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
@@ -602,7 +602,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     ';
                 }
                 $editUidList = '';
-                if (!isset($contentRecordsPerColumn[$key]) || !is_array($contentRecordsPerColumn[$key])) {
+                if (!isset($contentRecordsPerColumn[$columnId]) || !is_array($contentRecordsPerColumn[$columnId])) {
                     $message = GeneralUtility::makeInstance(
                         FlashMessage::class,
                         $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:error.invalidBackendLayout'),
@@ -613,25 +613,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $queue = $service->getMessageQueueByIdentifier();
                     $queue->addMessage($message);
                 } else {
-                    $rowArr = $contentRecordsPerColumn[$key];
+                    $rowArr = $contentRecordsPerColumn[$columnId];
                     $this->generateTtContentDataArray($rowArr);
 
                     foreach ((array)$rowArr as $rKey => $row) {
-                        $this->contentElementCache[$lP][$key][$row['uid']] = $row;
+                        $this->contentElementCache[$lP][$columnId][$row['uid']] = $row;
                         if ($this->tt_contentConfig['languageMode']) {
-                            $languageColumn[$key][$lP] = $head[$key] . $content[$key];
+                            $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
                             if (!$this->defLangBinding) {
-                                $languageColumn[$key][$lP] .= $this->newLanguageButton(
-                                    $this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP),
+                                $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
+                                    $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
                                     $lP,
-                                    $key
+                                    $columnId
                                 );
                             }
                         }
                         if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                             $singleElementHTML = '';
                             if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
-                                $defLanguageCount[$key][] = (isset($row['_ORIG_uid']) ? $row['_ORIG_uid'] : $row['uid']);
+                                $defaultLanguageElementsByColumn[$columnId][] = (isset($row['_ORIG_uid']) ? $row['_ORIG_uid'] : $row['uid']);
                             }
                             $editUidList .= $row['uid'] . ',';
                             $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
@@ -662,7 +662,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             if ($this->tt_contentConfig['languageMode']) {
                                 $singleElementHTML .= '<div class="t3-page-ce t3js-page-ce">';
                             }
-                            $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id .
+                            $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id .
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
@@ -705,28 +705,28 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             }
                             $singleElementHTML .= '</div></div><div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div></div>';
                             if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
-                                $defLangBinding[$key][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
+                                $defLangBinding[$columnId][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
                             } else {
-                                $content[$key] .= $singleElementHTML;
+                                $content[$columnId] .= $singleElementHTML;
                             }
                         } else {
                             unset($rowArr[$rKey]);
                         }
                     }
-                    $content[$key] .= '</div>';
-                    $colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
+                    $content[$columnId] .= '</div>';
+                    $colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $columnId);
                     $tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $id, $this);
                     foreach ($tcaItems as $item) {
-                        if ($item[1] == $key) {
+                        if ($item[1] == $columnId) {
                             $colTitle = $this->getLanguageService()->sL($item[0]);
                         }
                     }
 
-                    $pasteP = ['colPos' => $key, 'sys_language_uid' => $lP];
+                    $pasteP = ['colPos' => $columnId, 'sys_language_uid' => $lP];
                     $editParam = $this->doEdit && !empty($rowArr)
                         ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
                         : '';
-                    $head[$key] .= $this->tt_content_drawColHeader($colTitle, $editParam, '', $pasteP);
+                    $head[$columnId] .= $this->tt_content_drawColHeader($colTitle, $editParam, '', $pasteP);
                 }
             }
             // For each column, fit the rendered content into a table cell:
@@ -734,17 +734,17 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             if ($this->tt_contentConfig['languageMode']) {
                 // in language mode process the content elements, but only fill $languageColumn. output will be generated later
                 $sortedLanguageColumn = [];
-                foreach ($cList as $key) {
-                    $languageColumn[$key][$lP] = $head[$key] . $content[$key];
+                foreach ($cList as $columnId) {
+                    $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
                     if (!$this->defLangBinding) {
-                        $languageColumn[$key][$lP] .= $this->newLanguageButton(
-                            $this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP),
+                        $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
+                            $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
                             $lP,
-                            $key
+                            $columnId
                         );
                     }
                     // We sort $languageColumn again according to $cList as it may contain data already from above.
-                    $sortedLanguageColumn[$key] = $languageColumn[$key];
+                    $sortedLanguageColumn[$columnId] = $languageColumn[$columnId];
                 }
                 $languageColumn = $sortedLanguageColumn;
             } else {
@@ -925,7 +925,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $out .= '</tr>';
                 if ($this->defLangBinding) {
                     // "defLangBinding" mode
-                    foreach ($defLanguageCount[$cKey] as $defUid) {
+                    foreach ($defaultLanguageElementsByColumn[$cKey] as $defUid) {
                         $cCont = [];
                         foreach ($langListArr as $lP) {
                             $cCont[] = $defLangBinding[$cKey][$lP][$defUid] . $this->newLanguageButton(
@@ -1874,14 +1874,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * Selects across columns, but within in the same PID. Columns are expect to be the same
      * for translations and original but this may be a conceptual error (?)
      *
-     * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
+     * @param array $defaultLanguageUids Numeric array with uids of tt_content elements in the default language
      * @param int $id Page pid
      * @param int $lP Sys language UID
      * @return array Modified $defLanguageCount
      */
-    public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP)
+    public function getNonTranslatedTTcontentUids($defaultLanguageUids, $id, $lP)
     {
-        if ($lP && !empty($defLanguageCount)) {
+        if ($lP && !empty($defaultLanguageUids)) {
             // Select all translations here:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tt_content');
@@ -1893,33 +1893,33 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 ->from('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq('sys_language_uid', intval($lP)),
-                    $queryBuilder->expr()->in('l18n_parent', array_map('intval', $defLanguageCount))
+                    $queryBuilder->expr()->in('l18n_parent', array_map('intval', $defaultLanguageUids))
                 );
 
             $result = $queryBuilder->execute();
 
             // Flip uids:
-            $defLanguageCount = array_flip($defLanguageCount);
+            $defaultLanguageUids = array_flip($defaultLanguageUids);
             // Traverse any selected elements and unset original UID if any:
             while ($row = $result->fetch()) {
                 BackendUtility::workspaceOL('tt_content', $row);
-                unset($defLanguageCount[$row['l18n_parent']]);
+                unset($defaultLanguageUids[$row['l18n_parent']]);
             }
             // Flip again:
-            $defLanguageCount = array_keys($defLanguageCount);
+            $defaultLanguageUids = array_keys($defaultLanguageUids);
         }
-        return $defLanguageCount;
+        return $defaultLanguageUids;
     }
 
     /**
      * Creates button which is used to create copies of records..
      *
-     * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
+     * @param array $defaultLanguageUids Numeric array with uids of tt_content elements in the default language
      * @param int $lP Sys language UID
      * @param int $colPos Column position
      * @return string "Copy languages" button, if available.
      */
-    public function newLanguageButton($defLanguageCount, $lP, $colPos = 0)
+    public function newLanguageButton($defaultLanguageUids, $lP, $colPos = 0)
     {
         $lP = (int)$lP;
         if (!$this->doEdit || !$lP) {
@@ -1940,14 +1940,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
         if (isset($this->contentElementCache[$lP][$colPos]) && is_array($this->contentElementCache[$lP][$colPos])) {
             foreach ($this->contentElementCache[$lP][$colPos] as $record) {
-                $key = array_search($record['t3_origuid'], $defLanguageCount);
+                $key = array_search($record['t3_origuid'], $defaultLanguageUids);
                 if ($key !== false) {
-                    unset($defLanguageCount[$key]);
+                    unset($defaultLanguageUids[$key]);
                 }
             }
         }
 
-        if (!empty($defLanguageCount)) {
+        if (!empty($defaultLanguageUids)) {
             $theNewButton =
                 '<input'
                     . ' class="btn btn-default t3js-localize"'
