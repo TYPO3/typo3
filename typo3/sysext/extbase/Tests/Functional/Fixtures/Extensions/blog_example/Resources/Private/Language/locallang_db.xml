@@ -15,6 +15,7 @@
 			<label index="tx_blogexample_domain_model_post">Post</label>
 			<label index="tx_blogexample_domain_model_post.blog">Related to</label>
 			<label index="tx_blogexample_domain_model_post.title">Title</label>
+			<label index="tx_blogexample_domain_model_post.subtitle">Title</label>
 			<label index="tx_blogexample_domain_model_post.date">Date</label>
 			<label index="tx_blogexample_domain_model_post.author">Author</label>
 			<label index="tx_blogexample_domain_model_post.content">Content</label>
