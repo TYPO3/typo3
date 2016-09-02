@@ -255,13 +255,3 @@ Let use all the space available for more comfort.
    TCEFORM.tt_content.bodytext.RTEfullScreenWidth = 100%
 
 
-.. _typical-user-tsconfig:
-
-The following is inserted in User TSconfig:
-"""""""""""""""""""""""""""""""""""""""""""
-
-Enable the RTE by default for all users
-
-::
-
-   setup.default.edit_RTE = 1

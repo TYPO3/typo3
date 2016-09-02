@@ -302,18 +302,6 @@ Let use all the space available for more comfort.
 The following is inserted in User TSconfig:
 """""""""""""""""""""""""""""""""""""""""""
 
-Enable the RTE by default for all users
-
-::
-
-   setup.default.edit_RTE = 1
-
-Enable the file upload feature of the element browser by default for all users
-
-::
-
-   options.uploadFieldsInTopOfEB = 1
-
 Set the default spelling ability of the check speller for all users
 
 ::

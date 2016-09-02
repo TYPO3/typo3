@@ -60,12 +60,6 @@ br tags in the content are assumed to be intentional.
 
    dontConvBRtoParagraph = 1
 
-PRESERVE DIV SECTIONS - DO NOT REMAP TO P
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-::
-
-   preserveDIVSections = 1
 
 TAGS ALLOWED OUTSIDE P & DIV
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

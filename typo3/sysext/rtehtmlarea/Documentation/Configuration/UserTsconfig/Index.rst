@@ -23,43 +23,6 @@ group, with the TYPO3 User Admin Tool. Properties of User TSconfig are
 documented in the :ref:`TSconfig reference <t3tsconfig:usertsconfig>`.
 
 
-.. _setup-default-edit-rte:
-
-setup.default.edit\_RTE
-^^^^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-   Property
-         setup.default.edit\_RTE
-
-   Data type
-         boolean
-
-   Description
-         Specifies that RTE editing should be enabled or disabled by default.
-
-
-
-.. _setup-override-edit-rte:
-
-setup.override.edit\_RTE
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-   Property
-         setup.override.edit\_RTE
-
-   Data type
-         boolean
-
-   Description
-         Specifies that RTE editing should be enabled or disabled, the user not
-         being allowed to change the setting.
-
-
-
 .. _setup-default-rtewidth:
 
 setup.default.rteWidth
@@ -336,57 +299,6 @@ options.enablePersonalDicts
          Default: 0
 
          Note: The feature must also be enabled in Page TSconfig.
-
-
-
-.. _options-uploadfieldsintopofeb:
-
-options.uploadFieldsInTopOfEB
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-   Property
-         options.uploadFieldsInTopOfEB
-
-   Data type
-         boolean
-
-   Description
-         Inserts a file uploader on the 'file' tab of the Insert/Modify link
-         dialogue as well as on the magic, plain and dragdrop tabs of the
-         Insert/modify image dialogue.
-
-         Note: This applies only when buttons.link.TYPO3Browser.disabled and/or
-         buttons.image.TYPO3Browser.disabled is not set.
-
-         Default: 0
-
-
-
-.. _options-createfoldersineb:
-
-options.createFoldersInEB
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-   Property
-         options.createFoldersInEB
-
-   Data type
-         boolean
-
-   Description
-         If set, a create folders option appears in the TYPO3 file browser.
-
-         Note: This applies only when buttons.link.TYPO3Browser.disabled and/or
-         buttons.image.TYPO3Browser.disabled is not set.
-
-         Note: For admin-users this is always enabled.
-
-         Default: 0
-
 
 
 .. _options-nothumbsinrteimageselect:

@@ -42,13 +42,3 @@ front end RTE configuration for the general public
    RTE.default.FE < RTE.default
 
 
-.. _minimal-user-tsconfig:
-
-The following is inserted in User TSconfig:
-"""""""""""""""""""""""""""""""""""""""""""
-
-Enable the RTE by default for all users
-
-::
-
-   setup.default.edit_RTE = 1

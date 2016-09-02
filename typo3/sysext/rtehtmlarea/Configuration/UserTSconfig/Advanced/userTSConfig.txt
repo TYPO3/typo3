@@ -1,8 +1,0 @@
-# ***************************************************************************************
-# "Advanced" User TSconfig for htmlArea RTE
-#
-# Sets default User TSConfig with minimal features for advanced admin users.
-# ***************************************************************************************
-
-	## Enable the RTE by default for all users
-setup.default.edit_RTE = 1

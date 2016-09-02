@@ -1,9 +1,0 @@
-# ***************************************************************************************
-# "Typical" User TSconfig for htmlArea RTE
-#
-# Sets User TSConfig with most commonly used features representing a good start for typical sites.
-# ***************************************************************************************
-## Default User TSConfig for the Usual default RTE configuration
-
-	## Enable the RTE by default for all users
-setup.default.edit_RTE = 1
