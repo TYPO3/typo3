@@ -64,8 +64,8 @@ class MicroDataSchema extends RteHtmlAreaApi
                 // Fallback to default schema file if configured file does not exists or is of zero size
                 if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
                     $fileName = 'EXT:' . $this->extensionKey . '/Resources/Public/Rdf/MicrodataSchema/SchemaOrgAll.rdf';
+                    $fileName = GeneralUtility::getFileAbsFileName($fileName);
                 }
-                $fileName = $this->getFullFileName($fileName);
                 $rdf = file_get_contents($fileName);
                 if ($rdf) {
                     $this->parseSchema($rdf, $schema);

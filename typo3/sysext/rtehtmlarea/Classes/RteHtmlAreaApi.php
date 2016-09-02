@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Rtehtmlarea;
  */
 
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -273,31 +273,6 @@ abstract class RteHtmlAreaApi
     }
 
     /**
-     * Make a file name relative to the PATH_site or to the PATH_typo3
-     *
-     * @param string $filename: a file name of the form EXT:.... or relative to the PATH_site
-     * @return string the file name relative to the PATH_site if in frontend or relative to the PATH_typo3 if in backend
-     */
-    protected function getFullFileName($filename)
-    {
-        if (strpos($filename, 'EXT:') === 0) {
-            // extension
-            list($extKey, $local) = explode('/', substr($filename, 4), 2);
-            $newFilename = '';
-            if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
-                $newFilename = ($this->isFrontend() || $this->isFrontendEditActive()
-                        ? ExtensionManagementUtility::siteRelPath($extKey)
-                        : ExtensionManagementUtility::extRelPath($extKey))
-                    . $local;
-            }
-        } else {
-            $path = ($this->isFrontend() || $this->isFrontendEditActive() ? '' : '../');
-            $newFilename = $path . ($filename[0] === '/' ? substr($filename, 1) : $filename);
-        }
-        return GeneralUtility::resolveBackPath($newFilename);
-    }
-
-    /**
      * Writes contents in a file in typo3temp and returns the file name
      *
      * @param string $label: A label to insert at the beginning of the name of the file
@@ -320,12 +295,7 @@ abstract class RteHtmlAreaApi
                 throw new \RuntimeException($failure, 1294585668);
             }
         }
-        if ($this->isFrontend() || $this->isFrontendEditActive()) {
-            $fileName = $relativeFilename;
-        } else {
-            $fileName = '../' . $relativeFilename;
-        }
-        return GeneralUtility::resolveBackPath($fileName);
+        return PathUtility::getAbsoluteWebPath($destination);
     }
 
     /**

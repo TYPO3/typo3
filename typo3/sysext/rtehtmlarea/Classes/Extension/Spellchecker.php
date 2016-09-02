@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
@@ -97,7 +98,7 @@ class Spellchecker extends RteHtmlAreaApi
 
             // Get the eID script or the AJAX path
             if ($this->isFrontend() || $this->isFrontendEditActive()) {
-                $path = ($GLOBALS['TSFE']->absRefPrefix ?: '') . 'index.php?eID=rtehtmlarea_spellchecker';
+                $path = PathUtility::getAbsoluteWebPath('index.php?eID=rtehtmlarea_spellchecker');
             } else {
                 /** @var UriBuilder $uriBuilder */
                 $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

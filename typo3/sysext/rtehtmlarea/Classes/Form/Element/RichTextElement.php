@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -27,6 +26,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ClientUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
@@ -238,7 +238,7 @@ class RichTextElement extends AbstractFormElement
 
         // Get skin file name from Page TSConfig if any
         $skinFilename = trim($this->processedRteConfiguration['skin']) ?: 'EXT:rtehtmlarea/Resources/Public/Css/Skin/htmlarea.css';
-        $skinFilename = $this->getFullFileName($skinFilename);
+        $skinFilename = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($skinFilename));
         $skinDirectory = dirname($skinFilename);
 
         // jQuery UI Resizable style sheet and main skin stylesheet
@@ -603,19 +603,20 @@ class RichTextElement extends AbstractFormElement
     protected function getRteInitJsCode()
     {
         $skinFilename = trim($this->processedRteConfiguration['skin']) ?: 'EXT:rtehtmlarea/Resources/Public/Css/Skin/htmlarea.css';
-        $skinFilename = $this->getFullFileName($skinFilename);
+        $skinFilename = GeneralUtility::getFileAbsFileName($skinFilename);
         $skinDirectory = dirname($skinFilename);
         // Editing area style sheet
         $editedContentCSS = GeneralUtility::createVersionNumberedFilename($skinDirectory . '/htmlarea-edited-content.css');
-
+        $editorUrl = GeneralUtility::getFileAbsFileName('EXT:rtehtmlarea/Resources/');
+        $editorUrl = dirname($editorUrl) . '/';
         return 'require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea"], function (HTMLArea) {
 			if (typeof RTEarea === "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
 				RTEarea[0].version = "' . TYPO3_version . '";
-				RTEarea[0].editorUrl = "' . ExtensionManagementUtility::extRelPath('rtehtmlarea') . '";
-				RTEarea[0].editorSkin = "' . $skinDirectory . '/";
-				RTEarea[0].editedContentCSS = "' . $editedContentCSS . '";
+				RTEarea[0].editorUrl = "' . PathUtility::getAbsoluteWebPath($editorUrl) . '";
+				RTEarea[0].editorSkin = "' . PathUtility::getAbsoluteWebPath($skinDirectory) . '/";
+				RTEarea[0].editedContentCSS = "' . PathUtility::getAbsoluteWebPath($editedContentCSS) . '";
 				RTEarea.init = function() {
 					HTMLArea.init();
 				};
@@ -781,12 +782,12 @@ class RichTextElement extends AbstractFormElement
                 $fileName = trim($contentCssfile);
                 $absolutePath = GeneralUtility::getFileAbsFileName($fileName);
                 if (file_exists($absolutePath) && filesize($absolutePath)) {
-                    $contentCssFiles[$contentCssKey] = $this->getFullFileName($fileName);
+                    $contentCssFiles[$contentCssKey] = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($fileName));
                 }
             }
         } else {
             // Fallback to default content css file if none of the configured files exists and is not empty
-            $contentCssFiles['default'] = $this->getFullFileName('EXT:rtehtmlarea/Resources/Public/Css/ContentCss/Default.css');
+            $contentCssFiles['default'] = PathUtility::getAbsoluteWebPath('EXT:rtehtmlarea/Resources/Public/Css/ContentCss/Default.css');
         }
         return array_unique($contentCssFiles);
     }
@@ -1083,31 +1084,6 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
-     * Make a file name relative to the PATH_site or to the PATH_typo3
-     *
-     * @param string $filename: a file name of the form EXT:.... or relative to the PATH_site
-     * @return string the file name relative to the PATH_site if in frontend or relative to the PATH_typo3 if in backend
-     */
-    protected function getFullFileName($filename)
-    {
-        if (strpos($filename, 'EXT:') === 0) {
-            // extension
-            list($extKey, $local) = explode('/', substr($filename, 4), 2);
-            $newFilename = '';
-            if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
-                $newFilename = ($this->isFrontendEditActive()
-                        ? ExtensionManagementUtility::siteRelPath($extKey)
-                        : ExtensionManagementUtility::extRelPath($extKey))
-                    . $local;
-            }
-        } else {
-            $path = ($this->isFrontendEditActive() ? '' : '../');
-            $newFilename = $path . ($filename[0] === '/' ? substr($filename, 1) : $filename);
-        }
-        return GeneralUtility::resolveBackPath($newFilename);
-    }
-
-    /**
      * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
      *
      * @return void
@@ -1121,16 +1097,6 @@ class RichTextElement extends AbstractFormElement
         $onSubmitCode[] =    'OK = 0;';
         $onSubmitCode[] = '};';
         $this->resultArray['additionalJavaScriptSubmit'][] = implode(LF, $onSubmitCode);
-    }
-
-    /**
-     * Checks if frontend editing is active.
-     *
-     * @return bool TRUE if frontend editing is active
-     */
-    protected function isFrontendEditActive()
-    {
-        return is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController;
     }
 
     /**
