@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================
 Breaking: #72492 - Removed XHTML2 support
 =========================================
@@ -11,7 +14,7 @@ The support for XHTML2 documents in the TYPO3 Frontend has been removed.
 Impact
 ======
 
-The TypoScript option ``config.doctype = xhtml_2`` has no effect anymore.
+The TypoScript option `config.doctype = xhtml_2` has no effect anymore.
 
 
 Affected Installations

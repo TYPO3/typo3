@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Breaking: #72711 - Remove property strict in TypoScriptParser
 =============================================================
@@ -5,7 +8,7 @@ Breaking: #72711 - Remove property strict in TypoScriptParser
 Description
 ===========
 
-The property ``strict`` of ``\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`` has been removed.
+The property `strict` of `\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser` has been removed.
 
 
 Impact

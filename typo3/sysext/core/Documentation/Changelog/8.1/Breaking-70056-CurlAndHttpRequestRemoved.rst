@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Breaking: #70056 - Http-related options and HttpRequest class removed
 =====================================================================
@@ -7,8 +10,8 @@ Description
 
 The following PHP classes have been removed:
 
-   * ``TYPO3\CMS\Core\Http\HttpRequest``
-   * ``TYPO3\CMS\Core\Http\Observer\Download``
+   * `TYPO3\CMS\Core\Http\HttpRequest`
+   * `TYPO3\CMS\Core\Http\Observer\Download`
 
 The following configuration options have been removed:
 
@@ -45,7 +48,7 @@ The following properties have been renamed:
    * All options related to SSL private keys (HTTP/ssl_local_cert, HTTP/ssl_passphrase) are merged into $TYPO3_CONF_VARS[HTTP][ssl_key]
    * All options related to verify SSL peers are merged into $TYPO3_CONF_VARS[HTTP][verify]
 
-Additionally, the dependency to the PEAR Package "Http_Request2" (composer package name ``pear/http_request2``) has
+Additionally, the dependency to the PEAR Package "Http_Request2" (composer package name `pear/http_request2`) has
 been removed in favor of the PHP library Guzzle.
 
 
@@ -70,14 +73,14 @@ as installations depending on the PEAR library "Http_Request2".
 Migration
 =========
 
-For PHP code previously using the ``HttpRequest`` and ``Download`` classes a new object-oriented PSR-7-based approach is
+For PHP code previously using the `HttpRequest` and `Download` classes a new object-oriented PSR-7-based approach is
 introduced, see the Guzzle Feature integration documentation for more details. A new PHP class
-``TYPO3\CMS\Core\Http\RequestFactory`` which generates PSR-7 compliant request objects helps in simplifying the
+`TYPO3\CMS\Core\Http\RequestFactory` which generates PSR-7 compliant request objects helps in simplifying the
 migration process.
 
-All still necessary options will be migrated to new options within ``$TYPO3_CONF_VARS[HTTP]`` when the install tool is run.
+All still necessary options will be migrated to new options within `$TYPO3_CONF_VARS[HTTP]` when the install tool is run.
 
-In special cases, the options ``$TYPO3_CONF_VARS[HTTP][ssl_verify_host]``, ``$TYPO3_CONF_VARS[HTTP][proxy_auth_scheme]``
-and ``$TYPO3_CONF_VARS[HTTP][proxy_host]`` need to migrated manually to the newly available options.
+In special cases, the options `$TYPO3_CONF_VARS[HTTP][ssl_verify_host]`, `$TYPO3_CONF_VARS[HTTP][proxy_auth_scheme]`
+and `$TYPO3_CONF_VARS[HTTP][proxy_host]` need to migrated manually to the newly available options.
 
 .. index:: php

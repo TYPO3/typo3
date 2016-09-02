@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================================
 Breaking: #72412 - Removed deprecated code from language processing functions
 =============================================================================
@@ -7,12 +10,12 @@ Description
 
 The following deprecated code has been removed:
 
-* ``LocalizationFactory::getParsedData`` no support for moved language files
-* class ``LocallangArrayParser`` has been removed completely
+* `LocalizationFactory::getParsedData` no support for moved language files
+* class `LocallangArrayParser` has been removed completely
 
 The following deprecated methods have been removed:
 
-* ``LanguageService::localizedFileRef()``
+* `LanguageService::localizedFileRef()`
 
 
 Impact
@@ -32,8 +35,8 @@ Instances which use old locations of language files, instances which use the rem
 Migration
 =========
 
-``LocalizationFactory::getParsedData`` only supports the new location of language files
-``LocallangArrayParser`` use XLIFF language files now
-``\TYPO3\CMS\Lang\LanguageService::localizedFileRef`` no replacement; not needed when XLIFF files are used
+`LocalizationFactory::getParsedData` only supports the new location of language files
+`LocallangArrayParser` use XLIFF language files now
+`\TYPO3\CMS\Lang\LanguageService::localizedFileRef` no replacement; not needed when XLIFF files are used
 
 .. index:: php

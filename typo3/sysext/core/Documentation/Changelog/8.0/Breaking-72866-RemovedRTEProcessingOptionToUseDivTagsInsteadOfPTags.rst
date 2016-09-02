@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================================================
 Breaking: #72866 - Removed RTE processing option to use div tags instead of p tags
 ==================================================================================
@@ -5,8 +8,8 @@ Breaking: #72866 - Removed RTE processing option to use div tags instead of p ta
 Description
 ===========
 
-The Rich Text Editor TSconfig processing instructions ``RTE.default.proc.useDIVasParagraphTagForRTE`` and
-``RTE.default.proc.remapParagraphTag`` have been removed.
+The Rich Text Editor TSconfig processing instructions `RTE.default.proc.useDIVasParagraphTagForRTE` and
+`RTE.default.proc.remapParagraphTag` have been removed.
 
 The Rich Text Editor is now always getting HTML content wrapped with <p> tags instead of the optional <div> tags.
 

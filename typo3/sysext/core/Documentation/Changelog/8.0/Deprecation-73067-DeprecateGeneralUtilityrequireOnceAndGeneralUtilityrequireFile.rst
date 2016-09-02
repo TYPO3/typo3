@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================================================
 Deprecation: #73067 - Deprecate GeneralUtility::requireOnce and  GeneralUtility::requireFile
 ============================================================================================
@@ -5,11 +8,11 @@ Deprecation: #73067 - Deprecate GeneralUtility::requireOnce and  GeneralUtility:
 Description
 ===========
 
-The following methods from ``TYPO3\CMS\Core\Utility\GeneralUtility`` have been
+The following methods from `TYPO3\CMS\Core\Utility\GeneralUtility` have been
 marked as deprecated.
 
-``GeneralUtility::requireOnce()``
-``GeneralUtility::requireFile()``
+`GeneralUtility::requireOnce()`
+`GeneralUtility::requireFile()`
 
 
 Impact

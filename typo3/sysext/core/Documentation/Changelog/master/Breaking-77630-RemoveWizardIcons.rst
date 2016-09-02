@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================
 Breaking: #77630 - Remove wizard icons
 ======================================
@@ -5,7 +8,7 @@ Breaking: #77630 - Remove wizard icons
 Description
 ===========
 
-The following icons have been removed from ``typo3/sysext/backend/Resources/Public/Images/FormFieldWizard/``:
+The following icons have been removed from `typo3/sysext/backend/Resources/Public/Images/FormFieldWizard/`:
 
 - wizard_add.gif
 - wizard_edit.gif
@@ -32,9 +35,9 @@ Migration
 
 The TCA migration migrates the icon calls to the new output if used as wizard icon.
 
-- ``wizard_add.gif`` => ``actions-add``
-- ``wizard_edit.gif`` => ``actions-open``
-- ``wizard_list.gif`` => ``actions-system-list-open``
-- ``wizard_table.gif`` => ``content-table``
-- ``wizard_link.gif`` => ``actions-wizard-link``
-- ``wizard_rte.gif`` => ``actions-wizard-rte``
+- `wizard_add.gif` => `actions-add`
+- `wizard_edit.gif` => `actions-open`
+- `wizard_list.gif` => `actions-system-list-open`
+- `wizard_table.gif` => `content-table`
+- `wizard_link.gif` => `actions-wizard-link`
+- `wizard_rte.gif` => `actions-wizard-rte`

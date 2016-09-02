@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================================
 Deprecation: #76804 - Deprecate GeneralUtility::strtoupper & strtolower
 =======================================================================
@@ -5,10 +8,10 @@ Deprecation: #76804 - Deprecate GeneralUtility::strtoupper & strtolower
 Description
 ===========
 
-The following methods within ``GeneralUtility`` have been marked as deprecated:
+The following methods within `GeneralUtility` have been marked as deprecated:
 
-* ``strtoupper()``
-* ``strtolower()``
+* `strtoupper()`
+* `strtolower()`
 
 
 Impact
@@ -26,19 +29,19 @@ Any installation with a 3rd party extension calling one of the methods in its PH
 Migration
 =========
 
-Instead of :php:``GeneralUtility::strtoupper($value)`` use:
+Instead of :php:`GeneralUtility::strtoupper($value)` use:
 
 .. code-block:: php
 
     $charsetConverter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
     $charsetConverter->conv_case('utf-8', $value, 'toUpper');
 
-Instead of :php:``GeneralUtility::strtolower($value)`` use:
+Instead of :php:`GeneralUtility::strtolower($value)` use:
 
 .. code-block:: php
 
     $charsetConverter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
     $charsetConverter->conv_case('utf-8', $value, 'toLower');
 
-Alternatively use the native implementation of :php:``strtoupper($value)`` or :php:``strtolower($value)``
+Alternatively use the native implementation of :php:`strtoupper($value)` or :php:`strtolower($value)`
 if the handled string consists of ascii characters only and has no multi-byte characters like umlauts.

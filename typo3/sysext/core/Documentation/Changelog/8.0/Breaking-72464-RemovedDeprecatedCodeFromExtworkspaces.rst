@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================
 Breaking: #72464 - Removed deprecated code from EXT:workspaces
 ==============================================================
@@ -15,7 +18,7 @@ and lead to deprecated code which is removed in TYPO3 CMS 8.
 Impact
 ======
 
-Using or extending ``\TYPO3\CMS\Workspaces\ExtDirect\ToolbarMenu`` will fail since
+Using or extending `\TYPO3\CMS\Workspaces\ExtDirect\ToolbarMenu` will fail since
 it has been removed.
 
 Using \TYPO3\CMS\Workspaces\Service\StagesService::getNotificationMode($stageId)

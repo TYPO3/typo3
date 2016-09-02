@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================
 Breaking: #75497 - inline backend layout wizard
 ===============================================
@@ -5,24 +8,24 @@ Breaking: #75497 - inline backend layout wizard
 Description
 ===========
 
-The ``BackendLayoutWizardController`` has been removed and a new renderType has been added to render the backend layout wizard inline in FormEngine.
+The `BackendLayoutWizardController` has been removed and a new renderType has been added to render the backend layout wizard inline in FormEngine.
 
-Also the backend route ``wizard_backend_layout`` has been removed.
+Also the backend route `wizard_backend_layout` has been removed.
 
 
 Impact
 ======
 
-Extending or using the ``BackendLayoutWizardController`` will break installations.
+Extending or using the `BackendLayoutWizardController` will break installations.
 
 
 Affected Installations
 ======================
 
-Any installation which uses an extension which makes use of ``BackendLayoutWizardController``
+Any installation which uses an extension which makes use of `BackendLayoutWizardController`
 
 
 Migration
 =========
 
-Use the renderType ``belayoutwizard``, which renders the backend layout wizard inline in FormEngine.
+Use the renderType `belayoutwizard`, which renders the backend layout wizard inline in FormEngine.

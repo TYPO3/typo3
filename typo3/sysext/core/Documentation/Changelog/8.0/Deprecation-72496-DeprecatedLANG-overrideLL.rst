@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================
 Deprecation: #72496 - Deprecated $LANG->overrideLL
 ==================================================
@@ -5,7 +8,7 @@ Deprecation: #72496 - Deprecated $LANG->overrideLL
 Description
 ===========
 
-The method ``LanguageService::overrideLL()`` has been marked as deprecated.
+The method `LanguageService::overrideLL()` has been marked as deprecated.
 
 
 Impact

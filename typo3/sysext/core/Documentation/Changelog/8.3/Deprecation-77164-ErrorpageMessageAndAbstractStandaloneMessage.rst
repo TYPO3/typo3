@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================================
 Deprecation: #77164 - ErrorpageMessage and AbstractStandaloneMessage
 ====================================================================
@@ -5,7 +8,7 @@ Deprecation: #77164 - ErrorpageMessage and AbstractStandaloneMessage
 Description
 ===========
 
-The two PHP classes ``ErrorpageMessage`` and ``AbstractStandaloneMessage`` have been marked as deprecated.
+The two PHP classes `ErrorpageMessage` and `AbstractStandaloneMessage` have been marked as deprecated.
 
 
 Impact

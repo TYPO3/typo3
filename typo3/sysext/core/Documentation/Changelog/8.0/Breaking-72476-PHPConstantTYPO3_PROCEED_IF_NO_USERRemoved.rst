@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================
 Breaking: #72476 - PHP Constant TYPO3_PROCEED_IF_NO_USER removed
 ================================================================
@@ -5,7 +8,7 @@ Breaking: #72476 - PHP Constant TYPO3_PROCEED_IF_NO_USER removed
 Description
 ===========
 
-The PHP constant ``TYPO3_PROCEED_IF_NO_USER`` has been removed.
+The PHP constant `TYPO3_PROCEED_IF_NO_USER` has been removed.
 
 
 Impact

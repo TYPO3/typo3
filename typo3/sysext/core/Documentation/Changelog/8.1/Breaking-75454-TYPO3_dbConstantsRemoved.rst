@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================
 Breaking: #75454 - TYPO3_db Constants removed
 =============================================
@@ -5,7 +8,7 @@ Breaking: #75454 - TYPO3_db Constants removed
 Description
 ===========
 
-The PHP constants ``TYPO3_db``, ``TYPO3_db_username``, ``TYPO3_db_password`` and ``TYPO3_db_host``
+The PHP constants `TYPO3_db`, `TYPO3_db_username`, `TYPO3_db_password` and `TYPO3_db_host`
 which were used when TYPO3 initialized the database connection have been removed.
 
 
@@ -25,7 +28,7 @@ Any installation which uses a third-party extension using these constants.
 Migration
 =========
 
-Use the configuration data within ``$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']``
+Use the configuration data within `$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']`
 to determine the username, password and host information for the default database connection.
 
 .. index:: php, setting

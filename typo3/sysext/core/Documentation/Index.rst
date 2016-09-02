@@ -1,73 +1,20 @@
-===============
-Core Change Log
-===============
 
-:Rendered:
-      |today|
+.. include:: Includes.txt
 
-**Table of contents**
+===========================
+TYPO3 CMS Core ChangeLog v8
+===========================
 
-.. contents::
-	:local:
-	:depth: 1
+:Rendered: |today|
 
-Breaking Changes
-================
+Every change to the TYPO3 Core which might affect your site is documented here.
 
 .. toctree::
-	:maxdepth: 1
-	:titlesonly:
-	:glob:
+   :hidden:
 
-	Changelog/master/Breaking-*
-
-Features
-========
-
-.. toctree::
-	:maxdepth: 1
-	:titlesonly:
-	:glob:
-
-	Changelog/master/Feature-*
-
-Deprecation
-===========
-
-.. toctree::
-	:maxdepth: 1
-	:titlesonly:
-	:glob:
-
-	Changelog/master/Deprecation-*
-
-Important
-=========
-
-.. toctree::
-	:maxdepth: 1
-	:titlesonly:
-	:glob:
-
-	Changelog/master/Important-*
-
-Old changes
-===========
-
-.. toctree::
-	:maxdepth: 1
-	:titlesonly:
-
-   	Changelog/8.3/Index
-   	Changelog/8.2/Index
-   	Changelog/8.1/Index
-   	Changelog/8.0/Index
-
-How to contribute
-=================
-
-.. toctree::
-	:maxdepth: 1
-	:titlesonly:
-
-	Changelog/Howto
+   Changelog/master/Index
+   Changelog/8.3/Index
+   Changelog/8.2/Index
+   Changelog/8.1/Index
+   Changelog/8.0/Index
+   Changelog/Howto

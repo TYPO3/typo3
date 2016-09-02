@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Breaking: #76879 - Remove unused properties from PageTreeView
 =============================================================
@@ -5,10 +8,10 @@ Breaking: #76879 - Remove unused properties from PageTreeView
 Description
 ===========
 
-The following unused properties have been removed from the :php:``PageTreeView`` class:
+The following unused properties have been removed from the :php:`PageTreeView` class:
 
-:php:``ext_separateNotinmenuPages``
-:php:``ext_alphasortNotinmenuPages``
+:php:`ext_separateNotinmenuPages`
+:php:`ext_alphasortNotinmenuPages`
 
 
 Impact

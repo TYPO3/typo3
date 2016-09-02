@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================
 Feature: #73429 - Wizard component has been added
 =================================================
@@ -6,7 +9,7 @@ Description
 ===========
 
 A new wizard component has been added. This component may be used for user-guided interactions.
-The RequireJS module can be used by including ``TYPO3/CMS/Backend/Wizard``.
+The RequireJS module can be used by including `TYPO3/CMS/Backend/Wizard`.
 
 The wizard supports straight forward actions only, junctions are not possible yet.
 

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================
 Breaking: #76527 - Cleanup ContextMenu classes
 ==============================================
@@ -8,10 +11,10 @@ Description
 The classes of the ContextMenu (used in page tree) have been refactored.
 The following classes have been removed:
 
-* :php:``\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu``
-* :php:``\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider``
-* :php:``\TYPO3\CMS\Backend\ContextMenu\Extdirect\AbstractExtdirectContextMenu``
-* :php:``\TYPO3\CMS\Backend\ContextMenu\Renderer\AbstractContextMenuRenderer``
+* :php:`\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu`
+* :php:`\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider`
+* :php:`\TYPO3\CMS\Backend\ContextMenu\Extdirect\AbstractExtdirectContextMenu`
+* :php:`\TYPO3\CMS\Backend\ContextMenu\Renderer\AbstractContextMenuRenderer`
 
 
 Impact

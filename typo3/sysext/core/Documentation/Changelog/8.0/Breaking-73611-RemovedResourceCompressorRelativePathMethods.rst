@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================
 Breaking: #73611 - Removed ResourceCompressor relative path methods
 ===================================================================
@@ -5,7 +8,7 @@ Breaking: #73611 - Removed ResourceCompressor relative path methods
 Description
 ===========
 
-The methods ``ResourceCompressor::setInitialPaths()`` and ``ResourceCompressor::setRelativePath()`` have been removed.
+The methods `ResourceCompressor::setInitialPaths()` and `ResourceCompressor::setRelativePath()` have been removed.
 
 
 Impact

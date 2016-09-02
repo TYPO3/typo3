@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================================
 Breaking: #77750 - Return value of ContentObjectRenderer::exec_Query changed
 ============================================================================
@@ -5,9 +8,9 @@ Breaking: #77750 - Return value of ContentObjectRenderer::exec_Query changed
 Description
 ===========
 
-The return type of :php:``ContentObjectRenderer::exec_Query()`` has changed.
-Instead of returning either :php:``bool``, :php:``\mysqli_result``
-or :php:``object`` the return value always is a :php:``\Doctrine\DBAL\Driver\Statement``.
+The return type of :php:`ContentObjectRenderer::exec_Query()` has changed.
+Instead of returning either :php:`bool`, :php:`\mysqli_result`
+or :php:`object` the return value always is a :php:`\Doctrine\DBAL\Driver\Statement`.
 
 
 Impact

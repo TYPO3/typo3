@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================
 Breaking: #75150 - Removed TypoScript option includeJSlibs
 ==========================================================
@@ -5,7 +8,7 @@ Breaking: #75150 - Removed TypoScript option includeJSlibs
 Description
 ===========
 
-The deprecated TypoScript property ``page.includeJSlibs`` has been removed.
+The deprecated TypoScript property `page.includeJSlibs` has been removed.
 
 
 Impact
@@ -23,6 +26,6 @@ Any installation using this TypoScript option.
 Migration
 =========
 
-Use the TypoScript property ``page.includeJSLibs`` instead, which is in line with naming of ``includeCSSLibs``.
+Use the TypoScript property `page.includeJSLibs` instead, which is in line with naming of `includeCSSLibs`.
 
 .. index:: typoscript

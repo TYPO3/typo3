@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Breaking: #73445 - Remove flashmessage_compatibility.js from core
 =================================================================
@@ -5,7 +8,7 @@ Breaking: #73445 - Remove flashmessage_compatibility.js from core
 Description
 ===========
 
-The ``flashmessage_compatibility.js`` has been removed from the core.
+The `flashmessage_compatibility.js` has been removed from the core.
 
 
 Impact

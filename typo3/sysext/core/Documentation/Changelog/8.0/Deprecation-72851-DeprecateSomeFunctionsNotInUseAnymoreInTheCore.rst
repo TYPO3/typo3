@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================================
 Deprecation: #72851 - Deprecate some functions not in use anymore in the core
 =============================================================================
@@ -7,11 +10,11 @@ Description
 
 The following unused methods have been marked as deprecated:
 
-``BackendUtility::processParams()``
-``BackendUtility::makeConfigForm()``
-``BackendUtility::titleAltAttrib()``
-``BackendUtility::getSQLselectableList()``
-``ContentObjectRenderer->processParams()``
+`BackendUtility::processParams()`
+`BackendUtility::makeConfigForm()`
+`BackendUtility::titleAltAttrib()`
+`BackendUtility::getSQLselectableList()`
+`ContentObjectRenderer->processParams()`
 
 
 Impact

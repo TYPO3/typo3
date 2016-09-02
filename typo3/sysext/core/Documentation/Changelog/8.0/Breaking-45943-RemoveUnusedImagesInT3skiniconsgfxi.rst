@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Breaking: #45943 - Remove unused Images in "t3skin/icons/gfx/i"
 ===============================================================
@@ -5,7 +8,7 @@ Breaking: #45943 - Remove unused Images in "t3skin/icons/gfx/i"
 Description
 ===========
 
-A lot of unused icons from ``EXT:t3skin/icons/gfx/i`` have been removed.
+A lot of unused icons from `EXT:t3skin/icons/gfx/i` have been removed.
 
 
 Impact

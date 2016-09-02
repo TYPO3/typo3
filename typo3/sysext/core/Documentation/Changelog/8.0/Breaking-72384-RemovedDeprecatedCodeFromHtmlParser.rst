@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================
 Breaking: #72384 - Removed deprecated code from HtmlParser
 ==========================================================
@@ -7,21 +10,21 @@ Description
 
 The following methods have been removed from HtmlParser:
 
-* ``getSubpart()``
-* ``substituteSubpart()``
-* ``substituteSubpartArray()``
-* ``substituteMarker()``
-* ``substituteMarkerArray()``
-* ``substituteMarkerAndSubpartArrayRecursive()``
-* ``XHTML_clean()``
-* ``processTag()``
-* ``processContent()``
+* `getSubpart()`
+* `substituteSubpart()`
+* `substituteSubpartArray()`
+* `substituteMarker()`
+* `substituteMarkerArray()`
+* `substituteMarkerAndSubpartArrayRecursive()`
+* `XHTML_clean()`
+* `processTag()`
+* `processContent()`
 
 The following method has been removed from RteHtmlParser:
 
-* ``evalWriteFile``
+* `evalWriteFile`
 
-The TSconfig option ``xhtml_cleaning`` has been removed as well.
+The TSconfig option `xhtml_cleaning` has been removed as well.
 
 Impact
 ======
@@ -39,12 +42,12 @@ Instances which use custom calls to HtmlParser via the methods above.
 Migration
 =========
 
-``getSubpart()`` use ``MarkerBasedTemplateService::getSubpart()`` instead
-``substituteSubpart()`` call ``MarkerBasedTemplateService::substituteSubpart()`` instead
-``substituteSubpartArray()`` call ``MarkerBasedTemplateService::substituteSubpartArray()`` instead
-``substituteMarker()`` call ``MarkerBasedTemplateService::substituteMarker()`` instead
-``substituteMarkerArray()`` call ``MarkerBasedTemplateService::substituteMarkerArray()`` instead
-``substituteMarkerAndSubpartArrayRecursive()`` call ``MarkerBasedTemplateService::substituteMarkerAndSubpartArrayRecursive()`` instead
-``XHTML_clean()`` call ``HtmlParser::HTMLcleaner()`` instead
+`getSubpart()` use `MarkerBasedTemplateService::getSubpart()` instead
+`substituteSubpart()` call `MarkerBasedTemplateService::substituteSubpart()` instead
+`substituteSubpartArray()` call `MarkerBasedTemplateService::substituteSubpartArray()` instead
+`substituteMarker()` call `MarkerBasedTemplateService::substituteMarker()` instead
+`substituteMarkerArray()` call `MarkerBasedTemplateService::substituteMarkerArray()` instead
+`substituteMarkerAndSubpartArrayRecursive()` call `MarkerBasedTemplateService::substituteMarkerAndSubpartArrayRecursive()` instead
+`XHTML_clean()` call `HtmlParser::HTMLcleaner()` instead
 
 .. index:: php

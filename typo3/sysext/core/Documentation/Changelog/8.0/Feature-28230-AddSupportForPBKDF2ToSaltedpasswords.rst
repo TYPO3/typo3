@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Feature: #28230 - Add support for PBKDF2 to saltedpasswords
 ===========================================================
@@ -5,7 +8,7 @@ Feature: #28230 - Add support for PBKDF2 to saltedpasswords
 Description
 ===========
 
-A new password hashing algorithm ``PBKDF2`` has been added to the system extension ``saltedpasswords``.
+A new password hashing algorithm `PBKDF2` has been added to the system extension `saltedpasswords`.
 PBKDF2 is designed to be computationally expensive to resist brute force password cracking.
 
 

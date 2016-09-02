@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Deprecation: #72859 - Deprecate methods of DocumentTemplate
 ===========================================================
@@ -5,7 +8,7 @@ Deprecation: #72859 - Deprecate methods of DocumentTemplate
 Description
 ===========
 
-The following methods within ``DocumentTemplate`` have been marked as deprecated:
+The following methods within `DocumentTemplate` have been marked as deprecated:
 
 * viewPageIcon()
 * getHeader()
@@ -17,7 +20,7 @@ The following methods within ``DocumentTemplate`` have been marked as deprecated
 * loadJavascriptLib()
 * getContextMenuCode()
 
-The following property within ``DocumentTemplate`` has been marked as deprecated:
+The following property within `DocumentTemplate` has been marked as deprecated:
 
 * sectionFlag (is internal)
 
@@ -37,9 +40,9 @@ Any installation with a 3rd party extension calling one of the methods in its PH
 Migration
 =========
 
-Instead of :php:``wrapScriptTags()`` use :php:``GeneralUtility::wrapJS``.
+Instead of :php:`wrapScriptTags()` use :php:`GeneralUtility::wrapJS`.
 
-Instead of :php:``getContextMenuCode()`` use:
+Instead of :php:`getContextMenuCode()` use:
 
 .. code-block:: php
 

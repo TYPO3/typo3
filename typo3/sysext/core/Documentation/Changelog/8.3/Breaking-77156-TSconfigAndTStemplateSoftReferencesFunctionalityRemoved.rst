@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================================
 Breaking: #77156 - TSconfig and TStemplate soft references functionality removed
 ================================================================================
@@ -8,7 +11,7 @@ Description
 Soft references based on TSconfig, TStemplate and images within fileadmin/ have been removed.
 
 The soft reference keys "TSconfig" and "TStemplate" that could previously be set via
-``$TCA[$table][columns][$column][config][softref]`` are not evaluated anymore.
+`$TCA[$table][columns][$column][config][softref]` are not evaluated anymore.
 
 The soft reference keys "images", "typolink" and "typolink_tag" are not evaluating files within fileadmin/
 anymore that are not based on the File Abstraction Layer.
@@ -16,15 +19,15 @@ anymore that are not based on the File Abstraction Layer.
 The public PHP property "SoftReferenceIndex::$fileAdminDir" has been removed.
 
 The following PHP methods has been removed without substitution:
-- :php:``SoftReferenceIndex::findRef_TStemplate()``
-- :php:``SoftReferenceIndex::findRef_TSconfig()``
-- :php:``SoftReferenceIndex::fileadminReferences()``
+- :php:`SoftReferenceIndex::findRef_TStemplate()`
+- :php:`SoftReferenceIndex::findRef_TSconfig()`
+- :php:`SoftReferenceIndex::fileadminReferences()`
 
 
 Impact
 ======
 
-Setting the softref properties ``TSconfig`` and ``TStemplate`` within TCA will not be evaluated anymore and will
+Setting the softref properties `TSconfig` and `TStemplate` within TCA will not be evaluated anymore and will
 throw a deprecation message.
 
 Calling any of the PHP methods above will throw a fatal PHP error.
@@ -44,4 +47,4 @@ All TYPO3 instances using extensions setting TSconfig or TStemplate soft referen
 Migration
 =========
 
-Remove the softref keys ``TStemplate`` and ``TSconfig`` from the TCA definition of the third party extensions.
+Remove the softref keys `TStemplate` and `TSconfig` from the TCA definition of the third party extensions.

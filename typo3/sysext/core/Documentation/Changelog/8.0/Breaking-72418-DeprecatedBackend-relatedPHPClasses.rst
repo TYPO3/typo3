@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================
 Breaking: #72418 - Deprecated backend-related PHP classes
 =========================================================
@@ -7,12 +10,12 @@ Description
 
 The following PHP classes have been removed:
 
-* ``TYPO3\CMS\Backend\Module\ModuleController``
-* ``TYPO3\CMS\Backend\Module\ModuleSettings``
-* ``TYPO3\CMS\Backend\View\LogoView``
-* ``TYPO3\CMS\Backend\View\ModuleMenuView``
-* ``TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands``
-* ``TYPO3\CMS\Backend\View\ThumbnailView``
+* `TYPO3\CMS\Backend\Module\ModuleController`
+* `TYPO3\CMS\Backend\Module\ModuleSettings`
+* `TYPO3\CMS\Backend\View\LogoView`
+* `TYPO3\CMS\Backend\View\ModuleMenuView`
+* `TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands`
+* `TYPO3\CMS\Backend\View\ThumbnailView`
 
 
 Impact

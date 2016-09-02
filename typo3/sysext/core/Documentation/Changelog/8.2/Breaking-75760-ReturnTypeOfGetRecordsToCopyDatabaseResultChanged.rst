@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================================================
 Breaking: #75760 - Return type of LocalizationRepository::getRecordsToCopyDatabaseResult changed
 ================================================================================================
@@ -5,9 +8,9 @@ Breaking: #75760 - Return type of LocalizationRepository::getRecordsToCopyDataba
 Description
 ===========
 
-The return type of :php:``LocalizationRepository::getRecordsToCopyDatabaseResult()``
-has changed. Instead of returning either :php:``bool``, :php:``\mysqli_result``
-or :php:``object`` the return value always is a :php:``\Doctrine\DBAL\Driver\Statement``.
+The return type of :php:`LocalizationRepository::getRecordsToCopyDatabaseResult()`
+has changed. Instead of returning either :php:`bool`, :php:`\mysqli_result`
+or :php:`object` the return value always is a :php:`\Doctrine\DBAL\Driver\Statement`.
 
 
 Impact

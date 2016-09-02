@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Breaking: #77416 - Removed property from DatabaseIntegrityCheck
 ===============================================================
@@ -5,13 +8,13 @@ Breaking: #77416 - Removed property from DatabaseIntegrityCheck
 Description
 ===========
 
-The property :php:``$perms_clause`` has been removed from class :php:``DatabaseIntegrityCheck``.
+The property :php:`$perms_clause` has been removed from class :php:`DatabaseIntegrityCheck`.
 
 
 Impact
 ======
 
-Setting or reading this property on an instance of :php:``TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck`` will
+Setting or reading this property on an instance of :php:`TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck` will
 result in a fatal PHP error.
 
 

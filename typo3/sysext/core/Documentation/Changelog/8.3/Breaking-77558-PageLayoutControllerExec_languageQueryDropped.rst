@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================
 Breaking: #77558 - PageLayoutController removed methods
 =======================================================
@@ -5,11 +8,11 @@ Breaking: #77558 - PageLayoutController removed methods
 Description
 ===========
 
-The following methods have been removed from :php:``PageLayoutController`` without substitution:
+The following methods have been removed from :php:`PageLayoutController` without substitution:
 
-* :php:``exec_languageQuery()``
-* :php:``isColumnEmpty()``
-* :php:``getElementsFromColumnAndLanguage()``
+* :php:`exec_languageQuery()`
+* :php:`isColumnEmpty()`
+* :php:`getElementsFromColumnAndLanguage()`
 
 All of those methods were internally used within the Page module, the risk that an extension using them is low.
 

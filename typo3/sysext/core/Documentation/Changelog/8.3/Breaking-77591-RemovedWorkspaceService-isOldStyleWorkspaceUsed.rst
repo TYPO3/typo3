@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================================
 Breaking: #77591 - Removed WorkspaceService->isOldStyleWorkspaceUsed
 ====================================================================
@@ -5,7 +8,7 @@ Breaking: #77591 - Removed WorkspaceService->isOldStyleWorkspaceUsed
 Description
 ===========
 
-The method ``WorkspaceService->isOldStyleWorkspaceUsed()`` was removed without substitution. It existed to identify if
+The method `WorkspaceService->isOldStyleWorkspaceUsed()` was removed without substitution. It existed to identify if
 Workspaces still were configured for TYPO3 4.4.
 
 

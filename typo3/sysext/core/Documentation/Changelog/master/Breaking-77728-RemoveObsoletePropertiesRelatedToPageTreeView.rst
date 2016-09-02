@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================================
 Breaking: #77728 - Remove obsolete page tree and click menu settings
 ====================================================================
@@ -7,15 +10,15 @@ Description
 
 The following obsolete properties have been removed:
 
-- :php:``FileSystemNavigationFrameController->doHighlight``
+- :php:`FileSystemNavigationFrameController->doHighlight`
 
-- :php:``ClickMenu->leftIcons``
+- :php:`ClickMenu->leftIcons`
 
 The following user TS settings have been removed:
 
-- :typoscript:``options.pageTree.disableTitleHighlight``
+- :ts:`options.pageTree.disableTitleHighlight`
 
-- :typoscript:``options.contextMenu.options.leftIcons``
+- :ts:`options.contextMenu.options.leftIcons`
 
 
 Impact

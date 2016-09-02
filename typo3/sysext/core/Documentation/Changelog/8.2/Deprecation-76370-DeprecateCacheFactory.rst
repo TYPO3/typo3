@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================
 Deprecation: #76370 - Deprecate CacheFactory
 ============================================
@@ -5,7 +8,7 @@ Deprecation: #76370 - Deprecate CacheFactory
 Description
 ===========
 
-Class :php:``CacheFactory`` has been deprecated.
+Class :php:`CacheFactory` has been deprecated.
 
 
 Impact

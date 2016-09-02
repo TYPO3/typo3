@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================
 Breaking: #74375 - fe_users.image migrated to FAL
 =================================================
@@ -6,7 +9,7 @@ Description
 ===========
 
 The Frontend User field "image" was previously handled via images located under
-``uploads/pics/``, as simple file references, not able to handle duplicate images etc.
+`uploads/pics/`, as simple file references, not able to handle duplicate images etc.
 
 The field is now set up to add references of the File Abstraction Layer avoiding
 the need to copy all images to uploads/pics/.
@@ -15,7 +18,7 @@ the need to copy all images to uploads/pics/.
 Impact
 ======
 
-Using the ``fe_users.image`` field in the frontend or backend may result in unexpected
+Using the `fe_users.image` field in the frontend or backend may result in unexpected
 behaviour.
 
 

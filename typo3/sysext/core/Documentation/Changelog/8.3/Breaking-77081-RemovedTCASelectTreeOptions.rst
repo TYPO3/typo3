@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================================
 Breaking: #77081 - Removed TCA tree options: width, allowRecursiveMode, autoSizeMax
 ===================================================================================
@@ -29,18 +32,18 @@ selection.
 When implemented 4 years ago, the purpose of this button was to ease handling of
 "record storage page". But now the "recursive" select box can be used for this usage.
 
-The option ``autosizemax`` has been dropped as the ``size`` can be used as maximum height.
+The option `autosizemax` has been dropped as the `size` can be used as maximum height.
 
 Impact
 ======
 
 The recursive selection mode button is not available any longer.
 
-The options ``width`` and ``autoSizeMax`` have no impact on the tree rendering.
+The options `width` and `autoSizeMax` have no impact on the tree rendering.
 
 The TCA Tree now fills the full width of the parent container.
 
-Instead of using the option ``autoSizeMax`` the configuration is now using the ``size`` parameter as maximal
+Instead of using the option `autoSizeMax` the configuration is now using the `size` parameter as maximal
 height of the TCA tree.
 
 
@@ -53,5 +56,5 @@ Any TYPO3 installation using a TCA Tree within FormEngine with one of the option
 Migration
 =========
 
-Use the ``size`` option and tune it to higher value, if it was used in combination
-with ``autoSizeMax``.
+Use the `size` option and tune it to higher value, if it was used in combination
+with `autoSizeMax`.

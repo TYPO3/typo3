@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================
 Deprecation: #77405 - PageRepository->getPathFromRootline
 =========================================================
@@ -5,7 +8,7 @@ Deprecation: #77405 - PageRepository->getPathFromRootline
 Description
 ===========
 
-The PHP method ``PageRepository->getPathFromRootline()`` has been marked as deprecated.
+The PHP method `PageRepository->getPathFromRootline()` has been marked as deprecated.
 
 
 Impact

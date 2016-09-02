@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================================
 Breaking: #77557 - Signature of QueryView->getQueryResultCode() changed
 =======================================================================
@@ -5,8 +8,8 @@ Breaking: #77557 - Signature of QueryView->getQueryResultCode() changed
 Description
 ===========
 
-The method signature of :php:``QueryView->getQueryResultCode()`` has changed
-from :php:``getQueryResultCode($mQ, $res, $table)`` to :php:``getQueryResultCode($type, array $dataRows, $table)``.
+The method signature of :php:`QueryView->getQueryResultCode()` has changed
+from :php:`getQueryResultCode($mQ, $res, $table)` to :php:`getQueryResultCode($type, array $dataRows, $table)`.
 
 The second argument is no longer a MySQLi or DBAL result object, but an array of rows.
 
@@ -19,7 +22,7 @@ Extensions using this method will throw a fatal error.
 Affected Installations
 ======================
 
-Extensions using :php:``QueryView->getQueryResultCode()``
+Extensions using :php:`QueryView->getQueryResultCode()`
 
 
 Migration

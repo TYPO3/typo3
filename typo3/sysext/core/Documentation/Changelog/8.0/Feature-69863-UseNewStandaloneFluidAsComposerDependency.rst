@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Feature: #69863 - Use new standalone Fluid as composer dependency
 =================================================================
@@ -61,18 +64,18 @@ ExpressionNodes that are active for your rendering process, via the View instanc
 		'Class\Number\Two'
 	));
 
-When added to this collection these Expression Node types allow new syntaxes such as ``{myVariable + 1}`` or
-``{myArrayLikeObject as array}``. When the legacy mode toggle is set to ``false`` this will enable the following
+When added to this collection these Expression Node types allow new syntaxes such as `{myVariable + 1}` or
+`{myArrayLikeObject as array}`. When the legacy mode toggle is set to `false` this will enable the following
 expression types:
 
 1. CastingExpressionNode - this type allows casting a variable to certain types, for example to guarantee an integer or a
-   boolean. It is used simply with an ``as`` keyword: ``{myStringVariable as boolean}``, ``{myBooleanVariable as integer}`` and
+   boolean. It is used simply with an `as` keyword: `{myStringVariable as boolean}`, `{myBooleanVariable as integer}` and
    so on. Attempting to cast a variable to an incompatible type causes a standard Fluid error.
-2. MathExpressionNode - this type allows basic mathematical operations on variables, for example ``{myNumber + 1}``,
-   ``{myPercent / 100}``, ``{myNumber * 100}`` and so on. An impossible expression returns an empty output.
+2. MathExpressionNode - this type allows basic mathematical operations on variables, for example `{myNumber + 1}`,
+   `{myPercent / 100}`, `{myNumber * 100}` and so on. An impossible expression returns an empty output.
 3. TernaryExpressionNode - this type allows an inline ternary condition which only operates on variables. The use case is "if
    this variable then use that variable else use another variable". It is used as
-   ``{myToggleVariable ? myThenVariable : myElseVariable}``. Note that it does not support any nested expressions, inline
+   `{myToggleVariable ? myThenVariable : myElseVariable}`. Note that it does not support any nested expressions, inline
    ViewHelper syntaxes or similar inside it - it must be used only with standard variables as input.
 
 Developers can add their own additional ExpressionNodeTypes. Each one consists of a pattern to be matched and methods dictated
@@ -81,18 +84,18 @@ by an interface to process the matches - any existing ExpressionNode type can be
 Namespaces are extensible
 -------------------------
 
-Fluid now allows each namespace alias (for example ``f:``) to be extended by adding to it additional PHP namespaces that are
+Fluid now allows each namespace alias (for example `f:`) to be extended by adding to it additional PHP namespaces that are
 also checked for the presence of ViewHelper classes. This is what allows TYPO3 CMS to transparently add just the ViewHelpers that
 are unique to TYPO3 CMS and let Fluid add the rest. It also means that developers can override individual ViewHelpers with custom
-versions and have their ViewHelpers called when the ``f:`` namespace is used.
+versions and have their ViewHelpers called when the `f:` namespace is used.
 
-This change also implies that namespaces are no longer monadic - any time you use ``{namespace f=My\Extension\ViewHelpers}`` you
+This change also implies that namespaces are no longer monadic - any time you use `{namespace f=My\Extension\ViewHelpers}` you
 will no longer receive an error with "namespace already registered". Fluid will instead add this PHP namespace and look for
 ViewHelpers there as well. Additional namespaces are checked from the bottom up, allowing the additional namespaces to override
-ViewHelper classes by placing them in the same scope (e.g. ``f:format.nl2br`` can be overridden with
-``My\Extension\ViewHelpers\Format\Nl2brViewHelper`` given the namespace registration example above.
+ViewHelper classes by placing them in the same scope (e.g. `f:format.nl2br` can be overridden with
+`My\Extension\ViewHelpers\Format\Nl2brViewHelper` given the namespace registration example above.
 
-The behaviour is used both for legacy namespace registration in curly braces and the modern ``xmlns`` approach using a
+The behaviour is used both for legacy namespace registration in curly braces and the modern `xmlns` approach using a
 container HTML tag.
 
 Rendering using f:render
@@ -105,14 +108,14 @@ want to, in any template.
 There are two specific changes both documented in their respective commits:
 
 1. Default content (when section/partial is missing) now possible - https://github.com/TYPO3Fluid/Fluid/commit/cd67f9d974bc489058bde1c4272b480eb349da09
-2. Tag content of ``f:render`` can now be passed as a variable to the section/partial being rendered (essentially becoming a
+2. Tag content of `f:render` can now be passed as a variable to the section/partial being rendered (essentially becoming a
    wrapping/block strategy) - https://github.com/TYPO3Fluid/Fluid/commit/454121cba81baed4e3fe526412ff3e14f7c499a9
 
 All TagBasedViewHelpers natively support data- prefixed attributes
 ------------------------------------------------------------------
 
-Simply put - any TagBasedViewHelper can now receive ``data-`` prefixed attributes without requiring those attributes to be
-declared by the ViewHelper. Any suffix can be used as long as the prefix is ``data-``.
+Simply put - any TagBasedViewHelper can now receive `data-` prefixed attributes without requiring those attributes to be
+declared by the ViewHelper. Any suffix can be used as long as the prefix is `data-`.
 
 Complex conditional statements
 ------------------------------
@@ -126,7 +129,7 @@ nesting and grouping:
 		// Done if both variable one and two evaluate to true, or if either variable three or four do.
 	</f:if>
 
-In addition, ``f:else`` has been fitted with an "elseif"-like behavior:
+In addition, `f:else` has been fitted with an "elseif"-like behavior:
 
 .. code-block:: xml
 
@@ -186,18 +189,18 @@ Whereas the following **will** work because the variables are accessed wrapped i
 	{f:if(condition: '{my{which}Variable}', then: 'this', else: 'that')}
 
 In other words: unless your outer variable reference is enclosed with curly braces, Fluid does not detect that you are
-referencing a dynamic variable and will instead assume you meant a variable actually named ``my{which}Variable`` which was added
-as ``$view->assign('my{which}Variable', 'value')``.
+referencing a dynamic variable and will instead assume you meant a variable actually named `my{which}Variable` which was added
+as `$view->assign('my{which}Variable', 'value')`.
 
 New ViewHelpers
 ---------------
 
 A few new ViewHelpers have been added to the collection as part of standalone Fluid and as such are also available in TYPO3 from now on:
 
-* ``f:or`` which is a shorter way to write (chained) conditions. It supports syntax like
-  ``{variableOne -> f:or(alternative: variableTwo) -> f:or(alternative: variableThree)}`` which checks each variable and outputs
+* `f:or` which is a shorter way to write (chained) conditions. It supports syntax like
+  `{variableOne -> f:or(alternative: variableTwo) -> f:or(alternative: variableThree)}` which checks each variable and outputs
   the first one that's not empty.
-* ``f:spaceless`` which can be used in tag-mode around template code to eliminate redundant whitespace and blank lines for
+* `f:spaceless` which can be used in tag-mode around template code to eliminate redundant whitespace and blank lines for
   example caused by indenting ViewHelper usages.
 
 Improved error reporting
@@ -223,7 +226,7 @@ provide custom implementations or manipulate the standard implementations by ret
 and using methods of those.
 
 There are no significant changes to best practices and the ViewHelper API (which you use when creating custom ViewHelpers)
-remains largely untouched. The most notable change is that ``$this->renderingContext`` in ViewHelpers and Views now allows direct
+remains largely untouched. The most notable change is that `$this->renderingContext` in ViewHelpers and Views now allows direct
 access to on-the-fly changes in Fluid's behavior.
 
 RenderingContext as implementation API
@@ -238,7 +241,7 @@ were only possible to achieve via means like XCLASSing. A RenderingContext now d
 * The ViewHelperResolver (new pattern) responsible for handling namespaces and resolving/creating ViewHelper instances
   and arguments
 * The ViewHelperInvoker (new pattern) responsible for calling ViewHelpers (circumvented when ViewHelpers implement a custom
-  ``compile()`` method)
+  `compile()` method)
 * The TemplatePaths (new pattern) which is a template file resolving class that now contains resolving methods previously found
   on the View itself
 * The TemplateParser (already known) which is responsible for parsing the template and creating a ParsedTemplate
@@ -321,41 +324,41 @@ ViewHelpers can accept arbitrary arguments
 ------------------------------------------
 
 This feature allows your ViewHelper class to receive any number of additional arguments using any names you desire. It works by
-separating the arguments that are passed to each ViewHelper into two groups: those that are declared using ``registerArgument``
+separating the arguments that are passed to each ViewHelper into two groups: those that are declared using `registerArgument`
 (or render method arguments), and those that are not. Those that are not declared are then passed to a special function -
-``handleAdditionalArguments`` - on the ViewHelper class, which in the default implementation throws an error if additional
+`handleAdditionalArguments` - on the ViewHelper class, which in the default implementation throws an error if additional
 arguments exist. So by overriding this method in your ViewHelper you can change if and when the ViewHelper should throw an
 error on receiving unregistered arguments.
 
-This feature is also the one allowing TagBasedViewHelpers to freely accept arbitrary ``data-`` prefixed arguments without
-failing - on TagBased ViewHelpers, the ``handleAdditionalArguments`` method simply adds new attributes to the tag that gets
-generated and throws an error if any additional arguments which are neither registered nor prefixed with ``data-`` are given.
+This feature is also the one allowing TagBasedViewHelpers to freely accept arbitrary `data-` prefixed arguments without
+failing - on TagBased ViewHelpers, the `handleAdditionalArguments` method simply adds new attributes to the tag that gets
+generated and throws an error if any additional arguments which are neither registered nor prefixed with `data-` are given.
 
 ViewHelpers automatically compilable
 ------------------------------------
 
 All ViewHelpers, including those you write yourself, are now automatically compilable. This means you no longer have to care
-about implementing the CompilableInterface or a custom ``compile()`` function, and that every Fluid template can now be cached
+about implementing the CompilableInterface or a custom `compile()` function, and that every Fluid template can now be cached
 to a compiled PHP script regardless of ViewHelpers.
 
-ViewHelpers still are able to define a custom ``compile()`` function but are no longer required to do so. When they don't define
+ViewHelpers still are able to define a custom `compile()` function but are no longer required to do so. When they don't define
 such a method, an execution is chosen which is identical in performance to calling the ViewHelper from a template that before
 this could not be compiled. The ViewHelpers that do define a custom compiling method can further increase performance.
 
-When you explicitly require a ViewHelper of yours to prevent template caching it is possible to implement a custom ``compile()``
-method which calls ``$templateParser->disable();`` and nothing else. Doing this disables the compiling inside the scope (template,
+When you explicitly require a ViewHelper of yours to prevent template caching it is possible to implement a custom `compile()`
+method which calls `$templateParser->disable();` and nothing else. Doing this disables the compiling inside the scope (template,
 partial or section) currently being rendered.
 
 New and more efficient escaping
 -------------------------------
 
-Contrary to earlier versions of Fluid which used a ViewHelperNode for ``f:format.htmlentities`` around other nodes it wished to
+Contrary to earlier versions of Fluid which used a ViewHelperNode for `f:format.htmlentities` around other nodes it wished to
 escape, standalone Fluid has implemented a custom SyntaxTreeNode type which does the escaping in a more efficient manner
-(directly using ``htmlentities``). Although it means you cannot override this escaping behaviour by overriding the
-``f:format.htmlentities`` ViewHelper (which is completely possible to do with Fluid now) it should mean a significant boost to
+(directly using `htmlentities`). Although it means you cannot override this escaping behaviour by overriding the
+`f:format.htmlentities` ViewHelper (which is completely possible to do with Fluid now) it should mean a significant boost to
 performance as it avoids an excessive amount of ViewHelper resolving and -rendering operations, replacing them with a single PHP
 function call wrapped in a tiny class, which compiles also to a single function call and which compiles in a way that it wraps
 the compiled output of the Node it escapes as a pure string operation.
 
-Escaping interception is still contained within the ``Configuration`` instance given to the TemplateParser - and those can be
+Escaping interception is still contained within the `Configuration` instance given to the TemplateParser - and those can be
 manipulated with a custom RenderingContext (see above).

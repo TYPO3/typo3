@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================
 Breaking: #77137 - RTE option "colors" removed
 ==============================================
@@ -5,7 +8,7 @@ Breaking: #77137 - RTE option "colors" removed
 Description
 ===========
 
-The RTE configuration option ``RTEsetup.properties.colors`` has been removed.
+The RTE configuration option `RTEsetup.properties.colors` has been removed.
 
 
 Impact
@@ -17,7 +20,7 @@ The color picker is streamlined with all occurrences in the backend, it shows al
 Affected Installations
 ======================
 
-All installations configuring ``RTEsetup.properties.colors`` are affected.
+All installations configuring `RTEsetup.properties.colors` are affected.
 
 
 Migration

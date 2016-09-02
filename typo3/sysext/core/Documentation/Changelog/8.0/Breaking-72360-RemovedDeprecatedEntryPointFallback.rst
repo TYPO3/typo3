@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================
 Breaking: #72360 - Removed deprecated entry point fallback
 ==========================================================
@@ -47,6 +50,6 @@ Migration
 =========
 
 Move all existing code in extensions that link to the deprecated entry points to use methods
-like ``BackendUtility::getModuleUrl()`` and ``BackendUtility::getAjaxUrl()`` or the UriBuilder class.
+like `BackendUtility::getModuleUrl()` and `BackendUtility::getAjaxUrl()` or the UriBuilder class.
 
 .. index:: php

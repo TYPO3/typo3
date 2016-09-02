@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================
 Deprecation: #75621 - GeneralUtility methods
 ============================================
@@ -5,7 +8,7 @@ Deprecation: #75621 - GeneralUtility methods
 Description
 ===========
 
-The following methods within ``GeneralUtility`` have been marked as deprecated:
+The following methods within `GeneralUtility` have been marked as deprecated:
 
 * compat_version()
 * convertMicrotime()

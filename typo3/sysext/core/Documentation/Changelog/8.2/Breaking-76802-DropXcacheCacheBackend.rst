@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================
 Breaking: #76802 - Drop xcache cache backend
 ============================================
@@ -5,7 +8,7 @@ Breaking: #76802 - Drop xcache cache backend
 Description
 ===========
 
-The ``xcache`` core cache backend has been dropped because PHP7 does no longer support xcache.
+The `xcache` core cache backend has been dropped because PHP7 does no longer support xcache.
 
 
 Impact
@@ -17,7 +20,7 @@ Instances will throw an exception or a fatal error using a cache with this backe
 Affected Installations
 ======================
 
-Instances that still use a configuration in ``LocalConfiguration.php`` or ``AdditionalConfiguration.php`` like:
+Instances that still use a configuration in `LocalConfiguration.php` or `AdditionalConfiguration.php` like:
 
 .. code-block:: php
 
@@ -31,5 +34,5 @@ Instances that still use a configuration in ``LocalConfiguration.php`` or ``Addi
 Migration
 =========
 
-Affected instances must switch to a different cache backend, ``APCU`` ``PHP`` module with ``ApcuBackend``
-provides the same local server in memory characteristics like ``xcache`` and should be considered as alternative.
+Affected instances must switch to a different cache backend, `APCU` `PHP` module with `ApcuBackend`
+provides the same local server in memory characteristics like `xcache` and should be considered as alternative.

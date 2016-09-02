@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================================
 Breaking: #72426 - Removed deprecated code from file and image processing functions
 ===================================================================================
@@ -7,16 +10,16 @@ Description
 
 The following deprecated methods have been removed:
 
-* ``LocalImageProcessor::getTemporaryImageWithText``
-* ``ResourceCompressor::compressCssPregCallback``
-* ``FileList::getButtonsAndOtherMarkers``
-* ``GraphicalFunctions::pngToGifByImagemagick``
+* `LocalImageProcessor::getTemporaryImageWithText`
+* `ResourceCompressor::compressCssPregCallback`
+* `FileList::getButtonsAndOtherMarkers`
+* `GraphicalFunctions::pngToGifByImagemagick`
 
 The following deprecated data members have been removed:
 
-* ``DuplicationBehavior::$legacyValueMap``
-* ``ExtendeFileUtillity::$dontCheckForUnique``
-* ``FileListController::$MCONF``
+* `DuplicationBehavior::$legacyValueMap`
+* `ExtendeFileUtillity::$dontCheckForUnique`
+* `FileListController::$MCONF`
 
 
 Impact
@@ -34,11 +37,11 @@ Instances which use custom calls to LocalImageProcessor, ResourceCompressor, Fil
 Migration
 =========
 
-``LocalImageProcessor::getTemporaryImageWithText`` use ``\TYPO3\CMS\Core\Imaging\GraphicalFunctions::getTemporaryImageWithText()`` instead
-``ResourceCompressor::compressCssPregCallback`` no replacement, functionality is implemented in a different way
-``ExtendeFileUtillity::$dontCheckForUnique`` use ``setExistingFilesConflictMode(DuplicationBehavior::REPLACE)`` instead
-``FileListController::$MCONF`` no replacement, configuration is done when registering the module in ext_tables.php
-``FileList::getButtonsAndOtherMarkers`` buttons are now defined in FileListController
-``GraphicalFunctions::pngToGifByImagemagick`` no replacement, the png_to_gif option has been removed
+`LocalImageProcessor::getTemporaryImageWithText` use `\TYPO3\CMS\Core\Imaging\GraphicalFunctions::getTemporaryImageWithText()` instead
+`ResourceCompressor::compressCssPregCallback` no replacement, functionality is implemented in a different way
+`ExtendeFileUtillity::$dontCheckForUnique` use `setExistingFilesConflictMode(DuplicationBehavior::REPLACE)` instead
+`FileListController::$MCONF` no replacement, configuration is done when registering the module in ext_tables.php
+`FileList::getButtonsAndOtherMarkers` buttons are now defined in FileListController
+`GraphicalFunctions::pngToGifByImagemagick` no replacement, the png_to_gif option has been removed
 
 .. index:: php

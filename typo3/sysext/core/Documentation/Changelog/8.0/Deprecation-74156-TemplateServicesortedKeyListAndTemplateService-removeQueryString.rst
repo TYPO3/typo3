@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================================================
 Deprecation: #74156 - TemplateService::sortedKeyList and TemplateService->removeQueryString
 ===========================================================================================
@@ -5,7 +8,7 @@ Deprecation: #74156 - TemplateService::sortedKeyList and TemplateService->remove
 Description
 ===========
 
-The methods ``TemplateService::sortedKeyList()`` and ``TemplateService->removeQueryString()`` have been marked
+The methods `TemplateService::sortedKeyList()` and `TemplateService->removeQueryString()` have been marked
 as deprecated.
 
 
@@ -24,6 +27,6 @@ Any TYPO3 installation with a custom extension that uses these PHP methods.
 Migration
 =========
 
-Use ``ArrayUtility::filterAndSortByNumericKeys`` and ``rtrim($url, '?')`` as drop-in replacements.
+Use `ArrayUtility::filterAndSortByNumericKeys` and `rtrim($url, '?')` as drop-in replacements.
 
 .. index:: php

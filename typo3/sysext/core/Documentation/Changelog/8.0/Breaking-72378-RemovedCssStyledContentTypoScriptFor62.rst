@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================
 Breaking: #72378 - Removed CSS Styled Content TypoScript for 6.2
 ================================================================
@@ -11,7 +14,7 @@ The compatibility TypoScript code for CSS Styled Content, which renders the Fron
 Impact
 ======
 
-Referencing the file via sys_template or including the TypoScript files in ``EXT:css_styled_content/static/6.2/`` will not work anymore.
+Referencing the file via sys_template or including the TypoScript files in `EXT:css_styled_content/static/6.2/` will not work anymore.
 
 
 Affected Installations

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================================
 Deprecation: #72827 - Module Icon configuration via [labels][tabs_images][tab]
 ==============================================================================
@@ -6,17 +9,17 @@ Description
 ===========
 
 When registering a non-extbase module, the option to configure an icon was
-previously done with the module configuration option ``[labels][tabs_images][tab]``.
+previously done with the module configuration option `[labels][tabs_images][tab]`.
 To clarify the naming, the property "icon" is introduced which expects a reference
-to the icon via the ``EXT:myextension/path/to/the/file.png`` syntax.
+to the icon via the `EXT:myextension/path/to/the/file.png` syntax.
 
-The old option ``[labels][tabs_images][tab]`` has been marked as deprecated.
+The old option `[labels][tabs_images][tab]` has been marked as deprecated.
 
 
 Impact
 ======
 
-When using the old configuration property ``[labels][tabs_images][tab]``, a
+When using the old configuration property `[labels][tabs_images][tab]`, a
 deprecation message is thrown.
 
 
@@ -30,7 +33,7 @@ still use the old configuration property.
 Migration
 =========
 
-Replace the ``[labels][tabs_images][tab]`` with ``[icon]`` in ``ext_tables.php`` in
+Replace the `[labels][tabs_images][tab]` with `[icon]` in `ext_tables.php` in
 your extension like this:
 
 .. code-block:: php

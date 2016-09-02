@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================================
 Feature: #76748 - Configure the availability of the elementbrowser
 ==================================================================
@@ -8,13 +11,13 @@ Description
 The button to open the elementBrowser can be configured to be enabled/disabled for the user.
 
 The button can be disabled by the following TCA setting:
-:php:``[table_name]['columns'][field_name]['config']['appearance']['elementBrowserEnabled'] = false;``
+:php:`[table_name]['columns'][field_name]['config']['appearance']['elementBrowserEnabled'] = false;`
 
 The button can be disabled by the following pageTs setting:
-:ts:``TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0``
+:ts:`TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0`
 
 The button can be disabled by the following userTs setting:
-:ts:``page.TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0``
+:ts:`page.TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0`
 
 
 Impact

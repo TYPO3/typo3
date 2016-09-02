@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================
 Feature: #76590 - Introduce UnitTests for JavaScript
 ====================================================
@@ -36,9 +39,9 @@ To run the UnitTests on a local system the following steps are necessary:
 Test-Files
 ==========
 
-Any test file must be located in extension folder ``typo3/sysext/<EXTKEY>/Tests/JavaScript/``
-The filename must end with Test.js, e.g. ``GridEditorTest.js``
-Each test file must be implemented as AMD module, must use strict mode and has to use :js:``describe`` with module name as outer wrap for each test.
+Any test file must be located in extension folder `typo3/sysext/<EXTKEY>/Tests/JavaScript/`
+The filename must end with Test.js, e.g. `GridEditorTest.js`
+Each test file must be implemented as AMD module, must use strict mode and has to use :js:`describe` with module name as outer wrap for each test.
 The following code block shows a good example:
 
 .. code-block:: javascript
@@ -63,6 +66,6 @@ Please take a look at the existing test files and read the jasmine documentation
 DataProvider for tests
 ----------------------
 
-For testing a set of values, the core implement a kind of DataProvider. To use the DataProvider you have to use the function :js:``using``.
-Please take a look at ``FormEngineValidationTest.js`` for an example.
+For testing a set of values, the core implement a kind of DataProvider. To use the DataProvider you have to use the function :js:`using`.
+Please take a look at `FormEngineValidationTest.js` for an example.
 

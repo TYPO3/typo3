@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Breaking: #72888 - Removed HtmlParser mapTags functionality
 ===========================================================
@@ -7,8 +10,8 @@ Description
 
 The functionality to map tags explicitly from the HtmlParser code has been removed:
 
-    * ``HtmlParser::mapTags()``
-    * ``RteHtmlParser::defaultTStagMapping()``
+    * `HtmlParser::mapTags()`
+    * `RteHtmlParser::defaultTStagMapping()`
 
 
 Impact
@@ -26,6 +29,6 @@ Any installation using custom RTE transformation and wanting to remap tags while
 Migration
 =========
 
-Use the "remap" functionality of the ``keepTags`` logic within HtmlParser to achieve the same in custom transformations.
+Use the "remap" functionality of the `keepTags` logic within HtmlParser to achieve the same in custom transformations.
 
 .. index:: php

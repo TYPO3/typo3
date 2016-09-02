@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================
 Feature: #72045 - HTMLparser.stripEmptyTags.keepTags
 ====================================================
@@ -5,11 +8,11 @@ Feature: #72045 - HTMLparser.stripEmptyTags.keepTags
 Description
 ===========
 
-A new option for the ``HTMLparser.stripEmptyTags`` configuration is added.
+A new option for the `HTMLparser.stripEmptyTags` configuration is added.
 It allows keeping configured tags. Before this change only a list of tags
 could be provided that should be removed.
 
-The following example will strip all empty tags **except** ``tr`` and ``td`` tags.
+The following example will strip all empty tags **except** `tr` and `td` tags.
 
 ::
 
@@ -17,12 +20,12 @@ The following example will strip all empty tags **except** ``tr`` and ``td`` tag
     HTMLparser.stripEmptyTags.keepTags = tr,td
 
 
-**Important!** If this setting is used the ``stripEmptyTags.tags`` configuration will
+**Important!** If this setting is used the `stripEmptyTags.tags` configuration will
 have no effect any more. You can only use one option at a time.
 
 
 Impact
 ======
 
-Unless the configuration of the ``HTMLparser is changed``, the stripEmptyTags
+Unless the configuration of the `HTMLparser is changed`, the stripEmptyTags
 feature will work as before.

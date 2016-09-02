@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Deprecation: #74022 - GraphicalFunctions->prependAbsolutePath()
 ===============================================================
@@ -5,7 +8,7 @@ Deprecation: #74022 - GraphicalFunctions->prependAbsolutePath()
 Description
 ===========
 
-The method ``GraphicalFunctions->prependAbsolutePath()`` has been marked as deprecated.
+The method `GraphicalFunctions->prependAbsolutePath()` has been marked as deprecated.
 
 
 Impact
@@ -23,6 +26,6 @@ Any installation with custom extensions that use GraphicalFunctions and the meth
 Migration
 =========
 
-Use ``GeneralUtility::getFileAbsFileName()`` instead.
+Use `GeneralUtility::getFileAbsFileName()` instead.
 
 .. index:: php

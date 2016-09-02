@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Deprecation: #73728 - Wizard type colorbox is deprecated
 ========================================================
@@ -7,13 +10,13 @@ Description
 
 The color-picker is now available as dedicated render-type which will integrate
 an inline color-picker widget based on bootstrap. Thus, the old wizard type
-``colorbox`` has been marked as deprecated.
+`colorbox` has been marked as deprecated.
 
 
 Impact
 ======
 
-Using the TCA wizard type ``colorbox`` will trigger a deprecation log entry.
+Using the TCA wizard type `colorbox` will trigger a deprecation log entry.
 The possibility to pick the color from a custom image has been removed
 without substitution together with the possibility to use color names like
 "red" or "white".
@@ -22,7 +25,7 @@ without substitution together with the possibility to use color names like
 Affected Installations
 ======================
 
-All TCA fields that are using the wizard type ``colorbox``, like e.g.
+All TCA fields that are using the wizard type `colorbox`, like e.g.
 
 
 .. code-block:: php
@@ -37,7 +40,7 @@ All TCA fields that are using the wizard type ``colorbox``, like e.g.
 Migration
 =========
 
-Use the new render-type ``colorpicker`` in the TCA field configuration, like e.g.
+Use the new render-type `colorpicker` in the TCA field configuration, like e.g.
 
 .. code-block:: php
 

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Breaking: #75454 - LocalConfiguration DB config structure has changed
 =====================================================================
@@ -7,7 +10,7 @@ Description
 
 To provide support for multiple database connections and remapping tables to different
 database systems within the TYPO3 Core the configuration format for database connections
-in ``LocalConfiguration.php`` / ``$GLOBALS['TYPO3_CONF_VARS']['DB']`` has changed.
+in `LocalConfiguration.php` / `$GLOBALS['TYPO3_CONF_VARS']['DB']` has changed.
 
 The new configuration array structure:
 
@@ -29,8 +32,8 @@ The new configuration array structure:
 	],
 
 Be aware that besides the deeper nesting below 'Connections/Default' some of the configuration
-keys have been renamed. It is required to provide the new configuration key ``driver`` with a
-value of ``mysqli`` explicitly.
+keys have been renamed. It is required to provide the new configuration key `driver` with a
+value of `mysqli` explicitly.
 
 The following table lists the changed configuration keys and the appropriate values if these
 have changed.
@@ -70,7 +73,7 @@ Migration
 =========
 
 The Install Tool will migrate the configuration information for the default connection to the new
-format. Installations overriding the database configuration using ``AdditionalConfiguration.php``
+format. Installations overriding the database configuration using `AdditionalConfiguration.php`
 or other means need to ensure the new format is being used.
 
 .. index:: php, setting

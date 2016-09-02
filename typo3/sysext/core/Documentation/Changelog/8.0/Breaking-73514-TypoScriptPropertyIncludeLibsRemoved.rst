@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================
 Breaking: #73514 - TypoScript property "includeLibs" removed
 ============================================================
@@ -5,14 +8,14 @@ Breaking: #73514 - TypoScript property "includeLibs" removed
 Description
 ===========
 
-The TypoScript property to load additional PHP libraries via ``.includeLibs`` has been removed from the Content
-Objects ``COA/COA_INT`` and ``USER/USER_INT``.
+The TypoScript property to load additional PHP libraries via `.includeLibs` has been removed from the Content
+Objects `COA/COA_INT` and `USER/USER_INT`.
 
 
 Impact
 ======
 
-Setting the ``.includeLibs`` property will have no effect anymore.
+Setting the `.includeLibs` property will have no effect anymore.
 
 
 Affected Installations

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Breaking: #72385 - Removed deprecated code from DataHandler
 ===========================================================
@@ -9,20 +12,20 @@ Removed deprecated code from DataHandler
 
 The following properties have been removed:
 
-``stripslashes_values``
-``clear_flexFormData_vDEFbase``
-``include_filefunctions``
+`stripslashes_values`
+`clear_flexFormData_vDEFbase`
+`include_filefunctions`
 
 The following methods have been removed:
 
-``checkValue_text()``
-``checkValue_input()``
-``checkValue_check()``
-``checkValue_radio()``
-``checkValue_group_select()``
-``checkValue_flex()``
+`checkValue_text()`
+`checkValue_input()`
+`checkValue_check()`
+`checkValue_radio()`
+`checkValue_group_select()`
+`checkValue_flex()`
 
-Additionally, the method ``getLocalTCE()`` does not accept any parameter anymore.
+Additionally, the method `getLocalTCE()` does not accept any parameter anymore.
 
 Impact
 ======

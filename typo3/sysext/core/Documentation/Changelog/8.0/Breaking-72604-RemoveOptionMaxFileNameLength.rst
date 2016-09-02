@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================
 Breaking: #72604 - Remove option maxFileNameLength
 ==================================================
@@ -5,7 +8,7 @@ Breaking: #72604 - Remove option maxFileNameLength
 Description
 ===========
 
-The option ``$TYPO3_CONF_VARS[SYS][maxFileNameLength]`` was removed.
+The option `$TYPO3_CONF_VARS[SYS][maxFileNameLength]` was removed.
 
 
 Impact

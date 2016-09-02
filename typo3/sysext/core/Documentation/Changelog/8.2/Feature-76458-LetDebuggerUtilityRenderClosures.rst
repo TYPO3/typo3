@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================
 Feature: #76458 - Let DebuggerUtility render closures
 =====================================================
@@ -5,7 +8,7 @@ Feature: #76458 - Let DebuggerUtility render closures
 Description
 ===========
 
-The ``DebuggerUtility`` of Extbase is now able to render closures.
+The `DebuggerUtility` of Extbase is now able to render closures.
 
 
 Impact

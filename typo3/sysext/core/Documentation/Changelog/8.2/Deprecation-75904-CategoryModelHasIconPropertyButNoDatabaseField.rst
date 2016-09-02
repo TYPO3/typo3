@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================================
 Deprecation: #75904 - Category Model has icon property but no database field
 ============================================================================
@@ -5,8 +8,8 @@ Deprecation: #75904 - Category Model has icon property but no database field
 Description
 ===========
 
-Methods :php:``\TYPO3\CMS\Extbase\Domain\Model\Category::getIcon`` and
-:php:``\TYPO3\CMS\Extbase\Domain\Model\Category::setIcon`` have been marked as deprecated.
+Methods :php:`\TYPO3\CMS\Extbase\Domain\Model\Category::getIcon` and
+:php:`\TYPO3\CMS\Extbase\Domain\Model\Category::setIcon` have been marked as deprecated.
 
 
 Impact

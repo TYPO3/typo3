@@ -1,6 +1,6 @@
-============================================================
-Documentation of breaking changes, deprecations and features
-============================================================
+===================
+Documenting Changes
+===================
 
 
 Motivation and goals
@@ -20,7 +20,7 @@ teams or projects:
 
 - Standardized format for easy usage in scripts like a core migration or release notes system.
 
-This new structure also replaces the NEWS.md file.
+This structure replaces the old `NEWS.md` file.
 
 Different changelog types
 =========================

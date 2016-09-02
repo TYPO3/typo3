@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================
 Breaking: #72370 - Removed deprecated code from extbase
 =======================================================
@@ -8,8 +11,8 @@ Description
 Remove deprecated code from extbase
 
 The ChangeLog file has been removed.
-``TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::__wakeup()`` has been removed.
-``TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule()`` has been removed.
+`TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::__wakeup()` has been removed.
+`TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule()` has been removed.
 
 
 Impact
@@ -27,7 +30,7 @@ Instances which use calls to the methods above.
 Migration
 =========
 
-Use the according method in ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule()`` instead of the removed one from ext:extbase.
-Objects are instantiated differently calling ``parent::__wakeup()`` is no longer necessary. No migration needed.
+Use the according method in `\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule()` instead of the removed one from ext:extbase.
+Objects are instantiated differently calling `parent::__wakeup()` is no longer necessary. No migration needed.
 
 .. index:: php

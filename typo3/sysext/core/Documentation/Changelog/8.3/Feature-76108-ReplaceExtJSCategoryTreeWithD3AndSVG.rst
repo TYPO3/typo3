@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Feature: #76108 - Replace ExtJS category tree with D3 and SVG
 =============================================================
@@ -5,7 +8,7 @@ Feature: #76108 - Replace ExtJS category tree with D3 and SVG
 Description
 ===========
 
-The Backend ExtJS category tree (renderType ``selectTree``) has been replaced with one based on D3.js_ and SVG.
+The Backend ExtJS category tree (renderType `selectTree`) has been replaced with one based on D3.js_ and SVG.
 Tree implements a 'virtual scroll' pattern, meaning that it renders only as many nodes as fit in the viewport.
 
 .. _D3.js: https://d3js.org/
@@ -31,7 +34,7 @@ Data binding
 ------------
 
 Thanks to D3, each SVG node representing tree item is bound to the data object. The general idea is that all operations (like showing/hiding/selecting...) are first performed on the dataset, and then the view (SVG) is refreshed.
-In the :js:``initialize`` function SvgTree loads the whole tree as json
+In the :js:`initialize` function SvgTree loads the whole tree as json
 
 
 Impact

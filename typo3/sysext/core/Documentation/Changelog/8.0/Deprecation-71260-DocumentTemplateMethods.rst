@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Deprecation: #71153 - Several DocumentTemplate methods deprecated
 =================================================================
@@ -5,14 +8,14 @@ Deprecation: #71153 - Several DocumentTemplate methods deprecated
 Description
 ===========
 
-The following methods from ``TYPO3\CMS\Backend\Template\DocumentTemplate`` have
+The following methods from `TYPO3\CMS\Backend\Template\DocumentTemplate` have
 been marked as deprecated.
 
-``section``
-``divider``
-``sectionHeader``
-``sectionBegin``
-``sectionEnd``
+`section`
+`divider`
+`sectionHeader`
+`sectionBegin`
+`sectionEnd`
 
 Impact
 ======

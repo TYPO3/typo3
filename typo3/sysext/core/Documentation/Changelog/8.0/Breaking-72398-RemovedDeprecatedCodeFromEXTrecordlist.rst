@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================
 Breaking: #72398 - Removed deprecated code from EXT:recordlist
 ==============================================================
@@ -7,14 +10,14 @@ Description
 
 The following deprecated methods have been removed:
 
-* ``RecordList::printContent()``
-* ``ElementBrowserFramesetController::printContent()``
+* `RecordList::printContent()`
+* `ElementBrowserFramesetController::printContent()`
 
 The following deprecated data members have been removed:
 
-* ``RecordList::$MCONF``
+* `RecordList::$MCONF`
 
-Support for multiple UIDs in the URL parameter ``act`` in ``AbstractLinkBrowserController::initVariables()`` has been removed.
+Support for multiple UIDs in the URL parameter `act` in `AbstractLinkBrowserController::initVariables()` has been removed.
 
 
 Impact
@@ -32,9 +35,9 @@ Instances which use custom calls to RecordList, AbstractLinkBrowserController, E
 Migration
 =========
 
-``$MCONF`` no replacement for this
-``RecordList::printContent()`` use ``RecordList::mainAction()`` instead
-``AbstractLinkBrowserController::initVariables()`` no replacement for using multiple UIDs
-``ElementBrowserFramesetController::printContent()`` use ``ElementBrowserFramesetController::mainAction()`` instead
+`$MCONF` no replacement for this
+`RecordList::printContent()` use `RecordList::mainAction()` instead
+`AbstractLinkBrowserController::initVariables()` no replacement for using multiple UIDs
+`ElementBrowserFramesetController::printContent()` use `ElementBrowserFramesetController::mainAction()` instead
 
 .. index:: php

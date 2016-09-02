@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================
 Feature: #54887 - Post-processing of the previewUrl
 ===================================================
@@ -5,7 +8,7 @@ Feature: #54887 - Post-processing of the previewUrl
 Description
 ===========
 
-An additional hook has been added to the method ``BackendUtility::viewOnClick()`` to
+An additional hook has been added to the method `BackendUtility::viewOnClick()` to
 post-process the preview url.
 
 The hook is called with the following signature:
@@ -28,7 +31,7 @@ The hook is called with the following signature:
 Register the hook
 -----------------
 
-Register a hook class which implements the method with the name ``postProcess``:
+Register a hook class which implements the method with the name `postProcess`:
 
 .. code-block:: php
 

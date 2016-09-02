@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Breaking: #77592 - Dropped TCA option showIfRTE in type=check
 =============================================================
@@ -5,7 +8,7 @@ Breaking: #77592 - Dropped TCA option showIfRTE in type=check
 Description
 ===========
 
-The TCA setting ``showIfRTE`` for type=check is not evaluated anymore, and removed from the TCA on all fields.
+The TCA setting `showIfRTE` for type=check is not evaluated anymore, and removed from the TCA on all fields.
 
 
 Impact

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================
 Feature: #76107 - Add fluid interceptor registration
 ====================================================
@@ -18,9 +21,9 @@ Interceptors registered here are added to the Fluid parser configuration.
 Impact
 ======
 
-Extensions are able to register custom interceptors using the available configuration in :php:``$TYPO3_CONF_VARS[fluid][interceptors]``.
+Extensions are able to register custom interceptors using the available configuration in :php:`$TYPO3_CONF_VARS[fluid][interceptors]`.
 
-Registered classes have to implement the ``\TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface``.
+Registered classes have to implement the `\TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface`.
 
 .. code-block:: php
 

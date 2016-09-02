@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================
 Deprecation: #75327 - $TSFE->csConvObj and $TSFE->csConv()
 ==========================================================
@@ -5,14 +8,14 @@ Deprecation: #75327 - $TSFE->csConvObj and $TSFE->csConv()
 Description
 ===========
 
-The public property ``csConvObj`` and the public method ``csConv()`` inside the TypoScriptFrontendController PHP
+The public property `csConvObj` and the public method `csConv()` inside the TypoScriptFrontendController PHP
 class have been marked as deprecated.
 
 
 Impact
 ======
 
-Calling ``$TSFE->csConv()`` will trigger a deprecation log entry.
+Calling `$TSFE->csConv()` will trigger a deprecation log entry.
 
 
 Affected Installations

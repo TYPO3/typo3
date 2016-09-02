@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================================
 Deprecation: #76520 - Deprecate method pages_getTree of PageLayoutView
 ======================================================================
@@ -5,13 +8,13 @@ Deprecation: #76520 - Deprecate method pages_getTree of PageLayoutView
 Description
 ===========
 
-The method :php:``pages_getTree()`` of ``PageLayoutView`` has been marked as deprecated.
+The method :php:`pages_getTree()` of `PageLayoutView` has been marked as deprecated.
 
 
 Impact
 ======
 
-Calling the method :php:``pages_getTree`` will trigger a deprecation log entry.
+Calling the method :php:`pages_getTree` will trigger a deprecation log entry.
 
 
 Affected Installations

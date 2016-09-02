@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================
 Breaking: #77765 - ExtJS notifications and dialogs removed
 ==========================================================
@@ -5,7 +8,7 @@ Breaking: #77765 - ExtJS notifications and dialogs removed
 Description
 ===========
 
-ExtJS notifications with the ExtJS components ``TYPO3.Window`` and ``TYPO3.Dialog`` have been removed from the TYPO3 Core.
+ExtJS notifications with the ExtJS components `TYPO3.Window` and `TYPO3.Dialog` have been removed from the TYPO3 Core.
 
 
 Impact

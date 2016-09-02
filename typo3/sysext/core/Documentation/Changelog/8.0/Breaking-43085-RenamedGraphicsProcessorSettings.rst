@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================================
 Breaking: #43085 - Change GFX settings prefix im\_* to generic processor\_*
 ===========================================================================
@@ -6,10 +9,10 @@ Description
 ===========
 
 Graphics processor settings for Image- or GraphicsMagick have been renamed
-in ``LocalConfiguration.php``. The former prefix ``im\_`` has been replaced with
-the unified prefix ``processor\_``.
+in `LocalConfiguration.php`. The former prefix `im\_` has been replaced with
+the unified prefix `processor\_`.
 
-Negative namings like ``noScaleUp`` have been changed positive counterparts.
+Negative namings like `noScaleUp` have been changed positive counterparts.
 During the conversion the previous configuration values are negated to reflect
 the changes in semantics of these options.
 
@@ -17,19 +20,19 @@ In addition references to specific versions of ImageMagick/GraphicsMagick
 have been removed from settings names and values. For a detailed list of
 changes please consult the information in the migration section.
 
-The unused configuration option ``image\_processing`` has been removed without
+The unused configuration option `image\_processing` has been removed without
 replacement.
 
-The processor specific configuration option ``colorspace`` has been namespaced
-below the ``processor\_`` hierarchy.
+The processor specific configuration option `colorspace` has been namespaced
+below the `processor\_` hierarchy.
 
 
 Impact
 ======
 
-Existing settings in ``LocalConfiguration.php`` are automatically migrated
+Existing settings in `LocalConfiguration.php` are automatically migrated
 through a silent upgrader when entering the Install Tool. If you modify
-the settings in ``AdditionalConfiguration.php`` or rely on them inside an
+the settings in `AdditionalConfiguration.php` or rely on them inside an
 extension you need to update those.
 
 

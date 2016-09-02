@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================
 Breaking: #77587 - Removed LiveSearch->getQueryString
 =====================================================
@@ -5,7 +8,7 @@ Breaking: #77587 - Removed LiveSearch->getQueryString
 Description
 ===========
 
-The public utility method ``getQueryString()`` within the ``LiveSearch`` PHP class has been removed.
+The public utility method `getQueryString()` within the `LiveSearch` PHP class has been removed.
 
 
 Impact

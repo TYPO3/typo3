@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Feature: #72904 - Add preProcessStorage signal to ResourceFactory
 =================================================================
@@ -7,7 +10,7 @@ Description
 
 This patch introduces a new signal before a resource storage is initialized.
 
-Register the class which implements your logic in ``ext_localconf.php``:
+Register the class which implements your logic in `ext_localconf.php`:
 
 .. code-block:: php
 
@@ -21,6 +24,6 @@ Register the class which implements your logic in ``ext_localconf.php``:
 
 The method is called with the following arguments:
 
-* int ``$uid`` the uid of the record
-* array ``$recordData`` all record data as array
-* string ``$fileIdentifier`` the file identifier
+* int `$uid` the uid of the record
+* array `$recordData` all record data as array
+* string `$fileIdentifier` the file identifier

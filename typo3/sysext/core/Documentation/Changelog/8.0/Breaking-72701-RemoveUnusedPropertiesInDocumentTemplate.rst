@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Breaking: #72701 - Remove unused properties in DocumentTemplate
 ===============================================================
@@ -9,9 +12,9 @@ Remove deprecated code from DocumentTemplate
 
 The following properties have been removed:
 
-``tableLayout``
-``table_TR``
-``table_TABLE``
+`tableLayout`
+`table_TR`
+`table_TABLE`
 
 
 Impact

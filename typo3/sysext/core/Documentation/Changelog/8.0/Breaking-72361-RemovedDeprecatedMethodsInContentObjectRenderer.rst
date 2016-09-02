@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================================
 Breaking: #72361 - Removed deprecated methods in ContentObjectRenderer
 ======================================================================
@@ -7,13 +10,13 @@ Description
 
 The following methods have been removed:
 
-* ``cleanFormName``
-* ``stdWrap_offsetWrap``
-* ``textStyle``
-* ``tableStyle``
+* `cleanFormName`
+* `stdWrap_offsetWrap`
+* `textStyle`
+* `tableStyle`
 
-The TypoScript ``jumpurl`` configuration has been removed for file links.
-The TypoScript property ``andWhere`` from ``.select`` has been removed.
+The TypoScript `jumpurl` configuration has been removed for file links.
+The TypoScript property `andWhere` from `.select` has been removed.
 
 
 Impact
@@ -31,13 +34,13 @@ Instances which use custom calls to ContentObjects via the methods above.
 Migration
 =========
 
-``cleanFormName`` has been moved to ``FormContentObject``.
-``stdWrap_offsetWrap`` has not been replaced by a new function.
-``textStyle`` TypoScript option should be done with CSS.
-``tableStyle`` TypoScript option should be done with CSS.
+`cleanFormName` has been moved to `FormContentObject`.
+`stdWrap_offsetWrap` has not been replaced by a new function.
+`textStyle` TypoScript option should be done with CSS.
+`tableStyle` TypoScript option should be done with CSS.
 
-TypoScript option ``jumpurl`` can be passed in the ``typolinkConfiguration`` property.
+TypoScript option `jumpurl` can be passed in the `typolinkConfiguration` property.
 
-TypoScript property ``andWhere`` can be migrated to ``where``.
+TypoScript property `andWhere` can be migrated to `where`.
 
 .. index:: php, typoscript

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================================================
 Breaking: #73719 - Unused JavaScript configuration options for the Backend removed
 ==================================================================================
@@ -5,7 +8,7 @@ Breaking: #73719 - Unused JavaScript configuration options for the Backend remov
 Description
 ===========
 
-The following JavaScript options from TYPO3.configuration and the global JavaScript property ``TS`` have been removed:
+The following JavaScript options from TYPO3.configuration and the global JavaScript property `TS` have been removed:
 
 .. code-block:: javascript
 

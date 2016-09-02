@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================================
 Breaking: #75711 - Removed DB-related methods and TCA-related options from cObj
 ===============================================================================
@@ -5,7 +8,7 @@ Breaking: #75711 - Removed DB-related methods and TCA-related options from cObj
 Description
 ===========
 
-The following methods have been removed from ``ContentObjectRenderer`` without substitution:
+The following methods have been removed from `ContentObjectRenderer` without substitution:
 
 * DBgetDelete()
 * DBgetUpdate()

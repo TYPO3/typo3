@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================
 Breaking: #72372 - Removed deprecated code from beuser
 ======================================================
@@ -5,11 +8,11 @@ Breaking: #72372 - Removed deprecated code from beuser
 Description
 ===========
 
-The following methods have been removed from ``PermissionAjaxController``
+The following methods have been removed from `PermissionAjaxController`
 
-``renderOwnername``
-``renderPermissions``
-``renderGroupname``
+`renderOwnername`
+`renderPermissions`
+`renderGroupname`
 
 
 Impact
