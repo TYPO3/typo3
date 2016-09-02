@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -72,11 +71,6 @@ class CropViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current['TSFE'] if used in BE mode
-     */
-    protected static $tsfeBackup;
-
-    /**
      * Initialize arguments.
      *
      * @api
@@ -131,9 +125,6 @@ class CropViewHelper extends AbstractViewHelper
         $respectHtml = $arguments['respectHtml'];
 
         $stringToTruncate = $renderChildrenClosure();
-        if (TYPO3_MODE === 'BE') {
-            self::simulateFrontendEnvironment();
-        }
 
         // Even if we are in extbase/fluid context here, we're switching to a casual class of the framework here
         // that has no dependency injection and other stuff. Therefor it is ok to use makeInstance instead of
@@ -148,36 +139,7 @@ class CropViewHelper extends AbstractViewHelper
         } else {
             $content = $contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
         }
-        if (TYPO3_MODE === 'BE') {
-            self::resetFrontendEnvironment();
-        }
 
         return $content;
-    }
-
-    /**
-     * Sets the global variable $GLOBALS['TSFE']->csConvObj in Backend mode
-     * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of
-     * ContentObjectRenderer rely on those variables to be set.
-     * @throws \InvalidArgumentException
-     */
-    protected static function simulateFrontendEnvironment()
-    {
-        self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
-        $GLOBALS['TSFE'] = new \stdClass();
-        // preparing csConvObj
-        if (!is_object($GLOBALS['TSFE']->csConvObj)) {
-            $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-        }
-    }
-
-    /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment().
-     *
-     * @see simulateFrontendEnvironment()
-     */
-    protected static function resetFrontendEnvironment()
-    {
-        $GLOBALS['TSFE'] = self::$tsfeBackup;
     }
 }
