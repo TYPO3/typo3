@@ -1,0 +1,19 @@
+<form class="shortcut-form" role="form" data-shortcutid="{selectedShortcutId}">
+	<h3 class="dropdown-headline">
+		{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksEdit')}
+	</h3>
+	<hr>
+	<div class="form-group">
+		<input type="text" class="form-control" name="shortcut-title" value="{selectedShortcut.label}"/>
+	</div>
+	<div class="form-group">
+		<select class="form-control" name="shortcut-group">
+			<f:for each="{shortcutGroups}" key="shortcutGroupId" as="shortcutGroupTitle">
+				<option value="{shortcutGroupId}" {f:if(condition: '{selectedShortcutGroupId} == {shortcutGroupId}', then: 'selected="selected"')}>{shortcutGroupTitle}</option>
+			</f:for>
+		</select>
+	</div>
+	<hr>
+	<input type="button" class="btn btn-default shortcut-form-cancel" value="Cancel"/>
+	<input type="button" class="btn btn-success shortcut-form-save" value="Save"/>
+</form>
