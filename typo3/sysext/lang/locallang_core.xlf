@@ -1227,6 +1227,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.sysinfo.webserver">
 				<source>Webserver</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.typo3-version">
+				<source>TYPO3 Version</source>
+			</trans-unit>
 			<trans-unit id="ExtDirect.namespaceError" xml:space="preserve">
 				<source>Ext Direct error in "%s" with namespace: "%s"\n
 Try to clear the TYPO3 cache and / or use parameter no_cache=1 as parameter in URL typo3/index.php\n\n

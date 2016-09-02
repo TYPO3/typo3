@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -116,6 +117,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function collectInformation()
     {
+        $this->getTypo3Version();
         $this->getWebServer();
         $this->getPhpVersion();
         $this->getDatabase();
@@ -275,6 +277,18 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.webserver')),
             'value' => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
             'icon' => $this->iconFactory->getIcon('sysinfo-webserver', Icon::SIZE_SMALL)->render()
+        ];
+    }
+
+    /**
+     * Gets the TYPO3 version
+     */
+    protected function getTypo3Version()
+    {
+        $this->systemInformation[] = [
+            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.typo3-version')),
+            'value' => htmlspecialchars(VersionNumberUtility::getCurrentTypo3Version()),
+            'icon' => $this->iconFactory->getIcon('sysinfo-typo3-version', Icon::SIZE_SMALL)->render()
         ];
     }
 
