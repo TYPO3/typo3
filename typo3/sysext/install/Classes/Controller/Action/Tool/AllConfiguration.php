@@ -216,13 +216,13 @@ class AllConfiguration extends Action\AbstractAction
         foreach ($lines as $lc) {
             $lc = trim($lc);
             if ($in) {
-                if ($lc === ');') {
+                if ($lc === '];') {
                     $in = 0;
                 } else {
                     if (preg_match('/["\']([[:alnum:]_-]*)["\'][[:space:]]*=>(.*)/i', $lc, $reg)) {
                         preg_match('/,[\\t\\s]*\\/\\/(.*)/i', $reg[2], $creg);
                         $theComment = trim($creg[1]);
-                        if (substr(strtolower(trim($reg[2])), 0, 5) == 'array' && $reg[1] === strtoupper($reg[1])) {
+                        if (substr(trim($reg[2]), 0, 1) === '[' && $reg[1] === strtoupper($reg[1])) {
                             $mainKey = trim($reg[1]);
                         } elseif ($mainKey) {
                             $commentArray[$mainKey][$reg[1]] = $theComment;
@@ -230,7 +230,7 @@ class AllConfiguration extends Action\AbstractAction
                     }
                 }
             }
-            if ($lc === 'return array(') {
+            if ($lc === 'return [') {
                 $in = 1;
             }
         }
