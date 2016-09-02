@@ -78,13 +78,6 @@ function rawurlencode(str) {
 	return output;
 }
 
-/**
- * Function to similar to PHPs  rawurlencode() which removes TYPO3_SITE_URL;
- */
-function rawurlencodeAndRemoveSiteUrl(str)	{	//
-	var siteUrl = TYPO3.configuration.siteUrl;
-	return rawurlencode(str_replace(siteUrl, "", str));
-}
 
 /**
  * String-replace function
