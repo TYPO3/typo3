@@ -27,6 +27,9 @@
 			<trans-unit id="stage_ready_to_publish">
 				<source>Ready to publish</source>
 			</trans-unit>
+			<trans-unit id="previewText">
+				<source>Preview of workspace %s (%s)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
