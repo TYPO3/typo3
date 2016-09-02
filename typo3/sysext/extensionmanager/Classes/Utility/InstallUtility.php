@@ -474,7 +474,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $statements = $sqlReader->getCreateTableStatementArray($rawDefinitions);
-
         if (count($statements) !== 0) {
             $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
             $schemaMigrationService->install($statements);

@@ -209,6 +209,20 @@ class SchemaMigrator
             foreach ($schemaDiff->changedTables as $key => $changedTable) {
                 $schemaDiff->changedTables[$key]->removedColumns = [];
                 $schemaDiff->changedTables[$key]->removedIndexes = [];
+
+                // With partial ext_tables.sql files the SchemaManager is detecting
+                // existing columns as false positives for a column rename. In this
+                // context every rename is actually a new column.
+                foreach ($changedTable->renamedColumns as $columnName => $renamedColumn) {
+                    $changedTable->addedColumns[$renamedColumn->getName()] = GeneralUtility::makeInstance(
+                        Column::class,
+                        $renamedColumn->getName(),
+                        $renamedColumn->getType(),
+                        array_diff_key($renamedColumn->toArray(), ['name', 'type'])
+                    );
+                    unset($changedTable->renamedColumns[$columnName]);
+                }
+
                 if ($createOnly) {
                     $schemaDiff->changedTables[$key]->changedColumns = [];
                     $schemaDiff->changedTables[$key]->renamedIndexes = [];
