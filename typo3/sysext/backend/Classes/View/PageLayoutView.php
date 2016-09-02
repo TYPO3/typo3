@@ -591,14 +591,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
                 }
-                $content[$key] .= '
-				<div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
-					<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
-                        . $link
-                    . '</div>
-                    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-                </div>
-				';
+                if ($this->getBackendUser()->checkLanguageAccess($lP)) {
+                    $content[$key] .= '
+                    <div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
+                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
+                            . $link
+                            . '</div>
+                        <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+                    </div>
+                    ';
+                }
                 $editUidList = '';
                 if (!isset($contentRecordsPerColumn[$key]) || !is_array($contentRecordsPerColumn[$key])) {
                     $message = GeneralUtility::makeInstance(
@@ -665,6 +667,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
                                 && $this->getPageLayoutController()->contentIsNotLockedForEditors()
+                                && $this->getBackendUser()->checkLanguageAccess($lP)
                                 && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                             ) {
                                 // New content element:
