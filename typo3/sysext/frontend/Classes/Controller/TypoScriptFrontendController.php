@@ -1460,10 +1460,12 @@ class TypoScriptFrontendController
         }
         if ($this->page['url_scheme'] > 0) {
             $newUrl = '';
-            $requestUrlScheme = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
-            if ((int)$this->page['url_scheme'] === HttpUtility::SCHEME_HTTP && $requestUrlScheme == 'https') {
+            $currentRequestIsSecure = GeneralUtility::getIndpEnv('TYPO3_SSL');
+            // force http
+            if ((int)$this->page['url_scheme'] === HttpUtility::SCHEME_HTTP && $currentRequestIsSecure) {
                 $newUrl = 'http://' . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 8);
-            } elseif ((int)$this->page['url_scheme'] === HttpUtility::SCHEME_HTTPS && $requestUrlScheme == 'http') {
+            } elseif ((int)$this->page['url_scheme'] === HttpUtility::SCHEME_HTTPS && !$currentRequestIsSecure) {
+                // force https
                 $newUrl = 'https://' . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 7);
             }
             if ($newUrl !== '') {
