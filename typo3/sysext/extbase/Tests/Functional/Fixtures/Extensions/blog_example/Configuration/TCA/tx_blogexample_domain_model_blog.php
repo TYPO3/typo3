@@ -107,6 +107,15 @@ return [
                 'max' => 256
             ]
         ],
+        'subtitle' => [
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.subtitle',
+            'config' => [
+                'type' => 'input',
+                'size' => 20,
+                'eval' => 'trim',
+                'max' => 256
+            ]
+        ],
         'description' => [
             'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.description',

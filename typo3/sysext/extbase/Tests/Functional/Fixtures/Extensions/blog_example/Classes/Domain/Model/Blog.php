@@ -28,6 +28,13 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $title = '';
 
     /**
+     * The blog's subtitle
+     *
+     * @var string
+     */
+    protected $subtitle;
+
+    /**
      * A short description of the blog
      *
      * @var string
@@ -70,6 +77,14 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function __construct()
     {
         $this->posts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubtitle()
+    {
+        return $this->subtitle;
     }
 
     /**
@@ -224,5 +239,13 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getAdministrator()
     {
         return $this->administrator;
+    }
+
+    /**
+     * @param ?string $subtitle
+     */
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
     }
 }

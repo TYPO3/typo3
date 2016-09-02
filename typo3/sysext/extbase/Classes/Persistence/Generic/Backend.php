@@ -398,14 +398,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                     if ($propertyValue->_isNew()) {
                         $this->insertObject($propertyValue, $object, $propertyName);
                     }
-                    // Check explicitly for NULL, as getPlainValue would convert this to 'NULL'
-                    $row[$columnMap->getColumnName()] = $propertyValue !== null
-                        ? $this->dataMapper->getPlainValue($propertyValue)
-                        : null;
+                    $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
                 }
                 $queue[] = $propertyValue;
             } elseif ($object->_isNew() || $object->_isDirty($propertyName)) {
-                $row[$columnMap->getColumnName()] = $this->dataMapper->getPlainValue($propertyValue, $columnMap);
+                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap);
             }
         }
         if (!empty($row)) {
@@ -677,7 +674,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                     $row[$columnMap->getColumnName()] = 0;
                 }
             } elseif ($propertyValue !== null) {
-                $row[$columnMap->getColumnName()] = $this->dataMapper->getPlainValue($propertyValue, $columnMap);
+                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap);
             }
         }
         $this->addCommonFieldsToRow($object, $row);
@@ -1122,5 +1119,22 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         }
         $storagePidList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
         return (int)$storagePidList[0];
+    }
+
+    /**
+     * Returns a plain value
+     *
+     * i.e. objects are flattened out if possible.
+     * Checks explicitly for null values as DataMapper's getPlainValue would convert this to 'NULL'
+     *
+     * @param mixed $input The value that will be converted
+     * @param ColumnMap $columnMap Optional column map for retrieving the date storage format
+     * @return int|string|null
+     */
+    protected function getPlainValue($input, ColumnMap $columnMap = null)
+    {
+        return $input !== null
+            ? $this->dataMapper->getPlainValue($input, $columnMap)
+            : null;
     }
 }

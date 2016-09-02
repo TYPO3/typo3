@@ -146,4 +146,41 @@ class AddTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             ->fetch();
         $this->assertEquals(-1, $newBlogRecord['sys_language_uid']);
     }
+
+    /**
+    * @test
+    */
+    public function addObjectSetsNullAsNullForSimpleTypes()
+    {
+        $newBlogTitle = 'aDi1oogh';
+        $newBlog = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Blog::class);
+        $newBlog->setTitle($newBlogTitle);
+        $newBlog->setSubtitle('subtitle');
+
+        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        // make sure null can be set explicitly
+        $insertedBlog = $this->blogRepository->findByUid(1);
+        $insertedBlog->setSubtitle(null);
+        $this->blogRepository->update($insertedBlog);
+        $this->persistentManager->persistAll();
+
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $newBlogRecord = $queryBuilder
+            ->select('*')
+            ->from('tx_blogexample_domain_model_blog')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'subtitle',
+                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetch();
+        $this->assertNull($newBlogRecord['subtitle']);
+    }
 }
