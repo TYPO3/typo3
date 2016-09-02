@@ -41,7 +41,8 @@ therefore only experienced server administrators should create such configuratio
 ### MySQL environment
 
 TYPO3 works with MySQL in the above mentioned versions. It will also work on
-compatible "drop-in" replacements like MariaDB or Percona.
+compatible "drop-in" replacements like MariaDB or Percona. The InnoDB engine
+is required to be enabled.
 
 ### MySQL required privileges
 
