@@ -475,6 +475,9 @@ All search words are converted to lowercase.
 			<trans-unit id="administration.noPageSelected">
 				<source>Please select a page from the page tree.</source>
 			</trans-unit>
+			<trans-unit id="error.noTypoScript">
+				<source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
