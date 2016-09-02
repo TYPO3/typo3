@@ -16,7 +16,7 @@
 	<f:if condition="{compareUserList}">
 		<h3>{f:translate(key: 'section.compare', default: 'Compare')}</h3>
 		<div class="table-fit">
-			<table class="table table-hover">
+			<table id="typo3-backend-user-list-compare" class="table table-hover">
 				<tbody>
 					<f:for each="{compareUserList}" as="compareUser">
 						<tr>
@@ -54,7 +54,7 @@
 	</f:comment>
 	<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertBelow: 1}">
 		<div class="table-fit">
-			<table class="table table-striped table-hover">
+			<table id="typo3-backend-user-list" class="table table-striped table-hover">
 				<thead>
 					<tr>
 						<th></th>
@@ -70,12 +70,14 @@
 					<f:comment>
 						Footer row: no officially defined style yet
 					</f:comment>
+				</tbody>
+				<tfoot>
 					<tr>
 						<td colspan="5">
 							<f:count subject="{backendUsers}" /> <f:translate key="users" />
 						</td>
 					</tr>
-				</tbody>
+				</tfoot>
 			</table>
 		</div>
 	</f:be.widget.paginate>

@@ -209,6 +209,7 @@ class AcceptanceCoreEnvironment extends Extension
         $testbase->setUpLocalConfiguration($instancePath, $localConfiguration, $this->configurationToUseInTestInstance);
         $defaultCoreExtensionsToLoad = [
             'core',
+            'beuser',
             'extbase',
             'fluid',
             'filelist',
