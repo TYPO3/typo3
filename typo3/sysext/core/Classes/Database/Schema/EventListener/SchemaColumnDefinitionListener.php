@@ -37,7 +37,9 @@ class SchemaColumnDefinitionListener
     public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $event)
     {
         $tableColumn = $event->getTableColumn();
-        $dbType = $this->getDatabaseType($tableColumn['Type']);
+        $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+
+        $dbType = $this->getDatabaseType($tableColumn['type']);
         if ($dbType !== 'enum' && $dbType !== 'set') {
             return;
         }
@@ -62,8 +64,6 @@ class SchemaColumnDefinitionListener
      */
     protected function getEnumerationTableColumnDefinition(array $tableColumn, AbstractPlatform $platform): Column
     {
-        $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
-
         $options = [
             'length' => $tableColumn['length'] ?: null,
             'unsigned' => false,
