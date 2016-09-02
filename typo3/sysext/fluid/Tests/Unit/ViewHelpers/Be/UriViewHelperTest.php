@@ -1,0 +1,85 @@
+<?php
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\UriViewHelper;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
+/**
+ * Test-case for Be\UriViewHelper
+ */
+class UriViewHelperTest extends ViewHelperBaseTestcase
+{
+
+    /**
+     * @var UriViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     */
+    protected $viewHelper;
+
+    /**
+     * @var UriBuilder|\PHPUnit_Framework_MockObject_MockBuilder
+     */
+    protected $uriBuilderMock;
+
+    /**
+     * setUp function
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = new UriViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+
+        $this->uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->getMock();
+    }
+
+    /**
+     * @test
+     */
+    public function initializeArgumentsRegistersExpectedArguments()
+    {
+        $viewHelper = $this->getMockBuilder(UriViewHelper::class)
+            ->setMethods(['registerArgument'])
+            ->getMock();
+
+        $viewHelper->expects($this->at(0))->method('registerArgument')->with('route', 'string', $this->anything());
+        $viewHelper->expects($this->at(1))->method('registerArgument')->with('parameters', 'array', $this->anything());
+        $viewHelper->expects($this->at(2))->method('registerArgument')
+            ->with('referenceType', 'string', $this->anything(), false, UriBuilder::ABSOLUTE_PATH);
+        $viewHelper->initializeArguments();
+    }
+
+    /**
+     * @test
+     */
+    public function renderRendersTagWithHrefFromRoute()
+    {
+        $this->viewHelper->setArguments([
+            'route' => 'theRouteArgument',
+            'parameters' => ['parameter' => 'to pass'],
+            'referenceType' => 'theReferenceTypeArgument'
+        ]);
+
+        GeneralUtility::addInstance(UriBuilder::class, $this->uriBuilderMock);
+
+        $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
+            ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
+
+        $this->assertEquals('theUri', $this->viewHelper->render());
+    }
+}
