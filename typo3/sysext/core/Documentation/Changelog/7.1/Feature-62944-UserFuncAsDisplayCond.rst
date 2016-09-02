@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================
 Feature: #62944 - UserFunc available as Display Condition
 =========================================================
@@ -5,7 +8,7 @@ Feature: #62944 - UserFunc available as Display Condition
 Description
 ===========
 
-Being able to use userFunc as ``displayCondition`` makes it possible to
+Being able to use userFunc as `displayCondition` makes it possible to
 check on any imaginable condition or state. If any situation can not
 be evaluated with any of the existing checks the developer is free
 to add an own user function which provides a boolean result whether

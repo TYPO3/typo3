@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Breaking: #68571 - Removed method ElementBrowser->getMsgBox
 ===========================================================
@@ -5,14 +8,14 @@ Breaking: #68571 - Removed method ElementBrowser->getMsgBox
 Description
 ===========
 
-The removed method ``getMsgBox`` in ``ElementBrowser`` used table based styling.
+The removed method `getMsgBox` in `ElementBrowser` used table based styling.
 The method has been removed since we have better means to display this kind of messages: FlashMessages or Callouts.
 
 
 Impact
 ======
 
-A fatal error will be thrown if the method ``getMsgBox`` is used.
+A fatal error will be thrown if the method `getMsgBox` is used.
 
 
 Affected Installations

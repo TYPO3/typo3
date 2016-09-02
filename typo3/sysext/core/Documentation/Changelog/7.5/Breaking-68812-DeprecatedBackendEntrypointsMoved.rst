@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Breaking: #68812 - Old Backend Entrypoints moved to deprecation layer
 =====================================================================
@@ -55,4 +58,4 @@ Migration
 =========
 
 Move all existing code in extensions that link to the deprecated entry points to use methods
-like ``BackendUtility::getModuleUrl()`` and ``BackendUtility::getAjaxUrl()`` or the UriBuilder class.
+like `BackendUtility::getModuleUrl()` and `BackendUtility::getAjaxUrl()` or the UriBuilder class.

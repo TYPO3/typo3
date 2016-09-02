@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Breaking: #64102 - Move t3-table and t3-button to bootstrap
 ===========================================================
@@ -19,12 +22,12 @@ Custom implementations of tables and buttons in backend modules will lose the TY
 Affected installations
 ======================
 
-Extensions that provide custom backend modules that are using the css classes ``.t3-table`` or ``.t3-button``.
+Extensions that provide custom backend modules that are using the css classes `.t3-table` or `.t3-button`.
 
 
 Migration
 =========
 
-For tables we recommend the usage of the CSS class combination ``table table-striped table-hover`` instead of ``t3-table``.
+For tables we recommend the usage of the CSS class combination `table table-striped table-hover` instead of `t3-table`.
 
-For buttons we recommend the usage of the CSS class combination ``btn btn-default`` instead of ``t3-button``.
+For buttons we recommend the usage of the CSS class combination `btn btn-default` instead of `t3-button`.

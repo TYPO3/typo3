@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================================
 Deprecation: #62855 - "XHTML cleaning" functionality moved to legacy extension
 ==============================================================================
@@ -29,7 +32,7 @@ The content output of the TYPO3 frontend is not cleaned anymore unless EXT:compa
 Affected installations
 ======================
 
-Any installation having the TypoScript option ``config.xhtml_cleaning`` set will have different behaviour in the
+Any installation having the TypoScript option `config.xhtml_cleaning` set will have different behaviour in the
 frontend rendering.
 
 Migration

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================================
 Breaking: #56746 - Add count methods and sort functionality to FAL drivers
 ==========================================================================
@@ -30,11 +33,11 @@ The custom FAL drivers need to be updated to be in line with the updated DriverI
 
 2 new functions need to be implemented:
 
- - ``countFoldersInFolder()``
- - ``countFilesInFolder()``
+ - `countFoldersInFolder()`
+ - `countFilesInFolder()`
 
 2 functions need to be extended with the parameters $sort and $sortRev:
 
- - ``getFilesInFolder(..., $sort, $sortRev)``
- - ``getFoldersInFolder(..., $sort, $sortRev)``
+ - `getFilesInFolder(..., $sort, $sortRev)`
+ - `getFoldersInFolder(..., $sort, $sortRev)`
 

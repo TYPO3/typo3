@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Breaking: #59966 - Extension Configuration cache-flushing changed
 =================================================================
@@ -24,4 +27,4 @@ Migration
 =========
 
 Extensions requiring a cache flush after configuration changes need to implement a slot
-for the ``afterExtensionConfigurationWrite`` signal which allows individual cache flush actions.
+for the `afterExtensionConfigurationWrite` signal which allows individual cache flush actions.

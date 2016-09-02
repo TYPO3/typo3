@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================================
 Breaking: #68010 - T3Editor - Plugin registration for codecompletion has changed
 ================================================================================
@@ -23,7 +26,7 @@ Every third-party extension providing a T3Editor plugin extending the codecomple
 Migration
 =========
 
-Port the plugin to an AMD module. The plugin must have an ``init`` method with a configuration object as only parameter. Every parameter that was passed to the old Prototype function must be in that configuration object. Please see the example code below or consult :file:`EXT:t3editor/Resources/Public/JavaScript/Plugins/CodeCompletion/DescriptionPlugin.js`.
+Port the plugin to an AMD module. The plugin must have an `init` method with a configuration object as only parameter. Every parameter that was passed to the old Prototype function must be in that configuration object. Please see the example code below or consult :file:`EXT:t3editor/Resources/Public/JavaScript/Plugins/CodeCompletion/DescriptionPlugin.js`.
 
 Example code:
 

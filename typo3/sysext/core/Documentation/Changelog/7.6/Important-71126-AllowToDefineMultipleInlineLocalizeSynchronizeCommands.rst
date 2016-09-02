@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================================
 Important: #71126 - Allow to define multiple inlineLocalizeSynchronize commands
 ===============================================================================
@@ -11,14 +14,13 @@ The inlineLocalizeSynchronize command in DataHandler currently supports these fo
 * [parent][13][inlineLocalizeSynchronize] = field,localize
 * [parent][13][inlineLocalizeSynchronize] = field,synchronize
 
-The current string configuration format is changed to be an array, legacy configurations are converted to the new format:
+The current string configuration format is changed to be an array, legacy configurations are converted to the new format::
 
-```
     [parent][13][inlineLocalizeSynchronize] = [
       field: name of the parent field,
       language: id of the target language,
       action: either "localize" or "synchronize",
       ids: array of child-ids to be localized [1, 2, 3]
     ]
-```
+
 Either "action" or "ids" must be defined.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================
 Deprecation: #25112 - Deprecate TypoScript property "andWhere"
 ==============================================================
@@ -5,7 +8,7 @@ Deprecation: #25112 - Deprecate TypoScript property "andWhere"
 Description
 ===========
 
-The select-property ``andWhere`` has been marked as deprecated.
+The select-property `andWhere` has been marked as deprecated.
 
 Impact
 ======
@@ -16,13 +19,13 @@ A deprecation message is logged for every usage of this property.
 Affected installations
 ======================
 
-All installations or extensions using the select-property ``andWhere``.
+All installations or extensions using the select-property `andWhere`.
 
 
 Migration
 =========
 
-Use the properties ``where`` and ``markers`` instead.
+Use the properties `where` and `markers` instead.
 
 .. code-block:: typoscript
 

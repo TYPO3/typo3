@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================
 Feature: #69730 - Introduce uniqueId generator
 ==============================================
@@ -5,7 +8,7 @@ Feature: #69730 - Introduce uniqueId generator
 Description
 ===========
 
-A new method ``getUniqueId()`` has been added to the StringUtility class.
+A new method `getUniqueId()` has been added to the StringUtility class.
 Now there is a common way to generate an unique identifier which can be
 used even in HTML tag attributes as it removes the invalid dot character.
 

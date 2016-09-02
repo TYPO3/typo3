@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Feature: #61542 - Add two-letter ISO 639-1 keys to sys_language
 ===============================================================
@@ -14,18 +17,18 @@ already supplied by the CMS Core.
 As a first step to identify languages by their proper ISO 639-1 two-letter code a new DB field for sys_language called
 "language_isocode" is introduced, which is used in all places of the TYPO3 CMS Core.
 
-Additionally the new TypoScript option ``config.sys_language_isocode`` can be used to set the existing
-``$TSFE->sys_language_isocode`` variable via TypoScript. Previously this was done via static_info_tables.
+Additionally the new TypoScript option `config.sys_language_isocode` can be used to set the existing
+`$TSFE->sys_language_isocode` variable via TypoScript. Previously this was done via static_info_tables.
 
-The ISO code is also used for the language attribute of the HTML tag. Therefore the setting ``config.htmlTag_langKey``
+The ISO code is also used for the language attribute of the HTML tag. Therefore the setting `config.htmlTag_langKey`
 is not needed anymore if it is the same as the ISO code.
 
 Impact
 ======
 
 Frontend:
-The value ``$TSFE->sys_language_isocode`` is now filled at any time. It can be set via TypoScript, or is automatically
-set if the ``config.sys_language_uid`` parameter is set > 0 from the language_isocode DB field.
+The value `$TSFE->sys_language_isocode` is now filled at any time. It can be set via TypoScript, or is automatically
+set if the `config.sys_language_uid` parameter is set > 0 from the language_isocode DB field.
 
 .. code-block:: typoscript
 

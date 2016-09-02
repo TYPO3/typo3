@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================
 Breaking: #67212 - Discard TYPO3 class loader
 =============================================
@@ -18,7 +21,7 @@ not changed during regular requests, but only if the extension list changes (by 
 These class information files are located in the :file:`typo3temp/autoload/` directory and will also be automatically
 created if they do not exist.
 
-Non-namespaced classes with ``Tx_`` naming convention like ``Tx_Extension_ClassName`` are only resolved through
+Non-namespaced classes with `Tx_` naming convention like `Tx_Extension_ClassName` are only resolved through
 the aforementioned class map, but not dynamically. This means that extension authors need to re-generate the class map
 files when introducing new classes. Thus it is highly recommended to use a Classes folder with PSR-4 standard class
 files in there.

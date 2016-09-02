@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================
 Breaking: #69930 - Remove option "serverTimeZone"
 =================================================
@@ -5,9 +8,9 @@ Breaking: #69930 - Remove option "serverTimeZone"
 Description
 ===========
 
-The option ``$TYPO3_CONF_VARS['SYS']['serverTimeZone']`` which was introduced when
+The option `$TYPO3_CONF_VARS['SYS']['serverTimeZone']` which was introduced when
 there was no clean way to fetch the timezone option in the PHP4 environment, has
-been removed. It was solved in PHP 5.1.0 which introduced ``date_default_timezone_get()``
+been removed. It was solved in PHP 5.1.0 which introduced `date_default_timezone_get()`
 which is used by the TYPO3 Core by default.
 
 
@@ -28,5 +31,5 @@ Any TYPO3 installation which uses a third-party extensions that uses this option
 Migration
 =========
 
-Use native timezone support by PHP directly. See ``date_default_timezone_get()``
+Use native timezone support by PHP directly. See `date_default_timezone_get()`
 for more information.

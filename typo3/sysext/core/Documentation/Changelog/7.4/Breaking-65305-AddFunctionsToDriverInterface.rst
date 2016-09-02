@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================
 Breaking: #65305 - DriverInterface has been extended
 ====================================================
@@ -5,7 +8,7 @@ Breaking: #65305 - DriverInterface has been extended
 Description
 ===========
 
-The ``getFolderInFolder()`` and ``getFileInFolder()`` functions have been added to ``DriverInterface``.
+The `getFolderInFolder()` and `getFileInFolder()` functions have been added to `DriverInterface`.
 
 
 Impact
@@ -23,5 +26,5 @@ Any installation with a custom FAL driver, like WebDAV or Dropbox.
 Migration
 =========
 
-The functions ``getFolderInFolder()`` and ``getFileInFolder()`` must be added to the custom FAL driver.
+The functions `getFolderInFolder()` and `getFileInFolder()` must be added to the custom FAL driver.
 A non-hierarchical driver needs to throw a "not implemented" exception when calling these functions.

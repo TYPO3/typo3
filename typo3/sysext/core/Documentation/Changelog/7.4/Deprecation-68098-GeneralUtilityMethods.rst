@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================
 Deprecation: #68098 - Deprecate GeneralUtility methods
 ======================================================
@@ -5,7 +8,7 @@ Deprecation: #68098 - Deprecate GeneralUtility methods
 Description
 ===========
 
-The following methods within ``GeneralUtility`` have been marked as deprecated and will be removed in TYPO3 CMS v8.
+The following methods within `GeneralUtility` have been marked as deprecated and will be removed in TYPO3 CMS v8.
 
 .. code-block:: php
 
@@ -17,8 +20,8 @@ The following methods within ``GeneralUtility`` have been marked as deprecated a
 	GeneralUtility::getThisUrl()
 	GeneralUtility::cleanOutputBuffers()
 
-The functionality ``formatForTextarea()`` was used in the older days to actually support IE4 and Netscape 3 properly
-and can now safely be exchanged by ``htmlspecialchars()``.
+The functionality `formatForTextarea()` was used in the older days to actually support IE4 and Netscape 3 properly
+and can now safely be exchanged by `htmlspecialchars()`.
 
 
 Impact
@@ -36,6 +39,6 @@ Installations with extensions that use the methods above handling.
 Migration
 =========
 
-Use corresponding functionality from ``getIndpEnv()`` instead of ``getThisUrl()``.
+Use corresponding functionality from `getIndpEnv()` instead of `getThisUrl()`.
 
 For the other methods, you can re-implement the functionality yourself in your extension where needed.

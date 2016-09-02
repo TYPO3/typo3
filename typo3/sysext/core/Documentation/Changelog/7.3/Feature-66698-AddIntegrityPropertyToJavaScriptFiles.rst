@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================
 Feature: #66698 - Add integrity property to JavaScript files
 ============================================================
@@ -5,9 +8,9 @@ Feature: #66698 - Add integrity property to JavaScript files
 Description
 ===========
 
-Add a property ``integrity="some-hash"`` to JavaScript files via TypoScript
+Add a property `integrity="some-hash"` to JavaScript files via TypoScript
 
-``page.includeJSLibs.<array>.integrity = some-hash``
+`page.includeJSLibs.<array>.integrity = some-hash`
 
 This patch affects the TypoScript PAGE properties
 

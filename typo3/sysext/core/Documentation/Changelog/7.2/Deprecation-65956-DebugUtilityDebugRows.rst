@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================================
 Deprecation: #65956 - $returnHTML parameter of DebugUtility::debugRows()
 ========================================================================
@@ -5,7 +8,7 @@ Deprecation: #65956 - $returnHTML parameter of DebugUtility::debugRows()
 Description
 ===========
 
-The parameter ``$returnHTML`` of the method ``\TYPO3\CMS\Core\Utility\DebugUtility::debugRows()`` is not used anymore and
+The parameter `$returnHTML` of the method `\TYPO3\CMS\Core\Utility\DebugUtility::debugRows()` is not used anymore and
 has been marked for deprecation.
 
 

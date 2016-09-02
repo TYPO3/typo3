@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================
 Feature: #20555 - Strip empty HTML tags in HtmlParser
 =====================================================
@@ -41,7 +44,7 @@ in Page TSconfig:
 .. tip::
 
 	Please note that the HTMLparser will strip all unknown tags by default. If you **only** want
-	to strip empty tags, you need to set ``keepNonMatchedTags`` to TRUE or configure the allowed tags:
+	to strip empty tags, you need to set `keepNonMatchedTags` to TRUE or configure the allowed tags:
 
 .. code-block:: typoscript
 

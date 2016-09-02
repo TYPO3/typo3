@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================================
 Deprecation: #69561 - Replace sprite icons with IconFactory in ContextMenu
 ==========================================================================
@@ -5,17 +8,17 @@ Deprecation: #69561 - Replace sprite icons with IconFactory in ContextMenu
 Description
 ===========
 
-The ``\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction::$class`` member variable is not
+The `\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction::$class` member variable is not
 used anymore inside Core, therefore it has been marked as deprecated and will be removed with CMS 8.
 
 
 Affected Installations
 ======================
 
-Any installation using third party code, which accesses ``ContextMenuAction::$class``.
+Any installation using third party code, which accesses `ContextMenuAction::$class`.
 
 
 Migration
 =========
 
-Remove any reference to ``ContextMenuAction::$class``.
+Remove any reference to `ContextMenuAction::$class`.

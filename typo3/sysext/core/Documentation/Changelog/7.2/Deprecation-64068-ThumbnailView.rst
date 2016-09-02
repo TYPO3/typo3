@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================
 Deprecation: #64068 - Deprecate thumbs.php and ThumbnailView
 ============================================================
@@ -13,7 +16,7 @@ uses the File Abstraction Layer.
 Impact
 ======
 
-Using ``ThumbnailView``, ``thumbs.php`` or ``BackendUtility::getThumbNail()`` will throw a deprecation warning.
+Using `ThumbnailView`, `thumbs.php` or `BackendUtility::getThumbNail()` will throw a deprecation warning.
 
 
 Affected installations
@@ -25,5 +28,5 @@ Any TYPO3 installation with custom extensions using one of the files / methods m
 Migration
 =========
 
-Use the File Abstraction Layer for any custom works. See ``BackendUtility::thumbCode()`` for inspiration.
+Use the File Abstraction Layer for any custom works. See `BackendUtility::thumbCode()` for inspiration.
 

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Feature: #56726 - Trigger metadata extraction after file upload
 ===============================================================
@@ -11,8 +14,8 @@ So when a editor uploaded a new file he had to wait until the scheduler task had
 been triggered again and extracted the metadata.
 
 Now the metadata extraction is by default triggered after adding/uploading a file
-in the BE or when the FAL API is used ``ResourceStorage::addFile()``,
-``ResourceStorage::replaceFile()`` and ``ResourceStorage::addUploadedFile()``.
+in the BE or when the FAL API is used `ResourceStorage::addFile()`,
+`ResourceStorage::replaceFile()` and `ResourceStorage::addUploadedFile()`.
 
 In some special situations it isn't desired to have metadata extraction direct
 after file upload/adding a file to the storage.

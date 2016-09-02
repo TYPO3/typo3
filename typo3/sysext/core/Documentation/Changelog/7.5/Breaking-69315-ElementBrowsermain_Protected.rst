@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================
 Breaking: #69315 - ElementBrowser::main_* protected
 ===================================================
@@ -5,10 +8,10 @@ Breaking: #69315 - ElementBrowser::main_* protected
 Description
 ===========
 
-The ``ElementBrowser::main_*`` methods have been marked protected as the new ``render`` method is the main entry point to the class.
-Additionally the public member ``ElementBrowserController::mode`` has been protected as well.
+The `ElementBrowser::main_*` methods have been marked protected as the new `render` method is the main entry point to the class.
+Additionally the public member `ElementBrowserController::mode` has been protected as well.
 
-The ``ElementBrowserController::content`` member and the ``ElementBrowserController::printContent()`` method have been removed.
+The `ElementBrowserController::content` member and the `ElementBrowserController::printContent()` method have been removed.
 
 Impact
 ======
@@ -25,4 +28,4 @@ Any installation using third party code calling the mentioned methods or member.
 Migration
 =========
 
-Ensure the intended mode is passed in via the ``mode`` GET-parameter and call the new ``ElementBrowser::render`` method.
+Ensure the intended mode is passed in via the `mode` GET-parameter and call the new `ElementBrowser::render` method.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Feature: #67545 - AJAX call to check whether file exists
 ========================================================
@@ -11,8 +14,8 @@ A Backend AJAX call to check whether a file exists has been added. The call need
 Impact
 ======
 
-The method can be called with ``TYPO3.settings.ajaxUrls['file_exists']``.
-The parameters ``fileName`` and ``fileTarget`` are required:
+The method can be called with `TYPO3.settings.ajaxUrls['file_exists']`.
+The parameters `fileName` and `fileTarget` are required:
 
 * fileName: Name of the file
 * fileTarget: Combined identifier of target directory for the file

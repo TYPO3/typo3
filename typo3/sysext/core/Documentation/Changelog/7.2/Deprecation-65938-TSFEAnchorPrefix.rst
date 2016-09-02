@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Deprecation: #65938 - Discourage usage of "$TSFE->anchorPrefix"
 ===============================================================
@@ -6,15 +9,15 @@ Description
 ===========
 
 The property "anchorPrefix" within TypoScriptFrontendController is set to the relative path from the public site
-root when ``config.baseURL`` is set, and can be used to prefix local anchors with that prefix. The option has been
-marked as deprecated in favor of using ``config.absRefPrefix`` when this functionality is needed.
+root when `config.baseURL` is set, and can be used to prefix local anchors with that prefix. The option has been
+marked as deprecated in favor of using `config.absRefPrefix` when this functionality is needed.
 
 
 Affected installations
 ======================
 
 All installations or extensions relying on the TypoScriptFrontendController property "anchorPrefix" running
-with the TypoScript option ``config.baseURL`` enabled.
+with the TypoScript option `config.baseURL` enabled.
 
 
 Migration
@@ -26,4 +29,4 @@ Use the PHP code below directly to fetch the information when needing baseURL an
 
 	GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
 
-Alternatively, use ``config.absRefPrefix`` to achieve the same result.
+Alternatively, use `config.absRefPrefix` to achieve the same result.

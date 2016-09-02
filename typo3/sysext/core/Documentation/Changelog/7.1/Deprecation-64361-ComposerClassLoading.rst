@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================
 Deprecation: #64361 - Composer Class Loading
 ============================================
@@ -11,10 +14,10 @@ The old class loader is still present and registered and will handle loading ext
 that do not follow the above mentioned standards.
 
 For the time being a pre-compiled composer class loader is shipped with the git repository,
-so that people using the TYPO3 sources directly from there can use it without requiring a ``composer install``
+so that people using the TYPO3 sources directly from there can use it without requiring a `composer install`
 step.
 
-It is possible however to do a ``composer install`` in the TYPO3 sources directory or a top level distribution directory
+It is possible however to do a `composer install` in the TYPO3 sources directory or a top level distribution directory
 to gain full control over class loading of your TYPO3 installation. This step is optional and currently requires
 thorough knowledge of composer and as such currently is only recommended for people familiar with this process.
 
@@ -39,7 +42,7 @@ present in the system will lead to fatal errors.
 Migration
 =========
 
-If you previously installed TYPO3 via composer, make sure you perform a ``composer update`` command to reflect
+If you previously installed TYPO3 via composer, make sure you perform a `composer update` command to reflect
 the current changes in your Packages folder.
 
 

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================
 Feature: #64257 - Support multiple UID in PageRepository::getMenu()
 ===================================================================
@@ -5,8 +8,8 @@ Feature: #64257 - Support multiple UID in PageRepository::getMenu()
 Description
 ===========
 
-An array of ``uid`` values can be passed to
-``PageRepository::getMenu()``, providing the chance to build menus
+An array of `uid` values can be passed to
+`PageRepository::getMenu()`, providing the chance to build menus
 from several roots.
 
 Example: Fetch children of pages #2 and #3:

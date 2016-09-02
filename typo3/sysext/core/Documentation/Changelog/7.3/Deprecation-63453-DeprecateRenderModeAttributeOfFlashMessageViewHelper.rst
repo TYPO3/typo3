@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================================
 Deprecation: #63453 - Deprecate renderMode attribute of FlashMessagesViewHelper
 ===============================================================================
@@ -5,7 +8,7 @@ Deprecation: #63453 - Deprecate renderMode attribute of FlashMessagesViewHelper
 Description
 ===========
 
-Deprecated ``renderMode`` in favor of a flexible deferred rendering of flash messages in the Fluid template.
+Deprecated `renderMode` in favor of a flexible deferred rendering of flash messages in the Fluid template.
 This means that flash messages should no longer contain HTML, but the HTML output can and should be adjusted in the
 Fluid template.
 
@@ -13,7 +16,7 @@ Fluid template.
 Impact
 ======
 
-Using ``renderMode`` on FlashMessage output will throw a deprecation warning.
+Using `renderMode` on FlashMessage output will throw a deprecation warning.
 
 
 Affected Installations

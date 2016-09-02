@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================
 Deprecation: #68183 - typo3/mod.php
 ===================================
@@ -18,10 +21,10 @@ All extensions directly linking to typo3/mod.php will throw a deprecation warnin
 Affected Installations
 ======================
 
-Installations with custom extensions that call typo3/mod.php without using proper API calls from ``BackendUtility``.
+Installations with custom extensions that call typo3/mod.php without using proper API calls from `BackendUtility`.
 
 
 Migration
 =========
 
-Use ``BackendUtility::getModuleUrl()``.
+Use `BackendUtility::getModuleUrl()`.

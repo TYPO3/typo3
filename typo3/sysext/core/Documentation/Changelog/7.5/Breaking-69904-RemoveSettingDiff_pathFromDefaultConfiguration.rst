@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Breaking: #69904 - Remove Setting diff_path from DefaultConfiguration
 =====================================================================
@@ -5,20 +8,20 @@ Breaking: #69904 - Remove Setting diff_path from DefaultConfiguration
 Description
 ===========
 
-Creating a diff view of text has been replaced with a PHP library instead of using ``diff`` on the command line.
+Creating a diff view of text has been replaced with a PHP library instead of using `diff` on the command line.
 Thus we no longer need to be able to configure the path.
 
 
 Impact
 ======
 
-The setting ``[BE][diff_path]`` will no longer have any effect.
+The setting `[BE][diff_path]` will no longer have any effect.
 
 
 Affected Installations
 ======================
 
-Any Installation that had to define a path different than ``diff``
+Any Installation that had to define a path different than `diff`
 
 
 Migration

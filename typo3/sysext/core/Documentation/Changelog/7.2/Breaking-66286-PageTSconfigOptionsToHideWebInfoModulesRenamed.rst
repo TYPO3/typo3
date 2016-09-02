@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================================
 Breaking: #66286 - Page TSconfig options to hide Web Info modules renamed
 =========================================================================
@@ -11,19 +14,19 @@ WEB > Info options in the function menu have new names in Page TSconfig properti
 Impact
 ======
 
-Page TSconfig options in ``mod.web_info.menu.function`` use new class names.
+Page TSconfig options in `mod.web_info.menu.function` use new class names.
 
 
 Affected Installations
 ======================
 
-Installation which have options in the Info module disabled by using Page TSconfig ``mod.web_info.menu.function``.
+Installation which have options in the Info module disabled by using Page TSconfig `mod.web_info.menu.function`.
 
 
 Migration
 =========
 
-The following properties under ``mod.web_info.menu.function`` have to be renamed:
+The following properties under `mod.web_info.menu.function` have to be renamed:
 
 	* tx_cms_webinfo_page -> TYPO3\CMS\Frontend\Controller\PageInformationController
 	* tx_cms_webinfo_lang -> TYPO3\CMS\Frontend\Controller\TranslationStatusController

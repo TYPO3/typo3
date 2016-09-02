@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Deprecation: #67297 - MySQL / DBMS field type conversion
 ========================================================
@@ -6,7 +9,7 @@ Description
 ===========
 
 The Dbal\DatabaseConnection class provides generic functions that translate between native MySQL field types
-and ADOdb meta field types. The generic functions ``MySQLActualType()`` and ``MySQLMetaType`` have been marked as
+and ADOdb meta field types. The generic functions `MySQLActualType()` and `MySQLMetaType` have been marked as
 deprecated and should not be used any longer.
 
 
@@ -20,4 +23,4 @@ If used however, they will trigger a deprecation message.
 Migration
 =========
 
-Use the functions ``getNativeFieldType()`` and ``getMetaFieldType()`` provided by the DBMS specifics class.
+Use the functions `getNativeFieldType()` and `getMetaFieldType()` provided by the DBMS specifics class.

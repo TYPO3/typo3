@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================
 Breaking: #67577 - rte_enabled and flag handling
 ================================================
@@ -5,9 +8,9 @@ Breaking: #67577 - rte_enabled and flag handling
 Description
 ===========
 
-Content elements of type ``text`` and ``text with image`` contained a field "RTE enabled" that
+Content elements of type `text` and `text with image` contained a field "RTE enabled" that
 could be unchecked to disable the rich text editor. This field has been removed together with the
-``TCA`` richtext ``flag`` handling.
+`TCA` richtext `flag` handling.
 
 
 Impact
@@ -19,14 +22,14 @@ The field is removed from database and the flag information is lost.
 Affected Installations
 ======================
 
-All instances will no longer show the "RTE enabled" field below ``text`` and ``text with image``
-content elements below the text field, the ``TCA`` ``flag`` is obsolete, see example below.
+All instances will no longer show the "RTE enabled" field below `text` and `text with image`
+content elements below the text field, the `TCA` `flag` is obsolete, see example below.
 
 
 Migration
 =========
 
-A typical rich text configuration in ``TCA`` looked like:
+A typical rich text configuration in `TCA` looked like:
 
 .. code-block:: php
 
@@ -46,7 +49,7 @@ A typical rich text configuration in ``TCA`` looked like:
 	),
 
 
-With this configuration RTE was only rendered if ``otherField`` had the value 1. This flag is obsolete now:
+With this configuration RTE was only rendered if `otherField` had the value 1. This flag is obsolete now:
 
 .. code-block:: php
 

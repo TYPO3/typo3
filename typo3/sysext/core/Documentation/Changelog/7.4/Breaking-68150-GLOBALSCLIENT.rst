@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================
 Breaking: #68150 - $GLOBALS['CLIENT']
 =====================================
@@ -5,22 +8,22 @@ Breaking: #68150 - $GLOBALS['CLIENT']
 Description
 ===========
 
-The initialization of the ``$GLOBALS['CLIENT']`` variable has been dropped.
+The initialization of the `$GLOBALS['CLIENT']` variable has been dropped.
 
 
 Impact
 ======
 
-Extensions that use ``$GLOBALS['CLIENT']`` will cause a PHP notice or may not function properly any more.
+Extensions that use `$GLOBALS['CLIENT']` will cause a PHP notice or may not function properly any more.
 
 
 Affected Installations
 ======================
 
-Installations with extensions that use ``$GLOBALS['CLIENT']`` are affected.
+Installations with extensions that use `$GLOBALS['CLIENT']` are affected.
 
 
 Migration
 =========
 
-Extensions can still use ``GeneralUtility::clientInfo()`` API to retrieve the same information.
+Extensions can still use `GeneralUtility::clientInfo()` API to retrieve the same information.

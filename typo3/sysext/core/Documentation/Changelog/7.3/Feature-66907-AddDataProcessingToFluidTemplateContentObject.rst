@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Feature: #66907 - Add Data Processing to FLUIDTEMPLATE content object
 =====================================================================
@@ -5,7 +8,7 @@ Feature: #66907 - Add Data Processing to FLUIDTEMPLATE content object
 Description
 ===========
 
-cObject FLUIDTEMPLATE has been extended with ``dataProcessing``. This setting can be used to add one or multiple processors to
+cObject FLUIDTEMPLATE has been extended with `dataProcessing`. This setting can be used to add one or multiple processors to
 manipulate data of the currently rendered content object, like tt_content or page, and fill a key/value store that will be passed
 as variables to the Fluid template, where every key of the key/value store will be available as variable in the Fluid template.
 

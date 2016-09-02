@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================
 Feature: #24906 - Configuration for maximum chars in TextElement
 ================================================================
@@ -5,7 +8,7 @@ Feature: #24906 - Configuration for maximum chars in TextElement
 Description
 ===========
 
-TCA type ``text`` now supports the HTML5 attribute ``maxlength`` to restrict
+TCA type `text` now supports the HTML5 attribute `maxlength` to restrict
 text to a given maximum length. Line breaks are usually counted as two
 characters.
 

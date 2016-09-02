@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Feature: #72505 - Introduce hook to override a record overlay
 =============================================================
@@ -24,7 +27,7 @@ The hook is called with the following signature:
 Register the hook
 -----------------
 
-Register the hook class which implements the method with the name ``postOverlayPriorityLookup``:
+Register the hook class which implements the method with the name `postOverlayPriorityLookup`:
 
 .. code-block:: php
 

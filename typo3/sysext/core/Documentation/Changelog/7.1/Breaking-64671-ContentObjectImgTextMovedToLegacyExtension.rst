@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================================
 Breaking: #64671 - Outdated ContentObject IMGTEXT moved to legacy extension
 ===========================================================================
@@ -10,7 +13,7 @@ The TypoScript Content Object IMGTEXT has been moved to the legacy extension "co
 Impact
 ======
 
-Any TypoScript using the cObject directly or via CSS Styled Content configured using ``renderMethod=table`` will result
+Any TypoScript using the cObject directly or via CSS Styled Content configured using `renderMethod=table` will result
 in an empty output in the TYPO3 Frontend.
 
 

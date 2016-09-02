@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Feature: #28382 - Add async property to JavaScript files
 ========================================================
@@ -5,9 +8,9 @@ Feature: #28382 - Add async property to JavaScript files
 Description
 ===========
 
-Add a property ``async="async"`` to JavaScript files via TypoScript
+Add a property `async="async"` to JavaScript files via TypoScript
 
-``page.includeJSlibs.<array>.async = 1``
+`page.includeJSlibs.<array>.async = 1`
 
 This patch affects the TypoScript PAGE properties
 

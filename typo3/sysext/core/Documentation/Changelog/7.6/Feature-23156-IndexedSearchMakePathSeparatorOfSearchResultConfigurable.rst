@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================================
 Feature: #23156 - Indexed search: Make path separator of search result configurable
 ===================================================================================
@@ -5,7 +8,7 @@ Feature: #23156 - Indexed search: Make path separator of search result configura
 Description
 ===========
 
-A new TypoScript configuration option :ts:``breadcrumbWrap`` has been added. It allows to configure
+A new TypoScript configuration option :ts:`breadcrumbWrap` has been added. It allows to configure
 the page path separator used in breadcrumbs in Indexed Search results. This option supports TypoScript
 option split syntax.
 

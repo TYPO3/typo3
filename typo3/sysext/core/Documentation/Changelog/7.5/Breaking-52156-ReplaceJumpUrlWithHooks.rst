@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================
 Breaking: #52156 - Replaced JumpURL features with hooks
 =======================================================
@@ -53,7 +56,7 @@ ResourceStorage adjustment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The method :code:`\TYPO3\CMS\Core\Resource\ResourceStorage::dumpFileContents()` accepts an additional
-parameter for overriding the mime type that is sent in the ``Content-Type`` header when delivering a file.
+parameter for overriding the mime type that is sent in the `Content-Type` header when delivering a file.
 
 Impact
 ======

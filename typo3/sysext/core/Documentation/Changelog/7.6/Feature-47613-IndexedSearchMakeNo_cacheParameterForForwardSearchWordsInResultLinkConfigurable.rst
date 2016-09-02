@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================================================================
 Feature: #47613 - Indexed Search: make no_cache parameter for forwardSearchWordsInResultLink configurable
 =========================================================================================================
@@ -5,8 +8,8 @@ Feature: #47613 - Indexed Search: make no_cache parameter for forwardSearchWords
 Description
 ===========
 
-A new TypoScript configuration option ``forwardSearchWordsInResultLink.no_cache`` has been added.
-It controls whether the ``no_cache`` parameter should be added to page links together with search words.
+A new TypoScript configuration option `forwardSearchWordsInResultLink.no_cache` has been added.
+It controls whether the `no_cache` parameter should be added to page links together with search words.
 
 Use following configuration for Indexed Search Extbase plugin:
 

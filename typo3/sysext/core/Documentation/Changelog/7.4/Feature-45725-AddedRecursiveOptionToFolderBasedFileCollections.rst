@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================================
 Feature: #45725 - Added recursive option to folder based file collections
 =========================================================================
@@ -6,7 +9,7 @@ Description
 ===========
 
 Folder based file collections have now an option to fetch all files recursively for
-the given folder. The option is also available in the TypoScript Object ``FILES``.
+the given folder. The option is also available in the TypoScript Object `FILES`.
 
 Usage:
 

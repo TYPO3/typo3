@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================
 Deprecation: #51482 - Script-based modules
 ==========================================
@@ -5,11 +8,11 @@ Deprecation: #51482 - Script-based modules
 Description
 ===========
 
-Pseudo-modules that are registered via ``ExtensionManagementUtility::addModulePath()`` and
-modules that are registered via ``ExtensionManagementUtility::addModule()`` using the fourth parameter
+Pseudo-modules that are registered via `ExtensionManagementUtility::addModulePath()` and
+modules that are registered via `ExtensionManagementUtility::addModule()` using the fourth parameter
 as a custom script-path have been marked as deprecated.
 
-The method ``ExtensionManagementUtility::addModulePath()`` itself has been marked as deprecated.
+The method `ExtensionManagementUtility::addModulePath()` itself has been marked as deprecated.
 
 
 Impact
@@ -30,7 +33,7 @@ Migration
 =========
 
 Use Configuration/Backend/Routes.php to register wizards and use
-``ExtensionManagementUtility::addModule()`` when registering a routePath option in the fifth parameter to
+`ExtensionManagementUtility::addModule()` when registering a routePath option in the fifth parameter to
 use the proper PSR-7 compatible way of registering and calling modules.
-Make sure to use UriBuilder and ``BackendUtility::getModuleUrl()`` to link to these modules instead of
+Make sure to use UriBuilder and `BackendUtility::getModuleUrl()` to link to these modules instead of
 hard-linking to the script names.

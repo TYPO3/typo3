@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================================================
 Deprecation: #67670 - Deprecate custom singleton logic in GeneralUtility::getUserObj
 ====================================================================================
@@ -5,8 +8,8 @@ Deprecation: #67670 - Deprecate custom singleton logic in GeneralUtility::getUse
 Description
 ===========
 
-The functionality of instantiating classes only once by calling ``GeneralUtility::getUserObj($className)`` multiple times
-while having a ``$className`` that is prepended with a ampersand ("&") has been marked as deprecated.
+The functionality of instantiating classes only once by calling `GeneralUtility::getUserObj($className)` multiple times
+while having a `$className` that is prepended with a ampersand ("&") has been marked as deprecated.
 
 
 An example of the deprecated behaviour in the ext_localconf.php of an extension:
@@ -19,20 +22,20 @@ An example of the deprecated behaviour in the ext_localconf.php of an extension:
 Impact
 ======
 
-Any calls to ``GeneralUtility::getUserObj()`` with a prefixed ampersand will throw a deprecation message.
+Any calls to `GeneralUtility::getUserObj()` with a prefixed ampersand will throw a deprecation message.
 
 
 Affected Installations
 ======================
 
-TYPO3 Instances with extensions that use ``getUserObj()`` themselves and/or use hooks built with ``getUserObj()`` and use references.
+TYPO3 Instances with extensions that use `getUserObj()` themselves and/or use hooks built with `getUserObj()` and use references.
 
 
 Migration
 =========
 
 Check if the classes that hook into certain parts of your custom extensions really need to be referenced / instantiated once.
-If so, implement the ``SingletonInterface`` of the TYPO3 Core, so the underlying function ``GeneralUtility::makeInstance()``
+If so, implement the `SingletonInterface` of the TYPO3 Core, so the underlying function `GeneralUtility::makeInstance()`
 will register the SingletonInterface only once.
 
 The modified example from above now looks like this:

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================================
 Important: #67401 - Dependency Injection is now done before initializeObject()
 ==============================================================================
@@ -5,11 +8,11 @@ Important: #67401 - Dependency Injection is now done before initializeObject()
 Description
 ===========
 
-Formerly ``initializeObject()`` was called before the dependencies were injected when retrieving an Extbase Domain
-Model. This behavior didn't match either the documentation nor the behavior when using the ``ObjectManager``.
+Formerly `initializeObject()` was called before the dependencies were injected when retrieving an Extbase Domain
+Model. This behavior didn't match either the documentation nor the behavior when using the `ObjectManager`.
 
-With TYPO3 CMS 7.3 this has been changed, dependency injection using ``@inject`` annotations and ``inject*()`` methods
-is now performed **before** calling ``initializeObject()`` when retrieving Domain Models.
+With TYPO3 CMS 7.3 this has been changed, dependency injection using `@inject` annotations and `inject*()` methods
+is now performed **before** calling `initializeObject()` when retrieving Domain Models.
 
 This may have impact on extensions that are relying on the reversed call order. In these cases adjustments are
 required to take into account that the injected objects are available.

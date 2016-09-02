@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================
 Feature: #69389 - Add spinning feature for icon
 ===============================================
@@ -5,7 +8,7 @@ Feature: #69389 - Add spinning feature for icon
 Description
 ===========
 
-The Icon API has now a support for spinning icons. While registering an icon a new property ``spinning`` is available:
+The Icon API has now a support for spinning icons. While registering an icon a new property `spinning` is available:
 
 
 .. code-block:: php

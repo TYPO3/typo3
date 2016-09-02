@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================================
 Feature: #66681 - CategoryRegistry: add options to set l10n_mode and l10n_display
 =================================================================================
@@ -5,7 +8,7 @@ Feature: #66681 - CategoryRegistry: add options to set l10n_mode and l10n_displa
 Description
 ===========
 
-Class ``CategoryRegistry->addTcaColumn`` got options to set  ``l10n_mode`` and ``l10n_display``.
+Class `CategoryRegistry->addTcaColumn` got options to set  `l10n_mode` and `l10n_display`.
 The values can be set via:
 
 .. code-block:: php

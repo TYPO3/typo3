@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================
 Breaking: #63431 - Backend toolbar refactored
 =============================================
@@ -31,5 +34,5 @@ Migration
 Extensions must implement the new interface \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface
 and must be registered in $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'].
 
-Warning: The new interface is not 100% finished, method ``checkAccess()`` will probably be
+Warning: The new interface is not 100% finished, method `checkAccess()` will probably be
 substituted by two other methods in later versions of TYPO3 CMS.

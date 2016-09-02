@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Feature: #69918 - Add PSR-7-based dispatching for Backend Modules
 =================================================================
@@ -7,12 +10,12 @@ Description
 
 Built on the PSR-7 principle and the routing concepts, it is now possible to
 register backend modules which are dispatched to a callable string instead of
-pointing to an index.php file in ``EXT:myextension/Modules/MyModule/index.php``.
+pointing to an index.php file in `EXT:myextension/Modules/MyModule/index.php`.
 
 The method which is called, receives a PSR-compatible request and response object
 and must return a response object which is outputted to the browser.
 
-An example registration uses the option ``routeTarget`` to resolve the method to
+An example registration uses the option `routeTarget` to resolve the method to
 be called when rendering the module:
 
 .. code-block:: php

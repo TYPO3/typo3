@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================
 Deprecation: #68760 - Deprecate class ModuleSettings
 ====================================================
@@ -5,14 +8,14 @@ Deprecation: #68760 - Deprecate class ModuleSettings
 Description
 ===========
 
-In older TYPO3 versions ``t3lib_modSettings`` (as ModuleSettings class was called before) was used to save the current
+In older TYPO3 versions `t3lib_modSettings` (as ModuleSettings class was called before) was used to save the current
 settings of backend modules. This kind of settings is nowadays stored in backend users uc array.
 For that reason ModuleSettings is now marked for removal in TYPO3 CMS 8.
 
 Impact
 ======
 
-Using ``ModuleSettings`` will trigger a deprecation log entry.
+Using `ModuleSettings` will trigger a deprecation log entry.
 
 
 Affected Installations

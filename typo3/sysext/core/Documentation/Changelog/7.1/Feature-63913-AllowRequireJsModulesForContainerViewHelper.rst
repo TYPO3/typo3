@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Feature: #63913 - Allow ContainerViewHelper to load RequireJS modules
 =====================================================================
@@ -5,7 +8,7 @@ Feature: #63913 - Allow ContainerViewHelper to load RequireJS modules
 Description
 ===========
 
-The ContainerViewHelper can load RequireJS modules via the ``includeRequireJsModules`` attribute. The scripts are passed
+The ContainerViewHelper can load RequireJS modules via the `includeRequireJsModules` attribute. The scripts are passed
 as array.
 
 .. code-block:: html

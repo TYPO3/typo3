@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================
 Feature: #71251 - Add FlashMessage support in ModuleTemplate API
 ================================================================
@@ -6,8 +9,8 @@ Description
 ===========
 
 Flash messages have different queues, depending on in which context they are
-enqueued. The FlashMessageService defaults the queue to ``core.template.flashMessages``,
-Extbase defaults the queue to ``extbase.flashmessages .$randomPluginQueue``.
+enqueued. The FlashMessageService defaults the queue to `core.template.flashMessages`,
+Extbase defaults the queue to `extbase.flashmessages .$randomPluginQueue`.
 
 Support for flash messages in ModuleTemplate has been added to enqueue flash messages automatically
 in the correct queue identifier.

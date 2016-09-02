@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================
 Deprecation: #46523 - BackendUtility::implodeTSParams()
 =======================================================
@@ -5,7 +8,7 @@ Deprecation: #46523 - BackendUtility::implodeTSParams()
 Description
 ===========
 
-The method ``TYPO3\CMS\Backend\Utility\BackendUtility::implodeTSParams()`` has been marked as deprecated and will be
+The method `TYPO3\CMS\Backend\Utility\BackendUtility::implodeTSParams()` has been marked as deprecated and will be
 removed in TYPO3 CMS 8.
 
 

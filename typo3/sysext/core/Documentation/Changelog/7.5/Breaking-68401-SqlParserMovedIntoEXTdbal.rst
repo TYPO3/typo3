@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================
 Breaking: #68401 - SqlParser moved into EXT:dbal
 ================================================
@@ -18,19 +21,19 @@ There is no impact for the core as EXT:dbal was the sole user of the SQL
 parser and it has been migrated into EXT:dbal.
 
 As the parsing and the compiling of SQL statements has been separated into
-multiple classes the non-public interface of ``SqlParser`` has changed.
+multiple classes the non-public interface of `SqlParser` has changed.
 Classes extending SqlParser need to be adjusted to the new interface.
 
 
 Affected Installations
 ======================
 
-Installations with 3rd party extensions that use ``\TYPO3\CMS\Core\Database\SqlParser``.
+Installations with 3rd party extensions that use `\TYPO3\CMS\Core\Database\SqlParser`.
 
 
 Migration
 =========
 
-Update the code to use ``\TYPO3\CMS\Dbal\Database\SqlParser`` instead of
-``\TYPO3\CMS\Core\Database\SqlParser`` or install EXT:compatibility6 which
+Update the code to use `\TYPO3\CMS\Dbal\Database\SqlParser` instead of
+`\TYPO3\CMS\Core\Database\SqlParser` or install EXT:compatibility6 which
 maps the old class names to the new ones in EXT:dbal.

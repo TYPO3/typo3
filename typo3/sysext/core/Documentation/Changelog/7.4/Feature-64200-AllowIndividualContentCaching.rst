@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================
 Feature: #64200 - Allow individual content caching
 ==================================================
@@ -5,9 +8,9 @@ Feature: #64200 - Allow individual content caching
 Description
 ===========
 
-The ``stdWrap.cache.`` property is now available as first-class function to all
+The `stdWrap.cache.` property is now available as first-class function to all
 content objects. This skips the rendering even for content objects that evaluate
-``stdWrap`` after rendering (e.g. ``COA``).
+`stdWrap` after rendering (e.g. `COA`).
 
 Usage:
 
@@ -36,8 +39,8 @@ Usage:
 		}
 	}
 
-The commented part is ``stdWrap.cache.`` property available since 4.7,
-that does not stop the rendering of ``COA`` including all sub-cObjects.
+The commented part is `stdWrap.cache.` property available since 4.7,
+that does not stop the rendering of `COA` including all sub-cObjects.
 
 Additionally, stdWrap support is added to key, lifetime and tags.
 
@@ -45,17 +48,17 @@ Additionally, stdWrap support is added to key, lifetime and tags.
 Impact
 ======
 
-If you've previously used the ``cache.`` property in your custom cObject,
-this will now fail, because ``cache.`` is unset to avoid double caching.
+If you've previously used the `cache.` property in your custom cObject,
+this will now fail, because `cache.` is unset to avoid double caching.
 You are encouraged to rely on the core methods for caching cObjects or
 rename your property.
 
-``stdWrap.cache`` continues to exists and can be used as before. However
-the top level ``stdWrap`` of certain cObjects (e.g. ``TEXT`` cObject)
-will not evaluate ``cache.`` as part of ``stdWrap``, but before starting
+`stdWrap.cache` continues to exists and can be used as before. However
+the top level `stdWrap` of certain cObjects (e.g. `TEXT` cObject)
+will not evaluate `cache.` as part of `stdWrap`, but before starting
 the rendering of the cObject. In conjunction the storing will happen
-after the ``stdWrap`` processing right before the content is returned.
+after the `stdWrap` processing right before the content is returned.
 
-Top level ``cache.`` will not evaluate the hook
-``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']``
+Top level `cache.` will not evaluate the hook
+`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']`
 any more.

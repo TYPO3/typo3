@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================
 Feature: #67056 - Add option to disable move buttons TCA group type
 ===================================================================
@@ -5,9 +8,9 @@ Feature: #67056 - Add option to disable move buttons TCA group type
 Description
 ===========
 
-The move buttons of the TCA type ``group`` can now be explicitly disabled with the
-``hideMoveIcons`` option. Before these icons where only automatically removed if
-``maxitems`` was set to 1.
+The move buttons of the TCA type `group` can now be explicitly disabled with the
+`hideMoveIcons` option. Before these icons where only automatically removed if
+`maxitems` was set to 1.
 
 .. code-block:: php
 
@@ -26,4 +29,4 @@ The move buttons of the TCA type ``group`` can now be explicitly disabled with t
 Impact
 ======
 
-Move buttons can now always be hidden for ``group`` fields
+Move buttons can now always be hidden for `group` fields

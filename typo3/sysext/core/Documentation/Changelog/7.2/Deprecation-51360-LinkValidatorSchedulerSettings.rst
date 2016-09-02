@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================================================
 Deprecation: #51360 - Deprecate mod.tx_linkvalidator namespace in scheduler settings
 ====================================================================================
@@ -5,15 +8,15 @@ Deprecation: #51360 - Deprecate mod.tx_linkvalidator namespace in scheduler sett
 Description
 ===========
 
-Using the ``mod.tx_linkvalidator`` namespace in the linkvalidator scheduler task
+Using the `mod.tx_linkvalidator` namespace in the linkvalidator scheduler task
 settings has been marked as deprecated. To make the setting consistent with TSconfig the namespace
-is changed to ``mod.linkvalidator``.
+is changed to `mod.linkvalidator`.
 
 
 Impact
 ======
 
-Using ``mod.tx_linkvalidator`` in the scheduler task settings will throw an deprecation log entry.
+Using `mod.tx_linkvalidator` in the scheduler task settings will throw an deprecation log entry.
 
 
 Affected installations
@@ -25,5 +28,5 @@ Instances which use the linkvalidator scheduler task and use custom TSconfig in 
 Migration
 =========
 
-Replace ``mod.tx_linkvalidator`` with ``mod.linkvalidator`` in all affected scheduler tasks.
+Replace `mod.tx_linkvalidator` with `mod.linkvalidator` in all affected scheduler tasks.
 

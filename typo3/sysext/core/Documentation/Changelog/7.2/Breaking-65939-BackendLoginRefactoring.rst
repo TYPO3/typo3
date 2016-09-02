@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================
 Breaking: #65939 - Backend Login Refactoring
 ============================================
@@ -7,15 +10,15 @@ Description
 
 For the refactoring of the backend login we introduce Fluid as template engine and remove the old marker template.
 
-It was necessary to remove the signal ``LoginController::SIGNAL_RenderLoginForm`` which will no longer be emitted.
+It was necessary to remove the signal `LoginController::SIGNAL_RenderLoginForm` which will no longer be emitted.
 
-Additionally the following methods of ``LoginController`` have been removed:
+Additionally the following methods of `LoginController` have been removed:
 
-* ``LoginController::makeLoginBoxImage``
-* ``LoginController::wrapLoginForm``
-* ``LoginController::makeLoginNews``
-* ``LoginController::makeLoginForm``
-* ``LoginController::makeLogoutForm``
+* `LoginController::makeLoginBoxImage`
+* `LoginController::wrapLoginForm`
+* `LoginController::makeLoginNews`
+* `LoginController::makeLoginForm`
+* `LoginController::makeLogoutForm`
 
 
 Impact
@@ -27,12 +30,12 @@ The mentioned methods are no longer available and a fatal error will be triggere
 Affected installations
 ======================
 
-All installations which make use of the ``LoginController::SIGNAL_RenderLoginForm`` signal or use the removed methods:
-* ``LoginController::makeLoginBoxImage``
-* ``LoginController::wrapLoginForm``
-* ``LoginController::makeLoginNews``
-* ``LoginController::makeLoginForm``
-* ``LoginController::makeLogoutForm``
+All installations which make use of the `LoginController::SIGNAL_RenderLoginForm` signal or use the removed methods:
+* `LoginController::makeLoginBoxImage`
+* `LoginController::wrapLoginForm`
+* `LoginController::makeLoginNews`
+* `LoginController::makeLoginForm`
+* `LoginController::makeLogoutForm`
 
 
 Migration

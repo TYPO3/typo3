@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================================
 Feature: #60019 - New SplFileInfo implementation with new mimeTypeGuessers hook
 ===============================================================================
@@ -5,12 +8,12 @@ Feature: #60019 - New SplFileInfo implementation with new mimeTypeGuessers hook
 Description
 ===========
 
-A new class ``\TYPO3\CMS\Core\Type\File\FileInfo`` which extends ``SplFileInfo`` is now
+A new class `\TYPO3\CMS\Core\Type\File\FileInfo` which extends `SplFileInfo` is now
 available as an API for fetching meta information from files.
 
 Besides the native .. _SplFileInfo API: http://php.net/manual/en/class.splfileinfo.php,
-it provides a new method ``getMimeType()`` to get the mime type of a file, e.g. text/html.
-It uses the native PHP function ``finfo_file()`` and ``mime_content_type()`` as a fallback.
+it provides a new method `getMimeType()` to get the mime type of a file, e.g. text/html.
+It uses the native PHP function `finfo_file()` and `mime_content_type()` as a fallback.
 
 Example: Get the MIME type of a file
 

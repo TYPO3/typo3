@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================================================================
 Deprecation: #69754 - Deprecate relative path to extension directory and using filename only in TCA ctrl iconfile
 =================================================================================================================
@@ -5,21 +8,21 @@ Deprecation: #69754 - Deprecate relative path to extension directory and using f
 Description
 ===========
 
-* Using relative paths to refer to the extension directory for iconfiles in ``TCA['ctrl']['iconfile']`` has been marked as deprecated.
+* Using relative paths to refer to the extension directory for iconfiles in `TCA['ctrl']['iconfile']` has been marked as deprecated.
 * Using filenames only to refer to an iconfile in TCA['ctrl'] has been marked as deprecated.
 
 
 Impact
 ======
 
-* TCA definitions in ``TCA['ctrl']['iconfile']`` containing ``'../typo3conf/ext/'`` or calls to ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()`` will trigger a deprecation log entry.
-* TCA definitions in ``TCA['ctrl']['iconfile']`` containing a filename only will trigger a deprecation log entry.
+* TCA definitions in `TCA['ctrl']['iconfile']` containing `'../typo3conf/ext/'` or calls to `\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()` will trigger a deprecation log entry.
+* TCA definitions in `TCA['ctrl']['iconfile']` containing a filename only will trigger a deprecation log entry.
 
 
 Affected Installations
 ======================
 
-Any installation with extensions defining ``TCA['ctrl']['iconfile']`` by using ``../typo3conf/ext/`` or only a filename.
+Any installation with extensions defining `TCA['ctrl']['iconfile']` by using `../typo3conf/ext/` or only a filename.
 
 
 Migration
@@ -28,7 +31,7 @@ Migration
 Relative paths
 --------------
 
-Use ``EXT:`` instead of relative path ``'../typo3conf/ext/'`` or ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()``, e.g.
+Use `EXT:` instead of relative path `'../typo3conf/ext/'` or `\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()`, e.g.
 
 .. code-block:: php
 
@@ -47,7 +50,7 @@ has to be migrated to
 Filename only
 -------------
 
-Use a full absolute path or an ``EXT:`` definition instead of a filename only:
+Use a full absolute path or an `EXT:` definition instead of a filename only:
 
 .. code-block:: php
 

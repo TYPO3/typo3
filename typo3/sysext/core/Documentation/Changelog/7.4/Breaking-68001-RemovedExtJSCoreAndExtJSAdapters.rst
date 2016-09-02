@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Breaking: #68001 - Removed ExtJS Core and ExtJS Adapters
 ========================================================
@@ -16,13 +19,13 @@ jQuery, prototype.js or YUI versions anymore and their usages have been slower t
 Impact
 ======
 
-Using TypoScript options ``page.javascriptLibs.ExtCore = 1``, ``page.javascriptLibs.ExtCore.debug = 1`` and ``page.javascriptLibs.ExtJs.adapter`` have no effect anymore.
+Using TypoScript options `page.javascriptLibs.ExtCore = 1`, `page.javascriptLibs.ExtCore.debug = 1` and `page.javascriptLibs.ExtJs.adapter` have no effect anymore.
 
-Using ``<f:be.container>`` ViewHelpers in a custom Backend module, setting the extJsAdapter, property will result in a fatal error.
+Using `<f:be.container>` ViewHelpers in a custom Backend module, setting the extJsAdapter, property will result in a fatal error.
 
-Calling ``$pageRenderer->loadExtJS()`` with a custom third parameter will have no effect anymore.
+Calling `$pageRenderer->loadExtJS()` with a custom third parameter will have no effect anymore.
 
-Calling the methods ``loadExtCore()``, ``enableExtCoreDebug()``, ``getExtCorePath()`` and ``setExtCorePath()`` of ``PageRenderer`` will result in fatal errors.
+Calling the methods `loadExtCore()`, `enableExtCoreDebug()`, `getExtCorePath()` and `setExtCorePath()` of `PageRenderer` will result in fatal errors.
 
 
 Affected Installations
@@ -30,9 +33,9 @@ Affected Installations
 
 Instances that use ExtCore in the TYPO3 Frontend
 
-Extensions that use ``<f:be.container>`` with an ExtJS Adapter
+Extensions that use `<f:be.container>` with an ExtJS Adapter
 
-Extensions that use the ``PageRenderer`` object directly to load custom ExtJS or ExtCore.
+Extensions that use the `PageRenderer` object directly to load custom ExtJS or ExtCore.
 
 
 Migration

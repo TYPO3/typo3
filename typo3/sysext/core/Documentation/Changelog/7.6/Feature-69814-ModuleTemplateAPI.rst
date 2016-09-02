@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================
 Feature: #69814 - ModuleTemplate API
 ====================================
@@ -59,11 +62,11 @@ Menus
 -----
 
 Creating menus is pretty simple.
-Ask the ``DocHeaderComponent`` for the ``MenuRegistry`` and ask the ``MenuRegistry`` to create a ``Menu`` for you.
+Ask the `DocHeaderComponent` for the `MenuRegistry` and ask the `MenuRegistry` to create a `Menu` for you.
 
-The ``Menu`` in return can create ``MenuItems`` for you.
+The `Menu` in return can create `MenuItems` for you.
 
-A ``Menu`` can have several **Types** which are represented by their respective Fluid Partials in EXT:backend/Resources/Private/Partials/Menu/.
+A `Menu` can have several **Types** which are represented by their respective Fluid Partials in EXT:backend/Resources/Private/Partials/Menu/.
 
 
 Examples of usages
@@ -103,8 +106,8 @@ Examples of usages
 ButtonBar Hook
 ==============
 
-The old module rendering knew a ``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook']`` hook
-to manipulate buttons. A similar hook is available in ModuleTemplate API as ``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook']``.
+The old module rendering knew a `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook']` hook
+to manipulate buttons. A similar hook is available in ModuleTemplate API as `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook']`.
 
 **Registering your own hook**
 

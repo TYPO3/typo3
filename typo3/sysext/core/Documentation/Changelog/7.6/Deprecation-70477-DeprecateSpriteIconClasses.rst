@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================
 Deprecation: #70477 - Deprecate SpriteIcon classes
 ==================================================
@@ -29,4 +32,4 @@ Extensions that use these PHP classes.
 Migration
 =========
 
-Use the ``IconRegistry`` to register icons.
+Use the `IconRegistry` to register icons.

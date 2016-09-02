@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Feature: #69764 - Introduced file icon detection by mime-type
 =============================================================
@@ -6,9 +9,9 @@ Description
 ===========
 
 The IconRegistry has been extended with a mapping of file icons by mime-type.
-It is possible to register full mime-types ``main-type/sub-type`` but also a
-fallback for only the main part of the mime-type ``main-type/*``.
-The core provides these fallbacks for ``audio/*``, ``video/*``, ``image/*`` and ``text/*``.
+It is possible to register full mime-types `main-type/sub-type` but also a
+fallback for only the main part of the mime-type `main-type/*`.
+The core provides these fallbacks for `audio/*`, `video/*`, `image/*` and `text/*`.
 
 
 Impact

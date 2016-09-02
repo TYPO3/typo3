@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================================
 Feature: #61725 - Hook for BackendUtility::countVersionsOfRecordsOnPage()
 =========================================================================
@@ -5,8 +8,8 @@ Feature: #61725 - Hook for BackendUtility::countVersionsOfRecordsOnPage()
 Description
 ===========
 
-Hook to post-process ``BackendUtility::countVersionsOfRecordsOnPage``
-result. ``BackendUtility::countVersionsOfRecordsOnPage`` is used to
+Hook to post-process `BackendUtility::countVersionsOfRecordsOnPage`
+result. `BackendUtility::countVersionsOfRecordsOnPage` is used to
 visualize workspace states in e.g. the page tree.
 
 Register like this:

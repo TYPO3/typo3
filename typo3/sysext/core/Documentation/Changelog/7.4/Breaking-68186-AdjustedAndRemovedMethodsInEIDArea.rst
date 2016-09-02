@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Breaking: #68186 - Adjusted and removed methods in eID area
 ===========================================================
@@ -9,14 +12,14 @@ eID scripts now use Request and Response objects to retrieve and output data.
 
 Due to adjustments of the Core eID scripts a few methods have been adjusted.
 
-``ExtDirectEidController::routeAction`` is now protected and has a changed signature.
+`ExtDirectEidController::routeAction` is now protected and has a changed signature.
 
 The following methods have been removed:
 
-* ``ExtDirectEidController::actionIsAllowed()``
-* ``ExtDirectEidController::render()``
-* ``EidUtility::isEidRequest()``
-* ``EidUtility::getEidScriptPath()``
+* `ExtDirectEidController::actionIsAllowed()`
+* `ExtDirectEidController::render()`
+* `EidUtility::isEidRequest()`
+* `EidUtility::getEidScriptPath()`
 
 Additionally calling an non-existent eID key will result in a fatal error.
 

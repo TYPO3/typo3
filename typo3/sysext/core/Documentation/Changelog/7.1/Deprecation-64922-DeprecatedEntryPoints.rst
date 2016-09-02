@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================
 Deprecation: #64922 - Deprecated entry points
 =============================================
@@ -24,16 +27,16 @@ Using one of the entry points in a backend module will throw a deprecation messa
 Migration
 =========
 
-Use ``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()`` instead with the according module name.
+Use `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()` instead with the according module name.
 
 typo3/tce_file.php
-``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_file')``
+`\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_file')`
 
 typo3/move_el.php
-``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('move_element')``
+`\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('move_element')`
 
 typo3/tce_db.php
-``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db')``
+`\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db')`
 
 typo3/login_frameset.php
-``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('login_frameset')``
+`\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('login_frameset')`

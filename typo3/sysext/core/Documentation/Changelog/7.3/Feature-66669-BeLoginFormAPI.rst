@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================
 Feature: #66669 - BE login form API
 ===================================
@@ -14,7 +17,7 @@ Registering a login provider
 ----------------------------
 
 The concept of the new backend login is based on "login providers".
-A login provider can be registered within your ``ext_localconf.php`` file like this:
+A login provider can be registered within your `ext_localconf.php` file like this:
 
 .. code-block:: php
 
@@ -27,12 +30,12 @@ A login provider can be registered within your ``ext_localconf.php`` file like t
 
 The settings are defined as:
 
-* ``provider``: The login provider class name, which must implement ``TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface``.
-* ``sorting``: The sorting is important for the ordering of the links to the possible login providers on the login screen.
-* ``icon-class``: The font-awesome icon name for the link on the login screen.
-* ``label``: The label for the login provider link on the login screen.
+* `provider`: The login provider class name, which must implement `TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface`.
+* `sorting`: The sorting is important for the ordering of the links to the possible login providers on the login screen.
+* `icon-class`: The font-awesome icon name for the link on the login screen.
+* `label`: The label for the login provider link on the login screen.
 
-For a new login provider you have to register a **new key** - a unix timestamp - in ``$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders']``.
+For a new login provider you have to register a **new key** - a unix timestamp - in `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders']`.
 If your login provider extends another one, you may only overwrite necessary settings. An example would be to
 extend an existing provider and replace its registered 'provider' class with your new class name.
 
@@ -45,27 +48,27 @@ LoginProviderInterface
 
 The LoginProviderInterface contains only one method:
 
-``public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController);``
+`public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController);`
 
 The parameters are defined as:
 
-* ``$view``: The Fluid StandaloneView which renders the login screen. You have to set the template file and you may add variables to the view according to your needs.
-* ``$pageRenderer``: The PageRenderer instance provides possibility to add necessary JavaScript resources.
-* ``$loginController``: The LoginController instance.
+* `$view`: The Fluid StandaloneView which renders the login screen. You have to set the template file and you may add variables to the view according to your needs.
+* `$pageRenderer`: The PageRenderer instance provides possibility to add necessary JavaScript resources.
+* `$loginController`: The LoginController instance.
 
 
 The View
 --------
 
-As mentioned above, the ``render`` method gets the Fluid StandaloneView as first parameter.
+As mentioned above, the `render` method gets the Fluid StandaloneView as first parameter.
 You have to set the template path and filename using the methods of this object.
 The template file must only contain the form fields, not the form-tag.
 Later on, the view renders the complete login screen.
 
 View requirements:
 
-* The template must use the ``Login``-layout provided by the Core ``<f:layout name="Login">``.
-* Form fields must be provided within the section ``<f:section name="loginFormFields">``.
+* The template must use the `Login`-layout provided by the Core `<f:layout name="Login">`.
+* Form fields must be provided within the section `<f:section name="loginFormFields">`.
 
 
 .. code-block:: html
@@ -88,8 +91,8 @@ Examples
 
 Within the Core you can find two best practice implementations:
 
-1. EXT:backend, which implements the ``UsernamePasswordLoginProvider`` (the default)
-2. EXT:openid, which implements the ``OpenIdLoginProvider`` and adds a second login option
+1. EXT:backend, which implements the `UsernamePasswordLoginProvider` (the default)
+2. EXT:openid, which implements the `OpenIdLoginProvider` and adds a second login option
 
 
 Impact

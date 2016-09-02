@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Feature: #66371 - Introduce autoplay option for video and audio files
 =====================================================================
@@ -5,16 +8,16 @@ Feature: #66371 - Introduce autoplay option for video and audio files
 Description
 ===========
 
-The ``RenderingRegistry`` added with #61800 introduced the option to render video
-and audio tags with the new ``MediaViewHelper`` added with #66366.
+The `RenderingRegistry` added with #61800 introduced the option to render video
+and audio tags with the new `MediaViewHelper` added with #66366.
 To improve the usability of this feature an autoplay checkbox has been added to
-the ``sys_file_reference`` records to enable the editor to configure this option
+the `sys_file_reference` records to enable the editor to configure this option
 on a per file basis.
 
 To make the autoplay option available in sys_file_reference records, make use of
-the new palettes ``videoOverlayPalette`` and ``audioOverlayPalette`` in your TCA.
+the new palettes `videoOverlayPalette` and `audioOverlayPalette` in your TCA.
 
-However, the autoplay property of the ``sys_file_reference`` is only taken into
+However, the autoplay property of the `sys_file_reference` is only taken into
 account if the view helper does not explicitly specify an autoplay option.
 
 Examples:

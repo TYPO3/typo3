@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================
 Breaking: #66997 - Remove super-/challenged password security
 =============================================================
@@ -27,13 +30,13 @@ Impact
 If an installation has rsaauth disabled, the password transfer is now **Plain Text**.
 
 Any code relying on or checking for the "superchallenged" or "challenged" option
-of ``[BE][loginSecurityLevel]`` or ``[FE][loginSecurityLevel]``, will not work as expected.
+of `[BE][loginSecurityLevel]` or `[FE][loginSecurityLevel]`, will not work as expected.
 
 
 Affected Installations
 ======================
 
-Any installation having set ``[BE][loginSecurityLevel]`` or ``[FE][loginSecurityLevel]`` to an empty string or to
+Any installation having set `[BE][loginSecurityLevel]` or `[FE][loginSecurityLevel]` to an empty string or to
 either of "superchallenged" or "challenged".
 
 

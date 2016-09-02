@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================
 Deprecation: #66789 - options deprecated in CshViewHelper
 =========================================================
@@ -5,7 +8,7 @@ Deprecation: #66789 - options deprecated in CshViewHelper
 Description
 ===========
 
-The two unused options ``iconOnly`` and ``styleAttributes`` have been marked as deprecated.
+The two unused options `iconOnly` and `styleAttributes` have been marked as deprecated.
 
 
 Impact

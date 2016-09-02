@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================================
 Feature: #66709 - Add TemplateRootPaths support to Fluid/View/StandaloneView
 ============================================================================
@@ -5,10 +8,10 @@ Feature: #66709 - Add TemplateRootPaths support to Fluid/View/StandaloneView
 Description
 ===========
 
-The StandaloneView is extended with ``setTemplateRootPaths($templatePaths)`` and ``setTemplate($templateName, $throwException = TRUE)``.
+The StandaloneView is extended with `setTemplateRootPaths($templatePaths)` and `setTemplate($templateName, $throwException = TRUE)`.
 Now you can set a template by name.
 
-When ``setTemplate($templateName)`` is called the ``$templateName`` is used to find the template in the given
+When `setTemplate($templateName)` is called the `$templateName` is used to find the template in the given
 templateRootPaths with the same fallback logic as layoutRootPath and partialRootPath.
 
 
@@ -48,5 +51,5 @@ Example of rendering a email template:
 Impact
 ======
 
-The public API of ``TYPO3\CMS\Fluid\View\StandaloneView`` is enhanced with the methods
- `setTemplateRootPaths($templatePaths)`` and ``setTemplate($templateName, $throwException = TRUE)``
+The public API of `TYPO3\CMS\Fluid\View\StandaloneView` is enhanced with the methods
+ `setTemplateRootPaths($templatePaths)` and `setTemplate($templateName, $throwException = TRUE)`

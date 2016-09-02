@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================
 Breaking: #67646 - PHP library inclusion in frontend removed
 ============================================================
@@ -8,14 +11,14 @@ Description
 The PHP library inclusion into the TYPO3 Frontend has been removed without substitution.
 Previously it was used to include plain PHP scripts during the Frontend request.
 
-The method ``PageGenerator::getIncFiles()`` has been removed.
+The method `PageGenerator::getIncFiles()` has been removed.
 
 
 Impact
 ======
 
-The TypoScript options ``config.includeLibrary`` and ``config.includeLibs`` have no effect anymore.
-Any calls to ``PageGenerator::getIncFiles()`` will result in a fatal error.
+The TypoScript options `config.includeLibrary` and `config.includeLibs` have no effect anymore.
+Any calls to `PageGenerator::getIncFiles()` will result in a fatal error.
 
 
 Affected Installations

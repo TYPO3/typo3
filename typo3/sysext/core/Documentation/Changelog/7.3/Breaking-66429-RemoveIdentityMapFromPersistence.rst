@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================
 Breaking: #66429 - Remove IdentityMap from persistence
 ======================================================
@@ -5,22 +8,22 @@ Breaking: #66429 - Remove IdentityMap from persistence
 Description
 ===========
 
-The ``IdentityMap`` class and its usage has been removed from the Extbase persistence.
+The `IdentityMap` class and its usage has been removed from the Extbase persistence.
 
 
 Impact
 ======
 
-Upgraded installations will throw a ``ReflectionException``. Accessing the previously existing ``IdentityMap``
-properties within ``DataMapper`` and ``Repository`` will now fail. Creating ``IdentityMap`` instances is not possible
+Upgraded installations will throw a `ReflectionException`. Accessing the previously existing `IdentityMap`
+properties within `DataMapper` and `Repository` will now fail. Creating `IdentityMap` instances is not possible
 anymore.
 
 
 Affected Installations
 ======================
 
-All installations, especially extensions using the ``IdentityMap`` class directly or accessing the properties within
-``DataMapper`` or ``Repository``.
+All installations, especially extensions using the `IdentityMap` class directly or accessing the properties within
+`DataMapper` or `Repository`.
 
 
 Migration
@@ -28,14 +31,14 @@ Migration
 
 The Extbase reflection cache of existing installations needs to be cleared once.
 
-Existing code can be migrated to the persistence ``Session`` class which provides a drop-in replacement for the
-``IdentityMap``.
+Existing code can be migrated to the persistence `Session` class which provides a drop-in replacement for the
+`IdentityMap`.
 
 
 Usage example
 =============
 
-How to use the ``Session`` class to retrieve objects by an identifier:
+How to use the `Session` class to retrieve objects by an identifier:
 
 .. code-block:: php
 

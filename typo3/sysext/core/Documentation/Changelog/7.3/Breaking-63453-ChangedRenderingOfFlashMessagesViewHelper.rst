@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================
 Breaking: #63453 - Changed rendering of FlashMessagesViewHelper
 ===============================================================
@@ -5,7 +8,7 @@ Breaking: #63453 - Changed rendering of FlashMessagesViewHelper
 Description
 ===========
 
-The default (``renderMode="ul"``) rendering output of the ``FlashMessagesViewHelper`` has been changed.
+The default (`renderMode="ul"`) rendering output of the `FlashMessagesViewHelper` has been changed.
 
 By default the view helper rendered an unordered list, each list item containing one message.
 This output has been adjusted and more markup has been added.
@@ -20,8 +23,8 @@ You may see unexpected formatting of flash messages.
 Affected Installations
 ======================
 
-Any template using the ``FlashMessagesViewHelper`` unless the attribute ``renderMode`` is set to "div".
-Be aware that the ``renderMode`` attribute has been deprecated.
+Any template using the `FlashMessagesViewHelper` unless the attribute `renderMode` is set to "div".
+Be aware that the `renderMode` attribute has been deprecated.
 
 
 Migration

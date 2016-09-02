@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================
 Breaking: #67753 - Drop "Show secondary options"
 ================================================
@@ -16,13 +19,13 @@ Impact
 PageTSconfig
 ------------
 
-Setting ``options.enableShowPalettes`` has no effect anymore and can be removed from ``PageTSconfig``.
+Setting `options.enableShowPalettes` has no effect anymore and can be removed from `PageTSconfig`.
 
 
 TCA
 ---
 
-Setting ``canNotCollapse`` in ``ctrl`` and ``palettes`` section are obsolete and can be dropped:
+Setting `canNotCollapse` in `ctrl` and `palettes` section are obsolete and can be dropped:
 
 .. code-block:: php
 
@@ -59,4 +62,4 @@ In the rare case that an extension uses one of the above methods or properties, 
 Migration
 =========
 
-The above properties can be dropped, the ``PageTS`` and ``TCA`` settings have no effect anymore.
+The above properties can be dropped, the `PageTS` and `TCA` settings have no effect anymore.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================
 Deprecation: #60559 - makeLoginBoxImage()
 =========================================
@@ -5,7 +8,7 @@ Deprecation: #60559 - makeLoginBoxImage()
 Description
 ===========
 
-Method ``TYPO3\CMS\Backend\Controller::makeLoginBoxImage()`` has been marked as deprecated.
+Method `TYPO3\CMS\Backend\Controller::makeLoginBoxImage()` has been marked as deprecated.
 
 
 Impact
@@ -18,8 +21,8 @@ Affected installations
 ======================
 
 The method was unused with default backend login screen for a long time already, an installation is only affected if a
-3rd party extension was loaded that changed the default login screen and used ``makeLoginBoxImage()`` or the template marker
-``LOGINBOX_IMAGE``.
+3rd party extension was loaded that changed the default login screen and used `makeLoginBoxImage()` or the template marker
+`LOGINBOX_IMAGE`.
 
 
 Migration

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================
 Important: #66614 - Checksums for processed files have been changed
 ===================================================================
@@ -8,10 +11,10 @@ Description
 The base data used for the checksum calculation of processed files has been changed.
 The checksum is used to identify changes which require regeneration of processed files.
 
-Formerly the ``GFX`` section of the ``TYPO3_CONF_VARS`` was included in this base data,
+Formerly the `GFX` section of the `TYPO3_CONF_VARS` was included in this base data,
 which caused weird problems in some cases.
 
-With TYPO3 CMS 7.3 (and 6.2.13) this has been changed. In case you are adjusting ``GFX`` settings and you want
+With TYPO3 CMS 7.3 (and 6.2.13) this has been changed. In case you are adjusting `GFX` settings and you want
 processed files to be regenerated, you need to manually clean the existing processed files by using the Clean up
 utility in the Install Tool.
 

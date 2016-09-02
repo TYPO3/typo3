@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================
 Deprecation: #68860 - Deprecate SelectImage.initEventHandler
 ============================================================
@@ -5,9 +8,9 @@ Deprecation: #68860 - Deprecate SelectImage.initEventHandler
 Description
 ===========
 
-Removes the calls of ``SelectImage.initEventHandler`` method.
+Removes the calls of `SelectImage.initEventHandler` method.
 This was limited to WebKit UserAgents and the provided implementation of
-``require`` was wrong, so that the EventListener was not registered at all.
+`require` was wrong, so that the EventListener was not registered at all.
 Nevertheless the functionality of drag and drop is not broken without the
 initEventHandler.
 
@@ -20,10 +23,10 @@ Throws console log with deprecation message.
 Affected Installations
 ======================
 
-All installations calling ``SelectImage.initEventHandler``.
+All installations calling `SelectImage.initEventHandler`.
 
 
 Migration
 =========
 
-Remove the call of ``SelectImage.initEventHandler``.
+Remove the call of `SelectImage.initEventHandler`.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Deprecation: #65293 - Deprecate file navigation frame entry point
 =================================================================
@@ -19,6 +22,6 @@ Using this entry point in a backend module will throw a deprecation message.
 Migration
 =========
 
-Use ``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()`` instead with the according module name.
+Use `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()` instead with the according module name.
 
-``typo3/alt_file_navframe.php`` will have to be refactored to ``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_navframe')``
+`typo3/alt_file_navframe.php` will have to be refactored to `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_navframe')`

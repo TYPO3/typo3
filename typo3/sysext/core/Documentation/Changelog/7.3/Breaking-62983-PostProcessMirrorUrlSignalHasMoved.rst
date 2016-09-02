@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Breaking: #62983 - postProcessMirrorUrl signal has moved
 ========================================================
@@ -6,7 +9,7 @@ Description
 ===========
 
 While refactoring the Language backend module, the
-``\TYPO3\CMS\Lang\Service\UpdateTranslationService::postProcessMirrorUrl`` signal got lost. Due to
+`\TYPO3\CMS\Lang\Service\UpdateTranslationService::postProcessMirrorUrl` signal got lost. Due to
 the refactoring, it has been integrated in another class.
 
 
@@ -20,14 +23,14 @@ Affected Installations
 ======================
 
 All extensions are affected that use the old
-``\TYPO3\CMS\Lang\Service\UpdateTranslationService::postProcessMirrorUrl``
+`\TYPO3\CMS\Lang\Service\UpdateTranslationService::postProcessMirrorUrl`
 signal.
 
 
 Migration
 =========
 
-Change the slot to use the ``\TYPO3\CMS\Lang\Service\TranslationService::postProcessMirrorUrl``
+Change the slot to use the `\TYPO3\CMS\Lang\Service\TranslationService::postProcessMirrorUrl`
 signal. If it is required to serve multiple TYPO3 versions, use the following code:
 
 .. code-block:: php

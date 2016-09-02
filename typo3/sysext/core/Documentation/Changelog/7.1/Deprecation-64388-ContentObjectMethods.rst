@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===============================================================================
 Deprecation: #64388 - Direct ContentObject methods within ContentObjectRenderer
 ===============================================================================
@@ -55,7 +58,7 @@ Instances which use custom calls to ContentObjects via the methods above.
 Migration
 =========
 
-Replace the direct method calls to ``$contentObject->COBJECT()`` with the common method.
+Replace the direct method calls to `$contentObject->COBJECT()` with the common method.
 
 Example for the SVG() ContentObject call:
 

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================================
 Feature: #67950 - Move CE table options from flexform to tt_content
 ===================================================================
@@ -7,11 +10,11 @@ Description
 
 The CE table (processing) configuration
 
-* ``Table caption``
-* ``Field delimiter``
-* ``Text enclosure``
-* ``Table header position``
-* ``Use table footer``
+* `Table caption`
+* `Field delimiter`
+* `Text enclosure`
+* `Table header position`
+* `Use table footer`
 
 were in EXT:css_styled_content configured/saved in a flexform. This has now been moved to regular database fields.
 

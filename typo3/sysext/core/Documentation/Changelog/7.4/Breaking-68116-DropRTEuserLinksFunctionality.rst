@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===================================================
 Breaking: #68116 - Drop RTE.userLinks functionality
 ===================================================
@@ -17,7 +20,7 @@ The special option won't show up in the ElementBrowser anymore.
 Affected Installations
 ======================
 
-All installations which use the option ``RTE.userLinks``
+All installations which use the option `RTE.userLinks`
 
 
 Migration

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ================================================================================================
 Feature: #68184 - Paths to typo3/cms package and document root can be specified in composer.json
 ================================================================================================
@@ -44,4 +47,4 @@ It can be specified in the extra section of your composer root package like that
 Impact
 ======
 
-When specifying the configuration like mentioned above, the directory structure of a ``composer install`` will change.
+When specifying the configuration like mentioned above, the directory structure of a `composer install` will change.

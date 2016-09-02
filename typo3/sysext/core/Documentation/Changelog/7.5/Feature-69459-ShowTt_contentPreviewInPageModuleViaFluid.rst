@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================================
 Feature: #69459 - Show tt_content preview in page module via Fluid
 ==================================================================
@@ -21,7 +24,7 @@ All content elements with CType "media" will then be rendered by the Fluid Templ
 	<f:format.crop length="200">{bodytext}</f:format.crop>
 
 All properties of the tt_content record are available in the template directly.
-Any data of the flexform field ``pi_flexform`` is available with the property ``pi_flexform_transformed`` as an array.
+Any data of the flexform field `pi_flexform` is available with the property `pi_flexform_transformed` as an array.
 
 .. note::
 

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================
 Feature: #69095 - Introduce icon state for IconFactory
 ======================================================
@@ -11,12 +14,12 @@ A state (default or disabled) for icons has been added. The state "disabled" mar
 Use an icon
 -----------
 
-The method ``IconFactory::getIcon()`` has now a fourth parameter for the state.
+The method `IconFactory::getIcon()` has now a fourth parameter for the state.
 
-The ``\TYPO3\CMS\Core\Type\Icon\IconState`` class provides only the following constants for icon states:
+The `\TYPO3\CMS\Core\Type\Icon\IconState` class provides only the following constants for icon states:
 
-* ``State::STATE_DEFAULT`` which currently means 100% opacity
-* ``State::STATE_DISABLED`` which currently means 50% opacity
+* `State::STATE_DEFAULT` which currently means 100% opacity
+* `State::STATE_DISABLED` which currently means 50% opacity
 
 The states may change in future, so please make use of the constants for an unified layout.
 

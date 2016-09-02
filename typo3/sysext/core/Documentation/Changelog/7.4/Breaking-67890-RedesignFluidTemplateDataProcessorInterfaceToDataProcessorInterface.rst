@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================================================
 Breaking: #67890 - Redesign FluidTemplateDataProcessorInterface to DataProcessorInterface
 =========================================================================================
@@ -5,14 +8,14 @@ Breaking: #67890 - Redesign FluidTemplateDataProcessorInterface to DataProcessor
 Description
 ===========
 
-The ``FluidTemplateDataProcessorInterface`` introduced with #66907 has been refactored to ``DataProcessorInterface``.
+The `FluidTemplateDataProcessorInterface` introduced with #66907 has been refactored to `DataProcessorInterface`.
 
 This decouples it from the Fluid StandaloneView and makes the ContentObjectRenderer available in the process method
 so the different DataProcessor classes do no have to initiate it on their own.
-Instead of manipulating the ``$data`` property of the ``ContentObjectRenderer`` a new key/value store can be filled/manipulated
+Instead of manipulating the `$data` property of the `ContentObjectRenderer` a new key/value store can be filled/manipulated
 by the different dataProcessor classes.
 
-The new interface expects the following ``process()`` method:
+The new interface expects the following `process()` method:
 
 .. code-block:: php
 
@@ -36,18 +39,18 @@ The new interface expects the following ``process()`` method:
 Impact
 ======
 
-This will break all frontend rendering for TYPO3 7.3 installations that use ``FLUIDTEMPLATE`` ``.dataProcessing``.
+This will break all frontend rendering for TYPO3 7.3 installations that use `FLUIDTEMPLATE` `.dataProcessing`.
 
 
 Affected Installations
 ======================
 
-All TYPO3 7.3 installations that already use the new ``FLUIDTEMPLATE`` ``.dataProcessing`` option.
+All TYPO3 7.3 installations that already use the new `FLUIDTEMPLATE` `.dataProcessing` option.
 
 
 Migration
 =========
 
-Change the interface of all DataProcessor classes from ``FluidTemplateDataProcessorInterface`` to the new
-``DataProcessorInterface`` and adjust the ``process()`` method to match the new parameters and make sure it returns the
+Change the interface of all DataProcessor classes from `FluidTemplateDataProcessorInterface` to the new
+`DataProcessorInterface` and adjust the `process()` method to match the new parameters and make sure it returns the
 processed data as the processed data.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 .. role::   typoscript(code)
 .. role::   ts(typoscript)
 

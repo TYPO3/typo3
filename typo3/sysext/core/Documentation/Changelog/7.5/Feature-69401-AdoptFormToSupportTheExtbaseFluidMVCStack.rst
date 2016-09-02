@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================================
 Feature: #69401 - Adopt form to support the Extbase/ Fluid MVC stack
 ====================================================================
@@ -33,7 +36,7 @@ is activated by default. This has no impact on the rendering as long as
 no "old" TypoScript settings (like .layout =) are present. If old
 rendering settings are used a compatibility theme is loaded which
 guarantees maximum backwards compatibility including all the different
-wrap-abilities like ``containerWrap`` and ``elementWrap``.
+wrap-abilities like `containerWrap` and `elementWrap`.
 
 For new installations it is recommended to switch off the compatibility
 mode and use own Fluid templates to customize the output.
@@ -44,7 +47,7 @@ the email (postProcessor/ mail). The patch allows to customize the
 frontend output for every single view, e.g. one can have a custom Fluid
 partial for the BUTTON object of the confirmation view.
 
-The ``partialRootPath`` can be overridden or extended to customize the form
+The `partialRootPath` can be overridden or extended to customize the form
 objects on a global scope. Furthermore it is possible to set a partial
 path for each form element on a local scope.
 
@@ -58,12 +61,12 @@ path for each form element on a local scope.
 	}
 
 The Fluid rendering would look for a MyButton.html located in the
-defined ``partialRootPath``.
+defined `partialRootPath`.
 
 In addition it is now possible to decide if an element should be
 rendered for a specific view. The visualisation can be adopted by using
-the TypoScript settings ``visibleInShowAction``, ``visibleInConfirmationAction``
-and ``visibleInMail``. As an example, this is utilized to hide the FIELDSET
+the TypoScript settings `visibleInShowAction`, `visibleInConfirmationAction`
+and `visibleInMail`. As an example, this is utilized to hide the FIELDSET
 object on the confirmation page which was the default behaviour in
 earlier versions of form.
 

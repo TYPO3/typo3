@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================
 Feature: #22175 - Support IEC/SI units in file size formatting
 ==============================================================
@@ -21,11 +24,11 @@ Impact
 
 Default formatted output of file sizes changes, see example below.
 
-TypoScript ``stdWrap`` property ``bytes`` defaults to a different label set.
-``bytes.labels = iec``, a specifically defined label string with pipe separated
+TypoScript `stdWrap` property `bytes` defaults to a different label set.
+`bytes.labels = iec`, a specifically defined label string with pipe separated
 label keywords is obsolete, but can still be used if required. The keyword
-``iec`` resolves to `` | Ki| Mi| Gi| Ti| Pi| Ei| Zi| Yi`` (binary base) and ``si`` resolves
-to `` | k| M| G| T| P| E| Z| Y`` (based on ten).
+`iec` resolves to ` | Ki| Mi| Gi| Ti| Pi| Ei| Zi| Yi` (binary base) and `si` resolves
+to ` | k| M| G| T| P| E| Z| Y` (based on ten).
 
 
 Example

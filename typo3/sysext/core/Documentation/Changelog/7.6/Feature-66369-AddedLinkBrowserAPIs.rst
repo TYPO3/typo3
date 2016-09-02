@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================
 Feature: #66369 - Added LinkBrowser APIs
 ========================================
@@ -31,9 +34,9 @@ Link browser tabs are registered in page TSconfig like this:
 		}
 	}
 
-The options ``displayBefore`` and ``displayAfter`` define the order how the various tabs are displayed in the link browser.
+The options `displayBefore` and `displayAfter` define the order how the various tabs are displayed in the link browser.
 
-The options ``scanBefore`` and ``scanAfter`` define the order in which handlers are queried when determining the responsible
+The options `scanBefore` and `scanAfter` define the order in which handlers are queried when determining the responsible
 tab for an existing link.
 Most likely your links will start with a specific prefix to identify them. Therefore you should register your tab at least before
 the 'url' handler, so your handler can advertise itself as responsible for the given link.
@@ -43,7 +46,7 @@ The 'url' handler should be treated as last resort as it will work with any link
 Handler implementation
 ----------------------
 
-A link handler has to implement the ``\TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface`` interface, which defines
+A link handler has to implement the `\TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface` interface, which defines
 all necessary methods for communication with the link browser.
 
 Additionally, each link handler should also provide a Javascript module (requireJS), which takes care of passing a link
@@ -74,7 +77,7 @@ A minimal implementation of such a module looks like this:
 		return myModule;
 	}
 
-Notice the call to ``LinkBrowser.finalizeFunction``, which is the point where the link is handed over to the link browser
+Notice the call to `LinkBrowser.finalizeFunction`, which is the point where the link is handed over to the link browser
 for further processing and storage.
 
 
@@ -84,7 +87,7 @@ Hooks
 You may have the need to modify the list of available link handlers based on some dynamic value.
 For this purpose you can register hooks.
 
-The registration of a link browser hook generally happens in your ``ext_tables.php`` and looks like:
+The registration of a link browser hook generally happens in your `ext_tables.php` and looks like:
 
 .. code:: php
 
@@ -96,7 +99,7 @@ The registration of a link browser hook generally happens in your ``ext_tables.p
 		];
 	}
 
-The ``before`` and ``after`` elements allow to control the execution order of all registered hooks.
+The `before` and `after` elements allow to control the execution order of all registered hooks.
 
 Currently the following list of hooks is implemented:
 

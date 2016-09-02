@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================================
 Feature: #70332 - EXT:form - Add HTML4 / HTML5 attributes to the wizard
 =======================================================================
@@ -15,32 +18,32 @@ attributes based on selfhtml documentation version 8.1.2.
 Currently supported attributes
 ------------------------------
 
-``accept, acceptcharset, accesskey, action, alt, checked, class, cols,
+`accept, acceptcharset, accesskey, action, alt, checked, class, cols,
 dir, disabled, enctype, id, label, lang, maxlength, method, multiple,
 name, placeholder, readonly, rows, selected, size, src, style, tabindex,
-title, type, value``
+title, type, value`
 
 New attributes
 --------------
 
-``autocomplete, autofocus, contenteditable, contextmenu, draggable,
+`autocomplete, autofocus, contenteditable, contextmenu, draggable,
 dropzone, height, hidden, inputmode, list, max, min, minlength,
 novalidate, pattern, required, selectionDirection, selectionEnd,
-selectionStart, spellcheck, step, translate, width, wrap``
+selectionStart, spellcheck, step, translate, width, wrap`
 
 The **type attribute** will be extended with the following HTML5 types:
 
-``color, date, datetime, datetime-local, email, month, number, range,
-search, tel, time, url, week``
+`color, date, datetime, datetime-local, email, month, number, range,
+search, tel, time, url, week`
 
 Each element is now able to set the HTML universal attributes and
 element specific attributes.
 
 Universal attributes are:
 
-``accesskey, class, contenteditable, contextmenu, dir, draggable,
+`accesskey, class, contenteditable, contextmenu, dir, draggable,
 dropzone, hidden, id, lang, spellcheck, style, tabindex, title,
-translate``
+translate`
 
 FORM
 ----
@@ -48,14 +51,14 @@ FORM
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accept, accept-charset, action, class, dir, enctype, id, lang, method,
-style, title``
+`accept, accept-charset, action, class, dir, enctype, id, lang, method,
+style, title`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``accept, accept-charset, action, autocomplete,
-enctype, method, novalidate``
+Universal attributes + `accept, accept-charset, action, autocomplete,
+enctype, method, novalidate`
 
 BUTTON
 ------
@@ -63,13 +66,13 @@ BUTTON
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
-title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
+title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, disabled, name, type, value``
+Universal attributes + `autofocus, disabled, name, type, value`
 
 SELECT
 ------
@@ -77,14 +80,14 @@ SELECT
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``class, disabled, id, lang, multiple, name, size, style, tabindex,
-title``
+`class, disabled, id, lang, multiple, name, size, style, tabindex,
+title`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, disabled, multiple, name,
-required, size``
+Universal attributes + `autofocus, disabled, multiple, name,
+required, size`
 
 TEXTAREA
 --------
@@ -92,15 +95,15 @@ TEXTAREA
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, class, cols, dir, disabled, id, lang, name, placeholder,
-readonly, rows, style, tabindex, title``
+`accesskey, class, cols, dir, disabled, id, lang, name, placeholder,
+readonly, rows, style, tabindex, title`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, cols, disabled, inputmode,
+Universal attributes + `autofocus, cols, disabled, inputmode,
 maxlength, minlength, name, placeholder, readonly, required, rows,
-selectionDirection, selectionEnd, selectionStart, wrap``
+selectionDirection, selectionEnd, selectionStart, wrap`
 
 SUBMIT
 ------
@@ -108,13 +111,13 @@ SUBMIT
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
-title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
+title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, disabled, name, type, value``
+Universal attributes + `autofocus, disabled, name, type, value`
 
 RADIO
 -----
@@ -122,14 +125,14 @@ RADIO
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
-title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
+title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, checked, disabled, name, readonly,
-required, type, value``
+Universal attributes + `autofocus, checked, disabled, name, readonly,
+required, type, value`
 
 PASSWORD
 --------
@@ -137,15 +140,15 @@ PASSWORD
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, maxlength, name,
-placeholder, readonly, size, style, tabindex, title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, maxlength, name,
+placeholder, readonly, size, style, tabindex, title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autocomplete, autofocus, disabled, maxlength,
+Universal attributes + `autocomplete, autofocus, disabled, maxlength,
 minlength, name, pattern, placeholder, readonly, required, size, type,
-value``
+value`
 
 HIDDEN
 ------
@@ -153,12 +156,12 @@ HIDDEN
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``class, id, lang, name, style, type, value``
+`class, id, lang, name, style, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``name, type, value``
+Universal attributes + `name, type, value`
 
 FILEUPLOAD
 ----------
@@ -166,14 +169,14 @@ FILEUPLOAD
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, name, size, style,
-tabindex, title, type``
+`accesskey, alt, class, dir, disabled, id, lang, name, size, style,
+tabindex, title, type`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``accept, autofocus, disabled, multiple name,
-readonly, required, type, value``
+Universal attributes + `accept, autofocus, disabled, multiple name,
+readonly, required, type, value`
 
 RESET
 -----
@@ -181,13 +184,13 @@ RESET
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
-title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, name, style, tabindex,
+title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, disabled, name, type, value``
+Universal attributes + `autofocus, disabled, name, type, value`
 
 TEXTLINE
 --------
@@ -195,26 +198,26 @@ TEXTLINE
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, maxlength, name,
-placeholder, readonly, size, style, tabindex, title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, maxlength, name,
+placeholder, readonly, size, style, tabindex, title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autocomplete, autofocus, disabled, inputmode,
+Universal attributes + `autocomplete, autofocus, disabled, inputmode,
 list, maxlength, minlength, name, pattern, placeholder, readonly,
-required, size, type, value``
+required, size, type, value`
 
 CHECKBOX
 
 Currently supported attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``accesskey, alt, class, dir, disabled, id, lang, name, style,
-tabindex, title, type, value``
+`accesskey, alt, class, dir, disabled, id, lang, name, style,
+tabindex, title, type, value`
 
 New attributes
 ^^^^^^^^^^^^^^
 
-Universal attributes + ``autofocus, checked, disabled, name, readonly,
-required, type, value``
+Universal attributes + `autofocus, checked, disabled, name, readonly,
+required, type, value`

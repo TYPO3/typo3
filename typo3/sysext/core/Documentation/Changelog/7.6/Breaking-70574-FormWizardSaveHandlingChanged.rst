@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ====================================================
 Breaking: #70574 - Form Wizard Save Handling Changed
 ====================================================
@@ -30,4 +33,4 @@ Any installations with extensions that hook into the wizard views of EXT:form.
 Migration
 =========
 
-Use the AJAX routes available via ``TYPO3.settings.ajaxUrls['formwizard_load']`` and ``TYPO3.settings.ajaxUrls['formwizard_save']``.
+Use the AJAX routes available via `TYPO3.settings.ajaxUrls['formwizard_load']` and `TYPO3.settings.ajaxUrls['formwizard_save']`.

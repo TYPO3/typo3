@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================
 Breaking: #63846 - FormEngine refactoring
 =========================================
@@ -44,7 +47,7 @@ Changed user functions and hooks
 --------------------------------
 
 * TCA: If format of type `none` is set to `user`, the configured userFunc no longer gets an instance of `FormEngine`
-  as parent object, but an instance of `NoneElement``.
+  as parent object, but an instance of `NoneElement`.
 
 * TCA: Wizards configured as `userFunc` now receive a dummy `FormEngine` object with empty properties instead
   of the real instance.

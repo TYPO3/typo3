@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Deprecation: #63522 - Deprecate the "device" TypoScript condition
 =================================================================
@@ -5,17 +8,17 @@ Deprecation: #63522 - Deprecate the "device" TypoScript condition
 Description
 ===========
 
-Client related TypoScript conditions the ``device`` type condition have been marked as deprecated.
+Client related TypoScript conditions the `device` type condition have been marked as deprecated.
 
 Impact
 ======
 
-Using a condition like ``[device = wap]`` is considered outdated and should be solved differently.
+Using a condition like `[device = wap]` is considered outdated and should be solved differently.
 
 Affected installations
 ======================
 
-Instances with TypoScript that rely on ``[device = ...]``.
+Instances with TypoScript that rely on `[device = ...]`.
 
 Migration
 =========

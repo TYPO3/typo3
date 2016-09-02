@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================================
 Breaking: #39721 - Prototype.js and Scriptaculous removed
 =========================================================
@@ -13,7 +16,7 @@ Impact
 
 Any TYPO3 Extension that uses prototype.js or scriptaculous for usage in the Backend or Frontend will not work anymore.
 
-The TypoScript properties ``page.javascriptLibs.Prototype`` and ``page.javascriptLibs.Scriptaculous.*`` have been removed
+The TypoScript properties `page.javascriptLibs.Prototype` and `page.javascriptLibs.Scriptaculous.*` have been removed
 and have no effect anymore, leading to not including prototype in websites where this TypoScript option is set.
 This might lead to broken websites when updating.
 

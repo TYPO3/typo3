@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================
 Breaking: #69795 - Unused DTM Tabmenu code removed
 ==================================================
@@ -13,7 +16,7 @@ Impact
 ======
 
 All logic that requires EXT:backend/Resources/Public/JavaScript/tabmenu.js
-directly and/or use the JavaScript code of ``DTM_activate()`` or ``DTM_toggle()``
+directly and/or use the JavaScript code of `DTM_activate()` or `DTM_toggle()`
 directly have been removed.
 
 

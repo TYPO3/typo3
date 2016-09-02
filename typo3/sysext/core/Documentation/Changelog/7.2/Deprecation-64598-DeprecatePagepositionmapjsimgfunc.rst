@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==========================================================
 Deprecation: #64598 - Deprecate PagePositionMap::JSimgFunc
 ==========================================================
@@ -7,7 +10,7 @@ Description
 
 The following function has been marked as deprecated:
 
-* ``\TYPO3\CMS\Backend\Tree\View\PagePositionMap::JSimgFunc``
+* `\TYPO3\CMS\Backend\Tree\View\PagePositionMap::JSimgFunc`
 
 This method was used only in class PagePositionMap. The implemented "onmouseover" / "onmouseout"
 behaviour to switch between two images was dropped entirely for now. If this is needed, it should

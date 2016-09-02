@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =============================================================================
 Feature: #70033 - Introduced TCA option showIconTable for selectSingle fields
 =============================================================================
@@ -5,7 +8,7 @@ Feature: #70033 - Introduced TCA option showIconTable for selectSingle fields
 Description
 ===========
 
-A new option ``showIconTable`` has been introduced for select fields with render type ``selectSingle`` to enforce or prevent the
+A new option `showIconTable` has been introduced for select fields with render type `selectSingle` to enforce or prevent the
 icon table underneath the field. By default the icon table is not shown.
 
 Example

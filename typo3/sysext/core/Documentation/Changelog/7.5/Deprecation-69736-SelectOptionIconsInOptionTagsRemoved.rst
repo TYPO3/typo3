@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ===========================================================
 Important: #69736 - Select option iconsInOptionTags removed
 ===========================================================
@@ -5,7 +8,7 @@ Important: #69736 - Select option iconsInOptionTags removed
 Description
 ===========
 
-The option ``iconsInOptionTags`` of TCA ``select`` fields has been removed due
+The option `iconsInOptionTags` of TCA `select` fields has been removed due
 to little support in browsers.
 
 
@@ -19,7 +22,7 @@ removed in TCA tables during bootstrap.
 Affected Installations
 ======================
 
-Any ``TCA`` configuration using ``iconsInOptionTags``.
+Any `TCA` configuration using `iconsInOptionTags`.
 
 
 Migration

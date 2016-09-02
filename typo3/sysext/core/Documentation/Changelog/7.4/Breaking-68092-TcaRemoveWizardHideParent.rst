@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================================
 Breaking: #68092 - TCA: Remove wizard hideParent and _HIDDENFIELD
 =================================================================
@@ -5,9 +8,9 @@ Breaking: #68092 - TCA: Remove wizard hideParent and _HIDDENFIELD
 Description
 ===========
 
-Wizards defined in ``TCA`` for display in ``FormEngine`` allowed to hide the "parent"
-field with the configuration options ``_HIDDENFIELD`` on main wizard level, and with
-the ``hideParent`` option for single wizards.
+Wizards defined in `TCA` for display in `FormEngine` allowed to hide the "parent"
+field with the configuration options `_HIDDENFIELD` on main wizard level, and with
+the `hideParent` option for single wizards.
 
 Both options have been dropped.
 
@@ -22,7 +25,7 @@ Affected Installations
 ======================
 
 A search through the TER code showed not a single extension that used the above options.
-A 3rd party extension is affected if a ``TCA`` column configuration is used like:
+A 3rd party extension is affected if a `TCA` column configuration is used like:
 
 .. code-block:: php
 
@@ -45,5 +48,5 @@ Migration
 =========
 
 Wizards can not trigger that a main field is not rendered anymore. If this kind of functionality
-is needed, it is recommended to register an own ``renderType`` in the ``NodeFactory`` for this
+is needed, it is recommended to register an own `renderType` in the `NodeFactory` for this
 type of field instead to route the element rendering to an own class.

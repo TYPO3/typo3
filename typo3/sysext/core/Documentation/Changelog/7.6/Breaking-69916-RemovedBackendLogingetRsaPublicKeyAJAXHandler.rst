@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Breaking: #69916 - Removed BackendLogin::getRsaPublicKey AJAX handler
 =====================================================================
@@ -5,8 +8,8 @@ Breaking: #69916 - Removed BackendLogin::getRsaPublicKey AJAX handler
 Description
 ===========
 
-The deprecated AJAX handler ``BackendLogin::getRsaPublicKey`` has been removed in favor of ``rsa_publickey``. As
-``getRsaPublicKey`` was the only method in this class, the file
+The deprecated AJAX handler `BackendLogin::getRsaPublicKey` has been removed in favor of `rsa_publickey`. As
+`getRsaPublicKey` was the only method in this class, the file
 :file:`typo3/sysext/rsaauth/Classes/Backend/AjaxLoginHandler.php` has been removed without substitution.
 
 
@@ -25,4 +28,4 @@ All 3rd party extensions using the removed handler are affected.
 Migration
 =========
 
-Use the AJAX handler ``rsa_publickey`` instead of ``BackendLogin::getRsaPublicKey``.
+Use the AJAX handler `rsa_publickey` instead of `BackendLogin::getRsaPublicKey`.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================================
 Breaking: #69916 - Hook ajaxSaveCode of t3editor changed
 ========================================================
@@ -5,19 +8,19 @@ Breaking: #69916 - Hook ajaxSaveCode of t3editor changed
 Description
 ===========
 
-The ``$ajaxObj`` parameter has been replaced by PSR-7-compliant ``$request`` and ``$response`` objects.
+The `$ajaxObj` parameter has been replaced by PSR-7-compliant `$request` and `$response` objects.
 
 
 Impact
 ======
 
-Using the ``$ajaxObj`` parameter will result in a fatal error.
+Using the `$ajaxObj` parameter will result in a fatal error.
 
 
 Affected Installations
 ======================
 
-All 3rd party extensions using the ``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode']``
+All 3rd party extensions using the `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode']`
 hook are affected.
 
 

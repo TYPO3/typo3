@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================
 Feature: #57632 - Include inline language label files with TypoScript
 =====================================================================
@@ -10,12 +13,12 @@ It is now possible to add inline language label files with TypoScript.
 Usage
 -----
 If you want to include inline labels from a XLF file, you have to specify that
-file in your TypoScript with a custom key in the new ``inlineLanguageLabelFiles``
+file in your TypoScript with a custom key in the new `inlineLanguageLabelFiles`
 section. In addition to the file you can configure three optional parameters:
 
-* ``selectionPrefix``: Only label keys that start with this prefix will be included (default: '')
-* ``stripFromSelectionName``: A string that will be removed from any included label key (default: '')
-* ``errorMode``: Error mode if the file could not be found: 0 - syslog entry, 1 - do nothing, 2 - throw an exception (default: 0)
+* `selectionPrefix`: Only label keys that start with this prefix will be included (default: '')
+* `stripFromSelectionName`: A string that will be removed from any included label key (default: '')
+* `errorMode`: Error mode if the file could not be found: 0 - syslog entry, 1 - do nothing, 2 - throw an exception (default: 0)
 
 Example
 -------

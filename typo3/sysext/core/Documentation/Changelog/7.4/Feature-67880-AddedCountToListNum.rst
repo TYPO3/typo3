@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ========================================
 Feature: #67880 - Added count to listNum
 ========================================
@@ -5,7 +8,7 @@ Feature: #67880 - Added count to listNum
 Description
 ===========
 
-A new property ``returnCount`` is added to the stdWrap property ``split``.
+A new property `returnCount` is added to the stdWrap property `split`.
 
 When dealing with comma separated values like the content of field:records or similar,
 in some cases we need to know, how many items are present inside the csv.

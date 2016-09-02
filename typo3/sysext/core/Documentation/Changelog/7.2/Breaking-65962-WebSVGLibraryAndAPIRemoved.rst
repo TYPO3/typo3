@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================================================
 Breaking: #65962 - Third-party library "websvg" and the according API has been removed
 ======================================================================================
@@ -32,7 +35,7 @@ Impact
 
 Any installation using one of the methods above in an extension will fail.
 
-Any installation using ``page.javascriptLibs.SVG = 1`` will not include the websvg library anymore and might lead
+Any installation using `page.javascriptLibs.SVG = 1` will not include the websvg library anymore and might lead
 to SVGs not being displayed anymore in certain browsers. Using the SVG Content Object will lead to the same result.
 
 

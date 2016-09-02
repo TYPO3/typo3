@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =================================================
 Deprecation: #67029 - Deprecate page.bgImg option
 =================================================
@@ -5,13 +8,13 @@ Deprecation: #67029 - Deprecate page.bgImg option
 Description
 ===========
 
-The option ``page.bgImg`` has been marked for deprecation and will be removed with TYPO3 CMS 8.
+The option `page.bgImg` has been marked for deprecation and will be removed with TYPO3 CMS 8.
 
 
 Impact
 ======
 
-Using ``page.bgImg`` will throw a deprecation message.
+Using `page.bgImg` will throw a deprecation message.
 
 
 Affected Installations

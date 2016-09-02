@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================
 Deprecation: #66065 - Backend Logo View Deprecated
 ==================================================
@@ -12,14 +15,14 @@ anymore and marked for deprecation. The logic for exchanging the logo via TBE_ST
 Impact
 ======
 
-Installations extending ``TYPO3\CMS\Backend\View\LogoView`` as an XCLASS will not see
+Installations extending `TYPO3\CMS\Backend\View\LogoView` as an XCLASS will not see
 any modified output anymore.
 
 
 Affected Installations
 ======================
 
-Installations extending ``TYPO3\CMS\Backend\View\LogoView`` as an XCLASS.
+Installations extending `TYPO3\CMS\Backend\View\LogoView` as an XCLASS.
 
 
 Migration

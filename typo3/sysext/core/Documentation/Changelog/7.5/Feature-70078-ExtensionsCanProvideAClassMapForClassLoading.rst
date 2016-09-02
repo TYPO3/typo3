@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================================
 Feature: #70078 - Extensions can provide a class map for class loading
 ======================================================================
@@ -65,7 +68,7 @@ Example ext_emconf.php file:
 	  )
 	);
 
-In the example configuration the path ``Resources/PHP/Libs`` is parsed for PHP files which are automatically added
+In the example configuration the path `Resources/PHP/Libs` is parsed for PHP files which are automatically added
 to the class loader.
 
 Impact

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==================================================================
 Feature: #59606 - Integrate Symfony/Console into CommandController
 ==================================================================
@@ -6,7 +9,7 @@ Description
 ===========
 
 The CommandController now makes use of Symfony/Console internally and
-provides various methods directly from the CommandController's ``output`` member:
+provides various methods directly from the CommandController's `output` member:
 
 * TableHelper
 
@@ -85,7 +88,7 @@ Impact
 
 This change does not alter the public API so it is not breaking
 in the strict sense. But it introduces a new behavior:
-Previously all output was collected in the ``Cli\Response`` and only rendered to the console at the end of a CLI request.
-Now all methods producing output (including ``output()`` and ``outputLine()``) render the result directly to the console.
-If you use ``$this->response`` directly or let the command method return a string, the rendering is still deferred until
+Previously all output was collected in the `Cli\Response` and only rendered to the console at the end of a CLI request.
+Now all methods producing output (including `output()` and `outputLine()`) render the result directly to the console.
+If you use `$this->response` directly or let the command method return a string, the rendering is still deferred until
 the end of the CLI request.

@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================
 Feature: #66366 - Introduced MediaViewHelper
 ============================================
@@ -5,11 +8,11 @@ Feature: #66366 - Introduced MediaViewHelper
 Description
 ===========
 
-In order to comfortably render video, audio and all other file types with a registered Renderer class (``RenderingRegistry``
-introduced with #61800) in FE, the ``MediaViewHelper`` has been added.
+In order to comfortably render video, audio and all other file types with a registered Renderer class (`RenderingRegistry`
+introduced with #61800) in FE, the `MediaViewHelper` has been added.
 
-The ``MediaViewHelper`` first checks if there is a Renderer present for the given file. If not,  it will as fallback
-render a image tag. This way it is a replacement for the ``ImageViewHelper`` in most cases when rendering video and
+The `MediaViewHelper` first checks if there is a Renderer present for the given file. If not,  it will as fallback
+render a image tag. This way it is a replacement for the `ImageViewHelper` in most cases when rendering video and
 audio tags.
 
 Examples:

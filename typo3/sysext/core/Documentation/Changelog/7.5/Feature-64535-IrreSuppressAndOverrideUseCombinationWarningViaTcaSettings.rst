@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =====================================================================================
 Feature: #64535 - IRRE: Suppress and override useCombination warning via TCA settings
 =====================================================================================
@@ -5,11 +8,11 @@ Feature: #64535 - IRRE: Suppress and override useCombination warning via TCA set
 Description
 ===========
 
-When using ``useCombination=TRUE`` there is always a FlashMessage warning displayed.
+When using `useCombination=TRUE` there is always a FlashMessage warning displayed.
 It is now possible to override the default warning message with a custom message or
 to suppress the FlashMessage completely via TCA setting.
 
-Example to suppress ``useCombination`` warning message:
+Example to suppress `useCombination` warning message:
 
 .. code-block:: php
 
@@ -25,7 +28,7 @@ Example to suppress ``useCombination`` warning message:
 		)
 	)
 
-Example to override ``useCombination`` warning message:
+Example to override `useCombination` warning message:
 
 .. code-block:: php
 

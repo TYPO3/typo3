@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =======================================================
 Feature: #66047 - Introduce JavaScript notification API
 =======================================================
@@ -5,7 +8,7 @@ Feature: #66047 - Introduce JavaScript notification API
 Description
 ===========
 
-The Flashmessages API has been moved from ``TYPO3.Flashmessages`` to ``top.TYPO3.Flashmessages`` in TYPO3 CMS 7.0.
+The Flashmessages API has been moved from `TYPO3.Flashmessages` to `top.TYPO3.Flashmessages` in TYPO3 CMS 7.0.
 
 Now we introduce the new JavaScript Notification API and remove the refactoring of the FlashMessage API which was made for TYPO3 CMS 7.0.
 
@@ -19,7 +22,7 @@ Please look at the examples section in this document for more details.
 Migration
 =========
 
-The affected 3rd party extensions must be modified to use ``top.TYPO3.Notification`` instead of ``top.TYPO3.Flashmessages``.
+The affected 3rd party extensions must be modified to use `top.TYPO3.Notification` instead of `top.TYPO3.Flashmessages`.
 
 Examples:
 

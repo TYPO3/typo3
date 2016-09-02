@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ==============================================================
 Feature: #63453 - Template support for FlashMessagesViewHelper
 ==============================================================
@@ -5,10 +8,10 @@ Feature: #63453 - Template support for FlashMessagesViewHelper
 Description
 ===========
 
-Template support for ``FlashMessagesViewHelper`` has been added.
+Template support for `FlashMessagesViewHelper` has been added.
 This allows to define a custom rendering for flash messages.
 
-The new attribute ``as`` for the ``FlashMessagesViewHelper`` allows to specify a variable name,
+The new attribute `as` for the `FlashMessagesViewHelper` allows to specify a variable name,
 which can be used within the view helper's child elements to access the flash messages.
 
 Example usage:

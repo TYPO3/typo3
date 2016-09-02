@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ============================================================
 Feature: #25341 - Scheduler task to optimize database tables
 ============================================================
@@ -5,8 +8,8 @@ Feature: #25341 - Scheduler task to optimize database tables
 Description
 ===========
 
-A scheduler task to run the ``OPTIMIZE TABLE`` command on selected
-database tables has been added. The ``OPTIMIZE TABLE`` command
+A scheduler task to run the `OPTIMIZE TABLE` command on selected
+database tables has been added. The `OPTIMIZE TABLE` command
 reorganizes the physical storage of table data and associated index
 data to reduce storage space and improve I/O efficiency when
 accessing the table. The exact changes made to each table depend
