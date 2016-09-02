@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
@@ -96,14 +95,10 @@ class Spellchecker extends RteHtmlAreaApi
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.spellCheckerMode = "' . $spellCheckerMode . '";';
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') . ';';
 
-            // Get the eID script or the AJAX path
-            if ($this->isFrontend() || $this->isFrontendEditActive()) {
-                $path = PathUtility::getAbsoluteWebPath('index.php?eID=rtehtmlarea_spellchecker');
-            } else {
-                /** @var UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $path = $uriBuilder->buildUriFromRoute('ajax_rtehtmlarea_spellchecker');
-            }
+            // Get the AJAX path (calling the Backend AJAX)
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $path = $uriBuilder->buildUriFromRoute('ajax_rtehtmlarea_spellchecker');
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.path = "' . $path . '";';
         }
         return implode(LF, $jsArray);

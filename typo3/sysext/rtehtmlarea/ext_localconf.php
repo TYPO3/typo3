@@ -159,9 +159,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['Language'] = [
     'objectReference' => \TYPO3\CMS\Rtehtmlarea\Extension\Language::class
 ];
 
-// Spell checking configuration
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['rtehtmlarea_spellchecker'] = \TYPO3\CMS\Rtehtmlarea\Controller\SpellCheckingController::class . '::processRequest';
-
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['SpellChecker'] = [
     'objectReference' => \TYPO3\CMS\Rtehtmlarea\Extension\Spellchecker::class,
     'AspellDirectory' => $_EXTCONF['AspellDirectory'] ?: '/usr/bin/aspell',

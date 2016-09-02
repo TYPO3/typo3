@@ -150,9 +150,11 @@ class SpellCheckingController
      * @param ResponseInterface $response
      * @return ResponseInterface
      * @throws \UnexpectedValueException
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function main(ServerRequestInterface $request, ResponseInterface $response)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->processRequest($request, $response);
     }
 
@@ -194,10 +196,6 @@ class SpellCheckingController
             $dictionaryArray[] = 'en';
         }
         $this->dictionary = GeneralUtility::_POST('dictionary');
-        $defaultDictionary = $this->dictionary;
-        if (!$defaultDictionary || !in_array($defaultDictionary, $dictionaryArray)) {
-            $defaultDictionary = 'en';
-        }
         uasort($dictionaryArray, 'strcoll');
         $dictionaryList = implode(',', $dictionaryArray);
         // Setting the dictionary
@@ -355,7 +353,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 ';
             $this->result .= '<body onload="window.parent.RTEarea[' . GeneralUtility::quoteJSvalue(GeneralUtility::_POST('editorId')) . '].editor.getPlugin(\'SpellChecker\').spellCheckComplete();">';
             $this->result .= preg_replace('/' . preg_quote('<?xml') . '.*' . preg_quote('?>') . '[' . preg_quote((LF . CR . chr(32))) . ']*/' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '', $this->text);
-            $this->result .= '<div style="display: none;">' . $dictionaries . '</div>';
             // Closing
             $this->result .= '
 </body></html>';
