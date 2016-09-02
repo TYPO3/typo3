@@ -160,7 +160,3 @@ function getModuleUrl(inUrl)	{	//
 
 	// Used by Frameset Modules
 var currentSubScript = "";
-var currentSubNavScript = "";
-
-	// status of WS FE preview
-var WorkspaceFrontendPreviewEnabled = TYPO3.configuration.workspaceFrontendPreviewEnabled;
