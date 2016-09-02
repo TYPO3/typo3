@@ -118,7 +118,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
                 . 'id="' . $multiSelectId . '" '
                 . 'data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
                 . 'class="form-control t3js-formengine-select-itemstoselect" '
-                . ($size ? ' size="' . $size . '" ' : '')
+                . ($size > 1 ? ' size="' . $size . '" ' : '')
                 . 'onchange="' . htmlspecialchars($sOnChange) . '" '
                 . $this->getValidationDataAsDataAttribute($config)
                 . $selector_itemListStyle
