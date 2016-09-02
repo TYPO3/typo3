@@ -70,31 +70,30 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function getPropertyReturnsPropertyNotAccessibleExceptionForNotExistingPropertyIfForceDirectAccessIsTrue()
+    public function getPropertyThrowsPropertyNotAccessibleExceptionForNotExistingPropertyIfForceDirectAccessIsTrue()
     {
         $this->expectException(PropertyNotAccessibleException::class);
         $this->expectExceptionCode(1302855001);
-        $property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', true);
+        \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', true);
     }
 
     /**
      * @test
      */
-    public function getPropertyReturnsThrowsExceptionIfPropertyDoesNotExist()
+    public function getPropertyThrowsExceptionIfPropertyDoesNotExist()
     {
         $this->expectException(PropertyNotAccessibleException::class);
-        $this->expectExceptionCode(1263391473);
+        $this->expectExceptionCode(1302855001);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty');
     }
 
     /**
      * @test
      */
-    public function getPropertyReturnsThrowsExceptionIfArrayKeyDoesNotExist()
+    public function getPropertyReturnsNullIfArrayKeyDoesNotExist()
     {
-        $this->expectException(PropertyNotAccessibleException::class);
-        $this->expectExceptionCode(1263391473);
-        \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty([], 'notExistingProperty');
+        $result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty([], 'notExistingProperty');
+        $this->assertNull($result);
     }
 
     /**
@@ -199,9 +198,10 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getPropertyCanAccessPropertiesOfAnObjectStorageObject()
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $objectStorage->key = 'value';
-        $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($objectStorage, 'key');
-        $this->assertEquals('value', $actual, 'getProperty does not work with ObjectStorage property.');
+        $object = new \stdClass();
+        $objectStorage->attach($object);
+        $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($objectStorage, 0);
+        $this->assertSame($object, $actual, 'getProperty does not work with ObjectStorage property.');
     }
 
     /**
@@ -375,17 +375,29 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @dataProvider propertyGettableTestValues
      * @test
+     * @param string $property
+     * @param bool $expected
      */
-    public function isPropertyGettableTellsIfAPropertyCanBeRetrieved()
+    public function isPropertyGettableTellsIfAPropertyCanBeRetrieved($property, $expected)
     {
-        $this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'publicProperty'));
-        $this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'property'));
-        $this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'booleanProperty'));
-        $this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'privateProperty'));
-        $this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'writeOnlyMagicProperty'));
-        $this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'shouldNotBePickedUp'));
-        $this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'anotherBooleanProperty'));
+        $this->assertEquals($expected, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, $property));
+    }
+
+    /**
+     * @return array
+     */
+    public function propertyGettableTestValues()
+    {
+        return [
+            ['publicProperty', true],
+            ['property', true],
+            ['booleanProperty', true],
+            ['anotherBooleanProperty', true],
+            ['privateProperty', false],
+            ['writeOnlyMagicProperty', false]
+        ];
     }
 
     /**
