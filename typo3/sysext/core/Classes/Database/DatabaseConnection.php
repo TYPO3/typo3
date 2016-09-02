@@ -1807,7 +1807,7 @@ class DatabaseConnection
      */
     public function debug_check_recordset($res)
     {
-        if ($res !== false) {
+        if ($res !== false && $res !== null) {
             return true;
         }
         $trace = debug_backtrace(0);
