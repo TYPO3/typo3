@@ -283,7 +283,6 @@ class SoftReferenceIndex
      */
     public function findRef_email($content, $spParams)
     {
-        $resultArray = [];
         // Email:
         $parts = preg_split('/([^[:alnum:]]+)([A-Za-z0-9\\._-]+[@][A-Za-z0-9\\._-]+[\\.].[A-Za-z0-9]+)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
@@ -320,7 +319,6 @@ class SoftReferenceIndex
      */
     public function findRef_url($content, $spParams)
     {
-        $resultArray = [];
         // URLs
         $parts = preg_split('/([^[:alnum:]"\']+)((http|ftp):\\/\\/[^[:space:]"\'<>]*)([[:space:]])/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
@@ -360,12 +358,11 @@ class SoftReferenceIndex
      */
     public function findRef_extension_fileref($content, $spParams)
     {
-        $resultArray = [];
         // Files starting with EXT:
         $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
             if ($idx % 3 == 2) {
-                $tokenID = $this->makeTokenID($idx);
+                $this->makeTokenID($idx);
                 $elements[$idx] = [];
                 $elements[$idx]['matchString'] = $value;
             }

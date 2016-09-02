@@ -112,7 +112,6 @@ abstract class AbstractContainer extends AbstractNode
             // Making the array of file items:
             $itemArray = GeneralUtility::trimExplode(',', $value, true);
             // Showing thumbnails:
-            $thumbnail = '';
             $imgs = [];
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             foreach ($itemArray as $imgRead) {

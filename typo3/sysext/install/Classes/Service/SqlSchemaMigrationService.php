@@ -639,7 +639,7 @@ class SqlSchemaMigrationService
             foreach ($arr as $key => $string) {
                 if (isset($keyArr[$key]) && $keyArr[$key]) {
                     try {
-                        $statement = $connection->query($string);
+                        $connection->query($string);
                     } catch (DBALException $e) {
                         $result[$key] = $e->getMessage();
                     }

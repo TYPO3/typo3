@@ -830,7 +830,6 @@ class RelationHandler
                 ->where($queryBuilder->expr()->eq($uidLocal_field, (int)$uid));
             // Boolean: does the field "tablename" need to be filled?
             $prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship;
-            $additionalWhere_tablenames = '';
             if ($this->MM_is_foreign && $prep) {
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable))

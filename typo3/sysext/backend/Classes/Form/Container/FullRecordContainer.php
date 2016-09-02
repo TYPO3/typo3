@@ -35,7 +35,6 @@ class FullRecordContainer extends AbstractContainer
     public function render()
     {
         $table = $this->data['tableName'];
-        $row = $this->data['databaseRow'];
         $recordTypeValue = $this->data['recordTypeValue'];
 
         // Load the description content for the table if requested

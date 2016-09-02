@@ -556,9 +556,7 @@ class DataHandlerHook
                 BackendUtility::fixVersioningPid($elementTable, $elementRecord);
                 $pageUid = ($elementUid = $elementRecord['pid']);
             }
-            // fetch the TSconfig settings for the email
-            // old way, options are TCEMAIN.notificationEmail_body/subject
-            $TCEmainTSConfig = $tcemainObj->getTCEMAIN_TSconfig($pageUid);
+
             // new way, options are
             // pageTSconfig: tx_version.workspaces.stageNotificationEmail.subject
             // userTSconfig: page.tx_version.workspaces.stageNotificationEmail.subject

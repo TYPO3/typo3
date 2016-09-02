@@ -195,7 +195,6 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $className2WithNS = __NAMESPACE__ . '\\' . $className2;
         eval('namespace ' . __NAMESPACE__ . '; class ' . $className2 . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' { }');
         $child = new $className2WithNS();
-        $classSchema2 = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, ['dummy'], [$className2WithNS]);
 
         /** @var \TYPO3\CMS\Extbase\Reflection\ClassSchema|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $classSchema1 */
         $classSchema1 = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, ['dummy'], [$classNameWithNS]);

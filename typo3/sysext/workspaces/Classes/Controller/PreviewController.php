@@ -225,7 +225,6 @@ class PreviewController extends AbstractController
     protected function generateJavascript()
     {
         $backendUser = $this->getBackendUser();
-        $lang = $this->getLanguageService();
         // If another page module was specified, replace the default Page module with the new one
         $newPageModule = trim($backendUser->getTSConfigVal('options.overridePageModule'));
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';

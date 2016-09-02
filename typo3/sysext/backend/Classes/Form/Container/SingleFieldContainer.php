@@ -480,7 +480,6 @@ class SingleFieldContainer extends AbstractContainer
     protected function inlineFieldShouldBeSkipped()
     {
         $table = $this->data['tableName'];
-        $row = $this->data['databaseRow'];
         $fieldName = $this->data['fieldName'];
         $fieldConfig = $this->data['processedTca']['columns'][$fieldName]['config'];
 

@@ -107,7 +107,7 @@ class SchedulerCliController
     protected function stopTask($task)
     {
         if ($this->scheduler->isValidTaskObject($task)) {
-            $result = $task->unmarkAllExecutions();
+            $task->unmarkAllExecutions();
         }
     }
 

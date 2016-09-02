@@ -589,7 +589,6 @@ var selectedDictionary = "' . $this->dictionary . '";
                             if (sizeof($this->misspelled) != 0) {
                                 $this->suggestedWords .= ',';
                             }
-                            $suggest = [];
                             $suggest = pspell_suggest($this->pspell_link, $word);
                             if (sizeof($suggest) != 0) {
                                 $this->suggestionCount++;
@@ -626,7 +625,6 @@ var selectedDictionary = "' . $this->dictionary . '";
                         . ' --encoding=' . escapeshellarg($this->aspellEncoding)
                         . ' 2>&1';
                     $AspellAnswer = shell_exec($AspellCommand);
-                    $AspellResultLines = [];
                     $AspellResultLines = GeneralUtility::trimExplode(LF, $AspellAnswer, true);
                     if (substr($AspellResultLines[0], 0, 6) == 'Error:') {
                         echo '{' . $AspellAnswer . '}';

@@ -67,7 +67,7 @@ class AbstractValidatorTest extends UnitTestCase
         $inputOptions = ['invalidoption' => 42];
         $this->expectException(\TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1379981890);
-        $validator = $this->getAccessibleMock(AbstractValidatorClass::class, ['dummy'], [$inputOptions]);
+        $this->getAccessibleMock(AbstractValidatorClass::class, ['dummy'], [$inputOptions]);
     }
 
     /**
@@ -78,6 +78,6 @@ class AbstractValidatorTest extends UnitTestCase
         $inputOptions = [];
         $this->expectException(\TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1379981891);
-        $validator = $this->getAccessibleMock(AbstractValidatorClass::class, ['dummy'], [$inputOptions]);
+        $this->getAccessibleMock(AbstractValidatorClass::class, ['dummy'], [$inputOptions]);
     }
 }

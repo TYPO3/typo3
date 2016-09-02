@@ -77,7 +77,6 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockedDriver = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class);
         $driverFixtureClass = get_class($mockedDriver);
         \TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
-        $mockedMount = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedRegistry = $this->createMock(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
         $mockedRegistry->expects($this->once())->method('getDriverClass')->with($this->equalTo($driverFixtureClass))->will($this->returnValue($driverFixtureClass));
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class, $mockedRegistry);

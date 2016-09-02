@@ -550,9 +550,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // If another page module was specified, replace the default Page module with the new one
             $newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
             $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-            // Perform some access checks:
-            $a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
-            $a_wp = $GLOBALS['BE_USER']->check('modules', $pageModule);
             $adminLink .= '<div class="btn-group btn-group-sm">';
             $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(' . GeneralUtility::quoteJSvalue($pageModule) . '); return false;">'
                 . $this->moduleTemplate->getIconFactory()->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()

@@ -2413,7 +2413,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $path = '';
             $pageCount = count($rl);
             if (is_array($rl) && !empty($rl)) {
-                $index = 0;
                 $breadcrumbWrap = isset($this->conf['breadcrumbWrap']) ? $this->conf['breadcrumbWrap'] : '/';
                 $breadcrumbWraps = $GLOBALS['TSFE']->tmpl->splitConfArray(['wrap' => $breadcrumbWrap], $pageCount);
                 foreach ($rl as $k => $v) {

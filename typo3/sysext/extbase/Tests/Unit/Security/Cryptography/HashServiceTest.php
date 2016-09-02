@@ -67,7 +67,7 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->expectExceptionCode(1255069587);
-        $hash = $this->hashService->generateHmac(null);
+        $this->hashService->generateHmac(null);
     }
 
     /**

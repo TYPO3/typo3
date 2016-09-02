@@ -489,10 +489,6 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
         $view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 
-        $viewParts = [
-            'templateRootPaths' => $typoScript['view']['templateRootPaths'],
-            'partialRootPaths' => $typoScript['view']['partialRootPaths'],
-        ];
         /* Extend all template root paths to $templateRootPaths/PostProcessor/Mail/$themeName  */
         foreach ($typoScript['view']['templateRootPaths'] as &$path) {
             if (substr($path, -1) !== '/') {

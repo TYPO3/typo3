@@ -902,10 +902,6 @@ class Indexer
      */
     public function indexExternalUrl($externalUrl)
     {
-        // Parse External URL:
-        $qParts = parse_url($externalUrl);
-        $fI = pathinfo($qParts['path']);
-        $ext = strtolower($fI['extension']);
         // Get headers:
         $urlHeaders = $this->getUrlHeaders($externalUrl);
         if (stristr($urlHeaders['Content-Type'], 'text/html')) {
@@ -1342,7 +1338,6 @@ class Indexer
     public function indexAnalyze($content)
     {
         $indexArr = [];
-        $counter = 0;
         $this->analyzeHeaderinfo($indexArr, $content, 'title', 7);
         $this->analyzeHeaderinfo($indexArr, $content, 'keywords', 6);
         $this->analyzeHeaderinfo($indexArr, $content, 'description', 5);

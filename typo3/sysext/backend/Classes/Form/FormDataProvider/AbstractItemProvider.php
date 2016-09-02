@@ -709,7 +709,6 @@ abstract class AbstractItemProvider
                 }
                 // Get all sheets and title
                 foreach ($flexForms as $extIdent => $extConf) {
-                    $extTitle = $languageService->sL(trim($extConf['title']));
                     // Get all fields in sheet
                     foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
                         if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {

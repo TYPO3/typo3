@@ -348,14 +348,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function addCustomValidators($targetClassName, ConjunctionValidator &$conjunctionValidator)
     {
-        $addedValidatorClassName = null;
         // @todo: get rid of ClassNamingUtility usage once we dropped underscored class name support
         $possibleValidatorClassName = ClassNamingUtility::translateModelNameToValidatorName($targetClassName);
 
         $customValidator = $this->createValidator($possibleValidatorClassName);
         if ($customValidator !== null) {
             $conjunctionValidator->addValidator($customValidator);
-            $addedValidatorClassName = get_class($customValidator);
         }
 
         // @todo: find polytype validator for class

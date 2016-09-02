@@ -120,7 +120,6 @@ This will show you missing files in the TYPO3 system and only report back if err
     {
         foreach ($resultArray['managedFilesMissing'] as $key => $value) {
             echo 'Processing file: ' . $key . LF;
-            $c = 0;
             foreach ($value as $hash => $recReference) {
                 echo '	Removing reference in record "' . $recReference . '": ';
                 if ($bypass = $this->cli_noExecutionCheck($recReference)) {

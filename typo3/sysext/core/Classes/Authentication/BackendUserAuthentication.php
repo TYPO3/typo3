@@ -509,7 +509,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
                     $_params = ['currentClause' => $constraint, 'perms' => $perms];
-                    $str = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                 }
             }
             return $constraint;

@@ -60,7 +60,7 @@ class FileStreamWrapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function windowsPathsCanBeProcessed()
     {
         $cRoot = 'C:\\Windows\\Root\\Path\\';
-        $root = vfsStream::setup('root');
+        vfsStream::setup('root');
         FileStreamWrapper::init($cRoot);
         FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin');
 

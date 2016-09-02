@@ -98,7 +98,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function constructorRaisesExceptionWhenPassingInvalidStreamResource()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $stream = new Stream(['  THIS WILL NOT WORK  ']);
+        new Stream(['  THIS WILL NOT WORK  ']);
     }
 
     /**

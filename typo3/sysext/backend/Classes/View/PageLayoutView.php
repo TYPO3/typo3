@@ -863,7 +863,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 if ($lP) {
                     list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . $lP);
                     BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
-                    $params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
                     $recordIcon = BackendUtility::wrapClickMenuOnIcon(
                         $this->iconFactory->getIconForRecord('pages_language_overlay', $lpRecord, Icon::SIZE_SMALL)->render(),
                         'pages_language_overlay',

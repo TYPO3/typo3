@@ -266,7 +266,6 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getStageTitle($ver_stage)
     {
-        $stageTitle = '';
         switch ($ver_stage) {
             case self::STAGE_PUBLISH_EXECUTE_ID:
                 $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_publish');

@@ -105,7 +105,6 @@ class ParseHtmlController
      */
     public function main_parse_html($openKeys)
     {
-        $editorNo = GeneralUtility::_GP('editorNo');
         $html = GeneralUtility::_GP('content');
         $RTEtsConfigParts = explode(':', GeneralUtility::_GP('RTEtsConfigParams'));
         $RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));

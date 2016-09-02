@@ -228,7 +228,6 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      */
     public function isValidSaltedPW($saltedPW)
     {
-        $isValid = false;
         $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
         if ($isValid) {
             $isValid = $this->isValidSalt($saltedPW);

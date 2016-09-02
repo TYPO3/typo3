@@ -609,8 +609,6 @@ class FolderTreeView extends AbstractTreeView
     {
         if (!$this->storageHashNumbers) {
             $this->storageHashNumbers = [];
-            // Mapping md5-hash to shorter number:
-            $hashMap = [];
             foreach ($this->storages as $storageUid => $storage) {
                 $fileMounts = $storage->getFileMounts();
                 if (!empty($fileMounts)) {

@@ -31,7 +31,7 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         foreach (['x', 'someValue', '123fivesixseveneight', 'some&', 'ab_cd%', rawurlencode('resource://some/äöü$&% sadf'), str_repeat('x', 250)] as $identifier) {
-            $abstractCache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+            $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
                 ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'])
                 ->setConstructorArgs([$identifier, $mockBackend])
                 ->getMock();
@@ -49,7 +49,7 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->getMock();
         foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $identifier) {
             try {
-                $abstractCache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+                $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
                     ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'])
                     ->setConstructorArgs([$identifier, $mockBackend])
                     ->getMock();

@@ -434,7 +434,7 @@ class CrawlerHook
         // Submit URLs:
         if (!empty($res)) {
             foreach ($res as $paramSetKey => $vv) {
-                $urlList = $pObj->urlListFromUrlArray($vv, $pageRow, $GLOBALS['EXEC_TIME'], 30, 1, 0, $duplicateTrack, $downloadUrls, ['tx_indexedsearch_reindex']);
+                $pObj->urlListFromUrlArray($vv, $pageRow, $GLOBALS['EXEC_TIME'], 30, 1, 0, $duplicateTrack, $downloadUrls, ['tx_indexedsearch_reindex']);
             }
         }
         // Add subpages to log now:

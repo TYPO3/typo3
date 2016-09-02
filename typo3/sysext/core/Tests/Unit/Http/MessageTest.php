@@ -205,7 +205,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717266);
-        $message = $this->message->withHeader('X-Foo', [$value]);
+        $this->message->withHeader('X-Foo', [$value]);
     }
 
     /**
@@ -230,7 +230,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717266);
-        $message = $this->message->withHeader('X-Foo', $value);
+        $this->message->withHeader('X-Foo', $value);
     }
 
     /**
@@ -240,7 +240,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717267);
-        $message = $this->message->withAddedHeader('X-Foo', $value);
+        $this->message->withAddedHeader('X-Foo', $value);
     }
 
     /**

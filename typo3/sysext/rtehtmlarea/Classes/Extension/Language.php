@@ -104,7 +104,6 @@ class Language extends RteHtmlAreaApi
     {
         $nameArray = [];
         if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
-            $where = '1=1';
             $table = 'static_languages';
             $lang = LocalizationUtility::getCurrentLanguage();
             $titleFields = LocalizationUtility::getLabelFields($table, $lang);

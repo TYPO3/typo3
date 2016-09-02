@@ -187,7 +187,6 @@ class CronCommand
      */
     protected function isInCommandList($commandExpression, $numberToMatch)
     {
-        $inList = false;
         if ((string)$commandExpression === '*') {
             $inList = true;
         } else {

@@ -109,8 +109,6 @@ class EscapeChildrenRenderingTest extends FunctionalTestCase
     {
         $view = new TemplateView();
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
-        $templateString = '{namespace ft=TYPO3Fluid\\FluidTest\\ViewHelpers}';
-        $templateString .= $viewHelperTemplate;
         $view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
         $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
 

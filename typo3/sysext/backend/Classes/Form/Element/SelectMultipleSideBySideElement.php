@@ -39,11 +39,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         // Field configuration from TCA:
         $config = $parameterArray['fieldConf']['config'];
 
-        // Creating the label for the "No Matching Value" entry.
-        $noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-            ? $this->getLanguageService()->sL(trim($parameterArray['fieldTSConfig']['noMatchingValue_label']))
-            : '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
-
         $selItems = $config['items'];
         $html = '';
         $disabled = '';

@@ -111,7 +111,7 @@ class SplitStorageTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
         $this->assertEquals($this->testKeyRightPart, $key);
 
-        $result = $this->subject->get();
+        $this->subject->get();
 
         $key = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tx_rsaauth_keys')

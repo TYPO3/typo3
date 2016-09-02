@@ -130,9 +130,8 @@ class ExtensionManagerTables extends AbstractUpdate
     public function performUpdate(array &$dbQueries, &$customMessages)
     {
         $result = true;
-
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+
         $createTableStatements = $this->getTableStatements();
 
         // First perform all create, add and change queries

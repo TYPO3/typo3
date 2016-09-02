@@ -1093,7 +1093,6 @@ class IndexSearchRepository
         } else {
             // Otherwise, if sorting are done with the pages table or other fields,
             // there is no need for joining with the rel/word tables:
-            $orderBy = '';
             switch ((string)$this->sortOrder) {
                 case 'title':
                     $queryBuilder->orderBy('IP.item_title', $this->getDescendingSortOrderFlag());

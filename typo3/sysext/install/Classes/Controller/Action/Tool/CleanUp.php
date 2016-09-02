@@ -171,7 +171,7 @@ class CleanUp extends Action\AbstractAction
      */
     protected function resetBackendUserUc()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('be_users')
             ->update('be_users')
             ->set('uc', '')

@@ -186,7 +186,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717326);
-        $new = $uri->withPort($port);
+        $uri->withPort($port);
     }
 
     /**
@@ -224,7 +224,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717328);
-        $new = $uri->withPath($path);
+        $uri->withPath($path);
     }
 
     /**
@@ -235,7 +235,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717330);
-        $new = $uri->withPath('/bar/baz?bat=quz');
+        $uri->withPath('/bar/baz?bat=quz');
     }
 
     /**
@@ -246,7 +246,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717332);
-        $new = $uri->withPath('/bar/baz#bat');
+        $uri->withPath('/bar/baz#bat');
     }
 
     /**
@@ -284,7 +284,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717334);
-        $new = $uri->withQuery($query);
+        $uri->withQuery($query);
     }
 
     /**
@@ -295,7 +295,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717336);
-        $new = $uri->withQuery('baz=bat#quz');
+        $uri->withQuery('baz=bat#quz');
     }
 
     /**
@@ -446,7 +446,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717338);
-        $uri = new Uri($scheme . '://example.com');
+        new Uri($scheme . '://example.com');
     }
 
     /**

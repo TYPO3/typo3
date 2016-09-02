@@ -2830,7 +2830,6 @@ class BackendUtility
         // Initialize some variables
         $helpText = '';
         $abbrClassAdd = '';
-        $wrappedText = $text;
         $hasHelpTextOverload = !empty($overloadHelpText);
         // Get the help text that should be shown on hover
         if (!$hasHelpTextOverload) {

@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper;
@@ -57,8 +56,6 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
         $this->viewHelper = new DateViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
     }
 
     protected function tearDown()
