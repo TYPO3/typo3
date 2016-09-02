@@ -78,7 +78,7 @@ be_groups</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lockToDomain.description">
-				<source>Enter the host name from which the user is forced to login.</source>
+				<source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.details">
 				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>

@@ -25,7 +25,7 @@
 				<source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.description">
-				<source>Enter the host name from which the user is forced to login.</source>
+				<source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.details">
 				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>

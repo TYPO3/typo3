@@ -204,7 +204,7 @@ Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStarted
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.description">
-				<source>Enter the host name from which the user is forced to login.</source>
+				<source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.details" xml:space="preserve">
 				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.

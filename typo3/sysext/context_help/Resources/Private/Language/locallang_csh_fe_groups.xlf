@@ -21,7 +21,7 @@ For instance if a page or content element was assigned access only by this group
 				<source>This title will appear as the group name in the 'Access'-list in other records.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.description">
-				<source>Enter the host name from which the group will be available only.</source>
+				<source>Enter the host name from which the group will be available only. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.details" xml:space="preserve">
 				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
