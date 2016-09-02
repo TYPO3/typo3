@@ -7,4 +7,10 @@ plugin.tx_indexedsearch {
 		 # cat=plugin.tx_indexedsearch/file; type=string; label=Path to template layouts (FE)
 		layoutRootPath =
 	}
+	settings {
+		# cat=plugin.tx_indexedsearch/settings; type=integer; label=Set the target page where search results are shown
+		targetPid =
+		# cat=plugin.tx_indexedsearch/settings; type=string; label=A list of integer which should be root-pages to search from
+		rootPidList =
+	}
 }
