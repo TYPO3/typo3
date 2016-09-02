@@ -1796,7 +1796,7 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function debug_check_recordset($res) {
-		if ($res !== FALSE) {
+		if ($res !== FALSE && $res !== NULL) {
 			return TRUE;
 		}
 		$msg = 'Invalid database result detected';
