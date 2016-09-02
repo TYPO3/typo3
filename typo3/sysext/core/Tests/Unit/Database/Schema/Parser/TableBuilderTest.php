@@ -245,4 +245,13 @@ class TableBuilderTest extends UnitTestCase
         $this->assertSame('aTestTable', $subject->getLocalTableName());
         $this->assertSame('pages_language_overlay', $subject->getForeignTableName());
     }
+
+    /**
+     * @test
+     */
+    public function hasColumnLengthOnIndex()
+    {
+        $subject = $this->table->getIndex('substring');
+        $this->assertSame(['TSconfig(80)'], $subject->getColumns());
+    }
 }

@@ -16,5 +16,6 @@ CREATE TABLE aTestTable (
 	PRIMARY KEY (uid),
   UNIQUE `parent` (pid,`deleted`,sorting),
 	KEY noCache (`no_cache`),
+	KEY substring (TSconfig(80)),
 	FOREIGN KEY fk_overlay (uid) REFERENCES pages_language_overlay(pid)
 ) ENGINE = MyISAM DEFAULT CHARACTER SET latin1 COLLATE latin1_german_cs ROW_FORMAT DYNAMIC AUTO_INCREMENT=1;

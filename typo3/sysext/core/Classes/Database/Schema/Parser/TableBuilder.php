@@ -178,6 +178,7 @@ class TableBuilder
      * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem $item
      * @return \Doctrine\DBAL\Schema\Index
      * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
      */
     protected function addIndex(CreateIndexDefinitionItem $item): Index
     {
@@ -185,6 +186,9 @@ class TableBuilder
 
         $columnNames = array_map(
             function (IndexColumnName $columnName) {
+                if ($columnName->length) {
+                    return $columnName->columnName->schemaObjectName . '(' . $columnName->length . ')';
+                }
                 return $columnName->columnName->schemaObjectName;
             },
             $item->columnNames
@@ -192,17 +196,32 @@ class TableBuilder
 
         if ($item->isPrimary) {
             $this->table->setPrimaryKey($columnNames);
-        } elseif ($item->isUnique) {
-            $this->table->addUniqueIndex($columnNames, $indexName);
-        } elseif ($item->isFulltext) {
-            $this->table->addIndex($columnNames, $indexName, ['fulltext']);
-        } elseif ($item->isSpatial) {
-            $this->table->addIndex($columnNames, $indexName, ['spatial']);
+            $index = $this->table->getPrimaryKey();
         } else {
-            $this->table->addIndex($columnNames, $indexName);
-        }
+            $index = GeneralUtility::makeInstance(
+                Index::class,
+                $indexName,
+                $columnNames,
+                $item->isUnique,
+                $item->isPrimary
+            );
 
-        $index = $item->isPrimary ? $this->table->getPrimaryKey() : $this->table->getIndex($indexName);
+            if ($item->isFulltext) {
+                $index->addFlag('fulltext');
+            } elseif ($item->isSpatial) {
+                $index->addFlag('spatial');
+            }
+
+            $this->table = GeneralUtility::makeInstance(
+                Table::class,
+                $this->table->getName(),
+                $this->table->getColumns(),
+                array_merge($this->table->getIndexes(), [strtolower($indexName) => $index]),
+                $this->table->getForeignKeys(),
+                0,
+                $this->table->getOptions()
+            );
+        }
 
         return $index;
     }
