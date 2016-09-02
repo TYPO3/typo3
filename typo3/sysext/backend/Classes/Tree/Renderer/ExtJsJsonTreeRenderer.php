@@ -58,7 +58,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
         if (is_object($node->getIcon())) {
             $iconMarkup = $node->getIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
             if (is_object($node->getIcon()->getOverlayIcon())) {
-                $overlayIcon = $node->getIcon()->getOverlayIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+                $overlayIconMarkup = $node->getIcon()->getOverlayIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
             }
         } else {
             $iconMarkup = $node->getIcon();

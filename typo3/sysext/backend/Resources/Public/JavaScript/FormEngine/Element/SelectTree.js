@@ -37,13 +37,15 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
      * @param {Object} settings
      */
     SelectTree.prototype.initialize = function (selector, settings) {
-        _super_.initialize.call(this, selector, settings);
-
+        if (!_super_.initialize.call(this, selector, settings)) {
+            return false;
+        }
         this.addIcons();
         this.dispatch.on('updateNodes.selectTree', this.updateNodes);
         this.dispatch.on('loadDataAfter.selectTree', this.loadDataAfter);
         this.dispatch.on('updateSvg.selectTree', this.renderCheckbox);
         this.dispatch.on('nodeSelectedAfter.selectTree', this.nodeSelectedAfter);
+        return true;
     };
 
     /**

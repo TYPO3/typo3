@@ -16,7 +16,10 @@
  */
 define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'], function ($, SelectTree) {
     'use strict';
-    $(document).ready(function () {
+
+    var SelectTreeElement = {
+    };
+    SelectTreeElement.initialize = function () {
         $('.typo3-tceforms-tree .treeRecord').each(function (i, element) {
 
             /**
@@ -36,7 +39,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'], function (
             var $wrapper = treeInput.parent().siblings('.svg-tree-wrapper');
             var dataUrl = TYPO3.settings.ajaxUrls['record_tree_data'] + '&' + TYPO3.jQuery.param(dataParams);
             var tree = new SelectTree();
-            tree.initialize($wrapper, {
+            var initialized = tree.initialize($wrapper, {
                 'dataUrl': dataUrl,
                 'showIcons': true,
                 'showCheckboxes': true,
@@ -46,6 +49,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'], function (
                 'validation': treeInput.data('formengine-validation-rules')[0],
                 'expandUpToLevel': treeInput.data('tree-expand-up-to-level')
             });
+            if (!initialized) {
+                return;
+            }
             tree.dispatch.on('nodeSelectedAfter.requestUpdate', window[$wrapper.attr('id')]);
 
             if (treeInput.data('tree-show-toolbar')) {
@@ -55,5 +61,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'], function (
                 });
             }
         });
-    });
+    };
+    return SelectTreeElement;
 });

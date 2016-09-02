@@ -135,7 +135,7 @@ define(['jquery', 'd3'], function ($, d3) {
             var $wrapper = $(selector);
             // Do nothing if already initialized
             if ($wrapper.data('svgtree-initialized')) {
-                return;
+                return false;
             }
 
             $.extend(this.settings, settings);
@@ -168,6 +168,7 @@ define(['jquery', 'd3'], function ($, d3) {
             this.wrapper.data('svgtree', this);
             this.wrapper.data('svgtree-initialized', true);
             this.wrapper.trigger('svgTree.initialized');
+            return true;
         },
 
         /**
