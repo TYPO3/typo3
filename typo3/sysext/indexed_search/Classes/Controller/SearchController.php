@@ -170,6 +170,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $searchData = [];
         }
 
+        // check if TypoScript is loaded
+        if (!isset($this->settings['results'])) {
+            $this->redirect('noTypoScript');
+        }
+
         $this->loadSettings();
 
         // setting default values
@@ -945,6 +950,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $this->view->assign('allGroups', $allGroups);
         }
         $this->view->assign('searchParams', $searchData);
+    }
+
+    /**
+     * TypoScript was not loaded
+     */
+    public function noTypoScriptAction()
+    {
     }
 
     /****************************************

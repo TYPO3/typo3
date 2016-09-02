@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 // register extbase plugin
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.IndexedSearch', 'Pi2', ['Search' => 'form,search'], ['Search' => 'form,search']);
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.IndexedSearch', 'Pi2', ['Search' => 'form,search,noTypoScript'], ['Search' => 'form,search']);
 
 // Attach to hooks:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = \TYPO3\CMS\IndexedSearch\Indexer::class;
