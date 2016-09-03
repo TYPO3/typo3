@@ -58,6 +58,9 @@ lib.stdheader {
         field = header
         htmlSpecialChars = 1
         typolink.parameter.field = header_link
+        typolink.target < lib.parseTarget
+        typolink.target =
+        typolink.target.override = {$styles.content.links.target}
     }
     10.key.field = header_layout
     10.key.ifEmpty = {$content.defaultHeaderType}
