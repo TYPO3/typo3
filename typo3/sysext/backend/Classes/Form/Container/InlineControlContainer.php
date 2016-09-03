@@ -414,13 +414,8 @@ class InlineControlContainer extends AbstractContainer
      */
     protected function wrapWithAnchor($text, $link, $attributes = [])
     {
-        $link = trim($link);
-        $result = '<a href="' . ($link ?: '#') . '"';
-        foreach ($attributes as $key => $value) {
-            $result .= ' ' . $key . '="' . htmlspecialchars(trim($value)) . '"';
-        }
-        $result .= '>' . $text . '</a>';
-        return $result;
+        $attributes['href'] = trim($link ?: '#');
+        return '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>' . $text . '</a>';
     }
 
     /**
