@@ -1057,12 +1057,14 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             if ($current->isDir() && !($fileName === '..' || $fileName === '.')) {
                 GeneralUtility::mkdir($targetFolderPath . '/' . $itemSubPath);
             } elseif ($current->isFile()) {
-                $result = copy($sourceFolderPath . '/' . $itemSubPath, $targetFolderPath . '/' . $itemSubPath);
+                $copySourcePath = $sourceFolderPath . '/' . $itemSubPath;
+                $copyTargetPath = $targetFolderPath . '/' . $itemSubPath;
+                $result = copy($copySourcePath, $copyTargetPath);
                 if ($result === false) {
                     // rollback
                     GeneralUtility::rmdir($targetFolderIdentifier, true);
                     throw new Exception\FileOperationErrorException(
-                        'Copying file "' . $sourceFolderPath . $itemSubPath . '" to "' . $targetFolderPath . $itemSubPath . '" failed.',
+                        'Copying resource "' . $copySourcePath . '" to "' . $copyTargetPath . '" failed.',
                         1330119452
                     );
                 }
