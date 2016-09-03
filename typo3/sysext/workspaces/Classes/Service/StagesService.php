@@ -789,12 +789,4 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
     {
         return $GLOBALS['BE_USER'];
     }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

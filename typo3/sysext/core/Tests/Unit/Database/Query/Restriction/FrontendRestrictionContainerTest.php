@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -171,14 +170,8 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         $typoScriptFrontendController->gr_list = $feGroupList;
         $typoScriptFrontendController->sys_page = $pageRepository;
 
-        $dbMock = $this->getMockBuilder(DatabaseConnection::class)
-            ->setMethods(['quoteStr'])
-            ->getMock();
-        $dbMock->expects($this->any())->method('quoteStr')->willReturnArgument(0);
-
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
-        $GLOBALS['TYPO3_DB'] = $dbMock;
 
         $subject = new FrontendRestrictionContainer();
         $expression = $subject->buildExpression([$tableName => ''], $this->expressionBuilder);

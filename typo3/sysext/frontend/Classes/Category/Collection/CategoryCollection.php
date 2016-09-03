@@ -176,14 +176,4 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
     {
         return $GLOBALS['TSFE'];
     }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

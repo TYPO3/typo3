@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -43,11 +42,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $backEndUser;
 
     /**
-     * @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $mockDatabaseConnection;
-
-    /**
      * Set up the tests
      */
     protected function setUp()
@@ -55,8 +49,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TCA'] = [];
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->backEndUser = $this->createMock(BackendUserAuthentication::class);
-        $this->mockDatabaseConnection = $this->createMock(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->mockDatabaseConnection;
         $this->subject = $this->getAccessibleMock(DataHandler::class, ['dummy']);
         $this->subject->start([], '', $this->backEndUser);
     }
@@ -275,7 +267,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFields($tcaFieldConf)
     {
-        $this->mockDatabaseConnection->expects($this->never())->method('getDateTimeFormats');
         $this->subject->_call('checkValueForInput', '', $tcaFieldConf, '', 0, 0, '');
     }
 

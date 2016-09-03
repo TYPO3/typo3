@@ -718,12 +718,4 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', [$destinationAbsolutePath, $this]);
     }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

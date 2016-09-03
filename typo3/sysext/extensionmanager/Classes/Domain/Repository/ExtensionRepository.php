@@ -320,7 +320,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Sets current_version = 1 for all extensions where the extension version is maximal.
      *
-     * For performance reasons, the "native" TYPO3_DB is used here directly.
+     * For performance reasons, the "native" database connection is used here directly.
      *
      * @param int $repositoryUid
      * @return void

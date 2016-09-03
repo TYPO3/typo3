@@ -331,14 +331,4 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
     {
         return self::$storageItemsField;
     }
-
-    /**
-     * Gets the database object.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

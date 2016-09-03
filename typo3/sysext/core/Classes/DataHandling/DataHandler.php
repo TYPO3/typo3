@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -665,13 +664,6 @@ class DataHandler
     protected static $recordPidsForDeletedRecords = [];
 
     /**
-     * Database layer. Identical to $GLOBALS['TYPO3_DB']
-     *
-     * @var DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
      * Runtime Cache to store and retrieve data computed for a single request
      *
      * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
@@ -690,7 +682,6 @@ class DataHandler
      */
     public function __construct()
     {
-        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
         $this->runtimeCache = $this->getRuntimeCache();
     }
 

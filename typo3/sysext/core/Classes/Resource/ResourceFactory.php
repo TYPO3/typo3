@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -690,13 +689,5 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
     protected function getIndexer(ResourceStorage $storage)
     {
         return GeneralUtility::makeInstance(Index\Indexer::class, $storage);
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -1053,14 +1053,4 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     {
         return $GLOBALS['BE_USER'];
     }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

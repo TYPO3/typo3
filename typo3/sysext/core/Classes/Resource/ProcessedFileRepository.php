@@ -42,17 +42,11 @@ class ProcessedFileRepository extends AbstractRepository
     protected $table = 'sys_file_processedfile';
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
      * Creates this object.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
     }
 
     /**

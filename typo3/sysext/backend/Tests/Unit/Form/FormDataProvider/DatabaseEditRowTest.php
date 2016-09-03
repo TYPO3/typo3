@@ -37,9 +37,6 @@ class DatabaseEditRowTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-
         $this->subject = $this->getMockBuilder(DatabaseEditRow::class)
             ->setMethods(['getDatabaseRow'])
             ->getMock();

@@ -197,14 +197,4 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
         }
         return $relatedRecords;
     }
-
-    /**
-     * Gets the database object.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

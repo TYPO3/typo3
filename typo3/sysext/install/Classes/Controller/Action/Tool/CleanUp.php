@@ -302,9 +302,6 @@ class CleanUp extends Action\AbstractAction
      */
     protected function clearProcessedFiles()
     {
-        // make the DB available
-        $GLOBALS['TYPO3_DB'] = $this->getDatabaseConnection();
-
         $repository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
         $failedDeletions = $repository->removeAll();
         if ($failedDeletions) {

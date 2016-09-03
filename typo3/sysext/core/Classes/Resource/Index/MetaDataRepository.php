@@ -46,16 +46,6 @@ class MetaDataRepository implements SingletonInterface
     protected $tableFields = [];
 
     /**
-     * Wrapper method for getting DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * Returns array of meta-data properties
      *
      * @param File $file

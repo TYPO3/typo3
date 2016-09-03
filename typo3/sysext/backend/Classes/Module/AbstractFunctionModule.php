@@ -297,9 +297,11 @@ abstract class AbstractFunctionModule
 
     /**
      * @return DatabaseConnection
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the Doctrine DBAL layer via the ConnectionPool class
      */
     protected function getDatabaseConnection()
     {
+        GeneralUtility::logDeprecatedFunction();
         return $GLOBALS['TYPO3_DB'];
     }
 

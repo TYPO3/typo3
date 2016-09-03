@@ -325,16 +325,4 @@ class UpgradeWizard extends Action\AbstractAction
         $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
         $schemaMigrationService->install($createTableStatements);
     }
-
-    /**
-     * Overwrite getDatabase method of abstract!
-     *
-     * Returns $GLOBALS['TYPO3_DB'] directly, since this global is instantiated properly in update wizards
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

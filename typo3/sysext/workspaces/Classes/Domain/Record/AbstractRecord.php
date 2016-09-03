@@ -45,14 +45,6 @@ abstract class AbstractRecord
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected static function getBackendUser()

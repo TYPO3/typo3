@@ -223,7 +223,6 @@ class TestSetup extends Action\AbstractAction
      */
     protected function convertImageFormatsToJpg()
     {
-        $this->setUpDatabaseConnectionMock();
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
@@ -266,7 +265,6 @@ class TestSetup extends Action\AbstractAction
      */
     protected function writeGifAndPng()
     {
-        $this->setUpDatabaseConnectionMock();
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
@@ -332,7 +330,6 @@ class TestSetup extends Action\AbstractAction
      */
     protected function scaleImages()
     {
-        $this->setUpDatabaseConnectionMock();
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
@@ -392,7 +389,6 @@ class TestSetup extends Action\AbstractAction
      */
     protected function combineImages()
     {
-        $this->setUpDatabaseConnectionMock();
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
@@ -445,7 +441,6 @@ class TestSetup extends Action\AbstractAction
      */
     protected function gdlib()
     {
-        $this->setUpDatabaseConnectionMock();
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
         $gifOrPng = $imageProcessor->gifExtension;
@@ -695,17 +690,5 @@ class TestSetup extends Action\AbstractAction
         list(, $version) = explode('Magick', $string);
         list($version) = explode(' ', trim($version));
         return trim($version);
-    }
-
-    /**
-     * Instantiate a dummy instance for $GLOBALS['TYPO3_DB'] to
-     * prevent real database calls
-     *
-     * @return void
-     */
-    protected function setUpDatabaseConnectionMock()
-    {
-        $database = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Database\DatabaseConnectionMock::class);
-        $GLOBALS['TYPO3_DB'] = $database;
     }
 }

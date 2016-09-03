@@ -229,6 +229,7 @@ class AbstractPlugin
      * Property for accessing DatabaseConnection centrally
      *
      * @var DatabaseConnection
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the Doctrine DBAL layer via the ConnectionPool class
      */
     protected $databaseConnection;
 
@@ -237,7 +238,7 @@ class AbstractPlugin
      * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the config.language setting.
      *
-     * @param DatabaseConnection $databaseConnection
+     * @param DatabaseConnection $databaseConnection, deprecated in TYPO3 v8, will be removed in TYPO3 v9
      * @param TypoScriptFrontendController $frontendController
      */
     public function __construct(DatabaseConnection $databaseConnection = null, TypoScriptFrontendController $frontendController = null)

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Feedit;
  */
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -46,13 +45,6 @@ class FrontendEditPanel
     protected $frontendController;
 
     /**
-     * Property for accessing DatabaseConnection centrally
-     *
-     * @var DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
      * @var FrontendBackendUserAuthentication
      */
     protected $backendUser;
@@ -65,13 +57,12 @@ class FrontendEditPanel
     /**
      * Constructor for the edit panel
      *
-     * @param DatabaseConnection $databaseConnection
+     * @param mixed $_ Previous the database connection
      * @param TypoScriptFrontendController $frontendController
      * @param FrontendBackendUserAuthentication $backendUser
      */
-    public function __construct(DatabaseConnection $databaseConnection = null, TypoScriptFrontendController $frontendController = null, FrontendBackendUserAuthentication $backendUser = null)
+    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null, FrontendBackendUserAuthentication $backendUser = null)
     {
-        $this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
         $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
         $this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
