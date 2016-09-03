@@ -540,7 +540,7 @@ class ExtendedFileUtility extends BasicFileUtility
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $numberOfReferences = $queryBuilder
-            ->count('uid')
+            ->count('hash')
             ->from('sys_refindex')
             ->where(
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
