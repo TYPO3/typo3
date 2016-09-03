@@ -86,6 +86,18 @@ The Scheduler supports the full cron syntax.</source>
 			<trans-unit id="task_email.description">
 				<source>Enter a recipient for the mails sent by the test task</source>
 			</trans-unit>
+			<trans-unit id="task_description.alttitle">
+				<source>Task description</source>
+			</trans-unit>
+			<trans-unit id="task_description.description">
+				<source>Enter a description for this task</source>
+			</trans-unit>
+			<trans-unit id="task_group.alttitle">
+				<source>Task group</source>
+			</trans-unit>
+			<trans-unit id="task_group.description">
+				<source>In case of a high number of different tasks, it may be useful to visually group similar tasks.</source>
+			</trans-unit>
 			<trans-unit id="task_sleepTime.alttitle">
 				<source>Sleep time</source>
 			</trans-unit>

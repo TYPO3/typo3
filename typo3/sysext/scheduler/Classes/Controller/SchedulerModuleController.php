@@ -721,7 +721,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $table = [];
 
         // Disable checkbox
-        $label = '<label for="task_disable">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:disable') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:disable') . '</label>';
         $table[] =
             '<div class="form-section" id="task_disable_row"><div class="form-group">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_disable', $label)
@@ -732,7 +732,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div>';
 
         // Task class selector
-        $label = '<label for="task_class">' . $this->getLanguageService()->getLL('label.class') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.class') . '</label>';
 
         // On editing, don't allow changing of the task class, unless it was not valid
         if ($this->submittedData['uid'] > 0 && !empty($taskInfo['class'])) {
@@ -766,7 +766,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div>';
 
         // Task type selector
-        $label = '<label for="task_type">' . $this->getLanguageService()->getLL('label.type') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.type') . '</label>';
         $table[] =
             '<div class="form-section" id="task_type_row"><div class="form-group">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_type', $label)
@@ -779,7 +779,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div>';
 
         // Task group selector
-        $label = '<label for="task_group">' . $this->getLanguageService()->getLL('label.group') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.group') . '</label>';
         $cell = '<select name="tx_scheduler[task_group]" id="task_class" class="form-control">';
 
         // Loop on all groups to display a selector
@@ -802,7 +802,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
 
-        $label = '<label for="tceforms-datetimefield-task_start">' . BackendUtility::wrapInHelp($this->cshKey, 'task_start', $this->getLanguageService()->getLL('label.start')) . '</label>';
+        $label = '<label>' . BackendUtility::wrapInHelp($this->cshKey, 'task_start', $this->getLanguageService()->getLL('label.start')) . '</label>';
         $value = ($taskInfo['start'] > 0 ? strftime($dateFormat, $taskInfo['start']) : '');
         $table[] =
             '<div class="form-section"><div class="row"><div class="form-group col-sm-6" id="task_start_col">'
@@ -819,7 +819,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // End date/time field
         // NOTE: datetime fields need a special id naming scheme
         $value = ($taskInfo['end'] > 0 ? strftime($dateFormat, $taskInfo['end']) : '');
-        $label = '<label for="tceforms-datetimefield-task_end">' . $this->getLanguageService()->getLL('label.end') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.end') . '</label>';
         $table[] =
             '<div class="form-group col-sm-6" id="task_end_col">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_end', $label)
@@ -833,7 +833,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div></div>';
 
         // Frequency input field
-        $label = '<label for="task_frequency">' . $this->getLanguageService()->getLL('label.frequency.long') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.frequency.long') . '</label>';
         $table[] =
             '<div class="form-section" id="task_frequency_row"><div class="form-group">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_frequency', $label)
@@ -843,7 +843,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div>';
 
         // Multiple execution selector
-        $label = '<label for="task_multiple">' . $this->getLanguageService()->getLL('label.parallel.long') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.parallel.long') . '</label>';
         $table[] =
             '<div class="form-section" id="task_multiple_row"><div class="form-group">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_multiple', $label)
@@ -854,7 +854,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div>';
 
         // Description
-        $label = '<label for="task_description">' . $this->getLanguageService()->getLL('label.description') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->getLL('label.description') . '</label>';
         $table[] =
             '<div class="form-section" id="task_description_row"><div class="form-group">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_description', $label)
@@ -873,7 +873,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Add each field to the display, if there are indeed any
             if (isset($fields) && is_array($fields)) {
                 foreach ($fields as $fieldID => $fieldInfo) {
-                    $label = '<label for="' . $fieldID . '">' . $this->getLanguageService()->sL($fieldInfo['label']) . '</label>';
+                    $label = '<label>' . $this->getLanguageService()->sL($fieldInfo['label']) . '</label>';
                     $htmlClassName = strtolower(str_replace('\\', '-', $class));
 
                     $table[] =
