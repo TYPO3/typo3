@@ -17,7 +17,6 @@ lib.parseFunc {
 			typolink {
 				parameter.data = parameters : allParams
 				extTarget = {$styles.content.links.extTarget}
-				target = {$styles.content.links.target}
 			}
 			parseFunc.constants = 1
 		}

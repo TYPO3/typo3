@@ -52,8 +52,6 @@ styles.content {
 	}
 
 	links {
-		# cat=content/links/l1; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: set to "" (empty). If you have frames in the template set to "page"
-		target =
 		# cat=content/links/l2; type=small; label= Target for external links
 		extTarget = _blank
 		# cat=content/links/l3; type=string; label= Parts to keep when building links: Comma separated list of the link parts to show when building the link-text: scheme,path,query. Example: "" (empty) => www.example.com, "scheme,path" => http://www.example.com
