@@ -8023,7 +8023,7 @@ class DataHandler
                     ->from('pages', 'B')
                     ->where(
                         $queryBuilder->expr()->eq('A.uid', (int)$pageUid),
-                        $queryBuilder->expr()->eq('B.pid', 'A.pid')
+                        $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid'))
                     )
                     ->execute();
 
