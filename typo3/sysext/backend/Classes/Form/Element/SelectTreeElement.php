@@ -31,7 +31,7 @@ class SelectTreeElement extends AbstractFormElement
      *
      * @var int
      */
-    protected $itemsToShow = 280;
+    protected $itemsToShow = 15;
 
     /**
      * Number of items to show at last
@@ -39,7 +39,7 @@ class SelectTreeElement extends AbstractFormElement
      *
      * @var int
      */
-    protected $minItemsToShow = 10;
+    protected $minItemsToShow = 5;
 
     /**
      * Pixel height of a single tree node
