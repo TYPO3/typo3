@@ -154,7 +154,7 @@ define(['jquery'], function($) {
 				return;
 			}
 
-			$('.tree').on('mousedown', '.dragTitle, .dragIcon', function(evt) {
+			$('.list-tree-root').on('mousedown', '.dragTitle, .dragIcon', function(evt) {
 				DragDrop.dragElement(evt, $(this));
 			}).on('mouseup', '.dragTitle, .dragIcon', function(evt) {
 				DragDrop.dropElement(evt, $(this));
