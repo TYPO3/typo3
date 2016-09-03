@@ -789,7 +789,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         ];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_search_stat');
         $connection->insert('index_stat_search', $insertFields);
-        $newId = $connection->lastInsertId();
+        $newId = $connection->lastInsertId('index_stat_search');
         if ($newId) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');
             foreach ($searchWords as $val) {

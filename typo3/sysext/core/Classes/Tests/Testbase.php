@@ -636,7 +636,7 @@ class Testbase
             );
             if (isset($table['id'])) {
                 $elementId = (string)$table['id'];
-                $foreignKeys[$tableName][$elementId] = $connection->lastInsertId();
+                $foreignKeys[$tableName][$elementId] = $connection->lastInsertId($tableName);
             }
         }
     }

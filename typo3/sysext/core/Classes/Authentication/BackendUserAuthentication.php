@@ -2321,7 +2321,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             ]
         );
 
-        return (int)$connection->lastInsertId();
+        return (int)$connection->lastInsertId('sys_log');
     }
 
     /**

@@ -242,7 +242,7 @@ class StorageRepository extends AbstractRepository
             ->getConnectionForTable($this->table);
         $dbConnection->insert($this->table, $field_values);
 
-        return (int)$dbConnection->lastInsertId();
+        return (int)$dbConnection->lastInsertId($this->table);
     }
 
     /**

@@ -142,7 +142,7 @@ class ProcessedFileRepository extends AbstractRepository
                 $insertFields
             );
 
-            $uid = $connection->lastInsertId();
+            $uid = $connection->lastInsertId($this->table);
             $processedFile->updateProperties(['uid' => $uid]);
         }
     }

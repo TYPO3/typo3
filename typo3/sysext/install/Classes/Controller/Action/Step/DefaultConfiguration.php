@@ -72,7 +72,7 @@ class DefaultConfiguration extends AbstractStepAction
                         'perms_everybody' => 1
                     ]
                 );
-                $pageUid = $databaseConnectionForPages->lastInsertId();
+                $pageUid = $databaseConnectionForPages->lastInsertId('pages');
 
                 // add a root sys_template with fluid_styled_content and a default PAGE typoscript snippet
                 $connectionPool->getConnectionForTable('sys_template')->insert(

@@ -6752,7 +6752,7 @@ class DataHandler
                     // Set mapping for NEW... -> real uid:
                     // the NEW_id now holds the 'NEW....' -id
                     $NEW_id = $id;
-                    $id = $connection->lastInsertId();
+                    $id = $connection->lastInsertId($table);
                     if (!$dontSetNewIdIndex) {
                         $this->substNEWwithIDs[$NEW_id] = $id;
                         $this->substNEWwithIDs_table[$NEW_id] = $table;

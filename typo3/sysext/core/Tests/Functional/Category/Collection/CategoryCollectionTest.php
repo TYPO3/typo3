@@ -359,7 +359,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         ];
 
         $connection->insert('sys_category', $values);
-        $this->categoryUid = $connection->lastInsertId();
+        $this->categoryUid = $connection->lastInsertId('sys_category');
     }
 
     /**

@@ -73,7 +73,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             $result = $connection->insert('tx_scheduler_task', $fields);
 
             if ($result) {
-                $task->setTaskUid($connection->lastInsertId());
+                $task->setTaskUid($connection->lastInsertId('tx_scheduler_task'));
                 $task->save();
                 $result = true;
             } else {

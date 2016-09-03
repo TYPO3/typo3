@@ -19,6 +19,7 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -386,5 +387,24 @@ class Connection extends \Doctrine\DBAL\Connection
                 );
             }
         }
+    }
+
+    /**
+     * Returns the ID of the last inserted row or sequence value.
+     * If table and fieldname have been provided it tries to build
+     * the sequence name for PostgreSQL. For MySQL the parameters
+     * are not required / and only the table name is passed through.
+     *
+     * @param string|null $tableName
+     * @param string|null $fieldName
+     * @return string
+     */
+    public function lastInsertId($tableName = null, string $fieldName = 'uid'): string
+    {
+        if ($this->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+            return parent::lastInsertId(trim(implode('_', [$tableName, $fieldName, 'seq']), '_'));
+        }
+
+        return (string)parent::lastInsertId($tableName);
     }
 }

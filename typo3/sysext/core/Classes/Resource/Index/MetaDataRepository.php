@@ -152,7 +152,7 @@ class MetaDataRepository implements SingletonInterface
         );
 
         $record = $emptyRecord;
-        $record['uid'] = $connection->lastInsertId();
+        $record['uid'] = $connection->lastInsertId($this->tableName);
         $record['newlyCreated']  = true;
 
         $this->emitRecordCreatedSignal($record);

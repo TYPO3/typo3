@@ -118,7 +118,7 @@ class SplitStorage extends AbstractStorage
                     'key_value' => $keyPart2
                 ]
             );
-            $keyId = $connection->lastInsertId();
+            $keyId = $connection->lastInsertId('tx_rsaauth_keys');
             // Store another part in session
             $_SESSION['tx_rsaauth_key'] = [$keyId, $keyPart1];
         }

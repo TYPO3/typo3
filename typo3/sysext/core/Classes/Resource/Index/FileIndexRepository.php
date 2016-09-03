@@ -329,7 +329,7 @@ class FileIndexRepository implements SingletonInterface
             $this->table,
             $data
         );
-        $data['uid'] = $connection->lastInsertId();
+        $data['uid'] = $connection->lastInsertId($this->table);
         $this->updateRefIndex($data['uid']);
         $this->emitRecordCreatedSignal($data);
         return $data['uid'];
