@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -432,10 +433,13 @@ abstract class AbstractItemProvider
         }
 
         $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
-        $queryResult = $queryBuilder->execute();
+        try {
+            $queryResult = $queryBuilder->execute();
+        } catch (DBALException $e) {
+            $databaseError = $e->getPrevious()->getMessage();
+        }
 
         // Early return on error with flash message
-        $databaseError = $queryResult->errorInfo();
         if (!empty($databaseError)) {
             $msg = $databaseError . '. ';
             $msg .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
@@ -447,7 +451,6 @@ abstract class AbstractItemProvider
             /** @var $defaultFlashMessageQueue FlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
-            $queryResult->closeCursor();
             return $items;
         }
 
