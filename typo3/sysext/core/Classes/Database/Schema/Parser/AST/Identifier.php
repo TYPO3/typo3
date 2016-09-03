@@ -28,6 +28,11 @@ class Identifier
     public $schemaObjectName;
 
     /**
+     * @var string
+     */
+    protected $quoteChar = '`';
+
+    /**
      * Identifier constructor.
      *
      * @param string $schemaObjectName
@@ -35,5 +40,17 @@ class Identifier
     public function __construct(string $schemaObjectName = null)
     {
         $this->schemaObjectName = (string)$schemaObjectName;
+    }
+
+    /**
+     * Quotes the schema object name.
+     *
+     * @return string
+     */
+    public function getQuotedName(): string
+    {
+        $c = $this->quoteChar;
+
+        return $c . str_replace($c, $c . $c, $this->schemaObjectName) . $c;
     }
 }

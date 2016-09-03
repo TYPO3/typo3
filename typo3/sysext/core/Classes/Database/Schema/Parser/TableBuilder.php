@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
@@ -44,9 +46,18 @@ class TableBuilder
     protected $table;
 
     /**
-     * TableBuilder constructor.
+     * @var AbstractPlatform
      */
-    public function __construct()
+    protected $platform;
+
+    /**
+     * TableBuilder constructor.
+     *
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @throws \InvalidArgumentException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function __construct(AbstractPlatform $platform = null)
     {
         // Register custom data types as no connection might have
         // been established yet so the types would not be available
@@ -58,6 +69,7 @@ class TableBuilder
                 Type::addType($type, $className);
             }
         }
+        $this->platform = $platform ?: GeneralUtility::makeInstance(MySqlPlatform::class);
     }
 
     /**
@@ -73,7 +85,7 @@ class TableBuilder
     {
         $this->table = GeneralUtility::makeInstance(
             Table::class,
-            $tableStatement->tableName->schemaObjectName,
+            $tableStatement->tableName->getQuotedName(),
             [],
             [],
             [],
@@ -112,7 +124,7 @@ class TableBuilder
     protected function addColumn(CreateColumnDefinitionItem $item): Column
     {
         $column = $this->table->addColumn(
-            $item->columnName->schemaObjectName,
+            $item->columnName->getQuotedName(),
             $this->getDoctrineColumnTypeName($item->dataType)
         );
 
@@ -153,20 +165,20 @@ class TableBuilder
         }
 
         if ($item->index) {
-            $this->table->addIndex([$item->columnName->schemaObjectName]);
+            $this->table->addIndex([$item->columnName->getQuotedName()]);
         }
 
         if ($item->unique) {
-            $this->table->addUniqueIndex([$item->columnName->schemaObjectName]);
+            $this->table->addUniqueIndex([$item->columnName->getQuotedName()]);
         }
 
         if ($item->primary) {
-            $this->table->setPrimaryKey([$item->columnName->schemaObjectName]);
+            $this->table->setPrimaryKey([$item->columnName->getQuotedName()]);
         }
 
         if ($item->reference !== null) {
             $this->addForeignKeyConstraint(
-                [$item->columnName->schemaObjectName],
+                [$item->columnName->getQuotedName()],
                 $item->reference
             );
         }
@@ -182,14 +194,14 @@ class TableBuilder
      */
     protected function addIndex(CreateIndexDefinitionItem $item): Index
     {
-        $indexName = $item->indexName->schemaObjectName;
+        $indexName = $item->indexName->getQuotedName();
 
         $columnNames = array_map(
             function (IndexColumnName $columnName) {
                 if ($columnName->length) {
-                    return $columnName->columnName->schemaObjectName . '(' . $columnName->length . ')';
+                    return $columnName->columnName->getQuotedName() . '(' . $columnName->length . ')';
                 }
-                return $columnName->columnName->schemaObjectName;
+                return $columnName->columnName->getQuotedName();
             },
             $item->columnNames
         );
@@ -214,7 +226,7 @@ class TableBuilder
 
             $this->table = GeneralUtility::makeInstance(
                 Table::class,
-                $this->table->getName(),
+                $this->table->getQuotedName($this->platform),
                 $this->table->getColumns(),
                 array_merge($this->table->getIndexes(), [strtolower($indexName) => $index]),
                 $this->table->getForeignKeys(),
@@ -233,10 +245,10 @@ class TableBuilder
      */
     protected function addForeignKey(CreateForeignKeyDefinitionItem $item)
     {
-        $indexName = $item->indexName->schemaObjectName ?: null;
+        $indexName = $item->indexName->getQuotedName() ?: null;
         $localColumnNames = array_map(
             function (IndexColumnName $columnName) {
-                return $columnName->columnName->schemaObjectName;
+                return $columnName->columnName->getQuotedName();
             },
             $item->columnNames
         );
@@ -255,10 +267,10 @@ class TableBuilder
         ReferenceDefinition $referenceDefinition,
         string $indexName = null
     ) {
-        $foreignTableName = $referenceDefinition->tableName->schemaObjectName;
+        $foreignTableName = $referenceDefinition->tableName->getQuotedName();
         $foreignColumNames = array_map(
             function (IndexColumnName $columnName) {
-                return $columnName->columnName->schemaObjectName;
+                return $columnName->columnName->getQuotedName();
             },
             $referenceDefinition->columnNames
         );

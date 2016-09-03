@@ -208,7 +208,7 @@ class TableBuilderTest extends UnitTestCase
         $subject = $this->table->getPrimaryKey();
         $this->assertInstanceOf(Index::class, $subject);
         $this->assertTrue($subject->isPrimary());
-        $this->assertSame(['uid'], $subject->getColumns());
+        $this->assertSame(['`uid`'], $subject->getColumns());
     }
 
     /**
@@ -219,7 +219,7 @@ class TableBuilderTest extends UnitTestCase
         $subject = $this->table->getIndex('parent');
         $this->assertInstanceOf(Index::class, $subject);
         $this->assertTrue($subject->isUnique());
-        $this->assertSame(['pid', 'deleted', 'sorting'], $subject->getColumns());
+        $this->assertSame(['`pid`', '`deleted`', '`sorting`'], $subject->getColumns());
     }
 
     /**
@@ -230,7 +230,7 @@ class TableBuilderTest extends UnitTestCase
         $subject = $this->table->getIndex('noCache');
         $this->assertInstanceOf(Index::class, $subject);
         $this->assertTrue($subject->isSimpleIndex());
-        $this->assertSame(['no_cache'], $subject->getColumns());
+        $this->assertSame(['`no_cache`'], $subject->getColumns());
     }
 
     /**
@@ -240,8 +240,8 @@ class TableBuilderTest extends UnitTestCase
     {
         $subject = $this->table->getForeignKey('fk_overlay');
         $this->assertInstanceOf(ForeignKeyConstraint::class, $subject);
-        $this->assertSame(['pid'], $subject->getForeignColumns());
-        $this->assertSame(['uid'], $subject->getLocalColumns());
+        $this->assertSame(['`pid`'], $subject->getForeignColumns());
+        $this->assertSame(['`uid`'], $subject->getLocalColumns());
         $this->assertSame('aTestTable', $subject->getLocalTableName());
         $this->assertSame('pages_language_overlay', $subject->getForeignTableName());
     }
@@ -252,6 +252,6 @@ class TableBuilderTest extends UnitTestCase
     public function hasColumnLengthOnIndex()
     {
         $subject = $this->table->getIndex('substring');
-        $this->assertSame(['TSconfig(80)'], $subject->getColumns());
+        $this->assertSame(['`TSconfig`(80)'], $subject->getColumns());
     }
 }

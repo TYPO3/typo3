@@ -16,9 +16,12 @@ namespace TYPO3\CMS\Core\Database\Schema;
  */
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Comparator;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
 use Doctrine\DBAL\Schema\SchemaDiff;
@@ -314,8 +317,8 @@ class SchemaMigrator
         $schemaDiff = $comparator->compare($fromSchema, $toSchema);
 
         if ($renameUnused) {
-            $schemaDiff = $this->migrateUnprefixedRemovedTablesToRenames($schemaDiff);
-            $schemaDiff = $this->migrateUnprefixedRemovedFieldsToRenames($schemaDiff);
+            $schemaDiff = $this->migrateUnprefixedRemovedTablesToRenames($schemaDiff, $connection);
+            $schemaDiff = $this->migrateUnprefixedRemovedFieldsToRenames($schemaDiff, $connection);
         }
 
         // All tables in the default connection are managed by TYPO3
@@ -392,6 +395,8 @@ class SchemaMigrator
                 array_merge($currentTableDefinition->getOptions(), $table->getOptions())
             );
         }
+
+        $tablesForConnection = $this->transformTablesForDatabasePlatform($tablesForConnection, $connection);
 
         $schemaConfig = GeneralUtility::makeInstance(SchemaConfig::class);
         $schemaConfig->setName($connection->getDatabase());
@@ -472,7 +477,7 @@ class SchemaMigrator
                 foreach ($changedTable->addedColumns as $addedColumn) {
                     $changedTables[$index . ':tbl_' . $addedColumn->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [$addedColumn],
                         [],
                         [],
@@ -490,7 +495,7 @@ class SchemaMigrator
                 foreach ($changedTable->addedIndexes as $addedIndex) {
                     $changedTables[$index . ':idx_' . $addedIndex->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [],
                         [],
@@ -509,7 +514,7 @@ class SchemaMigrator
                     $fkIndex = $index . ':fk_' . $addedForeignKey->getName();
                     $changedTables[$fkIndex] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [],
                         [],
@@ -566,14 +571,14 @@ class SchemaMigrator
                     // Get the current SQL declaration for the column
                     $currentColumn = $fromTable->getColumn($changedColumn->getOldColumnName()->getName());
                     $currentDeclaration = $databasePlatform->getColumnDeclarationSQL(
-                        $currentColumn->getName(),
+                        $currentColumn->getQuotedName($connection->getDatabasePlatform()),
                         $currentColumn->toArray()
                     );
 
                     // Build a dedicated diff just for the current column
                     $tableDiff = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [$changedColumn],
                         [],
@@ -605,7 +610,7 @@ class SchemaMigrator
                 foreach ($changedTable->renamedIndexes as $key => $changedIndex) {
                     $indexDiff = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [],
                         [],
@@ -636,7 +641,7 @@ class SchemaMigrator
                 // argument to pass in renamed columns.
                 $tableDiff = GeneralUtility::makeInstance(
                     TableDiff::class,
-                    $changedTable->name,
+                    $changedTable->getName($connection->getDatabasePlatform()),
                     [],
                     [],
                     [],
@@ -672,7 +677,7 @@ class SchemaMigrator
             if (count($changedTable->changedForeignKeys) !== 0) {
                 $tableDiff = GeneralUtility::makeInstance(
                     TableDiff::class,
-                    $changedTable->name,
+                    $changedTable->getName($connection->getDatabasePlatform()),
                     [],
                     [],
                     [],
@@ -779,7 +784,7 @@ class SchemaMigrator
 
                 $changedTables[$index . ':' . $changedColumn->column->getName()] = GeneralUtility::makeInstance(
                     TableDiff::class,
-                    $changedTable->name,
+                    $changedTable->getName($connection->getDatabasePlatform()),
                     [],
                     [$changedColumn],
                     [],
@@ -828,7 +833,7 @@ class SchemaMigrator
                 foreach ($changedTable->removedColumns as $removedColumn) {
                     $changedTables[$index . ':tbl_' . $removedColumn->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [],
                         [$removedColumn],
@@ -846,7 +851,7 @@ class SchemaMigrator
                 foreach ($changedTable->removedIndexes as $removedIndex) {
                     $changedTables[$index . ':idx_' . $removedIndex->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [],
                         [],
@@ -865,7 +870,7 @@ class SchemaMigrator
                     $fkIndex = $index . ':fk_' . $removedForeignKey->getName();
                     $changedTables[$fkIndex] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->name,
+                        $changedTable->getName($connection->getDatabasePlatform()),
                         [],
                         [],
                         [],
@@ -941,18 +946,21 @@ class SchemaMigrator
      * the old table being lost.
      *
      * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @param Connection $connection
      * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \InvalidArgumentException
      */
-    protected function migrateUnprefixedRemovedTablesToRenames(SchemaDiff $schemaDiff): SchemaDiff
-    {
+    protected function migrateUnprefixedRemovedTablesToRenames(
+        SchemaDiff $schemaDiff,
+        Connection $connection
+    ): SchemaDiff {
         foreach ($schemaDiff->removedTables as $index => $removedTable) {
             if (StringUtility::beginsWith($removedTable->getName(), $this->deletedPrefix)) {
                 continue;
             }
             $tableDiff = GeneralUtility::makeInstance(
                 TableDiff::class,
-                $removedTable->getName(),
+                $removedTable->getQuotedName($connection->getDatabasePlatform()),
                 $addedColumns = [],
                 $changedColumns = [],
                 $removedColumns = [],
@@ -979,8 +987,10 @@ class SchemaMigrator
      * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \InvalidArgumentException
      */
-    protected function migrateUnprefixedRemovedFieldsToRenames(SchemaDiff $schemaDiff): SchemaDiff
-    {
+    protected function migrateUnprefixedRemovedFieldsToRenames(
+        SchemaDiff $schemaDiff,
+        Connection $connection
+    ): SchemaDiff {
         foreach ($schemaDiff->changedTables as $tableIndex => $changedTable) {
             if (count($changedTable->removedColumns) === 0) {
                 continue;
@@ -993,7 +1003,7 @@ class SchemaMigrator
 
                 // Build a new column object with the same properties as the removed column
                 $renamedColumn = new Column(
-                    $this->deletedPrefix . $removedColumn->getName(),
+                    $connection->quoteIdentifier($this->deletedPrefix . $removedColumn->getName()),
                     $removedColumn->getType(),
                     array_diff_key($removedColumn->toArray(), ['name', 'type'])
                 );
@@ -1001,7 +1011,7 @@ class SchemaMigrator
                 // Build the diff object for the column to rename
                 $columnDiff = GeneralUtility::makeInstance(
                     ColumnDiff::class,
-                    $removedColumn->getName(),
+                    $removedColumn->getQuotedName($connection->getDatabasePlatform()),
                     $renamedColumn,
                     $changedProperties = [],
                     $removedColumn
@@ -1092,5 +1102,67 @@ class SchemaMigrator
                     || in_array($this->deletedPrefix . $tableName, $validTableNames, true);
             }
         );
+    }
+
+    /**
+     * Transform the table information to conform to specific
+     * requirements of different database platforms like removing
+     * the index substring length for Non-MySQL Platforms.
+     *
+     * @param Table[] $tables
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @return Table[]
+     * @throws \InvalidArgumentException
+     */
+    protected function transformTablesForDatabasePlatform(
+        array $tables,
+        Connection $connection
+    ): array {
+        foreach ($tables as &$table) {
+            $indexes = [];
+            foreach ($table->getIndexes() as $key => $index) {
+                $indexName = $index->getName();
+                // PostgreSQL requires index names to be unique per database/schema.
+                if ($connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+                    $indexName = $indexName . '_' . hash('crc32b', $table->getName() . '_' . $indexName);
+                }
+
+                // Remove the length information from column names for indexes if required.
+                $cleanedColumnNames = array_map(
+                    function (string $columnName) use ($connection) {
+                        if ($connection->getDatabasePlatform() instanceof MySqlPlatform) {
+                            // Returning the unquoted, unmodified version of the column name since
+                            // it can include the length information for BLOB/TEXT columns which
+                            // may not be quoted.
+                            return $columnName;
+                        }
+                        return $connection->quoteIdentifier(preg_replace('/\(\d+\)$/', '', $columnName));
+                    },
+                    $index->getUnquotedColumns()
+                );
+
+                $indexes[$key] = GeneralUtility::makeInstance(
+                    Index::class,
+                    $connection->quoteIdentifier($indexName),
+                    $cleanedColumnNames,
+                    $index->isUnique(),
+                    $index->isPrimary(),
+                    $index->getFlags(),
+                    $index->getOptions()
+                );
+            }
+
+            $table = GeneralUtility::makeInstance(
+                Table::class,
+                $table->getQuotedName($connection->getDatabasePlatform()),
+                $table->getColumns(),
+                $indexes,
+                $table->getForeignKeys(),
+                0,
+                $table->getOptions()
+            );
+        }
+
+        return $tables;
     }
 }
