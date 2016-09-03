@@ -469,7 +469,6 @@ class PageLayoutController
         $count = $queryBuilder
             ->count('uid')
             ->from('sys_language')
-            ->orderBy('sorting')
             ->execute()
             ->fetchColumn(0);
 
