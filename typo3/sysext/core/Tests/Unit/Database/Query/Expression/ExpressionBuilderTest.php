@@ -260,6 +260,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('postgresql');
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quote('\'1\'', Argument::cetera())->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -268,7 +269,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $result = $this->subject->inSet('aField', "'1'");
 
-        $this->assertSame('any(string_to_array("aField", \',\')) = \'1\'', $result);
+        $this->assertSame('\'1\' = ANY(string_to_array("aField"::text, \',\'))', $result);
     }
 
     /**

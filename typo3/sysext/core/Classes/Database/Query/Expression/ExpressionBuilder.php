@@ -294,13 +294,13 @@ class ExpressionBuilder
             case 'postgresql':
             case 'pdo_postgresql':
                 return $this->comparison(
-                    sprintf(
-                        'any(string_to_array(%s, %s))',
-                        $this->connection->quoteIdentifier($fieldName),
-                        $this->literal(',')
-                    ),
+                    $this->literal($value),
                     self::EQ,
-                    $value
+                    sprintf(
+                        'ANY(string_to_array(%s, %s))',
+                        $this->connection->quoteIdentifier($fieldName) . '::text',
+                        $this->literal(',')
+                    )
                 );
                 break;
             case 'oci8':
