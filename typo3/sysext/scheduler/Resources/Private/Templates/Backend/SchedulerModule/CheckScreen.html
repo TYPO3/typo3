@@ -13,3 +13,5 @@
 	<p>{f:translate(key: 'msg.cliScript', arguments: '{0: script}') -> f:format.raw()}</p>
 	{isExecutableMessage}
 </f:be.infobox>
+
+<f:render partial="ServerTime" arguments="{now: now}" />

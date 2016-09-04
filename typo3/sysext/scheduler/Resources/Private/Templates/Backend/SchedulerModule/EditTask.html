@@ -3,6 +3,4 @@
 
 <f:format.raw>{table}</f:format.raw>
 
-<h3><f:translate key="label.serverTime" /></h3>
-<p><f:translate key="msg.serverTimeHelp" /></p>
-<p><f:translate key="msg.serverTime" arguments="{0: now}" /></p>
+<f:render partial="ServerTime" arguments="{now: now}" />

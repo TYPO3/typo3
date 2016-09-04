@@ -106,6 +106,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->backendTemplatePath = ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Backend/SchedulerModule/';
         $this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('scheduler');
+        $this->view->setPartialRootPaths([ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Partials/Backend/SchedulerModule/']);
         $this->moduleUri = BackendUtility::getModuleUrl($this->moduleName);
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -472,6 +473,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         }
         $this->view->assign('isExecutableMessage', $message);
         $this->view->assign('isExecutableSeverity', $severity);
+        $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
     }
@@ -886,10 +888,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         }
 
         $this->view->assign('table', implode(LF, $table));
-
-        // Server date time
-        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
-        $this->view->assign('now', date($dateFormat) . ', GMT ' . date('P') . ')');
+        $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
     }
@@ -1225,10 +1224,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         }
 
         $this->view->assign('table', '<table class="table table-striped table-hover">' . implode(LF, $table) . '</table>');
-
-        // Server date time
-        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
-        $this->view->assign('now', date($dateFormat) . ', GMT ' . date('P') . ')');
+        $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
     }
@@ -1602,6 +1598,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setSetVariables(['function']);
         $buttonBar->addButton($shortcutButton);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getServerTime()
+    {
+        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
+        return date($dateFormat) . ', GMT ' . date('P') . ')';
     }
 
     /**
