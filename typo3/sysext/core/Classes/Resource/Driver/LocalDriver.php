@@ -522,7 +522,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         if ($recursive) {
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($path, $iteratorMode),
-                \RecursiveIteratorIterator::SELF_FIRST
+                \RecursiveIteratorIterator::SELF_FIRST,
+                \RecursiveIteratorIterator::CATCH_GET_CHILD
             );
         } else {
             $iterator = new \RecursiveDirectoryIterator($path, $iteratorMode);
@@ -1045,7 +1046,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         /** @var $iterator \RecursiveDirectoryIterator */
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($sourceFolderPath),
-            \RecursiveIteratorIterator::SELF_FIRST
+            \RecursiveIteratorIterator::SELF_FIRST,
+            \RecursiveIteratorIterator::CATCH_GET_CHILD
         );
         // Rewind the iterator as this is important for some systems e.g. Windows
         $iterator->rewind();
