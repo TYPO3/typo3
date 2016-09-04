@@ -5,6 +5,8 @@
 Deprecation: #73209 - Deprecated flex page TSConfig
 ===================================================
 
+See :issue:`73209`
+
 Description
 ===========
 

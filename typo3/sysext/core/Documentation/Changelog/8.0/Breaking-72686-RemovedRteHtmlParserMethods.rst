@@ -5,6 +5,8 @@
 Breaking: #72686 - Removed RteHtmlParser methods
 ================================================
 
+See :issue:`72686`
+
 Description
 ===========
 

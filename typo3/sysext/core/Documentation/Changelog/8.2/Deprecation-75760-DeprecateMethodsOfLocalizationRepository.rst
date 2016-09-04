@@ -5,6 +5,8 @@
 Deprecation: #75760 - Deprecate methods of LocalizationRepository
 =================================================================
 
+See :issue:`75760`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Important: #22858 - Filelist: Creating a new file and opening it immediately for editing
 ========================================================================================
 
+See :issue:`22858`
+
 Description
 ===========
 

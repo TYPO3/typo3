@@ -5,6 +5,8 @@
 Deprecation: #73190 - Deprecate BackendUtility::getListViewLink()
 =================================================================
 
+See :issue:`73190`
+
 Description
 ===========
 

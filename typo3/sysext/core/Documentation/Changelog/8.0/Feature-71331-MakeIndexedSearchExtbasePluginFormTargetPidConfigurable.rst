@@ -5,6 +5,8 @@
 Feature: #71331 - Make indexed_search extbase plugin form target Pid configurable
 =================================================================================
 
+See :issue:`71331`
+
 Description
 ===========
 

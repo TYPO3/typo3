@@ -5,6 +5,8 @@
 Breaking: #72492 - Removed XHTML2 support
 =========================================
 
+See :issue:`72492`
+
 Description
 ===========
 

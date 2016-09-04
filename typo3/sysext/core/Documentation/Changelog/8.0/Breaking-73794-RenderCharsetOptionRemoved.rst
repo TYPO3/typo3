@@ -5,6 +5,8 @@
 Breaking: #73794 - renderCharset option removed
 ===============================================
 
+See :issue:`73794`
+
 Description
 ===========
 

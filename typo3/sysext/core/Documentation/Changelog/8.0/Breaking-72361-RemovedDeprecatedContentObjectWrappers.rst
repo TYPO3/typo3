@@ -5,6 +5,8 @@
 Breaking: #72361 - Removed deprecated content object wrappers
 =============================================================
 
+See :issue:`72361`
+
 Description
 ===========
 

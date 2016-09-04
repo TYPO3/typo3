@@ -5,6 +5,8 @@
 Breaking: #77587 - Removed LiveSearch->getQueryString
 =====================================================
 
+See :issue:`77587`
+
 Description
 ===========
 

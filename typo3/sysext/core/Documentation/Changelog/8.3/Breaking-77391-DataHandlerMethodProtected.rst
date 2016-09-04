@@ -5,6 +5,8 @@
 Breaking: #77391 - DataHandler method protected
 ===============================================
 
+See :issue:`77391`
+
 Description
 ===========
 

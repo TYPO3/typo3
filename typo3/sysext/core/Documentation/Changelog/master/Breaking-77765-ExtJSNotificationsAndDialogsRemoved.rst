@@ -5,6 +5,8 @@
 Breaking: #77765 - ExtJS notifications and dialogs removed
 ==========================================================
 
+See :issue:`77765`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #18586 - Configurable width & height for editpanel in feedit
 =====================================================================
 
+See :issue:`18586`
+
 Description
 ===========
 

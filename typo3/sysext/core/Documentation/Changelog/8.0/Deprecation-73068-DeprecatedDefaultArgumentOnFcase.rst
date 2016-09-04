@@ -5,6 +5,8 @@
 Deprecation: #73068 - Deprecated "default" argument on f:case
 =============================================================
 
+See :issue:`73068`
+
 Description
 ===========
 

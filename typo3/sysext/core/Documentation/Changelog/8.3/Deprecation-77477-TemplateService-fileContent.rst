@@ -5,6 +5,8 @@
 Deprecation: #77477 - TemplateService->fileContent
 ==================================================
 
+See :issue:`77477`
+
 Description
 ===========
 

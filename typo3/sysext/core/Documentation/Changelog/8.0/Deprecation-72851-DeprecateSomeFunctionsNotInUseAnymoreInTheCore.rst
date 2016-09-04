@@ -5,6 +5,8 @@
 Deprecation: #72851 - Deprecate some functions not in use anymore in the core
 =============================================================================
 
+See :issue:`72851`
+
 Description
 ===========
 

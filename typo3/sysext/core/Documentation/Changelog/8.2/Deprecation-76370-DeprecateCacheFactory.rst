@@ -5,6 +5,8 @@
 Deprecation: #76370 - Deprecate CacheFactory
 ============================================
 
+See :issue:`76370`
+
 Description
 ===========
 

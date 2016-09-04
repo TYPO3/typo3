@@ -5,6 +5,8 @@
 Breaking: #72342 - Removed deprecated code from GeneralUtility
 ==============================================================
 
+See :issue:`72342`
+
 Description
 ===========
 

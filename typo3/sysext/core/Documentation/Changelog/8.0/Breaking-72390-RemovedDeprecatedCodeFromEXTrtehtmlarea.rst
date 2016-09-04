@@ -5,6 +5,8 @@
 Breaking: #72390 - Removed deprecated code from EXT:rtehtmlarea
 ===============================================================
 
+See :issue:`72390`
+
 Description
 ===========
 

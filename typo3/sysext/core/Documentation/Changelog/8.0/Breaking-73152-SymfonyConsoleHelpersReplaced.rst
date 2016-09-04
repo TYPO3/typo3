@@ -5,6 +5,8 @@
 Breaking: #73152 - Symfony console helpers replaced
 ===================================================
 
+See :issue:`73152`
+
 Description
 ===========
 

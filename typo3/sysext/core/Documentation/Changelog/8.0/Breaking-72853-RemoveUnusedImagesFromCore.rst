@@ -5,6 +5,8 @@
 Breaking: #72853 - Remove unused Images from core
 =================================================
 
+See :issue:`72853`
+
 Description
 ===========
 

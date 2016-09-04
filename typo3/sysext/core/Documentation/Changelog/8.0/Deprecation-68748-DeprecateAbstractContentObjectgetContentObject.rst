@@ -5,6 +5,8 @@
 Deprecation: #68748 - Deprecate AbstractContentObject::getContentObject()
 =========================================================================
 
+See :issue:`68748`
+
 Description
 ===========
 

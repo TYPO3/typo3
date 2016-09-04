@@ -5,6 +5,8 @@
 Breaking: #73793 - Removed AbstractPlugin->LOCAL_LANG_charset
 =============================================================
 
+See :issue:`73793`
+
 Description
 ===========
 

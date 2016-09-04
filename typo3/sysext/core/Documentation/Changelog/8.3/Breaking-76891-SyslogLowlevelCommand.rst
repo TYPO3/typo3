@@ -5,6 +5,8 @@
 Breaking: #76891 - syslog lowlevel command
 ==========================================
 
+See :issue:`76891`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #72022 - Removed class loading fallback in cObject
 ============================================================
 
+See :issue:`72022`
+
 Description
 ===========
 

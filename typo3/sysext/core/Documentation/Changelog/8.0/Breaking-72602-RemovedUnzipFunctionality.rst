@@ -5,6 +5,8 @@
 Breaking: #72602 - Removed unzip functionality
 ==============================================
 
+See :issue:`72602`
+
 Description
 ===========
 

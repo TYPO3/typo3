@@ -5,6 +5,8 @@
 Deprecation: #72827 - Module Icon configuration via [labels][tabs_images][tab]
 ==============================================================================
 
+See :issue:`72827`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #77182 - Removed BasicFileUtility methods and properties
 ==================================================================
 
+See :issue:`77182`
+
 Description
 ===========
 

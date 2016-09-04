@@ -5,6 +5,8 @@
 Breaking: #72711 - Remove property strict in TypoScriptParser
 =============================================================
 
+See :issue:`72711`
+
 Description
 ===========
 

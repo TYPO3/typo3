@@ -5,6 +5,8 @@
 Feature: #76458 - Let DebuggerUtility render closures
 =====================================================
 
+See :issue:`76458`
+
 Description
 ===========
 

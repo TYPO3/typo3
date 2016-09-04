@@ -5,6 +5,8 @@
 Breaking: #77390 - Expected return type of hook getResultRows_SQLpointer in Indexed Search changed
 ==================================================================================================
 
+See :issue:`77390`
+
 Description
 ===========
 

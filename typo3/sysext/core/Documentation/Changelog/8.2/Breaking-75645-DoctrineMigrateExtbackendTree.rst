@@ -5,6 +5,8 @@
 Breaking: #75645 - Doctrine: migrate ext:backend/Tree
 =====================================================
 
+See :issue:`75645`
+
 Description
 ===========
 

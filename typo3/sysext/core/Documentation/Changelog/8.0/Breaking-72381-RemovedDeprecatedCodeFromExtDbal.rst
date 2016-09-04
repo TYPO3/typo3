@@ -5,6 +5,8 @@
 Breaking: #72381 - Removed deprecated code from EXT:dbal
 ========================================================
 
+See :issue:`72381`
+
 Description
 ===========
 

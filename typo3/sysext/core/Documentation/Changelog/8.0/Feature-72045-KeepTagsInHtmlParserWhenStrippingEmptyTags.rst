@@ -5,6 +5,8 @@
 Feature: #72045 - HTMLparser.stripEmptyTags.keepTags
 ====================================================
 
+See :issue:`72045`
+
 Description
 ===========
 

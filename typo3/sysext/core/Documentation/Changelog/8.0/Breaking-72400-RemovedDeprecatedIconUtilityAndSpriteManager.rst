@@ -5,6 +5,8 @@
 Breaking: #72400 - Removed deprecated IconUtility and SpriteManager
 ===================================================================
 
+See :issue:`72400`
+
 Description
 ===========
 

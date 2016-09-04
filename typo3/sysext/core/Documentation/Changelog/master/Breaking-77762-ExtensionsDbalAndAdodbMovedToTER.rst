@@ -5,6 +5,8 @@
 Breaking: #77762 - Extensions dbal and adodb moved to TER
 =========================================================
 
+See :issue:`77762`
+
 Description
 ===========
 

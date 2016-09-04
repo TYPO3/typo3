@@ -5,6 +5,8 @@
 Deprecation: #75621 - GeneralUtility methods
 ============================================
 
+See :issue:`75621`
+
 Description
 ===========
 

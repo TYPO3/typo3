@@ -5,6 +5,8 @@
 Feature: #77336 - Allow passing an own unit collection to BytesViewHelper
 =========================================================================
 
+See :issue:`77336`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #75575 - TranslateViewHelper htmlEscape argument marked as deprecated
 ==================================================================================
 
+See :issue:`75575`
+
 Description
 ===========
 

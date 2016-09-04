@@ -5,6 +5,8 @@
 Breaking: #72405 - Removed traditional BE modules handling
 ==========================================================
 
+See :issue:`72405`
+
 Description
 ===========
 

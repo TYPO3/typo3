@@ -5,6 +5,8 @@
 Breaking: #72424 - Removed deprecated TypoScriptFrontendController options and methods
 ======================================================================================
 
+See :issue:`72424`
+
 Description
 ===========
 

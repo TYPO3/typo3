@@ -2,6 +2,8 @@
 Deprecation: #77839 - Move TYPO3/CMS/Core/QueryGenerator into EXT:lowlevel and deprecate the old module
 =======================================================================================================
 
+See :issue:`77839`
+
 Description
 ===========
 

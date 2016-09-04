@@ -5,6 +5,8 @@
 Deprecation: #69863 - Deprecate getTemplateVariableContainer function
 =====================================================================
 
+See :issue:`69863`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #77416 - Removed property from DatabaseIntegrityCheck
 ===============================================================
 
+See :issue:`77416`
+
 Description
 ===========
 

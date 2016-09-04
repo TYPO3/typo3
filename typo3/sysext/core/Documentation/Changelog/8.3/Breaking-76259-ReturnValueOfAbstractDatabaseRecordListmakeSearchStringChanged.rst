@@ -5,6 +5,8 @@
 Breaking: #76259 - Return value of AbstractDatabaseRecordList::makeSearchString changed
 =======================================================================================
 
+See :issue:`76259`
+
 Description
 ===========
 

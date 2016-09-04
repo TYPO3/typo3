@@ -5,6 +5,8 @@
 Breaking: #72338 - Removed GraphicalFunctions->nativeCharset
 ============================================================
 
+See :issue:`72338`
+
 Description
 ===========
 

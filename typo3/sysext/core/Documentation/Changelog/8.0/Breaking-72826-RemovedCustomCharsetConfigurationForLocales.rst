@@ -5,6 +5,8 @@
 Breaking: #72826 - Removed custom charset configuration for locales
 ===================================================================
 
+See :issue:`72826`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #72572 - Remove more deprecated miscellaneous functions and options
 =============================================================================
 
+See :issue:`72572`
+
 Description
 ===========
 

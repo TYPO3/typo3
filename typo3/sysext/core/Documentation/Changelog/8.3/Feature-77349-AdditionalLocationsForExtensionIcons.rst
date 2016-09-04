@@ -5,6 +5,8 @@
 Feature: #77349 - Additional locations for extension icons
 ==========================================================
 
+See :issue:`77349`
+
 Description
 ===========
 

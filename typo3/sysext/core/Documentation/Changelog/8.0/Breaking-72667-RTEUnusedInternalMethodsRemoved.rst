@@ -5,6 +5,8 @@
 Breaking: #72667 - RTE: Unused internal methods removed
 =======================================================
 
+See :issue:`72667`
+
 Description
 ===========
 

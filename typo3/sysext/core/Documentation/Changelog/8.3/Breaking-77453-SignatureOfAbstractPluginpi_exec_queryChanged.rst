@@ -5,6 +5,8 @@
 Breaking: #77453 - Signature of AbstractPlugin::pi_exec_query changed
 =====================================================================
 
+See :issue:`77453`
+
 Description
 ===========
 

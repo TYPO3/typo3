@@ -5,6 +5,8 @@
 Deprecation: #71255 - ExtendedFileUtility::pushErrorMessagesToFlashMessageQueue()
 =================================================================================
 
+See :issue:`71255`
+
 Description
 ===========
 

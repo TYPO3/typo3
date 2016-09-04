@@ -5,6 +5,8 @@
 Breaking: #75323 - Removed parameter entryPointPath from main applications
 ==========================================================================
 
+See :issue:`75323`
+
 Description
 ===========
 

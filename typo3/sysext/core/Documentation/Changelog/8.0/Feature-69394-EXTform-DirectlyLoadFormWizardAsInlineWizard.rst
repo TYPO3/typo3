@@ -5,6 +5,8 @@
 Feature: #69394 - EXT:form - Directly load form wizard as inline wizard
 =======================================================================
 
+See :issue:`69394`
+
 Description
 ===========
 

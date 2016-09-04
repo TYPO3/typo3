@@ -5,6 +5,8 @@
 Breaking: #72310 - EXT:form - Outsource labels and legends to own partials
 ==========================================================================
 
+See :issue:`72310`
+
 Description
 ===========
 

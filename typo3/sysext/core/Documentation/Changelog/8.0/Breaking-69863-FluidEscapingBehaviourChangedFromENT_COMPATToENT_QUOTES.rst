@@ -5,6 +5,8 @@
 Breaking: #69863 - Fluid escaping behaviour changed from ENT_COMPAT to ENT_QUOTES
 =================================================================================
 
+See :issue:`69863`
+
 Description
 ===========
 

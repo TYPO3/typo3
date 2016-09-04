@@ -5,6 +5,8 @@
 Feature: #76008 - Property visibility to DebuggerUtility::var_dump
 ==================================================================
 
+See :issue:`76008`
+
 Description
 ===========
 

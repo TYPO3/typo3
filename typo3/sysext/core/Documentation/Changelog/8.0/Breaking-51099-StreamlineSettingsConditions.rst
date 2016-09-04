@@ -5,6 +5,8 @@
 Breaking: #51099 - Streamline settings/conditions
 =================================================
 
+See :issue:`51099`
+
 Description
 ===========
 

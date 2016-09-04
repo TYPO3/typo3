@@ -5,6 +5,8 @@
 Breaking: #72493 - Removed TypoScript property page.bgImg
 =========================================================
 
+See :issue:`72493`
+
 Description
 ===========
 

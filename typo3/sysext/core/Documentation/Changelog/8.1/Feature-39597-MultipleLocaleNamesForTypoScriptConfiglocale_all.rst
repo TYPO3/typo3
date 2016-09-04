@@ -5,6 +5,8 @@
 Feature: #39597 - Multiple locale names for TypoScript config.locale_all
 ========================================================================
 
+See :issue:`39597`
+
 Description
 ===========
 

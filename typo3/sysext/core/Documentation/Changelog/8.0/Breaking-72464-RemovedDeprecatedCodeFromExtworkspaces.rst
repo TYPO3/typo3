@@ -5,6 +5,8 @@
 Breaking: #72464 - Removed deprecated code from EXT:workspaces
 ==============================================================
 
+See :issue:`72464`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #75150 - Removed TypoScript option includeJSlibs
 ==========================================================
 
+See :issue:`75150`
+
 Description
 ===========
 

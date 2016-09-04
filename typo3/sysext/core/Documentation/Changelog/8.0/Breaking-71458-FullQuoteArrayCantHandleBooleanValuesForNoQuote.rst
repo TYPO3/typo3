@@ -5,6 +5,8 @@
 Breaking: #71458 - FullQuoteArray can't handle boolean values for $noQuote
 ==========================================================================
 
+See :issue:`71458`
+
 Description
 ===========
 

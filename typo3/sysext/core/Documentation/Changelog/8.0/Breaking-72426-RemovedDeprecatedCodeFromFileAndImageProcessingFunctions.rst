@@ -5,6 +5,8 @@
 Breaking: #72426 - Removed deprecated code from file and image processing functions
 ===================================================================================
 
+See :issue:`72426`
+
 Description
 ===========
 

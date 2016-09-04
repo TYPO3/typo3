@@ -5,6 +5,8 @@
 Breaking: #75711 - Removed DB-related methods and TCA-related options from cObj
 ===============================================================================
 
+See :issue:`75711`
+
 Description
 ===========
 

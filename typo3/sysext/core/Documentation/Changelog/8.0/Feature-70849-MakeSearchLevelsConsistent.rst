@@ -5,6 +5,8 @@
 Important: #70849 - Make search levels in live search and list search consistent
 ================================================================================
 
+See :issue:`70849`
+
 Description
 ===========
 

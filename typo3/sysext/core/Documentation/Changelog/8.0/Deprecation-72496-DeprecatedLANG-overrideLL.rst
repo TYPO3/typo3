@@ -5,6 +5,8 @@
 Deprecation: #72496 - Deprecated $LANG->overrideLL
 ==================================================
 
+See :issue:`72496`
+
 Description
 ===========
 

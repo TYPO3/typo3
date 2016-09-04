@@ -5,6 +5,8 @@
 Feature: #77589 - EXT: syntax in PageRenderer and Compressor
 ============================================================
 
+See :issue:`77589`
+
 Description
 ===========
 

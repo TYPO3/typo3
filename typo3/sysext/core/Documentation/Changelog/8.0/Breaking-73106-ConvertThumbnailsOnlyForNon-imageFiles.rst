@@ -5,6 +5,8 @@
 Breaking: #73106 - Convert thumbnails only for non-image files
 ==============================================================
 
+See :issue:`73106`
+
 Description
 ===========
 

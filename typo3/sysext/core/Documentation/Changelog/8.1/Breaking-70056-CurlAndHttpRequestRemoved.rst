@@ -5,6 +5,8 @@
 Breaking: #70056 - Http-related options and HttpRequest class removed
 =====================================================================
 
+See :issue:`70056`
+
 Description
 ===========
 

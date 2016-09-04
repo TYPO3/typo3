@@ -5,6 +5,8 @@
 Deprecation: #73067 - Deprecate GeneralUtility::requireOnce and  GeneralUtility::requireFile
 ============================================================================================
 
+See :issue:`73067`
+
 Description
 ===========
 

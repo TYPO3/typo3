@@ -5,6 +5,8 @@
 Breaking: #72451 - Removed deprecated code from backend functions
 =================================================================
 
+See :issue:`72451`
+
 Description
 ===========
 

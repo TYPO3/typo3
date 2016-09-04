@@ -5,6 +5,8 @@
 Breaking: #76879 - Remove unused property pidSelect from AbstractDatabaseRecordList
 ===================================================================================
 
+See :issue:`76879`
+
 Description
 ===========
 

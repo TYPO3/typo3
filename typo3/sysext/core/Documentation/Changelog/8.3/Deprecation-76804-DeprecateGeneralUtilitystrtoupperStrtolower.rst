@@ -5,6 +5,8 @@
 Deprecation: #76804 - Deprecate GeneralUtility::strtoupper & strtolower
 =======================================================================
 
+See :issue:`76804`
+
 Description
 ===========
 

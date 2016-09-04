@@ -5,6 +5,8 @@
 Breaking: #75747 - EXT:form - Removed useDefaultContentObject setting
 =====================================================================
 
+See :issue:`75747`
+
 Description
 ===========
 

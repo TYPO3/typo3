@@ -5,6 +5,8 @@
 Breaking: #77342 - Removed templateFile override via FlexForm in EXT:felogin
 ============================================================================
 
+See :issue:`77342`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #73044 - JSON for ClickMenu in Backend
 ================================================
 
+See :issue:`73044`
+
 Description
 ===========
 

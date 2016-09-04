@@ -5,6 +5,8 @@
 Breaking: #72334 - Removed utf8 conversion in EXT:recycler
 ==========================================================
 
+See :issue:`72334`
+
 Description
 ===========
 

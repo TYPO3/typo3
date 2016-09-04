@@ -5,6 +5,8 @@
 Important: #72290 - Move install tool update flags to system registry
 =====================================================================
 
+See :issue:`72290`
+
 Description
 ===========
 

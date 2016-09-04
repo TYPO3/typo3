@@ -5,6 +5,8 @@
 Deprecation: #74156 - TemplateService::sortedKeyList and TemplateService->removeQueryString
 ===========================================================================================
 
+See :issue:`74156`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Important: #75747 - EXT:form - Removed support for compatibility6
 =================================================================
 
+See :issue:`75747`
+
 Description
 ===========
 

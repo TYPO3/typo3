@@ -5,6 +5,8 @@
 Breaking: #72372 - Removed deprecated code from beuser
 ======================================================
 
+See :issue:`72372`
+
 Description
 ===========
 

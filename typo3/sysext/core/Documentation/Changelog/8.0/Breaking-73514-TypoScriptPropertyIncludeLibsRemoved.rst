@@ -5,6 +5,8 @@
 Breaking: #73514 - TypoScript property "includeLibs" removed
 ============================================================
 
+See :issue:`73514`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #65165 - AdditionalMethodsInFolderInterface
 =====================================================
 
+See :issue:`65165`
+
 Description
 ===========
 

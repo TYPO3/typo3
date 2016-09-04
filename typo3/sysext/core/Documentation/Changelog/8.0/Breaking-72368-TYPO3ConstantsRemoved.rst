@@ -5,6 +5,8 @@
 Breaking: #72368 - TYPO3 Constants removed
 ==========================================
 
+See :issue:`72368`
+
 Description
 ===========
 

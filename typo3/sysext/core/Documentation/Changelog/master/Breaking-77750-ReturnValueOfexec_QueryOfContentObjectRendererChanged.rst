@@ -5,6 +5,8 @@
 Breaking: #77750 - Return value of ContentObjectRenderer::exec_Query changed
 ============================================================================
 
+See :issue:`77750`
+
 Description
 ===========
 

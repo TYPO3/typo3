@@ -5,6 +5,8 @@
 Deprecation: #77557 - Method QueryView->tableWrap()
 ===================================================
 
+See :issue:`77557`
+
 Description
 ===========
 

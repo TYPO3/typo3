@@ -5,6 +5,8 @@
 Breaking: #77345 - EXT:form - Remove deprecated IMAGEBUTTON element
 ===================================================================
 
+See :issue:`77345`
+
 Description
 ===========
 

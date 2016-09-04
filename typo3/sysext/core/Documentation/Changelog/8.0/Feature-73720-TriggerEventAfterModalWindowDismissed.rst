@@ -5,6 +5,8 @@
 Feature: #73720 - Trigger event after modal window dismissed
 ============================================================
 
+See :issue:`73720`
+
 Description
 ===========
 

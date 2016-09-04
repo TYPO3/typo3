@@ -5,6 +5,8 @@
 Breaking: #72431 - Remove deprecated code from lowlevel and utility functions
 =============================================================================
 
+See :issue:`72431`
+
 Description
 ===========
 

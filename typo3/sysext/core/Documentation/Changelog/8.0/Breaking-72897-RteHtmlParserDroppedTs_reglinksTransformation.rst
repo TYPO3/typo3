@@ -5,6 +5,8 @@
 Breaking: #72897 - RteHtmlParser: Dropped ts_reglinks transformation
 ====================================================================
 
+See :issue:`72897`
+
 Description
 ===========
 

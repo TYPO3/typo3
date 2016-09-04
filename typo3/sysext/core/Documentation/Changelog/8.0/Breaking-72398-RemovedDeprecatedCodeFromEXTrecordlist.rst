@@ -5,6 +5,8 @@
 Breaking: #72398 - Removed deprecated code from EXT:recordlist
 ==============================================================
 
+See :issue:`72398`
+
 Description
 ===========
 

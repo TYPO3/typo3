@@ -5,6 +5,8 @@
 Breaking: #77481 - Remove favicon from TBE_STYLES
 =================================================
 
+See :issue:`77481`
+
 Description
 ===========
 

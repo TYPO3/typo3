@@ -5,6 +5,8 @@
 Breaking: #77728 - Remove obsolete page tree and click menu settings
 ====================================================================
 
+See :issue:`77728`
+
 Description
 ===========
 

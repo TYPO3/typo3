@@ -5,6 +5,8 @@
 Deprecation: #75340 - Methods related to generating traditional Backend AJAX URLs
 =================================================================================
 
+See :issue:`75340`
+
 Description
 ===========
 

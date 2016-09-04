@@ -5,6 +5,8 @@
 Deprecation: #73050 - Deprecated random generator methods in GeneralUtility
 ===========================================================================
 
+See :issue:`73050`
+
 Description
 ===========
 

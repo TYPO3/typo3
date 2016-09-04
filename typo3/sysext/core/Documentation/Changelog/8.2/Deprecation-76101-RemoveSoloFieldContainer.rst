@@ -5,6 +5,8 @@
 Deprecation: #76101 - remove SoloFieldContainer
 ===============================================
 
+See :issue:`76101`
+
 Description
 ===========
 

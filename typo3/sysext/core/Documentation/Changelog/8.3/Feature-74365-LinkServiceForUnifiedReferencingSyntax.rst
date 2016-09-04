@@ -5,6 +5,8 @@
 Feature: #74365 - Add Linkservice for unified referencing syntax
 ================================================================
 
+See :issue:`74365`
+
 Description
 ===========
 

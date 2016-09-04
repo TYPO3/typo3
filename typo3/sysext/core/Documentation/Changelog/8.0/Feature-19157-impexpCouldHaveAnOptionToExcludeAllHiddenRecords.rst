@@ -5,6 +5,8 @@
 Feature: #19157 - Add option to exclude all hidden records in EXT:impexp
 ========================================================================
 
+See :issue:`19157`
+
 Description
 ===========
 

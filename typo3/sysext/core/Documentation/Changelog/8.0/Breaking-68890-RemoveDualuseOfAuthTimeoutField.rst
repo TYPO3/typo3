@@ -5,6 +5,8 @@
 Breaking: #68890 - Remove dual-use of auth_timeout_field in AbstractUserAuthentication
 =======================================================================================
 
+See :issue:`68890`
+
 Description
 ===========
 

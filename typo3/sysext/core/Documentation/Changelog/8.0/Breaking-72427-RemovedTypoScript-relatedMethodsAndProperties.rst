@@ -5,6 +5,8 @@
 Breaking: #72427 - Removed TypoScript-related methods and properties
 ====================================================================
 
+See :issue:`72427`
+
 Description
 ===========
 

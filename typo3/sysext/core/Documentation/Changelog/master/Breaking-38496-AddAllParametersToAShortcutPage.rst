@@ -5,6 +5,8 @@
 Breaking: #38496 - Shortcut redirects append all URL parameters
 ===============================================================
 
+See :issue:`38496`
+
 Description
 ===========
 

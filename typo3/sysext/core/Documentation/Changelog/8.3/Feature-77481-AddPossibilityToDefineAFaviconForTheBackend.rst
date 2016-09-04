@@ -5,6 +5,8 @@
 Feature: #77481 - Add possibility to define a favicon for the backend
 =====================================================================
 
+See :issue:`77481`
+
 Description
 ===========
 

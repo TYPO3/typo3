@@ -5,6 +5,8 @@
 Breaking: #77209 - Adapt default RECORDS tables
 ===============================================
 
+See :issue:`77209`
+
 Description
 ===========
 

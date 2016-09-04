@@ -5,6 +5,8 @@
 Breaking: #69863 - Removed deprecated code from EXT:fluid
 =========================================================
 
+See :issue:`69863`
+
 Description
 ===========
 

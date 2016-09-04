@@ -5,6 +5,8 @@
 Deprecation: #75625 - Deprecated cache clearing options
 =======================================================
 
+See :issue:`75625`
+
 Description
 ===========
 

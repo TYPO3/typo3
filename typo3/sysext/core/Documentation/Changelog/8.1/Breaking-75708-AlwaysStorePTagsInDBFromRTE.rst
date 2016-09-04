@@ -5,6 +5,8 @@
 Breaking: #75708 - Always store <p> tags in DB from RTE
 =======================================================
 
+See :issue:`75708`
+
 Description
 ===========
 

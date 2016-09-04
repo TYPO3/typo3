@@ -5,6 +5,8 @@
 Breaking: #77558 - PageLayoutController removed methods
 =======================================================
 
+See :issue:`77558`
+
 Description
 ===========
 

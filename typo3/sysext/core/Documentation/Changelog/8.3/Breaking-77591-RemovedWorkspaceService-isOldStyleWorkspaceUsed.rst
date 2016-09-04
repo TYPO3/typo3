@@ -5,6 +5,8 @@
 Breaking: #77591 - Removed WorkspaceService->isOldStyleWorkspaceUsed
 ====================================================================
 
+See :issue:`77591`
+
 Description
 ===========
 

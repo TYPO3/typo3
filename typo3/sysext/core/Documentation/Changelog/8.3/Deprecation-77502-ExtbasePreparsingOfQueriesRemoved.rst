@@ -5,6 +5,8 @@
 Deprecation: #77502 - Extbase: pre-parsing of queries removed
 =============================================================
 
+See :issue:`77502`
+
 Description
 ===========
 

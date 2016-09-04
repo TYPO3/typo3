@@ -5,6 +5,8 @@
 Breaking: #76285 - Popup configuration is moved to TYPO3.settings
 =================================================================
 
+See :issue:`76285`
+
 Description
 ===========
 

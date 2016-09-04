@@ -5,6 +5,8 @@
 Breaking: #72378 - Removed CSS Styled Content TypoScript for 6.2
 ================================================================
 
+See :issue:`72378`
+
 Description
 ===========
 

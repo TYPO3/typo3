@@ -5,6 +5,8 @@
 Breaking: #77814 - Remove feature subsearch from indexed search
 ===============================================================
 
+See :issue:`77814`
+
 Description
 ===========
 

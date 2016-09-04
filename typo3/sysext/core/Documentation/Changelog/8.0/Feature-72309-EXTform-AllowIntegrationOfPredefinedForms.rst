@@ -5,6 +5,8 @@
 Feature: #72309 - EXT:form - Integration of Predefined Forms
 ============================================================
 
+See :issue:`72309`
+
 Description
 ===========
 

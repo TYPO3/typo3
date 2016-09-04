@@ -5,6 +5,8 @@
 Breaking: #72361 - Removed deprecated methods in ContentObjectRenderer
 ======================================================================
 
+See :issue:`72361`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #73445 - Remove flashmessage_compatibility.js from core
 =================================================================
 
+See :issue:`73445`
+
 Description
 ===========
 

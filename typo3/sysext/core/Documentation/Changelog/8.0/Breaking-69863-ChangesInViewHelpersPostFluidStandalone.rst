@@ -5,6 +5,8 @@
 Breaking: #69863 - Changes in ViewHelpers post Standalone-Fluid
 ===============================================================
 
+See :issue:`69863`
+
 Description
 ===========
 

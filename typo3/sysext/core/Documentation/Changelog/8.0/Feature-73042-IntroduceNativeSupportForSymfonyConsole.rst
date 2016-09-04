@@ -5,6 +5,8 @@
 Feature: #73042 - Introduce native support for Symfony Console
 ==============================================================
 
+See :issue:`73042`
+
 Description
 ===========
 

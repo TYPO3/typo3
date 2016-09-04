@@ -5,6 +5,8 @@
 Breaking: #72666 - RTE: Remove relative path calculations
 =========================================================
 
+See :issue:`72666`
+
 Description
 ===========
 

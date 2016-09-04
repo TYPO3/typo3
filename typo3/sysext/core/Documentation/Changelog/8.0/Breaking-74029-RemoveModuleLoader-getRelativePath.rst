@@ -5,6 +5,8 @@
 Breaking: #74029 - Remove ModuleLoader->getRelativePath()
 =========================================================
 
+See :issue:`74029`
+
 Description
 ===========
 

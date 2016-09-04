@@ -5,6 +5,8 @@
 Breaking: #77186 - ExtDirect eID entry point removed
 ====================================================
 
+See :issue:`77186`
+
 Description
 ===========
 

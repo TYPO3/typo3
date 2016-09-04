@@ -5,6 +5,8 @@
 Breaking: #75493 - Evaluate "boolean /stdWrap" properties correctly
 ===================================================================
 
+See :issue:`75493`
+
 Description
 ===========
 

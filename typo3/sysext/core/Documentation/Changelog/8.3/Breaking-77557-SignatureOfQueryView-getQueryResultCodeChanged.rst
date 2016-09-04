@@ -5,6 +5,8 @@
 Breaking: #77557 - Signature of QueryView->getQueryResultCode() changed
 =======================================================================
 
+See :issue:`77557`
+
 Description
 ===========
 

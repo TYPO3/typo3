@@ -5,6 +5,8 @@
 Deprecation: #76345 - Path prefixes in callUserFunction and getUserObj
 ======================================================================
 
+See :issue:`76345`
+
 Description
 ===========
 

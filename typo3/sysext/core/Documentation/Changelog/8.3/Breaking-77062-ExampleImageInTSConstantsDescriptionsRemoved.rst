@@ -5,6 +5,8 @@
 Breaking: #77062 - Example image in TS constants descriptions removed
 =====================================================================
 
+See :issue:`77062`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #76531 - Add IconForRecordViewHelper
 =============================================
 
+See :issue:`76531`
+
 Description
 ===========
 

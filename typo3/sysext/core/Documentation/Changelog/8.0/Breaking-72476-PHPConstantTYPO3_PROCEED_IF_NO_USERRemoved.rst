@@ -5,6 +5,8 @@
 Breaking: #72476 - PHP Constant TYPO3_PROCEED_IF_NO_USER removed
 ================================================================
 
+See :issue:`72476`
+
 Description
 ===========
 

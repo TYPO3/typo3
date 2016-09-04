@@ -5,6 +5,8 @@
 Breaking: #75710 - RTE-related TSconfig options skipAlign and skipClass removed
 ===============================================================================
 
+See :issue:`75710`
+
 Description
 ===========
 

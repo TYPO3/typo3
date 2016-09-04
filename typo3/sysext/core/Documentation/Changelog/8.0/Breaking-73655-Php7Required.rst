@@ -5,6 +5,8 @@
 Breaking: #73655 - PHP 7 required
 =================================
 
+See :issue:`73655`
+
 Description
 ===========
 

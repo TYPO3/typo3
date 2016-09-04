@@ -5,6 +5,8 @@
 Breaking: #75357 - $TYPO3_CONF_VARS[BE][lockSSL] option is boolean
 ==================================================================
 
+See :issue:`75357`
+
 Description
 ===========
 

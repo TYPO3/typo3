@@ -5,6 +5,8 @@
 Deprecation: #73606 - Deprecate IconRegistry::getDeprecationSettings
 ====================================================================
 
+See :issue:`73606`
+
 Description
 ===========
 

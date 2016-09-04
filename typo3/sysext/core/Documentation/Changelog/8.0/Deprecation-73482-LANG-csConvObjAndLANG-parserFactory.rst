@@ -5,6 +5,8 @@
 Deprecation: #73482 - $LANG->csConvObj and $LANG->parserFactory
 ===============================================================
 
+See :issue:`73482`
+
 Description
 ===========
 

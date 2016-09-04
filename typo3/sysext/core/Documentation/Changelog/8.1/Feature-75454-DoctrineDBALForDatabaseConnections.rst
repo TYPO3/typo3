@@ -5,6 +5,8 @@
 Feature: #75454 - Added PHP library "Doctrine DBAL" for Database Connections within TYPO3
 =========================================================================================
 
+See :issue:`75454`
+
 Description
 ===========
 

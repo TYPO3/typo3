@@ -5,6 +5,8 @@
 Breaking: #75349 - Move Indexed Search pi-based plugin to compatibility7
 ========================================================================
 
+See :issue:`75349`
+
 Description
 ===========
 

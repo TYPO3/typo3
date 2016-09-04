@@ -5,6 +5,8 @@
 Breaking: #76259 - Signature of setTotalItems() in AbstractDatabaseRecordList changed
 =====================================================================================
 
+See :issue:`76259`
+
 Description
 ===========
 

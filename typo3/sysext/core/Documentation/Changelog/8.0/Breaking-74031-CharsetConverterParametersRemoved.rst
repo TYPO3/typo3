@@ -5,6 +5,8 @@
 Breaking: #74031 - CharsetConverter parameters removed
 ======================================================
 
+See :issue:`74031`
+
 Description
 ===========
 

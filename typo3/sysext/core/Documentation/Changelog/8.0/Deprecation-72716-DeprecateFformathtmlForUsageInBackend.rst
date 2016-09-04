@@ -5,6 +5,8 @@
 Deprecation: #72716 - Deprecate f:format.html for usage in backend
 ==================================================================
 
+See :issue:`72716`
+
 Description
 ===========
 

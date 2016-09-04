@@ -5,6 +5,8 @@
 Deprecation: #74022 - GraphicalFunctions->prependAbsolutePath()
 ===============================================================
 
+See :issue:`74022`
+
 Description
 ===========
 

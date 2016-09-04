@@ -5,6 +5,8 @@
 Feature: #73752 - Allow accessing ObjectStorage as array in Fluid and other places
 ==================================================================================
 
+See :issue:`73752`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #72337 - Charset Conversion Autodetection
 ==================================================
 
+See :issue:`72337`
+
 Description
 ===========
 

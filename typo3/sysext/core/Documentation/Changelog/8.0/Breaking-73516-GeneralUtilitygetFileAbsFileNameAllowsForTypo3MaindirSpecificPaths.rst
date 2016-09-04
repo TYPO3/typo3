@@ -5,6 +5,8 @@
 Breaking: #73516 - GeneralUtility::getFileAbsFileName allows for typo3/ maindir specific paths
 ==============================================================================================
 
+See :issue:`73516`
+
 Description
 ===========
 

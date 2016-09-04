@@ -5,6 +5,8 @@
 Breaking: #72421 - Removed deprecated code from database and query functions
 ============================================================================
 
+See :issue:`72421`
+
 Description
 ===========
 

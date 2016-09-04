@@ -5,6 +5,8 @@
 Breaking: #72370 - Removed deprecated code from extbase
 =======================================================
 
+See :issue:`72370`
+
 Description
 ===========
 

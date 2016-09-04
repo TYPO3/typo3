@@ -5,6 +5,8 @@
 Breaking: #74375 - fe_users.image migrated to FAL
 =================================================
 
+See :issue:`74375`
+
 Description
 ===========
 

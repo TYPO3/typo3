@@ -5,6 +5,8 @@
 Breaking: #72412 - Removed deprecated code from language processing functions
 =============================================================================
 
+See :issue:`72412`
+
 Description
 ===========
 

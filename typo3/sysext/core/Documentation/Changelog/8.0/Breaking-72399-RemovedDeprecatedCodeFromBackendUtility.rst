@@ -5,6 +5,8 @@
 Breaking: #72399 - Removed deprecated code from BackendUtility
 ==============================================================
 
+See :issue:`72399`
+
 Description
 ===========
 

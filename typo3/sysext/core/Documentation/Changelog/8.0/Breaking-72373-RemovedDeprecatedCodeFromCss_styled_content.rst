@@ -5,6 +5,8 @@
 Breaking: #72373 - Removed deprecated code from css_styled_content
 ==================================================================
 
+See :issue:`72373`
+
 Description
 ===========
 

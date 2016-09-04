@@ -5,6 +5,8 @@
 Breaking: #76108 - Replace ExtJS category tree with D3 and SVG
 ==============================================================
 
+See :issue:`76108`
+
 Description
 ===========
 

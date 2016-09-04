@@ -5,6 +5,8 @@
 Deprecation: #76259 - Deprecate method makeQueryArray of AbstractDatabaseRecordList
 ===================================================================================
 
+See :issue:`76259`
+
 Description
 ===========
 

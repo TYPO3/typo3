@@ -5,6 +5,8 @@
 Breaking: #77137 - RTE option "colors" removed
 ==============================================
 
+See :issue:`77137`
+
 Description
 ===========
 

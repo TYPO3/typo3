@@ -5,6 +5,8 @@
 Breaking: #77137 - JavaScript API of RTE changed
 ================================================
 
+See :issue:`77137`
+
 Description
 ===========
 

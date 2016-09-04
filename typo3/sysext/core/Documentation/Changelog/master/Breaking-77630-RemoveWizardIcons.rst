@@ -5,6 +5,8 @@
 Breaking: #77630 - Remove wizard icons
 ======================================
 
+See :issue:`77630`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #72438 - Remove deprecated code from FlashMessage
 ===========================================================
 
+See :issue:`72438`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #73794 - SearchFormController->utf8_to_currentCharset and TSFE->renderCharset
 ==========================================================================================
 
+See :issue:`73794`
+
 Description
 ===========
 

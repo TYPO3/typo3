@@ -5,6 +5,8 @@
 Deprecation: #75327 - $TSFE->csConvObj and $TSFE->csConv()
 ==========================================================
 
+See :issue:`75327`
+
 Description
 ===========
 

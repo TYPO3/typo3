@@ -5,6 +5,8 @@
 Feature: #69863 - Use new standalone Fluid as composer dependency
 =================================================================
 
+See :issue:`69863`
+
 Description
 ===========
 

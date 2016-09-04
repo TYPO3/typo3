@@ -5,6 +5,8 @@
 Breaking: #72419 - Remove deprecated code from backend controllers
 ==================================================================
 
+See :issue:`72419`
+
 Description
 ===========
 

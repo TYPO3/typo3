@@ -5,6 +5,8 @@
 Breaking: #66861 - Do not automatically append a "/" to the identifier of a folder
 ==================================================================================
 
+See :issue:`66861`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #72661 - RTE Transformation ts_strip removed
 ======================================================
 
+See :issue:`72661`
+
 Description
 ===========
 

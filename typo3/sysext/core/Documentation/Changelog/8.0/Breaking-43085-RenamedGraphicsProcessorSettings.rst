@@ -5,6 +5,8 @@
 Breaking: #43085 - Change GFX settings prefix im\_* to generic processor\_*
 ===========================================================================
 
+See :issue:`43085`
+
 Description
 ===========
 

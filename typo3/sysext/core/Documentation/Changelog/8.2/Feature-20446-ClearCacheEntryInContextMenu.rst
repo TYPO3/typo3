@@ -5,6 +5,8 @@
 Feature: #20446 - Clear cache entry in context menu
 ===================================================
 
+See :issue:`20446`
+
 Description
 ===========
 

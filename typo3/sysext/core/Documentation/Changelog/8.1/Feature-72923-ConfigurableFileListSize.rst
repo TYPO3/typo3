@@ -5,6 +5,8 @@
 Feature: #72923 - Configure the number of files shown per page in file list module
 ==================================================================================
 
+See :issue:`72923`
+
 Description
 ===========
 

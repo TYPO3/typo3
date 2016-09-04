@@ -5,6 +5,8 @@
 Breaking: #77180 - Dropped ExtJS support in Frontend TypoScript
 ===============================================================
 
+See :issue:`77180`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #45943 - Remove unused Images in "t3skin/icons/gfx/i"
 ===============================================================
 
+See :issue:`45943`
+
 Description
 ===========
 

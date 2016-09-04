@@ -5,6 +5,8 @@
 Breaking: #73046 - Alias AbstractNode -> ViewHelperNode for backwards compatibility
 ===================================================================================
 
+See :issue:`73046`
+
 Description
 ===========
 

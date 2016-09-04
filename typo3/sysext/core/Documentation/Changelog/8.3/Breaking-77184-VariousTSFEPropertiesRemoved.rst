@@ -5,6 +5,8 @@
 Breaking: #77184 - Various TSFE properties removed
 ==================================================
 
+See :issue:`77184`
+
 Description
 ===========
 

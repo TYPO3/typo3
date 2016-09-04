@@ -5,6 +5,8 @@
 Feature: #17309 - Access flexform value via TS
 ==============================================
 
+See :issue:`17309`
+
 Description
 ===========
 

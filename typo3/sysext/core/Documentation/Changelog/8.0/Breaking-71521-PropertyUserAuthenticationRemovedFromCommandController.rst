@@ -5,6 +5,8 @@
 Breaking: #71521 - Property userAuthentication removed from CommandController
 =============================================================================
 
+See :issue:`71521`
+
 Description
 ===========
 

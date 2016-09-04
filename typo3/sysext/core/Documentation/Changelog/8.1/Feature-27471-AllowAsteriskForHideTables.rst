@@ -5,6 +5,8 @@
 Feature: #27471 - Allow asterisk for hideTables
 ===============================================
 
+See :issue:`27471`
+
 Description
 ===========
 

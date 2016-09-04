@@ -2,6 +2,8 @@
 Breaking: #77783 - Removed unused ExtJS JavaScript libraries
 ============================================================
 
+See :issue:`77783`
+
 Description
 ===========
 

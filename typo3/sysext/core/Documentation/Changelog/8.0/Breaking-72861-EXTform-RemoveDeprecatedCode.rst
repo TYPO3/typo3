@@ -5,6 +5,8 @@
 Breaking: #72861 - EXT:form - Remove deprecated code
 ====================================================
 
+See :issue:`72861`
+
 Description
 ===========
 

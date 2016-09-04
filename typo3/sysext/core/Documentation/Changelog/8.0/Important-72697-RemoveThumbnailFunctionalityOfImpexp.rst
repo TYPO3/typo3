@@ -5,6 +5,8 @@
 Important: #72697 - Remove thumbnail functionality of impexp
 ============================================================
 
+See :issue:`72697`
+
 Description
 ===========
 

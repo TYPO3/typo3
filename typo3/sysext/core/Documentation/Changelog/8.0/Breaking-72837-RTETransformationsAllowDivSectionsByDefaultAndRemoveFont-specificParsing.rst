@@ -5,6 +5,8 @@
 Breaking: #72837 - RTE transformations: Allow div sections by default and remove font-specific parsing
 ======================================================================================================
 
+See :issue:`72837`
+
 Description
 ===========
 

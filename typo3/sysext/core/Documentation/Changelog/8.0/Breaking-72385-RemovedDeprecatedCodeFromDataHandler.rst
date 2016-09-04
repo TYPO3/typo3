@@ -5,6 +5,8 @@
 Breaking: #72385 - Removed deprecated code from DataHandler
 ===========================================================
 
+See :issue:`72385`
+
 Description
 ===========
 

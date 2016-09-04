@@ -5,6 +5,8 @@
 Deprecation: #75637 - Deprecate optional parameters of RecyclerUtility::getRecordPath()
 =======================================================================================
 
+See :issue:`75637`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #74124 - Removed sys_file_reference field downloadname
 ================================================================
 
+See :issue:`74124`
+
 Description
 ===========
 

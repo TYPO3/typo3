@@ -2,6 +2,8 @@
 Breaking: #77547 - Behaviour of RecordCollectionRepository::findByUid changed
 =============================================================================
 
+See :issue:`77547`
+
 Description
 ===========
 

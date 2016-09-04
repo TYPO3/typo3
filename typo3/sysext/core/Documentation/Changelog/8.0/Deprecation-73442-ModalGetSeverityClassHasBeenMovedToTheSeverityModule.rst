@@ -5,6 +5,8 @@
 Deprecation: #73442 - Modal.getSeverityClass has been moved to the Severity module
 ==================================================================================
 
+See :issue:`73442`
+
 Description
 ===========
 

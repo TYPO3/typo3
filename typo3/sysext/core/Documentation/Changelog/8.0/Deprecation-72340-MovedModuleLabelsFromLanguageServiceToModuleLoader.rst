@@ -5,6 +5,8 @@
 Deprecation: #72340 - Moved moduleLabels from LanguageService to ModuleLoader
 =============================================================================
 
+See :issue:`72340`
+
 Description
 ===========
 

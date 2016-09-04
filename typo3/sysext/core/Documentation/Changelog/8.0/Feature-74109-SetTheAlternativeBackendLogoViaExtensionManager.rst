@@ -5,6 +5,8 @@
 Feature: #74109 - Set the alternative Backend Logo via Extension Manager
 ========================================================================
 
+See :issue:`74109`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #76383 - Deprecate fontTag
 =======================================
 
+See :issue:`76383`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #72505 - Introduce hook to override a record overlay
 =============================================================
 
+See :issue:`72505`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #77405 - PageRepository->getPathFromRootline
 =========================================================
 
+See :issue:`77405`
+
 Description
 ===========
 

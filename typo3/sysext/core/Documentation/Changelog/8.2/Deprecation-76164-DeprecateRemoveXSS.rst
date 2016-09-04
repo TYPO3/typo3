@@ -5,6 +5,8 @@
 Deprecation: #76164 - Deprecate RemoveXSS
 =========================================
 
+See :issue:`76164`
+
 Description
 ===========
 

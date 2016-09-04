@@ -5,6 +5,8 @@
 Feature: #76748 - Configure the availability of the elementbrowser
 ==================================================================
 
+See :issue:`76748`
+
 Description
 ===========
 

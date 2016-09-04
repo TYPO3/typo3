@@ -5,6 +5,8 @@
 Feature: #69794 - Support pecl-memcached in MemcachedBackend
 ============================================================
 
+See :issue:`69794`
+
 Description
 ===========
 

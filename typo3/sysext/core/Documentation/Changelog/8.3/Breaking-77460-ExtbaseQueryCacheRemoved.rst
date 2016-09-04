@@ -5,6 +5,8 @@
 Breaking: #77460 - Extbase query cache removed
 ==============================================
 
+See :issue:`77460`
+
 Description
 ===========
 

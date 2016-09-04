@@ -5,6 +5,8 @@
 Deprecation: #73514 - IncludeLibrary Methods
 ============================================
 
+See :issue:`73514`
+
 Description
 ===========
 

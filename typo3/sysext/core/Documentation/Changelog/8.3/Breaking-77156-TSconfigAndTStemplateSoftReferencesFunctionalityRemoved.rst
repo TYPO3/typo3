@@ -5,6 +5,8 @@
 Breaking: #77156 - TSconfig and TStemplate soft references functionality removed
 ================================================================================
 
+See :issue:`77156`
+
 Description
 ===========
 

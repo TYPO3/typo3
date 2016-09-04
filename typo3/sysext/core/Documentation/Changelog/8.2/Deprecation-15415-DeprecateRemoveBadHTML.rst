@@ -5,6 +5,8 @@
 Deprecation: #15415 - Deprecate removeBadHTML
 =============================================
 
+See :issue:`15415`
+
 Description
 ===========
 

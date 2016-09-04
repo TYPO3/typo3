@@ -5,6 +5,8 @@
 Breaking: #72417 - Removed old locking API
 ==========================================
 
+See :issue:`72417`
+
 Description
 ===========
 

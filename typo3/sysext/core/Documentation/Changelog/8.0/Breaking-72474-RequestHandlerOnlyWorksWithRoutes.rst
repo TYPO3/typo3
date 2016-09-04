@@ -5,6 +5,8 @@
 Breaking: #72474 - RequestHandler only works with Routes
 ========================================================
 
+See :issue:`72474`
+
 Description
 ===========
 

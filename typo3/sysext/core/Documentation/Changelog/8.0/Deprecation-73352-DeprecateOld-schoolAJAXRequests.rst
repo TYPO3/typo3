@@ -5,6 +5,8 @@
 Deprecation: #73352 - Deprecate old-school AJAX requests
 ========================================================
 
+See :issue:`73352`
+
 Description
 ===========
 

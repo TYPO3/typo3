@@ -5,6 +5,8 @@
 Breaking: #72293 - API change in ExceptionHandlerInterface
 ==========================================================
 
+See :issue:`72293`
+
 Description
 ===========
 

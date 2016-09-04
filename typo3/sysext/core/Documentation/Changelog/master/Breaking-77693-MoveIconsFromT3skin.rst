@@ -5,6 +5,8 @@
 Breaking: #77693 - Move icons from t3skin
 =========================================
 
+See :issue:`77693`
+
 Description
 ===========
 

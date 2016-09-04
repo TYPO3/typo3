@@ -5,6 +5,8 @@
 Feature: #69439 - Enhance SQL query reduction in page tree in workspaces
 ========================================================================
 
+See :issue:`69439`
+
 Description
 ===========
 

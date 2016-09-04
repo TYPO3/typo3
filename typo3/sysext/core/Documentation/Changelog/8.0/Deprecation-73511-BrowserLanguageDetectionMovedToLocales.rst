@@ -5,6 +5,8 @@
 Deprecation: #73511 - BrowserLanguage detection moved to Locales
 ================================================================
 
+See :issue:`73511`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #73602 - Short-URL without ?id=ID removed
 ===================================================
 
+See :issue:`73602`
+
 Description
 ===========
 

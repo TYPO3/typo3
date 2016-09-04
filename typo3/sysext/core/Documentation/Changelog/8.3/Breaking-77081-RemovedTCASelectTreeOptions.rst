@@ -5,6 +5,8 @@
 Breaking: #77081 - Removed TCA tree options: width, allowRecursiveMode, autoSizeMax
 ===================================================================================
 
+See :issue:`77081`
+
 Description
 ===========
 

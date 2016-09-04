@@ -5,6 +5,8 @@
 Deprecation: #77164 - ErrorpageMessage and AbstractStandaloneMessage
 ====================================================================
 
+See :issue:`77164`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #72870 - Removed RTE transformation ts_preserve and preserveTags
 ==========================================================================
 
+See :issue:`72870`
+
 Description
 ===========
 

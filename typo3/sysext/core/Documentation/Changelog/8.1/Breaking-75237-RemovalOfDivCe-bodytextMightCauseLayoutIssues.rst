@@ -5,6 +5,8 @@
 Breaking: #75237 - Removal of div ce-bodytext might cause layout issues
 =======================================================================
 
+See :issue:`75237`
+
 Description
 ===========
 

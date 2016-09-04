@@ -5,6 +5,8 @@
 Breaking: #72418 - Deprecated backend-related PHP classes
 =========================================================
 
+See :issue:`72418`
+
 Description
 ===========
 

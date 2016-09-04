@@ -5,6 +5,8 @@
 Feature: #74038 - Report for checking database character set
 ============================================================
 
+See :issue:`74038`
+
 Description
 ===========
 

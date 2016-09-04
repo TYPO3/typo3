@@ -5,6 +5,8 @@
 Breaking: #72462 - Removed deprecated JavaScript code
 =====================================================
 
+See :issue:`72462`
+
 Description
 ===========
 

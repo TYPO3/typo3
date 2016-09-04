@@ -5,6 +5,8 @@
 Deprecation: #75371 - array2xml_cs
 ==================================
 
+See :issue:`75371`
+
 Description
 ===========
 

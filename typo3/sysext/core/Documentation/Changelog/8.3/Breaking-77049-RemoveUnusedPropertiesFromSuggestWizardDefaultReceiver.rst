@@ -5,6 +5,8 @@
 Breaking: #77049 - Remove unused properties from SuggestWizardDefaultReceiver
 =============================================================================
 
+See :issue:`77049`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #67236 - Added "allowedTags" argument to f:format.stripTags ViewHelper
 ===============================================================================
 
+See :issue:`67236`
+
 Description
 ===========
 

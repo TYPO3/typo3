@@ -5,6 +5,8 @@
 Breaking: #75324 - ReferenceIndex CLI command changed
 =====================================================
 
+See :issue:`75324`
+
 Description
 ===========
 

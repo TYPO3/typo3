@@ -5,6 +5,8 @@
 Deprecation: #77763 - Deprecate method ClickMenu::DB_editPageProperties()
 =========================================================================
 
+See :issue:`77763`
+
 Description
 ===========
 

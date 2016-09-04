@@ -5,6 +5,8 @@
 Breaking: #72416 - Remove EXT:t3skin/stylesheets/sprites/
 =========================================================
 
+See :issue:`72416`
+
 Description
 ===========
 

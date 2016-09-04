@@ -5,6 +5,8 @@
 Deprecation: #73728 - Wizard type colorbox is deprecated
 ========================================================
 
+See :issue:`73728`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #72604 - Remove option maxFileNameLength
 ==================================================
 
+See :issue:`72604`
+
 Description
 ===========
 

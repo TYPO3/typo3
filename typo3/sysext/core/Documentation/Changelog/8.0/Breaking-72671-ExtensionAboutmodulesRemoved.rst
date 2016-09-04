@@ -5,6 +5,8 @@
 Breaking: #72671 - Extension "aboutmodules" removed
 ===================================================
 
+See :issue:`72671`
+
 Description
 ===========
 

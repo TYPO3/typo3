@@ -5,6 +5,8 @@
 Feature: #73429 - Wizard component has been added
 =================================================
 
+See :issue:`73429`
+
 Description
 ===========
 

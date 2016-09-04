@@ -5,6 +5,8 @@
 Deprecation: #71917 - Deprecate the argument 'hsc' for getLL, getLLL, sL and pi_getLL
 =====================================================================================
 
+See :issue:`71917`
+
 Description
 ===========
 

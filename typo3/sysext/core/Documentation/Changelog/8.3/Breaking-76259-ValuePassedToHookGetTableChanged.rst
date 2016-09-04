@@ -5,6 +5,8 @@
 Breaking: #76259 - Value passed to hook getTable changed
 ========================================================
 
+See :issue:`76259`
+
 Description
 ===========
 

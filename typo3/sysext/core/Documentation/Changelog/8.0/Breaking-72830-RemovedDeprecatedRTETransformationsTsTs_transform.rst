@@ -5,6 +5,8 @@
 Breaking: #72830 - Removed deprecated RTE transformations ts & ts_transform
 ===========================================================================
 
+See :issue:`72830`
+
 Description
 ===========
 

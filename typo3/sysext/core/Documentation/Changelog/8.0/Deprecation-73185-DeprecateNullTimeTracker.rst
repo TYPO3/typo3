@@ -5,6 +5,8 @@
 Deprecation: #73185 - Deprecate NullTimeTracker
 ===============================================
 
+See :issue:`73185`
+
 Description
 ===========
 

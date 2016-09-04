@@ -5,6 +5,8 @@
 Deprecation: #75209 - Code cleanup for MenuViewHelperTrait
 ==========================================================
 
+See :issue:`75209`
+
 Description
 ===========
 

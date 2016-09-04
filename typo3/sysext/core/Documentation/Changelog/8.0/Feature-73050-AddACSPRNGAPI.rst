@@ -5,6 +5,8 @@
 Feature: #73050 - Add a CSPRNG API
 ==================================
 
+See :issue:`73050`
+
 Description
 ===========
 

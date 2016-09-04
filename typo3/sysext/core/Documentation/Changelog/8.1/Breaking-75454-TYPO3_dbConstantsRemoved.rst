@@ -5,6 +5,8 @@
 Breaking: #75454 - TYPO3_db Constants removed
 =============================================
 
+See :issue:`75454`
+
 Description
 ===========
 

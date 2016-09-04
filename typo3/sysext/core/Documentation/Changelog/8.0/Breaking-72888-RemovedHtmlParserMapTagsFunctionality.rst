@@ -5,6 +5,8 @@
 Breaking: #72888 - Removed HtmlParser mapTags functionality
 ===========================================================
 
+See :issue:`72888`
+
 Description
 ===========
 

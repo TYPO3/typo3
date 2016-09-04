@@ -5,6 +5,8 @@
 Deprecation: #76520 - Deprecate method pages_getTree of PageLayoutView
 ======================================================================
 
+See :issue:`76520`
+
 Description
 ===========
 

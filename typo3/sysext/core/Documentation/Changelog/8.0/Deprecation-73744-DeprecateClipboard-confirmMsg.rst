@@ -5,6 +5,8 @@
 Deprecation: #73744 - Deprecate Clipboard->confirmMsg()
 =======================================================
 
+See :issue:`73744`
+
 Description
 ===========
 

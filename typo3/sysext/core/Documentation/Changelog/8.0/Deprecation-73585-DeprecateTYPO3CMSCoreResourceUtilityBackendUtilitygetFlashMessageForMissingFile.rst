@@ -5,6 +5,8 @@
 Deprecation: #72585 - Deprecate TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile
 =============================================================================================================
 
+See :issue:`72585`
+
 Description
 ===========
 

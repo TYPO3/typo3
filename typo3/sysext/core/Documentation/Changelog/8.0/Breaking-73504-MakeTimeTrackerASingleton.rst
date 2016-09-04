@@ -5,6 +5,8 @@
 Breaking: #73504 - Make TimeTracker a singleton
 ===============================================
 
+See :issue:`73504`
+
 Description
 ===========
 

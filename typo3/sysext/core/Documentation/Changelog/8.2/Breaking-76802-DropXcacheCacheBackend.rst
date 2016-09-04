@@ -5,6 +5,8 @@
 Breaking: #76802 - Drop xcache cache backend
 ============================================
 
+See :issue:`76802`
+
 Description
 ===========
 

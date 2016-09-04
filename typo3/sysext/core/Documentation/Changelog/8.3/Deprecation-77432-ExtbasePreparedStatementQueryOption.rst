@@ -5,6 +5,8 @@
 Deprecation: #77432 - Extbase: Prepared Statement Query Option
 ==============================================================
 
+See :issue:`77432`
+
 Description
 ===========
 

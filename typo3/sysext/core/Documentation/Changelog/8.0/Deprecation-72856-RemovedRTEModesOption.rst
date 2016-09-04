@@ -5,6 +5,8 @@
 Deprecation: #72856 - Removed RTE "modes" option
 ================================================
 
+See :issue:`72856`
+
 Description
 ===========
 

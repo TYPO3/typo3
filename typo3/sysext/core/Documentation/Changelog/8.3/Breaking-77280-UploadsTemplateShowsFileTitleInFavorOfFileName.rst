@@ -5,6 +5,8 @@
 Breaking: #77280 - Uploads template shows file title in favor of file name
 ==========================================================================
 
+See :issue:`77280`
+
 Description
 ===========
 

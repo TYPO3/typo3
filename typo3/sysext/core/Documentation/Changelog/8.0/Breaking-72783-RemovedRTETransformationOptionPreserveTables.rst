@@ -5,6 +5,8 @@
 Breaking: #72783 - Removed RTE transformation option preserveTables
 ===================================================================
 
+See :issue:`72783`
+
 Description
 ===========
 

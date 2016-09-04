@@ -5,6 +5,8 @@
 Breaking: #72701 - Remove unused properties in DocumentTemplate
 ===============================================================
 
+See :issue:`72701`
+
 Description
 ===========
 

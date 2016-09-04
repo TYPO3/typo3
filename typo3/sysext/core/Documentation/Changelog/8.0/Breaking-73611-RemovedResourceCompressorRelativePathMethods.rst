@@ -5,6 +5,8 @@
 Breaking: #73611 - Removed ResourceCompressor relative path methods
 ===================================================================
 
+See :issue:`73611`
+
 Description
 ===========
 

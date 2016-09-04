@@ -5,6 +5,8 @@
 Breaking: #76527 - Cleanup ContextMenu classes
 ==============================================
 
+See :issue:`76527`
+
 Description
 ===========
 

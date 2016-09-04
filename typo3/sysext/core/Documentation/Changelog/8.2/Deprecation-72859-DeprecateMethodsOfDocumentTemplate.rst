@@ -5,6 +5,8 @@
 Deprecation: #72859 - Deprecate methods of DocumentTemplate
 ===========================================================
 
+See :issue:`72859`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #77643 - Reimplement SqlSchemaMigrationService using Doctrine SchemaManager
 ====================================================================================
 
+See :issue:`77643`
+
 Description
 ===========
 

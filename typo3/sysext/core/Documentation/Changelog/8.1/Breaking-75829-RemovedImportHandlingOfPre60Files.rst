@@ -5,6 +5,8 @@
 Breaking: #75829 - Removed handling of pre 6.0 files when importing
 ===================================================================
 
+See :issue:`75829`
+
 Description
 ===========
 

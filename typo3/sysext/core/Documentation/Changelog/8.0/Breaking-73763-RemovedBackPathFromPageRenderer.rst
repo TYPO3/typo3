@@ -5,6 +5,8 @@
 Breaking: #73763 - Removed backPath from PageRenderer
 =====================================================
 
+See :issue:`73763`
+
 Description
 ===========
 

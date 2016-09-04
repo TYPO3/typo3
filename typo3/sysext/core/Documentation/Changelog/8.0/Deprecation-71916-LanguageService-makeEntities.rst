@@ -5,6 +5,8 @@
 Deprecation: #71916 - LanguageService->makeEntities
 ===================================================
 
+See :issue:`71916`
+
 Description
 ===========
 

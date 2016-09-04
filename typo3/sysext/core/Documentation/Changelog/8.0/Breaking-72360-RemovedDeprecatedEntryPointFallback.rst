@@ -5,6 +5,8 @@
 Breaking: #72360 - Removed deprecated entry point fallback
 ==========================================================
 
+See :issue:`72360`
+
 Description
 ===========
 

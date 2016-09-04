@@ -5,6 +5,8 @@
 Deprecation: #73516 - Various GeneralUtility methods
 ====================================================
 
+See :issue:`73516`
+
 Description
 ===========
 

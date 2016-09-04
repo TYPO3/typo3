@@ -5,6 +5,8 @@
 Important: #72580 - Publicly accessible generated asset files moved to typo3temp/assets/
 ========================================================================================
 
+See :issue:`72580`
+
 Description
 ===========
 

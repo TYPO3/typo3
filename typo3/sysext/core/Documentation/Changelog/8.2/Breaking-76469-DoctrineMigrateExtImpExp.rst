@@ -5,6 +5,8 @@
 Breaking: #76469 - Doctrine: migrate ext:ImpExp
 ===============================================
 
+See :issue:`76469`
+
 Description
 ===========
 

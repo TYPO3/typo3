@@ -5,6 +5,8 @@
 Important: #73041 - PackageStates Includes Only Active Packages
 ===============================================================
 
+See :issue:`73041`
+
 Description
 ===========
 

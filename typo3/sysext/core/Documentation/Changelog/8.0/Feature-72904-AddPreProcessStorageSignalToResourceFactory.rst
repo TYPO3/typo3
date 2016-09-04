@@ -5,6 +5,8 @@
 Feature: #72904 - Add preProcessStorage signal to ResourceFactory
 =================================================================
 
+See :issue:`72904`
+
 Description
 ===========
 

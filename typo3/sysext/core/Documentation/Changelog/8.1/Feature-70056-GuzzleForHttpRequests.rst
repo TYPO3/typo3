@@ -5,6 +5,8 @@
 Feature: #70056 - Added PHP library "Guzzle" for HTTP Requests within TYPO3
 ===========================================================================
 
+See :issue:`70056`
+
 Description
 ===========
 

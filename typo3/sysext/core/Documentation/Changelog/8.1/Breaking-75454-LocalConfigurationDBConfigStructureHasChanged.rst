@@ -5,6 +5,8 @@
 Breaking: #75454 - LocalConfiguration DB config structure has changed
 =====================================================================
 
+See :issue:`75454`
+
 Description
 ===========
 

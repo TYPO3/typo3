@@ -5,6 +5,8 @@
 Feature: #77652 - Make sys_language records sortable
 ====================================================
 
+See :issue:`77652`
+
 Description
 ===========
 

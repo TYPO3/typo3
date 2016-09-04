@@ -5,6 +5,8 @@
 Breaking: #77592 - Dropped TCA option showIfRTE in type=check
 =============================================================
 
+See :issue:`77592`
+
 Description
 ===========
 

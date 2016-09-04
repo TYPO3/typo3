@@ -5,6 +5,8 @@
 Breaking: #72497 - Removed recode support for Charset Conversion
 ================================================================
 
+See :issue:`72497`
+
 Description
 ===========
 

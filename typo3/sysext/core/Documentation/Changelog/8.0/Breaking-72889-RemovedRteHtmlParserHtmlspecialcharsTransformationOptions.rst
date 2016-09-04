@@ -5,6 +5,8 @@
 Breaking: #72889 - Removed RteHtmlParser htmlspecialchars() transformation options
 ==================================================================================
 
+See :issue:`72889`
+
 Description
 ===========
 

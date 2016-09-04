@@ -5,6 +5,8 @@
 Breaking: #72384 - Removed deprecated code from HtmlParser
 ==========================================================
 
+See :issue:`72384`
+
 Description
 ===========
 

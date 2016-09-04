@@ -5,6 +5,8 @@
 Breaking: #72392 - Removed deprecated code from DocumentTemplate
 ================================================================
 
+See :issue:`72392`
+
 Description
 ===========
 

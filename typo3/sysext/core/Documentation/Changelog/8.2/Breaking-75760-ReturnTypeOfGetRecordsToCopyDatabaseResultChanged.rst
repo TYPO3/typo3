@@ -5,6 +5,8 @@
 Breaking: #75760 - Return type of LocalizationRepository::getRecordsToCopyDatabaseResult changed
 ================================================================================================
 
+See :issue:`75760`
+
 Description
 ===========
 
