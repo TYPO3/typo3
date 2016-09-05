@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Avatar renderer class
@@ -38,7 +39,13 @@ class Avatar
     public function __construct()
     {
         $this->validateSortAndInitiateAvatarProviders();
+        $this->view = $this->getFluidTemplateObject();
     }
+
+    /**
+     * @var StandaloneView
+     */
+    protected $view;
 
     /**
      * Render avatar tag
@@ -48,7 +55,7 @@ class Avatar
      * @param bool $showIcon show the record icon
      * @return string
      */
-    public function render(array $backendUser = null, $size = 32, $showIcon = false)
+    public function render(array $backendUser = null, int $size = 32, bool $showIcon = false)
     {
         if (!is_array($backendUser)) {
             $backendUser = $this->getBackendUser()->user;
@@ -58,12 +65,18 @@ class Avatar
         $icon = '';
         if ($showIcon) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $icon = '<span class="avatar-icon">' . $iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = $iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render();
         }
 
         $image = $this->getImgTag($backendUser, $size);
 
-        return '<span class="avatar"><span class="avatar-image">' . $image . '</span>' . $icon . '</span>';
+        $this->view->assignMultiple([
+                'image' => $image,
+                'icon' => $icon
+            ]
+        );
+
+        return $this->view->render();
     }
 
     /**
@@ -154,5 +167,30 @@ class Avatar
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename = null):StandaloneView
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+
+        if (is_null($filename)) {
+            $filename = 'Main.html';
+        }
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/Avatar/' . $filename));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }
