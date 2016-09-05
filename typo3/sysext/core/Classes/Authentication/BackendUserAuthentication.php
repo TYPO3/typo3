@@ -1830,7 +1830,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                 if ($storage->isDefault() && $storage->isWritable()) {
                     try {
                         $uploadFolder = $storage->getDefaultFolder();
-                        if ($uploadFolder->checkActionPermission('add')) {
+                        if ($uploadFolder->checkActionPermission('write')) {
                             break;
                         }
                         $uploadFolder = null;
@@ -1846,7 +1846,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                     if ($storage->isWritable()) {
                         try {
                             $uploadFolder = $storage->getDefaultFolder();
-                            if ($uploadFolder->checkActionPermission('add')) {
+                            if ($uploadFolder->checkActionPermission('write')) {
                                 break;
                             }
                             $uploadFolder = null;
