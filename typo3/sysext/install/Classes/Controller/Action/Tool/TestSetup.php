@@ -400,7 +400,7 @@ class TestSetup extends Action\AbstractAction
         $inputFile = $this->imageBasePath . 'TestInput/BackgroundOrange.gif';
         $overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $this->imageBasePath . 'TestInput/MaskBlackWhite.gif';
-        $resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
+        $resultFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix
             . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine1') . '.jpg';
         $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $result = $imageProcessor->getImageDimensions($resultFile);
@@ -417,7 +417,7 @@ class TestSetup extends Action\AbstractAction
         $inputFile = $this->imageBasePath . 'TestInput/BackgroundCombine.jpg';
         $overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $this->imageBasePath . 'TestInput/MaskCombine.jpg';
-        $resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
+        $resultFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix
             . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine2') . '.jpg';
         $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $result = $imageProcessor->getImageDimensions($resultFile);
@@ -457,7 +457,7 @@ class TestSetup extends Action\AbstractAction
             'color' => 'olive',
         ];
         $imageProcessor->makeBox($image, $conf, $workArea);
-        $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $result = $imageProcessor->getImageDimensions($outputFile);
         $testResults['simple'] = [];
@@ -477,7 +477,7 @@ class TestSetup extends Action\AbstractAction
             'color' => 'olive',
         ];
         $imageProcessor->makeBox($image, $conf, $workArea);
-        $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $result = $imageProcessor->getImageDimensions($outputFile);
         $testResults['box'] = [];
@@ -504,7 +504,7 @@ class TestSetup extends Action\AbstractAction
         ];
         $conf['BBOX'] = $imageProcessor->calcBBox($conf);
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $result = $imageProcessor->getImageDimensions($outputFile);
         $testResults['text'] = [];
@@ -520,7 +520,7 @@ class TestSetup extends Action\AbstractAction
             $conf['offset'] = '30,120';
             $conf['niceText'] = 1;
             $imageProcessor->makeText($image, $conf, $workArea);
-            $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
+            $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
             $imageProcessor->ImageWrite($image, $outputFile);
             $result = $imageProcessor->getImageDimensions($outputFile);
             $testResults['niceText']['title'] = 'Render text with TrueType font using \'niceText\' option';
@@ -556,7 +556,7 @@ class TestSetup extends Action\AbstractAction
             // Warning: Re-uses $image from above!
             $imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
             $imageProcessor->makeText($image, $conf, $workArea);
-            $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
+            $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
             $imageProcessor->ImageWrite($image, $outputFile);
             $result = $imageProcessor->getImageDimensions($outputFile);
             $testResults['shadow']['title'] = 'Render \'niceText\' with a shadow under';
@@ -690,5 +690,21 @@ class TestSetup extends Action\AbstractAction
         list(, $version) = explode('Magick', $string);
         list($version) = explode(' ', trim($version));
         return trim($version);
+    }
+
+    /**
+     * Return the temp image dir.
+     * If not exist it will be created
+     *
+     * @param GraphicalFunctions $imageProcessor
+     * @return string
+     */
+    protected function getImagesPath(GraphicalFunctions $imageProcessor)
+    {
+        $imagePath = $imageProcessor->tempPath . 'assets/images/';
+        if (!is_dir($imagePath)) {
+            GeneralUtility::mkdir_deep($imagePath);
+        }
+        return $imagePath;
     }
 }
