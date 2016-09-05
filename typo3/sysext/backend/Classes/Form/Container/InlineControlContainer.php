@@ -486,7 +486,7 @@ class InlineControlContainer extends AbstractContainer
             );
             if (
                 $folder instanceof Folder
-                && $folder->checkActionPermission('add')
+                && $folder->getStorage()->checkUserActionPermission('add', 'File')
             ) {
                 $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
                 $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
