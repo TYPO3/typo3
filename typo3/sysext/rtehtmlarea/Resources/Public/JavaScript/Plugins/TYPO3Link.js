@@ -162,8 +162,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					this.getButton(buttonId).tooltip,
 					this.getWindowDimensions(
 						{
-							width:	top.TYPO3.configuration.RTEPopupWindow.width,
-							height:	top.TYPO3.configuration.RTEPopupWindow.height
+							width:	(top.TYPO3.configuration.RTEPopupWindow || top.TYPO3.configuration.PopupWindow).width,
+							height:	(top.TYPO3.configuration.RTEPopupWindow || top.TYPO3.configuration.PopupWindow).height
 						},
 						buttonId
 					),
