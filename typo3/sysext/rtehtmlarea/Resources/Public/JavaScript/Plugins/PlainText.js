@@ -85,11 +85,13 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		cleanerConfig: {
 			pasteStructure: {
 				keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd)$/i,
-				removeAttributes: /^(id|on.*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
+				removeAttributes: /^(id|on.*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i,
+				removeTagsAndContents: /^(meta|head|title|style)/i
 			},
 			pasteFormat: {
 				keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|img|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|strike|strong|sub|sup|tt|u|var)$/i,
-				removeAttributes:  /^(id|on.*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
+				removeAttributes:  /^(id|on.*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i,
+				removeTagsAndContents: /^(meta|head|title|style)/i
 			}
 		},
 
@@ -109,6 +111,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					}
 					if (this.pasteBehaviourConfiguration[behaviour].removeAttributes) {
 						this.cleanerConfig[behaviour].removeAttributes = new RegExp( '^(' + this.pasteBehaviourConfiguration[behaviour].removeAttributes.split(',').join('|') + ')$', 'i');
+					}
+					if (this.pasteBehaviourConfiguration[behaviour].removeTagsAndContents) {
+						this.cleanerConfig[behaviour].removeTagsAndContents = new RegExp( '^(' + this.pasteBehaviourConfiguration[behaviour].removeTagsAndContents.split(',').join('|') + ')$', 'i');
 					}
 				}
 				this.cleaners[behaviour] = new Walker(this.cleanerConfig[behaviour]);
@@ -320,8 +325,14 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 							var i = 0, contentType;
 							while (i < contentTypes.length) {
 								contentType = contentTypes[i];
-								if (/text\/plain|text\/html/.test(contentType)) {
-									clipboardText += clipboardData.getData(contentType);
+								// return clipboardText if is HTML
+								if (/text\/html/.test(contentType)) {
+									clipboardText = clipboardData.getData(contentType);
+									break;
+								}
+								// add plainText
+								if (/text\/plain/.test(contentType)) {
+									clipboardText = clipboardData.getData(contentType);
 								}
 								i++;
 							}
