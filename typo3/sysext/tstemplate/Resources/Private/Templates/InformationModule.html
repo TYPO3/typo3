@@ -1,0 +1,59 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<h3><f:translate key="{LLPrefix}templateInformation"/></h3>
+<div>
+    <a href="#" class="t3-js-clickmenutrigger" data-table="sys_template" data-uid="{templateRecord.uid}" data-listframe="1">
+        <core:iconForRecord table="sys_template" row="{templateRecord}" />
+    </a><strong>&nbsp;{title}</strong>
+    <f:if condition="{siteTitle}">({siteTitle})</f:if>
+    <f:if condition="{manyTemplatesMenu}">
+        <div>
+            <f:format.raw>
+                {manyTemplatesMenu}
+            </f:format.raw>
+        </div>
+    </f:if>
+    <f:format.raw>{formResult}</f:format.raw>
+    <f:if condition="{constants}">
+        <h3><f:translate key="{LLPrefix}constants"/></h3>
+        <textarea name="data[constants]" rows="{numberOfRows}" wrap="off" class="text-monospace enable-tab" style="width:98%;height:70%" class="text-monospace">{constants}</textarea>
+        <input type="hidden" name="e[constants]" value="1">
+        <div class="checkbox">
+            <label for="checkIncludeTypoScriptFileContent">
+                <f:format.raw>{constantsLabel}</f:format.raw>
+                <f:translate key="{LLPrefix}includeTypoScriptFileContent"/>
+            </label>
+        </div>
+    </f:if>
+    <f:if condition="{config}">
+        <h3><f:translate key="{LLPrefix}setup"/></h3>
+        <textarea name="data[config]" rows="{numberOfRows}" wrap="off" class="text-monospace enable-tab" style="width:98%;height:70%" class="text-monospace">{config}</textarea>
+        <input type="hidden" name="e[config]" value="1">
+        <div class="checkbox">
+            <label for="checkIncludeTypoScriptFileContent">
+                <f:format.raw>{configLabel}</f:format.raw>
+                <f:translate key="{LLPrefix}includeTypoScriptFileContent"/>
+            </label>
+        </div>
+    </f:if>
+    <br />
+    <div class="table-fit">
+        <table class="table table-striped table-hover">
+            <f:for each="{tableRows}" as="line">
+                <f:render section="TemplateTableRow" arguments="{line: line}" />
+            </f:for>
+        </table>
+    </div>
+    <div>
+        <br />
+        <a class="btn btn-default" href="{editAllUrl}"><strong><core:icon identifier="actions-document-open" />&nbsp;<f:translate key="{LLPrefix}editTemplateRecord"/></strong></a>
+    </div>
+</div>
+
+<f:section name="TemplateTableRow">
+    <tr>
+        <td><a href="{line.url}" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:editField')}"><strong>{line.label}</strong></a></td>
+        <td width="80%">{line.data}</td>
+        <td><a href="{line.url}" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:editField')}"><span class="btn btn-default"><core:icon identifier="actions-document-open" /></span></a></td>
+    </tr>
+</f:section>
