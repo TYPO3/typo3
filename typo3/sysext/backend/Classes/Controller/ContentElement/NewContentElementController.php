@@ -350,7 +350,7 @@ class NewContentElementController {
 			foreach ($wizards as $groupKey => $wizardGroup) {
 				$groupKey = preg_replace('/\\.$/', '', $groupKey);
 				$showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
-				$showAll = $wizardGroup['show'] === '*';
+				$showAll = in_array('*', $showItems, TRUE);
 				$groupItems = array();
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
 					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
