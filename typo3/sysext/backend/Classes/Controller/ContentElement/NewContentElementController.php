@@ -378,7 +378,7 @@ class NewContentElementController extends AbstractModule
                 foreach ($wizards as $groupKey => $wizardGroup) {
                     $groupKey = rtrim($groupKey, '.');
                     $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], true);
-                    $showAll = $wizardGroup['show'] === '*';
+                    $showAll = in_array('*', $showItems, true);
                     $groupItems = [];
                     if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
                         $wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
