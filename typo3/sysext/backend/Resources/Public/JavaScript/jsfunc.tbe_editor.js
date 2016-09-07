@@ -162,7 +162,7 @@ var TBE_EDITOR = {
 				var t = (opener != null && typeof opener.top.TYPO3 !== 'undefined' ? opener.top : top);
 				t.TYPO3.Modal.confirm(
 					t.TYPO3.lang['alert'] || 'Alert',
-					t.TYPO3.lang['FormEngine.fieldsMissing'],
+					TYPO3.lang['FormEngine.fieldsMissing'],
 					t.TYPO3.Severity.error,
 					[
 						{
