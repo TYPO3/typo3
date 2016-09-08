@@ -94,7 +94,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 	 * @param {integer} intervalTime
 	 */
 	LoginRefresh.setIntervalTime = function(intervalTime) {
-		LoginRefresh.intervalTime = intervalTime;
+		// To avoid the integer overflow in setInterval, we limit the interval time to be one request per day
+		LoginRefresh.intervalTime = Math.min(intervalTime, 86400);
 	};
 
 	/**
