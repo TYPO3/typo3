@@ -2,9 +2,14 @@
 Documenting Changes
 ===================
 
-
 Motivation and goals
 ====================
+
+.. sidebar:: Forger
+
+   If you want to save yourself some time you can use the ReST-File-Generator at https://forger.typo3.org/utility/rst
+
+   Select the type of ReST snippet you want to create, enter your issue number and click the search button.
 
 Spreading information about important core changes has been a problematic issue ever since. With the switch to the
 new release cycle with version 7 of the TYPO3 CMS core this situation should be improved.
