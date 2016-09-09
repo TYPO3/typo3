@@ -1,0 +1,55 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/ConstantEditor'}" />
+<h3><f:translate key="{LLPrefix}editConstants"/></h3>
+<div>
+    <core:iconForRecord table="sys_template" row="{templateRecord}" />
+    <strong>&nbsp;<f:format.raw>{title}</f:format.raw></strong>
+    <f:if condition="{siteTitle}">({siteTitle})</f:if>
+    <f:if condition="{manyTemplatesMenu}">
+        <div>
+            <f:format.raw>
+                {manyTemplatesMenu}
+            </f:format.raw>
+        </div>
+    </f:if>
+    <div style="padding-top: 10px;"></div>
+    <f:if condition="{constantsMenu}">
+        <f:then>
+            <h3><f:translate key="{LLPrefix}category"/></h3>
+            <div><span class="text-nowrap">
+                <div class="form-inline form-inline-spaced"><f:format.raw>{constantsMenu}</f:format.raw></div>
+            </span></div>
+        </f:then>
+        <f:else>
+            <h3><core:icon identifier="status-dialog-notification" /><f:translate key="{LLPrefix}noConstants"/></h3>
+            <div><f:translate key="{LLPrefix}noConstantsDescription"/></div>
+        </f:else>
+    </f:if>
+    <div style="padding-top: 15px;"></div>
+    <f:if condition="{printFields}">
+        <div>
+            <f:format.raw>
+                {printFields}
+            </f:format.raw>
+        </div>
+    </f:if>
+    <f:if condition="{helpConfig.header}">
+        <div style="padding-top: 30px;"></div>
+        <div>
+            {helpConfig.header}<br>
+            <f:if condition="{helpConfig.description}">
+                <f:for each="{helpConfig.description}" as="line">
+                    {line}<br>
+                </f:for>
+            </f:if>
+            <f:if condition="{helpConfig.bulletList}">
+                <ul>
+                <f:for each="{helpConfig.bulletList}" as="line">
+                    <li>{line}</li>
+                </f:for>
+                </ul>
+            </f:if>
+        </div>
+    </f:if>
+</div>
