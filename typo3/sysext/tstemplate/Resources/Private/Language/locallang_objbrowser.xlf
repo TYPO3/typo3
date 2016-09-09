@@ -70,7 +70,7 @@
 				<source>You cannot edit properties and values, if there's no current template.</source>
 			</trans-unit>
 			<trans-unit id="addKey">
-				<source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
+				<source>Add key &quot;%s&quot; to Object List</source>
 			</trans-unit>
 			<trans-unit id="back">
 				<source>Back</source>
