@@ -159,7 +159,6 @@ module.exports = function(grunt) {
 					{ dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-beuser.svg', src: '<%= paths.t3icons %>module/module-beuser.svg' },
 					{ dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg', src: '<%= paths.t3icons %>module/module-config.svg' },
 					{ dest: '<%= paths.sysext %>cshmanual/Resources/Public/Icons/module-cshmanual.svg', src: '<%= paths.t3icons %>module/module-cshmanual.svg' },
-					{ dest: '<%= paths.sysext %>dbal/Resources/Public/Icons/module-dbal.svg', src: '<%= paths.t3icons %>module/module-dbal.svg' },
 					{ dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg', src: '<%= paths.t3icons %>module/module-dbint.svg' },
 					{ dest: '<%= paths.sysext %>documentation/Resources/Public/Icons/module-documentation.svg', src: '<%= paths.t3icons %>module/module-documentation.svg' },
 					{ dest: '<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg', src: '<%= paths.t3icons %>module/module-extensionmanager.svg' },
