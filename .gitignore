@@ -27,6 +27,9 @@ nbproject
 # Ignore build stuff
 Build/bower_components/*
 Build/node_modules/*
+Build/JavaScript
+Build/typings/*
+!Build/typings/no-def*
 .cache
 .sass-cache
 .session
@@ -44,3 +47,6 @@ typo3conf/*
 fileadmin/*
 uploads/*
 /.htaccess
+# TypeScript stuff
+.baseDir.ts
+.tscache

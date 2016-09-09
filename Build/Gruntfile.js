@@ -132,6 +132,28 @@ module.exports = function(grunt) {
 				src: '<%= paths.workspaces %>Public/Css/*.css'
 			}
 		},
+		ts: {
+			default : {
+				tsconfig: true,
+				options: {
+					verbose: false
+				}
+			}
+		},
+		tslint: {
+			options: {
+				configuration: 'tslint.json',
+				force: false
+			},
+			files: {
+				src: [
+					'<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts'
+				]
+			}
+		},
+		typings: {
+			install: {}
+		},
 		watch: {
 			options: {
 				livereload: true
@@ -139,11 +161,26 @@ module.exports = function(grunt) {
 			less: {
 				files: '<%= paths.less %>**/*.less',
 				tasks: 'css'
+			},
+			ts: {
+				files: '<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts',
+				tasks: 'scripts'
 			}
 		},
 		copy: {
 			options: {
 				punctuation: ''
+			},
+			ts_files: {
+				files: [{
+					expand: true,
+					cwd: '<%= paths.root %>Build/JavaScript/typo3/sysext/',
+					src: ['**/*.js', '**/*.js.map'],
+					dest: '<%= paths.sysext %>',
+					rename: function(dest, src) {
+						return dest + src.replace('Resources/Private/TypeScript', 'Resources/Public/JavaScript');
+					}
+				}]
 			},
 			core_icons: {
 				files: [{
@@ -303,6 +340,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-svgmin');
 	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-copy');
+	grunt.loadNpmTasks("grunt-ts");
+	grunt.loadNpmTasks('grunt-tslint');
+	grunt.loadNpmTasks('grunt-typings');
 
 	/**
 	 * grunt default task
@@ -331,10 +372,23 @@ module.exports = function(grunt) {
 	 *
 	 * this task does the following things:
 	 * - npm install
+	 * - typings install
 	 * - bower install
 	 * - copy some bower components to a specific destinations because they need to be included via PHP
 	 */
-	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy']);
+	grunt.registerTask('update', ['npm-install', 'typings', 'bower_install', 'bowercopy']);
+
+	/**
+	 * grunt scripts task
+	 *
+	 * call "$ grunt scripts"
+	 *
+	 * this task does the following things:
+	 * - 1) Check all TypeScript files (*.ts) with TSLint which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
+	 * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
+	 * - 3) Copy all generated JavaScript and Map files to public folders
+	 */
+	grunt.registerTask('scripts', ['tslint', 'ts', 'copy:ts_files']);
 
 	/**
 	 * grunt build task
@@ -347,6 +401,7 @@ module.exports = function(grunt) {
 	 * - compile less files
 	 * - uglify js files
 	 * - minifies svg files
+	 * - compiles TypeScript files
 	 */
-	grunt.registerTask('build', ['update', 'copy', 'css', 'uglify', 'svgmin']);
+	grunt.registerTask('build', ['update', 'scripts', 'copy', 'css', 'uglify', 'svgmin']);
 };

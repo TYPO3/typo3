@@ -1,0 +1,10 @@
+{
+	"// extends": "@see https://github.com/palantir/tslint/blob/master/src/configs/recommended.ts",
+	"extends": "tslint:recommended",
+	"rules": {
+		"interface-name": false,
+		"no-console": false,
+		"quotemark": [true, "single", "avoid-escape"],
+		"typedef": [true, "call-signature", "arrow-call-signature", "arrow-parameter", "property-declaration", "variable-declaration", "parameter", "member-variable-declaration"]
+	}
+}

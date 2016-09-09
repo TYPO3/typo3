@@ -1,0 +1,172 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "removeComments": false,
+        "pretty": true,
+        "baseUrl": ".",
+        "paths": {
+            "TYPO3/CMS/About/*": [
+                "../../typo3/sysext/about/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Backend/*": [
+                "../../typo3/sysext/backend/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Belog/*": [
+                "../../typo3/sysext/belog/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Beuser/*": [
+                "../../typo3/sysext/beuser/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Compatibility7/*": [
+                "../../typo3/sysext/compatibility7/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/ContextHelp/*": [
+                "../../typo3/sysext/context_help/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Core/*": [
+                "../../typo3/sysext/core/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Cshmanuel/*": [
+                "../../typo3/sysext/cshmanuel/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/CssStyledContent/*": [
+                "../../typo3/sysext/css_styled_content/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Documentation/*": [
+                "../../typo3/sysext/documentation/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Extbase/*": [
+                "../../typo3/sysext/extbase/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Extensionmanager/*": [
+                "../../typo3/sysext/extensionmanager/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Feedit/*": [
+                "../../typo3/sysext/feedit/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Felogin/*": [
+                "../../typo3/sysext/felogin/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Filelist/*": [
+                "../../typo3/sysext/filelist/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Filemetadata/*": [
+                "../../typo3/sysext/filemetadata/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Fluid/*": [
+                "../../typo3/sysext/fluid/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/FluidStyledContent/*": [
+                "../../typo3/sysext/fluid_styled_content/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Form/*": [
+                "../../typo3/sysext/form/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Frontend/*": [
+                "../../typo3/sysext/frontend/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Func/*": [
+                "../../typo3/sysext/func/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Impexp/*": [
+                "../../typo3/sysext/impexp/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/IndexedSearch/*": [
+                "../../typo3/sysext/indexed_search/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Info/*": [
+                "../../typo3/sysext/info/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/InfoPagetsconfig/*": [
+                "../../typo3/sysext/info_pagetsconfig/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Install/*": [
+                "../../typo3/sysext/install/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Lang/*": [
+                "../../typo3/sysext/lang/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Linkvalidator/*": [
+                "../../typo3/sysext/linkvalidator/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Lowlevel/*": [
+                "../../typo3/sysext/lowlevel/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Opendocs/*": [
+                "../../typo3/sysext/opendocs/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Recordlist/*": [
+                "../../typo3/sysext/recordlist/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Recycler/*": [
+                "../../typo3/sysext/recycler/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Reports/*": [
+                "../../typo3/sysext/reports/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Rsaauth/*": [
+                "../../typo3/sysext/rsaauth/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Rtehtmlarea/*": [
+                "../../typo3/sysext/rtehtmlarea/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Saltedpasswords/*": [
+                "../../typo3/sysext/saltedpassword/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Scheduler/*": [
+                "../../typo3/sysext/scheduler/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Setup/*": [
+                "../../typo3/sysext/setup/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Sv/*": [
+                "../../typo3/sysext/sv/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/SysAction/*": [
+                "../../typo3/sysext/sys_action/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/SysNote/*": [
+                "../../typo3/sysext/sys:note/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/T3editor/*": [
+                "../../typo3/sysext/t3editor/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/T3skin/*": [
+                "../../typo3/sysext/t3skin/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Taskcenter/*": [
+                "../../typo3/sysext/taskcenter/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Tstemplate/*": [
+                "../../typo3/sysext/tetemplate/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Version/*": [
+                "../../typo3/sysext/version/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Viewpage/*": [
+                "../../typo3/sysext/viewpage/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/WizardCrpages/*": [
+                "../../typo3/sysext/wizard_crpages/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/WizardSortpages/*": [
+                "../../typo3/sysext/wizard_sortpages/Resources/Public/JavaScript/"
+            ],
+            "TYPO3/CMS/Workspaces/*": [
+                "../../typo3/sysext/workspaces/Resources/Public/JavaScript/"
+            ]
+        },
+        "rootDir": "../../",
+        "outDir": "./JavaScript/"
+    },
+    "filesGlob": [
+        "typings/index.d.ts",
+        "../../typo3/sysext/*/Resources/Private/TypeScript/**/*.ts",
+        "!node_modules/**"
+    ],
+    "files": [
+        "typings/index.d.ts",
+        "../../typo3/sysext/backend/Resources/Private/TypeScript/ColorPicker.ts"
+    ]
+}
