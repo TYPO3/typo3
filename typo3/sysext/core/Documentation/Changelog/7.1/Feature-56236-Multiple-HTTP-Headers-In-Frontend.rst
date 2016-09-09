@@ -5,6 +5,8 @@
 Feature: #56236 - Multiple HTTP headers of the same type in Frontend Output
 ===========================================================================
 
+See :issue:`56236`
+
 Description
 ===========
 

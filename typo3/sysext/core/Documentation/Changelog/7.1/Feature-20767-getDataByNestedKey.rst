@@ -5,6 +5,8 @@
 Feature: #20767 - Allow nested array access on getData of field
 ===============================================================
 
+See :issue:`20767`
+
 Description
 ===========
 

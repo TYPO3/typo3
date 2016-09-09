@@ -5,6 +5,8 @@
 Feature: #69119 - Add a basic search to the filelist module
 ===========================================================
 
+See :issue:`69119`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #68724 - EM: "Get preconfigured distribution" shows only distributions that suite the current TYPO3 version
 ====================================================================================================================
 
+See :issue:`68724`
+
 Description
 ===========
 

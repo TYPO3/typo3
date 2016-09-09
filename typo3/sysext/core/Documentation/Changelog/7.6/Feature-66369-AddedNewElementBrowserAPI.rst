@@ -5,6 +5,8 @@
 Feature: #66369 - Added new element browser API
 ===============================================
 
+See :issue:`66369`
+
 Description
 ===========
 

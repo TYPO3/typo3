@@ -5,6 +5,8 @@
 Breaking: #64668 - Content Element mailform moved to legacy extension
 =====================================================================
 
+See :issue:`64668`
+
 Description
 ===========
 

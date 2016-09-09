@@ -5,6 +5,8 @@
 Deprecation: #64134 - Deprecate $BE_USER->OS
 ============================================
 
+See :issue:`64134`
+
 Description
 ===========
 

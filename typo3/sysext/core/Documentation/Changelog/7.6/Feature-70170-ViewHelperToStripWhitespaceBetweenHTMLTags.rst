@@ -5,6 +5,8 @@
 Feature: #70170 - ViewHelper to strip whitespace between HTML tags
 ==================================================================
 
+See :issue:`70170`
+
 Description
 ===========
 

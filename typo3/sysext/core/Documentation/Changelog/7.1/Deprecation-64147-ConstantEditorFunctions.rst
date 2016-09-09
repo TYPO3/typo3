@@ -5,6 +5,8 @@
 Deprecation: #64147 - TemplateService->ext_getKeyImage
 ======================================================
 
+See :issue:`64147`
+
 Description
 ===========
 

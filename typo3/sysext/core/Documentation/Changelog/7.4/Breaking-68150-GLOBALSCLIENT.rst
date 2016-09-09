@@ -5,6 +5,8 @@
 Breaking: #68150 - $GLOBALS['CLIENT']
 =====================================
 
+See :issue:`68150`
+
 Description
 ===========
 

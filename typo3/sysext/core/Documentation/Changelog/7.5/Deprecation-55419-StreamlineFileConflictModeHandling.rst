@@ -5,6 +5,8 @@
 Deprecation: #55419 - Streamline file conflict mode handling
 ============================================================
 
+See :issue:`55419`
+
 
 Description
 ===========

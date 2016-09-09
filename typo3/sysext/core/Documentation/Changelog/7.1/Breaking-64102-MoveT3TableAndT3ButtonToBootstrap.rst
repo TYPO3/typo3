@@ -5,6 +5,8 @@
 Breaking: #64102 - Move t3-table and t3-button to bootstrap
 ===========================================================
 
+See :issue:`64102`
+
 Description
 ===========
 

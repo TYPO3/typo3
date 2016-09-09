@@ -5,6 +5,8 @@
 Deprecation: #67297 - MySQL / DBMS field type conversion
 ========================================================
 
+See :issue:`67297`
+
 Description
 ===========
 

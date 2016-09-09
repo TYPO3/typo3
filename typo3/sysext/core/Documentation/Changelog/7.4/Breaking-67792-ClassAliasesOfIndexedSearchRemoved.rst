@@ -5,6 +5,8 @@
 Breaking: #67792 - Class aliases of Indexed Search removed
 ==========================================================
 
+See :issue:`67792`
+
 Description
 ===========
 

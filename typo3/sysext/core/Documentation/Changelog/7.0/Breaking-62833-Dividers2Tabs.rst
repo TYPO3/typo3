@@ -5,6 +5,8 @@
 Breaking: #62833 - Removed dividers2tabs functionality
 ======================================================
 
+See :issue:`62833`
+
 Description
 ===========
 

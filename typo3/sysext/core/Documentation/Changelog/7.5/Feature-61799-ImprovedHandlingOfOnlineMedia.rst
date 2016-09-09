@@ -5,6 +5,8 @@
 Feature: #61799 - Improved handling of online media
 ===================================================
 
+See :issue:`61799`
+
 Description
 ===========
 

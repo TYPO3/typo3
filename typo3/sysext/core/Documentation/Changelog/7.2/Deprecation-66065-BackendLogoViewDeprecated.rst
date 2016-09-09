@@ -5,6 +5,8 @@
 Deprecation: #66065 - Backend Logo View Deprecated
 ==================================================
 
+See :issue:`66065`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #61823 - Remove magic setter for $fromTC
 ==================================================
 
+See :issue:`61823`
+
 Description
 ===========
 

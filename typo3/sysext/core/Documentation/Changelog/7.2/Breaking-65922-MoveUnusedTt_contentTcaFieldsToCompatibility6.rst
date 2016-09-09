@@ -5,6 +5,8 @@
 Breaking: #65922 - Move unused tt_content TCA fields to compatibility6
 ======================================================================
 
+See :issue:`65922`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #56951 - Remove unused methods in PagePositionMap
 ===========================================================
 
+See :issue:`56951`
+
 Description
 ===========
 

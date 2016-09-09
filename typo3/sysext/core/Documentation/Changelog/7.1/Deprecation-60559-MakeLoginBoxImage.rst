@@ -5,6 +5,8 @@
 Deprecation: #60559 - makeLoginBoxImage()
 =========================================
 
+See :issue:`60559`
+
 Description
 ===========
 

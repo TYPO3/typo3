@@ -5,6 +5,8 @@
 Breaking: #64226 - Option $TYPO3_CONF_VARS[BE][accessListRenderMode] removed
 ============================================================================
 
+See :issue:`64226`
+
 Description
 ===========
 

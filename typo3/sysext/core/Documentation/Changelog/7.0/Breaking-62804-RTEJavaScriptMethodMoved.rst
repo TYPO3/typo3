@@ -5,6 +5,8 @@
 Breaking: #62804 - RTE JavaScript method HTMLArea.Editor::getNodeByPosition was moved
 =====================================================================================
 
+See :issue:`62804`
+
 Description
 ===========
 

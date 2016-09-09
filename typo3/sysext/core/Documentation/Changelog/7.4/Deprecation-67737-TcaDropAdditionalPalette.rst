@@ -5,6 +5,8 @@
 Deprecation: #67737 - TCA: Drop additional palette
 ==================================================
 
+See :issue:`67737`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #62733 - RTE Javascript Files Moved
 =============================================================
 
+See :issue:`62733`
+
 Description
 ===========
 

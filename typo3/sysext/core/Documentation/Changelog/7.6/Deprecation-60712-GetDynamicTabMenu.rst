@@ -5,6 +5,8 @@
 Deprecation: #60712 - DocumentTemplate->getDynamicTabMenu()
 ===========================================================
 
+See :issue:`60712`
+
 Description
 ===========
 

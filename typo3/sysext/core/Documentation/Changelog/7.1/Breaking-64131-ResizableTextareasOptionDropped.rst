@@ -5,6 +5,8 @@
 Breaking: #64131 - Resizable Textarea option removed
 ====================================================
 
+See :issue:`64131`
+
 Description
 ===========
 

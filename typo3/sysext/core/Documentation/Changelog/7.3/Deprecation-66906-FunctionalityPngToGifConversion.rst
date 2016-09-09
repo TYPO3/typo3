@@ -5,6 +5,8 @@
 Deprecation: #66906 - Functionality for png_to_gif conversion
 =============================================================
 
+See :issue:`66906`
+
 Description
 ===========
 

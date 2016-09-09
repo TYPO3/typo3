@@ -5,6 +5,8 @@
 Deprecation: #67402 - Extbase AbstractDomainObject __wakeup()
 =============================================================
 
+See :issue:`67402`
+
 Description
 ===========
 

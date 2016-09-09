@@ -5,6 +5,8 @@
 Breaking: #72931 - SearchFormController::pi_list_browseresults() has been renamed
 =================================================================================
 
+See :issue:`72931`
+
 Description
 ===========
 

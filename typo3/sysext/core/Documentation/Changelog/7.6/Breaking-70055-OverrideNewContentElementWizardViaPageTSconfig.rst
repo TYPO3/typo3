@@ -5,6 +5,8 @@
 Breaking: #70055 - Override New Content Element Wizard via page TSconfig
 ========================================================================
 
+See :issue:`70055`
+
 Description
 ===========
 

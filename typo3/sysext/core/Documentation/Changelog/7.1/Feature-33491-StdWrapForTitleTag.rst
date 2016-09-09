@@ -5,6 +5,8 @@
 Feature: #33491 - Add stdWrap functionality to <title> tag
 ==========================================================
 
+See :issue:`33491`
+
 Description
 ===========
 

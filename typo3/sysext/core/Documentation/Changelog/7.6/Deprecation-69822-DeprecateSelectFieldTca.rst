@@ -5,6 +5,8 @@
 Deprecation: #69822 - Deprecate TCA settings of select fields
 =============================================================
 
+See :issue:`69822`
+
 Description
 ===========
 

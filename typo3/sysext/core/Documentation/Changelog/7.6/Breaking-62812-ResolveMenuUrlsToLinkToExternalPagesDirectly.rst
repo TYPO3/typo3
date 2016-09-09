@@ -5,6 +5,8 @@
 Breaking: #62812 - Resolve URLs to "Link to external URL"-pages directly
 ========================================================================
 
+See :issue:`62812`
+
 Description
 ===========
 

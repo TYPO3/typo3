@@ -5,6 +5,8 @@
 Feature: #20555 - Strip empty HTML tags in HtmlParser
 =====================================================
 
+See :issue:`20555`
+
 Description
 ===========
 

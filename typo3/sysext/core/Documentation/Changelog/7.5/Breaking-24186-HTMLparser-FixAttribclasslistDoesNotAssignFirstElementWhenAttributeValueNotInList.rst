@@ -5,6 +5,8 @@
 Breaking: #24186 - HTMLparser - fixAttrib.['class'].list does not assign first element, when attribute value not in list
 ========================================================================================================================
 
+See :issue:`24186`
+
 
 Description
 ===========

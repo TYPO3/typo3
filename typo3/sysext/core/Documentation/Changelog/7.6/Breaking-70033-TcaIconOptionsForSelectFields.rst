@@ -5,6 +5,8 @@
 Breaking: #70033 - TCA icon options have been removed
 =====================================================
 
+See :issue:`70033`
+
 Description
 ===========
 

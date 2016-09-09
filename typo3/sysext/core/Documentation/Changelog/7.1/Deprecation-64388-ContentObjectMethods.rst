@@ -5,6 +5,8 @@
 Deprecation: #64388 - Direct ContentObject methods within ContentObjectRenderer
 ===============================================================================
 
+See :issue:`64388`
+
 Description
 ===========
 

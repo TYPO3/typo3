@@ -5,6 +5,8 @@
 Breaking: #63453 - Changed rendering of FlashMessagesViewHelper
 ===============================================================
 
+See :issue:`63453`
+
 Description
 ===========
 

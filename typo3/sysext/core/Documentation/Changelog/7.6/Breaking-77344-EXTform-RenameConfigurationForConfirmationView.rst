@@ -5,6 +5,8 @@
 Breaking: #77344 - EXT:form - Rename configuration for confirmation view
 ========================================================================
 
+See :issue:`77344`
+
 Description
 ===========
 

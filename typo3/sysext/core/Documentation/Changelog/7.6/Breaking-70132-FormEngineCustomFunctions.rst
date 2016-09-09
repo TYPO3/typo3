@@ -5,6 +5,8 @@
 Breaking: #70132 - FormEngine custom functions
 ==============================================
 
+See :issue:`70132`
+
 Description
 ===========
 

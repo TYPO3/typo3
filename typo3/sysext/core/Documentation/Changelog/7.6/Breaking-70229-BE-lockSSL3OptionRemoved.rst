@@ -5,6 +5,8 @@
 Breaking: #70229 - BE-lockSSL = 3 option removed
 ================================================
 
+See :issue:`70229`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #67880 - Added count to listNum
 ========================================
 
+See :issue:`67880`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #65913 - Deprecate $TSFE->checkFileInclude
 =======================================================
 
+See :issue:`65913`
+
 Description
 ===========
 

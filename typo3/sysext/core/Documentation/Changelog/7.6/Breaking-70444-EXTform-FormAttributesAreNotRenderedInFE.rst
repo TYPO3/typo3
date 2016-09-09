@@ -5,6 +5,8 @@
 Breaking: #70444 - EXT:form - Form attributes are not rendered in FE
 ====================================================================
 
+See :issue:`70444`
+
 Description
 ===========
 

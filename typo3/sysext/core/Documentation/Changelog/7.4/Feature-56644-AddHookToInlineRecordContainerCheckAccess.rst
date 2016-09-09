@@ -5,6 +5,8 @@
 Feature: #56644 - Hook for InlineRecordContainer::checkAccess()
 ===============================================================
 
+See :issue:`56644`
+
 Description
 ===========
 

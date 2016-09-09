@@ -5,6 +5,8 @@
 Feature: #69602 - Simplify handling of backend layouts in frontend
 ==================================================================
 
+See :issue:`69602`
+
 Description
 ===========
 

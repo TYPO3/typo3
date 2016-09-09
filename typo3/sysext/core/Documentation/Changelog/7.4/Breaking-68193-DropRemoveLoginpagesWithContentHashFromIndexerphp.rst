@@ -5,6 +5,8 @@
 Breaking: #68193 - Drop removeLoginpagesWithContentHash from Indexer.php
 ========================================================================
 
+See :issue:`68193`
+
 Description
 ===========
 

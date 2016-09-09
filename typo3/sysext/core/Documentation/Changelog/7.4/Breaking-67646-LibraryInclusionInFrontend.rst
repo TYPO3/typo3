@@ -5,6 +5,8 @@
 Breaking: #67646 - PHP library inclusion in frontend removed
 ============================================================
 
+See :issue:`67646`
+
 Description
 ===========
 

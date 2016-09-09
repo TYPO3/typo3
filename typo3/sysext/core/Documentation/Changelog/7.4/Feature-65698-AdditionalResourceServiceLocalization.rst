@@ -5,6 +5,8 @@
 Feature: #65698 - Additional localization files in backend workspace module
 ===========================================================================
 
+See :issue:`65698`
+
 Description
 ===========
 

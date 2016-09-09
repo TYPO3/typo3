@@ -5,6 +5,8 @@
 Feature: #67880 - Added count to split
 ======================================
 
+See :issue:`67880`
+
 Description
 ===========
 

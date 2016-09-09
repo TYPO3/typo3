@@ -5,6 +5,8 @@
 Breaking: #67545 - PreFileAdd signal behaviour changed
 ======================================================
 
+See :issue:`67545`
+
 Description
 ===========
 

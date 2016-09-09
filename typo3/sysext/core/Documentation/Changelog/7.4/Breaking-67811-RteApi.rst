@@ -5,6 +5,8 @@
 Breaking: #67811 - Rte API
 ==========================
 
+See :issue:`67811`
+
 Description
 ===========
 

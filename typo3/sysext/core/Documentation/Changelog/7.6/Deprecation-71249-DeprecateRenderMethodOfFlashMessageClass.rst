@@ -5,6 +5,8 @@
 Deprecation: #71249 - Deprecate render method of FlashMessage class
 ===================================================================
 
+See :issue:`71249`
+
 Description
 ===========
 

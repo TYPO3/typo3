@@ -5,6 +5,8 @@
 Deprecation: #62893 - Flashmessage JavaScript object TYPO3.Flashmessages was moved
 ==================================================================================
 
+See :issue:`62893`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #61786 - remove deprecated TypeHandlingService in extbase
 ===================================================================
 
+See :issue:`61786`
+
 Description
 ===========
 

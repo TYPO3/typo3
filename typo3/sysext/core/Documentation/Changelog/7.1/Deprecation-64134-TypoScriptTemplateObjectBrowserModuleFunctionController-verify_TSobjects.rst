@@ -5,6 +5,8 @@
 Deprecation: #64134 - Deprecate TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()
 ===========================================================================================================
 
+See :issue:`64134`
+
 Description
 ===========
 

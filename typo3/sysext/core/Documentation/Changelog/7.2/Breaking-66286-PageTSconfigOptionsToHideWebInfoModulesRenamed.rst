@@ -5,6 +5,8 @@
 Breaking: #66286 - Page TSconfig options to hide Web Info modules renamed
 =========================================================================
 
+See :issue:`66286`
+
 Description
 ===========
 

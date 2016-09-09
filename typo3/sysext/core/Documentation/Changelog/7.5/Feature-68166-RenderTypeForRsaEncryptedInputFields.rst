@@ -5,6 +5,8 @@
 Feature: #67932 - RenderType for rsa encrypted input fields
 ===========================================================
 
+See :issue:`67932`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #54518 - Provide TSconfig to link checkers
 ===================================================
 
+See :issue:`54518`
+
 Description
 ===========
 

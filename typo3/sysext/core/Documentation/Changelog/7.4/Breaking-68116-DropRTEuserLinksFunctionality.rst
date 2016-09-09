@@ -5,6 +5,8 @@
 Breaking: #68116 - Drop RTE.userLinks functionality
 ===================================================
 
+See :issue:`68116`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #68010 - T3Editor - Event callbacks for codecompletion have changed
 =============================================================================
 
+See :issue:`68010`
+
 Description
 ===========
 

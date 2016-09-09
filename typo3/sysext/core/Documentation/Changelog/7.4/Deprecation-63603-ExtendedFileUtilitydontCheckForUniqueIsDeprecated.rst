@@ -5,6 +5,8 @@
 Deprecation: #63603 - ExtendedFileUtility::$dontCheckForUnique is deprecated
 ============================================================================
 
+See :issue:`63603`
+
 Description
 ===========
 

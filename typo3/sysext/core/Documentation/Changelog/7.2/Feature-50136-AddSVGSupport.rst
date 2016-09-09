@@ -5,6 +5,8 @@
 Feature: #50136 - Add SVG support
 =================================
 
+See :issue:`50136`
+
 Description
 ===========
 

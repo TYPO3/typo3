@@ -5,6 +5,8 @@
 Deprecation: #62800 - Workspaces ToolbarItem via ExtDirect
 ==========================================================
 
+See :issue:`62800`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #66001 - Third-party libraries installed via composer are now in vendor
 =================================================================================
 
+See :issue:`66001`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #60019 - New SplFileInfo implementation with new mimeTypeGuessers hook
 ===============================================================================
 
+See :issue:`60019`
+
 Description
 ===========
 

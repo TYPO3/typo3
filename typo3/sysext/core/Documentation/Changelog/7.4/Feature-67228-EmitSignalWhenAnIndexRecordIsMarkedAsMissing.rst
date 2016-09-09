@@ -5,6 +5,8 @@
 Feature: #67228 - Emit Signal when an IndexRecord is marked as missing
 ======================================================================
 
+See :issue:`67228`
+
 Description
 ===========
 

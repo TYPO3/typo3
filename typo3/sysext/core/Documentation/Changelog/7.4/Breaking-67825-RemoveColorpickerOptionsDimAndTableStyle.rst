@@ -5,6 +5,8 @@
 Breaking: #67825 - Remove colorpicker options "dim" and "tableStyle"
 ====================================================================
 
+See :issue:`67825`
+
 Description
 ===========
 

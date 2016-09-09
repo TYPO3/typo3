@@ -5,6 +5,8 @@
 Feature: #68282 - Make DatabaseRecordList configurable to be editable
 =====================================================================
 
+See :issue:`68282`
+
 Description
 ===========
 

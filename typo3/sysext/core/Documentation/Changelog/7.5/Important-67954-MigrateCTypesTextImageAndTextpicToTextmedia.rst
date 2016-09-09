@@ -5,6 +5,8 @@
 Important: #67954 - Migrate CTypes text, image and textpic to textmedia
 =======================================================================
 
+See :issue:`67954`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #69262 - Move marker substitution functionality to own class
 =========================================================================
 
+See :issue:`69262`
+
 Description
 ===========
 

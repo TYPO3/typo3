@@ -5,6 +5,8 @@
 Deprecation: #70052 - TCA Display condition EXT LOADED
 ======================================================
 
+See :issue:`70052`
+
 Description
 ===========
 

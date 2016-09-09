@@ -5,6 +5,8 @@
 Breaking: #69916 - Hook ajaxSaveCode of t3editor changed
 ========================================================
 
+See :issue:`69916`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69291 - Changed registration of backend module icons
 ===============================================================
 
+See :issue:`69291`
+
 Description
 ===========
 

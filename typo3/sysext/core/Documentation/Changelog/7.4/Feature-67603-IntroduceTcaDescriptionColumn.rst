@@ -5,6 +5,8 @@
 Feature: #67603 - Introduce TCA > ctrl > descriptionColumn
 ==========================================================
 
+See :issue:`67603`
+
 Description
 ===========
 

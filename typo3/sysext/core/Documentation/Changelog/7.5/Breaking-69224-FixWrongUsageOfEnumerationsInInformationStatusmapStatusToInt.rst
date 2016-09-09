@@ -5,6 +5,8 @@
 Breaking: #69224 - Fix wrong usage of enumerations in InformationStatus::mapStatusToInt()
 =========================================================================================
 
+See :issue:`69224`
+
 Description
 ===========
 

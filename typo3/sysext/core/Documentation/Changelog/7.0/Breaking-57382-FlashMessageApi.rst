@@ -5,6 +5,8 @@
 Breaking: #57382 - Remove old flash message API
 ===============================================
 
+See :issue:`57382`
+
 Description
 ===========
 

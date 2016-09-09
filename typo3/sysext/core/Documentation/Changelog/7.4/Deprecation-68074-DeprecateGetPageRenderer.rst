@@ -5,6 +5,8 @@
 Deprecation: #68074 - Deprecate getPageRenderer() methods
 =========================================================
 
+See :issue:`68074`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #67824 - typo3/ext folder removed
 ===========================================
 
+See :issue:`67824`
+
 Description
 ===========
 

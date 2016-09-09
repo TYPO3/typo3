@@ -5,6 +5,8 @@
 Deprecation: #65934 - "Prefix Local Anchors" functionality moved to legacy extension
 ====================================================================================
 
+See :issue:`65934`
+
 Description
 ===========
 

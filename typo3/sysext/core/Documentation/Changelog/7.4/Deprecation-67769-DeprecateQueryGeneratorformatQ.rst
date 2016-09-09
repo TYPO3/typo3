@@ -5,6 +5,8 @@
 Deprecation: #67769 - Deprecate QueryGenerator::formatQ()
 =========================================================
 
+See :issue:`67769`
+
 Description
 ===========
 

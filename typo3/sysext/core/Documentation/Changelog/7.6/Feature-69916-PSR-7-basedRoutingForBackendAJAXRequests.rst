@@ -5,6 +5,8 @@
 Feature: #69916 - PSR-7-based Routing for Backend AJAX Requests
 ===============================================================
 
+See :issue:`69916`
+
 Description
 ===========
 

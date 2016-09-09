@@ -5,6 +5,8 @@
 Feature: #59606 - Integrate Symfony/Console into CommandController
 ==================================================================
 
+See :issue:`59606`
+
 Description
 ===========
 

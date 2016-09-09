@@ -5,6 +5,8 @@
 Breaking: #68131 - Streamline error and exception handling
 ==========================================================
 
+See :issue:`68131`
+
 Description
 ===========
 

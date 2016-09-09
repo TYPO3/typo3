@@ -5,6 +5,8 @@
 Deprecation: #70477 - Deprecate SpriteIcon classes
 ==================================================
 
+See :issue:`70477`
+
 Description
 ===========
 

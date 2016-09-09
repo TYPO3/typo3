@@ -5,6 +5,8 @@
 Breaking: #69916 - Removed BackendLogin::getRsaPublicKey AJAX handler
 =====================================================================
 
+See :issue:`69916`
+
 Description
 ===========
 

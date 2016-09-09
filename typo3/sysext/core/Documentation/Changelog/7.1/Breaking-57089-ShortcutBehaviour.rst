@@ -5,6 +5,8 @@
 Breaking: #57089 - Behaviour of page shortcut to "Parent of selected or current page"
 =====================================================================================
 
+See :issue:`57089`
+
 Description
 ===========
 

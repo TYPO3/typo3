@@ -5,6 +5,8 @@
 Deprecation: #65283 - Deprecate show item entry point
 =====================================================
 
+See :issue:`65283`
+
 Description
 ===========
 

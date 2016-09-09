@@ -5,6 +5,8 @@
 Breaking: #63110 - alt_doc_nodoc.php removed
 ============================================
 
+See :issue:`63110`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #61489 - Allow own TypoScript Condition implementations
 ================================================================
 
+See :issue:`61489`
+
 Description
 ===========
 

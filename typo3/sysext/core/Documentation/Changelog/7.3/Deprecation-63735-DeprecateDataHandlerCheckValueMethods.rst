@@ -5,6 +5,8 @@
 Deprecation: #63735 - Deprecate DataHandler->checkValue_*-methods
 =================================================================
 
+See :issue:`63735`
+
 Description
 ===========
 

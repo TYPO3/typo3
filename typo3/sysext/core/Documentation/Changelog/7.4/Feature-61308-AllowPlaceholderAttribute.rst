@@ -5,6 +5,8 @@
 Feature: #61308 - Allow Placeholder attribute
 =============================================
 
+See :issue:`61308`
+
 Description
 ===========
 

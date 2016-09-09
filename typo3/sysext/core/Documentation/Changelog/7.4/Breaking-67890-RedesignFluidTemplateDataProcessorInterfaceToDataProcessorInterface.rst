@@ -5,6 +5,8 @@
 Breaking: #67890 - Redesign FluidTemplateDataProcessorInterface to DataProcessorInterface
 =========================================================================================
 
+See :issue:`67890`
+
 Description
 ===========
 

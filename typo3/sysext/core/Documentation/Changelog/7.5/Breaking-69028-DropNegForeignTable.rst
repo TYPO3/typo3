@@ -5,6 +5,8 @@
 Breaking: #69028 - TCA type select - Drop neg_foreign_table
 ===========================================================
 
+See :issue:`69028`
+
 
 Description
 ===========

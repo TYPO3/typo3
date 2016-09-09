@@ -5,6 +5,8 @@
 Feature: #59712 - Additional params for HTMLparser userFunc
 ===========================================================
 
+See :issue:`59712`
+
 Description
 ===========
 

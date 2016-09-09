@@ -5,6 +5,8 @@
 Deprecation: #65289 - Deprecate browser entry point
 ===================================================
 
+See :issue:`65289`
+
 Description
 ===========
 

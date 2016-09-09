@@ -5,6 +5,8 @@
 Feature: #67765 - Introduce TypoLinkCodecService
 ================================================
 
+See :issue:`67765`
+
 Description
 ===========
 

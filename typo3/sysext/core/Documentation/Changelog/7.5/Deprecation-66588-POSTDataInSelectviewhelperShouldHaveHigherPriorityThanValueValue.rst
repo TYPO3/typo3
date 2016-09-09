@@ -5,6 +5,8 @@
 Deprecation: #66588 - POST Data in selectviewhelper should have higher priority than "value" value
 ==================================================================================================
 
+See :issue:`66588`
+
 Description
 ===========
 

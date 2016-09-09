@@ -5,6 +5,8 @@
 Feature: #70332 - EXT:form - Add HTML4 / HTML5 attributes to the wizard
 =======================================================================
 
+See :issue:`70332`
+
 Description
 ===========
 

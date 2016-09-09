@@ -5,6 +5,8 @@
 Feature: #66822 - Allow Sprites For Backend Modules
 ===================================================
 
+See :issue:`66822`
+
 Description
 ===========
 

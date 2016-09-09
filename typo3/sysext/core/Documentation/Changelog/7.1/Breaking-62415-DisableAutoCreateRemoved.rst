@@ -5,6 +5,8 @@
 Breaking: #62415 - Remove deprecated disable_autocreate field in workspaces
 ===========================================================================
 
+See :issue:`62415`
+
 Description
 ===========
 

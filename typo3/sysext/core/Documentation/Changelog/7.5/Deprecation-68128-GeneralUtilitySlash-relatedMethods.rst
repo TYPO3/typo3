@@ -5,6 +5,8 @@
 Deprecation: #68128 - GeneralUtility slash-related methods
 ==========================================================
 
+See :issue:`68128`
+
 Description
 ===========
 

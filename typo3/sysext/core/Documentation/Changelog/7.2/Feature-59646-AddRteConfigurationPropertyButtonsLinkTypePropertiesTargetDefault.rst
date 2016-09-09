@@ -5,6 +5,8 @@
 Feature: #59646 - Add RTE configuration property buttons.link.[*type*].properties.target.default
 ================================================================================================
 
+See :issue:`59646`
+
 Description
 ===========
 

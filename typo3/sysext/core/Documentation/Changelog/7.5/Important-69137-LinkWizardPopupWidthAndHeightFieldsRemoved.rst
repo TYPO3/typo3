@@ -5,6 +5,8 @@
 Important: #69137 - Link Wizard popup width and height fields removed
 =====================================================================
 
+See :issue:`69137`
+
 Description
 ===========
 

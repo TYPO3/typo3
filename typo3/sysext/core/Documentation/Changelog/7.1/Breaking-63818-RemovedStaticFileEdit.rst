@@ -5,6 +5,8 @@
 Breaking: #63818 - Removed Static file edit functionality
 =========================================================
 
+See :issue:`63818`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #69561 - Replace sprite icons with IconFactory in ContextMenu
 ==========================================================================
 
+See :issue:`69561`
+
 Description
 ===========
 

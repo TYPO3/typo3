@@ -5,6 +5,8 @@
 Breaking: #61821 - classFile option in makeInstanceService removed
 ==================================================================
 
+See :issue:`61821`
+
 Description
 ===========
 

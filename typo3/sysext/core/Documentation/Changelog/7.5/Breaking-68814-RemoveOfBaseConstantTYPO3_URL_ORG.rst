@@ -5,6 +5,8 @@
 Breaking: #68814 - Remove of base constant TYPO3_URL_ORG
 ========================================================
 
+See :issue:`68814`
+
 Description
 ===========
 

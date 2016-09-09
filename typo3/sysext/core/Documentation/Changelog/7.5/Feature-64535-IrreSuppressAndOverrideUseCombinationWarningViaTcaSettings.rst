@@ -5,6 +5,8 @@
 Feature: #64535 - IRRE: Suppress and override useCombination warning via TCA settings
 =====================================================================================
 
+See :issue:`64535`
+
 Description
 ===========
 

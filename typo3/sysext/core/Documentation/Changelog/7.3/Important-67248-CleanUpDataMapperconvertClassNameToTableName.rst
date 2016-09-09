@@ -5,6 +5,8 @@
 Important: #67248 - Clean up DataMapper::convertClassNameToTableName
 ====================================================================
 
+See :issue:`67248`
+
 Description
 ===========
 

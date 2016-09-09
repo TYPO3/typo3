@@ -5,6 +5,8 @@
 Breaking: #68178 - Drop $GLOBALS['TYPO3_CONF_VARS']['SYS]['form_enctype']
 =========================================================================
 
+See :issue:`68178`
+
 Description
 ===========
 

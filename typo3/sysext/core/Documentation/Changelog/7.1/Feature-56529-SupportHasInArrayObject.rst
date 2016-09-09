@@ -5,6 +5,8 @@
 Feature: #56529 - Support \"has*\" Functions in ObjectAccess
 ============================================================
 
+See :issue:`56529`
+
 Description
 ===========
 

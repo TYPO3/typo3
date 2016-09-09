@@ -5,6 +5,8 @@
 Feature: #24906 - Configuration for maximum chars in TextElement
 ================================================================
 
+See :issue:`24906`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69904 - Remove Setting diff_path from DefaultConfiguration
 =====================================================================
 
+See :issue:`69904`
+
 Description
 ===========
 

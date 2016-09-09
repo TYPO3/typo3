@@ -5,6 +5,8 @@
 Feature: #68047 - Emit a signal for each mapped object
 ======================================================
 
+See :issue:`68047`
+
 Description
 ===========
 

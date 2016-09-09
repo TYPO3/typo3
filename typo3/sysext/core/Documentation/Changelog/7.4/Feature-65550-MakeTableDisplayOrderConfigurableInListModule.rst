@@ -5,6 +5,8 @@
 Feature: #65550 - Make table display order configurable in List module
 ======================================================================
 
+See :issue:`65550`
+
 Description
 ===========
 

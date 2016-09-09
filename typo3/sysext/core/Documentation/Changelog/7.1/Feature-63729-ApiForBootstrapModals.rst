@@ -5,6 +5,8 @@
 Feature: #63729 - API for Twitter Bootstrap modals
 ==================================================
 
+See :issue:`63729`
+
 Description
 ===========
 

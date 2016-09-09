@@ -5,6 +5,8 @@
 Deprecation: #65956 - $returnHTML parameter of DebugUtility::debugRows()
 ========================================================================
 
+See :issue:`65956`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #45725 - Added recursive option to folder based file collections
 =========================================================================
 
+See :issue:`45725`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69276 - ElementBrowserController::$browser removed
 =============================================================
 
+See :issue:`69276`
+
 Description
 ===========
 

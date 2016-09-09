@@ -5,6 +5,8 @@
 Deprecation: #70138 - Flex form language handling
 =================================================
 
+See :issue:`70138`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #35245 - Rework workspace notification settings
 ========================================================
 
+See :issue:`35245`
+
 Description
 ===========
 

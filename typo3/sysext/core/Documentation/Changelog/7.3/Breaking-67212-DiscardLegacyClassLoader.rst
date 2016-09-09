@@ -5,6 +5,8 @@
 Breaking: #67212 - Discard TYPO3 class loader
 =============================================
 
+See :issue:`67212`
+
 Description
 ===========
 

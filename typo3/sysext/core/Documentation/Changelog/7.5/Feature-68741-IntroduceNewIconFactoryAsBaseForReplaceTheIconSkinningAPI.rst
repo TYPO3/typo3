@@ -5,6 +5,8 @@
 Feature: #68741 - Introduce new IconFactory as base to replace the icon skinning API
 ====================================================================================
 
+See :issue:`68741`
+
 Description
 ===========
 

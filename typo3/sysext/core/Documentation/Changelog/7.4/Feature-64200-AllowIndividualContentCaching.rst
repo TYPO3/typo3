@@ -5,6 +5,8 @@
 Feature: #64200 - Allow individual content caching
 ==================================================
 
+See :issue:`64200`
+
 Description
 ===========
 

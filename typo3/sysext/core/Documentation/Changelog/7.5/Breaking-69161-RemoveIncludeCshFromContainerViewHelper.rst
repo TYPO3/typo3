@@ -5,6 +5,8 @@
 Breaking: #69161 - Removed includeCsh setting from ContainerViewHelper
 ======================================================================
 
+See :issue:`69161`
+
 Description
 ===========
 

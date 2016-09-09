@@ -5,6 +5,8 @@
 Deprecation: #69028 - RelationHandler convertPosNeg()
 =====================================================
 
+See :issue:`69028`
+
 
 Description
 ===========

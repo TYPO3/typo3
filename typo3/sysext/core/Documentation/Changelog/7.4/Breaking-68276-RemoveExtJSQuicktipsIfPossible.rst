@@ -5,6 +5,8 @@
 Breaking: #68276 - Remove ExtJS Quicktips if possible
 =====================================================
 
+See :issue:`68276`
+
 Description
 ===========
 

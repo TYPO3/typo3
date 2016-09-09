@@ -5,6 +5,8 @@
 Feature: #65791 - Use PHP configured sendmail path, if [MAIL][transport] = sendmail is active
 =============================================================================================
 
+See :issue:`65791`
+
 Description
 ===========
 

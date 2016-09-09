@@ -5,6 +5,8 @@
 Breaking: #69168 - Removed non-tabbed view of Content Element Wizard
 ====================================================================
 
+See :issue:`69168`
+
 Description
 ===========
 

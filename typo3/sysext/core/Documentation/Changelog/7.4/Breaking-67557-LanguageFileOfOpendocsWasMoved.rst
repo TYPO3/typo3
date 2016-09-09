@@ -5,6 +5,8 @@
 Breaking: #67557 - Language file of Opendocs was moved
 ======================================================
 
+See :issue:`67557`
+
 Description
 ===========
 

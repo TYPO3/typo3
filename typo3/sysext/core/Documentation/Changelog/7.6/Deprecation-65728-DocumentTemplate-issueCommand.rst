@@ -5,6 +5,8 @@
 Deprecation: #65728 - DocumentTemplate->issueCommand()
 ======================================================
 
+See :issue:`65728`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #67506 - Deprecate IconUtility::getIcon
 ====================================================
 
+See :issue:`67506`
+
 Description
 ===========
 

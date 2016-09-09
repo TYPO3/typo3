@@ -5,6 +5,8 @@
 Breaking: #64643 - Remove functionality for enable_typo3temp_db_tracking
 ========================================================================
 
+See :issue:`64643`
+
 Description
 ===========
 

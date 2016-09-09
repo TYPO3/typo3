@@ -5,6 +5,8 @@
 Deprecation: #69078 - TemplateService::$tempPath
 ================================================
 
+See :issue:`69078`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69916 - Registered AJAX handlers replaced by routes
 ==============================================================
 
+See :issue:`69916`
+
 Description
 ===========
 

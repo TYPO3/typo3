@@ -5,6 +5,8 @@
 Feature: #22175 - Support IEC/SI units in file size formatting
 ==============================================================
 
+See :issue:`22175`
+
 Description
 ===========
 

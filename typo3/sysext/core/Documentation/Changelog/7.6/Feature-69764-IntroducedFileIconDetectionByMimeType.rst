@@ -5,6 +5,8 @@
 Feature: #69764 - Introduced file icon detection by mime-type
 =============================================================
 
+See :issue:`69764`
+
 Description
 ===========
 

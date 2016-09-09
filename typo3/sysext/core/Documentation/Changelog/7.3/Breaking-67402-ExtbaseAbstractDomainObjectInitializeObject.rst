@@ -5,6 +5,8 @@
 Breaking: #67402 - Extbase AbstractDomainObject initializeObject
 ================================================================
 
+See :issue:`67402`
+
 Description
 ===========
 

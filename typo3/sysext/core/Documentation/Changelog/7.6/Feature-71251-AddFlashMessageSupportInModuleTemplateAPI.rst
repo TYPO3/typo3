@@ -5,6 +5,8 @@
 Feature: #71251 - Add FlashMessage support in ModuleTemplate API
 ================================================================
 
+See :issue:`71251`
+
 Description
 ===========
 

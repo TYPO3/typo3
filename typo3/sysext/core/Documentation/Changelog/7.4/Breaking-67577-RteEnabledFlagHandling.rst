@@ -5,6 +5,8 @@
 Breaking: #67577 - rte_enabled and flag handling
 ================================================
 
+See :issue:`67577`
+
 Description
 ===========
 

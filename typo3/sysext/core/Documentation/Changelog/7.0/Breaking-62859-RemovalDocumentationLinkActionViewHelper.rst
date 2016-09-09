@@ -5,6 +5,8 @@
 Breaking: #62859 - Removal of doc:link.action view helper
 =========================================================
 
+See :issue:`62859`
+
 Description
 ===========
 

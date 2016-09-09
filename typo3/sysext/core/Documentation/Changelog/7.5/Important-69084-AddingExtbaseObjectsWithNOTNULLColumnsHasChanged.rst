@@ -5,6 +5,8 @@
 Important: #69084 - Adding Extbase Objects with NOT NULL columns has changed
 ============================================================================
 
+See :issue:`69084`
+
 Description
 ===========
 

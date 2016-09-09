@@ -5,6 +5,8 @@
 Breaking: #68401 - SqlParser moved into EXT:dbal
 ================================================
 
+See :issue:`68401`
+
 Description
 ===========
 

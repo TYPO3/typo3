@@ -5,6 +5,8 @@
 Deprecation: #65465 - Deprecate errorLog in ReferenceIndex
 ==========================================================
 
+See :issue:`65465`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #70033 - Introduced TCA option showIconTable for selectSingle fields
 =============================================================================
 
+See :issue:`70033`
+
 Description
 ===========
 

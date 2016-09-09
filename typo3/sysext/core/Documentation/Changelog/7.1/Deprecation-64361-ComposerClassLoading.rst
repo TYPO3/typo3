@@ -5,6 +5,8 @@
 Deprecation: #64361 - Composer Class Loading
 ============================================
 
+See :issue:`64361`
+
 Description
 ===========
 

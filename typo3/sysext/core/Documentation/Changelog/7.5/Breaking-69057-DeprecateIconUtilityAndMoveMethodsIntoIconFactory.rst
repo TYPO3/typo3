@@ -5,6 +5,8 @@
 Breaking: #69057 - Deprecate IconUtility and move methods into IconFactory
 ==========================================================================
 
+See :issue:`69057`
+
 Description
 ===========
 

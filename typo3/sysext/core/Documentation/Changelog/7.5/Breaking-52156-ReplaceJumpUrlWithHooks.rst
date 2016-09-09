@@ -5,6 +5,8 @@
 Breaking: #52156 - Replaced JumpURL features with hooks
 =======================================================
 
+See :issue:`52156`
+
 Description
 ===========
 

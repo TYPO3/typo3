@@ -5,6 +5,8 @@
 Feature: #69814 - ModuleTemplate API
 ====================================
 
+See :issue:`69814`
+
 Challenge
 =========
 

@@ -5,6 +5,8 @@
 Important: #68758 - Command controllers allowed in subfolders
 =============================================================
 
+See :issue:`68758`
+
 Description
 ===========
 

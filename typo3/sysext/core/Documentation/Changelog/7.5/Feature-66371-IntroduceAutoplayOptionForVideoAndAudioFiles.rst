@@ -5,6 +5,8 @@
 Feature: #66371 - Introduce autoplay option for video and audio files
 =====================================================================
 
+See :issue:`66371`
+
 Description
 ===========
 

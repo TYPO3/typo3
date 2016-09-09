@@ -5,6 +5,8 @@
 Feature: #64386 - Public Content Object Registration
 ====================================================
 
+See :issue:`64386`
+
 Description
 ===========
 

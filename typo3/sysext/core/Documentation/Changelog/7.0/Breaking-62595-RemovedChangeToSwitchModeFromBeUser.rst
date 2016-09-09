@@ -5,6 +5,8 @@
 Breaking: #62595 - Remove SU change-to mode
 ===========================================
 
+See :issue:`62595`
+
 Description
 ===========
 

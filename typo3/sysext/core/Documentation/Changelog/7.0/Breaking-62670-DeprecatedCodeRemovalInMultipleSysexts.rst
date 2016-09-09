@@ -5,6 +5,8 @@
 Breaking: #62670 - Removal of deprecated code in multiple sysexts
 =================================================================
 
+See :issue:`62670`
+
 Description
 ===========
 

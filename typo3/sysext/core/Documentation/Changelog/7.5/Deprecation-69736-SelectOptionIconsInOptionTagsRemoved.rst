@@ -5,6 +5,8 @@
 Important: #69736 - Select option iconsInOptionTags removed
 ===========================================================
 
+See :issue:`69736`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #64714 - Catch exceptions for inaccessible storages
 =============================================================
 
+See :issue:`64714`
+
 Description
 ===========
 

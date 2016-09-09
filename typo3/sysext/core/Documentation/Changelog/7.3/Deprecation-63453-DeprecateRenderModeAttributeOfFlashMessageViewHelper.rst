@@ -5,6 +5,8 @@
 Deprecation: #63453 - Deprecate renderMode attribute of FlashMessagesViewHelper
 ===============================================================================
 
+See :issue:`63453`
+
 Description
 ===========
 

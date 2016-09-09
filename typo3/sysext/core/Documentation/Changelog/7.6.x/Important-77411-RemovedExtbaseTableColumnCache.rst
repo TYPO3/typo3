@@ -5,6 +5,8 @@
 Important: #77411 - Removed extbase table column cache
 ======================================================
 
+See :issue:`77411`
+
 Description
 ===========
 

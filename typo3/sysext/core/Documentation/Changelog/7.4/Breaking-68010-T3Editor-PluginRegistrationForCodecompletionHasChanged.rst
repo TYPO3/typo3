@@ -5,6 +5,8 @@
 Breaking: #68010 - T3Editor - Plugin registration for codecompletion has changed
 ================================================================================
 
+See :issue:`68010`
+
 Description
 ===========
 

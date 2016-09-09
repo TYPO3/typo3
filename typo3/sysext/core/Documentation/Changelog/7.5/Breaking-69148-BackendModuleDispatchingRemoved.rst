@@ -5,6 +5,8 @@
 Breaking: #69148 - Backend Module Dispatching removed
 =====================================================
 
+See :issue:`69148`
+
 Description
 ===========
 

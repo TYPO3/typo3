@@ -5,6 +5,8 @@
 Feature: #66366 - Introduced MediaViewHelper
 ============================================
 
+See :issue:`66366`
+
 Description
 ===========
 

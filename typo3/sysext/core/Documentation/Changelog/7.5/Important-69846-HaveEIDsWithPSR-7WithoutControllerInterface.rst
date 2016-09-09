@@ -5,6 +5,8 @@
 Important: #69846 - Have eIDs with PSR-7 without ControllerInterface
 ====================================================================
 
+See :issue:`69846`
+
 Description
 ===========
 

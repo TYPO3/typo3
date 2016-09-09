@@ -5,6 +5,8 @@
 Breaking: #56746 - Add count methods and sort functionality to FAL drivers
 ==========================================================================
 
+See :issue:`56746`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #62914 - Early check for PHP 5.5 in Install Tool
 ==========================================================
 
+See :issue:`62914`
+
 Description
 ===========
 

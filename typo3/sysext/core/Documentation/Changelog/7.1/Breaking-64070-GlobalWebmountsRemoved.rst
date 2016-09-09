@@ -5,6 +5,8 @@
 Breaking: #64070 - Removed global variable WEBMOUNTS
 ====================================================
 
+See :issue:`64070`
+
 Description
 ===========
 

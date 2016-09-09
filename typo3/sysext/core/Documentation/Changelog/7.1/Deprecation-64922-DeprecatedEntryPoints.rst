@@ -5,6 +5,8 @@
 Deprecation: #64922 - Deprecated entry points
 =============================================
 
+See :issue:`64922`
+
 Description
 ===========
 

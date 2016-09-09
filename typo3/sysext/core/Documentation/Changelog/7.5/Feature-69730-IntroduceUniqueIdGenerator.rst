@@ -5,6 +5,8 @@
 Feature: #69730 - Introduce uniqueId generator
 ==============================================
 
+See :issue:`69730`
+
 Description
 ===========
 

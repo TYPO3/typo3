@@ -5,6 +5,8 @@
 Feature: #66445 - Add file extension to mimeType mapping
 ========================================================
 
+See :issue:`66445`
+
 Description
 ===========
 

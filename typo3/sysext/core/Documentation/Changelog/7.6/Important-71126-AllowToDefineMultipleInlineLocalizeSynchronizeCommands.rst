@@ -5,6 +5,8 @@
 Important: #71126 - Allow to define multiple inlineLocalizeSynchronize commands
 ===============================================================================
 
+See :issue:`71126`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #47666 - Attribute \"multiple\" for f:form.upload Viewhelper
 =====================================================================
 
+See :issue:`47666`
+
 Description
 ===========
 

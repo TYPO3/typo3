@@ -5,6 +5,8 @@
 Breaking: #33805 - ClickMenu Rewrite
 ====================================
 
+See :issue:`33805`
+
 Description
 ===========
 

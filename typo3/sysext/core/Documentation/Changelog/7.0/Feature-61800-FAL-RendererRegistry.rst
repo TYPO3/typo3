@@ -5,6 +5,8 @@
 Feature: #61800 - Registry for adding file rendering classes
 ============================================================
 
+See :issue:`61800`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #64286 - Added absolute url option to uri.image and image viewHelper
 =============================================================================
 
+See :issue:`64286`
+
 Description
 ===========
 

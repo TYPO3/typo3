@@ -5,6 +5,8 @@
 Deprecation: #47712 - Deprecate old Locking API
 ===============================================
 
+See :issue:`47712`
+
 Description
 ===========
 

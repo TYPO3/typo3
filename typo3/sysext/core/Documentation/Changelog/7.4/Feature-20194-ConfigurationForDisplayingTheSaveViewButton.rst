@@ -5,6 +5,8 @@
 Feature: #20194 - Configuration for displaying the "Save & View" button
 =======================================================================
 
+See :issue:`20194`
+
 Description
 ===========
 

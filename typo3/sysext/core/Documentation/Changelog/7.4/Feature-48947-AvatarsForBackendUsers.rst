@@ -5,6 +5,8 @@
 Feature: #48947 - Avatars for backend users
 ===========================================
 
+See :issue:`48947`
+
 Description
 ===========
 

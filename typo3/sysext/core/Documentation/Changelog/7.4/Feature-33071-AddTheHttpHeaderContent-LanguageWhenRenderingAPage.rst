@@ -5,6 +5,8 @@
 Feature: #33071 - Add the http header "Content-Language" when rendering a page
 ==============================================================================
 
+See :issue:`33071`
+
 Description
 ===========
 

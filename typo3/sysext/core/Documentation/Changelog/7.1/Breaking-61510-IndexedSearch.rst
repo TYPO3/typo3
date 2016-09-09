@@ -5,6 +5,8 @@
 Breaking: #61510 - Improvement of indexed_search
 ================================================
 
+See :issue:`61510`
+
 Description
 ===========
 

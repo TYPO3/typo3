@@ -5,6 +5,8 @@
 Deprecation: #62329 - Deprecate DocumentTable::table()
 ======================================================
 
+See :issue:`62329`
+
 Description
 ===========
 

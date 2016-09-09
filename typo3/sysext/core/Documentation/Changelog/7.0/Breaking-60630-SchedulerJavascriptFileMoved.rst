@@ -5,6 +5,8 @@
 Breaking: #60630 - Scheduler Javascript File Moved
 =============================================================
 
+See :issue:`60630`
+
 Description
 ===========
 

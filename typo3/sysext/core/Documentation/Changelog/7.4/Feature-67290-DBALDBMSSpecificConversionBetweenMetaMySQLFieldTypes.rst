@@ -5,6 +5,8 @@
 Feature: #67290 - DBAL: DBMS specific conversion between Meta/MySQL field types
 ===============================================================================
 
+See :issue:`67290`
+
 Description
 ===========
 

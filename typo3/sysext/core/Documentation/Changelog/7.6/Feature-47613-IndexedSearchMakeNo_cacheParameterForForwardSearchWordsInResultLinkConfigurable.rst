@@ -5,6 +5,8 @@
 Feature: #47613 - Indexed Search: make no_cache parameter for forwardSearchWordsInResultLink configurable
 =========================================================================================================
 
+See :issue:`47613`
+
 Description
 ===========
 

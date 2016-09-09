@@ -5,6 +5,8 @@
 Deprecation: #67029 - Deprecate page.bgImg option
 =================================================
 
+See :issue:`67029`
+
 Description
 ===========
 

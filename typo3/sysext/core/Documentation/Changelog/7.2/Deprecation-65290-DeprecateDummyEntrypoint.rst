@@ -5,6 +5,8 @@
 Deprecation: #65290 - Deprecate dummy entry point
 =================================================
 
+See :issue:`65290`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #68746 - Add annotation for CLI only commands
 ======================================================
 
+See :issue:`68746`
+
 Description
 ===========
 

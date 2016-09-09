@@ -5,6 +5,8 @@
 Feature: #66709 - Add TemplateRootPaths support to Fluid/View/StandaloneView
 ============================================================================
 
+See :issue:`66709`
+
 Description
 ===========
 

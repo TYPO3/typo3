@@ -5,6 +5,8 @@
 Deprecation: #65293 - Deprecate file navigation frame entry point
 =================================================================
 
+See :issue:`65293`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #64671 - Outdated ContentObject IMGTEXT moved to legacy extension
 ===========================================================================
 
+See :issue:`64671`
+
 Description
 ===========
 

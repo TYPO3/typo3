@@ -5,6 +5,8 @@
 Feature: #46624 - Additional HMENU browse menus
 ===============================================
 
+See :issue:`46624`
+
 Description
 ===========
 

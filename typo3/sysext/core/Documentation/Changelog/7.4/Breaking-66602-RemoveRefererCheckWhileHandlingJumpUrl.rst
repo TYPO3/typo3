@@ -5,6 +5,8 @@
 Breaking: #66602 - Check jumpUrl referer has been removed
 =========================================================
 
+See :issue:`66602`
+
 Description
 ===========
 

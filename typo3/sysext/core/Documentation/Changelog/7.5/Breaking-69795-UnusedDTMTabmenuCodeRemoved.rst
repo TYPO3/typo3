@@ -5,6 +5,8 @@
 Breaking: #69795 - Unused DTM Tabmenu code removed
 ==================================================
 
+See :issue:`69795`
+
 Description
 ===========
 

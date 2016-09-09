@@ -5,6 +5,8 @@
 Deprecation: #65381 - Deprecate DataHandler property "stripslashes_values"
 ==========================================================================
 
+See :issue:`65381`
+
 Description
 ===========
 

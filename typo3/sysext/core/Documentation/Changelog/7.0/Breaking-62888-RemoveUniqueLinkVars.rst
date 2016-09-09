@@ -5,6 +5,8 @@
 Breaking: #62888 - Remove config.uniqueLinkVars
 ===============================================
 
+See :issue:`62888`
+
 Description
 ===========
 

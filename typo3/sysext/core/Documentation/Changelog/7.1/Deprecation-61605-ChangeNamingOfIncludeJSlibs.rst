@@ -5,6 +5,8 @@
 Deprecation: #61605 - Change naming of TypoScript property page.includeJSlibs
 =============================================================================
 
+See :issue:`61605`
+
 Description
 ===========
 

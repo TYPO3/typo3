@@ -5,6 +5,8 @@
 Feature: #66111 - Add TemplateRootPaths support to cObject FLUIDTEMPLATE
 ========================================================================
 
+See :issue:`66111`
+
 Description
 ===========
 

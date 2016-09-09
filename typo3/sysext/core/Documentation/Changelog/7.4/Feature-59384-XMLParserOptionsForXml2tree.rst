@@ -5,6 +5,8 @@
 Feature: #59384 - XML parser options for xml2tree()
 ===================================================
 
+See :issue:`59384`
+
 Description
 ===========
 

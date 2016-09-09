@@ -5,6 +5,8 @@
 Deprecation: #46770 - Deprecate LocalImageProcessor::getTemporaryImageWithText
 ==============================================================================
 
+See :issue:`46770`
+
 Description
 ===========
 

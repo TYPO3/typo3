@@ -5,6 +5,8 @@
 Deprecation: #62988 - Deprecate unused/non-unified DocumentTemplate code
 ========================================================================
 
+See :issue:`62988`
+
 Description
 ===========
 

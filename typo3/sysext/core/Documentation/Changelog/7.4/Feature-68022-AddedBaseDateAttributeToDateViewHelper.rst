@@ -5,6 +5,8 @@
 Feature: #68022 - Added base date attribute to DateViewHelper
 =============================================================
 
+See :issue:`68022`
+
 Description
 ===========
 

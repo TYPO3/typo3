@@ -5,6 +5,8 @@
 Breaking: #71110 - TYPO3-specific Upload Limit removed
 ======================================================
 
+See :issue:`71110`
+
 Description
 ===========
 

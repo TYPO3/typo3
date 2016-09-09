@@ -5,6 +5,8 @@
 Deprecation: #65111 - getDynTabMenu
 ===================================
 
+See :issue:`65111`
+
 Description
 ===========
 

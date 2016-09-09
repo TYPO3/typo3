@@ -5,6 +5,8 @@
 Feature: #34944 - PaginateViewHelper handles non-query-result objects
 =====================================================================
 
+See :issue:`34944`
+
 Description
 ===========
 

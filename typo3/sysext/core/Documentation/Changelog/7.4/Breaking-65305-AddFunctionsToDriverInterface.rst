@@ -5,6 +5,8 @@
 Breaking: #65305 - DriverInterface has been extended
 ====================================================
 
+See :issue:`65305`
+
 Description
 ===========
 

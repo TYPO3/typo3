@@ -5,6 +5,8 @@
 Feature: #59591 - Image quality definable per sourceCollection
 ==============================================================
 
+See :issue:`59591`
+
 Description
 ===========
 

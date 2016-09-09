@@ -5,6 +5,8 @@
 Feature: #50039 - Configurable width of the Element Browser
 ===========================================================
 
+See :issue:`50039`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #69416 - Plugins (AbstractPlugin) can load custom language file
 ========================================================================
 
+See :issue:`69416`
+
 Description
 ===========
 

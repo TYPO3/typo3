@@ -5,6 +5,8 @@
 Breaking: #66868 - Move usage of BackendUserSettingsDataProvider
 ================================================================
 
+See :issue:`66868`
+
 Description
 ===========
 

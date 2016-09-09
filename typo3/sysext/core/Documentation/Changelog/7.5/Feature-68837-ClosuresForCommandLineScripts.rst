@@ -5,6 +5,8 @@
 Feature: #68837 - Closures for Command Line Scripts
 ===================================================
 
+See :issue:`68837`
+
 Description
 ===========
 

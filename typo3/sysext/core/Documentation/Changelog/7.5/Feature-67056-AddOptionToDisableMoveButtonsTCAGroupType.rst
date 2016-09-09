@@ -5,6 +5,8 @@
 Feature: #67056 - Add option to disable move buttons TCA group type
 ===================================================================
 
+See :issue:`67056`
+
 Description
 ===========
 

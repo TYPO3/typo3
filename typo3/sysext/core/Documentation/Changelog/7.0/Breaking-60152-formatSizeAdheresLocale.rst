@@ -5,6 +5,8 @@
 Breaking: #60152 - GeneralUtility::formatSize is now locale aware
 =================================================================
 
+See :issue:`60152`
+
 Description
 ===========
 

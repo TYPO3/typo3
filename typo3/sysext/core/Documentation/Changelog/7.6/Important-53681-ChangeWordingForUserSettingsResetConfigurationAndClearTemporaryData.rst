@@ -5,6 +5,8 @@
 Important: #53681 - Change wording for User Settings "Reset Configuration and Clear Temporary Data"
 ===================================================================================================
 
+See :issue:`53681`
+
 Description
 ===========
 

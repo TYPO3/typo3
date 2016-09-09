@@ -5,6 +5,8 @@
 Deprecation: #65288 - Deprecate "new record" entry point
 ========================================================
 
+See :issue:`65288`
+
 Description
 ===========
 

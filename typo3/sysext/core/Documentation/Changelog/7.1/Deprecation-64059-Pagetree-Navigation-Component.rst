@@ -5,6 +5,8 @@
 Deprecation: #64059 - Non-ExtJS Page Tree Navigation Frame
 ==========================================================
 
+See :issue:`64059`
+
 Description
 ===========
 

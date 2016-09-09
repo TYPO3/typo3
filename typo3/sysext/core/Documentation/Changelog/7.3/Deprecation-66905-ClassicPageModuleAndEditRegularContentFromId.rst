@@ -5,6 +5,8 @@
 Deprecation: #66905 - Deprecate uc->classicPageEditMode and editRegularContentFromId option
 ===========================================================================================
 
+See :issue:`66905`
+
 Description
 ===========
 

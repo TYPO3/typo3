@@ -5,6 +5,8 @@
 Breaking: #66190 - Remove flash and chart from ExtJS
 ====================================================
 
+See :issue:`66190`
+
 Description
 ===========
 

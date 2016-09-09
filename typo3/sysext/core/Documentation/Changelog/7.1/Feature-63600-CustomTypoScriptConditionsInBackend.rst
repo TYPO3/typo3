@@ -5,6 +5,8 @@
 Feature: #61489 - Allow own TypoScript Conditions in Backend as well
 ====================================================================
 
+See :issue:`61489`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #68804 - CLI-related constants and methods
 =======================================================
 
+See :issue:`68804`
+
 Description
 ===========
 

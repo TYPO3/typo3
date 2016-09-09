@@ -5,6 +5,8 @@
 Feature: #61993 - _CSS_PAGE_STYLE is now only included on the affected page
 ===========================================================================
 
+See :issue:`61993`
+
 Description
 ===========
 

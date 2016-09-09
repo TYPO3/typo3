@@ -5,6 +5,8 @@
 Deprecation: #70494 - DocumentTemplate->wrapClickMenuOnIcon()
 =============================================================
 
+See :issue:`70494`
+
 Description
 ===========
 

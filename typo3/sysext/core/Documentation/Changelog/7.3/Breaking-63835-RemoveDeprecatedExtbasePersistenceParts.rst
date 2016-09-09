@@ -5,6 +5,8 @@
 Breaking: #63835 - Remove Deprecated Parts in Extbase Persistence Layer
 =======================================================================
 
+See :issue:`63835`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #65778 - MediaWizard functionality is moved to system extension "mediace"
 ===================================================================================
 
+See :issue:`65778`
+
 Description
 ===========
 

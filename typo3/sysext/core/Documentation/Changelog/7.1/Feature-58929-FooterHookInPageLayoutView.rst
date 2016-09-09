@@ -5,6 +5,8 @@
 Feature: #58929 - PageLayoutView: Add hook for tt_content_drawFooter
 ====================================================================
 
+See :issue:`58929`
+
 Description
 ===========
 

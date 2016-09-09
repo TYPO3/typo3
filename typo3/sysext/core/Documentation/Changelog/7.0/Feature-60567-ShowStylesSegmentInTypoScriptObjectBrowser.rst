@@ -5,6 +5,8 @@
 Feature: #60567 - Show Styles Segment in TS Object Browser
 ==========================================================
 
+See :issue:`60567`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #69371 - Form element IMAGEBUTTON
 ==============================================
 
+See :issue:`69371`
+
 Description
 ===========
 

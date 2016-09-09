@@ -5,6 +5,8 @@
 Feature: #58621 - FormatCaseViewHelper
 ======================================
 
+See :issue:`58621`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #67098 - Correct required-parameter in TextfieldViewHelper
 ====================================================================
 
+See :issue:`67098`
+
 Description
 ===========
 

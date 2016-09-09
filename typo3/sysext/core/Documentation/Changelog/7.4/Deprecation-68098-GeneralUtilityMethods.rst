@@ -5,6 +5,8 @@
 Deprecation: #68098 - Deprecate GeneralUtility methods
 ======================================================
 
+See :issue:`68098`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #67932 - felogin template has been changed for RSA encryption
 =======================================================================
 
+See :issue:`67932`
+
 Description
 ===========
 

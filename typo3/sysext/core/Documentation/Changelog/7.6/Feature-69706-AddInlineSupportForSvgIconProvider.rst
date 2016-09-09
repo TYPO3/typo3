@@ -5,6 +5,8 @@
 Feature: #69706 - Add support for alternative (inline) icon markup
 ==================================================================
 
+See :issue:`69706`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #67288 - Deprecate Dbal\DatabaseConnection::MetaType() method
 ==========================================================================
 
+See :issue:`67288`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Important: #67852 - Remove jsfunc.evalfield.js from FormEngine
 ==============================================================
 
+See :issue:`67852`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #28382 - Add async property to JavaScript files
 ========================================================
 
+See :issue:`28382`
+
 Description
 ===========
 

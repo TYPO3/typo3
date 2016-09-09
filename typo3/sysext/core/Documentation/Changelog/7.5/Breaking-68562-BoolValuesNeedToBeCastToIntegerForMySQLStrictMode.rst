@@ -5,6 +5,8 @@
 Breaking: #68562 - Bool values need to be cast to integer for MySQL strict mode
 ===============================================================================
 
+See :issue:`68562`
+
 Description
 ===========
 

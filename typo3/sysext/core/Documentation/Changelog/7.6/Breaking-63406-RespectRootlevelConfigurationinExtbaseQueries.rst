@@ -5,6 +5,8 @@
 Breaking: #63406 - Respect rootLevel configuration in extbase queries
 =====================================================================
 
+See :issue:`63406`
+
 Description
 ===========
 

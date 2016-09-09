@@ -5,6 +5,8 @@
 Feature: #67875 - Override CategoryRegistry entries
 ===================================================
 
+See :issue:`67875`
+
 Description
 ===========
 

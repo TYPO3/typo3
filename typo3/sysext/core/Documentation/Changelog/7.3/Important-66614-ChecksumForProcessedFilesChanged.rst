@@ -5,6 +5,8 @@
 Important: #66614 - Checksums for processed files have been changed
 ===================================================================
 
+See :issue:`66614`
+
 Description
 ===========
 

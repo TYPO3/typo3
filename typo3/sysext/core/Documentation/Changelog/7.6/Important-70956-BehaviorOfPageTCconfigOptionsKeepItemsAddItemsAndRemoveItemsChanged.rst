@@ -5,6 +5,8 @@
 Important: #70956 - Behavior of Page TCconfig options keepItems, addItems and removeItems changed
 =================================================================================================
 
+See :issue:`70956`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #70078 - Extensions can provide a class map for class loading
 ======================================================================
 
+See :issue:`70078`
+
 Description
 ===========
 

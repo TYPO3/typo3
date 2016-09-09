@@ -5,6 +5,8 @@
 Breaking: #44879 - TypoScript inline styles from blockquote tag removed
 =======================================================================
 
+See :issue:`44879`
+
 Description
 ===========
 

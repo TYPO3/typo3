@@ -5,6 +5,8 @@
 Breaking: #59659 - Removal of deprecated code in sysext backend
 ===============================================================
 
+See :issue:`59659`
+
 Description
 ===========
 

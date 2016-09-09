@@ -5,6 +5,8 @@
 Deprecation: #66823 - Deprecate Extbase ExtensionUtility->configureModule method
 ================================================================================
 
+See :issue:`66823`
+
 Description
 ===========
 

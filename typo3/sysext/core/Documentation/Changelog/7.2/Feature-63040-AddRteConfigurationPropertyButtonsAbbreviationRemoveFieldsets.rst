@@ -5,6 +5,8 @@
 Feature: #63040 - Add RTE configuration property buttons.abbreviation.removeFieldsets
 =====================================================================================
 
+See :issue:`63040`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69227 - Strings for like are not properly escaped
 ============================================================
 
+See :issue:`69227`
+
 Description
 ===========
 

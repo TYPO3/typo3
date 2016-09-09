@@ -5,6 +5,8 @@
 Feature: #58366 - Add "auto" Option for config.absRefPrefix
 ===========================================================
 
+See :issue:`58366`
+
 Description
 ===========
 

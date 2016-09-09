@@ -5,6 +5,8 @@
 Breaking: #56133 - New BE user permission "Files: replace"
 ==========================================================
 
+See :issue:`56133`
+
 Description
 ===========
 

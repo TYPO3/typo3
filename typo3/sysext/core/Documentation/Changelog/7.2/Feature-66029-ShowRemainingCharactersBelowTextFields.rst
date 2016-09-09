@@ -5,6 +5,8 @@
 Feature: #66029 - Show remaining characters below text fields
 =============================================================
 
+See :issue:`66029`
+
 Description
 ===========
 

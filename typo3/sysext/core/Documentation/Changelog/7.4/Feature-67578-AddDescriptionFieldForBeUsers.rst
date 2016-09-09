@@ -5,6 +5,8 @@
 Feature: #67578 - Add description-field for backend-users
 =========================================================
 
+See :issue:`67578`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #62794 - Mail methods in GeneralUtility
 ====================================================
 
+See :issue:`62794`
+
 Description
 ===========
 

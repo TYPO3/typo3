@@ -5,6 +5,8 @@
 Deprecation: #67790 - Deprecate QueryGenerator::JSbottom()
 ==========================================================
 
+See :issue:`67790`
+
 Description
 ===========
 

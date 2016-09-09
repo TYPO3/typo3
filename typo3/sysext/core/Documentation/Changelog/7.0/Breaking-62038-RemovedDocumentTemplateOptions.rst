@@ -5,6 +5,8 @@
 Breaking: #62038 - Deprecated DocumentTemplate functionality
 ============================================================
 
+See :issue:`62038`
+
 Description
 ===========
 

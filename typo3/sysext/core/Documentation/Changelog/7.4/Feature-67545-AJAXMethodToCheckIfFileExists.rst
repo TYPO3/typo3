@@ -5,6 +5,8 @@
 Feature: #67545 - AJAX call to check whether file exists
 ========================================================
 
+See :issue:`67545`
+
 Description
 ===========
 

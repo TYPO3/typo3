@@ -5,6 +5,8 @@
 Breaking: #67204 - DatabaseConnection::exec_SELECTgetRows() may throw exception
 ===============================================================================
 
+See :issue:`67204`
+
 Description
 ===========
 

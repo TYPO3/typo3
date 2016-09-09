@@ -5,6 +5,8 @@
 Deprecation: #46523 - BackendUtility::implodeTSParams()
 =======================================================
 
+See :issue:`46523`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #69095 - Introduce icon state for IconFactory
 ======================================================
 
+See :issue:`69095`
+
 Description
 ===========
 

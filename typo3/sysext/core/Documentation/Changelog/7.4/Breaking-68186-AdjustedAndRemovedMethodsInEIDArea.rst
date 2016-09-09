@@ -5,6 +5,8 @@
 Breaking: #68186 - Adjusted and removed methods in eID area
 ===========================================================
 
+See :issue:`68186`
+
 Description
 ===========
 

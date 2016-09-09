@@ -5,6 +5,8 @@
 Deprecation: #70514 - dynamicConfigFile is deprecated
 =====================================================
 
+See :issue:`70514`
+
 Description
 ===========
 

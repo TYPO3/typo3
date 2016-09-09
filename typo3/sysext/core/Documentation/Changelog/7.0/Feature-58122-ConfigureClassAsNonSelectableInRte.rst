@@ -5,6 +5,8 @@
 Feature: #58122 - Configure class as non-selectable in Rich Text Editor
 =======================================================================
 
+See :issue:`58122`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #58033 - Enable label override of checkbox and radio buttons by TSconfig
 =================================================================================
 
+See :issue:`58033`
+
 Description
 -----------
 

@@ -5,6 +5,8 @@
 Feature: #59830 - Introduce read-only column for file mounts
 ============================================================
 
+See :issue:`59830`
+
 Description
 ===========
 

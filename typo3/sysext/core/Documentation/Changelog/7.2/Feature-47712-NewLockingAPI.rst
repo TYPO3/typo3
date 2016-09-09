@@ -5,6 +5,8 @@
 Feature: #47712 - New Locking API
 =================================
 
+See :issue:`47712`
+
 Description
 ===========
 

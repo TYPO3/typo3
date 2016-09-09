@@ -5,6 +5,8 @@
 Important: #67216 - Default minimum log level is set to warning
 ===============================================================
 
+See :issue:`67216`
+
 Description
 ===========
 

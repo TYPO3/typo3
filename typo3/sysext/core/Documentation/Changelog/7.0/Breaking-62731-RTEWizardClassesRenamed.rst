@@ -5,6 +5,8 @@
 Breaking: #62291 - RTE wizard classes renamed
 =============================================
 
+See :issue:`62291`
+
 Description
 ===========
 

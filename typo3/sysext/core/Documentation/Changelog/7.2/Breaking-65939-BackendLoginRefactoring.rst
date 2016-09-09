@@ -5,6 +5,8 @@
 Breaking: #65939 - Backend Login Refactoring
 ============================================
 
+See :issue:`65939`
+
 Description
 ===========
 

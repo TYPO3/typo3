@@ -5,6 +5,8 @@
 Important: #68128 - PHP Magic Quote Handling removed
 ====================================================
 
+See :issue:`68128`
+
 Description
 ===========
 

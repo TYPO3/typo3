@@ -5,6 +5,8 @@
 Deprecation: #65790 - Remove pages.storage_pid and logic
 ========================================================
 
+See :issue:`65790`
+
 Description
 ===========
 

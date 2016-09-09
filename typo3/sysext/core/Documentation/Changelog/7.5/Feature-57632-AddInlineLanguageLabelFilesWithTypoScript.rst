@@ -5,6 +5,8 @@
 Feature: #57632 - Include inline language label files with TypoScript
 =====================================================================
 
+See :issue:`57632`
+
 Description
 ===========
 

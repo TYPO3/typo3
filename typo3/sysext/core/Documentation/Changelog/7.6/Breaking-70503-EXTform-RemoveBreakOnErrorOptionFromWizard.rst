@@ -5,6 +5,8 @@
 Breaking: #70503 - EXT:form - Remove breakOnError option from wizard
 ====================================================================
 
+See :issue:`70503`
+
 Description
 ===========
 

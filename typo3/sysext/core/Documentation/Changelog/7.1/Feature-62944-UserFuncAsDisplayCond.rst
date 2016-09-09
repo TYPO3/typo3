@@ -5,6 +5,8 @@
 Feature: #62944 - UserFunc available as Display Condition
 =========================================================
 
+See :issue:`62944`
+
 Description
 ===========
 

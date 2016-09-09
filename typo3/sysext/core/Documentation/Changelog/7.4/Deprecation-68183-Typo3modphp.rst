@@ -5,6 +5,8 @@
 Deprecation: #68183 - typo3/mod.php
 ===================================
 
+See :issue:`68183`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #60582 - Rsaauth Javascript Files Moved
 =================================================
 
+See :issue:`60582`
+
 Description
 ===========
 

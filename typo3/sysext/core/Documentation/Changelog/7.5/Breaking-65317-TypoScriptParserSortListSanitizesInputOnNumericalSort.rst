@@ -5,6 +5,8 @@
 Breaking: #65317 - TypoScriptParser sortList sanitizes input on numerical sort
 ==============================================================================
 
+See :issue:`65317`
+
 Description
 ===========
 

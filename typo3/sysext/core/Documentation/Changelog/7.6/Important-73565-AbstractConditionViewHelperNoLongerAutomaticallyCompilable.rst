@@ -5,6 +5,8 @@
 Important: #73565 - AbstractConditionViewHelper no longer automatically compilable
 ==================================================================================
 
+See :issue:`73565`
+
 Description
 ===========
 

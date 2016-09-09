@@ -5,6 +5,8 @@
 Breaking: #63464 - Remove include_once inclusions inside ModuleFunctions
 ========================================================================
 
+See :issue:`63464`
+
 Description
 ===========
 

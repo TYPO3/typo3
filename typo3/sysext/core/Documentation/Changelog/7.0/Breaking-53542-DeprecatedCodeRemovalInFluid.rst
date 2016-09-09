@@ -5,6 +5,8 @@
 Breaking: #62416 - Removal of deprecated code in sysext fluid
 =============================================================
 
+See :issue:`62416`
+
 Description
 ===========
 

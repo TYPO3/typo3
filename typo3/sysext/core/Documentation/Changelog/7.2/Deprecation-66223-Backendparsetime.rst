@@ -5,6 +5,8 @@
 Deprecation: #66223 - Backend parseTime deprecated
 ==================================================
 
+See :issue:`66223`
+
 Description
 ===========
 

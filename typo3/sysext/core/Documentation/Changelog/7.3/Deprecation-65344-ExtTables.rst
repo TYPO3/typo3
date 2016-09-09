@@ -5,6 +5,8 @@
 Deprecation: #65344 - typo3conf/extTables.php deprecated
 ========================================================
 
+See :issue:`65344`
+
 Description
 ===========
 

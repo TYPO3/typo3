@@ -5,6 +5,8 @@
 Important: #68917 - Updated jQuery to 2.x
 =========================================
 
+See :issue:`68917`
+
 Description
 ===========
 

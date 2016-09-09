@@ -5,6 +5,8 @@
 Important: #68079 - Extension "mediace" moved to TER
 ====================================================
 
+See :issue:`68079`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #61829 - Deprecate config.classFile DBAL option
 ============================================================
 
+See :issue:`61829`
+
 Description
 ===========
 

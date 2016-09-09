@@ -5,6 +5,8 @@
 Deprecation: #64109 - Deprecate global hook softRefParser_GL
 ============================================================
 
+See :issue:`64109`
+
 
 Description
 ===========

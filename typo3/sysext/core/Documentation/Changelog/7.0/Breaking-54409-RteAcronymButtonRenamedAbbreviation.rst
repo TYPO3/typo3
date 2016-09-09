@@ -5,6 +5,8 @@
 Breaking: #54409 - RTE "acronym" button was renamed "abbreviation"
 ==================================================================
 
+See :issue:`54409`
+
 Description
 ===========
 

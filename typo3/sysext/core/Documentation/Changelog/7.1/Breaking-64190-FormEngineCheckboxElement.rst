@@ -5,6 +5,8 @@
 Breaking: #64190 - FormEngine Checkbox Element limitation of cols setting
 =========================================================================
 
+See :issue:`64190`
+
 Description
 ===========
 

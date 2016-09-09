@@ -5,6 +5,8 @@
 Deprecation: #66789 - options deprecated in CshViewHelper
 =========================================================
 
+See :issue:`66789`
+
 Description
 ===========
 

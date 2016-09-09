@@ -5,6 +5,8 @@
 Deprecation: #64068 - Deprecate thumbs.php and ThumbnailView
 ============================================================
 
+See :issue:`64068`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #51360 - Deprecate mod.tx_linkvalidator namespace in scheduler settings
 ====================================================================================
 
+See :issue:`51360`
+
 Description
 ===========
 

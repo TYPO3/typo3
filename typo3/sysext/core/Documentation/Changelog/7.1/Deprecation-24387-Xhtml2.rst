@@ -5,6 +5,8 @@
 Deprecation: #24387 - TypoScript option config.xhtmlDoctype=xhtml_2
 ===================================================================
 
+See :issue:`24387`
+
 Description
 ===========
 

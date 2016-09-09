@@ -5,6 +5,8 @@
 Feature: #47812 - Query support for BETWEEN added
 =================================================
 
+See :issue:`47812`
+
 Description
 ===========
 

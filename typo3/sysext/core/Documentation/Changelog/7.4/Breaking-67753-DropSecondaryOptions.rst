@@ -5,6 +5,8 @@
 Breaking: #67753 - Drop "Show secondary options"
 ================================================
 
+See :issue:`67753`
+
 Description
 ===========
 

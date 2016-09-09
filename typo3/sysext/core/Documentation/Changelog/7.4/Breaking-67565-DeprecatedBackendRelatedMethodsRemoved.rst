@@ -5,6 +5,8 @@
 Breaking: #67565 - Deprecated backend related methods removed
 =============================================================
 
+See :issue:`67565`
+
 Description
 ===========
 

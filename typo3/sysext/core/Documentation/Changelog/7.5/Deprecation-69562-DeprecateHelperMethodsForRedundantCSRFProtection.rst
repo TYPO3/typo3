@@ -5,6 +5,8 @@
 Deprecation: #69562 - Deprecate helper methods for redundant CSRF protection
 ============================================================================
 
+See :issue:`69562`
+
 Description
 ===========
 

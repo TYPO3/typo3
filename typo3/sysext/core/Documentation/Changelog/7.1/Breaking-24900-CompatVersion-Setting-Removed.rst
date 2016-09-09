@@ -5,6 +5,8 @@
 Breaking: #24900 - Remove $TYPO3_CONF_VARS[SYS][compat_version] option
 ======================================================================
 
+See :issue:`24900`
+
 Description
 ===========
 

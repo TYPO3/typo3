@@ -5,6 +5,8 @@
 Deprecation: #68141 - typo3/ajax.php
 ====================================
 
+See :issue:`68141`
+
 Description
 ===========
 

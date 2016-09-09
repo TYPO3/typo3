@@ -5,6 +5,8 @@
 Breaking: #68354 - Uniform extension directory structure of EXT:indexed_search
 ==============================================================================
 
+See :issue:`68354`
+
 Description
 ===========
 

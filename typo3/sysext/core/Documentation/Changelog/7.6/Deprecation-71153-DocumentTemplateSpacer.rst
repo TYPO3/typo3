@@ -5,6 +5,8 @@
 Deprecation: #71153 - DocumentTemplate->spacer()
 ================================================
 
+See :issue:`71153`
+
 Description
 ===========
 

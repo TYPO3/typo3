@@ -5,6 +5,8 @@
 Deprecation: #67932 - Deprecated old rsaauth encryption API
 ===========================================================
 
+See :issue:`67932`
+
 Description
 ===========
 

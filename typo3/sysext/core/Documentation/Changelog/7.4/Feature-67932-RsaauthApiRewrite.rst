@@ -5,6 +5,8 @@
 Feature: #67932 - New rsaauth API
 =================================
 
+See :issue:`67932`
+
 Description
 ===========
 

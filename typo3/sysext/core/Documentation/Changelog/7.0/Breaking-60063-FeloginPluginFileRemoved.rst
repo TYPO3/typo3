@@ -5,6 +5,8 @@
 Breaking: #60063 - Felogin Plugin Removed
 =========================================
 
+See :issue:`60063`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Deprecation: #65290 - TCA changes
 =================================
 
+See :issue:`65290`
+
 
 Description
 ===========

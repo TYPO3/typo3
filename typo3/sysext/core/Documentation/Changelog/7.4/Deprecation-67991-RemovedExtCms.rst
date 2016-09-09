@@ -5,6 +5,8 @@
 Deprecation: #67991 - Removed ext:cms
 =====================================
 
+See :issue:`67991`
+
 Description
 ===========
 

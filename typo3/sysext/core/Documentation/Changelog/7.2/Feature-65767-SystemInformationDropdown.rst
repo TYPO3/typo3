@@ -5,6 +5,8 @@
 Feature: #65767 - System Information Dropdown
 =============================================
 
+See :issue:`65767`
+
 Description
 ===========
 

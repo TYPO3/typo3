@@ -5,6 +5,8 @@
 Feature: #47919 - Possibility to configure an exception handler when rendering TypoScript content objects
 =========================================================================================================
 
+See :issue:`47919`
+
 Description
 ===========
 

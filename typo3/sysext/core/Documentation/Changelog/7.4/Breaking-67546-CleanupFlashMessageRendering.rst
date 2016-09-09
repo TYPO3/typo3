@@ -5,6 +5,8 @@
 Breaking: #67546 - Cleanup Flash message rendering in FlashMessageQueue
 =======================================================================
 
+See :issue:`67546`
+
 Description
 ===========
 

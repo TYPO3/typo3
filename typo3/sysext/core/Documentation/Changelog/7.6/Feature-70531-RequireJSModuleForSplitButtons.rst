@@ -5,6 +5,8 @@
 Feature: #70531 - RequireJS module for split buttons
 ====================================================
 
+See :issue:`70531`
+
 Description
 ===========
 

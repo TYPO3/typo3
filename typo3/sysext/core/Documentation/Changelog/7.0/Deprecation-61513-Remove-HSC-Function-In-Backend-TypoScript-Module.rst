@@ -5,6 +5,8 @@
 Deprecation: #61513 - Use native htmlspecialchars in ExtendedTemplateService
 ============================================================================
 
+See :issue:`61513`
+
 Description
 ===========
 

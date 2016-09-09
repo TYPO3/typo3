@@ -5,6 +5,8 @@
 Breaking: #30863 - Streamlined parameters for adding inline language files
 ==========================================================================
 
+See :issue:`30863`
+
 Description
 ===========
 

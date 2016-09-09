@@ -5,6 +5,8 @@
 Deprecation: #51482 - Script-based modules
 ==========================================
 
+See :issue:`51482`
+
 Description
 ===========
 

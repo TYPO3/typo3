@@ -5,6 +5,8 @@
 Breaking: #62339 - Move EXT:perm into EXT:beuser and remove EXT:perm
 ====================================================================
 
+See :issue:`62339`
+
 Description
 ===========
 

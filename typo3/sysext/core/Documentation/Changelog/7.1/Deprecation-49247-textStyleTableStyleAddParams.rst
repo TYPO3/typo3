@@ -5,6 +5,8 @@
 Deprecation: #49247 - Deprecate TypoScript functions "textStyle" and "tableStyle"
 =================================================================================
 
+See :issue:`49247`
+
 Description
 ===========
 

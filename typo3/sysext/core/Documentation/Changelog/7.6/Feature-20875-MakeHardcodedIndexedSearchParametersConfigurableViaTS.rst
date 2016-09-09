@@ -5,6 +5,8 @@
 Feature: #20875 - Make hardcoded indexed_search parameters configurable via TS
 ==============================================================================
 
+See :issue:`20875`
+
 Description
 ===========
 

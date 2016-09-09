@@ -5,6 +5,8 @@
 Deprecation: #69705 - Add unified refresh icon
 ==============================================
 
+See :issue:`69705`
+
 Description
 ===========
 

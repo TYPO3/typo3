@@ -5,6 +5,8 @@
 Deprecation: #65938 - Discourage usage of "$TSFE->anchorPrefix"
 ===============================================================
 
+See :issue:`65938`
+
 Description
 ===========
 

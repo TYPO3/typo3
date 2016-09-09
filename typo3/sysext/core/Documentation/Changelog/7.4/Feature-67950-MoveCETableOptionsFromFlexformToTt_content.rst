@@ -5,6 +5,8 @@
 Feature: #67950 - Move CE table options from flexform to tt_content
 ===================================================================
 
+See :issue:`67950`
+
 Description
 ===========
 

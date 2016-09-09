@@ -5,6 +5,8 @@
 Feature: #64726 - Added support for multiple FlashMessage queues
 ================================================================
 
+See :issue:`64726`
+
 Description
 ===========
 

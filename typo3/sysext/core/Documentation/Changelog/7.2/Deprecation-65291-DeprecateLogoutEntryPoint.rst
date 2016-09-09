@@ -5,6 +5,8 @@
 Deprecation: #65283 - Deprecate logout entry point
 ==================================================
 
+See :issue:`65283`
+
 Description
 ===========
 

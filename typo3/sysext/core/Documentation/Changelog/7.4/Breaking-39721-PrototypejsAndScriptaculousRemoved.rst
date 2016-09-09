@@ -5,6 +5,8 @@
 Breaking: #39721 - Prototype.js and Scriptaculous removed
 =========================================================
 
+See :issue:`39721`
+
 Description
 ===========
 

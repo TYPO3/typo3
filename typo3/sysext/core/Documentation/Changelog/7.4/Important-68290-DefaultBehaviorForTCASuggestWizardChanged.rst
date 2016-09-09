@@ -5,6 +5,8 @@
 Important: #68290 - Default behavior for TCA suggest wizard changed
 ===================================================================
 
+See :issue:`68290`
+
 Description
 ===========
 

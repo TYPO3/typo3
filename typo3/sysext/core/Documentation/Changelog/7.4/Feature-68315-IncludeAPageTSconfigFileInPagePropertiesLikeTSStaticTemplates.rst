@@ -5,6 +5,8 @@
 Feature: #68315 - Include a pageTSconfig file in page properties like TS static templates
 =========================================================================================
 
+See :issue:`68315`
+
 Description
 ===========
 

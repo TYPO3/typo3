@@ -5,6 +5,8 @@
 Feature: #68429 - Introduced AvatarProvider API
 ===============================================
 
+See :issue:`68429`
+
 Description
 ===========
 

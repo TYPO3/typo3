@@ -5,6 +5,8 @@
 Feature: #68895 - Introduced hook in BackendUserAuthentication::getDefaultUploadFolder
 ======================================================================================
 
+See :issue:`68895`
+
 Description
 ===========
 

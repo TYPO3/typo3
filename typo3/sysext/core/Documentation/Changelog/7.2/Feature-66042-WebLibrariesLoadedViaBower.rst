@@ -5,6 +5,8 @@
 Feature: #66042 - Web Libraries are included via bower
 ======================================================
 
+See :issue:`66042`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #69401 - Adopt form to support the Extbase/ Fluid MVC stack
 ====================================================================
 
+See :issue:`69401`
+
 Description
 ===========
 

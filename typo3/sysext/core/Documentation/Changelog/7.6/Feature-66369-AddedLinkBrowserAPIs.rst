@@ -5,6 +5,8 @@
 Feature: #66369 - Added LinkBrowser APIs
 ========================================
 
+See :issue:`66369`
+
 Description
 ===========
 

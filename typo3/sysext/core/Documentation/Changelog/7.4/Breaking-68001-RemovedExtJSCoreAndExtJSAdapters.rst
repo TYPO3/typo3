@@ -5,6 +5,8 @@
 Breaking: #68001 - Removed ExtJS Core and ExtJS Adapters
 ========================================================
 
+See :issue:`68001`
+
 Description
 ===========
 

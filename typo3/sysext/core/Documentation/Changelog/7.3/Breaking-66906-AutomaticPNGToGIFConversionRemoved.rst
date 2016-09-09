@@ -5,6 +5,8 @@
 Breaking: #66906 - Automatic PNG to GIF conversion removed
 ==========================================================
 
+See :issue:`66906`
+
 Description
 ===========
 

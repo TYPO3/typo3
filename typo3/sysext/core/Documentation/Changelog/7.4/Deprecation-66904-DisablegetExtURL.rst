@@ -5,6 +5,8 @@
 Deprecation: #66904 - $disable Option in PageRepository->getExtURL()
 ====================================================================
 
+See :issue:`66904`
+
 Description
 ===========
 

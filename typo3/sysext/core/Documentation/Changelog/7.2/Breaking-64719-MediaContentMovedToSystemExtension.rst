@@ -5,6 +5,8 @@
 Breaking: #64719 - Multimedia and Media cObjects and Content Types are moved to new system extension
 ====================================================================================================
 
+See :issue:`64719`
+
 Description
 ===========
 

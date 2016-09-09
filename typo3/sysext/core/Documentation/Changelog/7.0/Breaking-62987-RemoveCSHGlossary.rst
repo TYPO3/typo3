@@ -5,6 +5,8 @@
 Breaking: #62987 - Remove CSH Glossary
 ======================================
 
+See :issue:`62987`
+
 Description
 ===========
 

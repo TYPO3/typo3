@@ -5,6 +5,8 @@
 Breaking: #68571 - Removed method ElementBrowser->getMsgBox
 ===========================================================
 
+See :issue:`68571`
+
 Description
 ===========
 

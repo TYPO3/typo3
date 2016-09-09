@@ -5,6 +5,8 @@
 Breaking: #67987 - Removed entry script handling
 ================================================
 
+See :issue:`67987`
+
 Description
 ===========
 

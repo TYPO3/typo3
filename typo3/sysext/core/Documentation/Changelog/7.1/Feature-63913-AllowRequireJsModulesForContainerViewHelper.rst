@@ -5,6 +5,8 @@
 Feature: #63913 - Allow ContainerViewHelper to load RequireJS modules
 =====================================================================
 
+See :issue:`63913`
+
 Description
 ===========
 

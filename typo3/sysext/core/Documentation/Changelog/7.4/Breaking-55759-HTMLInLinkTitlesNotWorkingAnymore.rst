@@ -5,6 +5,8 @@
 Breaking: #55759 - HTML in link titles not working anymore
 ==========================================================
 
+See :issue:`55759`
+
 Description
 ===========
 

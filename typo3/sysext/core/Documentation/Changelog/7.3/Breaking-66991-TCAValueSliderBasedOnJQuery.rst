@@ -5,6 +5,8 @@
 Breaking: #66991 - TCA value slider based on jQuery
 ===================================================
 
+See :issue:`66991`
+
 Description
 ===========
 

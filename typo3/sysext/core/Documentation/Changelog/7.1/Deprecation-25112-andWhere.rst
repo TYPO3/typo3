@@ -5,6 +5,8 @@
 Deprecation: #25112 - Deprecate TypoScript property "andWhere"
 ==============================================================
 
+See :issue:`25112`
+
 Description
 ===========
 

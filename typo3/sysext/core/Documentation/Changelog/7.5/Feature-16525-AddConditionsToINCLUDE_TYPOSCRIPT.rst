@@ -5,6 +5,8 @@
 Feature: #16525 - Add conditions to INCLUDE_TYPOSCRIPT
 ======================================================
 
+See :issue:`16525`
+
 Description
 ===========
 

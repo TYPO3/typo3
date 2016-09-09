@@ -5,6 +5,8 @@
 Breaking: #66669 - Backend LoginController refactored
 =====================================================
 
+See :issue:`66669`
+
 Description
 ===========
 

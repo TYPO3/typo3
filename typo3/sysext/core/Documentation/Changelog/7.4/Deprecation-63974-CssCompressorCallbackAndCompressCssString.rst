@@ -5,6 +5,8 @@
 Deprecation: #63974 - Deprecate CSS compressor callback method
 ==============================================================
 
+See :issue:`63974`
+
 Description
 ===========
 

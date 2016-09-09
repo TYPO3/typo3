@@ -5,6 +5,8 @@
 Breaking: #66429 - Remove IdentityMap from persistence
 ======================================================
 
+See :issue:`66429`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Important: #69909 - FAL-based Database Fields moved to integer
 ==============================================================
 
+See :issue:`69909`
+
 Description
 ===========
 

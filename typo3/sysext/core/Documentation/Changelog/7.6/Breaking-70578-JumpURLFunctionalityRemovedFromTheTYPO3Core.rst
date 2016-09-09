@@ -5,6 +5,8 @@
 Breaking: #70578 - JumpURL functionality removed from the TYPO3 Core
 ====================================================================
 
+See :issue:`70578`
+
 Description
 ===========
 

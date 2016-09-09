@@ -5,6 +5,8 @@
 Feature: #69389 - Add spinning feature for icon
 ===============================================
 
+See :issue:`69389`
+
 Description
 ===========
 

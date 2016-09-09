@@ -5,6 +5,8 @@
 Breaking: #66707 - issueCommand() now adds quotes when used in JS context
 =========================================================================
 
+See :issue:`66707`
+
 Description
 ===========
 

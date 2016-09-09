@@ -5,6 +5,8 @@
 Deprecation: #68760 - Deprecate class ModuleSettings
 ====================================================
 
+See :issue:`68760`
+
 Description
 ===========
 

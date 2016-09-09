@@ -5,6 +5,8 @@
 Important: #68600 - Introduced ResourceStorage SanitizeFileName signal
 ======================================================================
 
+See :issue:`68600`
+
 Description
 ===========
 

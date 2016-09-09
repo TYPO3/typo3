@@ -5,6 +5,8 @@
 Breaking: #62793 - TypoScript config.notification_* removed
 ===========================================================
 
+See :issue:`62793`
+
 Description
 ===========
 

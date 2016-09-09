@@ -5,6 +5,8 @@
 Deprecation: #65422 - Alias cObjects COBJ_ARRAY and CASEFUNC
 ============================================================
 
+See :issue:`65422`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #67654 - Remove $GLOBALS[FILEICONS] functionality
 ===========================================================
 
+See :issue:`67654`
+
 Description
 ===========
 

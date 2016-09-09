@@ -5,6 +5,8 @@
 Breaking: #62039 - Removed TBE_STYLES[mainColors]
 =================================================
 
+See :issue:`62039`
+
 Description
 ===========
 

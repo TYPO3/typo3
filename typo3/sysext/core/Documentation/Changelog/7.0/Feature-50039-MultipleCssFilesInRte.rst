@@ -5,6 +5,8 @@
 Feature: #50039 - Multiple CSS Files in Rich Text Editor
 ========================================================
 
+See :issue:`50039`
+
 Description
 ===========
 

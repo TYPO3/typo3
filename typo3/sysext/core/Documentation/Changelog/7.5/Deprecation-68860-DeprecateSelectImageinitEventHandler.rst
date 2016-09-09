@@ -5,6 +5,8 @@
 Deprecation: #68860 - Deprecate SelectImage.initEventHandler
 ============================================================
 
+See :issue:`68860`
+
 Description
 ===========
 

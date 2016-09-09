@@ -5,6 +5,8 @@
 Breaking: #63838 - Changed OpcodeCacheUtility being a service class
 ===================================================================
 
+See :issue:`63838`
+
 Description
 ===========
 

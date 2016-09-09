@@ -5,6 +5,8 @@
 Breaking: #59966 - Extension Configuration cache-flushing changed
 =================================================================
 
+See :issue:`59966`
+
 Description
 ===========
 

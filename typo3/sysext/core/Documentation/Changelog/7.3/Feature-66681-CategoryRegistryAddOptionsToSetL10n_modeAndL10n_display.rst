@@ -5,6 +5,8 @@
 Feature: #66681 - CategoryRegistry: add options to set l10n_mode and l10n_display
 =================================================================================
 
+See :issue:`66681`
+
 Description
 ===========
 

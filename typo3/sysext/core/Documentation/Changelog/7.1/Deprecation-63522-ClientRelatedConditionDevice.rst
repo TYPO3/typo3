@@ -5,6 +5,8 @@
 Deprecation: #63522 - Deprecate the "device" TypoScript condition
 =================================================================
 
+See :issue:`63522`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #68812 - Old Backend Entrypoints moved to deprecation layer
 =====================================================================
 
+See :issue:`68812`
+
 Description
 ===========
 

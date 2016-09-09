@@ -5,6 +5,8 @@
 Deprecation: #69535 - Deprecate \TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\IconViewHelper
 ======================================================================================
 
+See :issue:`69535`
+
 Description
 ===========
 

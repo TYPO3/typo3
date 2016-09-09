@@ -5,6 +5,8 @@
 Feature: #67360 - Custom attribute name and multiple values for meta tags
 =========================================================================
 
+See :issue:`67360`
+
 Description
 ===========
 

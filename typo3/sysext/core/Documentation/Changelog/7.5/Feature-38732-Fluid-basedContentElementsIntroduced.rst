@@ -5,6 +5,8 @@
 Feature: #38732 - Fluid-based Content Elements Introduced
 =========================================================
 
+See :issue:`38732`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #68589 - Add CLI command to dump class loading information
 ===================================================================
 
+See :issue:`68589`
+
 Description
 ===========
 

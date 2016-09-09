@@ -5,6 +5,8 @@
 Deprecation: #60574 - Client Related Conditions
 ===============================================
 
+See :issue:`60574`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #65432 - Storage of module URI in global variable has been removed
 ============================================================================
 
+See :issue:`65432`
+
 Description
 ===========
 

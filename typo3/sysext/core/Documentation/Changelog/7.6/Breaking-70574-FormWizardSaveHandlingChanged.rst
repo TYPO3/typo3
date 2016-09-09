@@ -5,6 +5,8 @@
 Breaking: #70574 - Form Wizard Save Handling Changed
 ====================================================
 
+See :issue:`70574`
+
 Description
 ===========
 

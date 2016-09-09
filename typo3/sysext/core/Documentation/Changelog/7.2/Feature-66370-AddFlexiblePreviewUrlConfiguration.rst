@@ -5,6 +5,8 @@
 Feature: #66370 - Add flexible Preview URL configuration
 ========================================================
 
+See :issue:`66370`
+
 Description
 ===========
 

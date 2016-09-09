@@ -5,6 +5,8 @@
 Deprecation: #69877 - Use ModuleTemplate API for ext:filelist
 =============================================================
 
+See :issue:`69877`
+
 Description
 ===========
 

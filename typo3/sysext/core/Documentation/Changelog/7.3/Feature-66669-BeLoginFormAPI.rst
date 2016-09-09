@@ -5,6 +5,8 @@
 Feature: #66669 - BE login form API
 ===================================
 
+See :issue:`66669`
+
 Description
 ===========
 

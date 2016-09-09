@@ -5,6 +5,8 @@
 Feature: #67293 - Dependency ordering service
 =============================================
 
+See :issue:`67293`
+
 Description
 ===========
 

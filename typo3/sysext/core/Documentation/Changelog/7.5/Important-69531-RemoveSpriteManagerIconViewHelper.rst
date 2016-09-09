@@ -5,6 +5,8 @@
 Important: #69531 - Remove SpriteManagerIconViewHelper
 ======================================================
 
+See :issue:`69531`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69699 - TCA ctrl typeicons removed
 =============================================
 
+See :issue:`69699`
+
 Description
 ===========
 

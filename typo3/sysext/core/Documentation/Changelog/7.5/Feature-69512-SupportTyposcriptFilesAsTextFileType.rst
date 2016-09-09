@@ -5,6 +5,8 @@
 Feature: #69512 - Support \*.typoscript files as text file type
 ===============================================================
 
+See :issue:`69512`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Feature: #59231 - Hook for AbstractUserAuthentication::checkAuthentication()
 ============================================================================
 
+See :issue:`59231`
+
 Description
 ===========
 

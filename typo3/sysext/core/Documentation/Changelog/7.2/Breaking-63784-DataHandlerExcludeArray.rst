@@ -5,6 +5,8 @@
 Breaking: #63784 - Visibility and type of DataHandler->exclude_array
 ====================================================================
 
+See :issue:`63784`
+
 Description
 ===========
 

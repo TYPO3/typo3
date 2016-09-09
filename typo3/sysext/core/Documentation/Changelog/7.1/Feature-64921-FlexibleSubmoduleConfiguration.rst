@@ -5,6 +5,8 @@
 Feature: #64921 - Needed changes for flexible configuration of submodules
 =========================================================================
 
+See :issue:`64921`
+
 Description
 ===========
 

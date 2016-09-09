@@ -5,6 +5,8 @@
 Deprecation: #67670 - Deprecate custom singleton logic in GeneralUtility::getUserObj
 ====================================================================================
 
+See :issue:`67670`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #75942 - BigDocumentTemplate class removed
 ====================================================
 
+See :issue:`75942`
+
 Description
 ===========
 

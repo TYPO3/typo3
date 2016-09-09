@@ -5,6 +5,8 @@
 Breaking: #66997 - Remove super-/challenged password security
 =============================================================
 
+See :issue:`66997`
+
 Description
 ===========
 

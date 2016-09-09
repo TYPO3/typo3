@@ -5,6 +5,8 @@
 Breaking: #60630 - Scheduler Language Files Moved
 ===========================================================
 
+See :issue:`60630`
+
 Description
 ===========
 

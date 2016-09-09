@@ -5,6 +5,8 @@
 Feature: #66047 - Introduce JavaScript notification API
 =======================================================
 
+See :issue:`66047`
+
 Description
 ===========
 

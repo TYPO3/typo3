@@ -5,6 +5,8 @@
 Feature: #52131 - Hook for end of PageRepository->init()
 ========================================================
 
+See :issue:`52131`
+
 Description
 ===========
 

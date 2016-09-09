@@ -5,6 +5,8 @@
 Feature: #68756 - Add config "base" to stdWrap
 ==============================================
 
+See :issue:`68756`
+
 Description
 ===========
 

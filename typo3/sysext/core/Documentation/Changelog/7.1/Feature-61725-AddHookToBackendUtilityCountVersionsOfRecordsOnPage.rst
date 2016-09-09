@@ -5,6 +5,8 @@
 Feature: #61725 - Hook for BackendUtility::countVersionsOfRecordsOnPage()
 =========================================================================
 
+See :issue:`61725`
+
 Description
 ===========
 

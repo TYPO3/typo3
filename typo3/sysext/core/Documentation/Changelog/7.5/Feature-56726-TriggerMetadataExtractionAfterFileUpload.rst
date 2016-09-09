@@ -5,6 +5,8 @@
 Feature: #56726 - Trigger metadata extraction after file upload
 ===============================================================
 
+See :issue:`56726`
+
 Description
 ===========
 

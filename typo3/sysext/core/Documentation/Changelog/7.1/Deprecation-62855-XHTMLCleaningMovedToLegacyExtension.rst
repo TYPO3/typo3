@@ -5,6 +5,8 @@
 Deprecation: #62855 - "XHTML cleaning" functionality moved to legacy extension
 ==============================================================================
 
+See :issue:`62855`
+
 Description
 ===========
 

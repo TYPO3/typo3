@@ -5,6 +5,8 @@
 Feature: #68700 - Autoload definition can be provided in ext_emconf.php
 =======================================================================
 
+See :issue:`68700`
+
 Description
 ===========
 

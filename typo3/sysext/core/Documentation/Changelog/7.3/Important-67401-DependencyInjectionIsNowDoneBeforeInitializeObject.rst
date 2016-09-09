@@ -5,6 +5,8 @@
 Important: #67401 - Dependency Injection is now done before initializeObject()
 ==============================================================================
 
+See :issue:`67401`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #68206 - Remove usage of typolist and typohead in RTE
 ===============================================================
 
+See :issue:`68206`
+
 Description
 ===========
 

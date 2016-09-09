@@ -5,6 +5,8 @@
 Deprecation: #68122 - Deprecate GeneralUtility::readLLfile
 ==========================================================
 
+See :issue:`68122`
+
 Description
 ===========
 

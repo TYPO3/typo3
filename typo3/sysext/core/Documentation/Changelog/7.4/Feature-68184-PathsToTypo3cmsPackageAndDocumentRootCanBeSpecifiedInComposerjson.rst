@@ -5,6 +5,8 @@
 Feature: #68184 - Paths to typo3/cms package and document root can be specified in composer.json
 ================================================================================================
 
+See :issue:`68184`
+
 Description
 ===========
 

@@ -5,6 +5,8 @@
 Breaking: #69930 - Remove option "serverTimeZone"
 =================================================
 
+See :issue:`69930`
+
 Description
 ===========
 

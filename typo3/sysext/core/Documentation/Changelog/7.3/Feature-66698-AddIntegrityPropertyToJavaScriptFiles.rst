@@ -5,6 +5,8 @@
 Feature: #66698 - Add integrity property to JavaScript files
 ============================================================
 
+See :issue:`66698`
+
 Description
 ===========
 

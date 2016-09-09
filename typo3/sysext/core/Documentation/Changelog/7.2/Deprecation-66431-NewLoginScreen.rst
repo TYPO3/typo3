@@ -5,6 +5,8 @@
 Deprecation: #66431 - New Login Screen
 ======================================
 
+See :issue:`66431`
+
 Description
 ===========
 

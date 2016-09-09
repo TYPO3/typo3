@@ -5,6 +5,8 @@
 Breaking: #64696 - Content Element "search" moved to legacy extension
 =====================================================================
 
+See :issue:`64696`
+
 Description
 ===========
 

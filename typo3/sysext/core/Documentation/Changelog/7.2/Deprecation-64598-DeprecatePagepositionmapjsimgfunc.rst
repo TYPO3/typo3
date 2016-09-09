@@ -5,6 +5,8 @@
 Deprecation: #64598 - Deprecate PagePositionMap::JSimgFunc
 ==========================================================
 
+See :issue:`64598`
+
 Description
 ===========
 

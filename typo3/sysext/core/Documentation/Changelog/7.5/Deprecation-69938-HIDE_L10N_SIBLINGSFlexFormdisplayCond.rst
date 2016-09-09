@@ -5,6 +5,8 @@
 Deprecation: #69938 - HIDE_L10N_SIBLINGS FlexFormdisplayCond
 ============================================================
 
+See :issue:`69938`
+
 Description
 ===========
 

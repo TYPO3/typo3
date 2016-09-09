@@ -5,6 +5,8 @@
 Feature: #19494 - Add SELECTmmQuery method to DatabaseConnection
 ================================================================
 
+See :issue:`19494`
+
 Description
 ===========
 

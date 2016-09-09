@@ -5,6 +5,8 @@
 Feature: #70583 - Introduced Icon API in JavaScript
 ===================================================
 
+See :issue:`70583`
+
 Description
 ===========
 

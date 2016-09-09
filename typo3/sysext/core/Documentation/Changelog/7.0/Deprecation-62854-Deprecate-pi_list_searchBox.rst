@@ -5,6 +5,8 @@
 Deprecation: #62854 - Abstractplugin->pi_list_searchBox()
 =========================================================
 
+See :issue:`62854`
+
 Description
 ===========
 

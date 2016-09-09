@@ -5,6 +5,8 @@
 Feature: #65250 - TypoScript condition add GPmerged
 ===================================================
 
+See :issue:`65250`
+
 
 Description
 ===========

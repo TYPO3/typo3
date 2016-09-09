@@ -5,6 +5,8 @@
 Breaking: #64200 - Custom [cObject].cache.* TypoScript evaluation
 =================================================================
 
+See :issue:`64200`
+
 Description
 ===========
 

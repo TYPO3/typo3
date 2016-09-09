@@ -5,6 +5,8 @@
 Breaking: #69315 - ElementBrowser::main_* protected
 ===================================================
 
+See :issue:`69315`
+
 Description
 ===========
 

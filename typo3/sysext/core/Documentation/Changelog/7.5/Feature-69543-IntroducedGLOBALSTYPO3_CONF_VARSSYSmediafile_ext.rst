@@ -5,6 +5,8 @@
 Feature: #69543 - Introduced $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
 ================================================================================
 
+See :issue:`69543`
+
 Description
 ===========
 

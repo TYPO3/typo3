@@ -5,6 +5,8 @@
 Feature: #61289 - Signal for IconUtility html tag manipulation
 ==============================================================
 
+See :issue:`61289`
+
 Description
 ===========
 

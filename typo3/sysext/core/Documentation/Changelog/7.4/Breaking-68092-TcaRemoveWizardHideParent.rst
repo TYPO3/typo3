@@ -5,6 +5,8 @@
 Breaking: #68092 - TCA: Remove wizard hideParent and _HIDDENFIELD
 =================================================================
 
+See :issue:`68092`
+
 Description
 ===========
 

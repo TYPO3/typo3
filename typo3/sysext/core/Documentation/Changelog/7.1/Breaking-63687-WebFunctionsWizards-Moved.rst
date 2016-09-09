@@ -5,6 +5,8 @@
 Breaking: #63687 - Web=>Functions=>Wizards moved to legacy extension
 ====================================================================
 
+See :issue:`63687`
+
 Description
 ===========
 
