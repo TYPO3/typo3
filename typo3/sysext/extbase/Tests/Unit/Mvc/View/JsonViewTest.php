@@ -141,12 +141,12 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $dateTimeObject = new \DateTime('2011-02-03T03:15:23', new \DateTimeZone('UTC'));
         $configuration = [];
-        $expected = '2011-02-03T03:15:23+0000';
+        $expected = '2011-02-03T03:15:23+00:00';
         $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in UTC time zone could not be serialized.'];
 
         $dateTimeObject = new \DateTime('2013-08-15T15:25:30', new \DateTimeZone('America/Los_Angeles'));
         $configuration = [];
-        $expected = '2013-08-15T15:25:30-0700';
+        $expected = '2013-08-15T15:25:30-07:00';
         $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in America/Los_Angeles time zone could not be serialized.'];
         return $output;
     }

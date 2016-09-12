@@ -301,7 +301,7 @@ class JsonView extends AbstractView
     protected function transformObject($object, array $configuration)
     {
         if ($object instanceof \DateTime) {
-            return $object->format(\DateTime::ISO8601);
+            return $object->format(\DateTime::ATOM);
         } else {
             $propertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($object);
 

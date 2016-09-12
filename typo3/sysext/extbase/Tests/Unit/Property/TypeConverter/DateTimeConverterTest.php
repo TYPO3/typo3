@@ -135,7 +135,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ['12:13', 'H:i', true],
             ['13.12.1980', 'd.m.Y', true],
             ['2005-08-15T15:52:01+00:00', null, true],
-            ['2005-08-15T15:52:01+0000', \DateTime::ISO8601, true],
+            ['2005-08-15T15:52:01+00:00', \DateTime::ATOM, true],
             ['1308174051', 'U', true],
         ];
     }
@@ -378,7 +378,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             [['date' => '12:13', 'dateFormat' => 'H:i'], true],
             [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true],
             [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true],
-            [['date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601], true],
+            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => \DateTime::ATOM], true],
             [['date' => '1308174051', 'dateFormat' => 'U'], true],
             [['date' => 1308174051, 'dateFormat' => 'U'], true],
         ];
