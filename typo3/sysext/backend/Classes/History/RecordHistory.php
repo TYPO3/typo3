@@ -461,9 +461,6 @@ class RecordHistory
             if (!empty($entry['originalUser'])) {
                 $userName .= ' (' . $languageService->getLL('viaUser') . ' ' . $beUserArray[$entry['originalUser']]['username'] . ')';
             }
-            $singleLine['backendUserName'] = htmlspecialchars($userName);
-            $singleLine['backendUserUid'] = $entry['user'];
-            // add user name
 
             // Diff link
             $image = '<span title="' . $languageService->getLL('sumUpChanges', true) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</span>';
