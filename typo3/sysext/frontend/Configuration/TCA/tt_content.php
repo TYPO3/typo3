@@ -782,16 +782,6 @@ return [
                 'authMode_enforce' => 'strict'
             ]
         ],
-        'select_key' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.code',
-            'config' => [
-                'type' => 'input',
-                'size' => 50,
-                'max' => 80,
-                'eval' => 'trim'
-            ]
-        ],
         'file_collections' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections',
             'config' => [

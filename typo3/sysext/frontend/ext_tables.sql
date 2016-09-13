@@ -274,7 +274,6 @@ CREATE TABLE tt_content (
 	header_layout varchar(30) DEFAULT '0' NOT NULL,
 	menu_type varchar(30) DEFAULT '0' NOT NULL,
 	list_type varchar(255) DEFAULT '' NOT NULL,
-	select_key varchar(80) DEFAULT '' NOT NULL,
 	sectionIndex tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	linkToTop tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	file_collections text,

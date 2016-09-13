@@ -102,7 +102,6 @@ class ContentVisibleFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Co
         'list' => [
             'additionalFields' => [
                 'list_type',
-                'select_key',
                 'pages',
                 'recursive',
             ],

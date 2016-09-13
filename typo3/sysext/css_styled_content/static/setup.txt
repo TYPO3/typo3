@@ -1226,9 +1226,6 @@ tt_content.uploads {
 
 		collections.field = file_collections
 
-		# get from path (backwards compatibility, contains strings like "fileadmin/user_uploads/")
-		folders.field = select_key
-
 		sorting.field = filelink_sorting
 
 		# render the files
@@ -1735,7 +1732,7 @@ tt_content.list {
 	20.key.field = list_type
 
 	20.stdWrap {
-		editIcons = tt_content: list_type, layout, select_key, pages [recursive]
+		editIcons = tt_content: list_type, layout, pages [recursive]
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.plugin
 
 		prefixComment = 2 | Plugin inserted:

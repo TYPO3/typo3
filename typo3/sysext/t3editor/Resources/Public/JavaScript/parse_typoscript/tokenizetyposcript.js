@@ -780,7 +780,6 @@ var typoscriptWords = {
 	'section': 'reserved',
 	'sectionIndex': 'reserved',
 	'select': 'keyword2',
-	'select_key': 'reserved',
 	'selectFields': 'reserved',
 	'separator': 'reserved',
 	'set': 'reserved',

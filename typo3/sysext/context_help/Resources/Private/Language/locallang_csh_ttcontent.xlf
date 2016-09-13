@@ -533,16 +533,6 @@ tt_content:sectionIndex</source>
 				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="select_key.description">
-				<source>Enter a special string to define the Content Element's operation or leave it blank for the default mode. Possible values depend on the Content Element being used.</source>
-			</trans-unit>
-			<trans-unit id="select_key.details">
-				<source>Whether or not the content of this field is used and how it's intepreted depends on the Content Element and/or plugin being used. It is considered obsolete for plugins today, but is used in some Content Elements such as File Links.</source>
-			</trans-unit>
-			<trans-unit id="_select_key.seeAlso">
-				<source>tt_content:list_type</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="table_bgColor.description">
 				<source>Select the table background color.</source>
 			</trans-unit>

@@ -1791,9 +1791,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
                             $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
                         }
-                    } elseif (!empty($row['select_key'])) {
-                        $out .= htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key')))
-                            . ' ' . htmlspecialchars($row['select_key']) . '<br />';
                     } else {
                         $out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
                     }
