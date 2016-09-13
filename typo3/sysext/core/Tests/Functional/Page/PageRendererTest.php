@@ -80,7 +80,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', null, true);
 
         $subject->loadJquery();
-        $expectedJqueryRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+        $expectedJqueryRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $expectedJqueryStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
 
         $expectedBodyContent = $this->getUniqueId('ABCDE-');
@@ -177,7 +177,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         $subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-        $expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.MyNameSpace = jQuery.noConflict(true);';
         $subject->loadJquery(null, null, 'MyNameSpace');
         $out = $subject->render();
@@ -192,7 +192,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         $subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-        $expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $expectedStatement = 'jQuery.noConflict();';
         $subject->loadJquery(null, null, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
         $out = $subject->render();
@@ -208,7 +208,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         $subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-        $expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $subject->loadJquery(null, null, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE);
         $out = $subject->render();
         $this->assertRegExp($expectedRegExp, $out);
@@ -222,7 +222,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         $subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-        $expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
         $subject->loadJquery();
         $subject->enableDebugMode();
@@ -294,7 +294,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         $subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-        $expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $subject->loadExtJS(true, true);
         $subject->enableExtJsDebug();
         $out = $subject->render();

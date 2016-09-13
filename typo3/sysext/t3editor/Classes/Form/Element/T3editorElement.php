@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\T3editor\T3editor;
 
@@ -72,7 +73,7 @@ class T3editorElement extends AbstractFormElement
      *
      * @var string
      */
-    protected $relExtPath = '';
+    protected $extPath = '';
 
     /**
      * @var string
@@ -94,8 +95,8 @@ class T3editorElement extends AbstractFormElement
     public function render()
     {
         $this->getLanguageService()->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
-        $this->relExtPath = ExtensionManagementUtility::extRelPath('t3editor');
-        $this->codemirrorPath = $this->relExtPath . $this->codemirrorPath;
+        $this->extPath = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('t3editor'));
+        $this->codemirrorPath = $this->extPath . $this->codemirrorPath;
 
         $this->resultArray = $this->initializeResultArray();
 
@@ -187,7 +188,7 @@ class T3editorElement extends AbstractFormElement
         $attributes['name'] = $name;
         $attributes['data-labels'] = json_encode($this->getLanguageService()->getLabelsWithPrefix('js.', 'label_'));
         $attributes['data-instance-number'] =  $this->editorCounter;
-        $attributes['data-editor-path'] =  $this->relExtPath;
+        $attributes['data-editor-path'] =  $this->extPath;
         $attributes['data-codemirror-path'] =  $this->codemirrorPath;
         $attributes['data-ajaxsavetype'] = ''; // no ajax save in FormEngine at the moment
         $attributes['data-parserfile'] = $this->getParserfileByMode($this->mode);
@@ -262,7 +263,7 @@ class T3editorElement extends AbstractFormElement
     {
         switch ($mode) {
             case self::MODE_TYPOSCRIPT:
-                $stylesheet = [$this->relExtPath . 'Resources/Public/Css/t3editor_typoscript_colors.css'];
+                $stylesheet = [$this->extPath . 'Resources/Public/Css/t3editor_typoscript_colors.css'];
                 break;
             case self::MODE_JAVASCRIPT:
                 $stylesheet = [$this->codemirrorPath . '../css/jscolors.css'];
@@ -288,7 +289,7 @@ class T3editorElement extends AbstractFormElement
             default:
                 $stylesheet = [];
         }
-        $stylesheet[] = $this->relExtPath . 'Resources/Public/Css/t3editor_inner.css';
+        $stylesheet[] = $this->extPath . 'Resources/Public/Css/t3editor_inner.css';
         return json_encode($stylesheet);
     }
 

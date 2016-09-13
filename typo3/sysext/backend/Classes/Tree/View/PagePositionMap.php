@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -259,7 +260,7 @@ class PagePositionMap
         $TSconfigProp = $this->getModConfig($newPagePID);
         if ($TSconfigProp['overrideWithExtension']) {
             if (ExtensionManagementUtility::isLoaded($TSconfigProp['overrideWithExtension'])) {
-                $onclick = 'window.location.href=' . GeneralUtility::quoteJSvalue(ExtensionManagementUtility::extRelPath($TSconfigProp['overrideWithExtension']) . 'mod1/index.php?cmd=crPage&positionPid=' . $pid) . ';';
+                $onclick = 'window.location.href=' . GeneralUtility::quoteJSvalue(PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath($TSconfigProp['overrideWithExtension'])) . 'mod1/index.php?cmd=crPage&positionPid=' . $pid) . ';';
                 return $onclick;
             }
         }

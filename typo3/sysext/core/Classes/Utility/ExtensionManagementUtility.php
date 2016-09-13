@@ -145,9 +145,11 @@ class ExtensionManagementUtility
      *
      * @throws \BadFunctionCallException
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use PathUtility::getAbsoluteWebPath(), or ->siteRelPath()
      */
     public static function extRelPath($key)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!static::$packageManager->isPackageActive($key)) {
             throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!', 1365429673);
         }

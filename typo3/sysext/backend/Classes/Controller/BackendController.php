@@ -361,7 +361,7 @@ class BackendController
                 $info['extKey'] = 'backend';
             }
             $absoluteComponentPath = ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;
-            $relativeComponentPath = ExtensionManagementUtility::extRelPath($info['extKey']) . $componentDirectory;
+            $relativeComponentPath = PathUtility::getAbsoluteWebPath($absoluteComponentPath);
             $cssFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
             if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
                 // Don't allow inclusion outside directory

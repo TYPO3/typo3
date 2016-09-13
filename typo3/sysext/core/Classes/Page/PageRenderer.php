@@ -272,19 +272,19 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * default path to the requireJS library, relative to the typo3/ directory
      * @var string
      */
-    protected $requireJsPath = 'Resources/Public/JavaScript/Contrib/';
+    protected $requireJsPath = 'EXT:core/Resources/Public/JavaScript/Contrib/';
 
     /**
      * @var string
      */
-    protected $extJsPath = 'Resources/Public/JavaScript/Contrib/extjs/';
+    protected $extJsPath = 'EXT:core/Resources/Public/JavaScript/Contrib/extjs/';
 
     /**
      * The local directory where one can find jQuery versions and plugins
      *
      * @var string
      */
-    protected $jQueryPath = 'Resources/Public/JavaScript/Contrib/jquery/';
+    protected $jQueryPath = 'EXT:core/Resources/Public/JavaScript/Contrib/jquery/';
 
     // Internal flags for JS-libraries
     /**
@@ -414,16 +414,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct($templateFile = '')
     {
         $this->reset();
-
-        if (TYPO3_MODE === 'FE') {
-            $coreRelPath = ExtensionManagementUtility::siteRelPath('core');
-        } else {
-            $coreRelPath = ExtensionManagementUtility::extRelPath('core');
-        }
-        $this->requireJsPath = $coreRelPath . $this->requireJsPath;
-        $this->extJsPath = $coreRelPath . $this->extJsPath;
-        $this->jQueryPath = $coreRelPath . $this->jQueryPath;
-
         $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
         $this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
         if ($templateFile !== '') {
@@ -1307,17 +1297,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         // Add language labels for ExtDirect
-        if (TYPO3_MODE === 'FE') {
-            $this->addInlineLanguageLabelArray([
-                'extDirect_timeoutHeader' => $this->getTypoScriptFrontendController()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
-                'extDirect_timeoutMessage' => $this->getTypoScriptFrontendController()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
-            ]);
-        } else {
-            $this->addInlineLanguageLabelArray([
-                'extDirect_timeoutHeader' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
-                'extDirect_timeoutMessage' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
-            ]);
-        }
+        $this->addInlineLanguageLabelArray([
+            'extDirect_timeoutHeader'  => 'LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader',
+            'extDirect_timeoutMessage' => 'LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage'
+        ], true);
 
         $token = ($api = '');
         if (TYPO3_MODE === 'BE') {
@@ -2127,7 +2110,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     $code .= $block;
                 }
             }
-            $clearGifPath = htmlspecialchars(GeneralUtility::locationHeaderUrl(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/clear.gif'));
+            $clearGifPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/clear.gif');
+            $clearGifPath = htmlspecialchars(PathUtility::getAbsoluteWebPath($clearGifPath));
             $out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
 				Ext.BLANK_IMAGE_URL = "' . $clearGifPath . '";
@@ -2245,6 +2229,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 } else {
                     $jQueryFileName .= '.min.js';
                 }
+                $jQueryFileName = $this->processJsFile($jQueryFileName);
                 break;
             default:
                 $jQueryFileName = $source;

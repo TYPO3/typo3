@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Provides a javascript-driven code editor with syntax highlighting for TS, HTML, CSS and more
@@ -51,11 +52,11 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     protected $editorCounter = 0;
 
     /**
-     * Relative path to EXT:t3editor
+     * Path to EXT:t3editor
      *
      * @var string
      */
-    protected $relExtPath = '';
+    protected $extPath = '';
 
     /**
      * Relative directory to codemirror
@@ -168,8 +169,8 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
         // Disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
         $GLOBALS['BE_USER']->uc['disablePMKTextarea'] = 1;
 
-        $this->relExtPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
-        $this->codemirrorPath = $this->relExtPath . $this->codemirrorPath;
+        $this->extPath = PathUtility::getAbsoluteWebPath(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor'));
+        $this->codemirrorPath = $this->extPath . $this->codemirrorPath;
     }
 
     /**
@@ -181,7 +182,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     {
         /** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
         $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->addCssFile($this->relExtPath . 'Resources/Public/Css/t3editor.css');
+        $pageRenderer->addCssFile($this->extPath . 'Resources/Public/Css/t3editor.css');
         // Include editor-js-lib
         $pageRenderer->addJsLibrary('codemirror', $this->codemirrorPath . 'codemirror.js');
         if ($this->mode === self::MODE_TYPOSCRIPT) {
@@ -252,7 +253,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     {
         switch ($mode) {
             case self::MODE_TYPOSCRIPT:
-                $stylesheet = [$this->relExtPath . 'Resources/Public/Css/t3editor_typoscript_colors.css'];
+                $stylesheet = [$this->extPath . 'Resources/Public/Css/t3editor_typoscript_colors.css'];
                 break;
             case self::MODE_JAVASCRIPT:
                 $stylesheet = [$this->codemirrorPath . '../css/jscolors.css'];
@@ -278,7 +279,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
             default:
                 $stylesheet = [];
         }
-        $stylesheet[] = $this->relExtPath . 'Resources/Public/Css/t3editor_inner.css';
+        $stylesheet[] = $this->extPath . 'Resources/Public/Css/t3editor_inner.css';
         return json_encode($stylesheet);
     }
 
@@ -311,7 +312,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
                     . ($alt !== '' ? ' alt="' . htmlspecialchars($alt) . '"' : '')
                     . ' data-labels="' . htmlspecialchars(json_encode($GLOBALS['LANG']->getLabelsWithPrefix('js.', 'label_'))) . '"'
                     . ' data-instance-number="' . (int)$this->editorCounter . '"'
-                    . ' data-editor-path="' . htmlspecialchars($this->relExtPath) . '"'
+                    . ' data-editor-path="' . htmlspecialchars($this->extPath) . '"'
                     . ' data-codemirror-path="' . htmlspecialchars($this->codemirrorPath) . '"'
                     . ' data-ajaxsavetype="' . htmlspecialchars($this->ajaxSaveType) . '"'
                     . ' data-parserfile="' . htmlspecialchars($this->getParserfileByMode($this->mode)) . '"'

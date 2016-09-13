@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -1466,7 +1467,7 @@ class EditDocumentController extends AbstractModule
      */
     public function shortCutLink()
     {
-        if ($this->returnUrl !== ExtensionManagementUtility::extRelPath('backend') . 'Resources/Private/Templates/Close.html') {
+        if ($this->returnUrl !== ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html') {
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
             $shortCutButton->setModuleName($this->MCONF['name'])
                 ->setGetVariables([
@@ -1486,10 +1487,10 @@ class EditDocumentController extends AbstractModule
      */
     public function openInNewWindowLink()
     {
-        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
-        if ($this->returnUrl !== $backendRelPath . 'Resources/Private/Templates/Close.html') {
+        $closeUrl = ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html';
+        if ($this->returnUrl !== $closeUrl) {
             $aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(
-                ['returnUrl' => $backendRelPath . 'Resources/Private/Templates/Close.html']
+                ['returnUrl' => PathUtility::getAbsoluteWebPath($closeUrl)]
             ))
                 . ','
                 . GeneralUtility::quoteJSvalue(md5($this->R_URI))
