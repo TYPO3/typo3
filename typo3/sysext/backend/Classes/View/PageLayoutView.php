@@ -1817,7 +1817,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         }
                     } elseif (!empty($row['select_key'])) {
                         $out .= htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key')))
-                            . ' ' . $row['select_key'] . '<br />';
+                            . ' ' . htmlspecialchars($row['select_key']) . '<br />';
                     } else {
                         $out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
                     }
