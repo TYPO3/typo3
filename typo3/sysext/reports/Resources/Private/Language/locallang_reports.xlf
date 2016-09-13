@@ -99,6 +99,9 @@
 			<trans-unit id="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
 			</trans-unit>
+			<trans-unit id="status_cacheFloodingProtection">
+				<source>Cache Flooding Protection</source>
+			</trans-unit>
 			<trans-unit id="status_adminUserAccount">
 				<source>Admin User Account</source>
 			</trans-unit>

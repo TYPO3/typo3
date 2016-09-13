@@ -1113,6 +1113,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="warning.install_trustedhosts">
 				<source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
 			</trans-unit>
+			<trans-unit id="warning.install_cache_flooding">
+				<source>Cache Flooding Protection is disabled. Please enable [FE][cHashIncludePageId] in the Install Tool.</source>
+			</trans-unit>
 			<trans-unit id="warning.install_encryption">
 				<source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
 			</trans-unit>
