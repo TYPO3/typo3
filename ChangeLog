@@ -1,3 +1,17 @@
+2016-09-13  46b333a                  [RELEASE] Release of TYPO3 6.2.27 (TYPO3 Release Team)
+2016-09-13  8aecd0c  #76462          [!!!][SECURITY] Mitigate potential cache flooding (Benni Mack)
+2016-09-13  b04d394  #77906          [SECURITY] Fix select_key XSS in PageLayoutView (Georg Ringer)
+2016-09-13  67e63a9  #77204          [BUGFIX] Prevent orphaned tags in Typo3DatabaseBackend (Thomas Schlumberger)
+2016-09-02  44949df  #64176          [BUGFIX] Prevent fatal error if no column in page layout is defined (Nicole Cordes)
+2016-09-02  0f77d52  #77755          [BUGFIX] Check for null in debug_check_recordset (Morton Jonuschat)
+2016-08-23  b495775  #77588          [BUGFIX] Fix sql error in EXT:linkvalidator (Daniel Windloff)
+2016-08-19  b2c9915  #76441          [BUGFIX] Index all file mounts in FAL indexer scheduler task (Hannes Bochmann)
+2016-08-18  dc83c6d  #76928          [BUGFIX] Allow URL path segments like "typo3" (Mathias Brodala)
+2016-08-18  ba4521b  #67894          [BUGFIX] Felogin form with default layout is not visible (Michiel Roos)
+2016-07-19  95c3944  #77098          [BUGFIX] Prepend current path to versionNumberInFilename RewriteRule (Marco Huber)
+2016-07-19  95f1113                  [TASK] Set TYPO3 version to 6.2.27-dev (TYPO3 Release Team)
+
+
 2016-07-19  d719c97                  [RELEASE] Release of TYPO3 6.2.26 (TYPO3 Release Team)
 2016-07-19  2bc8727  #76358          [SECURITY] Link fields accept Javascript code when using URI Data Scheme (Valentin Despa)
 2016-07-19  485396d  #75933          [SECURITY] Prevent persistent username in filesystem (Wouter Wolters)
