@@ -32,6 +32,7 @@ return array(
     ),
     'FE' => array(
         'loginSecurityLevel' => 'rsa',
+        'cHashIncludePageId' => true,
     ),
     'GFX' => array(
         'jpg_quality' => '80',

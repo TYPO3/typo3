@@ -24,16 +24,8 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var array
-     */
-    protected $confCache = array();
-
     protected function setUp()
     {
-        $this->confCache = array(
-            'encryptionKey' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
-        );
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
             ->setMethods(array('foo'))
@@ -43,12 +35,13 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'cachedParametersWhiteList' => array(),
             'requireCacheHashPresenceParameters' => array('req1', 'req2'),
             'excludedParametersIfEmpty' => array(),
+            'includePageId' => true,
             'excludeAllEmptyParameters' => false
         ));
     }
 
     /**
-     * @dataProvider cacheHashCalculationDataprovider
+     * @dataProvider cacheHashCalculationDataProvider
      * @test
      */
     public function cacheHashCalculationWorks($params, $expected)
@@ -59,7 +52,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function cacheHashCalculationDataprovider()
+    public function cacheHashCalculationDataProvider()
     {
         return array(
             'Empty parameters should not return a hash' => array(
@@ -99,29 +92,33 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getRelevantParametersDataprovider()
     {
-        return array(
-            'Empty list should be passed through' => array('', array()),
-            'Simple parameter should be passed through and the encryptionKey should be added' => array(
-                'key=v',
-                array('encryptionKey', 'key')
-            ),
-            'Simple parameter should be passed through' => array(
-                'key1=v&key2=v',
-                array('encryptionKey', 'key1', 'key2')
-            ),
-            'System and exclude parameters should be omitted' => array(
+        return [
+            'Empty list should be passed through' => ['', []],
+            'Simple parameter should be passed through and the encryptionKey should be added' => [
+                'key=v&id=42',
+                ['encryptionKey', 'id', 'key']
+            ],
+            'Simple parameter should be passed through' => [
+                'key1=v&key2=v&id=42',
+                ['encryptionKey', 'id', 'key1', 'key2']
+            ],
+            'System and exclude parameters should be omitted' => [
                 'id=1&type=3&exclude1=x&no_cache=1',
-                array()
-            ),
-            'System and exclude parameters should be omitted, others should stay' => array(
+                []
+            ],
+            'System and exclude parameters (except id) should be omitted, others should stay' => [
                 'id=1&type=3&key=x&no_cache=1',
-                array('encryptionKey', 'key')
-            )
-        );
+                ['encryptionKey', 'id', 'key']
+            ],
+            'System and exclude parameters should be omitted and id is not required to be specified' => [
+                '&type=3&no_cache=1',
+                []
+            ]
+        ];
     }
 
     /**
-     * @dataProvider canGenerateForParametersDataprovider
+     * @dataProvider canGenerateForParametersDataProvider
      * @test
      */
     public function canGenerateForParameters($params, $expected)
@@ -130,23 +127,33 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionCode 1467983513
+     */
+    public function generateForParametersThrowsExceptionWhenIdIsNotSpecified()
+    {
+        $this->subject->generateForParameters('&key=x');
+    }
+
+    /**
      * @return array
      */
-    public function canGenerateForParametersDataprovider()
+    public function canGenerateForParametersDataProvider()
     {
-        $knowHash = '5cfdcf826275558b3613dd51714a0a17';
-        return array(
-            'Empty parameters should not return an hash' => array('', ''),
-            'Querystring has no relevant parameters so we should not have a cacheHash' => array('&exclude1=val', ''),
-            'Querystring has only system parameters so we should not have a cacheHash' => array('id=1&type=val', ''),
-            'Trivial key value combination should generate hash' => array('&key=value', $knowHash),
-            'Only the relevant parts should be taken into account' => array('&key=value&exclude1=val', $knowHash),
-            'Only the relevant parts should be taken into account(exclude2 before key)' => array('&exclude2=val&key=value', $knowHash),
-            'System parameters should not be taken into account' => array('&id=1&key=value', $knowHash),
-            'Admin panel parameters should not be taken into account' => array('&TSFE_ADMIN_PANEL[display]=7&key=value', $knowHash),
-            'Trivial hash for sorted parameters should be right' => array('a=v&b=v', '0f40b089cdad149aea99e9bf4badaa93'),
-            'Parameters should be sorted before  is created' => array('b=v&a=v', '0f40b089cdad149aea99e9bf4badaa93')
-        );
+        $knowHash = 'fac112f7e662c83c19b57142c3a921f5';
+        return [
+            'Empty parameters should not return an hash' => ['&id=42', ''],
+            'Querystring has no relevant parameters so we should not have a cacheHash' => ['&exclude1=val', ''],
+            'Querystring has only system parameters so we should not have a cacheHash' => ['&id=42&type=val', ''],
+            'Trivial key value combination should generate hash' => ['&id=42&key=value', $knowHash],
+            'Only the relevant parts should be taken into account' => ['&id=42&key=value&exclude1=val', $knowHash],
+            'Only the relevant parts should be taken into account(exclude2 before key)' => ['&id=42&exclude2=val&key=value', $knowHash],
+            'System parameters should not be taken into account (except id)' => ['&id=42&type=23&key=value', $knowHash],
+            'Admin panel parameters should not be taken into account' => ['&id=42&TSFE_ADMIN_PANEL[display]=7&key=value', $knowHash],
+            'Trivial hash for sorted parameters should be right' => ['&id=42&a=v&b=v', '52c8a1299e20324f90377c43153c4987'],
+            'Parameters should be sorted before cHash is created' => ['&id=42&b=v&a=v', '52c8a1299e20324f90377c43153c4987']
+        ];
     }
 
     /**
@@ -176,7 +183,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * In case the cHashOnlyForParameters is set, other parameters should not
      * incluence the cHash (except the encryption key of course)
      *
-     * @dataProvider canWhitelistParametersDataprovider
+     * @dataProvider canWhitelistParametersDataProvider
      * @test
      */
     public function canWhitelistParameters($params, $expected)
@@ -190,21 +197,21 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function canWhitelistParametersDataprovider()
+    public function canWhitelistParametersDataProvider()
     {
-        $oneParamHash = 'e2c0f2edf08be18bcff2f4272e11f66b';
-        $twoParamHash = 'f6f08c2e10a97d91b6ec61a6e2ddd0e7';
-        return array(
-            'Even with the whitelist enabled, empty parameters should not return an hash.' => array('', ''),
-            'Whitelisted parameters should have a hash.' => array('whitep1=value', $oneParamHash),
-            'Blacklisted parameter should not influence hash.' => array('whitep1=value&black=value', $oneParamHash),
-            'Multiple whitelisted parameters should work' => array('&whitep1=value&whitep2=value', $twoParamHash),
-            'The order should not influce the hash.' => array('whitep2=value&black=value&whitep1=value', $twoParamHash)
-        );
+        $oneParamHash = 'eae50a13101afd53a9d2c543230eb5bb';
+        $twoParamHash = '701e2d2f1becc9d1b71d327e5cb1c3ed';
+        return [
+            'Even with the whitelist enabled, empty parameters should not return an hash.' => ['', ''],
+            'Whitelisted parameters should have a hash.' => ['&id=42&whitep1=value', $oneParamHash],
+            'Blacklisted parameter should not influence hash.' => ['&id=42&whitep1=value&black=value', $oneParamHash],
+            'Multiple whitelisted parameters should work' => ['&id=42&whitep1=value&whitep2=value', $twoParamHash],
+            'The order should not influce the hash.' => ['&id=42&whitep2=value&black=value&whitep1=value', $twoParamHash]
+        ];
     }
 
     /**
-     * @dataProvider canSkipParametersWithEmptyValuesDataprovider
+     * @dataProvider canSkipParametersWithEmptyValuesDataProvider
      * @test
      */
     public function canSkipParametersWithEmptyValues($params, $settings, $expected)
@@ -217,29 +224,29 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function canSkipParametersWithEmptyValuesDataprovider()
+    public function canSkipParametersWithEmptyValuesDataProvider()
     {
-        return array(
-            'The default configuration does not allow to skip an empty key.' => array(
-                'key1=v&key2=&key3=',
-                array('excludedParametersIfEmpty' => array(), 'excludeAllEmptyParameters' => false),
-                array('encryptionKey', 'key1', 'key2', 'key3')
-            ),
-            'Due to the empty value, "key2" should be skipped(with equals sign' => array(
-                'key1=v&key2=&key3=',
-                array('excludedParametersIfEmpty' => array('key2'), 'excludeAllEmptyParameters' => false),
-                array('encryptionKey', 'key1', 'key3')
-            ),
-            'Due to the empty value, "key2" should be skipped(without equals sign)' => array(
-                'key1=v&key2&key3',
-                array('excludedParametersIfEmpty' => array('key2'), 'excludeAllEmptyParameters' => false),
-                array('encryptionKey', 'key1', 'key3')
-            ),
-            'Due to the empty value, "key2" and "key3" should be skipped' => array(
-                'key1=v&key2=&key3=',
-                array('excludedParametersIfEmpty' => array(), 'excludeAllEmptyParameters' => true),
-                array('encryptionKey', 'key1')
-            )
-        );
+        return [
+            'The default configuration does not allow to skip an empty key.' => [
+                '&id=42&key1=v&key2=&key3=',
+                ['excludedParametersIfEmpty' => [], 'excludeAllEmptyParameters' => false],
+                ['encryptionKey', 'id', 'key1', 'key2', 'key3']
+            ],
+            'Due to the empty value, "key2" should be skipped(with equals sign' => [
+                '&id=42&key1=v&key2=&key3=',
+                ['excludedParametersIfEmpty' => ['key2'], 'excludeAllEmptyParameters' => false],
+                ['encryptionKey', 'id', 'key1', 'key3']
+            ],
+            'Due to the empty value, "key2" should be skipped(without equals sign)' => [
+                '&id=42&key1=v&key2&key3',
+                ['excludedParametersIfEmpty' => ['key2'], 'excludeAllEmptyParameters' => false],
+                ['encryptionKey', 'id', 'key1', 'key3']
+            ],
+            'Due to the empty value, "key2" and "key3" should be skipped' => [
+                '&id=42&key1=v&key2=&key3=',
+                ['excludedParametersIfEmpty' => [], 'excludeAllEmptyParameters' => true],
+                ['encryptionKey', 'id', 'key1']
+            ]
+        ];
     }
 }
