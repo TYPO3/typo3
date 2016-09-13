@@ -961,11 +961,6 @@ return [
                 ]
             ]
         ],
-        'tx_impexp_origuid' => [
-            'config' => [
-                'type' => 'passthrough'
-            ]
-        ],
         'accessibility_title' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:accessibility_title',
             'config' => [

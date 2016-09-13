@@ -125,7 +125,6 @@ CREATE TABLE pages (
 	TSconfig text,
 	is_siteroot tinyint(4) DEFAULT '0' NOT NULL,
 	php_tree_stop tinyint(4) DEFAULT '0' NOT NULL,
-	tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,

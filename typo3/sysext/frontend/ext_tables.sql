@@ -150,7 +150,6 @@ CREATE TABLE pages_language_overlay (
 	abstract text,
 	author varchar(255) DEFAULT '' NOT NULL,
 	author_email varchar(80) DEFAULT '' NOT NULL,
-	tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumblob,
 	url varchar(255) DEFAULT '' NOT NULL,
 	urltype tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -220,7 +219,6 @@ CREATE TABLE sys_template (
 	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	includeStaticAfterBasedOn tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
@@ -288,7 +286,6 @@ CREATE TABLE tt_content (
 	recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	imageheight mediumint(8) unsigned DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
 	pi_flexform mediumtext,
 	accessibility_title varchar(30) DEFAULT '' NOT NULL,
 	accessibility_bypass tinyint(3) unsigned DEFAULT '0' NOT NULL,

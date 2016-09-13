@@ -159,7 +159,6 @@ return [
                 ]
             ]
         ],
-        'tx_impexp_origuid' => ['config' => ['type' => 'passthrough']],
         't3ver_label' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => [

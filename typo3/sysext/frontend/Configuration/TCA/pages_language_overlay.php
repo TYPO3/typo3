@@ -251,7 +251,6 @@ return [
                 'showIconTable' => true,
             ]
         ],
-        'tx_impexp_origuid' => ['config' => ['type' => 'passthrough']],
         'l18n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
