@@ -5931,8 +5931,7 @@ class ContentObjectRenderer
                         $addQueryParams = '';
                     }
                     if ($conf['useCacheHash']) {
-                        // Mind the order below! See http://forge.typo3.org/issues/17070
-                        $params = $tsfe->linkVars . $addQueryParams;
+                        $params = $tsfe->linkVars . $addQueryParams . '&id=' . $linkDetails['pageuid'];
                         if (trim($params, '& ') != '') {
                             /** @var $cacheHash CacheHashCalculator */
                             $cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
