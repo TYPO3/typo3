@@ -5610,6 +5610,9 @@ class DataHandler
         $copyTCE->cachedTSconfig = $this->cachedTSconfig;
         // Transformations should NOT be carried out during copy
         $copyTCE->dontProcessTransformations = true;
+        // make sure the isImporting flag is transferred, so all hooks know if
+        // the current process is an import process
+        $copyTCE->isImporting = $this->isImporting;
         return $copyTCE;
     }
 
