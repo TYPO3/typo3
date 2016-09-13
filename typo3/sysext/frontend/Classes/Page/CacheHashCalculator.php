@@ -47,6 +47,11 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $excludeAllEmptyParameters = FALSE;
 
 	/**
+	 * @var bool
+	 */
+	protected $includePageId = FALSE;
+
+	/**
 	 * Initialise class properties by using the relevant TYPO3 configuration
 	 */
 	public function __construct() {
@@ -118,6 +123,12 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 			$relevantParameters[$parameterName] = $parameterValue;
 		}
 		if (!empty($relevantParameters)) {
+			if ($this->includePageId) {
+				if (empty($parameters['id'])) {
+					throw new \RuntimeException('ID parameter needs to be passed for the cHash calculation! As a temporary not recommended workaround, you can set $GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'cHashIncludePageId\'] to false to avoid this error.', 1467983513);
+				}
+				$relevantParameters['id'] = $parameters['id'];
+			}
 			// Finish and sort parameters array by keys:
 			$relevantParameters['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 			ksort($relevantParameters);
@@ -223,6 +234,13 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function setCachedParametersWhiteList(array $cachedParametersWhiteList) {
 		$this->cachedParametersWhiteList = $cachedParametersWhiteList;
+	}
+
+	/**
+	 * @param bool $includePageId
+	 */
+	protected function setIncludePageId($includePageId) {
+		$this->includePageId = $includePageId;
 	}
 
 	/**

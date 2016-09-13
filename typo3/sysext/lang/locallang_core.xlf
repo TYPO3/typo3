@@ -955,6 +955,9 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="warning.install_enabled_cmd" xml:space="preserve">
 				<source>Click to remove the file now!</source>
 			</trans-unit>
+			<trans-unit id="warning.install_cache_flooding">
+				<source>Cache Flooding Protection is disabled. Please enable [FE][cHashIncludePageId] in the Install Tool.</source>
+			</trans-unit>
 			<trans-unit id="warning.install_encryption" xml:space="preserve">
 				<source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
 			</trans-unit>

@@ -35,6 +35,7 @@ return array(
 	),
 	'FE' => array(
 		'loginSecurityLevel' => 'rsa',
+		'cHashIncludePageId' => TRUE,
 		'activateContentAdapter' => FALSE,
 	),
 	'GFX' => array(

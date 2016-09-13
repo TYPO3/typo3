@@ -39,9 +39,25 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			'htaccessUpload' => $this->getHtaccessUploadStatus(),
 			'installToolEnabled' => $this->getInstallToolProtectionStatus(),
 			'installToolPassword' => $this->getInstallToolPasswordStatus(),
-			'saltedpasswords' => $this->getSaltedPasswordsStatus()
+			'saltedpasswords' => $this->getSaltedPasswordsStatus(),
+			'cacheFloodingProtection' => $this->getCacheFloodingProtectionStatus()
 		);
 		return $statuses;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether the check is disabled
+	 */
+	protected function getCacheFloodingProtectionStatus() {
+		$value = $GLOBALS['LANG']->getLL('status_ok');
+		$message = '';
+		$severity = \TYPO3\CMS\Reports\Status::OK;
+		if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashIncludePageId'])) {
+			$value = $GLOBALS['LANG']->getLL('status_insecure');
+			$severity = \TYPO3\CMS\Reports\Status::ERROR;
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_cache_flooding');
+		}
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_cacheFloodingProtection'), $value, $message, $severity);
 	}
 
 	/**
