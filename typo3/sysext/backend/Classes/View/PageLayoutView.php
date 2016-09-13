@@ -1583,7 +1583,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 					} elseif (!empty($row['select_key'])) {
 						$out .= $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), TRUE)
-							. ' ' . $row['select_key'] . '<br />';
+							. ' ' . htmlspecialchars($row['select_key']) . '<br />';
 					} else {
 						$out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
 					}
@@ -1594,7 +1594,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					break;
 				case 'script':
 					$out .= $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), TRUE)
-						. ' ' . $row['select_key'] . '<br />';
+						. ' ' . htmlspecialchars($row['select_key']) . '<br />';
 					$out .= '<br />' . $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 					$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
 					break;
