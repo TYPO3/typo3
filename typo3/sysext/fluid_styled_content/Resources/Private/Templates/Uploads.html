@@ -12,7 +12,7 @@
 					<f:if condition="{data.uploads_type} == 2">
 						<f:if condition="{f:uri.image(src: 'file:{f:if(condition: file.originalFile, then: \'file:{file.originalFile.uid}\', else: \'file:{file.uid}\')}')} != '/'">
 							<f:then>
-								<a href="{file.publicUrl}">
+								<a href="{file.publicUrl}"{f:if(condition:data.target,then:' target="{data.target}"')}>
 									<f:media file="{file}" width="150" alt="{file.properties.alternative}" />
 								</a>
 							</f:then>
@@ -23,7 +23,7 @@
 					</f:if>
 
 					<div>
-						<a href="{file.publicUrl}">
+						<a href="{file.publicUrl}"{f:if(condition:data.target,then:' target="{data.target}"')}>
 							<span class="ce-uploads-fileName">
 								<f:if condition="{file.title}">
 									<f:then>
