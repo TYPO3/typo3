@@ -36,6 +36,9 @@
 			<trans-unit id="no_subpages">
 				<source>Please select a page with subpages.</source>
 			</trans-unit>
+			<trans-unit id="not_available_in_draft_workspace">
+				<source>Sorry, this function is not available in the current draft workspace!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

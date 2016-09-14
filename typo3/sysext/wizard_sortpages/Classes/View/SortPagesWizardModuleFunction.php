@@ -110,7 +110,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
             $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', null, '<span class="btn btn-default btn-sm">|</span>');
             $out .= '<div>' . $theCode . '</div>';
         } else {
-            $out .= '<div>Sorry, this function is not available in the current draft workspace!</div>';
+            $out .= '<div>' . htmlspecialchars($lang->getLL('not_available_in_draft_workspace')) . '</div>';
         }
         return $out;
     }
