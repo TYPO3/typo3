@@ -53,11 +53,6 @@ mod.wizards.newContentElement.wizardItems {
 				CType = table
 			}
 		}
-	}
-
-	common.show := addToList(header,text,textpic,image,bullets,table)
-
-	special.elements {
 		uploads {
 			iconIdentifier = content-special-uploads
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_filelinks_title
@@ -66,7 +61,11 @@ mod.wizards.newContentElement.wizardItems {
 				CType = uploads
 			}
 		}
+	}
 
+	common.show := addToList(header,text,textpic,image,bullets,table,uploads)
+
+	special.elements {
 		menu {
 			iconIdentifier = content-special-menu
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_menus_title
@@ -105,5 +104,5 @@ mod.wizards.newContentElement.wizardItems {
 		}
 	}
 
-	special.show := addToList(uploads,menu,html,div,shortcut)
+	special.show := addToList(menu,html,div,shortcut)
 }

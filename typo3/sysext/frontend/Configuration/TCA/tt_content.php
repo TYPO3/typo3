@@ -59,35 +59,36 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.standard',
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common',
                         '--div--'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.0',
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_title',
                         'header',
                         'content-header'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.lists',
-                        '--div--'
-                    ],
-                    [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.4',
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_bulletList_title',
                         'bullets',
                         'content-bullets'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.5',
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_table_title',
                         'table',
                         'content-table'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.6',
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_filelinks_title',
                         'uploads',
                         'content-special-uploads'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.special',
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_title',
+                        'list',
+                        'content-plugin'
+                    ],
+                    [
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special',
                         '--div--'
                     ],
                     [
@@ -96,14 +97,9 @@ return [
                         'content-special-menu'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.13',
-                        'shortcut',
-                        'content-special-shortcut'
-                    ],
-                    [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.14',
-                        'list',
-                        'content-plugin'
+                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.17',
+                        'html',
+                        'content-special-html'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.16',
@@ -111,10 +107,10 @@ return [
                         'content-special-div'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.17',
-                        'html',
-                        'content-special-html'
-                    ]
+                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.13',
+                        'shortcut',
+                        'content-special-shortcut'
+                    ],
                 ],
                 'default' => 'header',
                 'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
