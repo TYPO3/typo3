@@ -1412,7 +1412,7 @@ class EditDocumentController extends AbstractModule
                         ->setHref($this->R_URI . '&columnsOnly=')
                         ->setTitle($lang->getLL('editWholeRecord'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-document-open',
+                            'actions-open',
                             Icon::SIZE_SMALL
                         ));
                     $buttonBar->addButton($columnsOnlyButton, ButtonBar::BUTTON_POSITION_LEFT, 3);

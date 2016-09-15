@@ -586,7 +586,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $element .= ' ' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('list.field'), $fieldName));
         $markerArray['actionlinkOpen'] = $actionLinkOpen;
         $markerArray['actionlinkClose'] = $actionLinkClose;
-        $markerArray['actionlinkIcon'] = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
+        $markerArray['actionlinkIcon'] = $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
         $markerArray['path'] = BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
         $markerArray['element'] = $element;
         $markerArray['headlink'] = htmlspecialchars($row['link_title']);

@@ -410,7 +410,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
                     $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                    $eI = '<a href="' . htmlspecialchars($url)
+                    $eI = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                         . '" title="' . htmlspecialchars($iTitle) . '">'
                         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
@@ -418,9 +418,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 }
                 switch ($field) {
                     case 'title':
-                        $theData[$field] = '&nbsp;<strong>'
+                        $theData[$field] = '&nbsp;' . $eI . '<strong>'
                             . $lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'])
-                            . '</strong>' . $eI;
+                            . '</strong>';
                         break;
                     case 'uid':
                         $theData[$field] = '&nbsp;<strong>ID:</strong>';
@@ -437,9 +437,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                     '</span>';
                             }
                         } else {
-                            $theData[$field] = '&nbsp;&nbsp;<strong>'
+                            $theData[$field] = '&nbsp;&nbsp;' . $eI . '<strong>'
                                 . htmlspecialchars($lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
-                                . '</strong>' . $eI;
+                                . '</strong>';
                         }
                 }
             }
@@ -1060,9 +1060,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
                         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                        $Nrow['__editIconLink__'] = '<a href="' . htmlspecialchars($url)
+                        $Nrow['__editIconLink__'] = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                             . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">'
-                            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                            . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
                         $Nrow['__editIconLink__'] = $this->noEditIcon();
                     }
@@ -1371,13 +1371,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
                         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                        $eI = '<a href="' . htmlspecialchars($url)
+                        $eI = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                             . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('editThisPage')) . '">'
-                            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                            . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
                         $eI = '';
                     }
-                    $theData[$field] = '<span align="right">' . $row['uid'] . $eI . '</span>';
+                    $theData[$field] = $eI . '<span align="right">' . $row['uid'] . '</span>';
                     break;
                 case 'shortcut':
                 case 'shortcut_mode':
@@ -1543,7 +1543,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     . '" title="' . htmlspecialchars($this->nextThree > 1
                         ? sprintf($this->getLanguageService()->getLL('nextThree'), $this->nextThree)
                         : $this->getLanguageService()->getLL('edit'))
-                    . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                    . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
                 // Hide element:
                 $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
                 if ($hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField]

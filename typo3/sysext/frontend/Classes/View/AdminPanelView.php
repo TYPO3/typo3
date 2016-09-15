@@ -702,7 +702,7 @@ class AdminPanelView
                 . '</a>';
         }
         if ($perms & Permission::PAGE_EDIT) {
-            $icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
+            $icon = $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render();
             $url = BackendUtility::getModuleUrl('record_edit', [
                 'edit[pages][' . $id . ']' => 'edit',
                 'noView' => 1,

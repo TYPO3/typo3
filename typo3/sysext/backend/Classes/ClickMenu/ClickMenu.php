@@ -755,7 +755,11 @@ class ClickMenu
         $newPageModule = trim($this->backendUser->getTSConfigVal('options.overridePageModule'));
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
         $loc = 'top.content.list_frame';
-        $theIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
+        $iconName = 'actions-open';
+        if ($table === 'pages') {
+            $iconName = 'actions-page-open';
+        }
+        $theIcon = $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render();
 
         $link = BackendUtility::getModuleUrl('record_edit', [
             'edit[' . $table . '][' . $uid . ']' => 'edit'

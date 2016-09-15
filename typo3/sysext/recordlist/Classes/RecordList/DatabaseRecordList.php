@@ -1441,6 +1441,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($permsEdit) {
             $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
             $iconIdentifier = 'actions-open';
+            if ($table === 'pages') {
+                $iconIdentifier = 'actions-page-open';
+            }
             $overlayIdentifier = !$this->isEditable($table) ? 'overlay-readonly' : null;
             $editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
                 . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier)->render() . '</a>';

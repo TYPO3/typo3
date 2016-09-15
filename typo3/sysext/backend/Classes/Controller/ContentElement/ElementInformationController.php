@@ -592,7 +592,7 @@ class ElementInformationController
         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
         $pageActionIcons = '
 			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
-				' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
+				' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '
 			</a>';
 
         // History button

@@ -169,7 +169,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $info = '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(
                     'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
-                ) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                ) . '">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= str_replace('###LANG_UID###', '0', $viewPageLink);
             $info .= '&nbsp;';
             $info .= GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
@@ -216,7 +216,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                         $info = '<a href="' . htmlspecialchars($editUrl)
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
-                            ) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                            ) . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
                         $info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
                         $tCells[] = '<td class="' . $status . '"><div class="btn-group">' . $info . '</div></td>';
                         $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(

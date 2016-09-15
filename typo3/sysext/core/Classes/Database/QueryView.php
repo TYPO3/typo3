@@ -694,7 +694,7 @@ class QueryView
                 . ');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()
                 . '</a>';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
-                . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', [
                         'cmd' => [
