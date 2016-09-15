@@ -1170,6 +1170,9 @@ abstract class AbstractMenuContentObject
     {
         $parameters = GeneralUtility::explodeUrl2Array($queryString);
         if (!empty($parameters)) {
+            if (!isset($parameters['id'])) {
+                $queryString .= '&id=' . $this->getTypoScriptFrontendController()->id;
+            }
             /** @var CacheHashCalculator $cacheHashCalculator */
             $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
             $cHashParameters = $cacheHashCalculator->getRelevantParameters($queryString);
