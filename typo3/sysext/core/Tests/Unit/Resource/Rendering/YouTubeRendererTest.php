@@ -39,7 +39,6 @@ class YouTubeRendererTest extends UnitTestCase
         parent::setUp();
         GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = 'test.server.org';
-        $_SERVER['REQUEST_URI'] = '/test-page/';
 
         /** @var YouTubeHelper|\PHPUnit_Framework_MockObject_MockObject $youTubeHelper */
         $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
@@ -95,7 +94,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200')
         );
     }
@@ -109,7 +108,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
@@ -123,7 +122,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
@@ -142,7 +141,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileReferenceMock, '300m', '200')
         );
     }
@@ -156,7 +155,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org/test-page/&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
         );
     }
