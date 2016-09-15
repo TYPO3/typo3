@@ -1,0 +1,103 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:be.pageRenderer loadJQuery="true" includeRequireJsModules="{0:'TYPO3/CMS/WizardCrpages/WizardCreatePages'}" />
+<h1><f:translate key="{LLPrefix}wiz_crMany"/></h1>
+<div>
+    <f:if condition="{pages}">
+        <f:then>
+            <div class="form-group">
+                <h4><f:translate key="{LLPrefix}wiz_newPages_currentMenu"/></h4>
+                <f:for each="{pages}" as="page">
+                    <f:render section="Page" arguments="{page: page}" />
+                </f:for>
+            </div>
+        </f:then>
+        <f:else>
+            <h4><f:translate key="{LLPrefix}wiz_newPages"/>:</h4>
+            <div class="form-group t3js-wizardcrpages-container">
+                <f:render section="FormLine" arguments="{line: {index: '0', label: '1', llprefix: '{LLPrefix}', typeselect: '{typeSelect}'}}" />
+                <f:render section="FormLine" arguments="{line: {index: '1', label: '2', llprefix: '{LLPrefix}', typeselect: '{typeSelect}'}}" />
+                <f:render section="FormLine" arguments="{line: {index: '2', label: '3', llprefix: '{LLPrefix}', typeselect: '{typeSelect}'}}" />
+                <f:render section="FormLine" arguments="{line: {index: '3', label: '4', llprefix: '{LLPrefix}', typeselect: '{typeSelect}'}}" />
+                <f:render section="FormLine" arguments="{line: {index: '4', label: '5', llprefix: '{LLPrefix}', typeselect: '{typeSelect}'}}" />
+            </div>
+        </f:else>
+    </f:if>
+    <div class="form-group">
+        <input class="btn btn-default t3js-wizardcrpages-createnewfields" type="button" value="{f:translate(key: '{LLPrefix}wiz_newPages_addMoreLines')}" />
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label for="createInListEnd">
+                <input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />
+                {f:translate(key: '{LLPrefix}wiz_newPages_listEnd')}
+            </label>
+        </div>
+        <div class="checkbox">
+            <label for="hidePages">
+                <input type="checkbox" name="hidePages" id="hidePages" value="1" />
+                {f:translate(key: '{LLPrefix}wiz_newPages_hidePages')}
+            </label>
+        </div>
+        <div class="checkbox">
+            <label for="hidePagesInMenus">
+                <input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />
+                {f:translate(key: '{LLPrefix}wiz_newPages_hidePagesInMenus')}
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-default" type="submit" name="create" value="{f:translate(key: '{LLPrefix}wiz_newPages_lCreate')}" />
+        <input class="btn btn-default" type="reset" value="{f:translate(key: '{LLPrefix}wiz_newPages_lReset')}" />
+    </div>
+
+    <f:format.raw>
+        <span class="btn btn-default btn-sm">{cshItem}</span>
+    </f:format.raw>
+</div>
+
+<script type="text/javascript">
+    var tpl = `<f:render section="FormLine" arguments="{line: {index: '[0]', label: '[1]', llprefix: '{LLPrefix}', typeselect: '{typeSelect}'}}" />`, i, line, div, bg, label;
+</script>
+
+<f:section name="Page">
+    <span class="text-nowrap" title="{page.titleAttribute}">
+        <core:iconForRecord table="pages" row="{page.record}" />{page.title}<br />
+    </span>
+</f:section>
+
+<f:section name="FormLine">
+    <div class="form-section" id="form-line-{line.index}">
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="page_new_{line.index}">
+                    <f:translate key="{line.llprefix}wiz_newPages_page"/> {line.label}:
+                </label>
+                <div class="form-control-wrap">
+                    <input class="form-control" type="text" id="page_new_{line.index}" name="data[pages][NEW{line.index}][title]" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label>
+                    <f:translate key="LLL:EXT:lang/locallang_general.xlf:LGL.type"/>
+                </label>
+                <div class="form-control-wrap">
+                    <div class="input-group">
+                        <div id="page_new_icon_{line.index}" class="input-group-addon input-group-icon">
+                            <core:iconForRecord table="pages" row="{id: '0'}" />
+                        </div>
+                        <select class="form-control form-control-adapt t3js-wizardcrpages-select-doktype" name="data[pages][NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
+                            <f:for each="{line.typeselect}" as="typegroup" key="group">
+                                <optgroup label="{f:translate(key: '{group}')}">
+                                    <f:for each="{typegroup}" as="type">
+                                        <option data-icon='{core:icon(identifier: "{type.2}")}' value="{type.1}">{f:translate(key: '{type.0}')}</option>
+                                    </f:for>
+                                </optgroup>
+                            </f:for>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>

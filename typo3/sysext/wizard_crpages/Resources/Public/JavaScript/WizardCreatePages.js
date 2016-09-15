@@ -37,8 +37,8 @@ define(['jquery'], function($) {
 		for (var i = 0; i < 5; i++) {
 			var label = WizardCreatePages.lineCounter + i + 1;
 			var line = tpl
-				.replace(/\{0\}/g, (WizardCreatePages.lineCounter + i))
-				.replace(/\{1\}/g, label);
+				.replace(/\[0\]/g, (WizardCreatePages.lineCounter + i))
+				.replace(/\[1\]/g, label);
 
 			$(line).appendTo(WizardCreatePages.containerSelector);
 		}
