@@ -15,12 +15,10 @@ namespace TYPO3\CMS\WizardSortpages\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Creates the "Sort pages" wizard
@@ -34,13 +32,10 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
      */
     public function main()
     {
-        $lang = $this->getLanguageService();
-        $lang->includeLLFile('EXT:wizard_sortpages/Resources/Private/Language/locallang.xlf');
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $out = '<h1>' . htmlspecialchars($lang->getLL('wiz_sort')) . '</h1>';
+        $assigns = [];
+        $assigns['LLPrefix'] = 'LLL:EXT:wizard_sortpages/Resources/Private/Language/locallang.xlf:';
+        $assigns['workspace'] = $this->getBackendUser()->workspace;
         if ($this->getBackendUser()->workspace === 0) {
-            $theCode = '';
             // Check if user has modify permissions to
             $sys_pages = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
             $sortByField = GeneralUtility::_GP('sortByField');
@@ -65,40 +60,71 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 }
             }
             $menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', false);
-
+            $assigns['menuItems'] = $menuItems;
             if (!empty($menuItems)) {
-                $lines = [];
-                $lines[] = '<thead><tr>';
-                $lines[] = '<th>' . $lang->getLL('wiz_changeOrder_title') . '</th>';
-                $lines[] = '<th>' . $lang->getLL('wiz_changeOrder_subtitle') . '</th>';
-                $lines[] = '<th>' . $lang->getLL('wiz_changeOrder_tChange') . '</th>';
-                $lines[] = '<th>' . $lang->getLL('wiz_changeOrder_tCreate') . '</th>';
-                $lines[] = '</tr></thead>';
-
-                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+                $dataLines = [];
                 foreach ($menuItems as $rec) {
                     $m_perms_clause = $this->getBackendUser()->getPagePermsClause(2);
                     // edit permissions for that page!
                     $pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-                    $lines[] = '<tr><td nowrap="nowrap">' . $iconFactory->getIconForRecord('pages', $rec, Icon::SIZE_SMALL)->render() . (!is_array($pRec) ? '<strong class="text-danger">' . htmlspecialchars($lang->getLL('wiz_W')) . '</strong></span> ' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
-					<td nowrap="nowrap">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['subtitle'], $this->getBackendUser()->uc['titleLen'])) . '</td>
-					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '</td>
-					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '</td>
-					</tr>';
+                    $line = [];
+                    $line['rec'] = $rec;
+                    $line['danger'] = !is_array($pRec);
+                    $line['title'] = GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen']);
+                    $line['subtitle'] = GeneralUtility::fixed_lgd_cs($rec['subtitle'], $this->getBackendUser()->uc['titleLen']);
+                    $line['tstamp'] = BackendUtility::datetime($rec['tstamp']);
+                    $line['crdate'] = BackendUtility::datetime($rec['crdate']);
+                    $dataLines[] = $line;
                 }
-                $theCode .= '<h2>' . htmlspecialchars($lang->getLL('wiz_currentPageOrder')) . '</h2>';
-                $theCode .= '<div class="table-fit"><table class="table table-striped table-hover">' . implode('', $lines) . '</table></div>';
+                $assigns['lines'] = $dataLines;
 
                 // Menu:
-                $lines = [];
-                $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_title'), 'title');
-                $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_subtitle'), 'subtitle');
-                $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_tChange'), 'tstamp');
-                $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_tCreate'), 'crdate');
-                $lines[] = '';
-                $lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_REVERSE'), 'REV');
-                $theCode .= '<h4>' . $lang->getLL('wiz_changeOrder') . '</h4><p>' . implode(' ', $lines) . '</p>';
+                $dataLines = [];
+                $line = [];
+                $line['title'] = 'wiz_changeOrder_title';
+                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                    [
+                        'id' => $GLOBALS['SOBE']->id,
+                        'sortByField' => 'title'
+                    ]
+                );
+                $dataLines[] = $line;
+                $line['title'] = 'wiz_changeOrder_subtitle';
+                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                    [
+                        'id' => $GLOBALS['SOBE']->id,
+                        'sortByField' => 'subtitle'
+                    ]
+                );
+                $dataLines[] = $line;
+                $line['title'] = 'wiz_changeOrder_tChange';
+                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                    [
+                        'id' => $GLOBALS['SOBE']->id,
+                        'sortByField' => 'tstamp'
+                    ]
+                );
+                $dataLines[] = $line;
+                $line['title'] = 'wiz_changeOrder_tCreate';
+                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                    [
+                        'id' => $GLOBALS['SOBE']->id,
+                        'sortByField' => 'crdate'
+                    ]
+                );
+                $dataLines[] = $line;
+                $line['title'] = 'wiz_changeOrder_REVERSE';
+                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                    [
+                        'id' => $GLOBALS['SOBE']->id,
+                        'sortByField' => 'REV'
+                    ]
+                );
+                $dataLines[] = $line;
+                $assigns['buttons'] = $dataLines;
             } else {
+                $lang = $this->getLanguageService();
+                $lang->includeLLFile('EXT:wizard_sortpages/Resources/Private/Language/locallang.xlf');
                 $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('no_subpages'), '', FlashMessage::NOTICE);
                 /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -107,35 +133,15 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
             // CSH:
-            $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', null, '<span class="btn btn-default btn-sm">|</span>');
-            $out .= '<div>' . $theCode . '</div>';
-        } else {
-            $out .= '<div>' . htmlspecialchars($lang->getLL('not_available_in_draft_workspace')) . '</div>';
+            $assigns['cshItem'] = BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages');
         }
-        return $out;
-    }
-
-    /**
-     * Creates a link for the sorting order
-     *
-     * @param string $title Title of the link
-     * @param string $order Field to sort by
-     * @return string HTML string
-     */
-    protected function wiz_linkOrder($title, $order)
-    {
-        $href = BackendUtility::getModuleUrl('web_func',
-            [
-                'id' => $GLOBALS['SOBE']->id,
-                'sortByField' => $order
-            ]
-        );
-        return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($href) . '" '
-            . ' data-severity="warning"'
-            . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:pleaseConfirm')) . '"'
-            . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
-            . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('wiz_changeOrder_msg1')) . '"'
-            . ' >' . htmlspecialchars($title) . '</a>';
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:wizard_sortpages/Resources/Private/Templates/SortPagesWizard.html'
+        ));
+        $view->assignMultiple($assigns);
+        return $view->render();
     }
 
     /**

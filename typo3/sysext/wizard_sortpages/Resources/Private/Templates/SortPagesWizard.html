@@ -1,0 +1,58 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:be.pageRenderer includeRequireJsModules="{0:'TYPO3/CMS/Backend/Modal'}" />
+<h1><f:translate key="{LLPrefix}wiz_sort"/></h1>
+
+<div>
+    <f:if condition="{workspace}">
+        <f:then>
+            <f:translate key="{LLPrefix}not_available_in_draft_workspace"/>
+        </f:then>
+        <f:else>
+            <f:if condition="{menuItems}">
+                <h2><f:translate key="{LLPrefix}wiz_currentPageOrder"/></h2>
+                <div class="table-fit">
+                    <table class="table table-striped table-hover">
+                        <thead><tr>
+                        <th><f:translate key="{LLPrefix}wiz_changeOrder_title"/></th>
+                        <th><f:translate key="{LLPrefix}wiz_changeOrder_subtitle"/></th>
+                        <th><f:translate key="{LLPrefix}wiz_changeOrder_tChange"/></th>
+                        <th><f:translate key="{LLPrefix}wiz_changeOrder_tCreate"/></th>
+                        </tr></thead>
+                        <f:for each="{lines}" as="line">
+                            <tr><td class="text-nowrap"><core:iconForRecord table="pages" row="{line.rec}" />
+                                <f:if condition="{line.danger}">
+                                    <strong class="text-danger"><f:translate key="{LLPrefix}wiz_W"/></strong>&nbsp;
+                                </f:if>
+                                {line.title}</td>
+                                <td class="text-nowrap">{line.subtitle}</td>
+                                <td class="text-nowrap">{line.tstamp}</td>
+                                <td class="text-nowrap">{line.crdate}</td>
+                            </tr>
+                        </f:for>
+                    </table>
+                </div>
+                <h4><f:translate key="{LLPrefix}wiz_changeOrder"/></h4>
+                <p>
+                    <f:for each="{buttons}" as="button">
+                        <f:render section="Button" arguments="{button: button, LLPrefix: LLPrefix}" />
+                    </f:for>
+                </p>
+            </f:if>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{cshItem}">
+        <span class="btn btn-default btn-sm">{cshItem -> f:format.raw()}</span>
+    </f:if>
+</div>
+
+<f:section name="Button">
+    <a class="btn btn-default t3js-modal-trigger"
+        href="{button.href}"
+        data-severity="warning"
+        data-title="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:pleaseConfirm')}"
+        data-button-close-text="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:cancel')}"
+        data-content="{f:translate(key: '{LLPrefix}wiz_changeOrder_msg1')}" >
+        <f:translate key="{LLPrefix}{button.title}"/></a>
+</f:section>
