@@ -1,3 +1,4 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <html
 	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
 	xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
@@ -63,7 +64,7 @@
 							<th><f:translate key="column.integrity" /></th>
 							<th><core:icon identifier="flags-multiple" size="small" /></th>
 							<th class="text-right">
-								<button type="button" class="btn btn-default t3js-toggle-all"><span class="t3-icon fa fa-check-square-o"></span></button>
+								<button type="button" class="btn btn-default t3js-toggle-all"><core:icon identifier="actions-document-select" /></span></button>
 							</th>
 						</tr>
 						</thead>
