@@ -19,7 +19,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
 
 /**
@@ -432,8 +431,7 @@ class ActionController extends AbstractController
             !empty($extbaseFrameworkConfiguration['view'][$setting])
             && is_array($extbaseFrameworkConfiguration['view'][$setting])
         ) {
-            $values = ArrayUtility::sortArrayWithIntegerKeys($extbaseFrameworkConfiguration['view'][$setting]);
-            $values = array_reverse($values, true);
+            $values = $extbaseFrameworkConfiguration['view'][$setting];
         }
 
         return $values;

@@ -1234,25 +1234,25 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "1.0.7",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3Fluid/Fluid.git",
-                "reference": "70314b168d14fc38315e554b82238dd966744377"
+                "reference": "52861b6ba2a4d239420c2e207668f4bd96a3b6c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/70314b168d14fc38315e554b82238dd966744377",
-                "reference": "70314b168d14fc38315e554b82238dd966744377",
+                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/52861b6ba2a4d239420c2e207668f4bd96a3b6c6",
+                "reference": "52861b6ba2a4d239420c2e207668f4bd96a3b6c6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "require-dev": {
-                "mikey179/vfsstream": "*",
-                "phpunit/phpunit": "*",
-                "satooshi/php-coveralls": "*"
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^1.0"
             },
             "bin": [
                 "bin/fluid"
@@ -1265,10 +1265,10 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-3.0+"
+                "LGPL-3.0"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2016-05-09 20:32:46"
+            "time": "2016-08-30 14:04:02"
         }
     ],
     "packages-dev": [
