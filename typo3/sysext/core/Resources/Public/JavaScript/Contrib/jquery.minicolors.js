@@ -1013,12 +1013,12 @@
 		.on('mousedown.minicolors touchstart.minicolors', '.minicolors-grid, .minicolors-slider, .minicolors-opacity-slider', function(event) {
 			var target = $(this);
 			event.preventDefault();
-			$(document).data('minicolors-target', target);
+			$(event.delegateTarget).data('minicolors-target', target);
 			move(target, event, true);
 		})
 		// Move pickers
 		.on('mousemove.minicolors touchmove.minicolors', function(event) {
-			var target = $(document).data('minicolors-target');
+			var target = $(event.delegateTarget).data('minicolors-target');
 			if( target ) move(target, event);
 		})
 		// Stop moving
