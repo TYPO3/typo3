@@ -222,6 +222,7 @@ class PageLayoutController
      * Array of tables to be listed by the Web > Page module in addition to the default tables
      *
      * @var array
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public $externalTables = [];
 
@@ -382,6 +383,12 @@ class PageLayoutController
         //              'fList' =>  'title,description,image',
         //              'icon' => TRUE));
         if (is_array($this->externalTables)) {
+            if (!empty($this->externalTables)) {
+                GeneralUtility::deprecationLog('The rendering of records in the page module by using '
+                    . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'cms\'][\'db_layout\'][\'addTables\']'
+                    . ' has been deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9.'
+                );
+            }
             foreach ($this->externalTables as $table => $tableSettings) {
                 // delete the default settings from above
                 if (is_array($this->MOD_MENU[$table])) {

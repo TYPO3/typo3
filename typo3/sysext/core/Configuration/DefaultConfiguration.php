@@ -1183,21 +1183,5 @@ return [
             'cliKeys' => []
         ],
     ],
-    'EXTCONF' => [
-        // Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
-        'cms' => [
-            'db_layout' => [
-                'addTables' => [
-                    'fe_users' => [
-                        0 => [
-                            'MENU' => '',
-                            'fList' => 'username,usergroup,name,email,telephone,address,zip,city',
-                            'icon' => true
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ],
     'SVCONF' => []
 ];
