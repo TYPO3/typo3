@@ -36,12 +36,12 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @var array
      */
-    protected $attributes;
+    protected $attributes = [];
 
     /**
      * @var array
      */
-    protected $cookieParams;
+    protected $cookieParams = [];
 
     /**
      * @var array
@@ -51,17 +51,17 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @var array
      */
-    protected $queryParams;
+    protected $queryParams = [];
 
     /**
      * @var array
      */
-    protected $serverParams;
+    protected $serverParams = [];
 
     /**
      * @var array
      */
-    protected $uploadedFiles;
+    protected $uploadedFiles = [];
 
     /**
      * Constructor, the only place to set all parameters of this Message/Request
