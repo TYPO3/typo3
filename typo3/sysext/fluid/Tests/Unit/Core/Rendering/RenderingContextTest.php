@@ -72,7 +72,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
         $this->renderingContext->setVariableProvider($templateVariableContainer);
-        $this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
+        $this->assertSame($this->renderingContext->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
     }
 
     /**

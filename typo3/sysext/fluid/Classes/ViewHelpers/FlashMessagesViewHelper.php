@@ -162,7 +162,7 @@ class FlashMessagesViewHelper extends AbstractTagBasedViewHelper
      */
     protected function renderFromTemplate(array $flashMessages, $as)
     {
-        $templateVariableContainer = $this->renderingContext->getTemplateVariableContainer();
+        $templateVariableContainer = $this->renderingContext->getVariableProvider();
         $templateVariableContainer->add($as, $flashMessages);
         $content = $this->renderChildren();
         $templateVariableContainer->remove($as);

@@ -90,7 +90,7 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      */
     protected function addArgumentsToTemplateVariableContainer(array $arguments)
     {
-        $templateVariableContainer = $this->getWidgetRenderingContext()->getTemplateVariableContainer();
+        $templateVariableContainer = $this->getWidgetRenderingContext()->getVariableProvider();
         foreach ($arguments as $identifier => $value) {
             $templateVariableContainer->add($identifier, $value);
         }
@@ -104,7 +104,7 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      */
     protected function removeArgumentsFromTemplateVariableContainer(array $arguments)
     {
-        $templateVariableContainer = $this->getWidgetRenderingContext()->getTemplateVariableContainer();
+        $templateVariableContainer = $this->getWidgetRenderingContext()->getVariableProvider();
         foreach ($arguments as $identifier => $value) {
             $templateVariableContainer->remove($identifier);
         }
