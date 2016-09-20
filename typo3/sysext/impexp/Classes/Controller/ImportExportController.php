@@ -952,7 +952,6 @@ class ImportExportController extends BaseScriptClass
         $file = GeneralUtility::_GP('file');
         // Initializing:
         $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-        $this->fileProcessor->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
         $this->fileProcessor->setActionPermissions();
         $conflictMode = empty(GeneralUtility::_GP('overwriteExistingFiles')) ? DuplicationBehavior::__default : DuplicationBehavior::REPLACE;
         $this->fileProcessor->setExistingFilesConflictMode(DuplicationBehavior::cast($conflictMode));

@@ -261,7 +261,6 @@ Reports problems with RTE images';
     {
         if (!is_object($this->fileProcObj)) {
             $this->fileProcObj = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-            $this->fileProcObj->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
             $this->fileProcObj->setActionPermissions();
         }
         return $this->fileProcObj;

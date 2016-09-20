@@ -372,7 +372,6 @@ class FileListController extends ActionController
                     // Init file processing object for deleting and pass the cmd array.
                     /** @var ExtendedFileUtility $fileProcessor */
                     $fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-                    $fileProcessor->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
                     $fileProcessor->setActionPermissions();
                     $fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
                     $fileProcessor->start($FILE);

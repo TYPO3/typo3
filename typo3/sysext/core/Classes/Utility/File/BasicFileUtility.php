@@ -67,8 +67,8 @@ class BasicFileUtility
      */
     public function __construct()
     {
-        $this->fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['filePermissions']['webspace']['allow']));
-        $this->fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['filePermissions']['webspace']['deny']));
+        $this->fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow']));
+        $this->fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny']));
     }
 
     /**
