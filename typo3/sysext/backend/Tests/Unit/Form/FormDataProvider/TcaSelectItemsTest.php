@@ -3188,6 +3188,97 @@ class TcaSelectItemsTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function processSelectFieldValueReturnsDuplicateValuesForMultipleSelect()
+    {
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '1,foo,foo,2,bar',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'multiple' => true,
+                            'maxitems' => 999,
+                            'items' => [
+                                ['1', '1', null, null],
+                                ['foo', 'foo', null, null],
+                                ['bar', 'bar', null, null],
+                                ['2', '2', null, null],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [
+            '1',
+            'foo',
+            'foo',
+            '2',
+            'bar'
+        ];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function processSelectFieldValueReturnsUniqueValuesForMultipleSelect()
+    {
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '1,foo,foo,2,bar',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'multiple' => false,
+                            'maxitems' => 999,
+                            'items' => [
+                                ['1', '1', null, null],
+                                ['foo', 'foo', null, null],
+                                ['bar', 'bar', null, null],
+                                ['2', '2', null, null],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [
+            0 => '1',
+            1 => 'foo',
+            3 => '2',
+            4 => 'bar',
+        ];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
      * Data Provider
      *
      * @return array

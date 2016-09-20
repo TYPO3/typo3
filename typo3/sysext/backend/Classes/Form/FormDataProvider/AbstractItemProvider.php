@@ -1202,6 +1202,9 @@ abstract class AbstractItemProvider
             $newDatabaseValueArray = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
         }
 
+        if ($fieldConfig['config']['multiple']) {
+            return $newDatabaseValueArray;
+        }
         return array_unique($newDatabaseValueArray);
     }
 
