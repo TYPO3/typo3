@@ -120,7 +120,7 @@ class YouTubeRenderer implements FileRendererInterface
 
         $videoId = $this->getOnlineMediaHelper($file)->getOnlineMediaId($orgFile);
         $src = sprintf(
-            '//www.youtube%s.com/embed/%s?%s',
+            'https://www.youtube%s.com/embed/%s?%s',
             !empty($options['no-cookie']) ? '-nocookie' : '',
             $videoId,
             implode('&amp;', $urlParams)
