@@ -98,6 +98,14 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                 '',
                 '42 - "css-class fluid_class"',
             ],
+            'classes are unique' => [
+                '42 - css-class',
+                '',
+                'css-class',
+                '',
+                '',
+                '42 - css-class',
+            ],
             'page with overridden title' => [
                 '42 - - "a link title"',
                 '',

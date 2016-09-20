@@ -161,10 +161,8 @@ class TypolinkViewHelper extends AbstractViewHelper
 
         // Combine classes if given in both "parameter" string and "class" argument
         if ($class) {
-            if ($typolinkConfiguration['class']) {
-                $typolinkConfiguration['class'] .= ' ';
-            }
-            $typolinkConfiguration['class'] .= $class;
+            $classes = explode(' ', trim($typolinkConfiguration['class']) . ' ' . trim($class));
+            $typolinkConfiguration['class'] = implode(' ', array_unique(array_filter($classes)));
         }
 
         // Override title if given in title argument
