@@ -115,7 +115,7 @@ class VimeoRenderer implements FileRendererInterface
         }
 
         $videoId = $this->getOnlineMediaHelper($file)->getOnlineMediaId($orgFile);
-        $src = sprintf('//player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
+        $src = sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
 
         $attributes = ['allowfullscreen'];
         if ((int)$width > 0) {
