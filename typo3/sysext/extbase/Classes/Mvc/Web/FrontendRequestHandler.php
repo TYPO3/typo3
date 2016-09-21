@@ -30,6 +30,11 @@ class FrontendRequestHandler extends AbstractRequestHandler
     protected $extensionService;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Web\CacheHashEnforcer
+     */
+    protected $cacheHashEnforcer;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
@@ -43,6 +48,14 @@ class FrontendRequestHandler extends AbstractRequestHandler
     public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Mvc\Web\CacheHashEnforcer $cacheHashEnforcer
+     */
+    public function injectCacheHashEnforcer(\TYPO3\CMS\Extbase\Mvc\Web\CacheHashEnforcer $cacheHashEnforcer)
+    {
+        $this->cacheHashEnforcer = $cacheHashEnforcer;
     }
 
     /**
@@ -64,6 +77,15 @@ class FrontendRequestHandler extends AbstractRequestHandler
             }
             $request->setIsCached(false);
         }
+
+        if ($this->configurationManager->isFeatureEnabled('requireCHashArgumentForActionArguments')) {
+            $pluginNamespace = $this->extensionService->getPluginNamespace(
+                $request->getControllerExtensionName(),
+                $request->getPluginName()
+            );
+            $this->cacheHashEnforcer->enforceForRequest($request, $pluginNamespace);
+        }
+
         /** @var $response \TYPO3\CMS\Extbase\Mvc\ResponseInterface */
         $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
         $this->dispatcher->dispatch($request, $response);
