@@ -1149,7 +1149,7 @@ class RichTextElement extends AbstractFormElement
 
                 $result = $queryBuilder
                     ->select('a.uid', 'b.lg_iso_2', 'b.lg_country_iso_2')
-                    ->from($tableA)
+                    ->from($tableA, 'a')
                     ->where('a.uid', (int)$this->contentLanguageUid)
                     ->leftJoin(
                         'a',

@@ -113,12 +113,11 @@ class Language extends RteHtmlAreaApi
                 $labelFields[] = $table . '.' . $titleField;
             }
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-            $result = $queryBuilder
+            $queryBuilder
                 ->select($table . '.lg_iso_2', $table . '.lg_country_iso_2')
-                ->addSelect(...GeneralUtility::trimExplode(',', $labelFields, true))
+                ->addSelect(...$labelFields)
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('lg_constructed', 0));
 
