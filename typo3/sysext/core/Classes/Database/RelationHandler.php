@@ -486,7 +486,8 @@ class RelationHandler
             if ($uidList) {
                 $this->itemArray = [];
                 $this->tableArray = [];
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder = $this->getConnectionForTableName($table)
+                    ->createQueryBuilder();
                 $queryBuilder->getRestrictions()->removeAll();
                 $queryBuilder->select('uid')
                     ->from($table)
@@ -518,7 +519,8 @@ class RelationHandler
     {
         $key = 0;
         $theTable = null;
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->getConnectionForTableName($tableName)
+            ->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->select('*')->from($tableName);
         // In case of a reverse relation
@@ -590,7 +592,7 @@ class RelationHandler
      */
     public function writeMM($MM_tableName, $uid, $prependTableName = false)
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($MM_tableName);
+        $connection = $this->getConnectionForTableName($MM_tableName);
         $expressionBuilder = $connection->createQueryBuilder()->expr();
 
         // In case of a reverse relation
@@ -821,7 +823,8 @@ class RelationHandler
         // If there are tables...
         $tableC = count($this->tableArray);
         if ($tableC) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($MM_tableName);
+            $queryBuilder = $this->getConnectionForTableName($MM_tableName)
+                ->createQueryBuilder();
             $queryBuilder->update($MM_tableName)
                 ->set($uidLocal_field, (int)$newUid)
                 ->where($queryBuilder->expr()->eq($uidLocal_field, (int)$uid));
@@ -869,8 +872,8 @@ class RelationHandler
         $foreign_table_field = $conf['foreign_table_field'];
         $useDeleteClause = !$this->undeleteRecord;
         $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : [];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($foreign_table);
+        $queryBuilder = $this->getConnectionForTableName($foreign_table)
+            ->createQueryBuilder();
         $queryBuilder->getRestrictions()
             ->removeAll();
         // Use the deleteClause (e.g. "deleted=0") on this table
@@ -1099,8 +1102,7 @@ class RelationHandler
                             $updateValues[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
                         }
                     }
-                    GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getConnectionForTable($table)
+                    $this->getConnectionForTableName($table)
                         ->update(
                             $table,
                             $updateValues,
@@ -1112,8 +1114,7 @@ class RelationHandler
                 if ($considerWorkspaces) {
                     // It's the specific versioned record -> update placeholder (if any)
                     if (!empty($row['t3ver_oid']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-                        GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getConnectionForTable($table)
+                        $this->getConnectionForTableName($table)
                             ->update(
                                 $table,
                                 $updateValues,
@@ -1181,7 +1182,8 @@ class RelationHandler
                             $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
                         }
                     }
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder = $this->getConnectionForTableName($table)
+                        ->createQueryBuilder();
                     $queryBuilder->getRestrictions()->removeAll();
                     $queryBuilder->select(...(GeneralUtility::trimExplode(',', $fields, true)))
                         ->from($table)
@@ -1341,7 +1343,8 @@ class RelationHandler
         $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->getConnectionForTableName($tableName)
+            ->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
             ->from($tableName)
@@ -1378,7 +1381,8 @@ class RelationHandler
         $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->getConnectionForTableName($tableName)
+            ->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
             ->from($tableName)
@@ -1416,7 +1420,8 @@ class RelationHandler
         $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->getConnectionForTableName($tableName)
+            ->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
             ->from($tableName)
@@ -1532,5 +1537,15 @@ class RelationHandler
         $resolver->setKeepDeletePlaceholder(true);
         $resolver->setKeepLiveIds($this->useLiveReferenceIds);
         return $resolver;
+    }
+
+    /**
+     * @param string $tableName
+     * @return Connection
+     */
+    protected function getConnectionForTableName(string $tableName)
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($tableName);
     }
 }
