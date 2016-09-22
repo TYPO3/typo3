@@ -77,13 +77,6 @@ class CoreUpdateService
     public function __construct(CoreVersionService $coreVersionService = null)
     {
         $this->coreVersionService = $coreVersionService ?: GeneralUtility::makeInstance(CoreVersionService::class);
-    }
-
-    /**
-     * Initialize update paths
-     */
-    public function initializeObject()
-    {
         $this->setDownloadTargetPath(PATH_site . 'typo3temp/var/transient/');
         $this->symlinkToCoreFiles = $this->discoverCurrentCoreSymlink();
         $this->downloadBaseUri = $this->coreVersionService->getDownloadBaseUri();
