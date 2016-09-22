@@ -275,6 +275,27 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
+    public function inSetForSQLite()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('sqlite');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quote('%,1,%', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->inSet('aField', "'1'");
+
+        $this->assertSame('\',\'||"aField"||\',\' LIKE \'%,1,%\'', $result);
+    }
+    /**
+     * @test
+     */
     public function defaultBitwiseAnd()
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);

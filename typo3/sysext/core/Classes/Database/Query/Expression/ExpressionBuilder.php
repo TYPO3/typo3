@@ -317,6 +317,21 @@ class ExpressionBuilder
                     1459696681
                 );
                 break;
+            case 'sqlite':
+            case 'sqlite3':
+            case 'pdo_sqlite':
+                return $this->comparison(
+                    implode('||', [
+                        $this->literal(','),
+                        $this->connection->quoteIdentifier($fieldName),
+                        $this->literal(','),
+                    ]),
+                    'LIKE',
+                    $this->literal(
+                        '%,' . $this->unquoteLiteral($value) . ',%'
+                    )
+                );
+                break;
             default:
                 return sprintf(
                     'FIND_IN_SET(%s, %s)',
@@ -446,5 +461,22 @@ class ExpressionBuilder
     public function literal($input, string $type = null): string
     {
         return $this->connection->quote($input, $type);
+    }
+
+    /**
+     * Unquote a string literal. Used to unquote values for internal platform adjustments.
+     *
+     * @param string $value The value to be unquoted
+     * @return string The unquoted value
+     */
+    protected function unquoteLiteral(string $value): string
+    {
+        $quoteChar = $this->connection
+            ->getDatabasePlatform()
+            ->getStringLiteralQuoteCharacter();
+
+        $unquotedValue = trim($value, $quoteChar);
+
+        return str_replace($quoteChar . $quoteChar, $quoteChar, $unquotedValue);
     }
 }
