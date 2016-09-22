@@ -38,7 +38,7 @@ class ValueSliderWizard
         // If Slider is used in a flexform
         if (!empty($params['flexFormPath'])) {
             $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-            $flexFormValue = $flexFormTools->getArrayValueByPath($params['flexFormPath'], GeneralUtility::xml2array($value));
+            $flexFormValue = $flexFormTools->getArrayValueByPath($params['flexFormPath'], $params['row'][$field]);
             if ($flexFormValue !== null) {
                 $value = $flexFormValue;
             }
