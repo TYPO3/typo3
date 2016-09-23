@@ -165,7 +165,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
             $contentElements = $queryBuilder
-                ->select('uid', 'header', 'hidden', 'starttime', 'endtime', 'fe_group', 'CType', 'colPos', 'bodytext')
+                ->select('*')
                 ->from('tt_content')
                 ->where($queryBuilder->expr()->eq('pid', (int)$pageId))
                 ->orderBy('colPos')
