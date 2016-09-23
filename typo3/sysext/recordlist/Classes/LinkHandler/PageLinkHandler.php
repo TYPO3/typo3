@@ -176,7 +176,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         // Look up tt_content elements from the expanded page:
         $res = $db->exec_SELECTquery(
-            'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
+            '*',
             'tt_content',
             'pid=' . (int)$expPageId . BackendUtility::deleteClause('tt_content')
             . BackendUtility::versioningPlaceholderClause('tt_content'),
