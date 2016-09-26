@@ -843,7 +843,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $manifestPath
      * @return \stdClass
-     * @throws Exception\MissingPackageManifestException
      * @throws Exception\InvalidPackageManifestException
      */
     public function getComposerManifest($manifestPath)
@@ -857,18 +856,12 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
 
-        try {
-            $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath);
-            $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
-                basename($manifestPath),
-                $extensionManagerConfiguration,
-                $composerManifest ?: new \stdClass()
-            );
-        } catch (Exception\InvalidPackageManifestException $e) {
-            if ($composerManifest === null) {
-                throw $e;
-            }
-        }
+        $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath);
+        $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
+            basename($manifestPath),
+            $extensionManagerConfiguration,
+            $composerManifest ?: new \stdClass()
+        );
 
         return $composerManifest;
     }

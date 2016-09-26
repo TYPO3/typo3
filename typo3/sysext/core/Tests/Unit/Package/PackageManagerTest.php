@@ -76,7 +76,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
         mkdir($packagePath, 0770, true);
-        file_put_contents($packagePath . 'ext_emconf.php', '');
+        file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         file_put_contents($packagePath . 'composer.json', '{}');
         $package = new Package($this->packageManager, $packageKey, $packagePath);
         $this->packageManager->registerPackage($package);
@@ -157,7 +157,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
             mkdir($packagePath, 0770, true);
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
-            file_put_contents($packagePath . 'ext_emconf.php', '');
+            file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
@@ -208,7 +208,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
             mkdir($packagePath, 0770, true);
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
-            file_put_contents($packagePath . 'ext_emconf.php', '');
+            file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
             $packagePaths[] = $packagePath;
         }
 
