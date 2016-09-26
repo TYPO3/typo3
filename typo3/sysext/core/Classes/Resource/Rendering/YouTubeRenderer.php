@@ -104,11 +104,14 @@ class YouTubeRenderer implements FileRendererInterface
         if (!empty($options['autoplay'])) {
             $urlParams[] = 'autoplay=1';
         }
-        if (!empty($options['loop'])) {
-            $urlParams[] = 'loop=1';
-        }
+	      if (!empty($options['loop'])) {
+		      $urlParams[] = 'loop=1';
+	      }
+	      if (!empty($options['relatedVideos'])) {
+		      $urlParams[] = 'rel=' . (int)!empty($options['relatedVideos']);
+	      }
         if (!isset($options['enablejsapi']) || !empty($options['enablejsapi'])) {
-            $urlParams[] = 'enablejsapi=1&amp;origin=' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+	        $urlParams[] = 'enablejsapi=1&amp;origin=' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         }
         $urlParams[] = 'showinfo=' . (int)!empty($options['showinfo']);
 
