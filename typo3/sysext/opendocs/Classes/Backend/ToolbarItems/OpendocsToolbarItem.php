@@ -18,10 +18,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Alist of all open documents
@@ -39,20 +37,11 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     protected $recentDocs;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->getLanguageService()->includeLLFile('EXT:opendocs/Resources/Private/Language/locallang.xlf');
         $this->loadDocsFromUserSession();
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu');
     }
 
     /**
@@ -74,8 +63,8 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function loadDocsFromUserSession()
     {
         $backendUser = $this->getBackendUser();
-        list($this->openDocs, ) = $backendUser->getModuleData('FormEngine', 'ses');
-        $this->recentDocs = $backendUser->getModuleData('opendocs::recent');
+        list($this->openDocs, ) = $backendUser->getModuleData('FormEngine', 'ses') ?: [];
+        $this->recentDocs = $backendUser->getModuleData('opendocs::recent') ?: [];
     }
 
     /**
@@ -85,14 +74,13 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $numDocs = count($this->openDocs);
-        $title = htmlspecialchars($this->getLanguageService()->getLL('toolbaritem'));
-        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL)->render('inline');
-        return '
-            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
-            <span class="toolbar-item-title">' . $title . '</span>
-            <span class="toolbar-item-badge badge" id="tx-opendocs-counter">' . $numDocs . '</span>
-            ';
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:opendocs/Resources/Private/Templates/ToolbarItem.html'
+        ));
+        $view->assign('numDocs', count($this->openDocs));
+        return $view->render();
     }
 
     /**
@@ -102,60 +90,48 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $languageService = $this->getLanguageService();
+        $assigns = [];
         $openDocuments = $this->openDocs;
         $recentDocuments = $this->recentDocs;
-        $entries = [];
-
-        $entries[] = '<h3 class="dropdown-headline">';
-        $entries[] = htmlspecialchars($this->getLanguageService()->getLL('toolbaritem'));
-        $entries[] = '</h3>';
-        $entries[] = '<hr>';
-
-        if (!empty($openDocuments)) {
-            $entries[] = '<h3 class="dropdown-headline">';
-            $entries[] = htmlspecialchars($languageService->getLL('open_docs'));
-            $entries[] = '</h3>';
-            $entries[] = '<div class="dropdown-table">';
-            $i = 0;
-            foreach ($openDocuments as $md5sum => $openDocument) {
-                $i++;
-                $entries[] = $this->renderMenuEntry($openDocument, $md5sum, false, $i == 1);
-            }
-            $entries[] = '</div>';
-            $entries[] = '<hr>';
-        }
+        $assigns['openDocuments'] = $this->getMenuEntries($openDocuments);
         // If there are "recent documents" in the list, add them
-        if (!empty($recentDocuments)) {
-            $entries[] = '<h3 class="dropdown-headline">';
-            $entries[] = htmlspecialchars($languageService->getLL('recent_docs'));
-            $entries[] = '</h3>';
-            $entries[] = '<div class="dropdown-table">';
-            $i = 0;
-            foreach ($recentDocuments as $md5sum => $recentDocument) {
-                $i++;
-                $entries[] = $this->renderMenuEntry($recentDocument, $md5sum, true, $i == 1);
-            }
-            $entries[] = '</div>';
-        }
-        if (!empty($entries)) {
-            $content = implode('', $entries);
-        } else {
-            $content = '<p>' . htmlspecialchars($languageService->getLL('no_docs')) . '</p>';
-        }
-        return $content;
+        $assigns['recentDocuments'] = $this->getMenuEntries($recentDocuments);
+
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:opendocs/Resources/Private/Templates/DropDown.html'
+        ));
+        $view->assignMultiple($assigns);
+        return $view->render();
     }
 
     /**
-     * Returns the recent documents list as an array
+     * Get menu entries for all eligible records
+     *
+     * @param $documents
+     * @return array
+     */
+    protected function getMenuEntries(array $documents) : array
+    {
+        $entries = [];
+        foreach ($documents as $md5sum => $recentDocument) {
+            $menuEntry = $this->getMenuEntry($recentDocument, $md5sum);
+            if ($menuEntry !== '') {
+                $entries[] = $menuEntry;
+            }
+        }
+        return $entries;
+    }
+
+    /**
+     * Returns the data for a recent or open document
      *
      * @param array $document
      * @param string $md5sum
-     * @param bool $isRecentDoc
-     * @param bool $isFirstDoc
-     * @return array All recent documents as list-items
+     * @return array The data of a recent or closed document
      */
-    protected function renderMenuEntry($document, $md5sum, $isRecentDoc = false, $isFirstDoc = false)
+    protected function getMenuEntry($document, $md5sum)
     {
         $table = $document[3]['table'];
         $uid = $document[3]['uid'];
@@ -164,46 +140,20 @@ class OpendocsToolbarItem implements ToolbarItemInterface
             // Record seems to be deleted
             return '';
         }
+        $result = [];
+        $result['table'] = $table;
+        $result['record'] = $record;
         $label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
-        $icon = $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render();
+        $result['label'] = $label;
         $link = BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
         $pageId = (int)$document[3]['uid'];
         if ($document[3]['table'] !== 'pages') {
             $pageId = (int)$document[3]['pid'];
         }
         $onClickCode = 'jump(' . GeneralUtility::quoteJSvalue($link) . ', \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;';
-        if (!$isRecentDoc) {
-            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'));
-            // Open document
-            $entry  = '<div class="dropdown-table-row t3js-topbar-opendocs-item">';
-            $entry .= '<div class="dropdown-table-column dropdown-table-icon">';
-            $entry .= $icon;
-            $entry .= '</div>';
-            $entry .= '<div class="dropdown-table-column dropdown-table-title">';
-            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="list_frame">';
-            $entry .= $label;
-            $entry .= '</a>';
-            $entry .= '</div>';
-            $entry .= '<div class="dropdown-table-column dropdown-table-actions">';
-            $entry .= '<a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-close t3js-topbar-opendocs-close" data-opendocsidentifier="' . $md5sum . '" title="' . $title . '">';
-            $entry .= $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline');
-            $entry .= '</a>';
-            $entry .= '</div>';
-            $entry .= '</div>';
-        } else {
-            // Recently used document
-            $entry  = '<div class="dropdown-table-row t3js-topbar-recentdoc">';
-            $entry .= '<div class="dropdown-table-column dropdown-table-icon">';
-            $entry .= $icon;
-            $entry .= '</div>';
-            $entry .= '<div class="dropdown-table-column dropdown-table-title">';
-            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="list_frame">';
-            $entry .= $label;
-            $entry .= '</a>';
-            $entry .= '</div>';
-            $entry .= '</div>';
-        }
-        return $entry;
+        $result['onClickCode'] = $onClickCode;
+        $result['md5sum'] = $md5sum;
+        return $result;
     }
 
     /**
@@ -286,8 +236,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function renderMenu(ServerRequestInterface $request, ResponseInterface $response)
     {
         $response->getBody()->write($this->getDropDown());
-        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        return $response;
+        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
     }
 
     /**
@@ -308,25 +257,5 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns current PageRenderer
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
-    }
-
-    /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }

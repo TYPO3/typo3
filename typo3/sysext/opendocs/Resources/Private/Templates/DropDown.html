@@ -1,0 +1,60 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:be.pageRenderer loadJQuery="false" includeRequireJsModules="{0:'TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu'}" />
+
+<h3 class="dropdown-headline">
+    {f:translate(key: 'toolbaritem', extensionName: 'opendocs')}
+</h3>
+<hr>
+
+<f:if condition="{noDocs}">
+    <f:then>
+        <p><f:translate key="no_docs" extensionName="opendocs"/></p>
+    </f:then>
+    <f:else>
+        <f:if condition="{openDocuments}">
+            <h3 class="dropdown-headline">
+                <f:translate key="open_docs" extensionName="opendocs"/>
+            </h3>
+            <div class="dropdown-table">
+                <f:for each="{openDocuments}" as="openDocument">
+                    <div class="dropdown-table-row t3js-topbar-opendocs-item">
+                        <div class="dropdown-table-column dropdown-table-icon">
+                            <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}" />
+                        </div>
+                        <div class="dropdown-table-column dropdown-table-title">
+                            <a class="dropdown-table-title-ellipsis" href="#" onclick="{openDocument.onClickCode}" target="contentIframe">
+                                {openDocument.label}
+                            </a>
+                        </div>
+                        <div class="dropdown-table-column dropdown-table-actions">
+                            <a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-close t3js-topbar-opendocs-close" data-opendocsidentifier="{openDocument.md5sum}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:rm.closeDoc')}">
+                                <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline" />
+                            </a>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+            <hr>
+        </f:if>
+        <f:if condition="{recentDocuments}">
+            <h3 class="dropdown-headline">
+                <f:translate key="recent_docs" extensionName="opendocs"/>
+            </h3>
+            <div class="dropdown-table">
+                <f:for each="{recentDocuments}" as="recentDocument">
+                    <div class="dropdown-table-row t3js-topbar-recentdoc">
+                        <div class="dropdown-table-column dropdown-table-icon">
+                            <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}" />
+                        </div>
+                        <div class="dropdown-table-column dropdown-table-title">
+                            <a class="dropdown-table-title-ellipsis" href="#" onclick="{recentDocument.onClickCode}" target="contentIframe">
+                                {recentDocument.label}
+                            </a>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </f:if>
+    </f:else>
+</f:if>
