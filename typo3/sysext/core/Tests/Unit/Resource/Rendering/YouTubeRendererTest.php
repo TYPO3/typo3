@@ -149,7 +149,7 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
+    public function renderOutputWithAutoplayAndWithoutControlsIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
@@ -157,6 +157,20 @@ class YouTubeRendererTest extends UnitTestCase
         $this->assertSame(
             '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithRelatedVideosTurnedOffIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;rel=0&amp;enablejsapi=1&amp;origin=http://test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['relatedVideos' => 0])
         );
     }
 }
