@@ -13,23 +13,23 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler;
+use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * A general purpose configuration manager used in backend mode.
  */
-class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
+class BackendConfigurationManager extends AbstractConfigurationManager
 {
-    /**
-     * Needed to recursively fetch a page tree
-     *
-     * @var \TYPO3\CMS\Core\Database\QueryGenerator
-     */
-    protected $queryGenerator;
-
     /**
      * @var array
      */
@@ -42,14 +42,6 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
     protected $currentPageId;
 
     /**
-     * @param \TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator
-     */
-    public function injectQueryGenerator(\TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator)
-    {
-        $this->queryGenerator = $queryGenerator;
-    }
-
-    /**
      * Returns TypoScript Setup array from current Environment.
      *
      * @return array the raw TypoScript setup
@@ -59,8 +51,8 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
         $pageId = $this->getCurrentPageId();
 
         if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
-            /** @var $template \TYPO3\CMS\Core\TypoScript\TemplateService */
-            $template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
+            /** @var $template TemplateService */
+            $template = GeneralUtility::makeInstance(TemplateService::class);
             // do not log time-performance information
             $template->tt_track = 0;
             // Explicitly trigger processing of extension static files
@@ -69,8 +61,8 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
             // Get the root line
             $rootline = [];
             if ($pageId > 0) {
-                /** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
-                $sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+                /** @var $sysPage PageRepository */
+                $sysPage = GeneralUtility::makeInstance(PageRepository::class);
                 // Get the rootline for the current page
                 $rootline = $sysPage->getRootLine($pageId, '', true);
             }
@@ -101,7 +93,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
             $pluginSignature = strtolower($extensionName . '_' . $pluginName);
             if (is_array($setup['module.']['tx_' . $pluginSignature . '.'])) {
                 $overruleConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']);
-                \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $overruleConfiguration);
+                ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $overruleConfiguration);
             }
         }
         return $pluginConfiguration;
@@ -153,7 +145,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
      */
     protected function getCurrentPageIdFromGetPostData()
     {
-        return (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        return (int)GeneralUtility::_GP('id');
     }
 
     /**
@@ -244,8 +236,8 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
     {
         if (!isset($frameworkConfiguration['mvc']['requestHandlers'])) {
             $frameworkConfiguration['mvc']['requestHandlers'] = [
-                \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class => \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class,
-                \TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler::class => \TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler::class
+                FrontendRequestHandler::class => FrontendRequestHandler::class,
+                BackendRequestHandler::class => BackendRequestHandler::class
             ];
         }
         return $frameworkConfiguration;
@@ -265,10 +257,11 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
         }
 
         $recursiveStoragePids = '';
-        $storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid);
+        $storagePids = GeneralUtility::intExplode(',', $storagePid);
         $permsClause = $this->getBackendUser()->getPagePermsClause(1);
+        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
         foreach ($storagePids as $startPid) {
-            $pids = $this->queryGenerator->getTreeList($startPid, $recursionDepth, 0, $permsClause);
+            $pids = $queryGenerator->getTreeList($startPid, $recursionDepth, 0, $permsClause);
             if ((string)$pids !== '') {
                 $recursiveStoragePids .= $pids . ',';
             }
