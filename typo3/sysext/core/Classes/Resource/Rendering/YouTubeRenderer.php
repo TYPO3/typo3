@@ -107,7 +107,7 @@ class YouTubeRenderer implements FileRendererInterface
 	      if (!empty($options['loop'])) {
 		      $urlParams[] = 'loop=1';
 	      }
-	      if (!empty($options['relatedVideos'])) {
+	      if (strlen($options['relatedVideos'] . '') > 0) {
 		      $urlParams[] = 'rel=' . (int)!empty($options['relatedVideos']);
 	      }
         if (!isset($options['enablejsapi']) || !empty($options['enablejsapi'])) {
