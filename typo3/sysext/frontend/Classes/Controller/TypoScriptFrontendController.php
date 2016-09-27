@@ -2278,6 +2278,10 @@ class TypoScriptFrontendController
         }
         $GET = GeneralUtility::_GET();
         if ($this->cHash && is_array($GET)) {
+            if (!isset($GET['id'])) {
+                // id not in $_GET -> home page -> use already determined id
+                $GET['id'] = $this->id;
+            }
             $this->cHash_array = $this->cacheHash->getRelevantParameters(GeneralUtility::implodeArrayForUrl('', $GET));
             $cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
             if ($cHash_calc != $this->cHash) {
