@@ -4707,6 +4707,16 @@ text with a ' . $urlMatch . '$|s'],
     /**
      * @test
      */
+    public function callUserFunctionTrimsSpaces()
+    {
+        $inputData = ['foo' => 'bar'];
+        $result = GeneralUtility::callUserFunction("\t" . self::class . '->user_calledUserFunction ', $inputData, $this);
+        $this->assertEquals('Worked fine', $result);
+    }
+
+    /**
+     * @test
+     */
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys()
     {
         $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_');
