@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -2149,15 +2150,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     /**
      * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
      *
-     * @param \Doctrine\DBAL\Driver\Statement $result MySQLi result object / DBAL object
+     * @param Statement|\mysqli_result $result DBAL Statement or MySQLi result object
      * @param string $table Table name defaulting to tt_content
      * @return array The selected rows returned in this array.
      */
-    public function getResult(\Doctrine\DBAL\Driver\Statement $result, string $table = 'tt_content'): array
+    public function getResult($result, string $table = 'tt_content'): array
     {
+        if ($result instanceof \mysqli_result) {
+            GeneralUtility::deprecationLog('Using \TYPO3\CMS\Backend\View\PageLayoutView::getResult with a mysqli_result object is deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9');
+        }
         $output = [];
         // Traverse the result:
-        while ($row = $result->fetch()) {
+        while ($row = ($result instanceof Statement ? $result->fetch() : $result->fetch_assoc())) {
             BackendUtility::workspaceOL($table, $row, -99, true);
             if ($row) {
                 // Add the row to the array:
