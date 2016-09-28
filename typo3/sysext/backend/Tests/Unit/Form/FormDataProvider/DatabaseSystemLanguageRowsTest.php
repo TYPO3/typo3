@@ -91,7 +91,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $statementProphecy = $this->prophesize(Statement::class);
 
-        // Register connection pool revelation in framework, this is the entry point used by system unter tetst
+        // Register connection pool revelation in framework, this is the entry point used by the system during tests
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
         // Simulate method call flow on database objects and verify correct query is built
@@ -134,7 +134,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $statementProphecy = $this->prophesize(Statement::class);
 
-        // Register connection pool revelation in framework, this is the entry point used by system unter tetst
+        // Register connection pool revelation in framework, this is the entry point used by the system during tests
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
         // Simulate method call flow on database objects and verify correct query is built
@@ -192,7 +192,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $statementProphecy = $this->prophesize(Statement::class);
 
-        // Register connection pool revelation in framework, this is the entry point used by system unter tetst
+        // Register connection pool revelation in framework, this is the entry point used by the system during tests
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
         // Simulate method call flow on database objects and verify correct query is built
@@ -248,7 +248,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $statementProphecy = $this->prophesize(Statement::class);
 
-        // Register connection pool revelation in framework, this is the entry point used by system under test
+        // Register connection pool revelation in framework, this is the entry point used by the system during tests
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
         // Simulate method call flow on database objects and verify correct query is built
@@ -312,7 +312,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $statementProphecy = $this->prophesize(Statement::class);
 
-        // Register connection pool revelation in framework, this is the entry point used by system under test
+        // Register connection pool revelation in framework, this is the entry point used by the system during tests
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
         // Simulate method call flow on database objects and verify correct query is built
