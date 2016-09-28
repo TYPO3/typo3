@@ -833,6 +833,11 @@ return [
                 'maxitems' => 999,
                 'minitems' => 0,
                 'size' => 5,
+                'wizards' => [
+                    'suggest' => [
+                        'type' => 'suggest'
+                    ]
+                ]
             ]
         ],
         'media' => [
