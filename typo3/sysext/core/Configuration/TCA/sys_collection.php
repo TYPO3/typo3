@@ -176,10 +176,11 @@ return [
     ],
     'types' => [
         'static' => [
-            'showitem' => 'title, --palette--;;1, type, description,table_name, items',
+            'showitem' => 'title, --palette--;;1, type, description,table_name, items,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime,fe_group',
         ],
     ],
     'palettes' => [
-        '1' => ['showitem' => 'starttime, endtime, fe_group, sys_language_uid, l10n_parent, l10n_diffsource, hidden']
+        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden'],
     ]
 ];

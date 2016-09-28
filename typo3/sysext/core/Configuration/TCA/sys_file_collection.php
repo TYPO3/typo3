@@ -186,21 +186,20 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, files',
+            'showitem' => 'title, sys_language_uid, l10n_parent, l10n_diffsource, type, files,
+                --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
         'static' => [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, files',
+            'showitem' => 'title, sys_language_uid, l10n_parent, l10n_diffsource, type, files,
+                --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
         'folder' => [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, storage, folder, recursive',
+            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, type, storage, folder, recursive,
+                --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
         'category' => [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, category',
-        ],
-    ],
-    'palettes' => [
-        '1' => [
-            'showitem' => 'hidden, starttime, endtime',
+            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, type, category,
+                --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
     ],
 ];
