@@ -152,7 +152,8 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'System parameters should not be taken into account (except id)' => ['&id=42&type=23&key=value', $knowHash],
             'Admin panel parameters should not be taken into account' => ['&id=42&TSFE_ADMIN_PANEL[display]=7&key=value', $knowHash],
             'Trivial hash for sorted parameters should be right' => ['&id=42&a=v&b=v', '52c8a1299e20324f90377c43153c4987'],
-            'Parameters should be sorted before cHash is created' => ['&id=42&b=v&a=v', '52c8a1299e20324f90377c43153c4987']
+            'Parameters should be sorted before cHash is created' => ['&id=42&b=v&a=v', '52c8a1299e20324f90377c43153c4987'],
+            'Empty argument names are filtered out before cHash calculation' => ['&id=42&b=v&a=v&=dummy', '52c8a1299e20324f90377c43153c4987']
         ];
     }
 
