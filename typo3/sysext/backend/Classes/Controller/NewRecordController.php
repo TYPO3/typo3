@@ -496,11 +496,12 @@ class NewRecordController extends AbstractModule
             if (is_array($GLOBALS['TCA'])) {
                 $groupName = '';
                 foreach ($GLOBALS['TCA'] as $table => $v) {
+                    $rootLevelConfiguration = isset($v['ctrl']['rootLevel']) ? (int)$v['ctrl']['rootLevel'] : -1;
                     if ($table != 'pages'
                         && $this->showNewRecLink($table)
                         && $this->isTableAllowedForThisPage($this->pageinfo, $table)
                         && $this->getBackendUserAuthentication()->check('tables_modify', $table)
-                        && (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
+                        && ($rootLevelConfiguration === -1 || ($this->id xor $rootLevelConfiguration))
                         && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
                     ) {
                         $newRecordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
