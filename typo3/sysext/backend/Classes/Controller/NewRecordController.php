@@ -497,7 +497,7 @@ class NewRecordController extends AbstractModule
                 $groupName = '';
                 foreach ($GLOBALS['TCA'] as $table => $v) {
                     $rootLevelConfiguration = isset($v['ctrl']['rootLevel']) ? (int)$v['ctrl']['rootLevel'] : -1;
-                    if ($table != 'pages'
+                    if ($table !== 'pages'
                         && $this->showNewRecLink($table)
                         && $this->isTableAllowedForThisPage($this->pageinfo, $table)
                         && $this->getBackendUserAuthentication()->check('tables_modify', $table)
@@ -510,7 +510,7 @@ class NewRecordController extends AbstractModule
                         // Create new link for record:
                         $newLink = $this->linkWrap($newRecordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
                         // If the table is 'tt_content', create link to wizard
-                        if ($table == 'tt_content') {
+                        if ($table === 'tt_content') {
                             $groupName = $lang->getLL('createNewContent');
                             $rowContent = $newContentIcon . '<strong>' . $lang->getLL('createNewContent') . '</strong><ul>';
                             // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
@@ -531,12 +531,12 @@ class NewRecordController extends AbstractModule
                             $nameParts = explode('_', $table);
                             $thisTitle = '';
                             $_EXTKEY = '';
-                            if ($nameParts[0] == 'tx' || $nameParts[0] == 'tt') {
+                            if ($nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
                                 // Try to extract extension name
-                                if (substr($v['ctrl']['title'], 0, 8) == 'LLL:EXT:') {
+                                if (substr($v['ctrl']['title'], 0, 8) === 'LLL:EXT:') {
                                     $_EXTKEY = substr($v['ctrl']['title'], 8);
                                     $_EXTKEY = substr($_EXTKEY, 0, strpos($_EXTKEY, '/'));
-                                    if ($_EXTKEY != '') {
+                                    if ($_EXTKEY !== '') {
                                         // First try to get localisation of extension title
                                         $temp = explode(':', substr($v['ctrl']['title'], 9 + strlen($_EXTKEY)));
                                         $langFile = $temp[0];
@@ -565,13 +565,14 @@ class NewRecordController extends AbstractModule
                                 $thisTitle = $lang->getLL('system_records');
                                 $iconFile['system'] = $this->moduleTemplate->getIconFactory()->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
                             }
-                            if ($groupName == '' || $groupName != $_EXTKEY) {
+
+                            if ($groupName === '' || $groupName !== $_EXTKEY) {
                                 $groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];
                             }
                             $rowContent .= $newLink;
                         }
                         // Compile table row:
-                        if ($table == 'tt_content') {
+                        if ($table === 'tt_content') {
                             $startRows[] = '<li>' . $rowContent . '</li>';
                         } else {
                             $this->tRows[$groupName]['title'] = $thisTitle;
@@ -654,10 +655,10 @@ class NewRecordController extends AbstractModule
             ],
             'returnUrl' => $this->returnUrl
         ];
-        if ($table == 'pages' && $addContentTable) {
+        if ($table === 'pages' && $addContentTable) {
             $urlParameters['tt_content']['prev'] = 'new';
             $urlParameters['returnNewPageId'] = 1;
-        } elseif ($table == 'pages_language_overlay') {
+        } elseif ($table === 'pages_language_overlay') {
             $urlParameters['overrideVals']['pages_language_overlay']['doktype'] = (int)$this->pageinfo['doktype'];
         }
         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
@@ -677,7 +678,7 @@ class NewRecordController extends AbstractModule
             return $this->getBackendUserAuthentication()->isAdmin();
         }
         // be_users and be_groups may not be created anywhere but in the root.
-        if ($checkTable == 'be_users' || $checkTable == 'be_groups') {
+        if ($checkTable === 'be_users' || $checkTable === 'be_groups') {
             return false;
         }
         // Checking doktype:
