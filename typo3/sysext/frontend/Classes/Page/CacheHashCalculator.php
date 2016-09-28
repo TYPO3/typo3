@@ -154,6 +154,10 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
         $parameterArray = [];
         foreach ($parameters as $parameter) {
             list($parameterName, $parameterValue) = explode('=', $parameter);
+            if (trim($parameterName) === '') {
+                // This parameter cannot appear in $_GET in PHP even if its value is not empty, so it should be ignored!
+                continue;
+            }
             $parameterArray[rawurldecode($parameterName)] = rawurldecode($parameterValue);
         }
         return $parameterArray;
