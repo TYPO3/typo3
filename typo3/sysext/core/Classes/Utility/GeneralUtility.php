@@ -3713,6 +3713,7 @@ class GeneralUtility
         if (is_object($funcName) && is_a($funcName, 'Closure')) {
             return call_user_func_array($funcName, [&$params, &$ref]);
         }
+        $funcName = trim($funcName);
         // Check persistent object and if found, call directly and exit.
         if (isset($GLOBALS['T3_VAR']['callUserFunction'][$funcName]) && is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName])) {
             return call_user_func_array([

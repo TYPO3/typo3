@@ -4587,6 +4587,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function callUserFunctionTrimsSpaces()
+    {
+        $inputData = ['foo' => 'bar'];
+        $result = GeneralUtility::callUserFunction("\t" . self::class . '->user_calledUserFunction ', $inputData, $this);
+        $this->assertEquals('Worked fine', $result);
+    }
+
+    /**
+     * @test
+     */
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys()
     {
         $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_');
