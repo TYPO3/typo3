@@ -1,0 +1,77 @@
+<p class="lead">
+    <f:translate key="report_explanation" extensionName="sv" />
+</p>
+<p class="help">
+    <f:translate key="externals_explanation" extensionName="sv" />
+</p>
+
+<f:for each="{servicesList}" as="serviceList">
+    <f:render section="ServiceTypeList" arguments="{serviceList: serviceList}" />
+</f:for>
+
+<h3><f:translate key="search_paths" extensionName="sv" /></h3>
+<f:if condition="{searchPaths}">
+    <f:then>
+        <table class="table table-striped table-hover tx_sv_reportlist">
+            <thead>
+                <tr>
+                    <td><f:translate key="path" extensionName="sv" /></td>
+                    <td><f:translate key="valid" extensionName="sv" /></td>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{searchPaths}" as="searchPath">
+                    <tr class="{searchPath.class}">
+                        <td class="first-cell">{searchPath.path}</td>
+                        <td class="last-cell"><f:translate key="{searchPath.accessible}" /></td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </f:then>
+    <f:else>
+        <p><f:translate key="no_search_paths" extensionName="sv" /></p>
+    </f:else>
+</f:if>
+
+
+<f:section name="ServiceTypeList">
+    <h3>{serviceList.Type}</h3>
+    <table class="table table-striped table-hover tx_sv_reportlist">
+        <thead>
+            <tr>
+                <td style="width: 35%"><f:translate key="service" extensionName="sv" /></td>
+                <td><f:translate key="priority" extensionName="sv" /></td>
+                <td><f:translate key="quality" extensionName="sv" /></td>
+                <td style="width: 35%"><f:translate key="subtypes" extensionName="sv" /></td>
+                <td><f:translate key="os" extensionName="sv" /></td>
+                <td><f:translate key="externals" extensionName="sv" /></td>
+                <td><f:translate key="available" extensionName="sv" /></td>
+            </tr>
+        </thead>
+        <tbody>
+            <f:for each="{serviceList.Services}" as="service">
+                <f:render section="ServiceRow" arguments="{service: service}" />
+            </f:for>
+        </tbody>
+    </table>
+</f:section>
+
+<f:section name="ServiceRow">
+    <tr class="service {service.AvailabilityClass}">
+        <td class="first-cell">{service.Description}
+            <p class="service-header">
+                <span class="service-title">{service.Information.title}</span> ({service.Information.extKey}: {service.Key})
+            </p>
+            <f:if condition="{service.Information.description}">
+                <p class="service-description">{service.Information.description}</p>
+            </f:if>
+        </td>
+        <td class="cell">{service.Information.priority}</td>
+        <td class="cell">{service.Information.quality}</td>
+        <td class="cell">{service.Subtypes}</td>
+        <td class="cell">{service.OperatingSystem}</td>
+        <td class="cell">{service.RequiredExecutables}</td>
+        <td class="last-cell">{service.Available}</td>
+    </tr>
+</f:section>

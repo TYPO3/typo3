@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\Controller\ReportController;
 use TYPO3\CMS\Reports\ReportInterface;
 
@@ -52,158 +53,108 @@ class ServicesListReport implements ReportInterface
      */
     public function getReport()
     {
-        $content = '';
-        $content .= $this->renderHelp();
-        $content .= $this->renderServicesList();
-        $content .= $this->renderExecutablesSearchPathList();
-        return $content;
-    }
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:sv/Resources/Private/Templates/ServicesListReport.html'
+        ));
 
-    /**
-     * Renders the help comments at the top of the module.
-     *
-     * @return string The help content for this module.
-     */
-    protected function renderHelp()
-    {
-        $help = '<p class="lead">' . $this->getLanguageService()->getLL('report_explanation') . '</p>';
-        $help .= '<p class="help">' . $this->getLanguageService()->getLL('externals_explanation') . '</p>';
-        return $help;
+        $view->assignMultiple([
+            'servicesList' => $this->getServicesList(),
+            'searchPaths' => $this->getExecutablesSearchPathList()
+        ]);
+
+        return $view->render();
     }
 
     /**
      * This method assembles a list of all installed services
      *
-     * @return string HTML to display
+     * @return array with data to display
      */
-    protected function renderServicesList()
+    protected function getServicesList()
     {
-        $servicesList = '';
+        $servicesList = [];
         $services = $this->getInstalledServices();
         foreach ($services as $serviceType => $installedServices) {
-            $servicesList .= $this->renderServiceTypeList($serviceType, $installedServices);
+            $servicesList[] = $this->getServiceTypeList($serviceType, $installedServices);
         }
         return $servicesList;
     }
 
     /**
-     * Renders the services list for a single service type.
+     * Get the services list for a single service type.
      *
      * @param string $serviceType The service type to render the installed services list for
      * @param array $services List of services for the given type
-     * @return string Service list as HTML for one service type
+     * @return array Service list as array for one service type
      */
-    protected function renderServiceTypeList($serviceType, $services)
+    protected function getServiceTypeList($serviceType, $services)
     {
         $lang = $this->getLanguageService();
-        $header = '<h3>' . sprintf($lang->getLL('service_type'), $serviceType) . '</h3>';
-        $serviceList = '
-			<table class="table table-striped table-hover tx_sv_reportlist">
-				<thead>
-					<tr>
-						<td style="width: 35%">' . $lang->getLL('service') . '</td>
-						<td>' . $lang->getLL('priority') . '</td>
-						<td>' . $lang->getLL('quality') . '</td>
-						<td style="width: 35%">' . $lang->getLL('subtypes') . '</td>
-						<td>' . $lang->getLL('os') . '</td>
-						<td>' . $lang->getLL('externals') . '</td>
-						<td>' . $lang->getLL('available') . '</td>
-					</tr>
-				</thead>
-			<tbody>';
+        $serviceList = [];
+        $serviceList['Type'] = sprintf($lang->getLL('service_type'), $serviceType);
 
+        $serviceList['Services'] = [];
         foreach ($services as $serviceKey => $serviceInformation) {
-            $serviceList .= $this->renderServiceRow($serviceKey, $serviceInformation);
+            $serviceList['Services'][] = $this->getServiceRow($serviceKey, $serviceInformation);
         }
 
-        $serviceList .= '
-			</tbody>
-			</table>
-		';
-        return $header . $serviceList;
+        return $serviceList;
     }
 
     /**
-     * Renders a single service's row.
+     * Get data of a single service's row.
      *
      * @param string $serviceKey The service key to access the service.
      * @param array $serviceInformation registration information of the service.
-     * @return string HTML row for the service.
+     * @return array data for one row for the service.
      */
-    protected function renderServiceRow($serviceKey, $serviceInformation)
+    protected function getServiceRow($serviceKey, $serviceInformation)
     {
-        $serviceDescription = '
-			<p class="service-header">
-				<span class="service-title">' . $serviceInformation['title'] . '</span> (' . $serviceInformation['extKey'] . ': ' . $serviceKey . ')
-			</p>';
-        if (!empty($serviceInformation['description'])) {
-            $serviceDescription .= '<p class="service-description">' . $serviceInformation['description'] . '</p>';
-        }
-        $serviceSubtypes = $serviceInformation['serviceSubTypes'] ? implode(', ', $serviceInformation['serviceSubTypes']) : '-';
-        $serviceOperatingSystem = $serviceInformation['os'] ?: $this->getLanguageService()->getLL('any');
-        $serviceRequiredExecutables = $serviceInformation['exec'] ?: '-';
-        $serviceAvailabilityClass = 'danger';
-        $serviceAvailable = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:no');
+        $result = [
+            'Key' => $serviceKey,
+            'Information' => $serviceInformation,
+            'Subtypes' => $serviceInformation['serviceSubTypes'] ? implode(', ', $serviceInformation['serviceSubTypes']) : '-',
+            'OperatingSystem' => $serviceInformation['os'] ?: $this->getLanguageService()->getLL('any'),
+            'RequiredExecutables' => $serviceInformation['exec'] ?: '-',
+            'AvailabilityClass' => 'danger',
+            'Available' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:no'),
+        ];
+
         try {
             $serviceDetails = ExtensionManagementUtility::findServiceByKey($serviceKey);
             if ($serviceDetails['available']) {
-                $serviceAvailabilityClass = 'success';
-                $serviceAvailable = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:yes');
+                $result['AvailabilityClass'] = 'success';
+                $result['Available'] = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:yes');
             }
         } catch (Exception $e) {
         }
-        $serviceRow = '
-			<tr class="service ' . $serviceAvailabilityClass . '">
-				<td class="first-cell">' . $serviceDescription . '</td>
-				<td class="cell">' . $serviceInformation['priority'] . '</td>
-				<td class="cell">' . $serviceInformation['quality'] . '</td>
-				<td class="cell">' . $serviceSubtypes . '</td>
-				<td class="cell">' . $serviceOperatingSystem . '</td>
-				<td class="cell">' . $serviceRequiredExecutables . '</td>
-				<td class="last-cell">' . $serviceAvailable . '</td>
-			</tr>';
-        return $serviceRow;
+
+        return $result;
     }
 
     /**
      * This method assembles a list of all defined executables search paths
      *
-     * @return string HTML to display
+     * @return array data to display
      */
-    protected function renderExecutablesSearchPathList()
+    protected function getExecutablesSearchPathList()
     {
-        $searchPaths = CommandUtility::getPaths(true);
-        $content = '<h3>' . $this->getLanguageService()->getLL('search_paths') . '</h3>';
-        if (empty($searchPaths)) {
-            $content .= '<p>' . $this->getLanguageService()->getLL('no_search_paths') . '</p>';
-        } else {
-            $content .= '
-			<table class="table table-striped table-hover tx_sv_reportlist">
-				<thead>
-					<tr>
-						<td>' . $this->getLanguageService()->getLL('path') . '</td>
-						<td>' . $this->getLanguageService()->getLL('valid') . '</td>
-					</tr>
-				</thead>
-				<tbody>';
-            foreach ($searchPaths as $path => $isValid) {
-                $pathAccessibleClass = 'danger';
-                $pathAccessible = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:no');
-                if ($isValid) {
-                    $pathAccessibleClass = 'success';
-                    $pathAccessible = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:yes');
-                }
-                $content .= '
-					<tr class="' . $pathAccessibleClass . '">
-						<td class="first-cell">' . GeneralUtility::fixWindowsFilePath($path) . '</td>
-						<td class="last-cell">' . $pathAccessible . '</td>
-					</tr>';
-            }
-            $content .= '
-				</tbody>
-			</table>';
+        $addInvalidSearchPaths = true;
+        $searchPaths = CommandUtility::getPaths($addInvalidSearchPaths);
+        $result = [];
+
+        foreach ($searchPaths as $path => $isValid) {
+            $searchPathData = $this->getServicePathStatus($isValid);
+            $result[] = [
+                'class' => $searchPathData['statusCSSClass'],
+                'accessible' => 'LLL:EXT:lang/locallang_common.xlf:' . $searchPathData['accessible'],
+                'path' => GeneralUtility::fixWindowsFilePath($path),
+            ];
         }
-        return $content;
+
+        return $result;
     }
 
     /**
@@ -245,8 +196,8 @@ class ServicesListReport implements ReportInterface
     {
         $result = 0;
         // If priorities are the same, test quality
-        if ($a['priority'] == $b['priority']) {
-            if ($a['quality'] != $b['quality']) {
+        if ($a['priority'] === $b['priority']) {
+            if ($a['quality'] !== $b['quality']) {
                 // Service with highest quality should come first,
                 // thus it must be marked as smaller
                 $result = $a['quality'] > $b['quality'] ? -1 : 1;
@@ -267,5 +218,25 @@ class ServicesListReport implements ReportInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Method to check if the service in path is available
+     * @param $isValid
+     * @return array
+     */
+    private function getServicePathStatus($isValid): array
+    {
+        $statusCSSClass = 'danger';
+        $accessible = 'no';
+
+        if ($isValid) {
+            $statusCSSClass = 'success';
+            $accessible = 'yes';
+        }
+        return [
+            'statusCSSClass' => $statusCSSClass,
+            'accessible' => $accessible
+        ];
     }
 }
