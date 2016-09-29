@@ -1061,16 +1061,9 @@ class TemplateService
 
         // Searching for possible unsubstituted constants left (only for information)
         if ($this->verbose) {
-            if (strstr($all, '{$')) {
-                $theConstList = [];
-                $findConst = explode('{$', $all);
-                array_shift($findConst);
-                foreach ($findConst as $constVal) {
-                    $constLen = MathUtility::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
-                    $theConstList[] = '{$' . substr($constVal, 0, ($constLen + 1));
-                }
+            if (preg_match_all('/\\{\\$.[^}]*\\}/', $all, $constantList) > 0) {
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSlogMessage(implode(', ', $theConstList) . ': Constants may remain un-substituted!!', 2);
+                    $this->getTimeTracker()->setTSlogMessage(implode(', ', $constantList[0]) . ': Constants may remain un-substituted!!', 2);
                 }
             }
         }
