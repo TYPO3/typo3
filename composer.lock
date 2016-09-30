@@ -1506,16 +1506,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v1.12.0",
+            "version": "v1.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "ddac737e1c06a310a0bb4b3da755a094a31a916a"
+                "reference": "baa7112bef3b86c65fcfaae9a7a50436e3902b41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/ddac737e1c06a310a0bb4b3da755a094a31a916a",
-                "reference": "ddac737e1c06a310a0bb4b3da755a094a31a916a",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/baa7112bef3b86c65fcfaae9a7a50436e3902b41",
+                "reference": "baa7112bef3b86c65fcfaae9a7a50436e3902b41",
                 "shasum": ""
             },
             "require": {
@@ -1560,7 +1560,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2016-08-17 00:17:27"
+            "time": "2016-09-27 07:57:59"
         },
         {
             "name": "jakoch/phantomjs-installer",
@@ -2839,16 +2839,16 @@
         },
         {
             "name": "site5/phantoman",
-            "version": "v1.1.6",
+            "version": "v1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grantlucas/phantoman.git",
-                "reference": "6ac9bed985d023909966a5c5b82489ced62998d1"
+                "reference": "f65d26d3311e44380692cb0255b95181743f69f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grantlucas/phantoman/zipball/6ac9bed985d023909966a5c5b82489ced62998d1",
-                "reference": "6ac9bed985d023909966a5c5b82489ced62998d1",
+                "url": "https://api.github.com/repos/grantlucas/phantoman/zipball/f65d26d3311e44380692cb0255b95181743f69f2",
+                "reference": "f65d26d3311e44380692cb0255b95181743f69f2",
                 "shasum": ""
             },
             "require": {
@@ -2871,18 +2871,18 @@
             "authors": [
                 {
                     "name": "Grant Lucas",
-                    "email": "grant.lucas@wwwh.com"
+                    "email": "contact@grantlucas.com"
                 }
             ],
             "description": "The Codeception extension for automatically starting and stopping PhantomJS when running tests.",
-            "homepage": "https://github.com/site5/phantoman",
+            "homepage": "https://github.com/grantlucas/phantoman",
             "keywords": [
                 "codeception",
                 "extension",
                 "headless",
                 "phantomjs"
             ],
-            "time": "2016-08-08 19:53:21"
+            "time": "2016-09-15 14:35:04"
         },
         {
             "name": "symfony/browser-kit",
