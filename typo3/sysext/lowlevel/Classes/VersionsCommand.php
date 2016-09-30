@@ -44,7 +44,7 @@ Traversing page tree and finding versions, categorizing them by various properti
 Published versions from the Live workspace are registered. So are all offline versions from Live workspace in general. Further, versions in non-existing workspaces are found.
 
 Automatic Repair:
-- Deleting (completely) published versions from LIVE workspace OR _all_ offline versions from Live workspace (toogle by --flush-live)
+- Deleting (completely) published versions from LIVE workspace OR _all_ offline versions from Live workspace (toggle by --flush-live)
 - Resetting workspace for versions where workspace is deleted. (You might want to run this tool again after this operation to clean out those new elements in the Live workspace)
 - Deleting unused placeholders
 ');
