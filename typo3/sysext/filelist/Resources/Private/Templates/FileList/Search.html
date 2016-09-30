@@ -43,7 +43,7 @@
 								<f:then>
 									<a href="#" class="filelist-file-title"
 										title="{f:translate( htmlEscape:'true', key:'LLL:EXT:lang/locallang_core.xlf:cm.editMetadata' )}"
-										data-url="{fl:uri.editSysFileMetadataRecord( uid:file.metadataUid, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } )}' )}"
+										data-url="{fl:uri.editSysFileMetadataRecord( uid:file.metadataUid, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
 									>
 										{file.name}
 									</a>
@@ -63,7 +63,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-edit"
 											title="{f:translate( htmlEscape:'true', key:'LLL:EXT:lang/locallang_core.xlf:cm.editcontent' )}"
-											data-url="{fl:uri.editFileContent( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } )}' )}"
+											data-url="{fl:uri.editFileContent( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-page-open" />
 										</a>
@@ -91,7 +91,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-replace"
 											title="{f:translate( htmlEscape:'true', key:'LLL:EXT:lang/locallang_core.xlf:cm.replace' )}"
-											data-url="{fl:uri.replaceFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } )}' )}"
+											data-url="{fl:uri.replaceFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-edit-replace" />
 										</a>
@@ -105,7 +105,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-rename"
 											title="{f:translate( htmlEscape:'true', key:'LLL:EXT:lang/locallang_core.xlf:cm.rename' )}"
-											data-url="{fl:uri.renameFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } )}' )}"
+											data-url="{fl:uri.renameFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-edit-rename" />
 										</a>
