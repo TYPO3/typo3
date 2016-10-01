@@ -980,7 +980,7 @@ class EditDocumentController extends AbstractModule
                     $this->viewId,
                     'mod.xMOD_alt_doc'
                 ) : [];
-                $body = $this->formResultCompiler->JStop();
+                $body = $this->formResultCompiler->addCssFiles();
                 $body .= $this->compileForm($editForm);
                 $body .= $this->formResultCompiler->printNeededJSFunctions();
                 $body .= '</form>';
@@ -1146,7 +1146,7 @@ class EditDocumentController extends AbstractModule
                                 $formResult['doSaveFieldName'] = 'doSave';
 
                                 // @todo: Put all the stuff into FormEngine as final "compiler" class
-                                // @todo: This is done here for now to not rewrite JStop()
+                                // @todo: This is done here for now to not rewrite addCssFiles()
                                 // @todo: and printNeededJSFunctions() now
                                 $this->formResultCompiler->mergeResult($formResult);
 

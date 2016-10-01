@@ -212,7 +212,7 @@ class RteController extends AbstractWizardController
             $formContent .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI) . '" />
 						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />';
             // Finally, add the whole setup:
-            $this->content .= $formResultCompiler->JStop()
+            $this->content .= $formResultCompiler->addCssFiles()
                 . $formContent
                 . $formResultCompiler->printNeededJSFunctions();
         } else {

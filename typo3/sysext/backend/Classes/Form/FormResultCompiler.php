@@ -169,8 +169,20 @@ class FormResultCompiler
      * JavaScript code added BEFORE the form is drawn:
      *
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function JStop()
+    {
+        GeneralUtility::logDeprecatedFunction();
+        return $this->addCssFiles();
+    }
+
+    /**
+     * Adds CSS files BEFORE the form is drawn
+     *
+     * @return string
+     */
+    public function addCssFiles()
     {
         $pageRenderer = $this->getPageRenderer();
         foreach ($this->stylesheetFiles as $stylesheetFile) {

@@ -967,7 +967,7 @@ class PageLayoutController
                     <input type="hidden" name="redirect" value="' . htmlspecialchars($redirect) . '" />
                     ';
                 // Add JavaScript as needed around the form:
-                $content = $formResultCompiler->JStop() . $panel . $formResultCompiler->printNeededJSFunctions();
+                $content = $formResultCompiler->addCssFiles() . $panel . $formResultCompiler->printNeededJSFunctions();
 
                 // Display "is-locked" message:
                 if ($command === 'edit') {
