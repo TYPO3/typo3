@@ -62,7 +62,11 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         foreach ($databaseDifferences as $schemaDiff) {
             // A change for a table is required
             if (count($schemaDiff->changedTables) !== 0) {
-                return true;
+                foreach ($schemaDiff->changedTables as $changedTable) {
+                    if (!empty($changedTable->addedColumns) || !empty($changedTable->changedColumns)) {
+                        return true;
+                    }
+                }
             }
         }
 

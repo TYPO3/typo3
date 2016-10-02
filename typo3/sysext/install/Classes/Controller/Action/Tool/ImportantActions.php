@@ -381,7 +381,7 @@ class ImportantActions extends Action\AbstractAction
         // Aggregate the per-connection statements into one flat array
         $addCreateChange = array_merge_recursive(...array_values($addCreateChange));
 
-        if (isset($addCreateChange['create_table'])) {
+        if (!empty($addCreateChange['create_table'])) {
             $databaseAnalyzerSuggestion['addTable'] = [];
             foreach ($addCreateChange['create_table'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['addTable'][$hash] = [
@@ -390,7 +390,7 @@ class ImportantActions extends Action\AbstractAction
                 ];
             }
         }
-        if (isset($addCreateChange['add'])) {
+        if (!empty($addCreateChange['add'])) {
             $databaseAnalyzerSuggestion['addField'] = [];
             foreach ($addCreateChange['add'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['addField'][$hash] = [
@@ -399,7 +399,7 @@ class ImportantActions extends Action\AbstractAction
                 ];
             }
         }
-        if (isset($addCreateChange['change'])) {
+        if (!empty($addCreateChange['change'])) {
             $databaseAnalyzerSuggestion['change'] = [];
             foreach ($addCreateChange['change'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['change'][$hash] = [
@@ -416,7 +416,7 @@ class ImportantActions extends Action\AbstractAction
         $dropRename = $schemaMigrationService->getUpdateSuggestions($sqlStatements, true);
         // Aggregate the per-connection statements into one flat array
         $dropRename = array_merge_recursive(...array_values($dropRename));
-        if (isset($dropRename['change_table'])) {
+        if (!empty($dropRename['change_table'])) {
             $databaseAnalyzerSuggestion['renameTableToUnused'] = [];
             foreach ($dropRename['change_table'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['renameTableToUnused'][$hash] = [
@@ -428,7 +428,7 @@ class ImportantActions extends Action\AbstractAction
                 }
             }
         }
-        if (isset($dropRename['change'])) {
+        if (!empty($dropRename['change'])) {
             $databaseAnalyzerSuggestion['renameTableFieldToUnused'] = [];
             foreach ($dropRename['change'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['renameTableFieldToUnused'][$hash] = [
@@ -437,7 +437,7 @@ class ImportantActions extends Action\AbstractAction
                 ];
             }
         }
-        if (isset($dropRename['drop'])) {
+        if (!empty($dropRename['drop'])) {
             $databaseAnalyzerSuggestion['deleteField'] = [];
             foreach ($dropRename['drop'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['deleteField'][$hash] = [
@@ -446,7 +446,7 @@ class ImportantActions extends Action\AbstractAction
                 ];
             }
         }
-        if (isset($dropRename['drop_table'])) {
+        if (!empty($dropRename['drop_table'])) {
             $databaseAnalyzerSuggestion['deleteTable'] = [];
             foreach ($dropRename['drop_table'] as $hash => $statement) {
                 $databaseAnalyzerSuggestion['deleteTable'][$hash] = [
