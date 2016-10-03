@@ -629,7 +629,8 @@ class Testbase
             }
 
             $tableName = $table->getName();
-            $connection = (new ConnectionPool())->getConnectionForTable($tableName);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($tableName);
             $connection->insert(
                 $tableName,
                 $insertArray
