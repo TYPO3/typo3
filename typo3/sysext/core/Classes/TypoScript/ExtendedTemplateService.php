@@ -231,11 +231,6 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var string
      */
-    protected $Cmarker = '';
-
-    /**
-     * @var string
-     */
     public $bType = '';
 
     /**
@@ -281,7 +276,6 @@ class ExtendedTemplateService extends TemplateService
      */
     public function substituteConstants($all)
     {
-        $this->Cmarker = substr(md5(uniqid('', true)), 0, 6);
         return preg_replace_callback('/\\{\\$(.[^}]+)\\}/', [$this, 'substituteConstantsCallBack'], $all);
     }
 
@@ -294,12 +288,13 @@ class ExtendedTemplateService extends TemplateService
      */
     public function substituteConstantsCallBack($matches)
     {
+        $marker = substr(md5($matches[0]), 0, 6);
         switch ($this->constantMode) {
             case 'const':
-                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $this->Cmarker . '_B##' . $matches[0] . '##' . $this->Cmarker . '_E##' : $matches[0];
+                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $marker . '_B##' . $matches[0] . '##' . $marker . '_E##' : $matches[0];
                 break;
             case 'subst':
-                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $this->Cmarker . '_B##' . $this->flatSetup[$matches[1]] . '##' . $this->Cmarker . '_E##' : $matches[0];
+                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $marker . '_B##' . $this->flatSetup[$matches[1]] . '##' . $marker . '_E##' : $matches[0];
                 break;
             case 'untouched':
                 $ret_val = $matches[0];
@@ -311,7 +306,7 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * Subsitute markers
+     * Substitute markers
      *
      * @param string $all
      * @return string
@@ -321,10 +316,10 @@ class ExtendedTemplateService extends TemplateService
         switch ($this->constantMode) {
             case 'const':
             case 'subst':
-                $all = str_replace(
-                    ['##' . $this->Cmarker . '_B##', '##' . $this->Cmarker . '_E##'],
-                    ['<strong style="color: green;">', '</strong>'],
-                    $all
+                $all = preg_replace(
+                    '/##[a-z0-9]{6}_B##((?:(?!##[a-z0-9]{6}_E##).)+)##[a-z0-9]{6}_E##/',
+                        '<strong style="color: green;">$1</strong>',
+                        $all
                 );
                 break;
             default:
@@ -804,9 +799,10 @@ class ExtendedTemplateService extends TemplateService
     {
         if ($chars >= 4) {
             if (strlen($string) > $chars) {
-                if (strlen($string) > 24 && substr($string, 0, 12) == '##' . $this->Cmarker . '_B##') {
-                    return '##' . $this->Cmarker . '_B##' . GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3))
-                        . '##' . $this->Cmarker . '_E##';
+                if (strlen($string) > 24 && preg_match('/^##[a-z0-9]{6}_B##$/', substr($string, 0, 12))) {
+                    $string = GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3));
+                    $marker = substr(md5($string), 0, 6);
+                    return '##' . $marker . '_B##' . $string . '##' . $marker . '_E##';
                 } else {
                     return GeneralUtility::fixed_lgd_cs($string, $chars - 3);
                 }
