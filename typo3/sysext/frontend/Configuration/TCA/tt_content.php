@@ -23,6 +23,7 @@ return [
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'languageField' => 'sys_language_uid',
         'translationSource' => 'l10n_source',
+        'previewRenderer' => \TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer::class,
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',

@@ -28,6 +28,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1460321142] = [
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 
+// Register standard preview renderer resolver implementation.
+// Resolves PreviewRendererInterface implementations for a given table and record.
+// Can be replaced with custom implementation by overriding this value in extensions.
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['previewRendererResolver'] = \TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver::class;
+
 // Include base TSconfig setup
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     "@import 'EXT:backend/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.tsconfig'"

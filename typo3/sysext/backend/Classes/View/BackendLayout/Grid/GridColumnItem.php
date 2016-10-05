@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
@@ -60,124 +61,16 @@ class GridColumnItem extends AbstractGridObject
 
     public function getPreview(): string
     {
-        $item = $this;
-        $row = $item->getRecord();
-        $configuration = $this->backendLayout->getDrawingConfiguration();
-        $out = '';
-        $outHeader = '';
-
-        if ($row['header']) {
-            $hiddenHeaderNote = '';
-            // If header layout is set to 'hidden', display an accordant note:
-            if ($row['header_layout'] == 100) {
-                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden')) . ']</em>';
-            }
-            $outHeader = $row['date']
-                ? htmlspecialchars($configuration->getItemLabels()['date'] . ' ' . BackendUtility::date($row['date'])) . '<br />'
-                : '';
-            $outHeader .= '<strong>' . $this->linkEditContent($this->renderText($row['header']), $row)
-                . $hiddenHeaderNote . '</strong><br />';
-        }
-
-        $drawItem = true;
-
-        // Draw preview of the item depending on its CType (if not disabled by previous hook):
-        if ($drawItem) {
-            switch ($row['CType']) {
-                case 'header':
-                    if ($row['subheader']) {
-                        $out .= $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br />';
-                    }
-                    break;
-                case 'bullets':
-                case 'table':
-                    if ($row['bodytext']) {
-                        $out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-                    }
-                    break;
-                case 'uploads':
-                    if ($row['media']) {
-                        $out .= $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'media'), $row) . '<br />';
-                    }
-                    break;
-                case 'shortcut':
-                    if (!empty($row['records'])) {
-                        $shortcutContent = [];
-                        $recordList = explode(',', $row['records']);
-                        foreach ($recordList as $recordIdentifier) {
-                            $split = BackendUtility::splitTable_Uid($recordIdentifier);
-                            $tableName = empty($split[0]) ? 'tt_content' : $split[0];
-                            $shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
-                            if (is_array($shortcutRecord)) {
-                                $icon = $this->iconFactory->getIconForRecord($tableName, $shortcutRecord, Icon::SIZE_SMALL)->render();
-                                $icon = BackendUtility::wrapClickMenuOnIcon(
-                                    $icon,
-                                    $tableName,
-                                    $shortcutRecord['uid']
-                                );
-                                $shortcutContent[] = $icon
-                                    . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
-                            }
-                        }
-                        $out .= implode('<br />', $shortcutContent) . '<br />';
-                    }
-                    break;
-                case 'list':
-                    $hookOut = '';
-                    $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => []];
-                    foreach (
-                        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']] ??
-                        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'] ??
-                        [] as $_funcRef
-                    ) {
-                        $hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                    }
-                    if ((string)$hookOut !== '') {
-                        $out .= $hookOut;
-                    } elseif (!empty($row['list_type'])) {
-                        $label = BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'list_type', $row['list_type']);
-                        if (!empty($label)) {
-                            $out .= $this->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL($label)) . '</strong>', $row) . '<br />';
-                        } else {
-                            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
-                            $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
-                        }
-                    } else {
-                        $out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
-                    }
-                    $out .= htmlspecialchars($this->getLanguageService()->sL(
-                        BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages'])
-                    )) . '<br />';
-                    break;
-                default:
-                    $contentType = $this->backendLayout->getDrawingConfiguration()->getContentTypeLabels()[$row['CType']];
-                    if (!isset($contentType)) {
-                        $contentType =  BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'CType', $row['CType']);
-                    }
-
-                    if ($contentType) {
-                        $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
-                        if ($row['bodytext']) {
-                            $out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-                        }
-                        if ($row['image']) {
-                            $out .= $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'image'), $row) . '<br />';
-                        }
-                    } else {
-                        $message = sprintf(
-                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
-                            $row['CType']
-                        );
-                        $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
-                    }
-            }
-        }
-        $out = '<span class="exampleContent">' . $out . '</span>';
-        $out = $outHeader . $out;
-        if ($item->isDisabled()) {
-            return '<span class="text-muted">' . $out . '</span>';
-        }
-        return $out;
+        $record = $this->getRecord();
+        $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
+            ->resolveRendererFor(
+                'tt_content',
+                $record,
+                $this->backendLayout->getDrawingConfiguration()->getPageId()
+            );
+        $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
+        $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
+        return $previewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $this);
     }
 
     public function getWrapperClassName(): string
@@ -222,16 +115,16 @@ class GridColumnItem extends AbstractGridObject
         return $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel');
     }
 
-    public function getFooterInfo(): iterable
+    public function getFooterInfo(): string
     {
-        $info = [];
-        $this->getProcessedValue('starttime,endtime,fe_group,space_before_class,space_after_class', $info);
-
-        if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']) && !empty($this->record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']])) {
-            $info[] = $this->record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']];
-        }
-
-        return $info;
+        $record = $this->getRecord();
+        $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
+            ->resolveRendererFor(
+                'tt_content',
+                $record,
+                $this->backendLayout->getDrawingConfiguration()->getPageId()
+            );
+        return $previewRenderer->renderPageModulePreviewFooter($this);
     }
 
     /**
@@ -251,70 +144,6 @@ class GridColumnItem extends AbstractGridObject
             return '<span title="' . $title . '">' . $icon . '</span>&nbsp;' . $title;
         }
         return $title;
-    }
-
-    /**
-     * Create thumbnail code for record/field but not linked
-     *
-     * @param mixed[] $row Record array
-     * @param string $table Table (record is from)
-     * @param string $field Field name for which thumbnail are to be rendered.
-     * @return string HTML for thumbnails, if any.
-     */
-    protected function getThumbCodeUnlinked($row, $table, $field)
-    {
-        return BackendUtility::thumbCode($row, $table, $field, '', '', null, 0, '', '', false);
-    }
-
-    /**
-     * Will create a link on the input string and possibly a big button after the string which links to editing in the RTE.
-     * Used for content element content displayed so the user can click the content / "Edit in Rich Text Editor" button
-     *
-     * @param string $str String to link. Must be prepared for HTML output.
-     * @param array $row The row.
-     * @return string If the whole thing was editable $str is return with link around. Otherwise just $str.
-     */
-    public function linkEditContent($str, $row)
-    {
-        if ($this->getBackendUser()->recordEditAccessInternals('tt_content', $row)) {
-            $urlParameters = [
-                'edit' => [
-                    'tt_content' => [
-                        $row['uid'] => 'edit'
-                    ]
-                ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid']
-            ];
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-            return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $str . '</a>';
-        }
-        return $str;
-    }
-
-    /**
-     * Processing of larger amounts of text (usually from RTE/bodytext fields) with word wrapping etc.
-     *
-     * @param string $input Input string
-     * @return string Output string
-     */
-    public function renderText($input): string
-    {
-        $input = strip_tags($input);
-        $input = GeneralUtility::fixed_lgd_cs($input, 1500);
-        return nl2br(htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8', false));
-    }
-
-    protected function getProcessedValue(string $fieldList, array &$info): void
-    {
-        $itemLabels = $this->backendLayout->getDrawingConfiguration()->getItemLabels();
-        $fieldArr = explode(',', $fieldList);
-        foreach ($fieldArr as $field) {
-            if ($this->record[$field]) {
-                $info[] = '<strong>' . htmlspecialchars($itemLabels[$field]) . '</strong> '
-                    . htmlspecialchars(BackendUtility::getProcessedValue('tt_content', $field, $this->record[$field]));
-            }
-        }
     }
 
     public function getIcons(): string

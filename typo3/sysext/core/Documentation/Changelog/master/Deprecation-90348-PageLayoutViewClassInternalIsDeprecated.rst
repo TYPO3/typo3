@@ -21,8 +21,10 @@ Implementations which depend on :php:`PageLayoutView` should prepare to use the 
 Affected Installations
 ======================
 
-Any site which uses PSR-14 events or backend content rendering hooks associated with :php:`PageLayoutView` such as :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter']`.
-
+* Any site which overrides the ``PageLayoutView`` class. The overridden class will still be instanced when rendering previews in BE page module - but no methods will be called on the instance **unless** they are called by a third party hook subscriber.
+* Any site which depends on PSR-14 events associated with ``PageLayoutView`` will only have those events dispatched if the ``fluidBasedPageModule`` feature flag is ``false``.
+  * Affects ``\TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent``.
+  * Affects ``\TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent``.
 
 Migration
 =========
