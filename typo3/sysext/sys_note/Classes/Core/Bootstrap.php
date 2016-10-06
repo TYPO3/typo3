@@ -14,6 +14,7 @@ namespace TYPO3\CMS\SysNote\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -82,7 +83,12 @@ class Bootstrap
         $count = $queryBuilder
             ->count('uid')
             ->from('sys_note')
-            ->where($queryBuilder->expr()->in('pid', $cleanedPageIds))
+            ->where(
+                $queryBuilder->expr()->in(
+                    'pid',
+                    $queryBuilder->createNamedParameter($cleanedPageIds, Connection::PARAM_INT_ARRAY)
+                )
+            )
             ->execute()
             ->fetchColumn();
         return (bool)$count;

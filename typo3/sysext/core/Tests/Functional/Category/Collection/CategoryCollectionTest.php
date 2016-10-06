@@ -175,7 +175,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $statement = $queryBuilder
             ->select('*')
             ->from($this->tableName)
-            ->where($queryBuilder->expr()->eq('uid', 1))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)))
             ->execute();
         $record = $statement->fetch();
         $collection->rewind();

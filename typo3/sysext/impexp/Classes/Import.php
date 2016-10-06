@@ -841,9 +841,21 @@ class Import extends ImportExport
                 $recordInDatabase = $queryBuilder->select('uid')
                     ->from('sys_file_metadata')
                     ->where(
-                        $queryBuilder->expr()->eq('file', (int)$this->import_mapId['sys_file'][$record['file']]),
-                        $queryBuilder->expr()->eq('sys_language_uid', 0),
-                        $queryBuilder->expr()->eq('pid', 0)
+                        $queryBuilder->expr()->eq(
+                            'file',
+                            $queryBuilder->createNamedParameter(
+                                $this->import_mapId['sys_file'][$record['file']],
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute()
                     ->fetch();

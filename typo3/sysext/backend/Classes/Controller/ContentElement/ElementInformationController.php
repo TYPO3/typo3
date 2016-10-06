@@ -652,9 +652,18 @@ class ElementInformationController
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($selectTable)),
-                $queryBuilder->expr()->eq('ref_uid', (int)$selectUid),
-                $queryBuilder->expr()->eq('deleted', 0)
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter($selectTable, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'ref_uid',
+                    $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'deleted',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchAll();
@@ -770,8 +779,14 @@ class ElementInformationController
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                $queryBuilder->expr()->eq('recuid', (int)$ref)
+                $queryBuilder->expr()->eq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'recuid',
+                    $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchAll();
@@ -874,7 +889,12 @@ class ElementInformationController
         $fileReference = $queryBuilder
             ->select('*')
             ->from('sys_file_reference')
-            ->where($queryBuilder->expr()->eq('uid', (int)$referenceRecord['recuid']))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetch();
 

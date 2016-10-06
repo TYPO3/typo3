@@ -32,7 +32,13 @@ class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
         $queryBuilder
             ->delete('sys_preview')
-            ->where($queryBuilder->expr()->lt('endtime', (int)$GLOBALS['EXEC_TIME']));
+            ->where(
+                $queryBuilder->expr()->lt(
+                    'endtime',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                )
+            )
+            ->execute();
 
         return true;
     }

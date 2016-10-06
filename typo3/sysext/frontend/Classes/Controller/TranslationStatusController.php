@@ -382,8 +382,18 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $result = $queryBuilder
             ->select('*')
             ->from(static::$pageLanguageOverlayTable)
-            ->where($queryBuilder->expr()->eq('pid', (int)$pageId))
-            ->andWhere($queryBuilder->expr()->eq('sys_language_uid', (int)$langId))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($langId, \PDO::PARAM_INT)
+                )
+            )
             ->execute();
 
         $row = $result->fetch();
@@ -415,10 +425,16 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             ->count('uid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$pageId)
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
             )
             ->andWhere(
-                $queryBuilder->expr()->eq('sys_language_uid', (int)$sysLang)
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($sysLang, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn(0);

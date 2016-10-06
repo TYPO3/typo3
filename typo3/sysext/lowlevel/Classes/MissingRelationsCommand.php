@@ -96,8 +96,8 @@ Reports missing relations';
             ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer', 'deleted')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE')),
-                $queryBuilder->expr()->gt('ref_uid', 0)
+                $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->orderBy('sorting', 'DESC')
             ->execute();

@@ -201,18 +201,27 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements AdditionalFieldPro
         $queryBuilder->select('TABLE_NAME AS Table', 'ENGINE AS Engine')
             ->from('information_schema.TABLES')
             ->where(
-                $queryBuilder->expr()->eq('TABLE_TYPE', $queryBuilder->quote('BASE TABLE')),
-                $queryBuilder->expr()->in('ENGINE', [
-                    $queryBuilder->quote('InnoDB'),
-                    $queryBuilder->quote('MyISAM'),
-                    $queryBuilder->quote('ARCHIVE'),
-                ]),
-                $queryBuilder->expr()->eq('TABLE_SCHEMA', $queryBuilder->quote($connection->getDatabase()))
+                $queryBuilder->expr()->eq(
+                    'TABLE_TYPE',
+                    $queryBuilder->createNamedParameter('BASE TABLE', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->in(
+                    'ENGINE',
+                    $queryBuilder->createNamedParameter(['InnoDB', 'MyISAM', 'ARCHIVE'], Connection::PARAM_STR_ARRAY)
+                ),
+                $queryBuilder->expr()->eq(
+                    'TABLE_SCHEMA',
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                )
             );
 
         if (!empty($tableNames)) {
-            $tableNames = array_map([$queryBuilder, 'quote'], $tableNames);
-            $queryBuilder->andWhere($queryBuilder->expr()->in('TABLE_NAME', $tableNames));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    'TABLE_NAME',
+                    $queryBuilder->createNamedParameter($tableNames, \PDO::PARAM_STR)
+                )
+            );
         }
 
         $tables = $queryBuilder->execute()->fetchAll();

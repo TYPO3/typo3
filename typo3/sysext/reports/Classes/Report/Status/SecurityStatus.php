@@ -107,7 +107,7 @@ class SecurityStatus implements StatusProviderInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'username',
-                    $queryBuilder->quote('admin')
+                    $queryBuilder->createNamedParameter('admin', \PDO::PARAM_STR)
                 )
             )
             ->execute()

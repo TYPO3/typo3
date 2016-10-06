@@ -638,7 +638,12 @@ class ImportExportController extends BaseScriptClass
 
         $queryBuilder->select('*')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                )
+            )
             ->setMaxResults($limit);
 
         foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {

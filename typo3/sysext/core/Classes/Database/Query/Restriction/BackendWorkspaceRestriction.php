@@ -67,7 +67,8 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
                         $workspaceIdExpression,
                         $expressionBuilder->lte(
                             $tablePrefix . '.t3ver_state',
-                            new VersionState(VersionState::DEFAULT_STATE)
+                            // Trigger __toString(), then cast int
+                            (int)(string)new VersionState(VersionState::DEFAULT_STATE)
                         )
                     );
                 } else {

@@ -292,7 +292,8 @@ class BackendUtilityTest extends UnitTestCase
         /** @var QueryBuilder|ObjectProphecy $queryBuilderProphet */
         $queryBuilderProphet->select('uid', 'sys_category.title')->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('sys_category')->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where('`uid` IN (1, 2)')->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('`uid` IN (:dcValue1)')->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->createNamedParameter([1, 2], Connection::PARAM_INT_ARRAY)->willReturn(':dcValue1');
         $queryBuilderProphet->execute()->willReturn($statementProphet->reveal());
 
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerInstance);
@@ -1072,9 +1073,12 @@ class BackendUtilityTest extends UnitTestCase
         $queryBuilderProphet->from($tableName)
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where('`uid` = ' . $row['origUid'])
+        $queryBuilderProphet->where('`uid` = 1')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturnArgument(0);
         $queryBuilderProphet->execute()
             ->shouldBeCalled()
             ->willReturn($statementProphet->reveal());

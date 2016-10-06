@@ -954,7 +954,10 @@ class TypoScriptFrontendController
                 ->select('params')
                 ->from('cache_md5params')
                 ->where(
-                    $queryBuilder->expr()->eq('md5hash', $queryBuilder->createNamedParameter($this->RDCT))
+                    $queryBuilder->expr()->eq(
+                        'md5hash',
+                        $queryBuilder->createNamedParameter($this->RDCT, \PDO::PARAM_STR)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -1365,7 +1368,7 @@ class TypoScriptFrontendController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($this->id)),
-                $queryBuilder->expr()->gte('pid', 0)
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
             ->execute()
@@ -1724,7 +1727,10 @@ class TypoScriptFrontendController
                         ->select('uid')
                         ->from('pages')
                         ->where(
-                            $queryBuilder->expr()->eq('uid', (int)$this->id),
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                            ),
                             $this->getBackendUser()->getPagePermsClause(1)
                         )
                         ->execute()
@@ -4003,7 +4009,10 @@ class TypoScriptFrontendController
                     ->select('title')
                     ->from('sys_workspace')
                     ->where(
-                        $queryBuilder->expr()->eq('uid', (int)$ws)
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($ws, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute()
                     ->fetch();
@@ -4536,11 +4545,20 @@ class TypoScriptFrontendController
                 $timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
                 $queryBuilder->addSelectLiteral(
                     'MIN('
-                        . 'CASE WHEN ' . $queryBuilder->expr()->lte($timeFields[$field], $now)
+                        . 'CASE WHEN '
+                        . $queryBuilder->expr()->lte(
+                            $timeFields[$field],
+                            $queryBuilder->createNamedParameter($now, \PDO::PARAM_INT)
+                        )
                         . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
                         . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
                 );
-                $timeConditions->add($queryBuilder->expr()->gt($timeFields[$field], $now));
+                $timeConditions->add(
+                    $queryBuilder->expr()->gt(
+                        $timeFields[$field],
+                        $queryBuilder->createNamedParameter($now, \PDO::PARAM_INT)
+                    )
+                );
             }
         }
 
@@ -4550,7 +4568,10 @@ class TypoScriptFrontendController
             $row = $queryBuilder
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$pid),
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    ),
                     $timeConditions
                 )
                 ->execute()
@@ -4594,7 +4615,10 @@ class TypoScriptFrontendController
                 ->select('uid', 'pid', 'domainName', 'forced')
                 ->from('sys_domain')
                 ->where(
-                    $queryBuilder->expr()->eq('redirectTo', $queryBuilder->createNamedParameter(''))
+                    $queryBuilder->expr()->eq(
+                        'redirectTo',
+                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                    )
                 )
                 ->orderBy('sorting', 'ASC')
                 ->execute();

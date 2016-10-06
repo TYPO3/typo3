@@ -295,7 +295,12 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                 $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $recordData = $queryBuilder->select('*')
                     ->from('sys_file_collection')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute()
                     ->fetch();
                 if (empty($recordData)) {
@@ -653,7 +658,12 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $fileReferenceData = $queryBuilder->select('*')
                 ->from('sys_file_reference')
-                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    )
+                )
                 ->execute()
                 ->fetch();
         }

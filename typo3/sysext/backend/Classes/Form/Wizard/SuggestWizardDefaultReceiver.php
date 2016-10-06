@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -276,8 +277,13 @@ class SuggestWizardDefaultReceiver
         // fetch all
         while ($depth - $level > 0 && !empty($pageIds)) {
             ++$level;
-            $pidList = array_map('intval', $pageIds);
-            $rows = $queryBuilder->where($queryBuilder->expr()->in('pid', $pidList))
+            $rows = $queryBuilder
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                    )
+                )
                 ->execute()
                 ->fetchAll();
 

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Plugin;
  */
 
 use Doctrine\DBAL\Driver\Statement;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -1075,18 +1076,29 @@ class AbstractPlugin
                     ->where(
                         $queryBuilder->expr()->eq($table . '.uid', $queryBuilder->quoteIdentifier($mm_cat['mmtable'] . '.uid_local')),
                         $queryBuilder->expr()->eq($mm_cat['table'] . '.uid', $queryBuilder->quoteIdentifier($mm_cat['mmtable'] . '.uid_foreign')),
-                        $queryBuilder->expr()->in($table . '.pid', $pidList)
+                        $queryBuilder->expr()->in(
+                            $table . '.pid',
+                            $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)
+                        )
                     );
                 if (strcmp($mm_cat['catUidList'], '')) {
                     $queryBuilder->andWhere(
                         $queryBuilder->expr()->in(
                             $mm_cat['table'] . '.uid',
-                            GeneralUtility::intExplode(',', $mm_cat['catUidList'], true)
+                            $queryBuilder->createNamedParameter(
+                                GeneralUtility::intExplode(',', $mm_cat['catUidList'], true),
+                                Connection::PARAM_INT_ARRAY
+                            )
                         )
                     );
                 }
             } else {
-                $queryBuilder->where($queryBuilder->expr()->in('pid', $pidList));
+                $queryBuilder->where(
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)
+                    )
+                );
             }
         } else {
             // Restrictions need to be handled by the $query parameter!
@@ -1225,7 +1237,10 @@ class AbstractPlugin
         $queryBuilder->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$pid),
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                ),
                 QueryHelper::stripLogicalOperatorPrefix($whereClause)
             );
 

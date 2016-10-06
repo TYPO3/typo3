@@ -48,8 +48,8 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
         $numberOfUpgradeableRecords = $queryBuilder->count('uid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->gt('media', 0),
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textmedia'))
+                $queryBuilder->expr()->gt('media', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textmedia', \PDO::PARAM_STR))
             )
             ->execute()
             ->fetchColumn(0);
@@ -79,8 +79,8 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
         $statement = $queryBuilder->select('uid', 'media')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->gt('media', 0),
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textmedia'))
+                $queryBuilder->expr()->gt('media', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textmedia', \PDO::PARAM_STR))
             )
             ->execute();
 
@@ -92,9 +92,14 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tt_content');
             $queryBuilder->update('tt_content')
-                ->where($queryBuilder->expr()->eq('uid', (int)$content['uid']))
-                ->set('media', 0, false)
-                ->set('assets', (int)$content['media'], false);
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($content['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->set('media', 0)
+                ->set('assets', (int)$content['media']);
             $queryStack[] = $queryBuilder->getSQL();
             try {
                 $queryBuilder->execute();
@@ -107,11 +112,20 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
                 ->getQueryBuilderForTable('sys_file_reference');
             $queryBuilder->update('sys_file_reference')
                 ->where(
-                    $queryBuilder->expr()->eq('uid_foreign', (int)$content['uid']),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->quote('tt_content')),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->quote('media'))
+                    $queryBuilder->expr()->eq(
+                        'uid_foreign',
+                        $queryBuilder->createNamedParameter($content['uid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter('tt_content', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $queryBuilder->createNamedParameter('media', \PDO::PARAM_STR)
+                    )
                 )
-                ->set('fieldname', $queryBuilder->quote('assets'), false);
+                ->set('fieldname', 'assets');
             $queryStack[] = $queryBuilder->getSQL();
             try {
                 $queryBuilder->execute();
@@ -122,8 +136,13 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('tt_content');
                 $queryBuilder->update('tt_content')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$content['uid']))
-                    ->set('media', (int)$content['media'], false)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($content['uid'], \PDO::PARAM_INT)
+                        )
+                    )
+                    ->set('media', (int)$content['media'])
                     ->execute();
                 return false;
             }

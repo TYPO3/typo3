@@ -130,7 +130,7 @@ class BackendUtility
             $queryBuilder
                 ->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', (int)$uid));
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
 
             // add custom where clause
             if ($where) {
@@ -390,12 +390,15 @@ class BackendUtility
         if (self::isTableLocalizable($table)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
-            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table)
-                ->expr();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $expressionBuilder = $queryBuilder->expr();
 
             $constraint = $expressionBuilder->andX(
-                $expressionBuilder->eq($tcaCtrl['languageField'], (int)$language),
+                $expressionBuilder->eq(
+                    $tcaCtrl['languageField'],
+                    $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                ),
                 QueryHelper::stripLogicalOperatorPrefix($andWhereClause)
             );
 
@@ -519,7 +522,7 @@ class BackendUtility
                 )
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', (int)$uid),
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                     QueryHelper::stripLogicalOperatorPrefix($clause)
                 )
                 ->execute()
@@ -1011,7 +1014,13 @@ class BackendUtility
                         ->select('uid', $ds_pointerField, $ds_searchParentField)
                         ->from($table)
                         ->where(
-                            $queryBuilder->expr()->eq('uid', (int)($newRecordPidValue ?: $rr[$ds_searchParentField]))
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter(
+                                    ($newRecordPidValue ?: $rr[$ds_searchParentField]),
+                                    \PDO::PARAM_INT
+                                )
+                            )
                         );
                     if ($subFieldPointer) {
                         $queryBuilder->addSelect($subFieldPointer);
@@ -2277,7 +2286,12 @@ class BackendUtility
                             $result = $queryBuilder
                                 ->select('uid', $MMfield)
                                 ->from($theColConf['foreign_table'])
-                                ->where($queryBuilder->expr()->in('uid', $selectUids))
+                                ->where(
+                                    $queryBuilder->expr()->in(
+                                        'uid',
+                                        $queryBuilder->createNamedParameter($selectUids, Connection::PARAM_INT_ARRAY)
+                                    )
+                                )
                                 ->execute();
 
                             $mmlA = [];
@@ -2327,13 +2341,16 @@ class BackendUtility
                                     ->removeAll()
                                     ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
                                 $constraints = [
-                                    $queryBuilder->expr()->eq($theColConf['foreign_field'], (int)$uid)
+                                    $queryBuilder->expr()->eq(
+                                        $theColConf['foreign_field'],
+                                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                    )
                                 ];
 
                                 if (!empty($theColConf['foreign_table_field'])) {
                                     $constraints[] = $queryBuilder->expr()->eq(
                                         $theColConf['foreign_table_field'],
-                                        $queryBuilder->createNamedParameter($table)
+                                        $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
                                     );
                                 }
 
@@ -2425,7 +2442,15 @@ class BackendUtility
                                 $result = $queryBuilder
                                     ->select('uid', $MMfield)
                                     ->from($theColConf['foreign_table'])
-                                    ->where($queryBuilder->expr()->in('uid', $selectUids))
+                                    ->where(
+                                        $queryBuilder->expr()->in(
+                                            'uid',
+                                            $queryBuilder->createNamedParameter(
+                                                $selectUids,
+                                                Connection::PARAM_INT_ARRAY
+                                            )
+                                        )
+                                    )
                                     ->execute();
 
                                 $mmlA = [];
@@ -3708,12 +3733,18 @@ class BackendUtility
                 ->from('sys_lockedrecords')
                 ->where(
                     $queryBuilder->expr()->neq(
-                        'sys_lockedrecords' . '.userid',
-                        (int)static::getBackendUserAuthentication()->user['uid']
+                        'sys_lockedrecords.userid',
+                        $queryBuilder->createNamedParameter(
+                            static::getBackendUserAuthentication()->user['uid'],
+                            \PDO::PARAM_INT
+                        )
                     ),
                     $queryBuilder->expr()->gt(
-                        'sys_lockedrecords' . '.tstamp',
-                        ($GLOBALS['EXEC_TIME'] - 2 * 3600)
+                        'sys_lockedrecords.tstamp',
+                        $queryBuilder->createNamedParameter(
+                            ($GLOBALS['EXEC_TIME'] - 2 * 3600),
+                            \PDO::PARAM_INT
+                        )
                     )
                 )
                 ->execute();
@@ -3966,11 +3997,11 @@ class BackendUtility
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq(
                         'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain)
+                        $queryBuilder->createNamedParameter($domain, \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->eq(
                         'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain . '/')
+                        $queryBuilder->createNamedParameter($domain . '/', \PDO::PARAM_STR)
                     )
                 )
 
@@ -4123,8 +4154,8 @@ class BackendUtility
                 ->count('*')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->quote($table)),
-                    $queryBuilder->expr()->eq('deleted', 0)
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
+                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                 );
 
             // Look up the path:
@@ -4135,11 +4166,12 @@ class BackendUtility
 
                 $ref = PathUtility::stripPathSitePrefix($ref);
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($ref))
+                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($ref, \PDO::PARAM_STR))
                 );
             } else {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('ref_uid', (int)$ref));
-
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT))
+                );
                 if ($table === 'sys_file') {
                     $queryBuilder->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')));
                 }
@@ -4180,8 +4212,14 @@ class BackendUtility
                 ->count('*')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], (int)$ref),
-                    $queryBuilder->expr()->neq($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0)
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
                 ->fetchColumn(0);
@@ -4249,9 +4287,9 @@ class BackendUtility
             $queryBuilder
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', -1),
-                    $queryBuilder->expr()->neq('uid', (int)$uid),
-                    $queryBuilder->expr()->eq('t3ver_oid', (int)$uid)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                 )
                 ->orderBy('t3ver_id', 'DESC');
 
@@ -4261,10 +4299,20 @@ class BackendUtility
 
             if ($workspace === 0) {
                 // Only in Live WS
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', 0));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                );
             } elseif ($workspace !== null) {
                 // In Live WS and Workspace with given ID
-                $queryBuilder->andWhere($queryBuilder->expr()->in('t3ver_wsid', [0, (int)$workspace]));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter([0, (int)$workspace], Connection::PARAM_INT_ARRAY)
+                    )
+                );
             }
 
             $rows = $queryBuilder->execute()->fetchAll();
@@ -4489,9 +4537,18 @@ class BackendUtility
                 $row = $queryBuilder
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->eq('pid', -1),
-                        $queryBuilder->expr()->eq('t3ver_oid', (int)$uid),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)$workspace)
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_oid',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute()
                     ->fetch();
@@ -4618,10 +4675,25 @@ class BackendUtility
                 ->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->neq('pid', -1),
-                    $queryBuilder->expr()->eq('t3ver_state', (string)(new VersionState(VersionState::MOVE_PLACEHOLDER))),
-                    $queryBuilder->expr()->eq('t3ver_move_id', (int)$uid),
-                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$workspace)
+                    $queryBuilder->expr()->neq(
+                        'pid',
+                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_state',
+                        $queryBuilder->createNamedParameter(
+                            (string)new VersionState(VersionState::MOVE_PLACEHOLDER),
+                            \PDO::PARAM_INT
+                        )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_move_id',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -4836,8 +4908,14 @@ class BackendUtility
             ->count('uid')
             ->from('sys_be_shortcuts')
             ->where(
-                $queryBuilder->expr()->eq('userid', (int)self::getBackendUserAuthentication()->user['uid']),
-                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url))
+                $queryBuilder->expr()->eq(
+                    'userid',
+                    $queryBuilder->createNamedParameter(
+                        self::getBackendUserAuthentication()->user['uid'],
+                        \PDO::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url, \PDO::PARAM_STR))
             )
             ->execute()
             ->fetchColumn(0);

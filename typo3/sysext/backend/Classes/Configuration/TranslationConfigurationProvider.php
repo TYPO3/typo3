@@ -133,13 +133,33 @@ class TranslationConfigurationProvider
             ->select(...GeneralUtility::trimExplode(',', $selFieldList))
             ->from($translationTable)
             ->where(
-                $queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'], (int)$uid),
-                $queryBuilder->expr()->eq('pid', (int)($table === 'pages' ? $row['uid'] : $row['pid']))
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(
+                        ($table === 'pages' ? $row['uid'] : $row['pid']),
+                        \PDO::PARAM_INT
+                    )
+                )
             );
         if (!$languageUid) {
-            $queryBuilder->andWhere($queryBuilder->expr()->gt($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], 0));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gt(
+                    $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'],
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            );
         } else {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], (int)$languageUid));
+            $queryBuilder
+                ->andWhere(
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT)
+                    )
+                );
         }
         $translationRecords = $queryBuilder
             ->execute()

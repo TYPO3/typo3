@@ -153,7 +153,12 @@ class BrowseTreeView extends AbstractTreeView
             $row = $queryBuilder
                 ->select('domainName', 'sorting')
                 ->from('sys_domain')
-                ->where($queryBuilder->expr()->eq('pid', (int)$row['uid']))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
+                    )
+                )
                 ->orderBy('sorting')
                 ->setMaxResults(1)
                 ->execute()

@@ -188,7 +188,10 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
                 )
             )
             ->where(
-                $queryBuilder->expr()->eq(self::$storageTableName . '.uid', (int)$this->getIdentifier())
+                $queryBuilder->expr()->eq(
+                    self::$storageTableName . '.uid',
+                    $queryBuilder->createNamedParameter($this->getIdentifier(), \PDO::PARAM_INT)
+                )
             )
             ->execute();
         $relatedRecords = [];

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1701,15 +1702,24 @@ class Indexer
         $count = (int)$queryBuilder->count('*')
             ->from('index_grlist')
             ->where(
-                $queryBuilder->expr()->eq('phash', (int)$hash),
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($hash, \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq(
                         'hash_gr_list',
-                        IndexedSearchUtility::md5inthash($this->defaultGrList)
+                        $queryBuilder->createNamedParameter(
+                            IndexedSearchUtility::md5inthash($this->defaultGrList),
+                            \PDO::PARAM_INT
+                        )
                     ),
                     $queryBuilder->expr()->eq(
                         'hash_gr_list',
-                        IndexedSearchUtility::md5inthash($this->conf['gr_list'])
+                        $queryBuilder->createNamedParameter(
+                            IndexedSearchUtility::md5inthash($this->conf['gr_list']),
+                            \PDO::PARAM_INT
+                        )
                     )
                 )
             )
@@ -1739,8 +1749,14 @@ class Indexer
         $count = (int)$queryBuilder->count('phash')
             ->from('index_section')
             ->where(
-                $queryBuilder->expr()->eq('phash', (int)$hash),
-                $queryBuilder->expr()->eq('page_id', (int)$this->conf['id'])
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($hash, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'page_id',
+                    $queryBuilder->createNamedParameter($this->conf['id'], \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn();
@@ -2112,7 +2128,10 @@ class Indexer
         $count = (int)$queryBuilder->count('baseword')
             ->from('index_words')
             ->where(
-                $queryBuilder->expr()->in('wid', $phashArray)
+                $queryBuilder->expr()->in(
+                    'wid',
+                    $queryBuilder->createNamedParameter($phashArray, Connection::PARAM_INT_ARRAY)
+                )
             )
             ->execute()
             ->fetchColumn();
@@ -2124,7 +2143,10 @@ class Indexer
             $result = $queryBuilder->select('baseword')
                 ->from('index_words')
                 ->where(
-                    $queryBuilder->expr()->in('wid', $phashArray)
+                    $queryBuilder->expr()->in(
+                        'wid',
+                        $queryBuilder->createNamedParameter($phashArray, Connection::PARAM_INT_ARRAY)
+                    )
                 )
                 ->execute();
 
@@ -2166,7 +2188,7 @@ class Indexer
         $result = $queryBuilder->select('wid')
             ->from('index_words')
             ->where(
-                $queryBuilder->expr()->neq('is_stopword', 0)
+                $queryBuilder->expr()->neq('is_stopword', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->groupBy('wid')
             ->execute();

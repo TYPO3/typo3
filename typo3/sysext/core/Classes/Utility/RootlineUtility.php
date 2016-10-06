@@ -247,8 +247,11 @@ class RootlineUtility
             $row = $queryBuilder->select(...self::$rootlineFields)
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', (int)$uid),
-                    $queryBuilder->expr()->neq('doktype', (int)PageRepository::DOKTYPE_RECYCLER)
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->neq(
+                        'doktype',
+                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -312,13 +315,22 @@ class RootlineUtility
                     $queryBuilder->select('uid')
                         ->from($table)
                         ->where(
-                            $queryBuilder->expr()->eq($configuration['foreign_field'], (int)($columnIsOverlaid ? $uid : $pageRecord['uid']))
+                            $queryBuilder->expr()->eq(
+                                $configuration['foreign_field'],
+                                $queryBuilder->createNamedParameter(
+                                    $columnIsOverlaid ? $uid : $pageRecord['uid'],
+                                    \PDO::PARAM_INT
+                                )
+                            )
                         );
 
                     if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
                         foreach ($configuration['foreign_match_fields'] as $field => $value) {
                             $queryBuilder->andWhere(
-                                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+                                $queryBuilder->expr()->eq(
+                                    $field,
+                                    $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+                                )
                             );
                         }
                     }
@@ -326,7 +338,11 @@ class RootlineUtility
                         $queryBuilder->andWhere(
                             $queryBuilder->expr()->eq(
                                 trim($configuration['foreign_table_field']),
-                                $queryBuilder->createNamedParameter((int)$this->languageUid > 0 && $columnIsOverlaid ? 'pages_language_overlay' : 'pages'))
+                                $queryBuilder->createNamedParameter(
+                                    (int)$this->languageUid > 0 && $columnIsOverlaid ? 'pages_language_overlay' : 'pages',
+                                    \PDO::PARAM_STR
+                                )
+                            )
                         );
                     }
                     if (isset($configuration['foreign_sortby'])) {

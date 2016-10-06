@@ -48,16 +48,34 @@ class AutoPublishService
             ->select('uid', 'swap_modes', 'publish_time', 'unpublish_time')
             ->from('sys_workspace')
             ->where(
-                $queryBuilder->expr()->eq('pid', 0),
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
                 $queryBuilder->orWhere(
                     $queryBuilder->andWhere(
-                        $queryBuilder->expr()->neq('publish_time', 0),
-                        $queryBuilder->expr()->lte('publish_time', (int)$GLOBALS['EXEC_TIME'])
+                        $queryBuilder->expr()->neq(
+                            'publish_time',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->lte(
+                            'publish_time',
+                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                        )
                     ),
                     $queryBuilder->andWhere(
-                        $queryBuilder->expr()->eq('publish_time', 0),
-                        $queryBuilder->expr()->neq('unpublish_time', 0),
-                        $queryBuilder->expr()->lte('unpublish_time', (int)$GLOBALS['EXEC_TIME'])
+                        $queryBuilder->expr()->eq(
+                            'publish_time',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->neq(
+                            'unpublish_time',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->lte(
+                            'unpublish_time',
+                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                        )
                     )
                 )
             )

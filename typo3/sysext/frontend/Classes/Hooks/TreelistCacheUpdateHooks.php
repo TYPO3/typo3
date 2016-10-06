@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Hooks;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -256,7 +257,10 @@ class TreelistCacheUpdateHooks
             $queryBuilder
                 ->delete('cache_treelist')
                 ->where(
-                    $queryBuilder->expr()->in('pid', $rootLineIds)
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter($rootLineIds, Connection::PARAM_INT_ARRAY)
+                    )
                 )
                 ->execute();
         }
@@ -314,7 +318,10 @@ class TreelistCacheUpdateHooks
         $queryBuilder
             ->delete('cache_treelist')
             ->where(
-                $queryBuilder->expr()->lte('expires', (int)$GLOBALS['EXEC_TIME'])
+                $queryBuilder->expr()->lte(
+                    'expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                )
             )
             ->execute();
     }

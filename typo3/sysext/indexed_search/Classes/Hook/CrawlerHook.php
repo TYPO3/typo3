@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
 
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,8 +75,11 @@ class CrawlerHook
         $result = $queryBuilder->select('*')
             ->from('index_config')
             ->where(
-                $queryBuilder->expr()->lt('timer_next_indexing', (int)$GLOBALS['EXEC_TIME']),
-                $queryBuilder->expr()->eq('set_id', 0)
+                $queryBuilder->expr()->lt(
+                    'timer_next_indexing',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq('set_id', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->execute();
 
@@ -196,7 +200,10 @@ class CrawlerHook
                 ->select('*')
                 ->from('index_config')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', (int)$params['indexConfigUid'])
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($params['indexConfigUid'], \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -281,8 +288,14 @@ class CrawlerHook
             $result = $queryBuilder->select('*')
                 ->from($cfgRec['table2index'])
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $pid),
-                    $queryBuilder->expr()->gt('uid', (int)$session_data['uid'])
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gt(
+                        'uid',
+                        $queryBuilder->createNamedParameter($session_data['uid'], \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults($numberOfRecords)
                 ->orderBy('uid')
@@ -446,7 +459,12 @@ class CrawlerHook
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $result = $queryBuilder->select('uid', 'title')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', $pageUid))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                    )
+                )
                 ->execute();
             // Traverse subpages and add to queue:
             while ($row = $result->fetch()) {
@@ -497,7 +515,7 @@ class CrawlerHook
         // Lookup running index configurations:
         $runningIndexingConfigurations = $queryBuilder->select('*')
             ->from('index_config')
-            ->where($queryBuilder->expr()->neq('set_id', 0))
+            ->where($queryBuilder->expr()->neq('set_id', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
             ->execute()
             ->fetchAll();
         // For each running configuration, look up how many log entries there are which are scheduled
@@ -520,18 +538,31 @@ class CrawlerHook
                     ->select('phash')
                     ->from('index_phash')
                     ->where(
-                        $queryBuilder->expr()->eq('freeIndexUid', (int)$cfgRec['uid']),
-                        $queryBuilder->expr()->neq('freeIndexSetId', (int)$cfgRec['set_id'])
+                        $queryBuilder->expr()->eq(
+                            'freeIndexUid',
+                            $queryBuilder->createNamedParameter($cfgRec['uid'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->neq(
+                            'freeIndexSetId',
+                            $queryBuilder->createNamedParameter($cfgRec['set_id'], \PDO::PARAM_INT)
+                        )
                     )
                     ->execute()
                     ->fetchAll();
 
-                $oldPhashRows = array_map('intval', array_column($oldPhashRows, 'phash'));
                 // Removing old registrations for all tables
                 foreach ($tablesToClean as $table) {
                     $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
                     $queryBuilder->delete($table)
-                        ->where($queryBuilder->expr()->in('phash', $oldPhashRows))
+                        ->where(
+                            $queryBuilder->expr()->in(
+                                'phash',
+                                $queryBuilder->createNamedParameter(
+                                    array_column($oldPhashRows, 'phash'),
+                                    Connection::PARAM_INT_ARRAY
+                                )
+                            )
+                        )
                         ->execute();
                 }
 
@@ -759,7 +790,12 @@ class CrawlerHook
         $queryBuilder = $connectionPool->getQueryBuilderForTable('index_section');
         $oldPhashRows = $queryBuilder->select('phash')
             ->from('index_section')
-            ->where($queryBuilder->expr()->eq('page_id', (int)$id))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'page_id',
+                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchAll();
 
@@ -767,7 +803,6 @@ class CrawlerHook
             return;
         }
 
-        $pHashesToDelete = array_map('intval', array_column($oldPhashRows, 'phash'));
         $tables = [
             'index_debug',
             'index_fulltext',
@@ -779,7 +814,15 @@ class CrawlerHook
         foreach ($tables as $table) {
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->delete($table)
-                ->where($queryBuilder->expr()->in('phash', $pHashesToDelete))
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'phash',
+                        $queryBuilder->createNamedParameter(
+                            array_column($oldPhashRows, 'phash'),
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                )
                 ->execute();
         }
     }
@@ -841,17 +884,32 @@ class CrawlerHook
             $result = $queryBuilder->select('*')
                 ->from('index_config')
                 ->where(
-                    $queryBuilder->expr()->eq('set_id', 0),
-                    $queryBuilder->expr()->eq('type', 1),
-                    $queryBuilder->expr()->eq('table2index', $queryBuilder->createNamedParameter($table)),
+                    $queryBuilder->expr()->eq('set_id', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'table2index',
+                        $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                    ),
                     $queryBuilder->expr()->orX(
                         $queryBuilder->expr()->andX(
-                            $queryBuilder->expr()->eq('alternative_source_pid', 0),
-                            $queryBuilder->expr()->eq('pid', (int)$currentRecord['pid'])
+                            $queryBuilder->expr()->eq(
+                                'alternative_source_pid',
+                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($currentRecord['pid'], \PDO::PARAM_INT)
+                            )
                         ),
-                        $queryBuilder->expr()->eq('alternative_source_pid', (int)$currentRecord['pid'])
+                        $queryBuilder->expr()->eq(
+                            'alternative_source_pid',
+                            $queryBuilder->createNamedParameter($currentRecord['pid'], \PDO::PARAM_INT)
+                        )
                     ),
-                    $queryBuilder->expr()->eq('records_indexonchange', 1)
+                    $queryBuilder->expr()->eq(
+                        'records_indexonchange',
+                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute();
 

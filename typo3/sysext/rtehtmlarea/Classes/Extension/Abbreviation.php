@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -201,7 +202,12 @@ class Abbreviation extends RteHtmlAreaApi
             }
 
             if ($pageTree !== '') {
-                $queryBuilder->where($queryBuilder->expr()->in('a.pid', $pageTree));
+                $queryBuilder->where(
+                    $queryBuilder->expr()->in(
+                        'a.pid',
+                        $queryBuilder->createNamedParameter($pageTree, Connection::PARAM_INT_ARRAY)
+                    )
+                );
             } else {
                 // If page tree is empty the user does not have access to any pages / acronyms.
                 // This is why we do not try do read any records from the database.
@@ -214,15 +220,29 @@ class Abbreviation extends RteHtmlAreaApi
             if ($this->configuration['contentLanguageUid'] > -1) {
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->eq('a.sys_language_uid', $this->configuration['contentLanguageUid']),
-                        $queryBuilder->expr()->eq('a.sys_language_uid', -1)
+                        $queryBuilder->expr()->eq(
+                            'a.sys_language_uid',
+                            $queryBuilder->createNamedParameter(
+                                $this->configuration['contentLanguageUid'],
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'a.sys_language_uid',
+                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        )
                     )
                 );
             }
             // Restrict to abbreviations in certain languages
             if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['language.']) && isset($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems'])) {
                 $languageList = GeneralUtility::trimExplode(',', strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']));
-                $queryBuilder->andWhere($queryBuilder->expr()->in('b.lg_iso_2', $languageList));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in(
+                        'b.lg_iso_2',
+                        $queryBuilder->createNamedParameter($languageList, Connection::PARAM_STR_ARRAY)
+                    )
+                );
             }
 
             $result = $queryBuilder->execute();

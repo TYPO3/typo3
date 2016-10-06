@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -7155,10 +7156,16 @@ class ContentObjectRenderer
             $cacheEntry = $queryBuilder->select('treelist')
                 ->from('cache_treelist')
                 ->where(
-                    $queryBuilder->expr()->eq('md5hash', $queryBuilder->createNamedParameter($requestHash)),
+                    $queryBuilder->expr()->eq(
+                        'md5hash',
+                        $queryBuilder->createNamedParameter($requestHash, \PDO::PARAM_STR)
+                    ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gt('expires', (int)$GLOBALS['EXEC_TIME']),
-                        $queryBuilder->expr()->eq('expires', 0)
+                        $queryBuilder->expr()->gt(
+                            'expires',
+                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq('expires', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                     )
                 )
                 ->setMaxResults(1)
@@ -7201,7 +7208,12 @@ class ContentObjectRenderer
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryBuilder->select(...GeneralUtility::trimExplode(',', $allFields, true))
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', (int)$id))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    )
+                )
                 ->orderBy('sorting');
 
             if (!empty($moreWhereClauses)) {
@@ -7236,7 +7248,12 @@ class ContentObjectRenderer
                         ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $queryBuilder->select(...GeneralUtility::trimExplode(',', $allFields, true))
                         ->from('pages')
-                        ->where($queryBuilder->expr()->eq('uid', (int)$next_id))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($next_id, \PDO::PARAM_INT)
+                            )
+                        )
                         ->orderBy('sorting')
                         ->setMaxResults(1);
 
@@ -7351,7 +7368,10 @@ class ContentObjectRenderer
             $searchWord = $queryBuilder->escapeLikeWildcards($searchWord);
             foreach ($searchFields as $field) {
                 $searchWordConstraint->add(
-                    $queryBuilder->expr()->like($prefixTableName . $field, $queryBuilder->quote('%' . $searchWord . '%'))
+                    $queryBuilder->expr()->like(
+                        $prefixTableName . $field,
+                        $queryBuilder->createNamedParameter('%' . $searchWord . '%', \PDO::PARAM_STR)
+                    )
                 );
             }
 
@@ -7750,7 +7770,7 @@ class ContentObjectRenderer
                     $expressionBuilder->andX(
                         $expressionBuilder->eq(
                             $table . '.t3ver_state',
-                            VersionState::cast(VersionState::MOVE_PLACEHOLDER)
+                            (int)(string)VersionState::cast(VersionState::MOVE_PLACEHOLDER)
                         ),
                         $expressionBuilder->in($table . '.t3ver_move_id', $listArr)
                     )
@@ -7983,10 +8003,16 @@ class ContentObjectRenderer
         $queryBuilder->select('uid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->in('uid', array_map('intval', $listArr)),
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($listArr, Connection::PARAM_INT_ARRAY)
+                ),
                 $queryBuilder->expr()->notIn(
                     'doktype',
-                    GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true)
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true),
+                        Connection::PARAM_INT_ARRAY
+                    )
                 )
             );
         try {
@@ -8018,10 +8044,16 @@ class ContentObjectRenderer
             $count = $queryBuilder->count('*')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', $uid),
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->notIn(
                         'doktype',
-                        GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true)
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true),
+                            Connection::PARAM_INT_ARRAY
+                        )
                     )
                 )
                 ->execute()

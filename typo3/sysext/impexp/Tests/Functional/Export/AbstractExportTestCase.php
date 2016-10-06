@@ -105,7 +105,12 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
                     $queryBuilder
                         ->select('*')
                         ->from($table)
-                        ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                            )
+                        );
 
                     foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
                         list($fieldName, $order) = $orderPair;

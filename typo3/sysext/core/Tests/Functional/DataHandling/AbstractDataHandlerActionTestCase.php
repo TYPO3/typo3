@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
  */
 
 use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -208,7 +209,12 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
         $statement = $queryBuilder
             ->select('*')
             ->from('sys_log')
-            ->where($queryBuilder->expr()->in('error', [1, 2]))
+            ->where(
+                $queryBuilder->expr()->in(
+                    'error',
+                    $queryBuilder->createNamedParameter([1, 2], Connection::PARAM_INT_ARRAY)
+                )
+            )
             ->execute();
 
         $actualErrorLogEntries = $statement->rowCount();

@@ -45,7 +45,7 @@ class LanguageIsoCodeUpdate extends AbstractUpdate
         $numberOfAffectedRows = $queryBuilder->count('uid')
             ->from('sys_language')
             ->where(
-                $queryBuilder->expr()->eq('language_isocode', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->eq('language_isocode', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNotNull('static_lang_isocode')
             )
             ->execute()
@@ -73,7 +73,7 @@ class LanguageIsoCodeUpdate extends AbstractUpdate
         $statement = $queryBuilder->select('uid', 'language_isocode', 'static_lang_isocode')
             ->from('sys_language')
             ->where(
-                $queryBuilder->expr()->eq('language_isocode', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->eq('language_isocode', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNotNull('static_lang_isocode')
             )
             ->execute();
@@ -90,12 +90,13 @@ class LanguageIsoCodeUpdate extends AbstractUpdate
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('sys_language');
                 $queryBuilder->update('sys_language')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$languageRecord['uid']))
-                    ->set(
-                        'language_isocode',
-                        $queryBuilder->quote(strtolower($staticLanguageRecord['lg_iso_2'])),
-                        false
-                    );
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($languageRecord['uid'], \PDO::PARAM_INT)
+                        )
+                    )
+                    ->set('language_isocode', strtolower($staticLanguageRecord['lg_iso_2']));
                 $databaseQueries[] = $queryBuilder->getSQL();
                 $queryBuilder->execute();
             }

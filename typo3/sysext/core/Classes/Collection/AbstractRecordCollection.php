@@ -333,7 +333,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $collectionRecord = $queryBuilder->select('*')
             ->from(static::$storageTableName)
-            ->where($queryBuilder->expr()->eq('uid', (int)$id))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
         return self::create($collectionRecord, $fillItems);

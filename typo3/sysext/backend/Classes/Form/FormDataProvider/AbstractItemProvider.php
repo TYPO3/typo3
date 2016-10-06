@@ -952,9 +952,19 @@ abstract class AbstractItemProvider
         }
 
         if ($rootLevel === -1) {
-            $queryBuilder->andWhere($queryBuilder->expr()->neq($foreignTableName . '.pid', -1));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->neq(
+                    $foreignTableName . '.pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                )
+            );
         } elseif ($rootLevel === 1) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq($foreignTableName . '.pid', 0));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $foreignTableName . '.pid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            );
         } else {
             $queryBuilder->andWhere($backendUser->getPagePermsClause(1));
             if ($foreignTableName !== 'pages') {

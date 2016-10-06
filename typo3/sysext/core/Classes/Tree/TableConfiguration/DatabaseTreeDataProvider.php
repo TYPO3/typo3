@@ -334,7 +334,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $queryBuilder->getRestrictions()->removeAll();
             $nodeData = $queryBuilder->select('*')
                 ->from($this->getTableName())
-                ->where($queryBuilder->expr()->eq('uid', $node->getId()))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($node->getId(), \PDO::PARAM_INT)
+                    )
+                )
                 ->setMaxResults(1)
                 ->execute()
                 ->fetch();
@@ -452,7 +457,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                     $queryBuilder->getRestrictions()->removeAll();
                     $records = $queryBuilder->select('uid')
                         ->from($this->getTableName())
-                        ->where($queryBuilder->expr()->eq($this->columnConfiguration['foreign_field'], (int)$uid))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                $this->columnConfiguration['foreign_field'],
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            )
+                        )
                         ->execute()
                         ->fetchAll();
 

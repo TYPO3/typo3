@@ -97,9 +97,18 @@ Reports problems with RTE images';
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE')),
-                $queryBuilder->expr()->like('ref_string', $queryBuilder->expr()->literal('%/RTEmagic%')),
-                $queryBuilder->expr()->eq('softref_key', $queryBuilder->expr()->literal('images'))
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->like(
+                    'ref_string',
+                    $queryBuilder->createNamedParameter('%/RTEmagic%', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'softref_key',
+                    $queryBuilder->createNamedParameter('images', \PDO::PARAM_STR)
+                )
             )
             ->orderBy('sorting', 'DESC')
             ->execute();

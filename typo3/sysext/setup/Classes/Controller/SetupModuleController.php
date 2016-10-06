@@ -742,8 +742,17 @@ class SetupModuleController extends AbstractModule
                 ->select('*')
                 ->from('be_users')
                 ->where(
-                    $queryBuilder->expr()->neq('uid', (int)$this->getBackendUser()->user['uid']),
-                    $queryBuilder->expr()->notLike('username', $queryBuilder->createNamedParameter($queryBuilder->escapeLikeWildcards('_cli_') . '%'))
+                    $queryBuilder->expr()->neq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->notLike(
+                        'username',
+                        $queryBuilder->createNamedParameter(
+                            $queryBuilder->escapeLikeWildcards('_cli_') . '%',
+                            \PDO::PARAM_STR
+                        )
+                    )
                 )
                 ->orderBy('username')
                 ->execute()
@@ -900,10 +909,22 @@ class SetupModuleController extends AbstractModule
             ->select('uid_local')
             ->from('sys_file_reference')
             ->where(
-                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')),
-                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')),
-                $queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')),
-                $queryBuilder->expr()->eq('uid_foreign', (int)$beUserId)
+                $queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'fieldname',
+                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'table_local',
+                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'uid_foreign',
+                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn();
@@ -930,10 +951,22 @@ class SetupModuleController extends AbstractModule
         $queryBuilder
             ->delete('sys_file_reference')
             ->where(
-                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')),
-                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')),
-                $queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')),
-                $queryBuilder->expr()->eq('uid_foreign', (int)$beUserId)
+                $queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'fieldname',
+                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'table_local',
+                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'uid_foreign',
+                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                )
             )
             ->execute();
 

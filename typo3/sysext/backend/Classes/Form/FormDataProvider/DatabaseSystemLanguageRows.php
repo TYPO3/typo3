@@ -76,7 +76,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
         $queryResult = $queryBuilder
             ->select('uid', 'title', 'language_isocode', 'flag')
             ->from('sys_language')
-            ->where($queryBuilder->expr()->eq('pid', 0))
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
             ->orderBy('sorting')
             ->execute();
 

@@ -252,8 +252,14 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
                 ->select('uid', 'title')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $id),
-                    $queryBuilder->expr()->in('doktype', GeneralUtility::intExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], true)),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->in(
+                        'doktype',
+                        $queryBuilder->createNamedParameter(
+                            $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'],
+                            \PDO::PARAM_INT
+                        )
+                    ),
                     QueryHelper::stripLogicalOperatorPrefix($perms_clause)
                 )
                 ->execute();

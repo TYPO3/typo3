@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Authentication;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -1382,7 +1383,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                         $this->getPagePermsClause(1),
                         $queryBuilder->expr()->in(
                             'uid',
-                            GeneralUtility::intExplode(',', $this->groupData['webmounts'])
+                            $queryBuilder->createNamedParameter(
+                                GeneralUtility::intExplode(',', $this->groupData['webmounts']),
+                                Connection::PARAM_INT_ARRAY
+                            )
                         )
                     )
                     ->execute()
@@ -1417,14 +1421,23 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->usergroup_table);
         $expressionBuilder = $queryBuilder->expr();
         $constraints = $expressionBuilder->andX(
-            $expressionBuilder->eq('pid', 0),
-            $expressionBuilder->in('uid', GeneralUtility::intExplode(',', $grList)),
+            $expressionBuilder->eq(
+                'pid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ),
+            $expressionBuilder->in(
+                'uid',
+                $queryBuilder->createNamedParameter(
+                    GeneralUtility::intExplode(',', $grList),
+                    Connection::PARAM_INT_ARRAY
+                )
+            ),
             $expressionBuilder->orX(
                 $expressionBuilder->eq('lockToDomain', $queryBuilder->quote('')),
                 $expressionBuilder->isNull('lockToDomain'),
                 $expressionBuilder->eq(
                     'lockToDomain',
-                    $queryBuilder->createNamedParameter(GeneralUtility::getIndpEnv('HTTP_HOST'))
+                    $queryBuilder->createNamedParameter(GeneralUtility::getIndpEnv('HTTP_HOST'), \PDO::PARAM_STR)
                 )
             )
         );
@@ -1623,7 +1636,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 
             $queryBuilder->select('*')
                 ->from('sys_filemounts')
-                ->where($queryBuilder->expr()->in('uid', array_map('intval', $fileMounts)));
+                ->where(
+                    $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($fileMounts, Connection::PARAM_INT_ARRAY))
+                );
 
             foreach (QueryHelper::parseOrderBy($orderBy) as $fieldAndDirection) {
                 $queryBuilder->addOrderBy(...$fieldAndDirection);
@@ -1645,7 +1660,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_storage');
             $defaultStorageRow = $queryBuilder->select('uid')
                 ->from('sys_file_storage')
-                ->where($queryBuilder->expr()->eq('is_default', 1))
+                ->where(
+                    $queryBuilder->expr()->eq('is_default', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
+                )
                 ->setMaxResults(1)
                 ->execute()
                 ->fetch(\PDO::FETCH_ASSOC);
@@ -2064,12 +2081,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
                         $wsRec = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields))
                             ->from('sys_workspace')
-                            ->where(
-                                $queryBuilder->expr()->eq(
-                                    'uid',
-                                    (int)$wsRec
-                                )
-                            )
+                            ->where($queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
+                            ))
                             ->orderBy('title')
                             ->setMaxResults(1)
                             ->execute()
@@ -2360,9 +2375,18 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             $queryBuilder->select('tstamp')
                 ->from('sys_log')
                 ->where(
-                    $queryBuilder->expr()->eq('type', 255),
-                    $queryBuilder->expr()->eq('action', 4),
-                    $queryBuilder->expr()->gt('tstamp', (int)$theTimeBack)
+                    $queryBuilder->expr()->eq(
+                        'type',
+                        $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'action',
+                        $queryBuilder->createNamedParameter(4, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gt(
+                        'tstamp',
+                        $queryBuilder->createNamedParameter($theTimeBack, \PDO::PARAM_INT)
+                    )
                 )
                 ->orderBy('tstamp', 'DESC')
                 ->setMaxResults(1);
@@ -2374,10 +2398,22 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             $result = $queryBuilder->select('*')
                 ->from('sys_log')
                 ->where(
-                    $queryBuilder->expr()->eq('type', 255),
-                    $queryBuilder->expr()->eq('action', 3),
-                    $queryBuilder->expr()->neq('error', 0),
-                    $queryBuilder->expr()->gt('tstamp', (int)$theTimeBack)
+                    $queryBuilder->expr()->eq(
+                        'type',
+                        $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'action',
+                        $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'error',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gt(
+                        'tstamp',
+                        $queryBuilder->createNamedParameter($theTimeBack, \PDO::PARAM_INT)
+                    )
                 )
                 ->orderBy('tstamp')
                 ->execute();
@@ -2641,8 +2677,13 @@ This is a dump of the failures:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             $isUserAllowedToLogin = (bool)$queryBuilder->count('uid')
                 ->from('be_users')
-                ->where($queryBuilder->expr()->eq('uid', (int)$backendUserId))
-                ->andWhere($queryBuilder->expr()->eq('admin', 1))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($backendUserId, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
+                )
                 ->execute()
                 ->fetchColumn(0);
         }

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use SJBR\StaticInfoTables\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -118,7 +119,12 @@ class Language extends RteHtmlAreaApi
                 ->select($table . '.lg_iso_2', $table . '.lg_country_iso_2')
                 ->addSelect(...$labelFields)
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('lg_constructed', 0));
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'lg_constructed',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                );
 
             // Restrict to certain languages
             if (
@@ -127,7 +133,12 @@ class Language extends RteHtmlAreaApi
                 && isset($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems'])
             ) {
                 $languageList = GeneralUtility::trimExplode(',', strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']));
-                $queryBuilder->andWhere($queryBuilder->expr()->in($table . '.lg_iso_2', $languageList));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in(
+                        $table . '.lg_iso_2',
+                        $queryBuilder->createNamedParameter($languageList, Connection::PARAM_STR_ARRAY)
+                    )
+                );
             }
 
             $result = $queryBuilder->execute();

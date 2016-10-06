@@ -278,7 +278,12 @@ class AdministrationController extends ActionController
         $pageHashRow = $queryBuilder
             ->select('*')
             ->from('index_phash')
-            ->where($queryBuilder->expr()->eq('phash', $pageHash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetch();
 
@@ -290,7 +295,12 @@ class AdministrationController extends ActionController
         $debugRow = $queryBuilder
             ->select('*')
             ->from('index_debug')
-            ->where($queryBuilder->expr()->eq('phash', $pageHash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchAll();
         $debugInfo = [];
@@ -309,8 +319,14 @@ class AdministrationController extends ActionController
             ->from('index_words')
             ->from('index_rel')
             ->where(
-                $queryBuilder->expr()->eq('index_rel.phash', $pageHash),
-                $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
+                $queryBuilder->expr()->eq(
+                    'index_rel.phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_words.wid',
+                    $queryBuilder->quoteIdentifier('index_rel.wid')
+                )
             )
             ->orderBy('index_words.baseword')
             ->execute()
@@ -343,7 +359,12 @@ class AdministrationController extends ActionController
         $sections = $queryBuilder
             ->select('*')
             ->from('index_section')
-            ->where($queryBuilder->expr()->eq('phash', $pageHash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchAll();
 
@@ -355,9 +376,18 @@ class AdministrationController extends ActionController
             ->from('index_rel')
             ->setMaxResults(20)
             ->where(
-                $queryBuilder->expr()->eq('index_rel.phash', $pageHash),
-                $queryBuilder->expr()->eq('index_words.is_stopword', 0),
-                $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
+                $queryBuilder->expr()->eq(
+                    'index_rel.phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_words.is_stopword',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_words.wid',
+                    $queryBuilder->quoteIdentifier('index_rel.wid')
+                )
             )
             ->orderBy('index_rel.count', 'DESC')
             ->execute()
@@ -371,9 +401,18 @@ class AdministrationController extends ActionController
             ->from('index_rel')
             ->setMaxResults(20)
             ->where(
-                $queryBuilder->expr()->eq('index_rel.phash', $pageHash),
-                $queryBuilder->expr()->eq('index_words.is_stopword', 0),
-                $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
+                $queryBuilder->expr()->eq(
+                    'index_rel.phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_words.is_stopword',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_words.wid',
+                    $queryBuilder->quoteIdentifier('index_rel.wid')
+                )
             )
             ->orderBy('index_rel.freq', 'DESC')
             ->execute()
@@ -433,9 +472,18 @@ class AdministrationController extends ActionController
             ->from('index_section')
             ->from('index_phash')
             ->where(
-                $queryBuilder->expr()->eq('index_rel.wid', (int)$id),
-                $queryBuilder->expr()->eq('index_rel.phash', $queryBuilder->quoteIdentifier('index_section.phash')),
-                $queryBuilder->expr()->eq('index_section.phash', $queryBuilder->quoteIdentifier('index_phash.phash'))
+                $queryBuilder->expr()->eq(
+                    'index_rel.wid',
+                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_rel.phash',
+                    $queryBuilder->quoteIdentifier('index_section.phash')
+                ),
+                $queryBuilder->expr()->eq(
+                    'index_section.phash',
+                    $queryBuilder->quoteIdentifier('index_phash.phash')
+                )
             )
             ->orderBy('index_rel.freq', 'desc')
             ->execute()

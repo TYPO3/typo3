@@ -294,7 +294,7 @@ abstract class FunctionalTestCase extends BaseTestCase
 
         $userRow = $queryBuilder->select('*')
             ->from('be_users')
-            ->where($queryBuilder->expr()->eq('uid', (int) $userUid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
 

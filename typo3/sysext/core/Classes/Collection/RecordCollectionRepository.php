@@ -71,7 +71,7 @@ class RecordCollectionRepository
 
         $data = $queryBuilder->select('*')
             ->from($this->table)
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
         if (is_array($data)) {

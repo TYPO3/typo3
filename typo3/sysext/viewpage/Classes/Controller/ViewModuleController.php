@@ -285,7 +285,12 @@ class ViewModuleController extends ActionController
                 'o',
                 $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('sys_language.uid'))
             )
-            ->where($queryBuilder->expr()->eq('o.pid', (int)$pageIdToShow))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'o.pid',
+                    $queryBuilder->createNamedParameter($pageIdToShow, \PDO::PARAM_INT)
+                )
+            )
             ->groupBy('sys_language.uid', 'sys_language.title')
             ->orderBy('sys_language.sorting')
             ->execute();

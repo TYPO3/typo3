@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -292,23 +293,38 @@ class WorkspaceService implements SingletonInterface
         // Table A is the offline version and pid=-1 defines offline
         // Table B (online) must have PID >= 0 to signify being online.
         $constraints = [
-            $queryBuilder->expr()->eq('A.pid', -1),
-            $queryBuilder->expr()->gte('B.pid', 0),
-            $queryBuilder->expr()->neq('A.t3ver_state', new VersionState(VersionState::MOVE_POINTER))
+            $queryBuilder->expr()->eq(
+                'A.pid',
+                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->gte(
+                'B.pid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->neq(
+                'A.t3ver_state',
+                $queryBuilder->createNamedParameter(
+                    (string)new VersionState(VersionState::MOVE_POINTER),
+                    \PDO::PARAM_INT
+                )
+            )
         ];
 
         if ($pageList) {
             $pidField = $table === 'pages' ? 'uid' : 'pid';
             $constraints[] = $queryBuilder->expr()->in(
                 'B.' . $pidField,
-                GeneralUtility::intExplode(',', $pageList, true)
+                $queryBuilder->createNamedParameter(
+                    GeneralUtility::intExplode(',', $pageList, true),
+                    Connection::PARAM_INT_ARRAY
+                )
             );
         }
 
         if ($isTableLocalizable && MathUtility::canBeInterpretedAsInteger($language)) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                (int)$language
+                $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
             );
         }
 
@@ -316,22 +332,37 @@ class WorkspaceService implements SingletonInterface
         // If = -98, select all that are NOT online (zero).
         // Anything else below -1 will not select on the wsid and therefore select all!
         if ($wsid > self::SELECT_ALL_WORKSPACES) {
-            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$wsid);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'A.t3ver_wsid',
+                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+            );
         } elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
-            $constraints[] = $queryBuilder->expr()->neq('A.t3ver_wsid', 0);
+            $constraints[] = $queryBuilder->expr()->neq(
+                'A.t3ver_wsid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         }
 
         // lifecycle filter:
         // 1 = select all drafts (never-published),
         // 2 = select all published one or more times (archive/multiple)
         if ($filter === 1) {
-            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_count', 0);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'A.t3ver_count',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         } elseif ($filter === 2) {
-            $constraints[] = $queryBuilder->expr()->gt('A.t3ver_count', 0);
+            $constraints[] = $queryBuilder->expr()->gt(
+                'A.t3ver_count',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         }
 
         if ((int)$stage !== -99) {
-            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_stage', (int)$stage);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'A.t3ver_stage',
+                $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
+            );
         }
 
         // ... and finally the join between the two tables.
@@ -373,40 +404,94 @@ class WorkspaceService implements SingletonInterface
         // B - online record
         // C - moveFrom placeholder
         $constraints = [
-            $queryBuilder->expr()->eq('A.t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER)),
-            $queryBuilder->expr()->gt('B.pid', 0),
-            $queryBuilder->expr()->eq('B.t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
-            $queryBuilder->expr()->eq('B.t3ver_wsid', 0),
-            $queryBuilder->expr()->eq('C.pid', -1),
-            $queryBuilder->expr()->eq('C.t3ver_state', new VersionState(VersionState::MOVE_POINTER)),
+            $queryBuilder->expr()->eq(
+                'A.t3ver_state',
+                $queryBuilder->createNamedParameter(
+                    (string)new VersionState(VersionState::MOVE_PLACEHOLDER),
+                    \PDO::PARAM_INT
+                )
+            ),
+            $queryBuilder->expr()->gt(
+                'B.pid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'B.t3ver_state',
+                $queryBuilder->createNamedParameter(
+                    (string)new VersionState(VersionState::DEFAULT_STATE),
+                    \PDO::PARAM_INT
+                )
+            ),
+            $queryBuilder->expr()->eq(
+                'B.t3ver_wsid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'C.pid',
+                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'C.t3ver_state',
+                $queryBuilder->createNamedParameter(
+                    (string)new VersionState(VersionState::MOVE_POINTER),
+                    \PDO::PARAM_INT
+                )
+            ),
             $queryBuilder->expr()->eq('A.t3ver_move_id', $queryBuilder->quoteIdentifier('B.uid')),
             $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid'))
         ];
 
         if ($wsid > self::SELECT_ALL_WORKSPACES) {
-            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$wsid);
-            $constraints[] = $queryBuilder->expr()->eq('C.t3ver_wsid', (int)$wsid);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'A.t3ver_wsid',
+                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+            );
+            $constraints[] = $queryBuilder->expr()->eq(
+                'C.t3ver_wsid',
+                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+            );
         } elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
-            $constraints[] = $queryBuilder->expr()->neq('A.t3ver_wsid', 0);
-            $constraints[] = $queryBuilder->expr()->neq('C.t3ver_wsid', 0);
+            $constraints[] = $queryBuilder->expr()->neq(
+                'A.t3ver_wsid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
+            $constraints[] = $queryBuilder->expr()->neq(
+                'C.t3ver_wsid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         }
 
         // lifecycle filter:
         // 1 = select all drafts (never-published),
         // 2 = select all published one or more times (archive/multiple)
         if ($filter === 1) {
-            $constraints[] = $queryBuilder->expr()->eq('C.t3ver_count', 0);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'C.t3ver_count',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         } elseif ($filter === 2) {
-            $constraints[] = $queryBuilder->expr()->gt('C.t3ver_count', 0);
+            $constraints[] = $queryBuilder->expr()->gt(
+                'C.t3ver_count',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         }
 
         if ((int)$stage != -99) {
-            $constraints[] = $queryBuilder->expr()->eq('C.t3ver_stage', (int)$stage);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'C.t3ver_stage',
+                $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
+            );
         }
 
         if ($pageList) {
             $pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
-            $constraints[] =  $queryBuilder->expr()->in($pidField, GeneralUtility::intExplode(',', $pageList, true));
+            $constraints[] =  $queryBuilder->expr()->in(
+                $pidField,
+                $queryBuilder->createNamedParameter(
+                    GeneralUtility::intExplode(',', $pageList, true),
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
         }
 
         $rows = $queryBuilder
@@ -464,8 +549,14 @@ class WorkspaceService implements SingletonInterface
                 ->select('uid', 'pid', 't3ver_move_id')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->in('t3ver_move_id', $pageIds),
-                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$wsid)
+                    $queryBuilder->expr()->in(
+                        't3ver_move_id',
+                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+                    )
                 )
                 ->orderBy('uid')
                 ->execute();
@@ -497,7 +588,12 @@ class WorkspaceService implements SingletonInterface
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $result = $queryBuilder->select('uid', 't3ver_move_id')
                 ->from('pages')
-                ->where($queryBuilder->expr()->in('uid', $newList))
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($newList, Connection::PARAM_INT_ARRAY)
+                    )
+                )
                 ->orderBy('uid')
                 ->execute();
 
@@ -604,12 +700,18 @@ class WorkspaceService implements SingletonInterface
             $row = $queryBuilder->select('t3ver_state')
                 ->from('pages_language_overlay')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'],
-                        (int)$language
+                        $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
                     ),
-                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$GLOBALS['BE_USER']->workspace)
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspace, \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults(1)
                 ->execute()
@@ -935,17 +1037,29 @@ class WorkspaceService implements SingletonInterface
                 ->from($tableName, 'A')
                 ->from($tableName, 'B')
                 ->where(
-                    $queryBuilder->expr()->eq('A.pid', -1),
-                    $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                    $queryBuilder->expr()->eq(
+                        'A.pid',
+                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'A.t3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->orX(
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid')),
-                            $queryBuilder->expr()->neq('A.t3ver_state', $movePointer)
+                            $queryBuilder->expr()->neq(
+                                'A.t3ver_state',
+                                $queryBuilder->createNamedParameter($movePointer, \PDO::PARAM_STR)
+                            )
 
                         ),
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.t3ver_move_id')),
-                            $queryBuilder->expr()->eq('A.t3ver_state', $movePointer)
+                            $queryBuilder->expr()->eq(
+                                'A.t3ver_state',
+                                $queryBuilder->createNamedParameter($movePointer, \PDO::PARAM_STR)
+                            )
                         )
                     )
                 )

@@ -446,7 +446,12 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
                 $queryBuilder
                     ->select('uid')
                     ->from($tableName)
-                    ->where($queryBuilder->expr()->eq('pid', (int)$rootID));
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)
+                        )
+                    );
 
                 if ($GLOBALS['TCA'][$tableName]['ctrl']['delete']) {
                     $queryBuilder->addSelect($GLOBALS['TCA'][$tableName]['ctrl']['delete']);
@@ -579,7 +584,12 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
                 $queryBuilder
                     ->select('uid')
                     ->from('pages')
-                    ->where($queryBuilder->expr()->eq('pid', (int)$rootID))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)
+                        )
+                    )
                     ->orderBy('sorting');
 
                 $result = $queryBuilder->execute();

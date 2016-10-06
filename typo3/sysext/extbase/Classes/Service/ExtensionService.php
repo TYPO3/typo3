@@ -170,9 +170,18 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
                     ->select('pid')
                     ->from('tt_content')
                     ->where(
-                        $queryBuilder->expr()->eq('list_type', $queryBuilder->createNamedParameter($pluginSignature)),
-                        $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')),
-                        $queryBuilder->expr()->eq('sys_language_uid', (int)$GLOBALS['TSFE']->sys_language_uid)
+                        $queryBuilder->expr()->eq(
+                            'list_type',
+                            $queryBuilder->createNamedParameter($pluginSignature, \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'CType',
+                            $queryBuilder->createNamedParameter('list', \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter($GLOBALS['TSFE']->sys_language_uid, \PDO::PARAM_INT)
+                        )
                     )
                     ->setMaxResults(2)
                     ->execute()

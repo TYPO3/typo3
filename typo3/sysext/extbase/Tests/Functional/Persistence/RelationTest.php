@@ -75,7 +75,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->execute()
             ->fetchColumn(0);
 
@@ -94,7 +97,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->execute()
             ->fetchColumn(0);
         $this->assertSame(($countPostsOriginal + 1), $countPosts);
@@ -104,7 +110,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -133,7 +142,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -161,7 +173,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('uid', $latestPost->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($latestPost->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -172,7 +187,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -229,7 +247,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -242,7 +263,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('uid', $newPost->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($newPost->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -289,7 +313,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -345,7 +372,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+                $queryBuilder->expr()->eq(
+                    'blog',
+                    $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -358,8 +388,11 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('tx_blogexample_domain_model_post')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('blog', $this->blog->getUid()),
-                    $queryBuilder->expr()->eq('sorting', 6)
+                    $queryBuilder->expr()->eq(
+                        'blog',
+                        $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT))
                 )
             )
             ->execute()
@@ -412,7 +445,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid_local',
+                    $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -464,7 +500,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid_local',
+                    $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -476,8 +515,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('tx_blogexample_post_tag_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
-                    $queryBuilder->expr()->eq('uid_foreign', $latestTag->getUid())
+                    $queryBuilder->expr()->eq(
+                        'uid_local',
+                        $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'uid_foreign',
+                        $queryBuilder->createNamedParameter($latestTag->getUid(), \PDO::PARAM_INT)
+                    )
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
@@ -499,7 +544,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', 1)
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -530,7 +575,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', 1)
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -541,7 +586,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid_local',
+                    $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -553,8 +601,11 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('tx_blogexample_post_tag_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
-                    $queryBuilder->expr()->eq('sorting', 6)
+                    $queryBuilder->expr()->eq(
+                        'uid_local',
+                        $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT))
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
@@ -576,7 +627,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', 1)
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -602,7 +653,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', 1)
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -613,7 +664,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('uid_foreign', 'sorting')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid_local',
+                    $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -626,8 +680,11 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('tx_blogexample_post_tag_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
-                    $queryBuilder->expr()->eq('sorting', 5)
+                    $queryBuilder->expr()->eq(
+                        'uid_local',
+                        $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(5, \PDO::PARAM_INT))
                 )
             )
             ->execute()
@@ -649,7 +706,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', 1)
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -685,7 +742,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', 1)
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -696,7 +753,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('uid_foreign', 'sorting')
             ->from('tx_blogexample_post_tag_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+                $queryBuilder->expr()->eq(
+                    'uid_local',
+                    $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                )
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
@@ -710,8 +770,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('tx_blogexample_post_tag_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
-                    $queryBuilder->expr()->eq('sorting', $sorting)
+                    $queryBuilder->expr()->eq(
+                        'uid_local',
+                        $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'sorting',
+                        $queryBuilder->createNamedParameter($sorting, \PDO::PARAM_STR)
+                    )
                 )
             )
             ->execute()
@@ -733,7 +799,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('*')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('uid', 1)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();
@@ -751,7 +817,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('*')
             ->from('tx_blogexample_domain_model_post')
             ->where(
-                $queryBuilder->expr()->eq('uid', 1)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();
@@ -784,9 +850,15 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('sys_category_record_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_foreign', 1),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                    $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter('tx_blogexample_domain_model_post', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $queryBuilder->createNamedParameter('categories', \PDO::PARAM_STR)
+                    )
                 )
             )
             ->execute()
@@ -828,9 +900,15 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('sys_category_record_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_foreign', 1),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                    $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter('tx_blogexample_domain_model_post', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $queryBuilder->createNamedParameter('categories', \PDO::PARAM_STR)
+                    )
                 )
             )
             ->execute()
@@ -856,9 +934,15 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('sys_category_record_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_foreign', 1),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                    $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter('tx_blogexample_domain_model_post', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $queryBuilder->createNamedParameter('categories', \PDO::PARAM_STR)
+                    )
                 )
             )
             ->execute()
@@ -895,9 +979,18 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->from('sys_category_record_mm')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('uid_foreign', $this->blog->getUid()),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                    $queryBuilder->expr()->eq(
+                        'uid_foreign',
+                        $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter('tx_blogexample_domain_model_post', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $queryBuilder->createNamedParameter('categories', \PDO::PARAM_STR)
+                    )
                 )
             )
             ->execute()

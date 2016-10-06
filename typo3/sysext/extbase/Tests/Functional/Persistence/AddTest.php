@@ -76,7 +76,10 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_blog')
             ->where(
-                $queryBuilder->expr()->eq('title', $queryBuilder->expr()->literal($newBlogTitle))
+                $queryBuilder->expr()->eq(
+                    'title',
+                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                )
             )
             ->execute()
             ->fetchColumn(0);
@@ -103,7 +106,10 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('*')
             ->from('tx_blogexample_domain_model_blog')
             ->where(
-                $queryBuilder->expr()->eq('title', $queryBuilder->expr()->literal($newBlogTitle))
+                $queryBuilder->expr()->eq(
+                    'title',
+                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                )
             )
             ->execute()
             ->fetch();
@@ -131,7 +137,10 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             ->select('*')
             ->from('tx_blogexample_domain_model_blog')
             ->where(
-                $queryBuilder->expr()->eq('title', $queryBuilder->expr()->literal($newBlogTitle))
+                $queryBuilder->expr()->eq(
+                    'title',
+                    $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
+                )
             )
             ->execute()
             ->fetch();

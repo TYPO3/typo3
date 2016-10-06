@@ -87,8 +87,13 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
         // Update text to textmedia
         $queryBuilder = $ttContentConnection->createQueryBuilder();
         $queryBuilder->update('tt_content')
-            ->where($queryBuilder->expr()->eq('CType', $queryBuilder->quote('text')))
-            ->set('CType', $queryBuilder->quote('textmedia'), false);
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'CType',
+                    $queryBuilder->createNamedParameter('text', \PDO::PARAM_STR)
+                )
+            )
+            ->set('CType', 'textmedia');
         $databaseQueries[] = $queryBuilder->getSQL();
         $queryBuilder->execute();
 
@@ -99,28 +104,48 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
             ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textpic')),
-                    $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('image'))
+                    $queryBuilder->expr()->eq(
+                        'CType',
+                        $queryBuilder->createNamedParameter('textpic', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'CType',
+                        $queryBuilder->createNamedParameter('image', \PDO::PARAM_STR)
+                    )
                 )
             )->execute();
         while ($ttContentRow = $statement->fetch()) {
             $falQueryBuilder = $falConnection->createQueryBuilder();
             $falQueryBuilder->update('sys_file_reference')
                 ->where(
-                    $queryBuilder->expr()->eq('uid_foreign', (int)$ttContentRow['uid']),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->quote('tt_content')),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->quote('image'))
+                    $queryBuilder->expr()->eq(
+                        'uid_foreign',
+                        $falQueryBuilder->createNamedParameter($ttContentRow['uid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $falQueryBuilder->createNamedParameter('tt_content', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $falQueryBuilder->createNamedParameter('image', \PDO::PARAM_STR)
+                    )
                 )
-                ->set('fieldname', $queryBuilder->quote('assets'), false);
+                ->set('fieldname', 'assets');
             $databaseQueries[] = $falQueryBuilder->getSQL();
             $falQueryBuilder->execute();
 
             $ttContentQueryBuilder = $ttContentConnection->createQueryBuilder();
             $ttContentQueryBuilder->update('tt_content')
-                ->where($queryBuilder->expr()->eq('uid', (int)$ttContentRow['uid']))
-                ->set('CType', $queryBuilder->quote('textmedia'), false)
-                ->set('assets', $queryBuilder->quote((int)$ttContentRow['image']), false)
-                ->set('image', $queryBuilder->quote(0), false);
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $ttContentQueryBuilder->createNamedParameter($ttContentRow['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->set('CType', 'textmedia')
+                ->set('assets', (int)$ttContentRow['image'])
+                ->set('image', 0);
             $databaseQueries[] = $ttContentQueryBuilder->getSQL();
             $ttContentQueryBuilder->execute();
         }
@@ -133,19 +158,36 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
             ->from('be_groups')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->notLike('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textmedia:ALLOW%')),
+                    $queryBuilder->expr()->notLike(
+                        'explicit_allowdeny',
+                        $queryBuilder->createNamedParameter('%tt_content:CType:textmedia:ALLOW%', \PDO::PARAM_STR)
+                    ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textpic:ALLOW%')),
-                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:image:ALLOW%')),
-                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:text:ALLOW%'))
+                        $queryBuilder->expr()->like(
+                            'explicit_allowdeny',
+                            $queryBuilder->createNamedParameter('%tt_content:CType:textpic:ALLOW%', \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->like(
+                            'explicit_allowdeny',
+                            $queryBuilder->createNamedParameter('%tt_content:CType:image:ALLOW%', \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->like(
+                            'explicit_allowdeny',
+                            $queryBuilder->createNamedParameter('%tt_content:CType:text:ALLOW%', \PDO::PARAM_STR)
+                        )
                     )
                 )
             )->execute();
         while ($beGroupsRow = $statement->fetch()) {
             $queryBuilder = $beGroupsConnection->createQueryBuilder();
             $queryBuilder->update('be_groups')
-                ->where($queryBuilder->expr()->eq('uid', (int)$beGroupsRow['uid']))
-                ->set('explicit_allowdeny', $queryBuilder->quote($beGroupsRow['explicit_allowdeny'] . ',tt_content:CType:textmedia:ALLOW'), false);
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($beGroupsRow['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->set('explicit_allowdeny', $beGroupsRow['explicit_allowdeny'] . ',tt_content:CType:textmedia:ALLOW');
             $databaseQueries[] = $queryBuilder->getSQL();
             $queryBuilder->execute();
         }
@@ -157,19 +199,36 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
             ->from('be_groups')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->notLike('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textmedia:DENY%')),
+                    $queryBuilder->expr()->notLike(
+                        'explicit_allowdeny',
+                        $queryBuilder->createNamedParameter('%tt_content:CType:textmedia:DENY%', \PDO::PARAM_STR)
+                    ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textpic:DENY%')),
-                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:image:DENY%')),
-                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:text:DENY%'))
+                        $queryBuilder->expr()->like(
+                            'explicit_allowdeny',
+                            $queryBuilder->createNamedParameter('%tt_content:CType:textpic:DENY%', \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->like(
+                            'explicit_allowdeny',
+                            $queryBuilder->createNamedParameter('%tt_content:CType:image:DENY%', \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->like(
+                            'explicit_allowdeny',
+                            $queryBuilder->createNamedParameter('%tt_content:CType:text:DENY%', \PDO::PARAM_STR)
+                        )
                     )
                 )
             )->execute();
         while ($beGroupsRow = $statement->fetch()) {
             $queryBuilder = $beGroupsConnection->createQueryBuilder();
             $queryBuilder->update('be_groups')
-                ->where($queryBuilder->expr()->eq('uid', (int)$beGroupsRow['uid']))
-                ->set('explicit_allowdeny', $queryBuilder->quote($beGroupsRow['explicit_allowdeny'] . ',tt_content:CType:textmedia:DENY'), false);
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($beGroupsRow['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->set('explicit_allowdeny', $beGroupsRow['explicit_allowdeny'] . ',tt_content:CType:textmedia:DENY');
             $databaseQueries[] = $queryBuilder->getSQL();
             $queryBuilder->execute();
         }

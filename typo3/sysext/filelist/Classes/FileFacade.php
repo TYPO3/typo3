@@ -257,10 +257,19 @@ class FileFacade
             $count = $queryBuilder->count('*')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('deleted', 0),
-                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
-                    $queryBuilder->expr()->eq('ref_uid', (int)$this->resource->getProperty('uid')),
-                    $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_metadata'))
+                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'ref_table',
+                        $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'ref_uid',
+                        $queryBuilder->createNamedParameter($this->resource->getProperty('uid'), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'tablename',
+                        $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                    )
                 )
                 ->execute()
                 ->fetchColumn();

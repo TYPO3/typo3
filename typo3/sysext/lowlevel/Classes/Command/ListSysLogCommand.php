@@ -71,7 +71,10 @@ class ListSysLogCommand extends Command
             ->select('*')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->gt('tstamp', $GLOBALS['EXEC_TIME'] - 24 * 3600)
+                $queryBuilder->expr()->gt(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'] - 24 * 3600, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('tstamp', 'DESC')
             ->execute();

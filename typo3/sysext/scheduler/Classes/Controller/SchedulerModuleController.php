@@ -337,8 +337,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $cliUserExists = (int)$queryBuilder->count('*')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter('_cli_scheduler')),
-                $queryBuilder->expr()->eq('admin', 0)
+                $queryBuilder->expr()->eq(
+                    'username',
+                    $queryBuilder->createNamedParameter('_cli_scheduler', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn();
@@ -537,7 +540,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // The task could not be unserialized properly, simply delete the database record
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task');
             $result = $queryBuilder->delete('tx_scheduler_task')
-                ->where($queryBuilder->expr()->eq('uid', (int)$this->submittedData['uid']))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($this->submittedData['uid'], \PDO::PARAM_INT)
+                    )
+                )
                 ->execute();
 
             if ($result) {

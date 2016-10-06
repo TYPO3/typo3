@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -181,7 +182,10 @@ class LiveSearch
                 ->select('*')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->in('pid', $pageIdList),
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageIdList, Connection::PARAM_INT_ARRAY)
+                    ),
                     $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin)
                 )
                 ->setFirstResult($firstResult)

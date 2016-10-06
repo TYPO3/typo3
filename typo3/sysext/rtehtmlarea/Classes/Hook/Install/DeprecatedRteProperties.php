@@ -221,14 +221,16 @@ class DeprecatedRteProperties extends AbstractUpdate
                         $queryBuilder->quoteIdentifier('TSconfig'),
                         'LIKE BINARY',
                         $queryBuilder->createNamedParameter(
-                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . '%'
+                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . '%',
+                            \PDO::PARAM_STR
                         )
                     ),
                     $queryBuilder->expr()->comparison(
                         $queryBuilder->quoteIdentifier('TSconfig'),
                         'NOT LIKE BINARY',
                         $queryBuilder->createNamedParameter(
-                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . 's%'
+                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . 's%',
+                            \PDO::PARAM_STR
                         )
                     )
                 );
@@ -237,13 +239,15 @@ class DeprecatedRteProperties extends AbstractUpdate
                     $queryBuilder->expr()->like(
                         'TSconfig',
                         $queryBuilder->createNamedParameter(
-                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . '%'
+                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . '%',
+                            \PDO::PARAM_STR
                         )
                     ),
                     $queryBuilder->expr()->notLike(
                         'TSconfig',
                         $queryBuilder->createNamedParameter(
-                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . 's%'
+                            '%RTE.%' . $queryBuilder->escapeLikeWildcards($deprecatedRteProperty) . 's%',
+                            \PDO::PARAM_STR
                         )
                     )
                 );
@@ -298,8 +302,13 @@ class DeprecatedRteProperties extends AbstractUpdate
         foreach ($pages as $page) {
             try {
                 $queryBuilder->update('pages')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$page['uid']))
-                    ->set('TSconfig', $queryBuilder->quote($page['TSconfig']), false)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($page['uid'], \PDO::PARAM_INT)
+                        )
+                    )
+                    ->set('TSconfig', $page['TSconfig'])
                     ->execute();
             } catch (DBALException $e) {
                 $customMessages .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;

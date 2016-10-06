@@ -84,7 +84,7 @@ This will show you missing files in the TYPO3 system and only report back if err
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE'))
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR))
             )
             ->orderBy('sorting', 'DESC')
             ->execute();

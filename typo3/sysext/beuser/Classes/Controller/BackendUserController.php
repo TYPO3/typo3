@@ -238,8 +238,14 @@ class BackendUserController extends BackendUserActionController
         $affectedRows = $queryBuilder
             ->delete('be_sessions')
             ->where(
-                $queryBuilder->expr()->eq('ses_userid', (int)$backendUser->getUid()),
-                $queryBuilder->expr()->eq('ses_id', $queryBuilder->expr()->literal($sessionId))
+                $queryBuilder->expr()->eq(
+                    'ses_userid',
+                    $queryBuilder->createNamedParameter($backendUser->getUid(), \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'ses_id',
+                    $queryBuilder->createNamedParameter($sessionId, \PDO::PARAM_STR)
+                )
             )
             ->execute();
 
@@ -269,9 +275,27 @@ class BackendUserController extends BackendUserActionController
             $queryBuilder
                 ->update('be_sessions')
                 ->where(
-                    $queryBuilder->expr()->eq('ses_id', $queryBuilder->expr()->literal($this->getBackendUserAuthentication()->id)),
-                    $queryBuilder->expr()->eq('ses_name', $queryBuilder->expr()->literal(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName())),
-                    $queryBuilder->expr()->eq('ses_userid', (int)$this->getBackendUserAuthentication()->user['uid'])
+                    $queryBuilder->expr()->eq(
+                        'ses_id',
+                        $queryBuilder->createNamedParameter(
+                            $this->getBackendUserAuthentication()->id,
+                            \PDO::PARAM_STR
+                        )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'ses_name',
+                        $queryBuilder->createNamedParameter(
+                            \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(),
+                            \PDO::PARAM_STR
+                        )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'ses_userid',
+                        $queryBuilder->createNamedParameter(
+                            $this->getBackendUserAuthentication()->user['uid'],
+                            \PDO::PARAM_INT
+                        )
+                    )
                 )
                 ->set('ses_userid', (int)$targetUser['uid'])
                 ->set('ses_backuserid', (int)$this->getBackendUserAuthentication()->user['uid'])

@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -254,12 +255,24 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             ->from('sys_be_shortcuts')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('userid', (int)$backendUser->user['uid']),
-                    $queryBuilder->expr()->gte('sc_group', 0)
+                    $queryBuilder->expr()->eq(
+                        'userid',
+                        $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gte(
+                        'sc_group',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 )
             )
             ->orWhere(
-                $queryBuilder->expr()->in('sc_group', array_keys($this->getGlobalShortcutGroups()))
+                $queryBuilder->expr()->in(
+                    'sc_group',
+                    $queryBuilder->createNamedParameter(
+                        array_keys($this->getGlobalShortcutGroups()),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                )
             )
             ->orderBy('sc_group')
             ->addOrderBy('sorting')
@@ -536,7 +549,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_be_shortcuts');
             $affectedRows = $queryBuilder->delete('sys_be_shortcuts')
-                ->where($queryBuilder->expr()->eq('uid', $shortcutId))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($shortcutId, \PDO::PARAM_INT)
+                    )
+                )
                 ->execute();
             if ($affectedRows === 1) {
                 $success = true;
@@ -712,9 +730,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'userid',
-                    $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'])
+                    $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url))
+                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url, \PDO::PARAM_STR))
             )
             ->execute()
             ->fetchColumn();
@@ -743,13 +761,23 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_be_shortcuts');
         $queryBuilder->update('sys_be_shortcuts')
-            ->where($queryBuilder->expr()->eq('uid', $shortcutId))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($shortcutId, \PDO::PARAM_INT)
+                )
+            )
             ->set('description', $shortcutName)
             ->set('sc_group', $shortcutGroupId);
 
         if (!$backendUser->isAdmin()) {
             // Users can only modify their own shortcuts
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('userid', (int)$backendUser->user['uid']));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'userid',
+                    $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT)
+                )
+            );
 
             if ($shortcutGroupId < 0) {
                 $queryBuilder->set('sc_group', 0);
@@ -848,7 +876,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                         ->getQueryBuilderForTable($table);
                     $queryBuilder->select(...array_unique(array_values($selectFields)))
                         ->from($table)
-                        ->where($queryBuilder->expr()->in('uid', $recordid));
+                        ->where(
+                            $queryBuilder->expr()->in(
+                                'uid',
+                                $queryBuilder->createNamedParameter($recordid, \PDO::PARAM_INT)
+                            )
+                        );
 
                     if ($table === 'pages' && $this->perms_clause) {
                         $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->perms_clause));

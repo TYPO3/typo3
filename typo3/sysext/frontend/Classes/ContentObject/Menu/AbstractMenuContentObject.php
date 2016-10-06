@@ -985,7 +985,10 @@ abstract class AbstractMenuContentObject
             foreach ($kwArr as $word) {
                 $keyWordsWhereArr[] = $queryBuilder->expr()->like(
                     $kfield,
-                    $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($word) . '%')
+                    $queryBuilder->createNamedParameter(
+                        '%' . $queryBuilder->escapeLikeWildcards($word) . '%',
+                        \PDO::PARAM_STR
+                    )
                 );
             }
             $where = empty($keyWordsWhereArr) ? '' : '(' . implode(' OR ', $keyWordsWhereArr) . ')';

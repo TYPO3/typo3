@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Tree\View\ContentLayoutPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -411,14 +412,32 @@ class PageLayoutController
                     'sys_language',
                     'pages_language_overlay',
                     'pages_language_overlay',
-                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages_language_overlay.sys_language_uid'))
+                    $queryBuilder->expr()->eq(
+                        'sys_language.uid',
+                        $queryBuilder->quoteIdentifier('pages_language_overlay.sys_language_uid')
+                    )
                 )
                 ->where(
-                    $queryBuilder->expr()->eq('pages_language_overlay.deleted', 0),
-                    $queryBuilder->expr()->eq('pages_language_overlay.pid', (int)$this->id),
+                    $queryBuilder->expr()->eq(
+                        'pages_language_overlay.deleted',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'pages_language_overlay.pid',
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gte('pages_language_overlay.t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
-                        $queryBuilder->expr()->eq('pages_language_overlay.t3ver_wsid', (int)$this->getBackendUser()->workspace)
+                        $queryBuilder->expr()->gte(
+                            'pages_language_overlay.t3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                (string)new VersionState(VersionState::DEFAULT_STATE),
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'pages_language_overlay.t3ver_wsid',
+                            $queryBuilder->createNamedParameter($this->getBackendUser()->workspace, \PDO::PARAM_INT)
+                        )
                     )
                 )
                 ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
@@ -426,7 +445,12 @@ class PageLayoutController
                     'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag')
                 ->orderBy('sys_language.sorting');
             if (!$this->getBackendUser()->isAdmin()) {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language.hidden', 0));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'sys_language.hidden',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                );
             }
             $statement = $queryBuilder->execute();
         } else {
@@ -663,8 +687,11 @@ class PageLayoutController
                 ->select('title')
                 ->from('pages_language_overlay')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$this->id),
-                    $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'sys_language_uid',
+                        $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults(1)
                 ->execute()
@@ -824,12 +851,27 @@ class PageLayoutController
                 ->from('tt_content')
                 ->orderBy('sorting')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$this->id),
-                    $queryBuilder->expr()->eq('colPos', (int)substr($edit_record, 10)),
-                    $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'colPos',
+                        $queryBuilder->createNamedParameter(substr($edit_record, 10), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'sys_language_uid',
+                        $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gte('t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)$beUser->workspace)
+                        $queryBuilder->expr()->gte(
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                (string)new VersionState(VersionState::DEFAULT_STATE),
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($beUser->workspace, \PDO::PARAM_INT)
+                        )
                     )
                 )
                 ->execute();
@@ -850,8 +892,14 @@ class PageLayoutController
             $sys_log_row = $queryBuilder->select('tablename', 'recuid')
                 ->from('sys_log')
                 ->where(
-                    $queryBuilder->expr()->eq('userid', (int)$beUser->user['uid']),
-                    $queryBuilder->expr()->eq('NEWid', $queryBuilder->createNamedParameter($this->new_unique_uid))
+                    $queryBuilder->expr()->eq(
+                        'userid',
+                        $queryBuilder->createNamedParameter($beUser->user['uid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'NEWid',
+                        $queryBuilder->createNamedParameter($this->new_unique_uid, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -872,8 +920,14 @@ class PageLayoutController
         $this->undoButtonR = $queryBuilder->select('tstamp')
             ->from('sys_history')
             ->where(
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-                $queryBuilder->expr()->eq('recuid', (int)$this->eRParts[1])
+                $queryBuilder->expr()->eq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'recuid',
+                    $queryBuilder->createNamedParameter($this->eRParts[1], \PDO::PARAM_INT)
+                )
             )
             ->orderBy('tstamp', 'DESC')
             ->setMaxResults(1)
@@ -1263,8 +1317,14 @@ class PageLayoutController
                         ->select('uid')
                         ->from('pages_language_overlay')
                         ->where(
-                            $queryBuilder->expr()->eq('pid', (int)$this->id),
-                            $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language)
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'sys_language_uid',
+                                $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
+                            )
                         )
                         ->setMaxResults(1)
                         ->execute()
@@ -1421,25 +1481,46 @@ class PageLayoutController
             ->count('uid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$this->id),
-                $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language)
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
+                )
             );
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'])) {
-            $andWhere[] = $queryBuilder->expr()->neq('hidden', 0);
+            $andWhere[] = $queryBuilder->expr()->neq(
+                'hidden',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         }
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['starttime'])) {
             $andWhere[] = $queryBuilder->expr()->andX(
-                $queryBuilder->expr()->neq('starttime', 0),
-                $queryBuilder->expr()->gt('starttime', (int)$GLOBALS['SIM_ACCESS_TIME'])
+                $queryBuilder->expr()->neq(
+                    'starttime',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->gt(
+                    'starttime',
+                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], \PDO::PARAM_INT)
+                )
             );
         }
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['endtime'])) {
             $andWhere[] = $queryBuilder->expr()->andX(
-                $queryBuilder->expr()->neq('endtime', 0),
-                $queryBuilder->expr()->lte('endtime', (int)$GLOBALS['SIM_ACCESS_TIME'])
+                $queryBuilder->expr()->neq(
+                    'endtime',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->lte(
+                    'endtime',
+                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], \PDO::PARAM_INT)
+                )
             );
         }
 
@@ -1578,18 +1659,44 @@ class PageLayoutController
         $queryBuilder->select('*')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$this->id),
-                $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language),
-                $queryBuilder->expr()->in('colPos', GeneralUtility::intExplode(',', $this->colPosList)),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->in(
+                    'colPos',
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $this->colPosList, true),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                ),
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->gte('t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
-                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$beUser->workspace)
+                    $queryBuilder->expr()->gte(
+                        't3ver_state',
+                        $queryBuilder->createNamedParameter(
+                            (string)new VersionState(VersionState::DEFAULT_STATE),
+                            \PDO::PARAM_INT
+                        )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(
+                            (string)new VersionState(VersionState::DEFAULT_STATE),
+                            \PDO::PARAM_INT
+                        )
+                    )
                 )
             )
             ->orderBy('colPos')
             ->addOrderBy('sorting');
         if (!$beUser->user['admin']) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('editlock', 0));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'editlock',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            );
         }
         $statement = $queryBuilder->execute();
         $colPos = null;
@@ -1701,9 +1808,15 @@ class PageLayoutController
             ->count('uid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$this->id),
-                $queryBuilder->expr()->eq('t3ver_wsid', $workspaceId),
-                $queryBuilder->expr()->{$comparisonExpression}('pid', -1)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->{$comparisonExpression}(
+                    'pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn(0);

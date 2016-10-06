@@ -115,7 +115,12 @@ class InternalLinktype extends AbstractLinktype
         $row = $queryBuilder
             ->select('uid', 'title', 'deleted', 'hidden', 'starttime', 'endtime')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', (int)$page))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($page, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetch();
         $this->responsePage = true;
@@ -157,7 +162,12 @@ class InternalLinktype extends AbstractLinktype
         $row = $queryBuilder
             ->select('uid', 'pid', 'header', 'deleted', 'hidden', 'starttime', 'endtime')
             ->from('tt_content')
-            ->where($queryBuilder->expr()->eq('uid', (int)$anchor))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($anchor, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetch();
         $this->responseContent = true;

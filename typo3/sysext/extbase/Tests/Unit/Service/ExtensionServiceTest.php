@@ -275,8 +275,8 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $connection = $this->getMockDatabaseConnection();
         $connection->executeQuery(
-            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = 0) LIMIT 2',
-            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list'],
+            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = :dcValue3) LIMIT 2',
+            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list', 'dcValue3' => 0],
             Argument::cetera()
         )->shouldBeCalled()->willReturn($statement->reveal());
 
@@ -299,8 +299,8 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $connection = $this->getMockDatabaseConnection();
         $connection->executeQuery(
-            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = 0) LIMIT 2',
-            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list'],
+            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = :dcValue3) LIMIT 2',
+            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list', 'dcValue3' => 0],
             Argument::cetera()
         )->shouldBeCalled()->willReturn($statement->reveal());
 
@@ -325,8 +325,8 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $connection = $this->getMockDatabaseConnection();
         $connection->executeQuery(
-            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = 0) LIMIT 2',
-            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list'],
+            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = :dcValue3) LIMIT 2',
+            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list', 'dcValue3' => 0],
             Argument::cetera()
         )->shouldBeCalled()->willReturn($statement->reveal());
 

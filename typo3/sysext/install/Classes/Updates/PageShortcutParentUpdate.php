@@ -48,8 +48,11 @@ class PageShortcutParentUpdate extends AbstractUpdate
         $numberOfAffectedPages = $queryBuilder->count('uid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->neq('shortcut', 0),
-                $queryBuilder->expr()->eq('shortcut_mode', PageRepository::SHORTCUT_MODE_PARENT_PAGE)
+                $queryBuilder->expr()->neq('shortcut', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'shortcut_mode',
+                    $queryBuilder->createNamedParameter(PageRepository::SHORTCUT_MODE_PARENT_PAGE, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn(0);
@@ -74,8 +77,11 @@ class PageShortcutParentUpdate extends AbstractUpdate
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->update('pages')
             ->where(
-                $queryBuilder->expr()->neq('shortcut', 0),
-                $queryBuilder->expr()->eq('shortcut_mode', PageRepository::SHORTCUT_MODE_PARENT_PAGE)
+                $queryBuilder->expr()->neq('shortcut', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'shortcut_mode',
+                    $queryBuilder->createNamedParameter(PageRepository::SHORTCUT_MODE_PARENT_PAGE, \PDO::PARAM_INT)
+                )
             )
             ->set('shortcut', 0, false);
         $databaseQueries[] = $queryBuilder->getSQL();

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -431,14 +432,20 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
 
         if (is_numeric($id) && $id >= 0) {
             $queryBuilder->andWhere(
-                $expressionBuilder->eq('pid', (int)$id)
+                $expressionBuilder->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
             );
         }
 
         $excludedDoktypes = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.excludeDoktypes');
         if (!empty($excludedDoktypes)) {
             $queryBuilder->andWhere(
-                $expressionBuilder->notIn('doktype', GeneralUtility::intExplode(',', $excludedDoktypes))
+                $expressionBuilder->notIn(
+                    'doktype',
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $excludedDoktypes, true),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                )
             );
         }
 
@@ -446,7 +453,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             $searchParts = $expressionBuilder->orX();
             if (is_numeric($searchFilter) && $searchFilter > 0) {
                 $searchParts->add(
-                    $expressionBuilder->eq('uid', (int)$searchFilter)
+                    $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_INT))
                 );
             }
             $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
@@ -455,15 +462,27 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
 
             $aliasExpression = '';
             if ($useAlias) {
-                $aliasExpression = $expressionBuilder->like('alias', $queryBuilder->createNamedParameter($searchFilter));
+                $aliasExpression = $expressionBuilder->like(
+                    'alias',
+                    $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                );
             }
 
             if ($useNavTitle) {
                 $searchWhereAlias = $expressionBuilder->orX(
-                    $expressionBuilder->like('nav_title', $queryBuilder->createNamedParameter($searchFilter)),
+                    $expressionBuilder->like(
+                        'nav_title',
+                        $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                    ),
                     $expressionBuilder->andX(
-                        $expressionBuilder->eq('nav_title', $queryBuilder->createNamedParameter('')),
-                        $expressionBuilder->like('title', $queryBuilder->createNamedParameter($searchFilter))
+                        $expressionBuilder->eq(
+                            'nav_title',
+                            $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        ),
+                        $expressionBuilder->like(
+                            'title',
+                            $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                        )
                     )
                 );
                 if (strlen($aliasExpression)) {
@@ -472,7 +491,10 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                 $searchParts->add($searchWhereAlias);
             } else {
                 $searchParts->add(
-                    $expressionBuilder->like('title', $queryBuilder->createNamedParameter($searchFilter))
+                    $expressionBuilder->like(
+                        'title',
+                        $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                    )
                 );
 
                 if (strlen($aliasExpression)) {

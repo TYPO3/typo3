@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -335,7 +336,7 @@ class PageRepository
         $row = $queryBuilder->select('*')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$uid),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess)
             )
@@ -374,9 +375,9 @@ class PageRepository
         $row = $queryBuilder->select('uid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('alias', $queryBuilder->createNamedParameter($alias)),
+                $queryBuilder->expr()->eq('alias', $queryBuilder->createNamedParameter($alias, \PDO::PARAM_STR)),
                 // "AND pid>=0" because of versioning (means that aliases sent MUST be online!)
-                $queryBuilder->expr()->gte('pid', 0)
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
             ->execute()
@@ -474,8 +475,14 @@ class PageRepository
                 $result = $queryBuilder->select(...$fieldArr)
                     ->from('pages_language_overlay')
                     ->where(
-                        $queryBuilder->expr()->in('pid', array_map('intval', $page_ids)),
-                        $queryBuilder->expr()->eq('sys_language_uid', (int)$lUid)
+                        $queryBuilder->expr()->in(
+                            'pid',
+                            $queryBuilder->createNamedParameter($page_ids, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter($lUid, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
 
@@ -564,14 +571,17 @@ class PageRepository
                             $olrow = $queryBuilder->select('*')
                                 ->from($table)
                                 ->where(
-                                    $queryBuilder->expr()->eq('pid', (int)$row['pid']),
+                                    $queryBuilder->expr()->eq(
+                                        'pid',
+                                        $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                                    ),
                                     $queryBuilder->expr()->eq(
                                         $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                                        (int)$sys_language_content
+                                        $queryBuilder->createNamedParameter($sys_language_content, \PDO::PARAM_INT)
                                     ),
                                     $queryBuilder->expr()->eq(
                                         $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                                        (int)$row['uid']
+                                        $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
                                     )
                                 )
                                 ->setMaxResults(1)
@@ -700,7 +710,10 @@ class PageRepository
         $res = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->in($relationField, array_map('intval', $pageIds)),
+                $queryBuilder->expr()->in(
+                    $relationField,
+                    $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                ),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
@@ -813,7 +826,10 @@ class PageRepository
             $count = $queryBuilder->count('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq($searchField, (int)$searchUid),
+                    $queryBuilder->expr()->eq(
+                        $searchField,
+                        $queryBuilder->createNamedParameter($searchUid, \PDO::PARAM_INT)
+                    ),
                     QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                     QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
                     QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
@@ -863,15 +879,18 @@ class PageRepository
             ->from('sys_domain')
             ->where(
                 $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('sys_domain.pid')),
-                $queryBuilder->expr()->eq('sys_domain.hidden', 0),
+                $queryBuilder->expr()->eq(
+                    'sys_domain.hidden',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq(
                         'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain)
+                        $queryBuilder->createNamedParameter($domain, \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->eq(
                         'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain . '/')
+                        $queryBuilder->createNamedParameter($domain . '/', \PDO::PARAM_STR)
                     )
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
@@ -1021,8 +1040,14 @@ class PageRepository
                 $pageRec = $queryBuilder->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
                     ->from('pages')
                     ->where(
-                        $queryBuilder->expr()->eq('uid', (int)$pageId),
-                        $queryBuilder->expr()->neq('doktype', 255)
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->neq(
+                            'doktype',
+                            $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute()
                     ->fetch();
@@ -1047,8 +1072,14 @@ class PageRepository
                 $mountRec = $queryBuilder->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
                     ->from('pages')
                     ->where(
-                        $queryBuilder->expr()->eq('uid', $mount_pid),
-                        $queryBuilder->expr()->neq('doktype', 255)
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($mount_pid, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->neq(
+                            'doktype',
+                            $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute()
                     ->fetch();
@@ -1099,7 +1130,7 @@ class PageRepository
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             $row = $queryBuilder->select('*')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $uid))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute()
                 ->fetch();
 
@@ -1112,7 +1143,12 @@ class PageRepository
                         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                         $numRows = (int)$queryBuilder->count('*')
                             ->from('pages')
-                            ->where($queryBuilder->expr()->eq('uid', (int)$row['pid']))
+                            ->where(
+                                $queryBuilder->expr()->eq(
+                                    'uid',
+                                    $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                                )
+                            )
                             ->execute()
                             ->fetchColumn();
                         if ($numRows > 0) {
@@ -1149,7 +1185,7 @@ class PageRepository
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $uid))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute()
                 ->fetch();
 
@@ -1610,7 +1646,12 @@ class PageRepository
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                 $origRow = $queryBuilder->select(...array_keys($this->purgeComputedProperties($row)))
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', (int)$moveID))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($moveID, \PDO::PARAM_INT)
+                        )
+                    )
                     ->setMaxResults(1)
                     ->execute()
                     ->fetch();
@@ -1647,10 +1688,22 @@ class PageRepository
                 $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->neq('pid', -1),
-                        $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER)),
-                        $queryBuilder->expr()->eq('t3ver_move_id', (int)$uid),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)$workspace)
+                        $queryBuilder->expr()->neq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq(
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                new VersionState(VersionState::MOVE_PLACEHOLDER),
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_move_id',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                        )
                     )
                     ->setMaxResults(1)
                     ->execute()
@@ -1689,9 +1742,15 @@ class PageRepository
             $newrow = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', -1),
-                    $queryBuilder->expr()->eq('t3ver_oid', $uid),
-                    $queryBuilder->expr()->eq('t3ver_wsid', $workspace)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults(1)
                 ->execute()
@@ -1709,9 +1768,15 @@ class PageRepository
 
             if (is_array($newrow)) {
                 $queryBuilder->where(
-                    $queryBuilder->expr()->eq('pid', -1),
-                    $queryBuilder->expr()->eq('t3ver_oid', $uid),
-                    $queryBuilder->expr()->eq('t3ver_wsid', $workspace)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                    )
                 );
                 if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
                     // Return offline version, tested for its enableFields.
@@ -1723,7 +1788,9 @@ class PageRepository
             } else {
                 // OK, so no workspace version was found. Then check if online version can be
                 // selected with full enable fields and if so, return 1:
-                $queryBuilder->where($queryBuilder->expr()->eq('uid', $uid));
+                $queryBuilder->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                );
                 if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
                     // Means search was done, but no version found.
                     return 1;
@@ -1760,8 +1827,8 @@ class PageRepository
                 $ws = $queryBuilder->select('*')
                     ->from('sys_workspace')
                     ->where(
-                        $queryBuilder->expr()->eq('uid', (int)$wsid),
-                        $queryBuilder->expr()->eq('deleted', 0)
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                     )
                     ->execute()
                     ->fetch();

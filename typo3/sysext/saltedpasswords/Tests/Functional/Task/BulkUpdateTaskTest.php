@@ -130,7 +130,7 @@ class BulkUpdateTaskTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $usersToBeUpdated = $queryBuilder
             ->select('uid', 'password')
             ->from('fe_users')
-            ->where($queryBuilder->expr()->eq('uid', 2))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)))
             ->execute()
             ->fetchAll();
 
@@ -141,7 +141,7 @@ class BulkUpdateTaskTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $saltedPassword = $queryBuilder
             ->select('password')
             ->from('fe_users')
-            ->where($queryBuilder->expr()->eq('uid', 2))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)))
             ->execute()
             ->fetchColumn();
 

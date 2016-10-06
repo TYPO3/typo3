@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\Common\Collections\Expr\Comparison;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,7 +75,7 @@ class DefaultDataProvider implements DataProviderInterface
         $data = $queryBuilder
             ->select('*')
             ->from($this->tableName)
-            ->where($queryBuilder->expr()->eq('uid', (int)$identifier))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($identifier, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
 
@@ -153,16 +154,37 @@ class DefaultDataProvider implements DataProviderInterface
             ->where(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->comparison((int)$pageTsConfigId[$fieldName], '=', 0),
-                        $queryBuilder->expr()->comparison((int)$storagePid, '=', 0)
+                        $queryBuilder->expr()->comparison(
+                            $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT),
+                            Comparison::EQ,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->comparison(
+                            $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT),
+                            Comparison::EQ,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
                     ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->eq('backend_layout.pid', (int)$pageTsConfigId[$fieldName]),
-                        $queryBuilder->expr()->eq('backend_layout.pid', (int)$storagePid)
+                        $queryBuilder->expr()->eq(
+                            'backend_layout.pid',
+                            $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'backend_layout.pid',
+                            $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT)
+                        )
                     ),
                     $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->comparison((int)$pageTsConfigId[$fieldName], '=', 0),
-                        $queryBuilder->expr()->eq('backend_layout.pid', (int)$pageUid)
+                        $queryBuilder->expr()->comparison(
+                            $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT),
+                            Comparison::EQ,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'backend_layout.pid',
+                            $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                        )
                     )
                 )
             );

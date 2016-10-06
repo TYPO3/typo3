@@ -97,6 +97,9 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
         $queryBuilderProphecy->from(Argument::cetera())
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphecy->reveal());
+        $queryBuilderProphecy->createNamedParameter(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturnArgument(0);
         $queryBuilderProphecy->where(Argument::cetera())
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphecy->reveal());

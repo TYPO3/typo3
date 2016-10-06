@@ -60,7 +60,7 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
 
         $rows = $queryBuilder->select('*')
             ->from('pages_language_overlay')
-            ->where($queryBuilder->expr()->eq('pid', $pid))
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
             ->execute()
             ->fetchAll();
 

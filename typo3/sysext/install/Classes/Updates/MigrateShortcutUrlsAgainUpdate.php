@@ -79,8 +79,13 @@ class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
             );
             $queryBuilder = $connection->createQueryBuilder();
             $queryBuilder->update('sys_be_shortcuts')
-                ->set('url', $queryBuilder->quote($encodedUrl), false)
-                ->where($queryBuilder->expr()->eq('uid', (int)$shortcut['uid']));
+                ->set('url', $encodedUrl)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($shortcut['uid'], \PDO::PARAM_INT)
+                    )
+                );
             $databaseQueries[] = $queryBuilder->getSQL();
             $queryBuilder->execute();
         }

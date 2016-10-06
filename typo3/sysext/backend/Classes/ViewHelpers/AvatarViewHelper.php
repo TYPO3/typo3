@@ -61,7 +61,12 @@ class AvatarViewHelper extends AbstractViewHelper
             $backendUser = $queryBuilder
                 ->select('*')
                 ->from('be_users')
-                ->where($queryBuilder->expr()->eq('uid', (int)$arguments['backendUser']))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($arguments['backendUser'], \PDO::PARAM_INT)
+                    )
+                )
                 ->execute()
                 ->fetch();
         } else {

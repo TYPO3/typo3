@@ -525,7 +525,12 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $timeoutTimeStamp = (int)($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_session_data');
         $queryBuilder->delete('fe_session_data')
-            ->where($queryBuilder->expr()->lt('tstamp', $timeoutTimeStamp))
+            ->where(
+                $queryBuilder->expr()->lt(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($timeoutTimeStamp, \PDO::PARAM_INT)
+                )
+            )
             ->execute();
         parent::gc();
     }

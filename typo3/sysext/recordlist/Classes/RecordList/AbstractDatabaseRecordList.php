@@ -1309,8 +1309,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             $localizedRecordUid = $queryBuilder->select('uid')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['languageField'], (int)$language),
-                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], (int)$orig_uid)
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($orig_uid, \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults(1)
                 ->execute()

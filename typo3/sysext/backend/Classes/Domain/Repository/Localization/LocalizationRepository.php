@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Localization;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -39,9 +40,18 @@ class LocalizationRepository
         $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
 
         $constraints = [
-            $queryBuilder->expr()->eq('tt_content.colPos', (int)$colPos),
-            $queryBuilder->expr()->eq('tt_content.pid', (int)$pageId),
-            $queryBuilder->expr()->eq('tt_content.sys_language_uid', (int)$localizedLanguage),
+            $queryBuilder->expr()->eq(
+                'tt_content.colPos',
+                $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'tt_content.pid',
+                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'tt_content.sys_language_uid',
+                $queryBuilder->createNamedParameter($localizedLanguage, \PDO::PARAM_INT)
+            ),
         ];
         $constraints += $this->getAllowedLanguageConstraintsForBackendUser();
 
@@ -84,10 +94,22 @@ class LocalizationRepository
         $rowCount = $queryBuilder->count('uid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('tt_content.sys_language_uid', (int)$languageId),
-                $queryBuilder->expr()->eq('tt_content.colPos', (int)$colPos),
-                $queryBuilder->expr()->eq('tt_content.pid', (int)$pageId),
-                $queryBuilder->expr()->neq('tt_content.t3_origuid', 0)
+                $queryBuilder->expr()->eq(
+                    'tt_content.sys_language_uid',
+                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tt_content.colPos',
+                    $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tt_content.pid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tt_content.t3_origuid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn(0);
@@ -112,9 +134,18 @@ class LocalizationRepository
                 'tt_content.sys_language_uid',
                 $queryBuilder->quoteIdentifier('sys_language.uid')
             ),
-            $queryBuilder->expr()->eq('tt_content.colPos', (int)$colPos),
-            $queryBuilder->expr()->eq('tt_content.pid', (int)$pageId),
-            $queryBuilder->expr()->neq('sys_language.uid', (int)$languageId)
+            $queryBuilder->expr()->eq(
+                'tt_content.colPos',
+                $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'tt_content.pid',
+                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->neq(
+                'sys_language.uid',
+                $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+            )
         ];
         $constraints += $this->getAllowedLanguageConstraintsForBackendUser();
 
@@ -183,14 +214,17 @@ class LocalizationRepository
             if (!empty($GLOBALS['TCA']['sys_language']['ctrl']['enablecolumns']['disabled'])) {
                 $constraints[] = $queryBuilder->expr()->eq(
                     'sys_language.' . $GLOBALS['TCA']['sys_language']['ctrl']['enablecolumns']['disabled'],
-                    0
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 );
             }
 
             if (!empty($backendUser->user['allowed_languages'])) {
                 $constraints[] = $queryBuilder->expr()->in(
                     'sys_language.uid',
-                    GeneralUtility::intExplode(',', $backendUser->user['allowed_languages'])
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $backendUser->user['allowed_languages'], true),
+                        Connection::PARAM_INT_ARRAY
+                    )
                 );
             }
         }
@@ -219,9 +253,18 @@ class LocalizationRepository
             ->select('t3_origuid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', (int)$destLanguageId),
-                $queryBuilder->expr()->eq('tt_content.colPos', (int)$colPos),
-                $queryBuilder->expr()->eq('tt_content.pid', (int)$pageId)
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($destLanguageId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tt_content.colPos',
+                    $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tt_content.pid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
             )
             ->execute();
 
@@ -232,14 +275,29 @@ class LocalizationRepository
         $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('tt_content.sys_language_uid', (int)$languageId),
-                $queryBuilder->expr()->eq('tt_content.colPos', (int)$colPos),
-                $queryBuilder->expr()->eq('tt_content.pid', (int)$pageId)
+                $queryBuilder->expr()->eq(
+                    'tt_content.sys_language_uid',
+                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tt_content.colPos',
+                    $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tt_content.pid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('tt_content.sorting');
 
         if (!empty($originalUids)) {
-            $queryBuilder->andWhere($queryBuilder->expr()->notIn('tt_content.uid', $originalUids));
+            $queryBuilder
+                ->andWhere(
+                    $queryBuilder->expr()->notIn(
+                        'tt_content.uid',
+                        $queryBuilder->createNamedParameter($originalUids, Connection::PARAM_INT_ARRAY)
+                    )
+                );
         }
 
         return $queryBuilder->execute();
@@ -316,14 +374,25 @@ class LocalizationRepository
                 $queryBuilder->select(...$select)
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->eq('pid', (int)$pid),
-                        $queryBuilder->expr()->eq('sys_language_uid', (int)$sourceLanguage),
-                        $queryBuilder->expr()->lt($sortRow, (int)$row[$sortRow])
+                        $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter($sourceLanguage, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->lt(
+                            $sortRow,
+                            $queryBuilder->createNamedParameter($row[$sortRow], \PDO::PARAM_INT)
+                        )
                     );
 
                 // Respect the colPos for content elements
                 if ($table === 'tt_content') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->eq('colPos', (int)$row['colPos']));
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->eq(
+                            'colPos',
+                            $queryBuilder->createNamedParameter($row['colPos'], \PDO::PARAM_INT)
+                        )
+                    );
                 }
 
                 $previousRow = $queryBuilder->orderBy($sortRow, 'DESC')->execute()->fetch();

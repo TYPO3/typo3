@@ -506,12 +506,24 @@ class Clipboard
                 ->select('*')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq($tcaCtrl['transOrigPointerField'], (int)$parentRec['uid']),
-                    $queryBuilder->expr()->neq($tcaCtrl['languageField'], 0)
+                    $queryBuilder->expr()->eq(
+                        $tcaCtrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($parentRec['uid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        $tcaCtrl['languageField'],
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 );
 
             if (isset($tcaCtrl['versioningWS']) && $tcaCtrl['versioningWS']) {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', (int)$parentRec['t3ver_wsid']));
+                $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($parentRec['t3ver_wsid'], \PDO::PARAM_INT)
+                        )
+                    );
             }
             $rows = $queryBuilder->execute()->fetchAll();
             if (is_array($rows)) {

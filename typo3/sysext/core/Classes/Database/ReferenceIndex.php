@@ -215,9 +215,12 @@ class ReferenceIndex
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $queryResult = $queryBuilder->select('*')->from('sys_refindex')->where(
-            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-            $queryBuilder->expr()->eq('recuid', (int)$uid),
-            $queryBuilder->expr()->eq('workspace', (int)$this->getWorkspaceId())
+            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)),
+            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+            $queryBuilder->expr()->eq(
+                'workspace',
+                $queryBuilder->createNamedParameter($this->getWorkspaceId(), \PDO::PARAM_INT)
+            )
         )->execute();
         $currentRelations = [];
         while ($relation = $queryResult->fetch()) {
@@ -822,7 +825,7 @@ class ReferenceIndex
                 ->select('*')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash))
+                    $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash, \PDO::PARAM_STR))
                 )
                 ->setMaxResults(1)
                 ->execute()
@@ -845,7 +848,10 @@ class ReferenceIndex
                 ->select('*')
                 ->from($referenceRecord['tablename'])
                 ->where(
-                    $queryBuilder->expr()->eq('uid',  (int)$referenceRecord['recuid'])
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults(1)
                 ->execute()
@@ -1073,7 +1079,7 @@ class ReferenceIndex
                 ($configuration['type'] === 'select' || $configuration['type'] === 'inline')
                 && !empty($configuration['foreign_table'])
             )
-        ;
+            ;
     }
 
     /**
@@ -1094,7 +1100,7 @@ class ReferenceIndex
             $configuration['type'] === 'flex'
             ||
             isset($configuration['softref'])
-        ;
+            ;
     }
 
     /**
@@ -1212,8 +1218,14 @@ class ReferenceIndex
                 ->count('hash')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-                    $queryBuilder->expr()->notIn('recuid', $uidList)
+                    $queryBuilder->expr()->eq(
+                        'tablename',
+                        $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->notIn(
+                        'recuid',
+                        $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
+                    )
                 )
                 ->execute()
                 ->fetchColumn(0);
@@ -1228,8 +1240,14 @@ class ReferenceIndex
                     $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
                     $queryBuilder->delete('sys_refindex')
                         ->where(
-                            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-                            $queryBuilder->expr()->notIn('recuid', $uidList)
+                            $queryBuilder->expr()->eq(
+                                'tablename',
+                                $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                            ),
+                            $queryBuilder->expr()->notIn(
+                                'recuid',
+                                $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
+                            )
                         )->execute();
                 }
             }

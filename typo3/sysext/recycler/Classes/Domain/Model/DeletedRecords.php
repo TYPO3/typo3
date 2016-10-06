@@ -177,7 +177,7 @@ class DeletedRecords
                 ->from($table)
                 ->where(
                     $queryBuilder->expr()->neq($deletedField, 0),
-                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                     $filterConstraint
                 )
                 ->execute()
@@ -268,7 +268,7 @@ class DeletedRecords
             $resPages = $queryBuilder
                 ->select('uid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', (int)$id))
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
                 ->orderBy('sorting')
                 ->execute();
 
@@ -419,7 +419,7 @@ class DeletedRecords
             ->select('uid', 'pid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$uid),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1)
             )
             ->execute()

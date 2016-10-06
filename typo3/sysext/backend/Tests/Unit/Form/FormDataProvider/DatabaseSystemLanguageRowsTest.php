@@ -104,6 +104,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
         $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
 
@@ -147,6 +148,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
         $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
 
@@ -205,6 +207,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
         $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
 
@@ -261,6 +264,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
 
         $statementProphecy->fetch()->shouldBeCalledTimes(2)->willReturn($aDatabaseResultRow, false);
@@ -325,6 +329,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
 
         $statementProphecy->fetch()->shouldBeCalledTimes(2)->willReturn($aDatabaseResultRow, false);

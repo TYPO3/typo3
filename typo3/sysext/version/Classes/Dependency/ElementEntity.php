@@ -231,9 +231,18 @@ class ElementEntity
                 ->select('*')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($this->table)),
-                    $queryBuilder->expr()->eq('recuid', $this->id),
-                    $queryBuilder->expr()->eq('workspace', $this->dependency->getWorkspace())
+                    $queryBuilder->expr()->eq(
+                        'tablename',
+                        $queryBuilder->createNamedParameter($this->table, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'recuid',
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'workspace',
+                        $queryBuilder->createNamedParameter($this->dependency->getWorkspace(), \PDO::PARAM_INT)
+                    )
                 )
                 ->orderBy('sorting')
                 ->execute();
@@ -284,10 +293,22 @@ class ElementEntity
                 ->select('*')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('deleted', 0),
-                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($this->table)),
-                    $queryBuilder->expr()->eq('ref_uid', $this->id),
-                    $queryBuilder->expr()->eq('workspace', $this->dependency->getWorkspace())
+                    $queryBuilder->expr()->eq(
+                        'deleted',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'ref_table',
+                        $queryBuilder->createNamedParameter($this->table, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'ref_uid',
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'workspace',
+                        $queryBuilder->createNamedParameter($this->dependency->getWorkspace(), \PDO::PARAM_INT)
+                    )
                 )
                 ->orderBy('sorting')
                 ->execute();
@@ -403,7 +424,12 @@ class ElementEntity
             $row = $queryBuilder
                 ->select('uid', 'pid', 't3ver_wsid', 't3ver_state', 't3ver_oid')
                 ->from($this->getTable())
-                ->where($queryBuilder->expr()->eq('uid', $this->getId()))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($this->getId(), \PDO::PARAM_INT)
+                    )
+                )
                 ->execute()
                 ->fetch();
 

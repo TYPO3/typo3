@@ -41,9 +41,9 @@ class SaltedPasswordsUtility
             ->count('*')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->neq('password', $queryBuilder->quote('')),
-                $queryBuilder->expr()->notLike('password', $queryBuilder->quote('$%')),
-                $queryBuilder->expr()->notLike('password', $queryBuilder->quote('M$%'))
+                $queryBuilder->expr()->neq('password', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->notLike('password', $queryBuilder->createNamedParameter('$%', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->notLike('password', $queryBuilder->createNamedParameter('M$%', \PDO::PARAM_STR))
             )
             ->execute()
             ->fetchColumn();

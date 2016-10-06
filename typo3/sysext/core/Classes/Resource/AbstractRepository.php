@@ -143,7 +143,10 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
 
         if (!empty($this->type)) {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq($this->typeField, $queryBuilder->createNamedParameter($this->type))
+                $queryBuilder->expr()->eq(
+                    $this->typeField,
+                    $queryBuilder->createNamedParameter($this->type, \PDO::PARAM_STR)
+                )
             );
         }
         $result = $queryBuilder->execute();
@@ -208,7 +211,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
             ->select('*')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$uid)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();

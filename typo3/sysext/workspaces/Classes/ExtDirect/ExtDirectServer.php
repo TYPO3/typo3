@@ -381,10 +381,22 @@ class ExtDirectServer extends AbstractHandler
             ->select('log_data', 'tstamp', 'userid')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('action', 6),
-                $queryBuilder->expr()->eq('details_nr', 30),
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                $queryBuilder->expr()->eq('recuid', (int)$uid)
+                $queryBuilder->expr()->eq(
+                    'action',
+                    $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'details_nr',
+                    $queryBuilder->createNamedParameter(30, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'recuid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('tstamp', 'DESC')
             ->execute();

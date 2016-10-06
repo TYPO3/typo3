@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -54,8 +55,11 @@ class SystemInformationController extends AbstractController
         $count = $queryBuilder->count('error')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->gte('tstamp', $timestamp),
-                $queryBuilder->expr()->in('error', [-1, 1, 2])
+                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($timestamp, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->in(
+                    'error',
+                    $queryBuilder->createNamedParameter([-1, 1, 2], Connection::PARAM_INT_ARRAY)
+                )
             )
             ->execute()
             ->fetchColumn(0);

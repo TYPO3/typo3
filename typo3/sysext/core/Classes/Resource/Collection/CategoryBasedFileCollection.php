@@ -74,8 +74,14 @@ class CategoryBasedFileCollection extends AbstractFileCollection
                 )
             )
             ->where(
-                $queryBuilder->expr()->eq('sys_category.uid', (int)$this->getItemsCriteria()),
-                $queryBuilder->expr()->eq('sys_category_record_mm.tablenames', $queryBuilder->createNamedParameter('sys_file_metadata'))
+                $queryBuilder->expr()->eq(
+                    'sys_category.uid',
+                    $queryBuilder->createNamedParameter($this->getItemsCriteria(), \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.tablenames',
+                    $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                )
             )
             ->execute();
         $resourceFactory = ResourceFactory::getInstance();

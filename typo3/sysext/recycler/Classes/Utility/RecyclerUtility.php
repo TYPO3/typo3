@@ -99,7 +99,7 @@ class RecyclerUtility
             $queryBuilder
                 ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', (int)$uid));
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
             if (!empty($clause)) {
                 $queryBuilder->andWhere($clause);
             }
@@ -162,7 +162,7 @@ class RecyclerUtility
         $deleted = $queryBuilder
             ->select('deleted')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', (int)$pid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
             ->execute()
             ->fetchColumn();
 
@@ -184,7 +184,7 @@ class RecyclerUtility
         $pid = $queryBuilder
             ->select('pid')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
             ->fetchColumn();
 

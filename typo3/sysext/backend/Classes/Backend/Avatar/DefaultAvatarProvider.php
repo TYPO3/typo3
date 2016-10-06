@@ -70,10 +70,22 @@ class DefaultAvatarProvider implements AvatarProviderInterface
             ->select('uid_local')
             ->from('sys_file_reference')
             ->where(
-                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')),
-                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')),
-                $queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')),
-                $queryBuilder->expr()->eq('uid_foreign', (int)$beUserId)
+                $queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter('be_users', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'fieldname',
+                    $queryBuilder->createNamedParameter('avatar', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'table_local',
+                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'uid_foreign',
+                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn();

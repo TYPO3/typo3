@@ -1268,8 +1268,14 @@ class SchemaMigrator
             )
             ->from('information_schema.TABLES')
             ->where(
-                $queryBuilder->expr()->eq('TABLE_TYPE', $queryBuilder->quote('BASE TABLE')),
-                $queryBuilder->expr()->eq('TABLE_SCHEMA', $queryBuilder->quote($connection->getDatabase()))
+                $queryBuilder->expr()->eq(
+                    'TABLE_TYPE',
+                    $queryBuilder->createNamedParameter('BASE TABLE', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'TABLE_SCHEMA',
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                )
             )
             ->execute();
 

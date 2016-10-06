@@ -92,8 +92,8 @@ This will check the system for double files relations.';
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE')),
-                $queryBuilder->expr()->eq('softref_key', $queryBuilder->expr()->literal(''))
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
             )
             ->orderBy('sorting', 'DESC')
             ->execute();

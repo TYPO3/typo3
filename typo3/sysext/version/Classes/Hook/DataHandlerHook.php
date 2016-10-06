@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Version\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -504,13 +505,22 @@ class DataHandlerHook
                                     ->select('log_data', 'tstamp', 'userid')
                                     ->from('sys_log')
                                     ->where(
-                                        $queryBuilder->expr()->eq('action', 6),
-                                        $queryBuilder->expr()->eq('details_nr', 30),
+                                        $queryBuilder->expr()->eq(
+                                            'action',
+                                            $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT)
+                                        ),
+                                        $queryBuilder->expr()->eq(
+                                            'details_nr',
+                                            $queryBuilder->createNamedParameter(30, \PDO::PARAM_INT)
+                                        ),
                                         $queryBuilder->expr()->eq(
                                             'tablename',
-                                            $queryBuilder->createNamedParameter($eTable)
+                                            $queryBuilder->createNamedParameter($eTable, \PDO::PARAM_STR)
                                         ),
-                                        $queryBuilder->expr()->eq('recuid', (int)$eUid)
+                                        $queryBuilder->expr()->eq(
+                                            'recuid',
+                                            $queryBuilder->createNamedParameter($eUid, \PDO::PARAM_INT)
+                                        )
                                     )
                                     ->orderBy('uid', 'DESC')
                                     ->execute();
@@ -1271,7 +1281,12 @@ class DataHandlerHook
                 $statement = $queryBuilder
                     ->select('uid')
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('pid', (int)$oldPageId))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($oldPageId, \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute();
 
                 while ($row = $statement->fetch()) {
@@ -1327,9 +1342,18 @@ class DataHandlerHook
                     ->from($table, 'A')
                     ->from($table, 'B')
                     ->where(
-                        $queryBuilder->expr()->eq('A.pid', -1),
-                        $queryBuilder->expr()->eq('B.pid', (int)$pageId),
-                        $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                        $queryBuilder->expr()->eq(
+                            'A.pid',
+                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'B.pid',
+                            $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'A.t3ver_wsid',
+                            $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                        ),
                         $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
                     )
                     ->execute();
@@ -1374,9 +1398,18 @@ class DataHandlerHook
                     ->from($table, 'A')
                     ->from($table, 'B')
                     ->where(
-                        $queryBuilder->expr()->eq('A.pid', -1),
-                        $queryBuilder->expr()->in('B.pid', array_map('intval', $pageIdList)),
-                        $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                        $queryBuilder->expr()->eq(
+                            'A.pid',
+                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->in(
+                            'B.pid',
+                            $queryBuilder->createNamedParameter($pageIdList, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'A.t3ver_wsid',
+                            $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                        ),
                         $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
                     )
                     ->groupBy('A.uid')
@@ -1421,9 +1454,18 @@ class DataHandlerHook
             ->from($table, 'A')
             ->from($table, 'B')
             ->where(
-                $queryBuilder->expr()->eq('A.pid', -1),
-                $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
-                $queryBuilder->expr()->in('A.uid', array_map('intval', $idList)),
+                $queryBuilder->expr()->eq(
+                    'A.pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'A.t3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->in(
+                    'A.uid',
+                    $queryBuilder->createNamedParameter($idList, Connection::PARAM_INT_ARRAY)
+                ),
                 $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
             )
             ->groupBy('B.pid')

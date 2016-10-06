@@ -57,7 +57,7 @@ class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Abstr
         $referenceCount = $queryBuilder
             ->count('uid')
             ->from('sys_file_reference')
-            ->where($queryBuilder->expr()->eq('uid_local', 20))
+            ->where($queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(20, \PDO::PARAM_INT)))
             ->execute()
             ->fetchColumn(0);
 

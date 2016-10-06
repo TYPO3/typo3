@@ -120,10 +120,13 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
             $whereClause = $queryBuilder->expr()->comparison(
                 $queryBuilder->quoteIdentifier('TSconfig'),
                 'LIKE BINARY',
-                $queryBuilder->createNamedParameter('%acronym%')
+                $queryBuilder->createNamedParameter('%acronym%', \PDO::PARAM_STR)
             );
         } else {
-            $whereClause = $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%acronym%'));
+            $whereClause = $queryBuilder->expr()->like(
+                'TSconfig',
+                $queryBuilder->createNamedParameter('%acronym%', \PDO::PARAM_STR)
+            );
         }
 
         try {
@@ -172,8 +175,13 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
         foreach ($pages as $page) {
             try {
                 $queryBuilder->update('pages')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$page['uid']))
-                    ->set('TSconfig', $queryBuilder->quote($page['TSconfig']), false)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($page['uid'], \PDO::PARAM_INT)
+                        )
+                    )
+                    ->set('TSconfig', $page['TSconfig'])
                     ->execute();
             } catch (DBALException $e) {
                 $customMessages .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;

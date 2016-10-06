@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
@@ -91,19 +92,26 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         // TODO: This should rather be a functional test if we need a query builder
         // or we should clean up the code itself to not need to mock internal behavior here
-        $queryBuilder = new QueryBuilder(
-            $connection->reveal(),
-            null,
-            new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
+
+        $statementProphet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
+
+        $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);
+        $restrictionProphet->removeAll()->willReturn($restrictionProphet->reveal());
+
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connection->reveal())
         );
+        $queryBuilderProphet->getRestrictions()->willReturn($restrictionProphet->reveal());
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
+        $queryBuilderProphet->delete(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()->willReturn($statementProphet->reveal());
 
         $connectionPool = $this->prophesize(ConnectionPool::class);
-        $connectionPool->getQueryBuilderForTable('pages')->willReturn($queryBuilder);
+        $connectionPool->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
-        $connection->executeUpdate('DELETE FROM pages WHERE (deleted = 1) AND (tstamp < 400)', Argument::cetera())
-            ->shouldBeCalled()
-            ->willReturn(1);
         $this->assertTrue($subject->execute());
     }
 

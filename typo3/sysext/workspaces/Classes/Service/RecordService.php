@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
@@ -72,7 +73,12 @@ class RecordService implements \TYPO3\CMS\Core\SingletonInterface
             $records = $queryBuilder
                 ->select($createUserIdFieldName)
                 ->from($tableName)
-                ->where($queryBuilder->expr()->in('uid', $ids))
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                    )
+                )
                 ->groupBy($createUserIdFieldName)
                 ->execute()
                 ->fetchAll();

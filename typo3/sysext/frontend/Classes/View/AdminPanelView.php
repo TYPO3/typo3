@@ -715,10 +715,13 @@ class AdminPanelView
                     ->select('uid', 'pid', 't3ver_state')
                     ->from('pages_language_overlay')
                     ->where(
-                        $queryBuilder->expr()->eq('pid', (int)$id),
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                        ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',
-                            (int)$tsfe->sys_language_uid
+                            $queryBuilder->createNamedParameter($tsfe->sys_language_uid, \PDO::PARAM_INT)
                         )
                     )
                     ->setMaxResults(1)

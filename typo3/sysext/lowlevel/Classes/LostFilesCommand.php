@@ -113,9 +113,18 @@ Will report lost files.';
                         ->select('*')
                         ->from('sys_refindex')
                         ->where(
-                            $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE')),
-                            $queryBuilder->expr()->eq('ref_string', $queryBuilder->expr()->literal($value)),
-                            $queryBuilder->expr()->eq('softref_key', $queryBuilder->expr()->literal(''))
+                            $queryBuilder->expr()->eq(
+                                'ref_table',
+                                $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'ref_string',
+                                $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'softref_key',
+                                $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                            )
                         )
                         ->orderBy('sorting', 'DESC')
                         ->execute();

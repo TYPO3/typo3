@@ -173,7 +173,7 @@ class RecordHistory
         $row = $queryBuilder
             ->select('snapshot')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
 
@@ -182,7 +182,7 @@ class RecordHistory
             $queryBuilder
                 ->update('sys_history')
                 ->set('snapshot', (int)!$row['snapshot'])
-                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute();
         }
     }
@@ -664,7 +664,12 @@ class RecordHistory
                 $rows = $queryBuilder
                     ->select('uid')
                     ->from($tablename)
-                    ->where($queryBuilder->expr()->eq('pid', (int)$elParts[1]))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($elParts[1], \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute();
                 if ($rows->rowCount() === 0) {
                     continue;
@@ -714,8 +719,14 @@ class RecordHistory
                     'sys_history.sys_log_uid',
                     $queryBuilder->quoteIdentifier('sys_log.uid')
                 ),
-                $queryBuilder->expr()->eq('sys_history.tablename', $queryBuilder->createNamedParameter($table)),
-                $queryBuilder->expr()->eq('sys_history.recuid', (int)$uid)
+                $queryBuilder->expr()->eq(
+                    'sys_history.tablename',
+                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_history.recuid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('sys_log.uid', 'DESC')
             ->setMaxResults((int)$this->maxSteps)
@@ -758,13 +769,13 @@ class RecordHistory
                 ->select('uid', 'userid', 'action', 'tstamp', 'log_data')
                 ->from('sys_log')
                 ->where(
-                    $queryBuilder->expr()->eq('type', 1),
+                    $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->eq('action', 1),
-                        $queryBuilder->expr()->eq('action', 3)
+                        $queryBuilder->expr()->eq('action', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('action', $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT))
                     ),
-                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                    $queryBuilder->expr()->eq('recuid', (int)$uid)
+                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
+                    $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                 )
                 ->orderBy('uid', 'DESC')
                 ->setMaxResults((int)$this->maxSteps)
@@ -912,9 +923,7 @@ class RecordHistory
         $record = $queryBuilder
             ->select('*')
             ->from('sys_history')
-            ->where(
-                $queryBuilder->expr()->eq('uid', (int)$shUid)
-            )
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($shUid, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
 

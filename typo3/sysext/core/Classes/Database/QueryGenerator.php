@@ -945,11 +945,23 @@ class QueryGenerator
                             if ($from_table === 'pages') {
                                 $queryBuilder->where(
                                     QueryHelper::stripLogicalOperatorPrefix($perms_clause),
-                                    $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                    $queryBuilder->expr()->in(
+                                        'uid',
+                                        $queryBuilder->createNamedParameter(
+                                            GeneralUtility::intExplode(',', $webMountPageTree),
+                                            Connection::PARAM_INT_ARRAY
+                                        )
+                                    )
                                 );
                             } else {
                                 $queryBuilder->where(
-                                    $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                    $queryBuilder->expr()->in(
+                                        'pid',
+                                        $queryBuilder->createNamedParameter(
+                                            GeneralUtility::intExplode(',', $webMountPageTree),
+                                            Connection::PARAM_INT_ARRAY
+                                        )
+                                    )
                                 );
                             }
                         }
@@ -1547,7 +1559,7 @@ class QueryGenerator
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                     QueryHelper::stripLogicalOperatorPrefix($permClause)
                 )
                 ->execute();
@@ -1613,11 +1625,23 @@ class QueryGenerator
             if ($this->table === 'pages') {
                 $queryBuilder->where(
                     QueryHelper::stripLogicalOperatorPrefix($perms_clause),
-                    $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $webMountPageTree))
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::intExplode(',', $webMountPageTree),
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
                 );
             } else {
                 $queryBuilder->where(
-                    $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $webMountPageTree))
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::intExplode(',', $webMountPageTree),
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
                 );
             }
         }

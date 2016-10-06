@@ -85,9 +85,14 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
             if ($update !== null) {
                 $queryBuilder = $workspaceConnection->createQueryBuilder();
                 $queryBuilder->update('sys_workspace')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$workspaceRecord['uid']));
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($workspaceRecord['uid'], \PDO::PARAM_INT)
+                        )
+                    );
                 foreach ($update as $field => $value) {
-                    $queryBuilder->set($field, $queryBuilder->quote($value), false);
+                    $queryBuilder->set($field, $value);
                 }
                 $databaseQueries[] = $queryBuilder->getSQL();
                 $queryBuilder->execute();
@@ -103,9 +108,14 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
             if ($update !== null) {
                 $queryBuilder = $workspaceConnection->createQueryBuilder();
                 $queryBuilder->update('sys_workspace_stage')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$stageRecord['uid']));
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($stageRecord['uid'], \PDO::PARAM_INT)
+                        )
+                    );
                 foreach ($update as $field => $value) {
-                    $queryBuilder->set($field, $queryBuilder->quote($value), false);
+                    $queryBuilder->set($field, $value);
                 }
                 $databaseQueries[] = $queryBuilder->getSQL();
                 $queryBuilder->execute();

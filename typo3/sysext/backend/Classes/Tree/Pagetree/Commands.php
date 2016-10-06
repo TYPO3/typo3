@@ -294,9 +294,7 @@ class Commands
         $domain = $queryBuilder
             ->select('domainName')
             ->from('sys_domain')
-            ->where(
-                $queryBuilder->expr()->eq('pid', (int)$uid)
-            )
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->setMaxResults(1)
             ->orderBy('sorting')
         ->execute()

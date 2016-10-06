@@ -446,9 +446,18 @@ class ActionService
             ->select('uid')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->eq('t3ver_oid', $liveUid),
-                $queryBuilder->expr()->eq('t3ver_wsid', $workspaceId)
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_oid',
+                    $queryBuilder->createNamedParameter($liveUid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                )
             )
             ->execute();
 

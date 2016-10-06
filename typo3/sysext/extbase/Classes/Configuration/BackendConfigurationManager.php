@@ -176,7 +176,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
             ->select('uid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('is_siteroot', 1)
+                $queryBuilder->expr()->eq('is_siteroot', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->orderBy('sorting')
             ->execute()
@@ -209,7 +209,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
             ->select('pid')
             ->from('sys_template')
             ->where(
-                $queryBuilder->expr()->eq('root', 1)
+                $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->orderBy('crdate')
             ->execute()

@@ -53,7 +53,12 @@ class BackendUserSessionRepository extends Repository
         return $queryBuilder
             ->select('ses_id AS id', 'ses_iplock AS ip', 'ses_tstamp AS timestamp')
             ->from('be_sessions')
-            ->where($queryBuilder->expr()->eq('ses_userid', (int)$backendUser->getUid()))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'ses_userid',
+                    $queryBuilder->createNamedParameter($backendUser->getUid(), \PDO::PARAM_INT)
+                )
+            )
             ->orderBy('ses_tstamp', 'ASC')
             ->execute()
             ->fetchAll();
@@ -73,9 +78,18 @@ class BackendUserSessionRepository extends Repository
             ->set('ses_userid', $authentication->user['ses_backuserid'])
             ->set('ses_backuserid', 0)
             ->where(
-                $queryBuilder->expr()->eq('ses_id', $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->id)),
-                $queryBuilder->expr()->eq('ses_name', $queryBuilder->createNamedParameter(BackendUserAuthentication::getCookieName())),
-                $queryBuilder->expr()->eq('ses_userid', (int)$GLOBALS['BE_USER']->user['uid'])
+                $queryBuilder->expr()->eq(
+                    'ses_id',
+                    $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->id, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'ses_name',
+                    $queryBuilder->createNamedParameter(BackendUserAuthentication::getCookieName(), \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'ses_userid',
+                    $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->user['uid'], \PDO::PARAM_INT)
+                )
             )
             ->execute();
     }

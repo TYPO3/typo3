@@ -463,7 +463,12 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $queryBuilder
                 ->select('*')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    )
+                );
 
             if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
                 $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby']);

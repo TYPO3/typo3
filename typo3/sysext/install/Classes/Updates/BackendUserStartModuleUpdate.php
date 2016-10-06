@@ -78,10 +78,15 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                     $userConfig['startModule'] = 'help_AboutAboutmodules';
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
                     $queryBuilder->update('be_users')
-                        ->where($queryBuilder->expr()->eq('uid', (int)$backendUser['uid']))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($backendUser['uid'], \PDO::PARAM_INT)
+                            )
+                        )
                         // Manual quoting and false as third parameter to have the final
                         // value in $databaseQueries and not a statement placeholder
-                        ->set('uc', $queryBuilder->quote(serialize($userConfig)), false);
+                        ->set('uc', serialize($userConfig));
                     $databaseQueries[] = $queryBuilder->getSQL();
                     $queryBuilder->execute();
                 }

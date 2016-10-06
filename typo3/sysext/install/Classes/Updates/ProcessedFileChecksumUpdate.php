@@ -57,7 +57,7 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate
         $incompleteCount = $queryBuilder->count('uid')
             ->from('sys_file_processedfile')
             ->orWhere(
-                $queryBuilder->expr()->notIn('identifier', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->notIn('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNull('width'),
                 $queryBuilder->expr()->isNull('height')
             )->execute()->fetchColumn(0);
@@ -110,7 +110,12 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate
             ->orderBy('uid');
         // If there was a start trigger, use it
         if ($firstUid !== null && (int)$firstUid > 0) {
-            $queryBuilder->where($queryBuilder->expr()->gt('uid', (int)$firstUid));
+            $queryBuilder->where(
+                $queryBuilder->expr()->gt(
+                    'uid',
+                    $queryBuilder->createNamedParameter($firstUid, \PDO::PARAM_INT)
+                )
+            );
         }
         $statement = $queryBuilder->execute();
         while ($processedFileRow = $statement->fetch()) {

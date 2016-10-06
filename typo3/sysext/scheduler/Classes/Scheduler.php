@@ -102,7 +102,12 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         // to avoid leaving old executions lying around
         $result = $queryBuilder->select('uid', 'serialized_executions', 'serialized_task_object')
             ->from('tx_scheduler_task')
-            ->where($queryBuilder->expr()->neq('serialized_executions', $queryBuilder->quote('')))
+            ->where(
+                $queryBuilder->expr()->neq(
+                    'serialized_executions',
+                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                )
+            )
             ->execute();
         $maxDuration = $this->extConf['maxLifetime'] * 60;
         while ($row = $result->fetch()) {
@@ -298,16 +303,21 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                 $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
             );
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('t.disable', 0),
-                $queryBuilder->expr()->neq('t.nextexecution', 0),
-                $queryBuilder->expr()->lte('t.nextexecution', (int)$GLOBALS['EXEC_TIME']),
+                $queryBuilder->expr()->eq('t.disable', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->neq('t.nextexecution', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->lte(
+                    't.nextexecution',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('g.hidden', 0),
+                    $queryBuilder->expr()->eq('g.hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->isNull('g.hidden')
                 )
             );
         } else {
-            $queryBuilder->where($queryBuilder->expr()->eq('t.uid', $uid));
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('t.uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            );
         }
 
         $row = $queryBuilder->execute()->fetch();
@@ -378,7 +388,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         $tasks = [];
 
         if (!$includeDisabledTasks) {
-            $constraints[] = $queryBuilder->expr()->eq('disable', 0);
+            $constraints[] = $queryBuilder->expr()->eq(
+                'disable',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            );
         } else {
             $constraints[] = '1=1';
         }

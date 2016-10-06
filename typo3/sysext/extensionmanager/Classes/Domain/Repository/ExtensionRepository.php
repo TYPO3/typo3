@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -155,11 +156,26 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         );
 
         $searchConstraints = [
-            'extension_key' => $queryBuilder->expr()->eq('extension_key', $searchPlaceholder),
-            'extension_key_like' => $queryBuilder->expr()->like('extension_key', $searchPlaceholderForLike),
-            'title' => $queryBuilder->expr()->like('title', $searchPlaceholderForLike),
-            'description' => $queryBuilder->expr()->like('description', $searchPlaceholderForLike),
-            'author_name' => $queryBuilder->expr()->like('author_name', $searchPlaceholderForLike),
+            'extension_key' => $queryBuilder->expr()->eq(
+                'extension_key',
+                $queryBuilder->createNamedParameter($searchPlaceholder, \PDO::PARAM_STR)
+            ),
+            'extension_key_like' => $queryBuilder->expr()->like(
+                'extension_key',
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+            ),
+            'title' => $queryBuilder->expr()->like(
+                'title',
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+            ),
+            'description' => $queryBuilder->expr()->like(
+                'description',
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+            ),
+            'author_name' => $queryBuilder->expr()->like(
+                'author_name',
+                $queryBuilder->createNamedParameter($searchPlaceholderForLike, \PDO::PARAM_STR)
+            ),
         ];
 
         $caseStatement = 'CASE ' .
@@ -176,8 +192,8 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->orX(...array_values($searchConstraints)),
-                $queryBuilder->expr()->eq('current_version', 1),
-                $queryBuilder->expr()->gte('review_state', 0)
+                $queryBuilder->expr()->eq('current_version', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->orderBy('position', 'DESC')
             ->execute()
@@ -333,7 +349,12 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $queryBuilder
             ->update(self::TABLE_NAME)
-            ->where($queryBuilder->expr()->in('uid', $uidsOfCurrentVersion))
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uidsOfCurrentVersion, Connection::PARAM_INT_ARRAY)
+                )
+            )
             ->set('current_version', 1)
             ->execute();
     }
@@ -365,7 +386,10 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 )
             )
             ->where(
-                $queryBuilder->expr()->eq('a.repository', (int)$repositoryUid),
+                $queryBuilder->expr()->eq(
+                    'a.repository',
+                    $queryBuilder->createNamedParameter($repositoryUid, \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->isNull('b.extension_key')
             )
             ->orderBy('a.uid')
@@ -392,7 +416,10 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return (int)$queryBuilder
             ->count('*')
             ->from(self::TABLE_NAME)
-            ->where($queryBuilder->expr()->eq('current_version', 1))
+            ->where($queryBuilder->expr()->eq(
+                'current_version',
+                $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+            ))
             ->execute()
             ->fetchColumn(0);
     }

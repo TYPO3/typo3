@@ -102,8 +102,14 @@ class ProcessedFileRepository extends AbstractRepository
                 ->select('*')
                 ->from($this->table)
                 ->where(
-                    $queryBuilder->expr()->eq('storage', (int)$storage->getUid()),
-                    $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier))
+                    $queryBuilder->expr()->eq(
+                        'storage',
+                        $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'identifier',
+                        $queryBuilder->createNamedParameter($identifier, \PDO::PARAM_STR)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -180,9 +186,15 @@ class ProcessedFileRepository extends AbstractRepository
             ->select('*')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('original', (int)$file->getUid()),
-                $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType)),
-                $queryBuilder->expr()->eq('configurationsha1', $queryBuilder->createNamedParameter(sha1(serialize($configuration))))
+                $queryBuilder->expr()->eq(
+                    'original',
+                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType, \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq(
+                    'configurationsha1',
+                    $queryBuilder->createNamedParameter(sha1(serialize($configuration)), \PDO::PARAM_STR)
+                )
             )
             ->execute()
             ->fetch();
@@ -212,7 +224,10 @@ class ProcessedFileRepository extends AbstractRepository
             ->select('*')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('original', (int)$file->getUid())
+                $queryBuilder->expr()->eq(
+                    'original',
+                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                )
             )
             ->execute();
 
@@ -236,7 +251,7 @@ class ProcessedFileRepository extends AbstractRepository
             ->select('*')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->neq('identifier', $queryBuilder->quote(''))
+                $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
             )
             ->execute();
 

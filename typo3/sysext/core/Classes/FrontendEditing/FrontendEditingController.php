@@ -338,7 +338,10 @@ class FrontendEditingController
             $currentRecord = $queryBuilder
                 ->select(...$fields)
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->where($queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ))
                 ->execute()
                 ->fetch();
 
@@ -351,7 +354,10 @@ class FrontendEditingController
                 $queryBuilder
                     ->select('uid', 'pid')
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('pid', (int)$currentRecord['pid']))
+                    ->where($queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($currentRecord['pid'], \PDO::PARAM_INT)
+                    ))
                     ->setMaxResults(2);
 
                 // Disable the default restrictions (but not all) if the admin panel is in preview mode
@@ -365,15 +371,28 @@ class FrontendEditingController
 
                 if (!empty($copyAfterDuplicateFields)) {
                     foreach ($copyAfterDuplicateFields as $fieldName) {
-                        $queryBuilder->andWhere($queryBuilder->expr()->eq($fieldName, $currentRecord[$fieldName]));
+                        $queryBuilder->andWhere($queryBuilder->expr()->eq(
+                            $fieldName,
+                            $queryBuilder->createNamedParameter($currentRecord[$fieldName], \PDO::PARAM_STR)
+                        ));
                     }
                 }
                 if (!empty($direction)) {
                     if ($direction === 'up') {
-                        $queryBuilder->andWhere($queryBuilder->expr()->lt($sortField, (int)$currentRecord[$sortField]));
+                        $queryBuilder->andWhere(
+                            $queryBuilder->expr()->lt(
+                                $sortField,
+                                $queryBuilder->createNamedParameter($currentRecord[$sortField], \PDO::PARAM_INT)
+                            )
+                        );
                         $queryBuilder->orderBy($sortField, 'DESC');
                     } else {
-                        $queryBuilder->andWhere($queryBuilder->expr()->gt($sortField, (int)$currentRecord[$sortField]));
+                        $queryBuilder->andWhere(
+                            $queryBuilder->expr()->gt(
+                                $sortField,
+                                $queryBuilder->createNamedParameter($currentRecord[$sortField], \PDO::PARAM_INT)
+                            )
+                        );
                         $queryBuilder->orderBy($sortField, 'ASC');
                     }
                 }

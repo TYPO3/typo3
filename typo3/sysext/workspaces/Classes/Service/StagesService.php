@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -589,7 +590,12 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         $result = $queryBuilder
             ->select('*')
             ->from('be_groups')
-            ->where($queryBuilder->expr()->in('uid', array_map('intval', $groups)))
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($groups, Connection::PARAM_INT_ARRAY)
+                )
+            )
             ->execute();
 
         while ($row = $result->fetch()) {

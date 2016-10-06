@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Status;
@@ -114,16 +116,20 @@ class DatabaseCheck
     /**
      * Checks the character set of the database and reports an error if it is not utf-8.
      *
-     * @param Connection Connection to the database to be checked
+     * @param Connection $connection to the database to be checked
      * @return Status\StatusInterface
      */
-    protected function checkMysqlDatabaseUtf8Status($connection)
+    protected function checkMysqlDatabaseUtf8Status(Connection $connection)
     {
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connection->createQueryBuilder();
         $defaultDatabaseCharset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
             ->from('information_schema.SCHEMATA')
             ->where(
-                $queryBuilder->expr()->eq('SCHEMA_NAME', $queryBuilder->quote($connection->getDatabase()))
+                $queryBuilder->expr()->eq(
+                    'SCHEMA_NAME',
+                    $queryBuilder->createNamedParameter($connection->getDatabase(), \PDO::PARAM_STR)
+                )
             )
             ->setMaxResults(1)
             ->execute()

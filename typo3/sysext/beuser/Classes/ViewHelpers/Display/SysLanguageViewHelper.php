@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -71,7 +72,10 @@ class SysLanguageViewHelper extends AbstractViewHelper
             ->where(
                 $queryBuilder->expr()->in(
                     'uid',
-                    GeneralUtility::intExplode(',', $uids)
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $uids),
+                        Connection::PARAM_INT_ARRAY
+                    )
                 )
             )
             ->orderBy('sorting')

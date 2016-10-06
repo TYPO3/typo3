@@ -177,7 +177,10 @@ class DatabaseSelect extends AbstractStepAction
         $defaultDatabaseCharset = $queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
             ->from('information_schema.SCHEMATA')
             ->where(
-                $queryBuilder->expr()->eq('SCHEMA_NAME', $queryBuilder->quote($dbName))
+                $queryBuilder->expr()->eq(
+                    'SCHEMA_NAME',
+                    $queryBuilder->createNamedParameter($dbName, \PDO::PARAM_STR)
+                )
             )
             ->setMaxResults(1)
             ->execute()

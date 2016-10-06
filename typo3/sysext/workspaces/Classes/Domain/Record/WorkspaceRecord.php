@@ -117,8 +117,14 @@ class WorkspaceRecord extends AbstractRecord
                 ->select('*')
                 ->from('sys_workspace_stage')
                 ->where(
-                    $queryBuilder->expr()->eq('parentid', $this->getUid()),
-                    $queryBuilder->expr()->eq('parenttable', $queryBuilder->quote('sys_workspace'))
+                    $queryBuilder->expr()->eq(
+                        'parentid',
+                        $queryBuilder->createNamedParameter($this->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'parenttable',
+                        $queryBuilder->createNamedParameter('sys_workspace', \PDO::PARAM_STR)
+                    )
                 )
                 ->orderBy('sorting')
                 ->execute();

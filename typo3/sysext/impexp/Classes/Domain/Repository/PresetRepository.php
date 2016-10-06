@@ -39,16 +39,28 @@ class PresetRepository
             ->from('tx_impexp_presets')
             ->where(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->gt('public', 0),
-                    $queryBuilder->expr()->eq('user_uid', (int)$this->getBackendUser()->user['uid'])
+                    $queryBuilder->expr()->gt(
+                        'public',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'user_uid',
+                        $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
+                    )
                 )
             );
 
         if ($pageId) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('item_uid', (int)$pageId),
-                    $queryBuilder->expr()->eq('item_uid', 0)
+                    $queryBuilder->expr()->eq(
+                        'item_uid',
+                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'item_uid',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 )
             );
         }
@@ -75,7 +87,12 @@ class PresetRepository
 
         return $queryBuilder->select('*')
             ->from('tx_impexp_presets')
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetch();
     }

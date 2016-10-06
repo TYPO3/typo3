@@ -80,9 +80,18 @@ class DataHandlerHook
                     ->update($tcaTable)
                     ->set('t3ver_stage', StagesService::STAGE_EDIT_ID)
                     ->where(
-                        $queryBuilder->expr()->eq('t3ver_stage', (int)$stageId),
-                        $queryBuilder->expr()->eq('pid', -1),
-                        $queryBuilder->expr()->gt('t3ver_wsid', 0)
+                        $queryBuilder->expr()->eq(
+                            't3ver_stage',
+                            $queryBuilder->createNamedParameter($stageId, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->gt(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
             }

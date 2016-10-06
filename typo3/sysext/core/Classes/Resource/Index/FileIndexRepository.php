@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Resource\File;
@@ -98,7 +99,7 @@ class FileIndexRepository implements SingletonInterface
             ->select(...$this->fields)
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$fileUid)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($fileUid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();
@@ -139,7 +140,7 @@ class FileIndexRepository implements SingletonInterface
             ->select(...$this->fields)
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('storage', (int)$storageUid),
+                $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('identifier_hash', $queryBuilder->createNamedParameter($identifierHash))
             )
             ->execute()
@@ -183,7 +184,7 @@ class FileIndexRepository implements SingletonInterface
             ->select(...$this->fields)
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash))
+                $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash), \PDO::PARAM_STR)
             )
             ->execute()
             ->fetchAll();
@@ -208,9 +209,12 @@ class FileIndexRepository implements SingletonInterface
             ->where(
                 $queryBuilder->expr()->eq(
                     'folder_hash',
-                    $queryBuilder->createNamedParameter($folder->getHashedIdentifier())
+                    $queryBuilder->createNamedParameter($folder->getHashedIdentifier(), \PDO::PARAM_STR)
                 ),
-                $queryBuilder->expr()->eq('storage', (int)$folder->getStorage()->getUid())
+                $queryBuilder->expr()->eq(
+                    'storage',
+                    $queryBuilder->createNamedParameter($folder->getStorage()->getUid(), \PDO::PARAM_INT)
+                )
             )
             ->execute();
 
@@ -255,22 +259,25 @@ class FileIndexRepository implements SingletonInterface
             ->where(
                 $queryBuilder->expr()->in(
                     'folder_hash',
-                    array_map([$queryBuilder, 'createNamedParameter'], $folderIdentifiers)
+                    $queryBuilder->createNamedParameter($folderIdentifiers, Connection::PARAM_INT_ARRAY)
                 ),
-                $queryBuilder->expr()->in('storage', $storageUids)
+                $queryBuilder->expr()->in(
+                    'storage',
+                    $queryBuilder->createNamedParameter($storageUids, Connection::PARAM_INT_ARRAY)
+                )
             );
 
         if (isset($fileName)) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->like(
                     'name',
-                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($fileName) . '%')
+                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($fileName) . '%', \PDO::PARAM_STR)
                 )
             );
         }
 
         if (!$includeMissing) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('missing', 0));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('missing', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)));
         }
 
         $result = $queryBuilder->execute();
@@ -347,14 +354,17 @@ class FileIndexRepository implements SingletonInterface
 
         if ((int)$file->_getPropertyRaw('uid') > 0) {
             $constraints = [
-                $queryBuilder->expr()->eq('uid', (int)$file->getUid())
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
             ];
         } else {
             $constraints = [
-                $queryBuilder->expr()->eq('storage', (int)$file->getStorage()->getUid()),
+                $queryBuilder->expr()->eq(
+                    'storage',
+                    $queryBuilder->createNamedParameter($file->getStorage()->getUid(), \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->eq(
                     'identifier',
-                    $queryBuilder->createNamedParameter($file->_getPropertyRaw('identifier'))
+                    $queryBuilder->createNamedParameter($file->_getPropertyRaw('identifier'), \PDO::PARAM_STR)
                 )
             ];
         }
@@ -426,7 +436,7 @@ class FileIndexRepository implements SingletonInterface
             ->from($this->table)
             ->where(
                 $queryBuilder->expr()->gt('tstamp', $queryBuilder->quoteIdentifier('last_indexed')),
-                $queryBuilder->expr()->eq('storage', (int)$storage->getUid())
+                $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT))
             )
             ->orderBy('tstamp', 'ASC')
             ->execute()
@@ -450,11 +460,19 @@ class FileIndexRepository implements SingletonInterface
             ->select(...$this->fields)
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('storage', (int)$storage->getUid())
+                $queryBuilder->expr()->eq(
+                    'storage',
+                    $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT)
+                )
             );
 
         if (!empty($uidList)) {
-            $queryBuilder->andWhere($queryBuilder->expr()->notIn('uid', array_map('intval', $uidList)));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->notIn(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
+                )
+            );
         }
 
         $rows = $queryBuilder->execute()->fetchAll();

@@ -75,7 +75,8 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $queryBuilderProphet = $this->createDatabaseMock();
         $queryBuilderProphet->select('*')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where('uid = 123')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where(Argument::cetera())->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         $this->subject->findByUid('123');

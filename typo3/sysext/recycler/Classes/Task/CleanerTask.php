@@ -65,12 +65,19 @@ class CleanerTask extends AbstractTask
             $queryBuilder->getRestrictions()->removeAll();
 
             $constraints = [
-                $queryBuilder->expr()->eq($GLOBALS['TCA'][$tableName]['ctrl']['delete'], 1),
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$tableName]['ctrl']['delete'],
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                )
+                ,
             ];
 
             if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp']) {
                 $dateBefore = $this->getPeriodAsTimestamp();
-                $constraints[] = $queryBuilder->expr()->lt($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'], (int)$dateBefore);
+                $constraints[] = $queryBuilder->expr()->lt(
+                    $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'],
+                    $queryBuilder->createNamedParameter($dateBefore, \PDO::PARAM_INT)
+                );
             }
             $this->checkFileResourceFieldsBeforeDeletion($tableName, $constraints);
             try {

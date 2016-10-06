@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  */
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -270,7 +271,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $indexCfgRec = $queryBuilder
                         ->select('*')
                         ->from('index_config')
-                        ->where($queryBuilder->expr()->eq('uid', (int)$freeIndexUid))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
+                            )
+                        )
                         ->execute()
                         ->fetch();
                     $categoryTitle = $indexCfgRec['title'];
@@ -678,7 +684,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $ftdrow = $queryBuilder
                     ->select('*')
                     ->from('index_fulltext')
-                    ->where($queryBuilder->expr()->eq('phash', (int)$row['phash']))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'phash',
+                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute()
                     ->fetch();
                 if ($ftdrow !== false) {
@@ -1149,7 +1160,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $result = $queryBuilder
                     ->select('uid', 'title')
                     ->from('index_config')
-                    ->where($queryBuilder->expr()->in('uid', $uidList))
+                    ->where(
+                        $queryBuilder->expr()->in(
+                            'uid',
+                            $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
+                        )
+                    )
                     ->execute();
 
                 while ($row = $result->fetch()) {
@@ -1330,7 +1346,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $result = $queryBuilder
                 ->select('uid', 'title')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', (int)$pageUid))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                    )
+                )
                 ->orderBy('sorting')
                 ->execute();
 
@@ -1403,7 +1424,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $row = $queryBuilder
             ->select('domainName')
             ->from('sys_domain')
-            ->where($queryBuilder->expr()->eq('pid', (int)$id))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                )
+            )
             ->orderBy('sorting')
             ->setMaxResults(1)
             ->execute()

@@ -645,6 +645,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilderProphet->expr()->willReturn(
             GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
         );
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getQueryBuilderForTable(Argument::any($tableName, 'pages'))->willReturn($queryBuilderProphet->reveal());
@@ -706,6 +707,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilderProphet->expr()->willReturn(
             GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
         );
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getQueryBuilderForTable(Argument::any($tableName, 'pages'))->willReturn($queryBuilderProphet->reveal());

@@ -18,6 +18,7 @@ use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -466,19 +467,21 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             ->select('*')
             ->from('tx_linkvalidator_link')
             ->where(
-                $queryBuilder->expr()->in('record_pid', $pageList)
+                $queryBuilder->expr()->in(
+                    'record_pid',
+                    $queryBuilder->createNamedParameter($pageList, Connection::PARAM_INT_ARRAY)
+                )
             )
             ->orderBy('record_uid')
             ->addOrderBy('uid');
 
         if (!empty($linkTypes)) {
-            $placeholders = array_map(
-                function ($linkType) use ($queryBuilder) {
-                    return $queryBuilder->createNamedParameter($linkType);
-                },
-                $linkTypes
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    'link_type',
+                    $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
+                )
             );
-            $queryBuilder->andWhere($queryBuilder->expr()->in('link_type', $placeholders));
         }
 
         return $queryBuilder->execute();

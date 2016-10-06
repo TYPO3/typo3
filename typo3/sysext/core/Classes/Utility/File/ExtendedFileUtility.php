@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Utility\File;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -405,9 +406,18 @@ class ExtendedFileUtility extends BasicFileUtility
                 ->select('tablename', 'recuid', 'ref_uid')
                 ->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
-                    $queryBuilder->expr()->eq('ref_uid', (int)$fileObject->getUid()),
-                    $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_metadata'))
+                    $queryBuilder->expr()->eq(
+                        'ref_table',
+                        $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'ref_uid',
+                        $queryBuilder->createNamedParameter($fileObject->getUid(), \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'tablename',
+                        $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                    )
                 )
                 ->execute()
                 ->fetchAll();
@@ -544,9 +554,18 @@ class ExtendedFileUtility extends BasicFileUtility
             ->count('hash')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
-                $queryBuilder->expr()->in('ref_uid', $fileUids),
-                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_metadata'))
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->in(
+                    'ref_uid',
+                    $queryBuilder->createNamedParameter($fileUids, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                )
             )->execute()->fetchColumn(0);
 
         $hasReferences = $numberOfReferences > 0;
@@ -580,7 +599,10 @@ class ExtendedFileUtility extends BasicFileUtility
             ->select('uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign')
             ->from('sys_file_reference')
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$referenceRecord['recuid'])
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetch();

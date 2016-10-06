@@ -239,7 +239,12 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
         $res = $queryBuilder
             ->select('uid', 'TSconfig')
             ->from('pages')
-            ->where($queryBuilder->expr()->neq('TSconfig', $queryBuilder->quote('')))
+            ->where(
+                $queryBuilder->expr()->neq(
+                    'TSconfig',
+                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                )
+            )
             ->groupBy('uid')
             ->execute();
 

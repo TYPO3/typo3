@@ -788,8 +788,14 @@ class FileList extends AbstractRecordList
         $translationRecords = $queryBuilder->select('*')
             ->from('sys_file_metadata')
             ->where(
-                $queryBuilder->expr()->eq($GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'], (int)$metaDataRecord['uid']),
-                $queryBuilder->expr()->gt($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'], 0)
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($metaDataRecord['uid'], \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->gt(
+                    $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'],
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchAll();
@@ -1047,10 +1053,19 @@ class FileList extends AbstractRecordList
         $referenceCount = $queryBuilder->count('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('deleted', 0),
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->quote('sys_file')),
-                $queryBuilder->expr()->eq('ref_uid', (int)$fileOrFolderObject->getUid()),
-                $queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata'))
+                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'ref_uid',
+                    $queryBuilder->createNamedParameter($fileOrFolderObject->getUid(), \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                )
             )
             ->execute()
             ->fetchColumn();

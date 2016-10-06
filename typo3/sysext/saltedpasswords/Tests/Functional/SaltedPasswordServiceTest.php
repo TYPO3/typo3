@@ -71,7 +71,7 @@ class SaltedPasswordServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $currentPassword = $queryBuilder
             ->select('password')
             ->from('be_users')
-            ->where($queryBuilder->expr()->eq('uid', 3))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT)))
             ->execute()
             ->fetchColumn();
 

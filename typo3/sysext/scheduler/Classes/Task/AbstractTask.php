@@ -375,7 +375,7 @@ abstract class AbstractTask
             ->select('serialized_executions')
             ->from('tx_scheduler_task')
             ->where(
-                $queryBuilder->expr()->eq('uid', $this->taskUid)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();
@@ -401,7 +401,7 @@ abstract class AbstractTask
             ->select('serialized_executions')
             ->from('tx_scheduler_task')
             ->where(
-                $queryBuilder->expr()->eq('uid', $this->taskUid)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();
@@ -452,7 +452,7 @@ abstract class AbstractTask
             ->select('serialized_executions')
             ->from('tx_scheduler_task')
             ->where(
-                $queryBuilder->expr()->eq('uid', $this->taskUid)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetch();

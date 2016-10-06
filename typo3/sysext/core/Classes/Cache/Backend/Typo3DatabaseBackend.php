@@ -138,8 +138,14 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $cacheRow =  $queryBuilder->select('content')
             ->from($this->cacheTable)
             ->where(
-                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($entryIdentifier)),
-                $queryBuilder->expr()->gte('expires', (int)$GLOBALS['EXEC_TIME'])
+                $queryBuilder->expr()->eq(
+                    'identifier',
+                    $queryBuilder->createNamedParameter($entryIdentifier, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->gte(
+                    'expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetch();
@@ -167,8 +173,14 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $count = $queryBuilder->count('*')
             ->from($this->cacheTable)
             ->where(
-                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($entryIdentifier)),
-                $queryBuilder->expr()->gte('expires', (int)$GLOBALS['EXEC_TIME'])
+                $queryBuilder->expr()->eq(
+                    'identifier',
+                    $queryBuilder->createNamedParameter($entryIdentifier, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->gte(
+                    'expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn(0);
@@ -217,8 +229,14 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             ->from($this->tagsTable)
             ->where(
                 $queryBuilder->expr()->eq($this->cacheTable . '.identifier',  $queryBuilder->quoteIdentifier($this->tagsTable . '.identifier')),
-                $queryBuilder->expr()->eq($this->tagsTable . '.tag', $queryBuilder->createNamedParameter($tag)),
-                $queryBuilder->expr()->gte($this->cacheTable . '.expires', (int)$GLOBALS['EXEC_TIME'])
+                $queryBuilder->expr()->eq(
+                    $this->tagsTable . '.tag',
+                    $queryBuilder->createNamedParameter($tag, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->gte(
+                    $this->cacheTable . '.expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                )
             )
             ->execute();
         while ($row = $result->fetch()) {
@@ -270,7 +288,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             $queryBuilder = $connection->createQueryBuilder();
             $result = $queryBuilder->select('identifier')
                 ->from($this->tagsTable)
-                ->where($queryBuilder->expr()->eq('tag', $queryBuilder->createNamedParameter($tag)))
+                ->where($queryBuilder->expr()->eq('tag', $queryBuilder->createNamedParameter($tag, \PDO::PARAM_STR)))
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
                 ->execute();
@@ -321,7 +339,10 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             $queryBuilder = $connection->createQueryBuilder();
             $result = $queryBuilder->select('identifier')
                 ->from($this->cacheTable)
-                ->where($queryBuilder->expr()->lt('expires', (int)$GLOBALS['EXEC_TIME']))
+                ->where($queryBuilder->expr()->lt(
+                    'expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                ))
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
                 ->execute();
@@ -339,7 +360,10 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                     ->execute();
             }
             $queryBuilder->delete($this->cacheTable)
-                ->where($queryBuilder->expr()->lt('expires', (int)$GLOBALS['EXEC_TIME']))
+                ->where($queryBuilder->expr()->lt(
+                    'expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                ))
                 ->execute();
 
             // Find out which "orphaned" tags rows exists that have no cache row and delete those, too.

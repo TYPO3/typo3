@@ -108,7 +108,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
         $collectionRecord = $queryBuilder->select('*')
             ->from(static::$storageTableName)
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$id)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
             ->execute()
@@ -154,14 +154,17 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
                 )
             )
             ->where(
-                $queryBuilder->expr()->eq(static::$storageTableName . '.uid', (int)$this->getIdentifier()),
+                $queryBuilder->expr()->eq(
+                    static::$storageTableName . '.uid',
+                    $queryBuilder->createNamedParameter($this->getIdentifier(), \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.tablenames',
-                    $queryBuilder->createNamedParameter($this->getItemTableName())
+                    $queryBuilder->createNamedParameter($this->getItemTableName(), \PDO::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.fieldname',
-                    $queryBuilder->createNamedParameter($this->getRelationFieldName())
+                    $queryBuilder->createNamedParameter($this->getRelationFieldName(), \PDO::PARAM_STR)
                 )
             );
 

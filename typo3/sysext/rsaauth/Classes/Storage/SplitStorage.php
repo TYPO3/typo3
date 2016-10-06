@@ -135,7 +135,12 @@ class SplitStorage extends AbstractStorage
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_rsaauth_keys');
         $count = $queryBuilder->delete('tx_rsaauth_keys')
-            ->where($queryBuilder->expr()->lt('crdate', ($GLOBALS['EXEC_TIME'] - 30 * 60)))
+            ->where(
+                $queryBuilder->expr()->lt(
+                    'crdate',
+                    $queryBuilder->createNamedParameter(($GLOBALS['EXEC_TIME'] - 30 * 60), \PDO::PARAM_INT)
+                )
+            )
             ->execute();
 
         return (int)$count;

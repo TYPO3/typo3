@@ -132,7 +132,12 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                     $workspaceRecord = $queryBuilder
                         ->select('uid', 'adminusers', 'reviewers', 'members', 'db_mountpoints')
                         ->from('sys_workspace')
-                        ->where($queryBuilder->expr()->eq('uid', (int)$workspaceUid))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($workspaceUid, \PDO::PARAM_INT)
+                            )
+                        )
                         ->execute()
                         ->fetch();
 
@@ -263,8 +268,14 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 ->select('*')
                 ->from('sys_preview')
                 ->where(
-                    $queryBuilder->expr()->eq('keyword', $queryBuilder->createNamedParameter($inputCode)),
-                    $queryBuilder->expr()->gt('endtime', (int)$GLOBALS['EXEC_TIME'])
+                    $queryBuilder->expr()->eq(
+                        'keyword',
+                        $queryBuilder->createNamedParameter($inputCode, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->gt(
+                        'endtime',
+                        $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                    )
                 )
                 ->setMaxResults(1)
                 ->execute()

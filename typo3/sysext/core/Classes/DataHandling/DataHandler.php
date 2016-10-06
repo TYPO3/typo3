@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -2602,17 +2603,17 @@ class DataHandler
             ->count('uid')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value)),
-                $queryBuilder->expr()->neq('uid', $uid)
+                $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value, \PDO::PARAM_STR)),
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT))
             );
         if ($pid !== 0) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pid', $pid)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createPositionalParameter($pid, \PDO::PARAM_INT))
             );
         } else {
             // pid>=0 for versioning
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->gte('pid', 0)
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT))
             );
         }
 
@@ -3512,13 +3513,27 @@ class DataHandler
                     $queryBuilder
                         ->select(...$fields)
                         ->from($table)
-                        ->where($queryBuilder->expr()->eq('pid', (int)$uid));
+                        ->where($queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                        );
                     if ($isTableWorkspaceEnabled && (int)$this->BE_USER->workspace === 0) {
                         // Table is workspace enabled, user is in default ws -> add t3ver_wsid=0 restriction
-                        $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', 0));
+                        $queryBuilder->andWhere(
+                            $queryBuilder->expr()->eq(
+                                't3ver_wsid',
+                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            )
+                        );
                     } elseif ($isTableWorkspaceEnabled) {
                         // Table is workspace enabled, user has a ws selected -> select wsid=0 and selected wsid rows
-                        $queryBuilder->andWhere($queryBuilder->expr()->in('t3ver_wsid', [0, (int)$this->BE_USER->workspace]));
+                        $queryBuilder->andWhere($queryBuilder->expr()->in(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter(
+                                [0, $this->BE_USER->workspace],
+                                Connection::PARAM_INT_ARRAY
+                            )
+                        ));
                     }
                     if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
                         $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby'], 'DESC');
@@ -3980,11 +3995,26 @@ class DataHandler
             ->select('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE')),
-                $queryBuilder->expr()->like('ref_string', $queryBuilder->createNamedParameter('%/RTEmagic%')),
-                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('images')),
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                $queryBuilder->expr()->eq('recuid', (int)$theNewSQLID)
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->like(
+                    'ref_string',
+                    $queryBuilder->createNamedParameter('%/RTEmagic%', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'softref_key',
+                    $queryBuilder->createNamedParameter('images', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'recuid',
+                    $queryBuilder->createNamedParameter($theNewSQLID, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('sorting', 'DESC')
             ->execute()
@@ -4930,7 +4960,7 @@ class DataHandler
                 $result = $queryBuilder
                     ->select(...$fileFieldArr)
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                     ->execute();
                 if ($row = $result->fetch()) {
                     $fArray = $fileFieldArr;
@@ -5081,7 +5111,10 @@ class DataHandler
                     $statement = $queryBuilder
                         ->select('uid')
                         ->from($table)
-                        ->where($queryBuilder->expr()->eq('pid', (int)$uid))
+                        ->where($queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        ))
                         ->execute();
 
                     while ($row = $statement->fetch()) {
@@ -5423,10 +5456,10 @@ class DataHandler
             ->from($table)
             ->where($queryBuilder->expr()->orX(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('pid', -1),
-                    $queryBuilder->expr()->eq('t3ver_oid', $id)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
                 ),
-                $queryBuilder->expr()->eq('uid', $id)
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
             ))
             ->orderBy('t3ver_id', 'DESC')
             ->setMaxResults(1)
@@ -6309,7 +6342,7 @@ class DataHandler
                 $output = $queryBuilder
                     ->select('uid', 'pid')
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
                     ->execute()
                     ->fetch();
                 BackendUtility::fixVersioningPid($table, $output, true);
@@ -6349,14 +6382,20 @@ class DataHandler
         $queryBuilder
             ->select('uid')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', (int)$id));
+            ->where($queryBuilder->expr()->eq(
+                'uid',
+                $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+            ));
         if ($perms && !$this->admin) {
             $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($perms));
         }
         if (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] &&
             $perms & Permission::PAGE_EDIT + Permission::PAGE_DELETE + Permission::CONTENT_EDIT
         ) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['editlock'], 0));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq(
+                $GLOBALS['TCA']['pages']['ctrl']['editlock'],
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ));
         }
         return $queryBuilder;
     }
@@ -6384,7 +6423,7 @@ class DataHandler
             $result = $queryBuilder
                 ->select('uid', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
                 ->orderBy('sorting')
                 ->execute();
             while ($row = $result->fetch()) {
@@ -6454,7 +6493,7 @@ class DataHandler
             $result = $queryBuilder
                 ->select('pid', 'uid', 't3ver_oid', 't3ver_wsid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', (int)$destinationId))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($destinationId, \PDO::PARAM_INT)))
                 ->execute();
             if ($row = $result->fetch()) {
                 BackendUtility::fixVersioningPid('pages', $row);
@@ -6522,7 +6561,10 @@ class DataHandler
                 $count = $queryBuilder
                     ->count('uid')
                     ->from($table)
-                    ->where($queryBuilder->expr()->eq('pid', (int)$page_uid))
+                    ->where($queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($page_uid, \PDO::PARAM_INT)
+                    ))
                     ->execute()
                     ->fetchColumn(0);
                 if ($count) {
@@ -6554,7 +6596,7 @@ class DataHandler
             $row = $queryBuilder
                 ->select('*')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
                 ->execute()
                 ->fetch();
             if ($row) {
@@ -6584,7 +6626,7 @@ class DataHandler
         $result = $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $fieldList))
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', (int)$id))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
         return $result ?: null;
@@ -6804,7 +6846,7 @@ class DataHandler
             $row = $queryBuilder
                 ->select('*')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
                 ->execute()
                 ->fetch();
 
@@ -6914,7 +6956,7 @@ class DataHandler
             if ($pid >= 0) {
                 // Fetches the first record under this pid
                 $row = $queryBuilder
-                    ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                    ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
                     ->orderBy($sortRow, 'ASC')
                     ->setMaxResults(1)
                     ->execute()
@@ -6943,7 +6985,10 @@ class DataHandler
                 // Sorting number is inside the list
                 // Fetches the record which is supposed to be the prev record
                 $row = $queryBuilder
-                    ->where($queryBuilder->expr()->eq('uid', abs($pid)))
+                    ->where($queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter(abs($pid), \PDO::PARAM_INT)
+                    ))
                     ->execute()
                     ->fetch();
 
@@ -6968,8 +7013,14 @@ class DataHandler
                             ->select($sortRow, 'pid', 'uid')
                             ->from($table)
                             ->where(
-                                $queryBuilder->expr()->eq('pid', (int)$row['pid']),
-                                $queryBuilder->expr()->gte($sortRow, (int)$row[$sortRow])
+                                $queryBuilder->expr()->eq(
+                                    'pid',
+                                    $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                                ),
+                                $queryBuilder->expr()->gte(
+                                    $sortRow,
+                                    $queryBuilder->createNamedParameter($row[$sortRow], \PDO::PARAM_INT)
+                                )
                             )
                             ->orderBy($sortRow, 'ASC')
                             ->setMaxResults(2)
@@ -7032,7 +7083,7 @@ class DataHandler
             $result = $queryBuilder
                 ->select('uid')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
                 ->orderBy($sortRow, 'ASC')
                 ->execute();
             while ($row = $result->fetch()) {
@@ -7086,16 +7137,29 @@ class DataHandler
                     ->select(...$select)
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->eq('pid', (int)$pid),
-                        $queryBuilder->expr()->eq('sys_language_uid', 0),
-                        $queryBuilder->expr()->lt($sortRow, (int)$row[$sortRow])
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->lt(
+                            $sortRow,
+                            $queryBuilder->createNamedParameter($row[$sortRow], \PDO::PARAM_INT)
+                        )
                     )
                     ->orderBy($sortRow, 'DESC')
                     ->setMaxResults(1);
                 if ($table === 'tt_content') {
-                    $queryBuilder->andWhere(
-                        $queryBuilder->expr()->eq('colPos', (int)$row['colPos'])
-                    );
+                    $queryBuilder
+                        ->andWhere(
+                            $queryBuilder->expr()->eq(
+                                'colPos',
+                                $queryBuilder->createNamedParameter($row['colPos'], \PDO::PARAM_INT)
+                            )
+                        );
                 }
                 // If there is an element, find its localized record in specified localization language
                 if ($previousRow = $queryBuilder->execute()->fetch()) {
@@ -7188,7 +7252,7 @@ class DataHandler
                 $queryBuilder
                     ->select('uid')
                     ->from('sys_language')
-                    ->where($queryBuilder->expr()->eq('pid', 0));
+                    ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)));
                 $rows = array_merge([['uid' => 0]], $queryBuilder->execute()->fetchAll(), [['uid' => -1]]);
                 foreach ($rows as $r) {
                     if ($this->BE_USER->checkLanguageAccess($r['uid'])) {
@@ -7231,7 +7295,7 @@ class DataHandler
         $queryBuilder->getRestrictions()->removeAll();
         $currentRecord = $queryBuilder->select('*')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', (int)$id))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
         // If the current record exists (which it should...), begin comparison:
@@ -7473,7 +7537,7 @@ class DataHandler
             ->removeAll();
         $queryBuilder->select('pid')
             ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid));
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
         if ($row = $queryBuilder->execute()->fetch()) {
             return $row['pid'];
         }
@@ -7530,15 +7594,20 @@ class DataHandler
             $queryBuilder
                 ->select('uid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
                 ->orderBy('sorting', 'DESC');
             if (!$this->admin) {
                 $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($this->pMap['show']));
             }
             if ((int)$this->BE_USER->workspace === 0) {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', 0));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                );
             } else {
-                $queryBuilder->andWhere($queryBuilder->expr()->in('t3ver_wsid', [0, (int)$this->BE_USER->workspace]));
+                $queryBuilder->andWhere($queryBuilder->expr()->in(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter([0, $this->BE_USER->workspace], Connection::PARAM_INT_ARRAY)
+                ));
             }
             $result = $queryBuilder->execute();
 
@@ -7753,8 +7822,8 @@ class DataHandler
                 ->count('uid')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$pid),
-                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle))
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle, \PDO::PARAM_STR))
                 )
                 ->execute()
                 ->fetchColumn(0);
@@ -7800,7 +7869,7 @@ class DataHandler
             $row = $query
                 ->select('pid')
                 ->from($table)
-                ->where($query->expr()->eq('uid', abs($pid)))
+                ->where($query->expr()->eq('uid', $query->createNamedParameter(abs($pid), \PDO::PARAM_INT)))
                 ->execute()
                 ->fetch();
             // Look, if the record UID happens to be an offline record. If so, find its live version.
@@ -7879,7 +7948,10 @@ class DataHandler
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $count = $query->count('uid')
                     ->from($table)
-                    ->where($query->expr()->in('pid', $inList))
+                    ->where($query->expr()->in(
+                        'pid',
+                        $query->createNamedParameter($inList, Connection::PARAM_INT_ARRAY)
+                    ))
                     ->execute()
                     ->fetchColumn(0);
                 if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
@@ -8019,7 +8091,7 @@ class DataHandler
                     ->from('pages', 'A')
                     ->from('pages', 'B')
                     ->where(
-                        $queryBuilder->expr()->eq('A.uid', (int)$pageUid),
+                        $queryBuilder->expr()->eq('A.uid', $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)),
                         $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid'))
                     )
                     ->execute();
@@ -8037,9 +8109,10 @@ class DataHandler
                         $siblingChildren = $siblingChildrenQuery
                             ->select('uid')
                             ->from('pages')
-                            ->where(
-                                $siblingChildrenQuery->expr()->eq('pid', (int)$row_tmp['uid'])
-                            )
+                            ->where($siblingChildrenQuery->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($row_tmp['uid'], \PDO::PARAM_INT)
+                            ))
                             ->execute();
                         while ($row_tmp2 = $siblingChildren->fetch()) {
                             $pageIdsThatNeedCacheFlush[] = (int)$row_tmp2['uid'];
@@ -8057,9 +8130,10 @@ class DataHandler
                     $row_tmp = $parentQuery
                         ->select('pid')
                         ->from('pages')
-                        ->where(
-                            $parentQuery->expr()->eq('uid', (int)$pid_tmp)
-                        )
+                        ->where($parentQuery->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($pid_tmp, \PDO::PARAM_INT)
+                        ))
                         ->execute()
                         ->fetch();
                     if (!empty($row_tmp)) {
@@ -8312,11 +8386,17 @@ class DataHandler
             ->select('*')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('type', 1),
-                $queryBuilder->expr()->lt('action', 256),
-                $queryBuilder->expr()->eq('userid', (int)$this->BE_USER->user['uid']),
-                $queryBuilder->expr()->eq('tstamp', (int)$GLOBALS['EXEC_TIME']),
-                $queryBuilder->expr()->neq('error', 0)
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->lt('action', $queryBuilder->createNamedParameter(256, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'userid',
+                    $queryBuilder->createNamedParameter($this->BE_USER->user['uid'], \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq('error', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->execute();
 

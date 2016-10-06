@@ -76,7 +76,7 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $queryBuilderProphet->count(Argument::cetera())->willReturn($queryBuilderProphet);
         $queryBuilderProphet->from(Argument::cetera())->willReturn($queryBuilderProphet);
         $queryBuilderProphet->where(Argument::cetera())->willReturn($queryBuilderProphet);
-        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturn(Argument::type('string'));
         $queryBuilderProphet->execute()->willReturn($databaseStatementProphet);
         $queryBuilderProphet->expr()->willReturn($expressionBuilderProphet->reveal());
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);

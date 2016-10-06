@@ -46,7 +46,7 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
         $flexFormCount = $queryBuilder->count('uid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('table')),
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('table', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNotNull('pi_flexform')
             )
             ->execute()->fetchColumn(0);
@@ -75,7 +75,7 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
         $statement = $queryBuilder->select('uid', 'pi_flexform')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('Ctype', $queryBuilder->createNamedParameter('table')),
+                $queryBuilder->expr()->eq('Ctype', $queryBuilder->createNamedParameter('table', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNotNull('pi_flexform')
             )
             ->execute();
@@ -85,10 +85,15 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
                 $fields = $this->mapFieldsFromFlexForm($flexForm);
                 $queryBuilder = $connection->createQueryBuilder();
                 $queryBuilder->update('tt_content')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$tableRecord['uid']))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($tableRecord['uid'], \PDO::PARAM_INT)
+                        )
+                    )
                     ->set('pi_flexform', 'null', false);
                 foreach ($fields as $identifier => $value) {
-                    $queryBuilder->set($identifier, $queryBuilder->quote($value), false);
+                    $queryBuilder->set($identifier, $value);
                 }
                 $databaseQueries[] = $queryBuilder->getSQL();
                 $queryBuilder->execute();

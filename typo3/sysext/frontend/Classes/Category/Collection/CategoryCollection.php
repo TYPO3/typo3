@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,7 +74,10 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
             ->select('*')
             ->from(static::$storageTableName)
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$id)
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                )
             )
             ->setMaxResults(1)
             ->execute()
@@ -112,7 +116,10 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
                 $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField']
             );
 
-            $languageConstraint = $queryBuilder->expr()->in($languageField, [0, -1]);
+            $languageConstraint = $queryBuilder->expr()->in(
+                $languageField,
+                $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY)
+            );
 
             // If not in default language, also consider items in current language with no original
             if ($tsfe->sys_language_content > 0) {
@@ -125,8 +132,14 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
                 $languageConstraint = $queryBuilder->expr()->orX(
                     $languageConstraint,
                     $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq($languageField, (int)$tsfe->sys_language_content),
-                        $queryBuilder->expr()->eq($transOrigPointerField, 0)
+                        $queryBuilder->expr()->eq(
+                            $languageField,
+                            $queryBuilder->createNamedParameter($tsfe->sys_language_content, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            $transOrigPointerField,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
                     )
                 );
             }

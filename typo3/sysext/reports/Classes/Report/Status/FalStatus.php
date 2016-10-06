@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,8 +74,14 @@ class FalStatus implements StatusProviderInterface
                 ->count('*')
                 ->from('sys_file')
                 ->where(
-                    $queryBuilder->expr()->eq('missing', 1),
-                    $queryBuilder->expr()->in('storage', array_keys($storages))
+                    $queryBuilder->expr()->eq(
+                        'missing',
+                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->in(
+                        'storage',
+                        $queryBuilder->createNamedParameter(array_keys($storages), Connection::PARAM_INT_ARRAY)
+                    )
                 )
                 ->execute()
                 ->fetchColumn(0);
@@ -89,8 +96,14 @@ class FalStatus implements StatusProviderInterface
                 ->select('identifier', 'storage')
                 ->from('sys_file')
                 ->where(
-                    $queryBuilder->expr()->eq('missing', 1),
-                    $queryBuilder->expr()->in('storage', array_keys($storages))
+                    $queryBuilder->expr()->eq(
+                        'missing',
+                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->in(
+                        'storage',
+                        $queryBuilder->createNamedParameter(array_keys($storages), Connection::PARAM_INT_ARRAY)
+                    )
                 )
                 ->setMaxResults($maxFilesToShow)
                 ->execute()

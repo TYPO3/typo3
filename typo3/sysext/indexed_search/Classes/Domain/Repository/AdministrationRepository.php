@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -61,7 +62,12 @@ class AdministrationRepository
         $result = $queryBuilder
             ->select('*')
             ->from('index_grlist')
-            ->where($queryBuilder->expr()->eq('phash', (int)$phash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                )
+            )
             ->execute();
         $numberOfRows = $result->rowCount();
         $allRows = [];
@@ -84,7 +90,12 @@ class AdministrationRepository
         return $queryBuilder
             ->count('phash')
             ->from('index_fulltext')
-            ->where($queryBuilder->expr()->eq('phash', (int)$phash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchColumn(0);
     }
@@ -101,7 +112,12 @@ class AdministrationRepository
         return $queryBuilder
             ->count('*')
             ->from('index_rel')
-            ->where($queryBuilder->expr()->eq('phash', (int)$phash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchColumn(0);
     }
@@ -120,7 +136,7 @@ class AdministrationRepository
             ->select('index_phash.*')
             ->addSelectLiteral($queryBuilder->expr()->count('*', 'pcount'))
             ->from('index_phash')
-            ->where($queryBuilder->expr()->neq('item_type', 0))
+            ->where($queryBuilder->expr()->neq('item_type', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
             ->groupBy(
                 'phash_grouping',
                 'phash',
@@ -160,8 +176,14 @@ class AdministrationRepository
                     ->select('*')
                     ->from('index_phash')
                     ->where(
-                        $queryBuilder->expr()->eq('phash_grouping', (int)$row['phash_grouping']),
-                        $queryBuilder->expr()->neq('phash', (int)$row['phash'])
+                        $queryBuilder->expr()->eq(
+                            'phash_grouping',
+                            $queryBuilder->createNamedParameter($row['phash_grouping'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->neq(
+                            'phash',
+                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
                 while ($row2 = $res2->fetch()) {
@@ -251,7 +273,12 @@ class AdministrationRepository
         $items = $queryBuilder
             ->count('*')
             ->from('index_phash')
-            ->where($queryBuilder->expr()->eq('item_type', $queryBuilder->createNamedParameter($itemType)))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'item_type',
+                    $queryBuilder->createNamedParameter($itemType, \PDO::PARAM_STR)
+                )
+            )
             ->groupBy('phash_grouping')
             ->execute()
             ->fetchAll();
@@ -271,7 +298,12 @@ class AdministrationRepository
         return (int)$queryBuilder
             ->count('phash')
             ->from('index_section')
-            ->where($queryBuilder->expr()->eq('phash', (int)$pageHash))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchColumn(0);
     }
@@ -289,7 +321,7 @@ class AdministrationRepository
             ->select('index_phash.*')
             ->addSelectLiteral($queryBuilder->expr()->count('*', 'pcount'))
             ->from('index_phash')
-            ->where($queryBuilder->expr()->neq('data_page_id', 0))
+            ->where($queryBuilder->expr()->neq('data_page_id', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
             ->groupBy(
                 'phash_grouping',
                 'phash',
@@ -328,8 +360,14 @@ class AdministrationRepository
                     ->select('*')
                     ->from('index_phash')
                     ->where(
-                        $queryBuilder->expr()->eq('phash_grouping', (int)$row['phash_grouping']),
-                        $queryBuilder->expr()->neq('phash', (int)$row['phash'])
+                        $queryBuilder->expr()->eq(
+                            'phash_grouping',
+                            $queryBuilder->createNamedParameter($row['phash_grouping'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->neq(
+                            'phash',
+                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
                 while ($row2 = $res2->fetch()) {
@@ -357,7 +395,12 @@ class AdministrationRepository
             ->select('word')
             ->from('index_stat_word')
             ->addSelectLiteral($queryBuilder->expr()->count('*', 'c'))
-            ->where($queryBuilder->expr()->eq('pageid', (int)$pageUid))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pageid',
+                    $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                )
+            )
             ->groupBy('word')
             ->setMaxResults((int)$max);
 
@@ -373,7 +416,13 @@ class AdministrationRepository
         if ($count === 0) {
             // Limit access to pages of the current site
             $queryBuilder->where(
-                $queryBuilder->expr()->in('pageid', $this->extGetTreeList((int)$pageUid, 100, 0, '1=1')),
+                $queryBuilder->expr()->in(
+                    'pageid',
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $this->extGetTreeList((int)$pageUid, 100, 0, '1=1'), true),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                ),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhere)
             );
         }
@@ -468,7 +517,10 @@ class AdministrationRepository
             ->from('index_section', 'ISEC')
             ->where(
                 $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('ISEC.phash')),
-                $queryBuilder->expr()->eq('ISEC.page_id', (int)$singleLine['row']['uid'])
+                $queryBuilder->expr()->eq(
+                    'ISEC.page_id',
+                    $queryBuilder->createNamedParameter($singleLine['row']['uid'], \PDO::PARAM_INT)
+                )
             )
             ->groupBy(
                 'IP.phash',
@@ -522,7 +574,10 @@ class AdministrationRepository
                     ->from('index_rel')
                     ->from('index_words')
                     ->where(
-                        $queryBuilder->expr()->eq('index_rel.phash', (int)$row['phash']),
+                        $queryBuilder->expr()->eq(
+                            'index_rel.phash',
+                            $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                        ),
                         $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
                     )
                     ->groupBy('index_words.baseword')
@@ -536,7 +591,12 @@ class AdministrationRepository
                         ->getQueryBuilderForTable('index_fulltext');
                     $row['fulltextData'] = $queryBuilder->select('*')
                         ->from('index_fulltext')
-                        ->where($queryBuilder->expr()->eq('phash', (int)$row['phash']))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'phash',
+                                $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                            )
+                        )
                         ->setMaxResults(1)
                         ->execute()
                         ->fetch();
@@ -547,7 +607,10 @@ class AdministrationRepository
                         ->from('index_rel')
                         ->from('index_words')
                         ->where(
-                            $queryBuilder->expr()->eq('index_rel.phash', (int)$row['phash']),
+                            $queryBuilder->expr()->eq(
+                                'index_rel.phash',
+                                $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
+                            ),
                             $queryBuilder->expr()->eq(
                                 'index_words.wid',
                                 $queryBuilder->quoteIdentifier('index_rel.wid')
@@ -625,7 +688,10 @@ class AdministrationRepository
                     ->select('page_id')
                     ->from('index_section')
                     ->where(
-                        $queryBuilder->expr()->eq('phash', (int)$phash)
+                        $queryBuilder->expr()->eq(
+                            'phash',
+                            $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
                 while ($row = $res->fetch()) {
@@ -671,7 +737,12 @@ class AdministrationRepository
             $queryBuilder
                 ->update('index_words')
                 ->set('is_stopword', (int)$state)
-                ->where($queryBuilder->expr()->eq('wid', (int)$wid))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'wid',
+                        $queryBuilder->createNamedParameter($wid, \PDO::PARAM_INT)
+                    )
+                )
                 ->execute();
         }
     }

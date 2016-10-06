@@ -1060,11 +1060,11 @@ abstract class AbstractUserAuthentication
             ->where(
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_id',
-                    $queryBuilder->createNamedParameter($this->id)
+                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_name',
-                    $queryBuilder->createNamedParameter($this->name)
+                    $queryBuilder->createNamedParameter($this->name, \PDO::PARAM_STR)
                 ),
                 // Condition on which to join the session and user table
                 $queryBuilder->expr()->eq(
@@ -1073,7 +1073,7 @@ abstract class AbstractUserAuthentication
                 ),
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_hashlock',
-                    $queryBuilder->createNamedParameter($this->hashLockClause_getHashInt())
+                    $queryBuilder->createNamedParameter($this->hashLockClause_getHashInt(), \PDO::PARAM_INT)
                 )
             );
 
@@ -1508,11 +1508,11 @@ abstract class AbstractUserAuthentication
             ->where(
                 $query->expr()->lt(
                     'ses_tstamp',
-                    $query->createNamedParameter((int)($GLOBALS['EXEC_TIME'] - $this->gc_time))
+                    $query->createNamedParameter(($GLOBALS['EXEC_TIME'] - $this->gc_time), \PDO::PARAM_INT)
                 ),
                 $query->expr()->eq(
                     'ses_name',
-                    $query->createNamedParameter($this->name)
+                    $query->createNamedParameter($this->name, \PDO::PARAM_STR)
                 )
             )
             ->execute();
@@ -1593,7 +1593,7 @@ abstract class AbstractUserAuthentication
         $query->setRestrictions($this->userConstraints());
         $query->select('*')
             ->from($this->user_table)
-            ->where($query->expr()->eq('uid', (int)$uid));
+            ->where($query->expr()->eq('uid', $query->createNamedParameter($uid, \PDO::PARAM_INT)));
 
         return $query->execute()->fetch();
     }
@@ -1612,7 +1612,7 @@ abstract class AbstractUserAuthentication
         $query->setRestrictions($this->userConstraints());
         $query->select('*')
             ->from($this->user_table)
-            ->where($query->expr()->eq('username', $query->createNamedParameter($name)));
+            ->where($query->expr()->eq('username', $query->createNamedParameter($name, \PDO::PARAM_STR)));
 
         return $query->execute()->fetch();
     }
@@ -1648,7 +1648,10 @@ abstract class AbstractUserAuthentication
             if (!empty($username)) {
                 array_unshift(
                     $constraints,
-                    $query->expr()->eq($dbUser['username_column'], $query->createNamedParameter($username))
+                    $query->expr()->eq(
+                        $dbUser['username_column'],
+                        $query->createNamedParameter($username, \PDO::PARAM_STR)
+                    )
                 );
             }
 

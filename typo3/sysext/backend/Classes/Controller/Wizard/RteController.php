@@ -253,8 +253,14 @@ class RteController extends AbstractWizardController
                 ->select('tstamp')
                 ->from('sys_history')
                 ->where(
-                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($this->P['table'])),
-                    $queryBuilder->expr()->eq('recuid', (int)$this->P['uid'])
+                    $queryBuilder->expr()->eq(
+                        'tablename',
+                        $queryBuilder->createNamedParameter($this->P['table'], \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'recuid',
+                        $queryBuilder->createNamedParameter($this->P['uid'], \PDO::PARAM_INT)
+                    )
                 )
                 ->orderBy('tstamp', 'desc')
                 ->setMaxResults(1)

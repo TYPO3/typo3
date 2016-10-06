@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Sv;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -162,13 +163,19 @@ class AuthenticationService extends AbstractAuthenticationService
                 $res = $queryBuilder->select('*')
                     ->from($this->db_groups['table'])
                     ->where(
-                        $queryBuilder->expr()->in('uid', array_map('intval', $groups)),
+                        $queryBuilder->expr()->in(
+                            'uid',
+                            $queryBuilder->createNamedParameter($groups, Connection::PARAM_INT_ARRAY)
+                        ),
                         $queryBuilder->expr()->orX(
-                            $queryBuilder->expr()->eq('lockToDomain', $queryBuilder->quote('')),
+                            $queryBuilder->expr()->eq(
+                                'lockToDomain',
+                                $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                            ),
                             $queryBuilder->expr()->isNull('lockToDomain'),
                             $queryBuilder->expr()->eq(
                                 'lockToDomain',
-                                $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'])
+                                $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'], \PDO::PARAM_STR)
                             )
                         )
                     )
@@ -209,13 +216,22 @@ class AuthenticationService extends AbstractAuthenticationService
             ->select('uid', 'subgroup')
             ->from($this->db_groups['table'])
             ->where(
-                $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $grList, true)),
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $grList, true),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                ),
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('lockToDomain', $queryBuilder->quote('')),
+                    $queryBuilder->expr()->eq(
+                        'lockToDomain',
+                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                    ),
                     $queryBuilder->expr()->isNull('lockToDomain'),
                     $queryBuilder->expr()->eq(
                         'lockToDomain',
-                        $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'])
+                        $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'], \PDO::PARAM_STR)
                     )
                 )
             )

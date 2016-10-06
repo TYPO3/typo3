@@ -71,7 +71,8 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
                     // in case we are NOT in a versioning preview (That means we are online!)
                     $constraints[] = $expressionBuilder->lte(
                         $tablePrefix . '.t3ver_state',
-                        new VersionState(VersionState::DEFAULT_STATE)
+                        // Trigger __toString(), then cast int
+                        (int)(string)new VersionState(VersionState::DEFAULT_STATE)
                     );
                 } elseif ($tableName !== 'pages') {
                     // Show only records of the live and current workspace in case we are in a versioning preview

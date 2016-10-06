@@ -52,8 +52,14 @@ class FilesReplacePermissionUpdate extends AbstractUpdate
             $numberOfUpgradeRows = $queryBuilder->count('uid')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->like('file_permissions', $queryBuilder->createNamedParameter('%writeFile%')),
-                    $queryBuilder->expr()->notLike('file_permissions', $queryBuilder->createNamedParameter('%replaceFile%'))
+                    $queryBuilder->expr()->like(
+                        'file_permissions',
+                        $queryBuilder->createNamedParameter('%writeFile%', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->notLike(
+                        'file_permissions',
+                        $queryBuilder->createNamedParameter('%replaceFile%', \PDO::PARAM_STR)
+                    )
                 )
                 ->execute()
                 ->fetchColumn(0);
@@ -87,16 +93,27 @@ class FilesReplacePermissionUpdate extends AbstractUpdate
             $statement = $queryBuilder->select('uid', 'file_permissions')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->like('file_permissions', $queryBuilder->createNamedParameter('%writeFile%')),
-                    $queryBuilder->expr()->notLike('file_permissions', $queryBuilder->createNamedParameter('%replaceFile%'))
+                    $queryBuilder->expr()->like(
+                        'file_permissions',
+                        $queryBuilder->createNamedParameter('%writeFile%', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->notLike(
+                        'file_permissions',
+                        $queryBuilder->createNamedParameter('%replaceFile%', \PDO::PARAM_STR)
+                    )
                 )
                 ->execute();
             while ($record = $statement->fetch()) {
                 $queryBuilder = $connection->createQueryBuilder();
                 $queryBuilder->update($table)
-                    ->where($queryBuilder->expr()->eq('uid', (int)$record['uid']))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
+                        )
+                    )
                     // Manual quoting to have the final value in $databaseQueries and not a statement placeholder
-                    ->set('file_permissions', $queryBuilder->quote($record['file_permissions'] . ',replaceFile'), false);
+                    ->set('file_permissions', $record['file_permissions'] . ',replaceFile');
                 $databaseQueries[] = $queryBuilder->getSQL();
                 $queryBuilder->execute();
             }

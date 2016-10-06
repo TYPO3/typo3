@@ -492,7 +492,13 @@ class RelationHandler
                 $queryBuilder->select('uid')
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $uidList))
+                        $queryBuilder->expr()->in(
+                            'uid',
+                            $queryBuilder->createNamedParameter(
+                                GeneralUtility::intExplode(',', $uidList),
+                                Connection::PARAM_INT_ARRAY
+                            )
+                        )
                     );
                 foreach (QueryHelper::parseOrderBy((string)$sortby) as $orderPair) {
                     list($fieldName, $order) = $orderPair;
@@ -533,11 +539,20 @@ class RelationHandler
                 // having previously allowed only one table, this case applies.
                 if ($this->currentTable == $this->MM_isMultiTableRelationship) {
                     $expression = $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable)),
-                        $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter(''))
+                        $queryBuilder->expr()->eq(
+                            'tablenames',
+                            $queryBuilder->createNamedParameter($this->currentTable, \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'tablenames',
+                            $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        )
                     );
                 } else {
-                    $expression = $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable));
+                    $expression = $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter($this->currentTable, \PDO::PARAM_STR)
+                    );
                 }
                 $queryBuilder->andWhere($expression);
             }
@@ -555,11 +570,14 @@ class RelationHandler
         }
         foreach ($this->MM_match_fields as $field => $value) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
             );
         }
         $queryBuilder->andWhere(
-            $queryBuilder->expr()->eq($uidLocal_field, (int)$uid)
+            $queryBuilder->expr()->eq(
+                $uidLocal_field,
+                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+            )
         );
         $queryBuilder->orderBy($sorting_field);
         $statement = $queryBuilder->execute();
@@ -637,7 +655,10 @@ class RelationHandler
             $queryBuilder->getRestrictions()->removeAll();
             $queryBuilder->select($uidForeign_field)
                 ->from($MM_tableName)
-                ->where($queryBuilder->expr()->eq($uidLocal_field, (int)$uid))
+                ->where($queryBuilder->expr()->eq(
+                    $uidLocal_field,
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ))
                 ->orderBy($sorting_field);
 
             if ($prep) {
@@ -695,19 +716,33 @@ class RelationHandler
                     $queryBuilder->update($MM_tableName)
                         ->set($sorting_field, $c)
                         ->where(
-                            $expressionBuilder->eq($uidLocal_field, $uid),
-                            $expressionBuilder->eq($uidForeign_field, $val['id'])
+                            $expressionBuilder->eq(
+                                $uidLocal_field,
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            ),
+                            $expressionBuilder->eq(
+                                $uidForeign_field,
+                                $queryBuilder->createNamedParameter($val['id'], \PDO::PARAM_INT)
+                            )
                         );
 
                     if ($additionalWhere->count()) {
                         $queryBuilder->andWhere($additionalWhere);
                     }
                     if ($this->MM_hasUidField) {
-                        $queryBuilder->andWhere($expressionBuilder->eq('uid', (int)$oldMMs_inclUid[$oldMMs_index][2]));
+                        $queryBuilder->andWhere(
+                            $expressionBuilder->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMMs_index][2], \PDO::PARAM_INT)
+                            )
+                        );
                     }
                     if ($tablename) {
                         $queryBuilder->andWhere(
-                            $expressionBuilder->eq('tablenames', $queryBuilder->createNamedParameter($tablename))
+                            $expressionBuilder->eq(
+                                'tablenames',
+                                $queryBuilder->createNamedParameter($tablename, \PDO::PARAM_STR)
+                            )
                         );
                     }
 
@@ -741,18 +776,21 @@ class RelationHandler
                 foreach ($oldMMs as $oldMM_key => $mmItem) {
                     // If UID field is present, of course we need only use that for deleting.
                     if ($this->MM_hasUidField) {
-                        $removeClauses->add($queryBuilder->expr()->eq('uid', (int)$oldMMs_inclUid[$oldMM_key][2]));
+                        $removeClauses->add($queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMM_key][2], \PDO::PARAM_INT)
+                        ));
                     } else {
                         if (is_array($mmItem)) {
                             $removeClauses->add(
                                 $queryBuilder->expr()->andX(
                                     $queryBuilder->expr()->eq(
                                         'tablenames',
-                                        $queryBuilder->createNamedParameter($mmItem[0])
+                                        $queryBuilder->createNamedParameter($mmItem[0], \PDO::PARAM_STR)
                                     ),
                                     $queryBuilder->expr()->eq(
                                         $uidForeign_field,
-                                        $queryBuilder->createNamedParameter($mmItem[1])
+                                        $queryBuilder->createNamedParameter($mmItem[1], \PDO::PARAM_INT)
                                     )
                                 )
                             );
@@ -760,7 +798,7 @@ class RelationHandler
                             $removeClauses->add(
                                 $queryBuilder->expr()->eq(
                                     $uidForeign_field,
-                                    $queryBuilder->createNamedParameter($mmItem)
+                                    $queryBuilder->createNamedParameter($mmItem, \PDO::PARAM_INT)
                                 )
                             );
                         }
@@ -776,7 +814,10 @@ class RelationHandler
 
                 $queryBuilder->delete($MM_tableName)
                     ->where(
-                        $queryBuilder->expr()->eq($uidLocal_field, (int)$uid),
+                        $queryBuilder->expr()->eq(
+                            $uidLocal_field,
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        ),
                         $removeClauses
                     );
 
@@ -827,12 +868,18 @@ class RelationHandler
                 ->createQueryBuilder();
             $queryBuilder->update($MM_tableName)
                 ->set($uidLocal_field, (int)$newUid)
-                ->where($queryBuilder->expr()->eq($uidLocal_field, (int)$uid));
+                ->where($queryBuilder->expr()->eq(
+                    $uidLocal_field,
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ));
             // Boolean: does the field "tablename" need to be filled?
             $prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship;
             if ($this->MM_is_foreign && $prep) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable))
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter($this->currentTable, \PDO::PARAM_STR)
+                    )
                 );
             }
             // Add WHERE clause if configured
@@ -844,7 +891,7 @@ class RelationHandler
             // Select, update or delete only those relations that match the configured fields
             foreach ($this->MM_match_fields as $field => $value) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
                 );
             }
             $queryBuilder->execute();
@@ -887,12 +934,21 @@ class RelationHandler
         if ($conf['symmetric_field']) {
             $queryBuilder->where(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq($conf['foreign_field'], $uid),
-                    $queryBuilder->expr()->eq($conf['symmetric_field'], $uid)
+                    $queryBuilder->expr()->eq(
+                        $conf['foreign_field'],
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $conf['symmetric_field'],
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    )
                 )
             );
         } else {
-            $queryBuilder->where($queryBuilder->expr()->eq($conf['foreign_field'], $uid));
+            $queryBuilder->where($queryBuilder->expr()->eq(
+                $conf['foreign_field'],
+                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+            ));
         }
         // If it's requested to look for the parent uid AND the parent table,
         // add an additional SQL-WHERE clause
@@ -900,21 +956,27 @@ class RelationHandler
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $foreign_table_field,
-                    $queryBuilder->createNamedParameter($this->currentTable)
+                    $queryBuilder->createNamedParameter($this->currentTable, \PDO::PARAM_STR)
                 )
             );
         }
         // Add additional where clause if foreign_match_fields are defined
         foreach ($foreign_match_fields as $field => $value) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
             );
         }
         // Select children from the live(!) workspace only
         if (BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->in($foreign_table . '.t3ver_wsid', [0, (int)$this->getWorkspaceId()]),
-                $queryBuilder->expr()->neq($foreign_table . '.pid', -1)
+                $queryBuilder->expr()->in(
+                    $foreign_table . '.t3ver_wsid',
+                    $queryBuilder->createNamedParameter([0, (int)$this->getWorkspaceId()], Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->neq(
+                    $foreign_table . '.pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                )
             );
         }
         // Get the correct sorting field
@@ -924,6 +986,7 @@ class RelationHandler
             if ($conf['symmetric_sortby'] && $conf['symmetric_field']) {
                 // Sorting depends on, from which side of the relation we're looking at it
                 // This requires bypassing automatic quoting and setting of the default sort direction
+                // @TODO: Doctrine: generalize to standard SQL to guarantee database independency
                 $queryBuilder->add(
                     'orderBy',
                     'CASE
@@ -1186,7 +1249,13 @@ class RelationHandler
                     $queryBuilder->getRestrictions()->removeAll();
                     $queryBuilder->select(...(GeneralUtility::trimExplode(',', $fields, true)))
                         ->from($table)
-                        ->where($queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $itemList)));
+                        ->where($queryBuilder->expr()->in(
+                            'uid',
+                            $queryBuilder->createNamedParameter(
+                                GeneralUtility::intExplode(',', $itemList),
+                                Connection::PARAM_INT_ARRAY
+                            )
+                        ));
                     if ($this->additionalWhere[$table]) {
                         $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->additionalWhere[$table]));
                     }
@@ -1392,7 +1461,6 @@ class RelationHandler
      */
     protected function purgeVersionedIds($tableName, array $ids)
     {
-        $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
         $queryBuilder = $this->getConnectionForTableName($tableName)
@@ -1401,9 +1469,18 @@ class RelationHandler
         $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->in('t3ver_oid', $ids),
-                $queryBuilder->expr()->neq('t3ver_wsid', 0)
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->in(
+                    't3ver_oid',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->neq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('t3ver_state', 'DESC')
             ->execute()
@@ -1430,7 +1507,6 @@ class RelationHandler
      */
     protected function purgeLiveVersionedIds($tableName, array $ids)
     {
-        $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
         $queryBuilder = $this->getConnectionForTableName($tableName)
@@ -1439,9 +1515,18 @@ class RelationHandler
         $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->in('t3ver_oid', $ids),
-                $queryBuilder->expr()->neq('t3ver_wsid', 0)
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->in(
+                    't3ver_oid',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->neq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
             ->orderBy('t3ver_state', 'DESC')
             ->execute()
@@ -1469,7 +1554,6 @@ class RelationHandler
      */
     protected function purgeDeletePlaceholder($tableName, array $ids)
     {
-        $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
         $queryBuilder = $this->getConnectionForTableName($tableName)
@@ -1478,10 +1562,28 @@ class RelationHandler
         $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->in('t3ver_oid', $ids),
-                $queryBuilder->expr()->neq('t3ver_wsid', (int)$this->getWorkspaceId()),
-                $queryBuilder->expr()->eq('t3ver_state', (int)VersionState::cast(VersionState::DELETE_PLACEHOLDER))
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->in(
+                    't3ver_oid',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->neq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter(
+                        $this->getWorkspaceId(),
+                        \PDO::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(
+                        (string)VersionState::cast(VersionState::DELETE_PLACEHOLDER),
+                        \PDO::PARAM_INT
+                    )
+                )
             )
             ->execute()
             ->fetchAll();

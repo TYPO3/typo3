@@ -276,7 +276,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             foreach ($where as $fieldName => $value) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($value))
+                    $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
                 );
             }
 
@@ -306,7 +306,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             foreach ($where as $fieldName => $value) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($value))
+                    $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
                 );
             }
 
@@ -545,7 +545,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                             $queryBuilder->expr()->eq(
                                 $tableName . '.uid',
                                 $queryBuilder->createNamedParameter(
-                                    $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']], \PDO::PARAM_INT
+                                    $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']],
+                                    \PDO::PARAM_INT
                                 )
                             ),
                             $queryBuilder->expr()->eq(
@@ -624,7 +625,12 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $result = $queryBuilder
                 ->select('pid')
                 ->from($tableName)
-                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    )
+                )
                 ->execute();
             if ($row = $result->fetch()) {
                 $storagePage = $row['pid'];

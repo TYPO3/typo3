@@ -189,8 +189,14 @@ class ImportExportTask implements TaskInterface
             ->from('tx_impexp_presets')
             ->where(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->gt('public', 0),
-                    $queryBuilder->expr()->eq('user_uid', (int)$this->getBackendUser()->user['uid'])
+                    $queryBuilder->expr()->gt(
+                        'public',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'user_uid',
+                        $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
+                    )
                 )
             )
             ->orderBy('item_uid', 'DESC')

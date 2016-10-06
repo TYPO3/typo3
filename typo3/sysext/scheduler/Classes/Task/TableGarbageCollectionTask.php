@@ -83,8 +83,8 @@ class TableGarbageCollectionTask extends AbstractTask
             // If expire field value is 0, do not delete
             // Expire field = 0 means no expiration
             $queryBuilder->where(
-                $queryBuilder->expr()->lte($field, $dateLimit),
-                $queryBuilder->expr()->gt($field, 0)
+                $queryBuilder->expr()->lte($field, $queryBuilder->createNamedParameter($dateLimit, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gt($field, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         } elseif (!empty($configuration['dateField'])) {
             if (!$this->allTables) {
@@ -96,7 +96,10 @@ class TableGarbageCollectionTask extends AbstractTask
                 $deleteTimestamp = strtotime('-' . $configuration['expirePeriod'] . 'days');
             }
             $queryBuilder->where(
-                $queryBuilder->expr()->lt($configuration['dateField'], $deleteTimestamp)
+                $queryBuilder->expr()->lt(
+                    $configuration['dateField'],
+                    $queryBuilder->createNamedParameter($deleteTimestamp, \PDO::PARAM_INT)
+                )
             );
         } else {
             throw new \RuntimeException(self::class . ' misconfiguration: Either expireField or dateField must be defined for table ' . $table, 1308355268);

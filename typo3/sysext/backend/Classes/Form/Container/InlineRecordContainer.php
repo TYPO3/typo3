@@ -477,8 +477,14 @@ class InlineRecordContainer extends AbstractContainer
                     ->select('uid')
                     ->from('sys_file_metadata')
                     ->where(
-                        $queryBuilder->expr()->eq('file', (int)substr($rec['uid_local'], 9)),
-                        $queryBuilder->expr()->eq('sys_language_uid', (int)$sys_language_uid)
+                        $queryBuilder->expr()->eq(
+                            'file',
+                            $queryBuilder->createNamedParameter(substr($rec['uid_local'], 9), \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter($sys_language_uid, \PDO::PARAM_INT)
+                        )
                     )
                     ->setMaxResults(1)
                     ->execute()

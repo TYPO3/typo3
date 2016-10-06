@@ -91,9 +91,18 @@ class FileRepository extends AbstractRepository
                 ->select('uid')
                 ->from('sys_file_reference')
                 ->where(
-                    $queryBuilder->expr()->eq('uid_foreign', (int)$uid),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($tableName)),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($fieldName))
+                    $queryBuilder->expr()->eq(
+                        'uid_foreign',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'tablenames',
+                        $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'fieldname',
+                        $queryBuilder->createNamedParameter($fieldName, \PDO::PARAM_STR)
+                    )
                 )
                 ->orderBy('sorting_foreign')
                 ->execute();

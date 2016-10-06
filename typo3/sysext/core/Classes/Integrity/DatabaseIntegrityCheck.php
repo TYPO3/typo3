@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Integrity;
 
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -112,12 +113,12 @@ class DatabaseIntegrityCheck
         if ($versions) {
             $queryBuilder->addSelect('t3ver_wsid', 't3ver_id', 't3ver_count');
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->eq('t3ver_oid', (int)$theID)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
         } else {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', (int)$theID)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
         }
         $result = $queryBuilder->execute();
@@ -178,12 +179,12 @@ class DatabaseIntegrityCheck
         // Select all records from table pointing to this page
         if ($versions) {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->eq('t3ver_oid', (int)$theID)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
         } else {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', (int)$theID)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
         }
         $queryResult = $queryBuilder->execute();
@@ -229,7 +230,10 @@ class DatabaseIntegrityCheck
                 $queryResult = $queryBuilder->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'])
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->notIn('pid', $pageIdsForTable)
+                        $queryBuilder->expr()->notIn(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pageIdsForTable, Connection::PARAM_INT_ARRAY)
+                        )
                     )
                     ->execute();
                 $lostIdList = [];
@@ -298,7 +302,12 @@ class DatabaseIntegrityCheck
                 $queryBuilder->getRestrictions()->removeAll();
                 $count = $queryBuilder->count('uid')
                     ->from($table)
-                    ->where($queryBuilder->expr()->in('pid', $pageIds))
+                    ->where(
+                        $queryBuilder->expr()->in(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                        )
+                    )
                     ->execute()
                     ->fetchColumn(0);
                 if ($count) {
@@ -312,7 +321,12 @@ class DatabaseIntegrityCheck
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $count = $queryBuilder->count('uid')
                     ->from($table)
-                    ->where($queryBuilder->expr()->in('pid', $pageIdsForTable))
+                    ->where(
+                        $queryBuilder->expr()->in(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pageIdsForTable, Connection::PARAM_INT_ARRAY)
+                        )
+                    )
                     ->execute()
                     ->fetchColumn(0);
                 if ($count) {
@@ -429,12 +443,18 @@ class DatabaseIntegrityCheck
                         )) {
                             $whereClause[] = $queryBuilder->expr()->andX(
                                 $queryBuilder->expr()->isNotNull($fieldName),
-                                $queryBuilder->expr()->neq($fieldName, 0)
+                                $queryBuilder->expr()->neq(
+                                    $fieldName,
+                                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                                )
                             );
                         } elseif (in_array($fieldType, [Type::STRING, Type::TEXT], true)) {
                             $whereClause[] = $queryBuilder->expr()->andX(
                                 $queryBuilder->expr()->isNotNull($fieldName),
-                                $queryBuilder->expr()->neq($fieldName, $queryBuilder->quote(''))
+                                $queryBuilder->expr()->neq(
+                                    $fieldName,
+                                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                                )
                             );
                         }
                     }
@@ -594,7 +614,6 @@ class DatabaseIntegrityCheck
         foreach ($theArray as $table => $dbArr) {
             if ($GLOBALS['TCA'][$table]) {
                 $ids = array_keys($dbArr);
-                $ids = array_map('intval', $ids);
                 if (!empty($ids)) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($table);
@@ -605,7 +624,10 @@ class DatabaseIntegrityCheck
                         ->select('uid')
                         ->from($table)
                         ->where(
-                            $queryBuilder->expr()->in('uid', $ids)
+                            $queryBuilder->expr()->in(
+                                'uid',
+                                $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                            )
                         )
                         ->execute();
                     while ($row = $queryResult->fetch()) {

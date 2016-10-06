@@ -356,13 +356,18 @@ class PagePositionMap
                 ->select('*')
                 ->from('tt_content')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$pid),
-                    $queryBuilder->expr()->eq('colPos', (int)$vv)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('colPos', $queryBuilder->createNamedParameter($vv, \PDO::PARAM_INT))
                 )
                 ->orderBy('sorting');
 
             if ((string)$this->cur_sys_language !== '') {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language_uid', (int)$this->cur_sys_language));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'sys_language_uid',
+                        $queryBuilder->createNamedParameter($this->cur_sys_language, \PDO::PARAM_INT)
+                    )
+                );
             }
 
             $res = $queryBuilder->execute();

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Linkvalidator;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -147,15 +148,24 @@ class LinkAnalyzer
             $queryBuilder->delete('tx_linkvalidator_link')
                 ->where(
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->in('record_pid', $pidList),
+                        $queryBuilder->expr()->in(
+                            'record_pid',
+                            $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)
+                        ),
                         $queryBuilder->expr()->andX(
-                            $queryBuilder->expr()->in('record_uid', $pidList),
-                            $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
+                            $queryBuilder->expr()->in(
+                                'record_uid',
+                                $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'table_name',
+                                $queryBuilder->createNamedParameter('pages', \PDO::PARAM_STR)
+                            )
                         )
                     ),
                     $queryBuilder->expr()->in(
                         'link_type',
-                        array_map([$queryBuilder, 'createNamedParameter'], $checkKeys)
+                        $queryBuilder->createNamedParameter($checkKeys, Connection::PARAM_INT_ARRAY)
                     )
                 )
                 ->execute();
@@ -181,7 +191,12 @@ class LinkAnalyzer
 
                 $result = $queryBuilder->select(...$selectFields)
                     ->from($table)
-                    ->where($queryBuilder->expr()->in(($table === 'pages' ? 'uid' : 'pid'), $pidList))
+                    ->where(
+                        $queryBuilder->expr()->in(
+                            ($table === 'pages' ? 'uid' : 'pid'),
+                            $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)
+                        )
+                    )
                     ->execute();
 
                 // @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
@@ -419,7 +434,12 @@ class LinkAnalyzer
         $result = $queryBuilder->select('link_type')
             ->addSelectLiteral($queryBuilder->expr()->count('uid', 'nbBrokenLinks'))
             ->from('tx_linkvalidator_link')
-            ->where($queryBuilder->expr()->in('record_pid', $this->pidList))
+            ->where(
+                $queryBuilder->expr()->in(
+                    'record_pid',
+                    $queryBuilder->createNamedParameter($this->pidList, Connection::PARAM_INT_ARRAY)
+                )
+            )
             ->groupBy('link_type')
             ->execute();
 
@@ -461,7 +481,10 @@ class LinkAnalyzer
                 ->select('uid', 'title', 'hidden', 'extendToSubpages')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $id),
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    ),
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
                 ->execute();
@@ -504,7 +527,12 @@ class LinkAnalyzer
                 $row = $queryBuilder
                     ->select('uid', 'title', 'hidden', 'extendToSubpages')
                     ->from('pages')
-                    ->where($queryBuilder->expr()->eq('uid', $pageInfo['pid']))
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($pageInfo['pid'], \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute()
                     ->fetch();
 

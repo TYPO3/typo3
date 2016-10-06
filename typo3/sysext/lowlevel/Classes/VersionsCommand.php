@@ -98,8 +98,14 @@ Automatic Repair:
                     ->select('uid', 'pid')
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->gte('pid', 0),
-                        $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::NEW_PLACEHOLDER))
+                        $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq(
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                (string)new VersionState(VersionState::NEW_PLACEHOLDER),
+                                \PDO::PARAM_INT
+                            )
+                        )
                     )
                     ->execute();
 
@@ -127,8 +133,14 @@ Automatic Repair:
                     ->select('uid', 'pid', 't3ver_move_id', 't3ver_wsid', 't3ver_state')
                     ->from($table)
                     ->where(
-                        $queryBuilder->expr()->gte('pid', 0),
-                        $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER))
+                        $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq(
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                (string)new VersionState(VersionState::MOVE_PLACEHOLDER),
+                                \PDO::PARAM_INT
+                            )
+                        )
                     )
                     ->execute();
                 while ($placeholderRecord = $result->fetch()) {
@@ -175,7 +187,12 @@ Automatic Repair:
                 $result = $queryBuilder
                     ->select('uid', 'pid', 't3ver_move_id', 't3ver_wsid', 't3ver_state')
                     ->from($table)
-                    ->where($queryBuilder->expr()->neq('t3ver_move_id', 0))
+                    ->where(
+                        $queryBuilder->expr()->neq(
+                            't3ver_move_id',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute();
 
                 while ($placeholderRecord = $result->fetch()) {
@@ -244,7 +261,12 @@ Automatic Repair:
 
                     $queryBuilder
                         ->update($table)
-                        ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            )
+                        )
                         ->set('t3ver_wsid', 0)
                         ->execute();
                     echo 'DONE';

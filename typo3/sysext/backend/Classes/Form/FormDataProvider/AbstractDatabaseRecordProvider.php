@@ -75,7 +75,7 @@ abstract class AbstractDatabaseRecordProvider
 
         $row = $queryBuilder->select('*')
             ->from($tableName)
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
 

@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -316,7 +317,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 ->select('*')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', (int)$id),
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                     $this->getBackendUser()->getPagePermsClause(1)
                 )
                 ->execute()
@@ -1195,7 +1196,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             ->select('*')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('pid', (int)$pid),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
                 $this->getBackendUser()->getPagePermsClause(1)
             );
 
@@ -1259,7 +1260,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $queryBuilder
             ->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)));
 
         if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
@@ -1878,8 +1879,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 ->select('*')
                 ->from('tt_content')
                 ->where(
-                    $queryBuilder->expr()->eq('sys_language_uid', intval($lP)),
-                    $queryBuilder->expr()->in('l18n_parent', array_map('intval', $defaultLanguageUids))
+                    $queryBuilder->expr()->eq(
+                        'sys_language_uid',
+                        $queryBuilder->createNamedParameter($lP, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->in(
+                        'l18n_parent',
+                        $queryBuilder->createNamedParameter($defaultLanguageUids, Connection::PARAM_INT_ARRAY)
+                    )
                 );
 
             $result = $queryBuilder->execute();
@@ -2050,11 +2057,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages_language_overlay.sys_language_uid'))
                 )
                 ->where(
-                    $queryBuilder->expr()->eq('pages_language_overlay.deleted', 0),
-                    $queryBuilder->expr()->eq('pages_language_overlay.pid', (int)$this->id),
+                    $queryBuilder->expr()->eq(
+                        'pages_language_overlay.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'pages_language_overlay.pid',
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gte('pages_language_overlay.t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
-                        $queryBuilder->expr()->eq('pages_language_overlay.t3ver_wsid', (int)$this->getBackendUser()->workspace)
+                        $queryBuilder->expr()->gte(
+                            'pages_language_overlay.t3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                (string)new VersionState(VersionState::DEFAULT_STATE),
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'pages_language_overlay.t3ver_wsid',
+                            $queryBuilder->createNamedParameter($this->getBackendUser()->workspace, \PDO::PARAM_INT)
+                        )
                     )
                 )
                 ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
@@ -2062,7 +2083,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag')
                 ->orderBy('sys_language.sorting');
             if (!$this->getBackendUser()->isAdmin()) {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language.hidden', 0));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'sys_language.hidden',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                );
             }
             $statement = $queryBuilder->execute();
             while ($row = $statement->fetch()) {
@@ -2230,7 +2256,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
             $count = (int)$queryBuilder->count('uid')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+                )
                 ->execute()
                 ->fetchColumn();
         }
@@ -2366,7 +2394,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
                 $count = $queryBuilder->count('uid')
                     ->from($tName)
-                    ->where($queryBuilder->expr()->eq('pid', (int)$id))
+                    ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
                     ->execute()
                     ->fetchColumn();
                 // If records were found (or if "tt_content" is the table...):

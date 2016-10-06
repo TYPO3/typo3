@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  */
 
 use Doctrine\DBAL\Driver\Statement;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -488,8 +489,18 @@ class IndexSearchRepository
                     'pages',
                     $queryBuilder->expr()->eq('ISEC.page_id', $queryBuilder->quoteIdentifier('pages.uid'))
                 )
-                ->andWhere($queryBuilder->expr()->eq('pages.no_search', 0))
-                ->andWhere($queryBuilder->expr()->lt('pages.doktype', 200));
+                ->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'pages.no_search',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->lt(
+                        'pages.doktype',
+                        $queryBuilder->createNamedParameter(200, \PDO::PARAM_INT)
+                    )
+                );
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         } elseif ($searchRootPageIdList[0] >= 0) {
             // Collecting all pages IDs in which to search;
@@ -501,7 +512,12 @@ class IndexSearchRepository
                 $idList[] = $cObj->getTreeList(-1 * $rootId, 9999);
             }
             $idList = GeneralUtility::intExplode(',', implode(',', $idList));
-            $queryBuilder->andWhere($queryBuilder->expr()->in('ISEC.page_id', $idList));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    'ISEC.page_id',
+                    $queryBuilder->createNamedParameter($idList, Connection::PARAM_INT_ARRAY)
+                )
+            );
         }
 
         $searchBoolean = '';
@@ -898,8 +914,11 @@ class IndexSearchRepository
         $indexCfgRec = $queryBuilder->select('indexcfgs')
             ->from('index_config')
             ->where(
-                $queryBuilder->expr()->eq('type', 5),
-                $queryBuilder->expr()->eq('uid', $freeIndexUid),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(5, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
+                ),
                 QueryHelper::stripLogicalOperatorPrefix($this->enableFields('index_config'))
             )
             ->execute()
@@ -920,7 +939,13 @@ class IndexSearchRepository
                     ->where(QueryHelper::stripLogicalOperatorPrefix($this->enableFields('index_config')));
                 switch ($table) {
                     case 'index_config':
-                        $idxRec = $queryBuilder->andWhere($queryBuilder->expr()->eq('uid', $uid))
+                        $idxRec = $queryBuilder
+                            ->andWhere(
+                                $queryBuilder->expr()->eq(
+                                    'uid',
+                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                )
+                            )
                             ->execute()
                             ->fetch();
                         if ($idxRec) {
@@ -928,7 +953,13 @@ class IndexSearchRepository
                         }
                         break;
                     case 'pages':
-                        $indexCfgRecordsFromPid = $queryBuilder->andWhere($queryBuilder->expr()->eq('pid', $uid))
+                        $indexCfgRecordsFromPid = $queryBuilder
+                            ->andWhere(
+                                $queryBuilder->expr()->eq(
+                                    'pid',
+                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                )
+                            )
                             ->execute();
                         while ($idxRec = $indexCfgRecordsFromPid->fetch()) {
                             $list[] = $idxRec['uid'];
@@ -961,7 +992,13 @@ class IndexSearchRepository
             ->from('index_phash', 'IP')
             ->from('index_section', 'ISEC')
             ->where(
-                $queryBuilder->expr()->in('IP.phash', GeneralUtility::intExplode(',', $list, true)),
+                $queryBuilder->expr()->in(
+                    'IP.phash',
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $list, true),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                ),
                 QueryHelper::stripLogicalOperatorPrefix($this->mediaTypeWhere()),
                 QueryHelper::stripLogicalOperatorPrefix($this->languageWhere()),
                 QueryHelper::stripLogicalOperatorPrefix($this->freeIndexUidWhere($freeIndexUid)),
@@ -1017,8 +1054,14 @@ class IndexSearchRepository
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page_id')),
                 QueryHelper::stripLogicalOperatorPrefix($this->enableFields('pages')),
-                $queryBuilder->expr()->eq('pages.no_search', 0),
-                $queryBuilder->expr()->lt('pages.doktype', 200)
+                $queryBuilder->expr()->eq(
+                    'pages.no_search',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->lt(
+                    'pages.doktype',
+                    $queryBuilder->createNamedParameter(200, \PDO::PARAM_INT)
+                )
             );
         } elseif ($this->searchRootPageIdList >= 0) {
             // Collecting all pages IDs in which to search;
@@ -1032,7 +1075,10 @@ class IndexSearchRepository
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',
-                    array_unique(GeneralUtility::intExplode(',', implode(',', $pageIdList), true))
+                    $queryBuilder->createNamedParameter(
+                        array_unique(GeneralUtility::intExplode(',', implode(',', $pageIdList), true)),
+                        Connection::PARAM_INT_ARRAY
+                    )
                 )
             );
         }

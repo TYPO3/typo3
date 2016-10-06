@@ -191,10 +191,15 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
             ->from($this->table)
             ->where(
                 $queryBuilder->expr()->isNotNull($this->fieldToMigrate),
-                $queryBuilder->expr()->neq($this->fieldToMigrate,
-                    $queryBuilder->createNamedParameter('')),
-                $queryBuilder->expr()->comparison('CAST(CAST(' . $this->fieldToMigrate . ' AS DECIMAL) AS CHAR)',
-                    ExpressionBuilder::NEQ, 'CAST(' . $this->fieldToMigrate . ' AS CHAR)')
+                $queryBuilder->expr()->neq(
+                    $this->fieldToMigrate,
+                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->comparison(
+                    'CAST(CAST(' . $queryBuilder->quoteIdentifier($this->fieldToMigrate) . ' AS DECIMAL) AS CHAR)',
+                    ExpressionBuilder::NEQ,
+                    'CAST(' . $queryBuilder->quoteIdentifier($this->fieldToMigrate) . ' AS CHAR)'
+                )
             )
             ->orderBy('uid')
             ->setFirstResult($limit)
@@ -256,10 +261,14 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file');
                 $queryBuilder->getRestrictions()->removeAll();
                 $existingFileRecord = $queryBuilder->select('uid')->from('sys_file')->where(
-                    $queryBuilder->expr()->eq('sha1',
-                        $queryBuilder->createNamedParameter($fileSha1)),
-                    $queryBuilder->expr()->eq('storage',
-                        $queryBuilder->createNamedParameter($storageUid))
+                    $queryBuilder->expr()->eq(
+                        'sha1',
+                        $queryBuilder->createNamedParameter($fileSha1, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'storage',
+                        $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)
+                    )
                 )->execute()->fetch();
 
                 // the file exists, the file does not have to be moved again
@@ -324,7 +333,10 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
         if ($i === count($fieldItems)) {
             $queryBuilder = $connectionPool->getQueryBuilderForTable($this->table);
             $queryBuilder->update($this->table)->where(
-                $queryBuilder->expr()->eq('uid', $row['uid'])
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
+                )
             )->set($this->fieldToMigrate, $i)->execute();
             $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
         } else {

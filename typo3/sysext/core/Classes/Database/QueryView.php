@@ -132,7 +132,7 @@ class QueryView
             $queryBuilder->getRestrictions()->removeAll();
             $statement = $queryBuilder->select('uid', 'title')
                 ->from('sys_action')
-                ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2)))
+                ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)))
                 ->orderBy('title')
                 ->execute();
             $opt[] = '<option value="0">__Save to Action:__</option>';
@@ -250,7 +250,10 @@ class QueryView
                 ];
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
                 $queryBuilder->update('sys_action')
-                    ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                    ->where($queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ))
                     ->set('t2_data', serialize($t2DataValue))
                     ->execute();
             }
@@ -614,7 +617,10 @@ class QueryView
                 $likes = [];
                 $excapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
                 foreach ($fields as $field) {
-                    $likes[] = $queryBuilder->expr()->like($field, $queryBuilder->createNamedParameter($excapedLikeString));
+                    $likes[] = $queryBuilder->expr()->like(
+                        $field,
+                        $queryBuilder->createNamedParameter($excapedLikeString, \PDO::PARAM_STR)
+                    );
                 }
                 $count = $queryBuilder->orWhere(...$likes)->execute()->fetchColumn(0);
 
@@ -626,7 +632,10 @@ class QueryView
                         ->setMaxResults(200);
                     $likes = [];
                     foreach ($fields as $field) {
-                        $likes[] = $queryBuilder->expr()->like($field, $queryBuilder->createNamedParameter($excapedLikeString));
+                        $likes[] = $queryBuilder->expr()->like(
+                            $field,
+                            $queryBuilder->createNamedParameter($excapedLikeString, \PDO::PARAM_STR)
+                        );
                     }
                     $statement = $queryBuilder->orWhere(...$likes)->execute();
                     $lastRow = null;
@@ -888,7 +897,7 @@ class QueryView
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
                 ->execute();
@@ -1080,11 +1089,23 @@ class QueryView
                             if ($from_table === 'pages') {
                                 $queryBuilder->where(
                                     QueryHelper::stripLogicalOperatorPrefix($perms_clause),
-                                    $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                    $queryBuilder->expr()->in(
+                                        'uid',
+                                        $queryBuilder->createNamedParameter(
+                                            GeneralUtility::intExplode(',', $webMountPageTree),
+                                            Connection::PARAM_INT_ARRAY
+                                        )
+                                    )
                                 );
                             } else {
                                 $queryBuilder->where(
-                                    $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                    $queryBuilder->expr()->in(
+                                        'pid',
+                                        $queryBuilder->createNamedParameter(
+                                            GeneralUtility::intExplode(',', $webMountPageTree),
+                                            Connection::PARAM_INT_ARRAY
+                                        )
+                                    )
                                 );
                             }
                         }

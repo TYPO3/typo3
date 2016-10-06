@@ -45,7 +45,12 @@ class Tables
 
                 $deletedCount = $queryBuilder->count('uid')
                     ->from($tableName)
-                    ->where($queryBuilder->expr()->neq($deletedField, 0))
+                    ->where(
+                        $queryBuilder->expr()->neq(
+                            $deletedField,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
+                    )
                     ->execute()
                     ->fetchColumn();
 

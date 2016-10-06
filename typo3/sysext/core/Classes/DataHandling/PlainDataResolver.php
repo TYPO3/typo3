@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -174,9 +175,15 @@ class PlainDataResolver
             ->select('uid', 't3ver_oid', 't3ver_state')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->eq('pid', -1),
-                $queryBuilder->expr()->in('t3ver_oid', array_map('intval', $ids)),
-                $queryBuilder->expr()->eq('t3ver_wsid', $this->workspaceId)
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->in(
+                    't3ver_oid',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($this->workspaceId, \PDO::PARAM_INT)
+                )
             )
             ->execute();
 
@@ -220,10 +227,19 @@ class PlainDataResolver
             ->select('uid', 't3ver_move_id')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->neq('pid', -1),
-                $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_PLACEHOLDER),
-                $queryBuilder->expr()->eq('t3ver_wsid', $this->workspaceId),
-                $queryBuilder->expr()->in('t3ver_move_id', array_map('intval', $ids))
+                $queryBuilder->expr()->neq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter((string)VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($this->workspaceId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->in(
+                    't3ver_move_id',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                )
             )
             ->execute();
 
@@ -267,7 +283,10 @@ class PlainDataResolver
             ->select('uid')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->in('uid', array_map('intval', $ids))
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                )
             );
 
         if (!empty($this->sortingStatement)) {
@@ -305,7 +324,10 @@ class PlainDataResolver
             ->select('uid', 't3ver_oid')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->in('uid', array_map('intval', $ids))
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                )
             )
             ->execute();
 

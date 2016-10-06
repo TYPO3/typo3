@@ -864,7 +864,9 @@ class ExtendedTemplateService extends TemplateService
         $queryBuilder = $this->getTemplateQueryBuilder($pid)
             ->setMaxResults(1);
         if ($templateUid) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('uid', (int)$templateUid));
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
+            );
         }
         $row = $queryBuilder->execute()->fetch();
         BackendUtility::workspaceOL('sys_template', $row);
@@ -910,7 +912,9 @@ class ExtendedTemplateService extends TemplateService
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder->select('*')
             ->from('sys_template')
-            ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+            );
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
         }

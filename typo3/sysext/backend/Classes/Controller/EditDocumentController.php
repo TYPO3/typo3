@@ -1345,9 +1345,12 @@ class EditDocumentController extends AbstractModule
                     ->where(
                         $queryBuilder->expr()->eq(
                             'tablename',
-                            $queryBuilder->createNamedParameter($this->firstEl['table'])
+                            $queryBuilder->createNamedParameter($this->firstEl['table'], \PDO::PARAM_STR)
                         ),
-                        $queryBuilder->expr()->eq('recuid', (int)$this->firstEl['uid'])
+                        $queryBuilder->expr()->eq(
+                            'recuid',
+                            $queryBuilder->createNamedParameter($this->firstEl['uid'], \PDO::PARAM_INT)
+                        )
                     )
                     ->orderBy('tstamp', 'DESC')
                     ->setMaxResults(1)
@@ -1580,9 +1583,18 @@ class EditDocumentController extends AbstractModule
                         $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fetchFields, true))
                             ->from($table)
                             ->where(
-                                $queryBuilder->expr()->eq('pid', (int)$pid),
-                                $queryBuilder->expr()->gt($languageField, 0),
-                                $queryBuilder->expr()->eq($transOrigPointerField, (int)$rowsByLang[0]['uid'])
+                                $queryBuilder->expr()->eq(
+                                    'pid',
+                                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                                ),
+                                $queryBuilder->expr()->gt(
+                                    $languageField,
+                                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                                ),
+                                $queryBuilder->expr()->eq(
+                                    $transOrigPointerField,
+                                    $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], \PDO::PARAM_INT)
+                                )
                             )
                             ->execute();
 
@@ -1652,8 +1664,14 @@ class EditDocumentController extends AbstractModule
             $localizedRecord = $queryBuilder->select('uid')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['languageField'], (int)$language),
-                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], (int)$origUid)
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($origUid, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
                 ->fetch();
@@ -1721,11 +1739,8 @@ class EditDocumentController extends AbstractModule
             // Add join with pages_languages_overlay table to only show active languages
             $queryBuilder->from('pages_language_overlay', 'o')
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        'o.sys_language_uid',
-                        $queryBuilder->quoteIdentifier('s.uid')
-                    ),
-                    $queryBuilder->expr()->eq('o.pid', (int)$id)
+                    $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('s.uid')),
+                    $queryBuilder->expr()->eq('o.pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
                 );
         }
 

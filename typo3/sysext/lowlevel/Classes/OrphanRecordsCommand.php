@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,7 +85,10 @@ Will report orphan uids from TCA tables.';
         $resultArray['illegal_record_under_versioned_page'] = $this->recStats['illegal_record_under_versioned_page'];
         // Find orphans:
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-            $idList = is_array($this->recStats['all'][$tableName]) && count($this->recStats['all'][$tableName]) ? implode(',', $this->recStats['all'][$tableName]) : 0;
+            $idList = [0];
+            if (is_array($this->recStats['all'][$tableName]) && count($this->recStats['all'][$tableName])) {
+                $idList = $this->recStats['all'][$tableName];
+            }
             // Select all records belonging to page:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($tableName);
@@ -92,7 +96,12 @@ Will report orphan uids from TCA tables.';
             $result = $queryBuilder
                 ->select('uid')
                 ->from($tableName)
-                ->where($queryBuilder->expr()->notIn('uid', $idList))
+                ->where(
+                    $queryBuilder->expr()->notIn(
+                        'uid',
+                        $queryBuilder->createNamedParameter($idList, Connection::PARAM_INT_ARRAY)
+                    )
+                )
                 ->orderBy('uid')
                 ->execute();
 
