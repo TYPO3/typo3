@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Frontend\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -171,10 +170,6 @@ class AdminPanelView
             }
             // Saving
             $beUser->writeUC();
-            // Flush fluid template cache
-            $cacheManager = new CacheManager();
-            $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-            $cacheManager->getCache('fluid_template')->flush();
         }
         $this->getTimeTracker()->LR = $this->extGetFeAdminValue('tsdebug', 'LR');
         if ($this->extGetFeAdminValue('cache', 'noCache')) {
@@ -395,9 +390,6 @@ class AdminPanelView
             $this->extNeedUpdate = true;
             $out .= $this->extGetItem('preview_showHiddenPages', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="0" /><input type="checkbox" id="preview_showHiddenPages" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_showHiddenPages'] ? ' checked="checked"' : '') . ' />');
             $out .= $this->extGetItem('preview_showHiddenRecords', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="0" /><input type="checkbox" id="preview_showHiddenRecords" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_showHiddenRecords'] ? ' checked="checked"' : '') . ' />');
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isDevelopment()) {
-                $out .= $this->extGetItem('preview_showFluidDebug', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showFluidDebug]" value="0" /><input type="checkbox" id="preview_showFluidDebug" name="TSFE_ADMIN_PANEL[preview_showFluidDebug]" value="1"' . (!empty($this->getBackendUser()->uc['TSFE_adminConfig']['preview_showFluidDebug']) ? ' checked="checked"' : '') . ' />');
-            }
             // Simulate date
             $out .= $this->extGetItem('preview_simulateDate', '<input type="text" id="preview_simulateDate" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\', 1,0);" /><input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="' . $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate'] . '" />');
             $this->extJSCODE .= 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
