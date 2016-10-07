@@ -633,7 +633,7 @@ var inline = {
 	},
 
 	redrawSortingButtons: function (objectPrefix, records) {
-		var i, $headerObj, sortUp, sortDown;
+		var i, $headerObj, sortUp, sortDown, partOfHeaderObj, iconIdentifier;
 
 		// if no records were passed, fetch them from form field
 		if (typeof records == 'undefined') {
@@ -644,23 +644,41 @@ var inline = {
 				records = this.trimExplode(',', formObj[0].value);
 			}
 		}
-
-		for (i = 0; i < records.length; i++) {
-			if (!records[i].length) {
-				continue;
+		partOfHeaderObj = this.escapeObjectId(objectPrefix) + this.structureSeparator;
+		require(['TYPO3/CMS/Backend/Icons'], function(Icons) {
+			for (i = 0; i < records.length; i++) {
+				if (!records[i].length) {
+					continue;
+				}
+				$headerObj = TYPO3.jQuery('#' + partOfHeaderObj + records[i] + '_header');
+				sortUp = $headerObj.find('.sortingUp');
+				iconIdentifier = 'actions-move-up';
+				if (sortUp) {
+					if (i == 0) {
+						sortUp.addClass('disabled');
+						iconIdentifier = 'empty-empty';
+					} else {
+						sortUp.removeClass('disabled');
+					}
+					Icons.getIcon(iconIdentifier, Icons.sizes.small).done(function(markup) {
+						sortUp.find('.t3js-icon').replaceWith(markup);
+					});
+				}
+				sortDown = $headerObj.find('.sortingDown');
+				iconIdentifier = 'actions-move-down';
+				if (sortDown) {
+					if (i == records.length - 1) {
+						sortDown.addClass('disabled');
+						iconIdentifier = 'empty-empty';
+					} else {
+						sortDown.removeClass('disabled');
+					}
+					Icons.getIcon(iconIdentifier, Icons.sizes.small).done(function(markup) {
+						sortDown.find('.t3js-icon').replaceWith(markup);
+					});
+				}
 			}
-
-			$headerObj = $('#' + this.escapeObjectId(objectPrefix) + this.structureSeparator + records[i] + '_header');
-			sortUp = $headerObj.find('.sortingUp');
-			sortDown = $headerObj.find('.sortingDown');
-
-			if (sortUp) {
-				sortUp.css('visibility', (i == 0 ? 'hidden' : 'visible'));
-			}
-			if (sortDown) {
-				sortDown.css('visibility', (i == records.length - 1 ? 'hidden' : 'visible'));
-			}
-		}
+		});
 	},
 
 	memorizeAddRecord: function (objectPrefix, newUid, afterUid, selectedValue) {
