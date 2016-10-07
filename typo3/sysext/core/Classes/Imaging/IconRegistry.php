@@ -2059,6 +2059,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-text-ts.svg'
             ]
         ],
+        'mimetypes-text-typoscript' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-text-typoscript.svg'
+            ]
+        ],
         'mimetypes-word' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -3044,6 +3050,7 @@ class IconRegistry implements SingletonInterface
         'php3' => 'mimetypes-text-php',
         'inc' => 'mimetypes-text-php',
         'ts' => 'mimetypes-text-ts',
+        'typoscript' => 'mimetypes-text-typoscript',
         'txt' => 'mimetypes-text-text',
         'class' => 'mimetypes-text-text',
         'tmpl' => 'mimetypes-text-text',

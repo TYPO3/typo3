@@ -133,6 +133,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
                 $mode = self::MODE_CSS;
                 break;
             case 'ts':
+            case 'typoscript':
                 $mode = self::MODE_TYPOSCRIPT;
                 break;
             case 'sparql':

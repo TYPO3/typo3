@@ -20,6 +20,7 @@
 *.md text eol=lf
 *.yml text eol=lf
 *.ts text eol=lf
+*.typoscript text eol=lf
 *.xlf text eol=lf
 *.sql text eol=lf
 *.t3s text eol=lf

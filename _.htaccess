@@ -310,7 +310,7 @@ AddDefaultCharset utf-8
 </IfModule>
 
 # Access block for files
-<FilesMatch "(?i:^\.|^#.*#|^(?:ChangeLog|ToDo|Readme|License)(?:\.md|\.txt)?|^composer\.(?:json|lock)|^ext_conf_template\.txt|^ext_typoscript_constants\.txt|^ext_typoscript_setup\.txt|flexform[^.]*\.xml|locallang[^.]*\.(?:xml|xlf)|\.(?:bak|co?nf|cfg|ya?ml|ts|dist|fla|in[ci]|log|sh|sql(?:\..*)?|sw[op]|git.*)|.*(?:~|rc))$">
+<FilesMatch "(?i:^\.|^#.*#|^(?:ChangeLog|ToDo|Readme|License)(?:\.md|\.txt)?|^composer\.(?:json|lock)|^ext_conf_template\.txt|^ext_typoscript_constants\.txt|^ext_typoscript_setup\.txt|flexform[^.]*\.xml|locallang[^.]*\.(?:xml|xlf)|\.(?:bak|co?nf|cfg|ya?ml|ts|typoscript|dist|fla|in[ci]|log|sh|sql(?:\..*)?|sw[op]|git.*)|.*(?:~|rc))$">
 	# Apache < 2.3
 	<IfModule !mod_authz_core.c>
 		Order allow,deny
