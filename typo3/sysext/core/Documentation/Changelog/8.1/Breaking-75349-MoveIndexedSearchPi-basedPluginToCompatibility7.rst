@@ -31,4 +31,4 @@ Migration
 
 Installations using pi1 should migrate to the Extbase plugin or install EXT:compatibility7.
 
-.. index:: php
+.. index:: PHP-API

@@ -25,3 +25,5 @@ Example code:
 	Wizard.addSlide('my-identifier', 'Foobar', '', Severity.info, function($slide, settings, identifier) {
 		console.log(identifier); // my-identifier
 	});
+
+.. index:: JavaScript, Backend

@@ -30,4 +30,4 @@ Migration
 
 Either change the CSS or use a custom template without all the conditions.
 
-.. index:: fluid, ext:fluid_styled_content
+.. index:: Fluid, ext:fluid_styled_content

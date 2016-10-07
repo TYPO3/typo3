@@ -36,3 +36,5 @@ Migration
 
 It is recommended to import files in a 6.x or 7.x installation and export the files from there again to import them
 in TYPO3 v8.
+
+.. index:: PHP-API, Backend

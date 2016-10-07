@@ -37,4 +37,4 @@ Migration
 Use the entry point level as integer, instead of the string, in your custom entry points. See
 `TYPO3\CMS\Backend\Http\Application` for an example.
 
-.. index:: php
+.. index:: PHP-API

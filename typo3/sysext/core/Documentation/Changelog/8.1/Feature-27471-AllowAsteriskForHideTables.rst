@@ -21,3 +21,4 @@ You want to show only a specific table, you can hide all tables and unhide only 
       table.tx_cal_event.hideTable = 0
    }
 
+.. index:: TSConfig

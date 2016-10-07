@@ -33,3 +33,5 @@ Migration
 =========
 
 `<f:translate>` needs to be wrapped by `<f:format.raw>` if the view helper result is needed in a different context than HTML
+
+.. index:: Fluid, Frontend

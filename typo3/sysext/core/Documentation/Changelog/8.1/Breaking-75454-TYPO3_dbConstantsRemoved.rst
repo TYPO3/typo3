@@ -33,4 +33,4 @@ Migration
 Use the configuration data within `$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']`
 to determine the username, password and host information for the default database connection.
 
-.. index:: php, setting
+.. index:: PHP-API, Database, LocalConfiguration

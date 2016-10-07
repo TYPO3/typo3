@@ -64,3 +64,5 @@ The `RequestFactory` class can be used like this:
 
 Extension authors are advised to use the `RequestFactory` class instead of using the Guzzle API directly in order to ensure
 a clear upgrade path when updates to the underlying API need to be done.
+
+.. index:: PHP-API, LocalConfiguration

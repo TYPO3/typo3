@@ -51,4 +51,4 @@ Migration
 
 Change the CLI scripts inside your installation to the new binary path.
 
-.. index:: php
+.. index:: PHP-API, CLI

@@ -37,3 +37,5 @@ Affected Installations
 ======================
 
 Any TYPO3 installation using DB-related Frontend Administration with the obsolete functionality.
+
+.. index:: PHP-API, TCA, Database

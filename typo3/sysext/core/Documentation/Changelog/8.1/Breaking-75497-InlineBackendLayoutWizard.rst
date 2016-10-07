@@ -31,3 +31,5 @@ Migration
 =========
 
 Use the renderType `belayoutwizard`, which renders the backend layout wizard inline in FormEngine.
+
+.. index:: PHP-API, Backend, TCA

@@ -30,3 +30,5 @@ You can define the configuration for every property like this:
          \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::CONFIGURATION_DECIMAL_POINT,
          ','
       );
+
+.. index:: PHP-API, ext:extbase

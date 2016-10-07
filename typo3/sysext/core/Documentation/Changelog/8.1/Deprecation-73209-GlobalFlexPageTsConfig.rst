@@ -48,3 +48,5 @@ Migration
 
 Search for `PAGE_TSCONFIG_ID`, `PAGE_TSCONFIG_IDLIST` and `PAGE_TSCONFIG_STR` and restrict
 them to single fields as outlined above.
+
+.. index:: PHP-API, TSConfig, FlexForm

@@ -39,3 +39,5 @@ Example 2: with alternativeMarkup = inline
          console.log(icon);
       });
    });
+
+.. index:: JavaScript

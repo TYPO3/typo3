@@ -109,4 +109,4 @@ Extension authors are advised to use the `ConnectionPool` and `Connection` class
 the Doctrine DBAL directly in order to ensure a clear upgrade path when updates to the underlying
 API need to be done.
 
-.. index:: php
+.. index:: PHP-API, Database, LocalConfiguration

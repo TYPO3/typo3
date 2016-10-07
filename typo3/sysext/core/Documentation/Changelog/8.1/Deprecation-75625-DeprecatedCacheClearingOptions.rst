@@ -34,3 +34,5 @@ Migration
 
 If the group of system caches needs to be deleted explicitly, use :php:`flushCachesInGroup('system')`
 of `CacheManager` directly.
+
+.. index:: PHP-API, LocalConfiguration

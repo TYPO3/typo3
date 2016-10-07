@@ -31,3 +31,5 @@ example TCA configuration:
          'renderType' => 'belayoutwizard',
       )
    )
+
+.. index:: TCA, Backend

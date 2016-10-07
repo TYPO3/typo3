@@ -18,3 +18,5 @@ underlying PHP function `setlocale()` does as well.
    config.locale_all = de_AT@euro, de_AT, de_DE, deu_deu
 
 ..
+
+.. index:: TypoScript, Frontend

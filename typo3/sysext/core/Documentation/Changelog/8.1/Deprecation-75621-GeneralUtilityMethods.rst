@@ -51,3 +51,5 @@ For the following methods, use the native PHP methods and constants directly tha
 * rawUrlEncodeFP()
 * lcfirst()
 * getMaximumPathLength()
+
+.. index:: PHP-API

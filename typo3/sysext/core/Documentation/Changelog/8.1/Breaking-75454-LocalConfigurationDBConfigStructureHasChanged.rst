@@ -78,4 +78,4 @@ The Install Tool will migrate the configuration information for the default conn
 format. Installations overriding the database configuration using `AdditionalConfiguration.php`
 or other means need to ensure the new format is being used.
 
-.. index:: php, setting
+.. index:: Database, LocalConfiguration

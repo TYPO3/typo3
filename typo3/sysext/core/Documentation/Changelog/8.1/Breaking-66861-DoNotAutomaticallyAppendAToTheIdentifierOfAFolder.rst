@@ -29,3 +29,5 @@ Migration
 =========
 
 All drivers that depend on this `/` being added should be adjusted so the driver handles this.
+
+.. index:: PHP-API, FAL

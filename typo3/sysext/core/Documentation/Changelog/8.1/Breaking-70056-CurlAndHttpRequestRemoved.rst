@@ -85,4 +85,4 @@ All still necessary options will be migrated to new options within `$TYPO3_CONF_
 In special cases, the options `$TYPO3_CONF_VARS[HTTP][ssl_verify_host]`, `$TYPO3_CONF_VARS[HTTP][proxy_auth_scheme]`
 and `$TYPO3_CONF_VARS[HTTP][proxy_host]` need to migrated manually to the newly available options.
 
-.. index:: php
+.. index:: PHP-API, LocalConfiguration
