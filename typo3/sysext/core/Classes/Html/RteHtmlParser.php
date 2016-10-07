@@ -938,6 +938,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
                         }
                         break;
+                    case 'pre':
+                        break;
                     default:
                         // Eliminate true linebreaks inside other headlist tags
                         $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;

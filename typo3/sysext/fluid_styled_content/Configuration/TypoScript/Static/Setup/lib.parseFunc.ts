@@ -40,7 +40,7 @@ lib.parseFunc {
 lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
 	# Processing <table> and <blockquote> blocks separately
-	externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul
+	externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre
 	externalBlocks {
 		# The blockquote content is passed into parseFunc again...
 		blockquote {
