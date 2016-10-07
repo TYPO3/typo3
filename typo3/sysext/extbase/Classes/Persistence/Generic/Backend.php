@@ -1092,6 +1092,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $properties = $object->_getProperties();
         foreach ($properties as $propertyName => $propertyValue) {
             $columnMap = $dataMap->getColumnMap($propertyName);
+            if ($columnMap === null) {
+                continue;
+            }
             $propertyMetaData = $classSchema->getProperty($propertyName);
             if ($propertyMetaData['cascade'] === 'remove') {
                 if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
@@ -1101,6 +1104,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 } elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
                     $this->removeEntity($propertyValue);
                 }
+            } elseif ($dataMap->getDeletedFlagColumnName() === null
+                && $columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
+            ) {
+                $this->deleteAllRelationsFromRelationtable($object, $propertyName);
             }
         }
     }
