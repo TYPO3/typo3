@@ -35,3 +35,5 @@ Migration
 Implement a proper encoding by yourself. Use :php:`htmlspecialchars()` or :ts:`stdWrap.htmlSpecialChars`
 in the context of HTML, :php:`GeneralUtility::quoteJSvalue()` or :ts:`stdWrap.encodeForJavaScriptValue`
 in the context of JavaScript.
+
+.. index:: Frontend, TypoScript, PHP-API

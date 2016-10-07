@@ -30,3 +30,5 @@ Migration
 =========
 
 Implement the methods by yourself.
+
+.. index:: PHP-API, Frontend, Backend, ext:extbase

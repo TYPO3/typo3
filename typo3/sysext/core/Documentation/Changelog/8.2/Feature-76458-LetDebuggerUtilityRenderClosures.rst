@@ -17,3 +17,5 @@ Impact
 ======
 
 If a closure is part of the debugging object, the source code of the closure is rendered.
+
+.. index:: PHP-API

@@ -32,3 +32,5 @@ Migration
 
 Migrate all calls that work with the result of :php:`ImportExportController::exec_listQueryPid()`
 to be able to handle :php:`\Doctrine\DBAL\Driver\Statement` objects.
+
+.. index:: Database, PHP-API

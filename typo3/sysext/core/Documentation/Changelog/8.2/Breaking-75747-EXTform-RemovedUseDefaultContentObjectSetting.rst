@@ -31,4 +31,4 @@ Migration
 
 Remove the TypoScript option from any TypoScript settings. Migrate manually to use the features of EXT:form.
 
-.. index:: typoscript
+.. index:: TypoScript, ext:form

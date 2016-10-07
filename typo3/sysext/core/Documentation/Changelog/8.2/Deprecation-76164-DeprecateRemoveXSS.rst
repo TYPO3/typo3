@@ -35,3 +35,5 @@ Migration
 
 Implement a proper encoding by yourself. Use :php:`htmlspecialchars()` in the
 context of HTML or :php:`GeneralUtility::quoteJSvalue()` in the context of JavaScript.
+
+.. index:: PHP-API

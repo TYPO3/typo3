@@ -30,3 +30,5 @@ Migration
 =========
 
 Extend the new `AbstractMenuViewHelper` which contains all methods instead of using the trait.
+
+.. index:: Frontend, PHP-API, ext:fluid_styled_content

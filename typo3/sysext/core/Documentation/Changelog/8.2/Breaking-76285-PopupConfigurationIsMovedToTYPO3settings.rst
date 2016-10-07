@@ -44,3 +44,5 @@ The migration can be done with the following replacements.
 :js:`top.TYPO3.configuration.PopupWindow.width` to :js:`TYPO3.settings.Popup.PopupWindow.width`
 
 :js:`top.TYPO3.configuration.PopupWindow.height` to :js:`TYPO3.settings.Popup.PopupWindow.height`
+
+.. index:: JavaScript, Backend

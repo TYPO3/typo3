@@ -57,4 +57,4 @@ Migration
 
 The usage of stdWrap sub-properties on boolean properties needs to be checked and possibly adapted to fit the fixed behavior.
 
-.. index:: typoscript
+.. index:: TypoScript, Frontend

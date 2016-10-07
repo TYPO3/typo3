@@ -33,3 +33,5 @@ Migration
 
 Update HTML to not output font tags. Use CSS instead. In case you really want to use the font tag,
 it can be created by :ts:`stdWrap.wrap`.
+
+.. index:: Frontend, PHP-API, TypoScript

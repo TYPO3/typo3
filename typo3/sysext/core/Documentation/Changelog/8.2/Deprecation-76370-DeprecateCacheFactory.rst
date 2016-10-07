@@ -30,3 +30,5 @@ Migration
 =========
 
 Nothing notable, do not use this class anymore.
+
+.. index:: PHP-API

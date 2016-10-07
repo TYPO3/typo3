@@ -37,3 +37,5 @@ Migration
 =========
 
 If the return value of these methods is output in HTML context use :php:`htmlspecialchars` directly to properly escape the content.
+
+.. index:: Frontend, Backend, PHP-API

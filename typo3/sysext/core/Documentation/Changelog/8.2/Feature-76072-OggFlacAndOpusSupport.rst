@@ -14,3 +14,5 @@ Support for the following open formats has been added to the media field:
 * ogg
 * flac
 * opus
+
+.. index:: Frontend, Backend

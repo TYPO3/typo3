@@ -42,3 +42,5 @@ Migration
 =========
 
 Use double slashes (//) or hash (#) for comments in Typoscript.
+
+.. index:: TypoScript

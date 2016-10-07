@@ -38,3 +38,5 @@ Migration
 
 Affected instances must switch to a different cache backend, `APCU` `PHP` module with `ApcuBackend`
 provides the same local server in memory characteristics like `xcache` and should be considered as alternative.
+
+.. index:: LocalConfiguration

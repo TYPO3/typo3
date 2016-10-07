@@ -37,3 +37,5 @@ Migration
 
 Remove the file prefix when registering a hook and make use of the common autoloading functionality of
 composer or via the fallback autoloader by TYPO3 to achieve the same functionality automatically.
+
+.. index:: Frontend, Backend, PHP-API

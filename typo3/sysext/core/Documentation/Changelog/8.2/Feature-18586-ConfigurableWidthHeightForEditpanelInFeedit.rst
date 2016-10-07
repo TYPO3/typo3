@@ -17,3 +17,5 @@ of EXT:feedit by using User TsConfig:
 
 	options.feedit.popupHeight = 700
 	options.feedit.popupWidth = 900
+
+.. index:: TSConfig

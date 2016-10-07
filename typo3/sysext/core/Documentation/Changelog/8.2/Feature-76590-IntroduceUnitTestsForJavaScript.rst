@@ -71,3 +71,4 @@ DataProvider for tests
 For testing a set of values, the core implement a kind of DataProvider. To use the DataProvider you have to use the function :js:`using`.
 Please take a look at `FormEngineValidationTest.js` for an example.
 
+.. index:: JavaScript

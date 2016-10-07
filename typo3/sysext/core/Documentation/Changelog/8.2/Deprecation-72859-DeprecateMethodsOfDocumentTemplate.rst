@@ -50,3 +50,5 @@ Instead of :php:`getContextMenuCode()` use:
 
     $this->getPageRenderer()->loadJquery();
     $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+
+.. index:: Backend, PHP-API
