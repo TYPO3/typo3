@@ -283,7 +283,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             }
             // Check for module access
             $moduleName = $row['M_module_name'] ?: $row['module_name'];
-            if (!isset($this->getLanguageService()->moduleLabels['tabs_images'][$moduleName . '_tab'])) {
+            if (!isset($this->getLanguageService()->moduleLabels['tabs_images'][$moduleName . '_tab'])
+                && $moduleName !== 'xMOD_alt_doc.php'
+            ) {
                 // Nice hack to check if the user has access to this module
                 // - otherwise the translation label would not have been loaded :-)
                 continue;
