@@ -922,7 +922,7 @@ class TemplateService
      */
     protected function getTypoScriptSourceFileContent($filePath, $baseName)
     {
-        $extensions = ['.ts', '.txt'];
+        $extensions = ['.typoscript', '.ts', '.txt'];
         foreach ($extensions as $extension) {
             $fileName = $filePath . $baseName . $extension;
             if (@file_exists($fileName)) {
@@ -948,17 +948,36 @@ class TemplateService
 
         // @todo Change to use new API
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
-            if ((is_array($files) || $files instanceof \ArrayAccess) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
+            if ((is_array($files) || $files instanceof \ArrayAccess) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_constants.typoscript'] || $files['ext_typoscript_setup.txt'] || $files['ext_typoscript_setup.typoscript'])) {
                 $mExtKey = str_replace('_', '', $extKey);
-                $subrow = [
-                    'constants' => $files['ext_typoscript_constants.txt'] ? @file_get_contents($files['ext_typoscript_constants.txt']) : '',
-                    'config' => $files['ext_typoscript_setup.txt'] ? @file_get_contents($files['ext_typoscript_setup.txt']) : '',
-                    'title' => $extKey,
-                    'uid' => $mExtKey
-                ];
-                $subrow = $this->prependStaticExtra($subrow);
-                $extPath = ExtensionManagementUtility::extPath($extKey);
-                $this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID, $extPath);
+                $constants = '';
+                $config = '';
+
+                if ($files['ext_typoscript_constants.typoscript']) {
+                    $constants = @file_get_contents($files['ext_typoscript_constants.typoscript']);
+                } elseif ($files['ext_typoscript_constants.txt']) {
+                    $constants = @file_get_contents($files['ext_typoscript_constants.txt']);
+                }
+
+                if ($files['ext_typoscript_setup.typoscript']) {
+                    $config = @file_get_contents($files['ext_typoscript_setup.typoscript']);
+                } elseif ($files['ext_typoscript_setup.txt']) {
+                    $config = @file_get_contents($files['ext_typoscript_setup.txt']);
+                }
+
+                $this->processTemplate(
+                    $this->prependStaticExtra([
+                        'constants' => $constants,
+                        'config' => $config,
+                        'title' => $extKey,
+                        'uid' => $mExtKey
+                    ]),
+                    $idList . ',ext_' . $mExtKey,
+                    $pid,
+                    'ext_' . $mExtKey,
+                    $templateID,
+                    ExtensionManagementUtility::extPath($extKey)
+                );
             }
         }
     }

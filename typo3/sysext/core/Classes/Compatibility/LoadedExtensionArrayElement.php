@@ -36,6 +36,8 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
         'ext_tables.php',
         'ext_tables.sql',
         'ext_tables_static+adt.sql',
+        'ext_typoscript_constants.typoscript',
+        'ext_typoscript_setup.typoscript',
         'ext_typoscript_constants.txt',
         'ext_typoscript_setup.txt'
     ];
