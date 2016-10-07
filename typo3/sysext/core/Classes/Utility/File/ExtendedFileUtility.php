@@ -576,7 +576,7 @@ class ExtendedFileUtility extends BasicFileUtility
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll();
         $fileReference = $queryBuilder
-            ->select('recuid', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign')
+            ->select('uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign')
             ->from('sys_file_reference')
             ->where(
                 $queryBuilder->expr()->eq('uid', (int)$referenceRecord['recuid'])
