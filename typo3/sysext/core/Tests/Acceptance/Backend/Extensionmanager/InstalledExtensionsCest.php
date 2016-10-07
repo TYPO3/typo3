@@ -80,18 +80,18 @@ class InstalledExtensionsCest
     {
         $I->switchToIFrame();
         $I->canSeeElement('.typo3-module-menu-item');
-        $I->cantSeeElement('#system_BeuserTxBeuser');
+        $I->cantSeeElement('#web_RecyclerRecycler');
 
         $I->switchToIFrame('content');
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'beuser');
-        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="beuser"]');
-        $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="beuser"]');
+        $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
+        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
+        $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
 
         $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
         $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
 
         $I->switchToIFrame();
-        $I->canSeeElement('#system_BeuserTxBeuser');
+        $I->canSeeElement('#web_RecyclerRecycler');
 
         return $I;
     }
@@ -103,17 +103,17 @@ class InstalledExtensionsCest
     public function checkIfUninstallingAnExtensionWithBackendModuleRemovesTheModuleFromTheModuleMenu(Admin $I)
     {
         $I->switchToIFrame();
-        $I->canSeeElement('#system_BeuserTxBeuser');
+        $I->canSeeElement('#web_RecyclerRecycler');
 
         $I->switchToIFrame('content');
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'beuser');
-        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="beuser"]');
-        $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="beuser"]');
+        $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
+        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
+        $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
 
         $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
         $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
 
         $I->switchToIFrame();
-        $I->cantSeeElement('#system_BeuserTxBeuser');
+        $I->cantSeeElement('#web_RecyclerRecycler');
     }
 }
