@@ -496,7 +496,7 @@ class NewRecordController extends AbstractModule
             if (is_array($GLOBALS['TCA'])) {
                 $groupName = '';
                 foreach ($GLOBALS['TCA'] as $table => $v) {
-                    $rootLevelConfiguration = isset($v['ctrl']['rootLevel']) ? (int)$v['ctrl']['rootLevel'] : -1;
+                    $rootLevelConfiguration = isset($v['ctrl']['rootLevel']) ? (int)$v['ctrl']['rootLevel'] : 0;
                     if ($table !== 'pages'
                         && $this->showNewRecLink($table)
                         && $this->isTableAllowedForThisPage($this->pageinfo, $table)
