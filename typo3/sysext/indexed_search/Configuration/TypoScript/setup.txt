@@ -62,7 +62,8 @@ plugin.tx_indexedsearch {
 			group = 0
 			languageUid = 0
 			desc = 0
-			numberOfResults = 0
+			# List of available number of results. First will be used as default.
+			numberOfResults = 10,25,50,100
 			# defaultOperand.1 = 1
 			# extResume=1
 		}

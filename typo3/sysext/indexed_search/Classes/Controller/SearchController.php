@@ -65,6 +65,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $defaultResultNumber = 10;
 
     /**
+     * @var int[]
+     */
+    protected $availableResultsNumbers = [];
+
+    /**
      * Search repository
      *
      * @var \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository
@@ -176,6 +181,14 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $this->redirect('noTypoScript');
         }
 
+        // Sets availableResultsNumbers - has to be called before request settings are read to avoid DoS attack
+        $this->availableResultsNumbers = array_filter(GeneralUtility::intExplode(',', $this->settings['blind']['numberOfResults']));
+
+        // Sets default result number if at least one availableResultsNumbers exists
+        if (isset($this->availableResultsNumbers[0])) {
+            $this->defaultResultNumber = $this->availableResultsNumbers[0];
+        }
+
         $this->loadSettings();
 
         // setting default values
@@ -194,7 +207,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($searchData['_freeIndexUid'] !== '' && $searchData['_freeIndexUid'] !== '_') {
             $searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
         }
-        $searchData['numberOfResults'] = MathUtility::forceIntegerInRange($searchData['numberOfResults'], 1, 100, $this->defaultResultNumber);
+        $searchData['numberOfResults'] = $this->getNumberOfResults($searchData['numberOfResults']);
         // This gets the search-words into the $searchWordArray
         $this->setSword($searchData['sword']);
         // Add previous search words to current
@@ -1252,17 +1265,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function getAllAvailableNumberOfResultsOptions()
     {
         $allOptions = [];
-        $blindSettings = $this->settings['blind'];
-        if (!$blindSettings['numberOfResults']) {
-            $allOptions = [
-                10 => 10,
-                25 => 25,
-                50 => 50,
-                100 => 100
-            ];
+        if (count($this->availableResultsNumbers) > 1) {
+            $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers);
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['numberOfResults']);
+        $allOptions = $this->removeOptionsFromOptionList($allOptions, $this->settings['blind']['numberOfResults']);
         return $allOptions;
     }
 
@@ -1526,6 +1533,20 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             10, 400, 60
         );
         $this->settings['results.']['hrefInSummaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['hrefInSummaryCropSignifier'], $typoScriptArray['hrefInSummaryCropSignifier.']);
+    }
+
+    /**
+     * Returns number of results to display
+     *
+     * @param int $numberOfResults Requested number of results
+     * @return int
+     */
+    protected function getNumberOfResults($numberOfResults)
+    {
+        $numberOfResults = intval($numberOfResults);
+
+        return (in_array($numberOfResults, $this->availableResultsNumbers)) ?
+            $numberOfResults : $this->defaultResultNumber;
     }
 
     /**
