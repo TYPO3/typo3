@@ -722,6 +722,8 @@ class RteHtmlParser extends HtmlParser
                     case 'aside':
                         $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>';
                         break;
+                    case 'pre':
+                        break;
                     default:
                         // usually <hx> tags and <table> tags where no other block elements are within the tags
                         // Eliminate true linebreaks inside block element tags

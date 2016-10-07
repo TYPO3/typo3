@@ -392,7 +392,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				// Collapse repeated spaces non-editable in wysiwyg
 				// Replace leading and trailing spaces non-editable in wysiwyg
 				return this.textArea.value.
-					replace(/[\x20]+/g, '\x20').
 					replace(/^\x20/g, '&nbsp;').
 					replace(/\x20$/g, '&nbsp;');
 			default:
