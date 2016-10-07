@@ -430,7 +430,7 @@
 }
 #formwizard-left .formwizard-element.x-btn-over {
   background-color: #D5D5D5;
-  background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+  background-image: -moz-linear-gradient(center top, #F6F6F6 10%, #D5D5D5 90%);
   border-color: #C0C0C0;
   border-radius: 0;
 }
