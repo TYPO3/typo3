@@ -25,3 +25,5 @@ Migration
 =========
 
 Use `./typo3/sysext/core/bin/typo3 syslog:list` with the optional verbose parameter instead.
+
+.. index:: CLI

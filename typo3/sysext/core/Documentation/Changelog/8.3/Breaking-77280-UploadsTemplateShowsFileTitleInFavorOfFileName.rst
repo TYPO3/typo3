@@ -29,3 +29,5 @@ Migration
 =========
 
 Override the template and remove the condition to restore the original behavior.
+
+.. index:: Frontend

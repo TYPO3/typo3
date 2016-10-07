@@ -31,3 +31,5 @@ Impact
 ======
 
 A custom list of units can be passed to the ViewHelper and will be used for formatting. The existing behaviour has not changed.
+
+.. index:: Fluid

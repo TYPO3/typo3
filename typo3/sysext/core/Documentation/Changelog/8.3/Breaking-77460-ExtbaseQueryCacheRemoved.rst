@@ -35,3 +35,5 @@ Migration
 =========
 
 Remove the according lines and migrate to Doctrine.
+
+.. index:: Database, PHP-API, LocalConfiguration, ext:extbase

@@ -41,3 +41,5 @@ For the property `defaultBodyTag` the according TypoScript settings can be used 
 body tag or the page title.
 
 The information previously stored in the clientInfo property can be fetched via `GeneralUtility::clientInfo()`.
+
+.. index:: PHP-API

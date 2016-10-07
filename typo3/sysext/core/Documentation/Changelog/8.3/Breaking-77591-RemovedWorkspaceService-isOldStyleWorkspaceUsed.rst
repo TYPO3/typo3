@@ -30,3 +30,5 @@ Migration
 =========
 
 Remove any occurrences to the PHP method.
+
+.. index:: PHP-API

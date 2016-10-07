@@ -50,3 +50,5 @@ Migration
 
 Remove the affected TypoScript constant editor configuration code, and any reference to the removed PHP
 methods and properties.
+
+.. index:: TypoScript, PHP-API

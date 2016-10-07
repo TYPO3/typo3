@@ -38,3 +38,5 @@ Migration
 =========
 
 Remove the functionality and just use `Typo3DbQueryParser->parseQuery()`.
+
+.. index:: Database, PHP-API, ext:extbase

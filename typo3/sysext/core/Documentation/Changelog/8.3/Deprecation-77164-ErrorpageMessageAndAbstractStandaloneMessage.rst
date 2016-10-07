@@ -29,3 +29,5 @@ Migration
 =========
 
 Use the new Fluid-based ErrorPageController class.
+
+.. index:: PHP-API

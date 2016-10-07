@@ -42,3 +42,5 @@ Migration
 
 Remove any calls to the methods within the extensions' code, as the TYPO3 abstraction layer will
 handle them automatically.
+
+.. index:: PHP-API, ext:extbase

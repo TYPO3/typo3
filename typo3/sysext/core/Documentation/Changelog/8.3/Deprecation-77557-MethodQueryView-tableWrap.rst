@@ -29,3 +29,5 @@ Migration
 =========
 
 Use :php:`'<pre>' . $str . '</pre>'` instead.
+
+.. index:: PHP-API

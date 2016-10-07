@@ -17,3 +17,5 @@ Extensions can now hold their extension icons in additional locations to the exi
 - `Resources/Public/Icons/Extension.gif`
 
 This makes it possible to restrict access to more directories, thus hardening the TYPO3 instance.
+
+.. index:: Backend

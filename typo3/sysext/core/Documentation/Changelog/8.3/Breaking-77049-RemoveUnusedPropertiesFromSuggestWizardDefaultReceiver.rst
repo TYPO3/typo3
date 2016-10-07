@@ -34,3 +34,5 @@ Migration
 
 Don't set the properties in extended classes and make use of the constructor and queryTable
 method instead, as it is done in the :php:`SuggestWizard` class.
+
+.. index:: PHP-API

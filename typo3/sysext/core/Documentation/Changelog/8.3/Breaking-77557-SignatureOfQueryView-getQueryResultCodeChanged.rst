@@ -31,3 +31,5 @@ Migration
 =========
 
 Move away from the method or feed it with an array of database rows.
+
+.. index:: PHP-API, Database

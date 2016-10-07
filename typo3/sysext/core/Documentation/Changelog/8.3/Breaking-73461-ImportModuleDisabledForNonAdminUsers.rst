@@ -30,3 +30,5 @@ Migration
 =========
 
 Set userTsConfig option :ts:`options.impexp.enableImportForNonAdminUser = 1` to restore the old behavior.
+
+.. index:: TSConfig

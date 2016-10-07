@@ -18,3 +18,5 @@ Impact
 ======
 
 This option should be enabled for "trustworthy" backend users only.
+
+.. index:: TSConfig, Backend

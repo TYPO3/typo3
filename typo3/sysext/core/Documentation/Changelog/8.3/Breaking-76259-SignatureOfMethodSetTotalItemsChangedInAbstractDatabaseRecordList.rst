@@ -51,3 +51,4 @@ Migration
 Instead of passing an array of parameters built using the deprecated ::php::`makeQueryArray()` method
 explicitly pass in the table name, page id and any additional query restrictions required.
 
+.. index:: Database, PHP-API

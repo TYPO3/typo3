@@ -59,3 +59,5 @@ Migration
 =========
 
 Use the File Abstraction Layer to achieve the same functionality.
+
+.. index:: PHP-API, FAL, LocalConfiguration

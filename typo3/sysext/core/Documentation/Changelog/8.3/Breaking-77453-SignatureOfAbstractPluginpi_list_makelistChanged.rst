@@ -34,3 +34,5 @@ Migration
 
 Migrate all code that works with the :php:`AbstractPlugin::pi_list_makelist` to provide the expected
 Doctrine Statement object.
+
+.. index:: PHP-API, Database

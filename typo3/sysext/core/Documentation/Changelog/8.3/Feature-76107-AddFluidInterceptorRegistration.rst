@@ -51,3 +51,5 @@ Registered classes have to implement the `\TYPO3Fluid\Fluid\Core\Parser\Intercep
          return [];
       }
    }
+
+.. index:: PHP-API, LocalConfiguration, Fluid

@@ -34,3 +34,5 @@ Migration
 =========
 
 Move away from those methods.
+
+.. index:: PHP-API

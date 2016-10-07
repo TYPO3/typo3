@@ -34,4 +34,4 @@ The registered class must implement the method :php:`pi_list_browseresults()` wi
 * bool `$forceOutput` Forces the output of the page browser if you set this option to `true`
 * object `$pObj` The AbstractPlugin instance calling the hook
 
-.. index:: php, plugin, hook
+.. index:: PHP-API, LocalConfiguration

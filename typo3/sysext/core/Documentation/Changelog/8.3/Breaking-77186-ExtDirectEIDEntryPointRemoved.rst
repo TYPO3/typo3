@@ -23,3 +23,5 @@ Affected Installations
 ======================
 
 Instances using the ExtDirect eID script.
+
+.. index:: JavaScript, Backend

@@ -29,3 +29,5 @@ Migration
 =========
 
 Use one of the various quoting options shipped with the Doctrine DBAL.
+
+.. index:: PHP-API, Database

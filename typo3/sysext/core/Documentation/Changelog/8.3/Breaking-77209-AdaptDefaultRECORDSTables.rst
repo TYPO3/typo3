@@ -30,3 +30,5 @@ Migration
 =========
 
 Adopt the TS and use :ts:`styles.content.shortcut.tables := addToList(tt_address,tt_news,tx_news_domain_model_news)`
+
+.. index:: TypoScript, Frontend

@@ -60,3 +60,5 @@ Migration
 
 Use the `size` option and tune it to higher value, if it was used in combination
 with `autoSizeMax`.
+
+.. index:: TCA

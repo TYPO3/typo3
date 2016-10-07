@@ -33,3 +33,5 @@ Migration
 =========
 
 Migrate the hook method to no longer expect or prepend the leading `AND`.
+
+.. index:: Database, PHP-API

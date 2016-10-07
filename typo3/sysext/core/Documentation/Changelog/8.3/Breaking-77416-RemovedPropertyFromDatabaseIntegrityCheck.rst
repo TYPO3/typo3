@@ -30,3 +30,5 @@ Migration
 =========
 
 No migration available.
+
+.. index:: PHP-API

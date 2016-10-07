@@ -29,3 +29,5 @@ Migration
 =========
 
 No migration available, implement the required functionality in your own code.
+
+.. index:: PHP-API

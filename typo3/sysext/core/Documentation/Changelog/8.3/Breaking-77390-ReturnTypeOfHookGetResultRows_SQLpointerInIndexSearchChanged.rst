@@ -35,3 +35,5 @@ Migration
 =========
 
 Migrate the implementation of the hook to provide the expected Doctrine Statement object.
+
+.. index:: Database, ext:indexed_search, PHP-API

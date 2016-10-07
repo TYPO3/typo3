@@ -50,3 +50,5 @@ Migration
 =========
 
 Remove the softref keys `TStemplate` and `TSconfig` from the TCA definition of the third party extensions.
+
+.. index:: TCA, PHP-API

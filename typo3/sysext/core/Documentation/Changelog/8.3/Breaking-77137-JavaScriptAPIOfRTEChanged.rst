@@ -50,3 +50,5 @@ buildButtonConfig
    value and declares the button being either active or not. The parameter `severity` is an integer representing the
    severity of the button. This should always represent the severity of the modal, use one of the severities defined in
    :js:`TYPO3/CMS/Backend/Severity`.
+
+.. index:: JavaScript, RTE

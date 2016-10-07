@@ -47,3 +47,5 @@ Instead of :php:`GeneralUtility::strtolower($value)` use:
 
 Alternatively use the native implementation of :php:`strtoupper($value)` or :php:`strtolower($value)`
 if the handled string consists of ascii characters only and has no multi-byte characters like umlauts.
+
+.. index:: PHP-API

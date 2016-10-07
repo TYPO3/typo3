@@ -31,3 +31,5 @@ Migration
 
 Migrate your code to the Doctrine based replacement :php:`\TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList::getQueryBuilder`
 and the associated hook `buildQueryParameters`.
+
+.. index:: PHP-API

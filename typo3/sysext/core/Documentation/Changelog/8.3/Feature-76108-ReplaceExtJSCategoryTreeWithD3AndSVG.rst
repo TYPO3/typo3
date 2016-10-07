@@ -45,3 +45,5 @@ Impact
 - New tree is faster.
 - A new 'indeterminate' state for the category has been introduced introduced. The category is in the  'indeterminate'  state if at last one of its descendants  is selected (checked).
 - Tree data is not rendered inline in HTML any more but fetched via Ajax
+
+.. index:: JavaScript, Backend

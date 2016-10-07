@@ -41,3 +41,5 @@ Migrate your code to use the :php:`Statement` object:
     {
         // ... do something here
     }
+
+.. index:: Database, PHP-API

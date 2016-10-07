@@ -38,3 +38,5 @@ Migration
 =========
 
 Include ExtJS via :ts:`page.includeJS` manually if needed or migrate to another supported modern framework.
+
+.. index:: JavaScript, TypoScript

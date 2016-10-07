@@ -38,3 +38,5 @@ Migration
 Migrate your code to use the Doctrine QueryBuilder where the `AND`
 is no longer needed or prepend the missing `AND` before using the
 return value.
+
+.. index:: Database, PHP-API

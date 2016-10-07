@@ -16,3 +16,5 @@ Impact
 ======
 
 In the frontend the file name will be replaced by the title as soon as a file has a title.
+
+.. index:: Frontend

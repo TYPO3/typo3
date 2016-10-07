@@ -29,3 +29,5 @@ Migration
 =========
 
 Remove all usages of the `IMAGEBUTTON` element.
+
+.. index:: TypoScript, ext:form

@@ -13,3 +13,5 @@ Description
 The new option `backendFavicon` in the extension manager configuration makes it possible to
 change the favicon of the backend. This makes it easier to distinguish between different
 installations and stages.
+
+.. index:: Backend

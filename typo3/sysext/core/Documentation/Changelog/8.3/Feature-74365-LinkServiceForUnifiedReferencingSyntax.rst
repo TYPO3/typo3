@@ -131,3 +131,5 @@ Impact
 
 Currently the impact is rather low, since a fallback mechanism will still be able to
 work with the old syntax.
+
+.. index:: RTE, Backend

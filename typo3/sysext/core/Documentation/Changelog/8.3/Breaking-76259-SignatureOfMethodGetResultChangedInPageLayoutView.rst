@@ -43,3 +43,5 @@ Migration
 
 Refactor all code that works with :php:`PageLayoutView::getResult()` to provide the expected
 Doctrine Statement object.
+
+.. index:: Database, PHP-API
