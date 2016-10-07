@@ -872,6 +872,9 @@ class SetupModuleController extends AbstractModule
     protected function getFieldsFromShowItem()
     {
         $allowedFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
+        if (!is_array($this->tsFieldConf)) {
+            return $allowedFields;
+        }
         foreach ($this->tsFieldConf as $fieldName => $userTsFieldConfig) {
             if (!empty($userTsFieldConfig['disabled'])) {
                 $fieldName = rtrim($fieldName, '.');
