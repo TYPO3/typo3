@@ -10,7 +10,7 @@ See :issue:`68890`
 Description
 ===========
 
-In `AbstractUserAuthentication` the property `auth_timeout_field` could
+In `AbstractUserAuthentication` class the property `auth_timeout_field` could
 previously either contain the name of a field or a timeout-value in seconds. To
 specify a field name the property can be used as before.
 To specify a timeout-value, a new property called `sessionTimeout` is introduced
@@ -28,4 +28,4 @@ Migration
 
 Extensions modifying `auth_timeout_field` to a numeric value should switch to using `sessionTimeout`.
 
-.. index:: php, setting
+.. index:: PHP-API

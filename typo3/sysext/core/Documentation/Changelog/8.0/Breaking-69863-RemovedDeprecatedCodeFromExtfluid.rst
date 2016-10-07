@@ -55,4 +55,4 @@ Keep in mind that these methods expect an **array** instead of a string.
 
 For `IconViewHelper` use `\TYPO3\CMS\Core\ViewHelpers\IconViewHelper` instead.
 
-.. index:: php
+.. index:: PHP-API, Fluid

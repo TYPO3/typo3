@@ -54,4 +54,4 @@ New:
 
         {f:render(partial: '{themeName}/Show/AdditionalElements/Label', arguments: {model: model, themeName: themeName})}
 
-.. index:: fluid
+.. index:: Fluid, ext:form

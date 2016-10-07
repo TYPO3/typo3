@@ -33,4 +33,4 @@ Migration
 
 Adapt the custom code to handle JSON responses instead of XML responses.
 
-.. index:: javascript
+.. index:: JavaScript, Backend

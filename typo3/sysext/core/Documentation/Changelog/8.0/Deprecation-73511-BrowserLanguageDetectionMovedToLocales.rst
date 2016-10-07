@@ -35,4 +35,4 @@ Migration
 
 Use the method `Locales->getPreferredClientLanguage()` instead.
 
-.. index:: php
+.. index:: PHP-API

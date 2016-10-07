@@ -364,3 +364,5 @@ the compiled output of the Node it escapes as a pure string operation.
 
 Escaping interception is still contained within the `Configuration` instance given to the TemplateParser - and those can be
 manipulated with a custom RenderingContext (see above).
+
+.. index:: Fluid

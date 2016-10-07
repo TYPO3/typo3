@@ -19,4 +19,4 @@ Migration
 
 Upgrade to at least PHP 7.0.0.
 
-.. index:: system requirement
+.. index:: PHP-API

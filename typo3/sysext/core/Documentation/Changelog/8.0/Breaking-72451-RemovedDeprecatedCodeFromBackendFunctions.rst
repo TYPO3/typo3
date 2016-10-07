@@ -50,4 +50,4 @@ Migration
 
 For property `$OS` use the constant TYPO3_OS directly.
 
-.. index:: php
+.. index:: PHP-API, Backend

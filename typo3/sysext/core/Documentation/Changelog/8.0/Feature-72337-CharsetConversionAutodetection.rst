@@ -24,3 +24,5 @@ Impact
 The options `$TYPO3_CONF_VARS['SYS'][t3lib_cs_utils]` and
 `$TYPO3_CONF_VARS[SYS][t3lib_cs_convMethod]` have no effect anymore and can be
 removed. TYPO3 chooses the best strategy at runtime.
+
+.. index:: LocalConfiguration

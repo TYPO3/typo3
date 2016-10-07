@@ -30,4 +30,4 @@ Migration
 
 Initialize `\TYPO3\CMS\Core\TimeTracker\TimeTracker` with false as first parameter.
 
-.. index:: php
+.. index:: PHP-API

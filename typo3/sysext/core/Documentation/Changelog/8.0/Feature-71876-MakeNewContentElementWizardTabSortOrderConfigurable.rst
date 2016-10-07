@@ -17,3 +17,5 @@ wizard by setting `before` and `after` values in Page TSconfig:
 
     mod.wizards.newContentElement.wizardItems.special.before = common
     mod.wizards.newContentElement.wizardItems.forms.after = common,special
+
+.. index:: Backend, TSConfig

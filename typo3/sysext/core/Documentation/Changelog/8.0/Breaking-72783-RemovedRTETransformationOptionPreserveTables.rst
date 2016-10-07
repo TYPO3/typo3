@@ -37,4 +37,4 @@ Migration
 Use the overruleMode `ts_css` instead which keeps the tables as they are. If tables should be disallowed inside the RTE
 the option `RTE.default.proc.denyTags := addToList(table)` can be used instead.
 
-.. index:: php, htmlarea
+.. index:: PHP-API, RTE, TSConfig

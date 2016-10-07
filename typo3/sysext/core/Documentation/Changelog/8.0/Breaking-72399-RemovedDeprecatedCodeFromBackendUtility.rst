@@ -49,4 +49,4 @@ For `helpTextIcon()` use `cshItem()` instead.
 For `isTableMovePlaceholderAware()` use `isTableWorkspaceEnabled()` directly.
 For `countVersionsOfRecordsOnPage()` use `\TYPO3\CMS\Workspaces\Service\WorkspaceService::hasPageRecordVersions` to check for record versions.
 
-.. index:: php
+.. index:: PHP-API, Backend

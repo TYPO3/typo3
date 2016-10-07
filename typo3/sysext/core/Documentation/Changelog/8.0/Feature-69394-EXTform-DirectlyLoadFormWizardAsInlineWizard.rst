@@ -26,3 +26,5 @@ the wizard cannot be deactivated anymore. Instead, the integrator can configure 
 to load the form wizard by default or not. The following UserTS is integrated by default:
 
 `setup.default.tx_form.showWizardByDefault = 1`
+
+.. index:: Backend, ext:form

@@ -41,4 +41,4 @@ For `Clickmenu.populateData` use `TYPO3.ClickMenu` instead.
 For `showClickmenu_raw` use `TYPO3.ClickMenu` instead.
 For `ShortcutManager.createShortcut` use `TYPO3.ShortcutMenu` directly.
 
-.. index:: javascript
+.. index:: JavaScript, Backend

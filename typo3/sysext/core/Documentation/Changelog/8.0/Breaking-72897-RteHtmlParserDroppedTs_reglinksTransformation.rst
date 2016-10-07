@@ -27,4 +27,4 @@ Affected Installations
 
 Any installation using obsolete transformation mode or special RTE transformations.
 
-.. index:: typoscript, htmlarea
+.. index:: TSConfig, Backend, RTE

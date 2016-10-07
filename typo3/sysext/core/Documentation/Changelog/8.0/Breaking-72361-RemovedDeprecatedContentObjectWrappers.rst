@@ -68,4 +68,4 @@ Example for the SVG() ContentObject call:
 
 	$cObj->cObjGetSingle('SVG', $conf);
 
-.. index:: php
+.. index:: PHP-API, Frontend

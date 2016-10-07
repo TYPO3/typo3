@@ -29,3 +29,5 @@ The method is called with the following arguments:
 * int `$uid` the uid of the record
 * array `$recordData` all record data as array
 * string `$fileIdentifier` the file identifier
+
+.. index:: PHP-API

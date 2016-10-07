@@ -46,4 +46,4 @@ Migration
 `FileList::getButtonsAndOtherMarkers` buttons are now defined in FileListController
 `GraphicalFunctions::pngToGifByImagemagick` no replacement, the png_to_gif option has been removed
 
-.. index:: php
+.. index:: PHP-API, Frontend, Backend

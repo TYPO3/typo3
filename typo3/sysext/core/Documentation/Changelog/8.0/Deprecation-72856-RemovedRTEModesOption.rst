@@ -31,4 +31,4 @@ When configuring a RTE field in a TYPO3 extension the defaultExtras part should 
 set to `richtext:rte_transform` instead of  `richtext:rte_transform[mode=ts_css]`
 in order to render the RTE.
 
-.. index:: typoscript, htmlarea
+.. index:: TSConfig, Backend, RTE

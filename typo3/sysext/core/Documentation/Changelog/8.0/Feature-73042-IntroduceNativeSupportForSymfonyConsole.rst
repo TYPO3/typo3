@@ -58,3 +58,5 @@ Impact
 
 Using Symfony Commands and calling `typo3` instead of using `typo3/cli_dispatch.phpsh` is
 now the preferred way for writing command line code.
+
+.. index:: PHP-API, Backend, CLI

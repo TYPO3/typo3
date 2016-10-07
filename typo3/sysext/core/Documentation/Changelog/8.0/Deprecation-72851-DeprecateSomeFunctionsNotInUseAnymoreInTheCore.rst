@@ -30,4 +30,4 @@ Affected Installations
 
 Instances with custom backend modules that use one of the aforementioned methods.
 
-.. index:: php
+.. index:: PHP-API

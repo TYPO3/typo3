@@ -34,4 +34,4 @@ Replace calls to :php:`GeneralUtility::generateRandomBytes()` with :php:`General
 
 Also replace calls to :php:`GeneralUtility::getRandomHexString()` with :php:`GeneralUtility::makeInstance(Random::class)->generateRandomHexString()`.
 
-.. index:: php
+.. index:: PHP-API

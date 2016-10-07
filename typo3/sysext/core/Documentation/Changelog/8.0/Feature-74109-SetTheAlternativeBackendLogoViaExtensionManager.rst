@@ -21,3 +21,5 @@ Impact
 ======
 
 The previously available `$GLOBALS[TBE_STYLES][logo]` option has no effect anymore.
+
+.. index:: Backend

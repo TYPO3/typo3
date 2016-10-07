@@ -48,4 +48,4 @@ Affected Installations
 
 Instances which use one of the methods above or use one of the removed Install Tool options.
 
-.. index:: php
+.. index:: PHP-API

@@ -34,4 +34,4 @@ Migration
 
 Use the Backend Ajax Routes logic instead.
 
-.. index:: routing, javascript
+.. index:: JavaScript, Backend, PHP-API

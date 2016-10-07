@@ -34,3 +34,5 @@ Register the hook class which implements the method with the name `postOverlayPr
 .. code-block:: php
 
    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][IconFactory::class]['overrideIconOverlay'][] = \VENDOR\MyExt\Hooks\IconFactoryHook::class;
+
+.. index:: PHP-API, Backend

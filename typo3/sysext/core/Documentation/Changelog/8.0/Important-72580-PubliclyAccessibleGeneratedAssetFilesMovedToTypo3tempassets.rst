@@ -18,4 +18,4 @@ These assets were moved from the folders `\_processed\_`, `compressor`, `GB`, `t
 `pics` and organized into `typo3temp/assets/js/`, `typo3temp/assets/css/`,
 `typo3temp/assets/compressed/` and `typo3temp/assets/images/`.
 
-.. index:: file system
+.. index:: Frontend

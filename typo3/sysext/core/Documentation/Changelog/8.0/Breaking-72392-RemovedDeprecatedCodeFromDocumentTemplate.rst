@@ -71,4 +71,4 @@ For `rfw()` and `dfw()` use proper HTML directly instead.
 For `getDynamicTabMenu()` use `getDynamicTabMenu()` from ModuleTemplate instead.
 For `collapseableSection()` use HTML bootstrap classes, localStorage etc.
 
-.. index:: php
+.. index:: PHP-API, Backend

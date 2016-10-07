@@ -37,4 +37,4 @@ Migration
 
 Use `CharsetConverter->utf8_to_numberarray()` instead of the method `singleChars()`.
 
-.. index:: php
+.. index:: PHP-API

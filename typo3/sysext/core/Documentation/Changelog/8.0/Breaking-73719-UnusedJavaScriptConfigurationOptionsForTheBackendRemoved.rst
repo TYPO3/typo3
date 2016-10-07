@@ -47,4 +47,4 @@ Migration
 Remove the values from the JavaScript code or provide a PHP alternative to make the options available again for
 JavaScript, if needed.
 
-.. index:: javascript
+.. index:: JavaScript, Backend

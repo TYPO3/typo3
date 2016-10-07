@@ -45,4 +45,4 @@ TypoScript option `jumpurl` can be passed in the `typolinkConfiguration` propert
 
 TypoScript property `andWhere` can be migrated to `where`.
 
-.. index:: php, typoscript
+.. index:: PHP-API, TypoScript, Frontend

@@ -48,4 +48,4 @@ All `.layout` settings have to be removed and ported to own fluid templates.
 All occurrences of the `.data` and `.content` attribute have to be substituted
 by `.text`.
 
-.. index:: typoscript
+.. index:: TypoScript, ext:form

@@ -33,4 +33,4 @@ Migration
 Use the `EXT:` syntax everywhere to resolve files within extension directories. If the path relative to the
 typo3/ main directory is explicitly needed, the constant `TYPO3_mainDir` can be used as a prefix to the file.
 
-.. index:: php, typoscript
+.. index:: PHP-API, TypoScript

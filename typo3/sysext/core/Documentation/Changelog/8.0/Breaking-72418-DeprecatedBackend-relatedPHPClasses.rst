@@ -31,4 +31,4 @@ Affected Installations
 
 Any installation with a custom PHP code accessing these PHP classes.
 
-.. index:: php
+.. index:: PHP-API, Backend

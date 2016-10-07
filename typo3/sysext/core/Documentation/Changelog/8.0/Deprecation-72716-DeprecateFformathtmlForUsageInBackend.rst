@@ -32,4 +32,4 @@ Migration
 
 Use the viewhelper `f:format.raw`.
 
-.. index:: fluid
+.. index:: Fluid, Backend

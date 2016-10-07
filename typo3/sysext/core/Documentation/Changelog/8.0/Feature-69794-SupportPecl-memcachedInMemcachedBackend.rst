@@ -35,3 +35,5 @@ Example code:
 			]
 		]
 	];
+
+.. index:: PHP-API, LocalConfiguration

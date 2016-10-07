@@ -30,4 +30,4 @@ Migration
 
 No migration available.
 
-.. index:: php
+.. index:: PHP-API

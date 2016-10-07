@@ -42,4 +42,4 @@ Migration
 `AbstractLinkBrowserController::initVariables()` no replacement for using multiple UIDs
 `ElementBrowserFramesetController::printContent()` use `ElementBrowserFramesetController::mainAction()` instead
 
-.. index:: php
+.. index:: PHP-API, ext:recordlist, Backend

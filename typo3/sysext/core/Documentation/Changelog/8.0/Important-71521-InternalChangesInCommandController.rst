@@ -14,4 +14,4 @@ The `CommandController::processRequest()` method has been changed to initialize 
 
 If this method was overridden without calling the parent method, these changes must be copied to prevent errors.
 
-.. index:: php
+.. index:: PHP-API

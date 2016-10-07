@@ -25,3 +25,4 @@ In order to make the searchlevel handling consistent between live and list searc
 
 This makes it possible to add custom search level entries.
 
+.. index:: Backend, TSConfig

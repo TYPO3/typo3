@@ -59,3 +59,5 @@ Impact
 ======
 
 None, you can start to use the CSPRNG in your code by now.
+
+.. index:: PHP-API

@@ -20,3 +20,5 @@ Impact
 
 New ViewHelper argument (string) `allowedTags` becomes available, allowing passing
 the tag list as second parameter to `strip_tags`.
+
+.. index:: Fluid

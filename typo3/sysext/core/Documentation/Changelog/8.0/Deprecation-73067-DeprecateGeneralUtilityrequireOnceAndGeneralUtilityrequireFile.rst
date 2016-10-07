@@ -34,4 +34,4 @@ Migration
 
 Use native require_once if needed, e.g. if autoloading does not work.
 
-.. index:: php
+.. index:: PHP-API

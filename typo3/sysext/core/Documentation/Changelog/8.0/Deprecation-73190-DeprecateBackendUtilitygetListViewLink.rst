@@ -30,4 +30,4 @@ Migration
 
 Use the `IconFactory` and `BackendUtility::getModuleUrl()` API methods directly instead to create links.
 
-.. index:: php
+.. index:: PHP-API, Backend

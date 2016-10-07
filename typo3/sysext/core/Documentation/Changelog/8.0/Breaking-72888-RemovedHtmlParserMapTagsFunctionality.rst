@@ -33,4 +33,4 @@ Migration
 
 Use the "remap" functionality of the `keepTags` logic within HtmlParser to achieve the same in custom transformations.
 
-.. index:: php
+.. index:: PHP-API, RTE

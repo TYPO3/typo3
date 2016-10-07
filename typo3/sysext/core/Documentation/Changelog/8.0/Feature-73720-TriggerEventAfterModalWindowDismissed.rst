@@ -28,3 +28,5 @@ Example code:
 		// Reset the selection
 		$someCombobox.val('');
 	});
+
+.. index:: Backend, JavaScript

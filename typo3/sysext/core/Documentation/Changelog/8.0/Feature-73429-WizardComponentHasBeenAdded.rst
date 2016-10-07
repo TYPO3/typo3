@@ -117,3 +117,5 @@ Example code:
         Wizard.getComponent().on('wizard-dismissed', function() {
             // Calculate the answer of life the universe and everything
         });
+
+.. index:: Backend, JavaScript

@@ -35,4 +35,4 @@ Migration
 
 Use the new introduced IconAPI that is available since 7LTS.
 
-.. index:: php, icons
+.. index:: PHP-API, Backend, Frontend

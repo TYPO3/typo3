@@ -25,4 +25,4 @@ Affected Installations
 
 Any installations with custom RTE transformations that use a custom implementation of the RteHtmlParser PHP class.
 
-.. index:: php, htmlarea
+.. index:: PHP-API, Backend, RTE

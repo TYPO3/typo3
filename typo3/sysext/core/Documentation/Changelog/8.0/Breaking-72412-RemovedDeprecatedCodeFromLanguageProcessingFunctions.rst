@@ -41,4 +41,4 @@ Migration
 `LocallangArrayParser` use XLIFF language files now
 `\TYPO3\CMS\Lang\LanguageService::localizedFileRef` no replacement; not needed when XLIFF files are used
 
-.. index:: php
+.. index:: PHP-API

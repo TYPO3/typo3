@@ -117,3 +117,5 @@ Example form:
    }
 
 ..
+
+.. index:: ext:form, TypoScript, TSConfig

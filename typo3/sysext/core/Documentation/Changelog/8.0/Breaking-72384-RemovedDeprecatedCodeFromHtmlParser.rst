@@ -52,4 +52,4 @@ Migration
 `substituteMarkerAndSubpartArrayRecursive()` call `MarkerBasedTemplateService::substituteMarkerAndSubpartArrayRecursive()` instead
 `XHTML_clean()` call `HtmlParser::HTMLcleaner()` instead
 
-.. index:: php
+.. index:: PHP-API, Frontend

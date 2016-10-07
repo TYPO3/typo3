@@ -41,4 +41,4 @@ For `GeneralUtility::flushOutputBuffers()` use `ob_clean()`.
 
 For `GeneralUtility::imageMagickCommand()` use `CommandUtility::imageMagickCommand`.
 
-.. index:: php
+.. index:: PHP-API

@@ -31,4 +31,4 @@ Migration
 
 Use `PathUtility::getRelativePath()` when the functionality is still needed.
 
-.. index:: php
+.. index:: PHP-API, Backend

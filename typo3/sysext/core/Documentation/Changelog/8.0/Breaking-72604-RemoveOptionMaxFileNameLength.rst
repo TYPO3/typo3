@@ -18,4 +18,4 @@ Impact
 
 Using the option will have no effect anymore.
 
-.. index:: setting
+.. index:: LocalConfiguration

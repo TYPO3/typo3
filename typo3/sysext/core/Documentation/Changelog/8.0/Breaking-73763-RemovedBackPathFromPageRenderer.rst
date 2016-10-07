@@ -33,4 +33,4 @@ Migration
 
 Simply remove the call to `PageRenderer->setBackPath()` in your own scripts.
 
-.. index:: php
+.. index:: PHP-API, Backend

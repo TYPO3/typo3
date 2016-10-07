@@ -109,4 +109,4 @@ Migration
 
 No migration
 
-.. index:: icons
+.. index:: Frontend, Backend

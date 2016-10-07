@@ -38,4 +38,4 @@ Migration
 
 Remove these parameters from the calling PHP code.
 
-.. index:: php
+.. index:: PHP-API

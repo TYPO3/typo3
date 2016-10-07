@@ -33,4 +33,4 @@ Migration
 
 Use `ModuleLoader->addLabelsForModule()` and `ModuleLoader->getLabelsForModule` instead.
 
-.. index:: php
+.. index:: PHP-API

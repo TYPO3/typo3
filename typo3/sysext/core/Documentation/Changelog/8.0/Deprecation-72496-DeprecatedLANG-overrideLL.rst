@@ -24,4 +24,4 @@ Affected Installations
 
 Any TYPO3 instance using the LanguageService method directly within an extension or third-party code.
 
-.. index:: php
+.. index:: PHP-API

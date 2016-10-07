@@ -38,4 +38,4 @@ customized to not include DIV elements.
 
 If the option `allowedFontColors` is still needed, the existing functionality can be achieved by using the `keepTags` functionality to sort out correct values for a property.
 
-.. index:: typoscript, htmlarea
+.. index:: TSConfig, Backend, RTE

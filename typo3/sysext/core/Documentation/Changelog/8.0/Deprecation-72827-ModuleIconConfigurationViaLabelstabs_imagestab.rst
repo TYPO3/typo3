@@ -55,4 +55,4 @@ your extension like this:
         )
     );
 
-.. index:: php, icons
+.. index:: PHP-API, Backend

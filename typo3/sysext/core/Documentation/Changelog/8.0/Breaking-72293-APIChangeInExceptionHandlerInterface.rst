@@ -38,4 +38,4 @@ Add `\Throwable` as type hinting in your implementation of
 `ExceptionHandlerInterface`. Check the API/type hinting of the method where you
 process the exception.
 
-.. index:: php
+.. index:: PHP-API

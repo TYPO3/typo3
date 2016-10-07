@@ -28,3 +28,5 @@ it to be called as `getArray()` enables:
 .. code-block:: text
 
 	{myObject.objectstorageproperty.array.4} in Fluid (including {myObject.objectstorageproperty.array.{dynamicIndex}} in v8)
+
+.. index:: Fluid

@@ -38,3 +38,5 @@ Register a hook class which implements the method with the name `postProcess`:
 .. code-block:: php
 
    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'][] = \VENDOR\MyExt\Hooks\BackendUtilityHook::class;
+
+.. index:: Backend, PHP-API

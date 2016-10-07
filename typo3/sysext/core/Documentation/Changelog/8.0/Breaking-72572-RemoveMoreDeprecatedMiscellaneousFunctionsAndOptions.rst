@@ -47,4 +47,4 @@ If the option `$TYPO3_CONF_VARS[SYS][displayErrors]` is set to "2" use "-1" inst
 
 All table definitions should be moved to <your_extension>/Configuration/TCA/<table_name>
 
-.. index:: php
+.. index:: PHP-API, TCA, Backend, LocalConfiguration

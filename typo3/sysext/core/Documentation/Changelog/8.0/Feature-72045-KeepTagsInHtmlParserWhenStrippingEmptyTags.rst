@@ -31,3 +31,5 @@ Impact
 
 Unless the configuration of the `HTMLparser is changed`, the stripEmptyTags
 feature will work as before.
+
+.. index:: Backend, TSConfig

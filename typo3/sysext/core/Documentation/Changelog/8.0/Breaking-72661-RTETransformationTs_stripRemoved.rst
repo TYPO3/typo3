@@ -35,4 +35,4 @@ Use TSconfig options like `RTE.default.removeTags` to specify which tags should 
 to the database, or even better `RTE.default.proc.allowTags` which tags are whitelisted to the database together
 with the default RTE processing command `ts_css`.
 
-.. index:: typoscript, htmlarea
+.. index:: TSConfig, Backend, RTE
