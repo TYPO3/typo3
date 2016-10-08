@@ -34,3 +34,5 @@ For migration details `see the docs`_
 
 
 .. _see the docs: https://docs.typo3.org/typo3cms/extensions/core/Changelog/7.2/Feature-66047-IntroduceJavascriptNotificationApi.html
+
+.. index:: Backend, JavaScript

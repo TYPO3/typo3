@@ -25,3 +25,5 @@ Migration
 =========
 
 Use AMD module :javascript:`TYPO3/CMS/Lowlevel/QueryGenerator` instead.
+
+.. index:: JavaScript, ext:lowlevel

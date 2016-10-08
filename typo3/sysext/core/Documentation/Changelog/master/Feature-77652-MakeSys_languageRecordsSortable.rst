@@ -17,3 +17,5 @@ Impact
 ======
 
 The languages can now be manually sorted instead of an ordering by its name.
+
+.. index:: Backend

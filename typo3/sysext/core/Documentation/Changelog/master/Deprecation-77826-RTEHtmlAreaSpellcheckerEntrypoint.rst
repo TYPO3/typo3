@@ -24,3 +24,5 @@ Migration
 =========
 
 Use `SpellCheckingController->processRequest` instead.
+
+.. index:: PHP-API, RTE

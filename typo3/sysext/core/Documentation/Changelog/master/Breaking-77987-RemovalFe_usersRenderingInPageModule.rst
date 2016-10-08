@@ -31,3 +31,5 @@ By using the following code in the :php:`ext_localconf.php` file, the records ca
             'icon' => true
         )
     );
+
+.. index:: LocalConfiguration, Backend

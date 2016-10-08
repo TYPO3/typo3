@@ -30,3 +30,5 @@ Migration
 
 If the previous behaviour is wanted, the TCA of the used collection table needs to
 be overridden to not use the configured enable columns.
+
+.. index:: PHP-API, Frontend

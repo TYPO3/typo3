@@ -27,3 +27,5 @@ Migration
 =========
 
 There is no migration available, consider migrating to a supported modern framework.
+
+.. index:: Backend, JavaScript

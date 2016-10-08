@@ -46,3 +46,5 @@ Migration
 * If you have Extbase code or Fluid templates using ObjectAccess to read stdClass instances with dynamically added properties and your code expects a
   false verdict for such properties (highly unlikely!) inverse any conditions depending on the resolved value being null or empty to expect the actual
   value/trueness of the value you address.
+
+.. index:: PHP-API, ext:extbase

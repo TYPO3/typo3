@@ -20,3 +20,5 @@ Migration
 =========
 
 No migration available.
+
+.. index:: LocalConfiguration, Backend

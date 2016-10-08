@@ -35,3 +35,5 @@ Migration
 
 Remove the option in your custom TypoScript and remove the functionality in the Fluid plugin
 template.
+
+.. index:: Frontend, TypoScript, Fluid, ext:indexed_search

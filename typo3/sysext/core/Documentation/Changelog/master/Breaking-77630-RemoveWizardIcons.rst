@@ -43,3 +43,5 @@ The TCA migration migrates the icon calls to the new output if used as wizard ic
 - `wizard_table.gif` => `content-table`
 - `wizard_link.gif` => `actions-wizard-link`
 - `wizard_rte.gif` => `actions-wizard-rte`
+
+.. index:: Backend

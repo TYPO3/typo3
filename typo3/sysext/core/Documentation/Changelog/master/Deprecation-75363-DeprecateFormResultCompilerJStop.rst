@@ -31,4 +31,4 @@ Migration
 
 Instead of :php:`JStop()` use :php:`addCssFiles()`.
 
-.. index:: php
+.. index:: PHP-API

@@ -14,3 +14,5 @@ Impact
 ======
 
 You are now able to show all TCA migration messages from within the Install Tool.
+
+.. index:: TCA, Backend

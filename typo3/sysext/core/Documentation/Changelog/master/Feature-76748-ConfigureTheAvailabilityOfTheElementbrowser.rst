@@ -26,3 +26,5 @@ Impact
 ======
 
 Default behavior is that the button stays visible, to disable/hide this button the TCA/pageTs/userTs needs to be explicit changed.
+
+.. index:: TSConfig, Backend

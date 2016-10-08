@@ -31,3 +31,5 @@ It is now possible to access properties of a flexform field by using TypoScript.
     }
 
 The key `flexform` is followed by the field which holds the flexform data and the name of the property whose content should be retrieved.
+
+.. index:: TypoScript, FlexForm

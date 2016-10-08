@@ -25,3 +25,5 @@ connections only explicitly mapped tables are managed. MySQL specific data types
 mapped to the closest matching standard type, for example TINYINT to SMALLINT. The support
 for foreign keys has been enhanced as a result of the additional capabilities of the
 Doctrine SchemaManager.
+
+.. index:: Database, PHP-API

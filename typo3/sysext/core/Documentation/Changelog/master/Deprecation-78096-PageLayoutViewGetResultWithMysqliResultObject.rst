@@ -28,3 +28,5 @@ Migration
 =========
 
 The extension should migrate to use the Doctrine API for database queries.
+
+.. index:: Backend, Database, PHP-API

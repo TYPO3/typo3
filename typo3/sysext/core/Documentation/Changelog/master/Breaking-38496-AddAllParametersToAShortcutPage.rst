@@ -48,3 +48,5 @@ Migration
 =========
 
 There is no migration available.
+
+.. index:: Frontend

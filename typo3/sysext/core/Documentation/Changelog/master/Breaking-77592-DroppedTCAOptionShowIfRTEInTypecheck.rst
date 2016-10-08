@@ -32,3 +32,5 @@ Migration
 =========
 
 Remove the setting from the TCA, and if still needed, use a custom display condition to achieve the same functionality.
+
+.. index:: TCA, Backend

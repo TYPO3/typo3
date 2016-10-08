@@ -20,3 +20,5 @@ Affected Installations
 ======================
 
 Installations which use the eID `rtehtmlarea_spellchecker` in a custom extension.
+
+.. index:: Backend, Frontend, RTE

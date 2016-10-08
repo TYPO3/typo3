@@ -34,3 +34,5 @@ Migration
 
 Full functionality can be kept by enabling the feature toggle `useMysqlFulltext` within
 the extension configuration of `indexed_search`.
+
+.. index:: LocalConfiguration, ext:indexed_search, ext:indexed_search_mysql

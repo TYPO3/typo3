@@ -29,3 +29,5 @@ Migration
 =========
 
 Use the upgrade wizard provided by the install tool to fetch and load the extensions from TER.
+
+.. index:: Database, ext:dba, ext:adodb
