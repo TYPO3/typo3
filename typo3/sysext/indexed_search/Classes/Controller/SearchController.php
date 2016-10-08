@@ -195,10 +195,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
         $searchData['numberOfResults'] = MathUtility::forceIntegerInRange($searchData['numberOfResults'], 1, 100, $this->defaultResultNumber);
         // This gets the search-words into the $searchWordArray
-        $this->sword = $searchData['sword'];
+        $this->setSword($searchData['sword']);
         // Add previous search words to current
         if ($searchData['sword_prev_include'] && $searchData['sword_prev']) {
-            $this->sword = trim($searchData['sword_prev']) . ' ' . $this->sword;
+            $this->setSword(trim($searchData['sword_prev']) . ' ' . $this->getSword());
         }
         $this->searchWords = $this->getSearchWords($searchData['defaultOperand']);
         // This is the id of the site root.
@@ -780,7 +780,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function writeSearchStat($searchParams, $searchWords, $count, $pt)
     {
         $insertFields = [
-            'searchstring' => $this->sword,
+            'searchstring' => $this->getSword(),
             'searchoptions' => serialize([$searchParams, $searchWords, $pt]),
             'feuser_id' => (int)$GLOBALS['TSFE']->fe_user->user['uid'],
             // cookie as set or retrieved. If people has cookies disabled this will vary all the time
@@ -831,7 +831,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         // Shorten search-word string to max 200 bytes (does NOT take multibyte charsets into account - but never mind,
         // shortening the string here is only a run-away feature!)
-        $searchWords = substr($this->sword, 0, 200);
+        $searchWords = substr($this->getSword(), 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
         $searchWords = $this->charsetConverter->conv($searchWords, $GLOBALS['TSFE']->metaCharset, 'utf-8');
         $searchWords = $this->charsetConverter->entities_to_utf8($searchWords);
@@ -913,7 +913,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $searchData = $this->initialize($search);
         // Adding search field value
-        $this->view->assign('sword', $this->sword);
+        $this->view->assign('sword', $this->getSword());
         // Extended search
         if ($search['extendedSearch']) {
             // "Search for"
@@ -1500,5 +1500,23 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             10, 400, 60
         );
         $this->settings['results.']['hrefInSummaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['hrefInSummaryCropSignifier'], $typoScriptArray['hrefInSummaryCropSignifier.']);
+    }
+
+    /**
+     * Set the search word
+     * @param string $sword
+     */
+    public function setSword($sword)
+    {
+        $this->sword = $sword;
+    }
+
+    /**
+     * Returns the search word
+     * @return string
+     */
+    public function getSword()
+    {
+        return $this->sword;
     }
 }
