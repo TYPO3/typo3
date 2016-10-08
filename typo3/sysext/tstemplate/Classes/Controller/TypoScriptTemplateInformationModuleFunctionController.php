@@ -250,10 +250,12 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 unset($e);
             }
             if (isset($e['constants'])) {
+                $assigns['showConstantsEditor'] = true;
                 $assigns['constants'] = $tplRow['constants'];
                 $assigns['constantsLabel'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
             }
             if (isset($e['config'])) {
+                $assigns['showConfigEditor'] = true;
                 $assigns['config'] = $tplRow['config'];
                 $assigns['configLabel'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
             }
