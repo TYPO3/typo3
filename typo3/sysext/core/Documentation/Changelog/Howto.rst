@@ -27,12 +27,14 @@ teams or projects:
 
 This structure replaces the old `NEWS.md` file.
 
+
 Different changelog types
 =========================
 
 A changelog handles one of these change types:
 
-- Breaking change: A patch moved or removed a specific part of core functionality that may break extensions if they use this part. Removal of deprecated code or an interface change are good examples of this type.
+- Breaking change: A patch moved or removed a specific part of core functionality that may break extensions if they use
+  this part. Removal of deprecated code or an interface change are good examples of this type.
 
 - Deprecation: A patch deprecates a certain core functionality for a planned removal.
 
@@ -66,10 +68,59 @@ Like other documentation, changelog files are done in ReST, see `TYPO3 wiki ReST
 
 - All types contain a "Description" section that should give a short summary on which core part was affected by the change.
 
-- All types contain an "Impact" section that describes the possible impact of a change. An example is "Frontend output may change", "Configuration of xy is easier" or "Backend will throw a fatal error".
+- All types contain an "Impact" section that describes the possible impact of a change. An example is "Frontend output
+  may change", "Configuration of xy is easier" or "Backend will throw a fatal error".
 
-- Types "Deprecation" and "Breaking" contain an "Affected installations" section that describes when and if a TYPO3 instance is affected by a change. Example: "Extension xy is in use" or "TypoScript functionality xy is used" or "System is based on PHP 5.3".
+- Types "Deprecation" and "Breaking" contain an "Affected installations" section that describes when and if a TYPO3 instance
+  is affected by a change. Example: "Extension xy is in use" or "TypoScript functionality xy is used" or "System is based on PHP 5.3".
 
 - Types "Deprecation" and "Breaking" contain a "Migration" section to describe best practices on how to cope with a specific change.
 
+- All types contain a list of tags, see below.
+
 .. _TYPO3 wiki ReST syntax: http://wiki.typo3.org/ReST_Syntax
+
+
+Tagging
+=======
+
+To provide the possibility to filter ReST files by topics, it is mandatory to equip every RST file with at least two tags.
+As a rule of thumb a file should have no more than five tags. Please limit yourself to the list provided below. If you
+are in dearly need to introduce a new tag, you must also add it to the list (and explain it) in this file as a reference
+for everyone.
+
+The tag list should be located at the end of a ReST file prefixed with the index keyword,
+example:: ``.. index:: Backend, JavaScript``.
+
+List of all possible tags:
+
+- TypoScript - Changes that imply or introduce alterations to some TypoScript settings or modify the behavior of TypoScript
+  itself. Frontend TypoScript only.
+
+- TSConfig - Changes or modifications on the PageTS or UserTS or the behavior of this field.
+
+- TCA - Every change related to TCA.
+
+- FlexForm - Changes affecting FlexForm functionality.
+
+- LocalConfiguration - Changes that affect the LocalConfiguration.php or the subordinated AdditionalConfiguration.php
+
+- Fluid - Changes that alter behavior of Fluid like introducing new tags or modifying already established ones.
+
+- FAL - Changes to File Abstraction Layer.
+
+- Database - Changes that modify behavior of the database abstraction or introduces or removes new fields.
+
+- JavaScript - Modifying or introducing JavaScript.
+
+- PHP-API - Implementations of mandatory changes of the PHP-API.
+
+- Frontend - Changes that will affect the behavior or rendering of the TYPO3 Frontend.
+
+- Backend - Changes that will affect the behavior or rendering of the TYPO3 Backend.
+
+- CLI - Changes affecting CLI functionality.
+
+- RTE - Changes to RTE functionality.
+
+- ext:xyz - Changes on extension xyz. Please refer to this tag only when changing system extensions.

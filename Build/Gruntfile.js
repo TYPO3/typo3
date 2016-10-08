@@ -41,8 +41,10 @@ module.exports = function(grunt) {
 			t3editor  : '<%= paths.sysext %>t3editor/Resources/',
 			workspaces: '<%= paths.sysext %>workspaces/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
-			flags     : 'bower_components/region-flags/svg/',
-			t3icons   : 'bower_components/wmdbsystems-typo3-icons/dist/'
+			bower     : 'bower_components/',
+			flags     : '<%= paths.bower %>region-flags/svg/',
+			t3icons   : '<%= paths.bower %>wmdbsystems-typo3-icons/dist/',
+			npm       : 'node_modules/'
 		},
 		less: {
 			options: {
@@ -181,6 +183,11 @@ module.exports = function(grunt) {
 					{ dest: '<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg', src: '<%= paths.t3icons %>module/module-viewpage.svg' },
 					{ dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg', src: '<%= paths.t3icons %>module/module-workspaces.svg' }
 				]
+			},
+			npm: {
+				files: [
+					{dest: '<%= paths.install %>Public/JavaScript/tagsort.min.js', src: '<%= paths.npm %>tagsort/tagsort.js'}
+				]
 			}
 		},
 		bowercopy: {
@@ -261,7 +268,8 @@ module.exports = function(grunt) {
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
-					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"]
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
+					"<%= paths.install %>Public/JavaScript/tagsort.min.js": ["<%= paths.install %>Public/JavaScript/tagsort.min.js"]
 				}
 			}
 		},

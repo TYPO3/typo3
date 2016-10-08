@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+	  xmlns:f="http://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers">
+<head>
+	<title>Partials: ListDocumentation</title>
+</head>
+<body>
+<f:section name="Main">
+	<f:for each="{files}" as="versionArray" key="version">
+		<f:if condition="{versionArray -> f:count()} > 0">
+			<h2>{version}</h2>
+			<div class="panel-group" role="tablist" aria-multiselectable="false">
+				<f:for each="{versionArray}" as="fileArray" key="issueNumber">
+
+					<div class="panel panel-default upgrade_analysis_item_to_filter"
+							 data-item-tags="{fileArray.tagList}" id="heading{issueNumber}">
+						<div class="panel-heading" role="tab">
+							<h3 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{issueNumber}" aria-expanded="true" aria-controls="collapse{issueNumber}" class="collapsed">
+									<span class="caret"></span>
+									<strong >
+										{fileArray.headline}</strong>
+								</a>
+							</h3>
+						</div>
+						<div id="collapse{issueNumber}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{issueNumber}">
+							<pre>{fileArray.content}</pre>
+						</div>
+					</div>
+
+				</f:for>
+			</div>
+		</f:if>
+	</f:for>
+</f:section>
+</body>
+</html>

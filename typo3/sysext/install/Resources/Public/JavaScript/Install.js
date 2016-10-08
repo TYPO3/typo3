@@ -82,7 +82,7 @@ TYPO3.Install.ExtensionChecker = {
 				if (data === 'OK') {
 					self.checkExtensionsCompatibility(true);
 				} else {
-					if(data === 'unauthorized') {
+					if (data === 'unauthorized') {
 						location.reload();
 					}
 					// workaround for xdebug returning 200 OK on fatal errors
@@ -119,10 +119,10 @@ TYPO3.Install.ExtensionChecker = {
 					);
 					var extensions = data.split(',');
 					var unloadButtonWrapper = $('<fieldset class="t3-install-form-submit"></fieldset>');
-					for(var i=0; i<extensions.length; i++) {
+					for (var i = 0; i < extensions.length; i++) {
 						var extension = extensions[i];
 						var unloadButton = $('<button />', {
-							text: 'Uninstall '+ $.trim(extension),
+							text: 'Uninstall ' + $.trim(extension),
 							'class': 't3-js-uninstallSingle',
 							'data-extension': $.trim(extension)
 						});
@@ -137,7 +137,7 @@ TYPO3.Install.ExtensionChecker = {
 						});
 					}
 					var unloadAllButton = $('<button />', {
-						text: 'Uninstall all incompatible extensions: '+ data,
+						text: 'Uninstall all incompatible extensions: ' + data,
 						click: function(e) {
 							$('.alert-loading', '#checkExtensions').show();
 							self.uninstallExtension(data);
@@ -197,7 +197,7 @@ TYPO3.Install.ExtensionChecker = {
 				if (data === 'OK') {
 					self.handleCheckExtensionsSuccess();
 				} else {
-					if(data === 'unauthorized') {
+					if (data === 'unauthorized') {
 						location.reload();
 					}
 					// workaround for xdebug returning 200 OK on fatal errors
@@ -562,7 +562,7 @@ $(function() {
 
 		if (value.length === 0) {
 			$(this).attr('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
-		} else if (!enoughRegex.test(value)) {
+		} else  if (!enoughRegex.test(value)) {
 			$(this).attr('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
 		} else if (strongRegex.test(value)) {
 			$(this).attr('style', 'background-color:#CDEACA; border:1px solid #58B548');
@@ -625,7 +625,7 @@ $(function() {
 	}
 	// This makes jquerys "contains" work case-insensitive
 	jQuery.expr[':'].contains = jQuery.expr.createPseudo(function(arg) {
-		return function( elem ) {
+		return function(elem) {
 			return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
 		};
 	});
@@ -660,7 +660,7 @@ $(function() {
 		$menuListGroup.width($(this).parent().width());
 	});
 	$menuListGroup.width($menuWrapper.parent().width());
-	$(window).resize(function(){
+	$(window).resize(function() {
 		$menuListGroup.width($('#menuWrapper').parent().width());
 	});
 	var $collapse = $('.collapse');
@@ -686,4 +686,19 @@ $(function() {
 	$('.t3js-custom-preset').on('input', function() {
 		$('#' + $(this).data('radio')).prop('checked', true);
 	});
+
+	TYPO3.Install.upgradeAnalysis.initialize();
 });
+
+
+TYPO3.Install.upgradeAnalysis = {
+	provideTags: function() {
+		$('#tagsort_tags_container').tagSort({
+			selector: '.upgrade_analysis_item_to_filter'
+		});
+	},
+
+	initialize: function() {
+		TYPO3.Install.upgradeAnalysis.provideTags();
+	}
+};

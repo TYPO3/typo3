@@ -6876,6 +6876,7 @@ button.close {
 @media all and (transform-3d), (-webkit-transform-3d) {
   .carousel-inner > .item {
     transition: transform 0.6s ease-in-out;
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     perspective: 1000px;
   }
@@ -8345,6 +8346,33 @@ fieldset[disabled] .navbar-inverse .btn-link:hover,
 .navbar-inverse .btn-link[disabled]:focus,
 fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #4d4d4d;
+}
+/* NOT REQUIRED */
+/* Just some example CSS */
+.tagsort-tags-container span {
+	display: inline-block;
+	border: 2px solid #CCC;
+	color: #AAA;
+	font-size: 12px;
+	line-height: 10px;
+	padding: 5px 9px;
+	margin: 5px;
+	cursor: pointer;
+	border-radius: 12px 12px 12px 12px;
+	-moz-border-radius: 12px 12px 12px 12px;
+	-webkit-border-radius: 12px 12px 12px 12px;
+	transition: all 0.2s ease-in-out;
+}
+.tagsort-tags-container span:hover {
+	border: 2px solid #000;
+	color: #FFF;
+	background-color: #000;
+
+}
+.tagsort-tags-container span.tagsort-active {
+	border: 2px solid #000;
+	color: #000;
+	background-color: transparent;
 }
 .content-area {
   padding-bottom: 35px;

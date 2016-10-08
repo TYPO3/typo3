@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+			xmlns:f="http://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers">
+<head>
+	<title>Template: Action/Tool/UpgradeAnalysis</title>
+</head>
+<body>
+<f:layout name="ToolAuthenticated"/>
+
+<f:section name="Content">
+	<h1>Upgrade Analysis</h1>
+
+	<div id="tagsort_tags_container"></div>
+	<div id="upgradeAnalysis_output">
+		<f:render partial="Action/Ajax/UpgradeAnalysis/ListDocumentation" section="Main" arguments="{_all}"/>
+	</div>
+</f:section>
+</body>
+</html>

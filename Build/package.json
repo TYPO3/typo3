@@ -32,6 +32,7 @@
     "karma-requirejs": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
     "phantomjs-prebuilt": "^2.1.7",
-    "requirejs": "^2.2.0"
+    "requirejs": "^2.2.0",
+    "tagsort": "1.4.0"
   }
 }
