@@ -679,8 +679,9 @@ class QueryView
                 $out .= '<td>' . $fVnew . '</td>';
             }
         }
-        $out .= '<td><div class="btn-group">';
+        $out .= '<td>';
         if (!$row['deleted']) {
+            $out .= '<div class="btn-group" role="group">';
             $url = BackendUtility::getModuleUrl('record_edit', [
                 'edit' => [
                     $table => [
@@ -690,12 +691,15 @@ class QueryView
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET'))
             ]);
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
+                . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= '</div><div class="btn-group" role="group">';
             $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid']
                 . ');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()
                 . '</a>';
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
-                . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= '</div>';
         } else {
+            $out .= '<div class="btn-group" role="group">';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', [
                         'cmd' => [
                             $table => [
@@ -727,6 +731,7 @@ class QueryView
                     'redirect' => $redirectUrl
                 ])) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= '</div>';
         }
         $_params = [$table => $row];
         if (is_array($this->hookArray['additionalButtons'])) {
@@ -734,7 +739,7 @@ class QueryView
                 $out .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
-        $out .= '</div></td></tr>';
+        $out .= '</td></tr>';
         return $out;
     }
 

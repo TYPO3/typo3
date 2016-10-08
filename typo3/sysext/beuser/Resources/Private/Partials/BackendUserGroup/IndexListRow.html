@@ -24,7 +24,6 @@
 	</td>
 	<td class="col-control">
 		<div class="btn-group" role="group">
-			<a class="btn btn-default" href="#" onclick="top.launchView('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
 			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_groups][{backendUserGroup.uid}]=edit&returnUrl={returnUrl}')}"><core:icon identifier="actions-open" /></a>
 			<f:if condition="{backendUserGroup.hidden}">
 				<f:then>
@@ -34,6 +33,9 @@
 					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
 				</f:else>
 			</f:if>
+		</div>
+		<div class="btn-group" role="group">
+			<a class="btn btn-default" href="#" onclick="top.launchView('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" /></a
 		</div>
 	</td>
 </tr>

@@ -29,9 +29,7 @@
 		</f:if>
 	</td>
 	<td class="col-control">
-		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default"><core:icon identifier="actions-edit-add" size="small"/> <f:translate key="compare" /></f:link.action>
 		<div class="btn-group" role="group">
-			<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
 			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><core:icon identifier="actions-open" /></a>
 			<f:if condition="{backendUser.currentlyLoggedIn} == 1">
 				<f:then>
@@ -49,6 +47,12 @@
 				</f:else>
 			</f:if>
 			<bu:removeUser backendUser="{backendUser}" />
+		</div>
+		<div class="btn-group" role="group">
+			<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
+		</div>
+		<div class="btn-group" role="group">
+			<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default"><core:icon identifier="actions-edit-add" size="small"/> <f:translate key="compare" /></f:link.action>
 			<bu:SwitchUser backendUser="{backendUser}" />
 		</div>
 	</td>

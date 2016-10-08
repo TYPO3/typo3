@@ -1142,7 +1142,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     // Define checkbox
                     $startExecutionElement = '<label class="btn btn-default btn-checkbox"><input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '"><span class="t3-icon fa"></span></label>';
 
-                    $actions = $editAction . $toggleHiddenAction . $deleteAction;
+                    $actions = '<div class="btn btn-group" role="group">' . $editAction . $toggleHiddenAction . $deleteAction . '</div>';
 
                     // Check the disable status
                     // Row is shown dimmed if task is disabled, unless it is still running
@@ -1156,9 +1156,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
                     // Show no action links (edit, delete) if task is running
                     if ($isRunning) {
-                        $actions = $stopAction;
+                        $actions = '<div class="btn btn-group" role="group">' . $stopAction . '</div>';
                     } else {
-                        $actions .= $runAction;
+                        $actions .= '<div class="btn btn-group" role="group">' . $runAction . '</div>';
                     }
 
                     // Check if the last run failed
@@ -1196,7 +1196,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                             . '<td>' . $multiple . '</td>'
                             . '<td>' . $lastExecution . '</td>'
                             . '<td>' . $nextDate . '</td>'
-                            . '<td nowrap="nowrap"><div class="btn-group" role="group">' . $actions . '</div></td>'
+                            . '<td nowrap="nowrap">' . $actions . '</td>'
                         . '</tr>';
                 } else {
                     // The task object is not valid
