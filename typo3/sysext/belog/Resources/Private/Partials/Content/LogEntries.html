@@ -103,70 +103,48 @@
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th valign="top">
-							<strong>
-								<f:translate key="chLog_l_error" />
-							</strong>
+						<th>
+							<f:translate key="chLog_l_error" />
 						</th>
-						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
-						<th valign="top">
-							<strong>
-								<f:translate key="chLog_l_time" />
-							</strong>
+						<th>
+							<f:translate key="chLog_l_time" />
 						</th>
-						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
-						<th valign="top" colspan="2">
-							<strong>
-								<f:translate key="chLog_l_user" />
-							</strong>
+						<th colspan="2">
+							<f:translate key="chLog_l_user" />
 						</th>
-						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
-						<th valign="top">
-							<strong>
-								<f:if condition="{constraint.isInPageContext}">
-									<f:then>
-										<f:translate key="chLog_l_table" />
-									</f:then>
-									<f:else>
-										<f:translate key="chLog_l_types" />
-									</f:else>
-								</f:if>
-							</strong>
+						<th>
+							<f:if condition="{constraint.isInPageContext}">
+								<f:then>
+									<f:translate key="chLog_l_table" />
+								</f:then>
+								<f:else>
+									<f:translate key="chLog_l_types" />
+								</f:else>
+							</f:if>
 						</th>
-						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
-						<th valign="top">
-							<strong>
-								<f:translate key="chLog_l_action" />
-							</strong>
+						<th>
+							<f:translate key="chLog_l_action" />
 						</th>
-						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
-						<th valign="top">
-							<strong>
-								<f:translate key="chLog_l_details" />
-							</strong>
+						<th>
+							<f:translate key="chLog_l_details" />
 						</th>
-						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
 					</tr>
 				</thead>
 				<tbody>
 					<f:for each="{day}" as="logItem">
 						<tr>
-							<td valign="top">
+							<td>
 								<belog:ErrorIcon errorNumber="{logItem.error}" />
 							</td>
-							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
-
-							<td valign="top">
+							<td>
 								<f:format.date format="H:i:s">@{logItem.tstamp}</f:format.date>
 							</td>
-							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
-
-							<td class="col-icon" valign="top">
+							<td class="col-icon">
 								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
 									<be:avatar backendUser="{logItem.backendUserUid}" showIcon="true" />
 								</f:if>
 							</td>
-							<td valign="top">
+							<td>
 								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
 									<f:then><belog:username uid="{logItem.backendUserUid}" /></f:then>
 									<f:else>[{logItem.backendUserUid}]</f:else>
@@ -186,9 +164,7 @@
 									</f:if>
 								</span>
 							</td>
-							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
-
-							<td valign="top">
+							<td>
 								<f:if condition="{constraint.isInPageContext}">
 									<f:then>
 										{logItem.tableName}
@@ -205,9 +181,7 @@
 									</f:else>
 								</f:if>
 							</td>
-							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
-
-							<td valign="top">
+							<td>
 								<f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
 									<f:then>
 										<f:translate key="action_{logItem.type}_{logItem.action}" />
@@ -217,16 +191,13 @@
 									</f:else>
 								</f:if>
 							</td>
-							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
-
-							<td valign="top">
+							<td>
 								<belog:formatDetails logEntry="{logItem}" />
 								<belog:historyEntry uid="{logItem.uid}" />
 								<f:if condition="{logItem.detailsNumber} > 0">
 									(msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
 								</f:if>
 							</td>
-							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
 						</tr>
 					</f:for>
 				</tbody>
