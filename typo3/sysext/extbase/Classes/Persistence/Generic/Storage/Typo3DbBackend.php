@@ -33,13 +33,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 class Typo3DbBackend implements BackendInterface, SingletonInterface
 {
     /**
-     * The TYPO3 database object
-     *
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseHandle;
-
-    /**
      * @var ConnectionPool
      */
     protected $connectionPool;
@@ -128,7 +121,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     public function __construct()
     {
-        $this->databaseHandle = $GLOBALS['TYPO3_DB'];
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
@@ -516,12 +508,19 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             && BackendUtility::isTableWorkspaceEnabled($tableName)
             && count($rows) === 1
         ) {
-            $movePlaceholder = $this->databaseHandle->exec_SELECTgetSingleRow(
-                $tableName . '.*',
-                $tableName,
-                't3ver_state=3 AND t3ver_wsid=' . $pageRepository->versioningWorkspaceId
-                    . ' AND t3ver_move_id=' . $rows[0]['uid']
-            );
+            $versionId = $pageRepository->versioningWorkspaceId;
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $movePlaceholder = $queryBuilder->select($tableName . '.*')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($versionId, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
             if (!empty($movePlaceholder)) {
                 $rows = [$movePlaceholder];
             }
@@ -538,12 +537,25 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
                     && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
                 ) {
-                    $row = $this->databaseHandle->exec_SELECTgetSingleRow(
-                        $tableName . '.*',
-                        $tableName,
-                        $tableName . '.uid=' . (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] .
-                            ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
-                    );
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                    $queryBuilder->getRestrictions()->removeAll();
+                    $row = $queryBuilder->select($tableName . '.*')
+                        ->from($tableName)
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                $tableName . '.uid',
+                                $queryBuilder->createNamedParameter(
+                                    $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']], \PDO::PARAM_INT
+                                )
+                            ),
+                            $queryBuilder->expr()->eq(
+                                $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'],
+                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            )
+                        )
+                        ->setMaxResults(1)
+                        ->execute()
+                        ->fetch();
                 }
             }
             $pageRepository->versionOL($tableName, $row, true);
