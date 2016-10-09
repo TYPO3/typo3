@@ -114,7 +114,10 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         $controllerObjectName = $request->getControllerObjectName();
         $controller = $this->objectManager->get($controllerObjectName);
         if (!$controller instanceof \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
+            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException(
+                'Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.',
+                1476109646
+            );
         }
         return $controller;
     }

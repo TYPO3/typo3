@@ -93,7 +93,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 $this->returnCallback(
                     function () use ($mockedUserAuthentication) {
                         if ($mockedUserAuthentication->user['admin'] !== 1) {
-                            throw new \Exception('User role is not admin');
+                            throw new \Exception('User role is not admin', 1476050222);
                         }
                     }
                 ));

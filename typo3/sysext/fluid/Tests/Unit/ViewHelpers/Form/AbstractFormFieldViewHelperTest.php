@@ -68,7 +68,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
         $this->injectDependenciesIntoViewHelper($formViewHelper);
         $formViewHelper->_set('respectSubmittedDataValue', false);
 
-        $mockObject = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ClassWithTwoGetters();
+        $mockObject = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ClassWithTwoGetters('testing', 1476108385);
 
         $formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
         $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObject')
@@ -248,7 +248,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
         $this->injectDependenciesIntoViewHelper($formFieldViewHelper);
         $arguments = ['property' => 'simple'];
         $formFieldViewHelper->expects($this->any())->method('renderHiddenIdentityField')->will(
-            $this->throwException(new \Exception('Should not be executed!!!'))
+            $this->throwException(new \Exception('Should not be executed!!!', 1476108413))
         );
         $formFieldViewHelper->_set('arguments', $arguments);
         $formFieldViewHelper->_call('addAdditionalIdentityPropertiesIfNeeded');

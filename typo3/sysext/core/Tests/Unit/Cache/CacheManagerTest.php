@@ -311,7 +311,7 @@ class CacheManagerTest extends UnitTestCase
         $manager->_set('defaultCacheConfiguration', $defaultCacheConfiguration);
         $manager->setCacheConfigurations($configuration);
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1464555650);
+        $this->expectExceptionCode(1476109149);
         $manager->getCache($cacheIdentifier);
     }
 

@@ -87,7 +87,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\CMS\Core\Tests\FunctionalT
         if (!is_file($path)) {
             throw new \Exception(
                 'Fixture file ' . $path . ' not found',
-                1376746261
+                1476109709
             );
         }
 

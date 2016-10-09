@@ -133,13 +133,15 @@ class BulkInsertQuery
 
             if (!$namedValue && !$positionalValue) {
                 throw new \InvalidArgumentException(
-                    sprintf('No value specified for column %s (index %d).', $column, $index)
+                    sprintf('No value specified for column %s (index %d).', $column, $index),
+                    1476049651
                 );
             }
 
             if ($namedValue && $positionalValue && $values[$column] !== $values[$index]) {
                 throw new \InvalidArgumentException(
-                    sprintf('Multiple values specified for column %s (index %d).', $column, $index)
+                    sprintf('Multiple values specified for column %s (index %d).', $column, $index),
+                    1476049652
                 );
             }
 
@@ -151,7 +153,8 @@ class BulkInsertQuery
 
             if ($namedType && $positionalType && $types[$column] !== $types[$index]) {
                 throw new \InvalidArgumentException(
-                    sprintf('Multiple types specified for column %s (index %d).', $column, $index)
+                    sprintf('Multiple types specified for column %s (index %d).', $column, $index),
+                    1476049653
                 );
             }
 
@@ -192,7 +195,8 @@ class BulkInsertQuery
                     'You can only insert %d rows in a single INSERT statement with platform "%s".',
                     $insertMaxRows,
                     $platform->getName()
-                )
+                ),
+                1476049654
             );
         }
 
@@ -244,7 +248,10 @@ class BulkInsertQuery
     public function getSQL(): string
     {
         if (empty($this->values)) {
-            throw new \LogicException('You need to add at least one set of values before generating the SQL.');
+            throw new \LogicException(
+                'You need to add at least one set of values before generating the SQL.',
+                1476049702
+            );
         }
 
         $connection = $this->connection;

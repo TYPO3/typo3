@@ -117,7 +117,7 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if (in_array($type, self::$dependencyTypes)) {
             $this->type = $type;
         } else {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($type . ' was not a valid dependency type.');
+            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($type . ' was not a valid dependency type.', 1476122402);
         }
     }
 

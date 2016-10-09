@@ -229,7 +229,7 @@ class CommandController implements CommandControllerInterface
         $this->request->setArguments($arguments);
 
         $this->arguments->removeAll();
-        throw new StopActionException();
+        throw new StopActionException('forward', 1476107661);
     }
 
     /**
@@ -344,7 +344,7 @@ class CommandController implements CommandControllerInterface
     protected function quit($exitCode = 0)
     {
         $this->response->setExitCode($exitCode);
-        throw new StopActionException;
+        throw new StopActionException('quit', 1476107681);
     }
 
     /**

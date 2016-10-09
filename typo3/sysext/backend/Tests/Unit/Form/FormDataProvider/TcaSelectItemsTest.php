@@ -1857,8 +1857,8 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
 
-        $prevException = new DBALException('Invalid table name', 400);
-        $exception = new DBALException('Driver error', 500, $prevException);
+        $prevException = new DBALException('Invalid table name', 1476045274);
+        $exception = new DBALException('Driver error', 1476045971, $prevException);
 
         $queryBuilderProphet->execute()->shouldBeCalled()->willThrow($exception);
 
@@ -2679,7 +2679,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     || $parameters['row'] !== [ 'aField' => 'aValue' ]
                                     || $parameters['field'] !== 'aField'
                                 ) {
-                                    throw new \UnexpectedValueException('broken', 1438604329);
+                                    throw new \UnexpectedValueException('broken', 1476109436);
                                 }
                             },
                         ],
@@ -2742,7 +2742,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 ],
                             ],
                             'itemsProcFunc' => function (array $parameters, $pObj) {
-                                throw new \UnexpectedValueException('anException', 1438604329);
+                                throw new \UnexpectedValueException('anException', 1476109437);
                             },
                         ],
                     ],

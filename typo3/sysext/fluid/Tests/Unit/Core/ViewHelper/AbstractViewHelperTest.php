@@ -149,7 +149,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->callInaccessibleMethod($fixture, 'registerRenderMethodArguments');
         $fixture->setArguments($namedArguments);
         if ($expectsException) {
-            $exception = new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception('test');
+            $exception = new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception('test', 1476108352);
             $this->expectException(get_class($exception));
             $fixture->expects($this->once())->method('render')->willThrowException($exception);
             $this->assertEquals('test', $this->callInaccessibleMethod($fixture, 'callRenderMethod'));

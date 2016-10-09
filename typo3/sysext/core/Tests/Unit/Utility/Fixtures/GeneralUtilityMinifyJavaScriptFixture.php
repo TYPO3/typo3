@@ -31,8 +31,8 @@ class GeneralUtilityMinifyJavaScriptFixture extends GeneralUtility
     public static function devLog($errorMessage, $extKey, $severity = 0, $dataVar = false)
     {
         if ($errorMessage !== 'Error minifying java script: foo') {
-            throw new \UnexpectedValueException('broken');
+            throw new \UnexpectedValueException('broken', 1476122080);
         }
-        throw new \RuntimeException();
+        throw new \RuntimeException('testing', 1476122081);
     }
 }

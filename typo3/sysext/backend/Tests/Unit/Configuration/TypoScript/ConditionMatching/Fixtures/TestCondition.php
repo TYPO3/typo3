@@ -30,7 +30,7 @@ class TestCondition extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMa
     {
         // Throw an exception if everything is fine, this exception is *expected* in the according unit test
         if ($conditionParameters[0] === '= 7' && $conditionParameters[1] === '!= 6') {
-            throw new TestConditionException('All Ok', 1411581139);
+            throw new TestConditionException('All Ok', 1476109533);
         }
     }
 }

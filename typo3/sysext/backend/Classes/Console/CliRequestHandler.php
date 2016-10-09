@@ -127,9 +127,9 @@ class CliRequestHandler implements RequestHandlerInterface
     {
         $cliKey = $input->getFirstArgument();
         if (empty($cliKey)) {
-            throw new \InvalidArgumentException('This script must have a command as first argument.', 1);
+            throw new \InvalidArgumentException('This script must have a command as first argument.', 1476107418);
         } elseif (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey])) {
-            throw new \InvalidArgumentException('This supplied command is not valid.', 1);
+            throw new \InvalidArgumentException('This supplied command is not valid.', 1476107480);
         }
         return $cliKey;
     }
@@ -167,18 +167,18 @@ class CliRequestHandler implements RequestHandlerInterface
     protected function loadCommandLineBackendUser($commandLineName)
     {
         if ($GLOBALS['BE_USER']->user['uid']) {
-            throw new \RuntimeException('Another user was already loaded which is impossible in CLI mode!', 3);
+            throw new \RuntimeException('Another user was already loaded which is impossible in CLI mode!', 1476107444);
         }
         if (!StringUtility::beginsWith($commandLineName, '_CLI_')) {
-            throw new \RuntimeException('Module name, "' . $commandLineName . '", was not prefixed with "_CLI_"', 3);
+            throw new \RuntimeException('Module name, "' . $commandLineName . '", was not prefixed with "_CLI_"', 1476107445);
         }
         $userName = strtolower($commandLineName);
         $GLOBALS['BE_USER']->setBeUserByName($userName);
         if (!$GLOBALS['BE_USER']->user['uid']) {
-            throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 3);
+            throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 1476107195);
         }
         if ($GLOBALS['BE_USER']->isAdmin()) {
-            throw new \RuntimeException('CLI backend user "' . $userName . '" was ADMIN which is not allowed!', 3);
+            throw new \RuntimeException('CLI backend user "' . $userName . '" was ADMIN which is not allowed!', 1476107446);
         }
     }
 

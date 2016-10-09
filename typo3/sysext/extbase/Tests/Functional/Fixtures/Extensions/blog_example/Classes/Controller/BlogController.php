@@ -59,7 +59,8 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             parent::processRequest($request, $response);
         } catch (\TYPO3\CMS\Extbase\Property\Exception $exception) {
             throw new \RuntimeException(
-                $this->getRuntimeIdentifier() . ': ' . $exception->getMessage() . ' (' . $exception->getCode() . ')'
+                $this->getRuntimeIdentifier() . ': ' . $exception->getMessage() . ' (' . $exception->getCode() . ')',
+                1476122222
             );
         }
     }

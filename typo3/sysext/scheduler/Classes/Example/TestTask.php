@@ -68,7 +68,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
                 $mailsSend = $mailer->send();
                 $success = $mailsSend > 0;
             } catch (\Exception $e) {
-                throw new \TYPO3\CMS\Core\Exception($e->getMessage());
+                throw new \TYPO3\CMS\Core\Exception($e->getMessage(), 1476048416);
             }
         } else {
             // No email defined, just log the task

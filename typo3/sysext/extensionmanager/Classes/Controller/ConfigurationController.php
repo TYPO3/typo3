@@ -94,7 +94,7 @@ class ConfigurationController extends AbstractModuleController
             if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
                 $this->redirect('welcome', 'Distribution', null, ['extension' => $extension->getUid()]);
             }
-            throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.');
+            throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.', 1476047775);
         }
     }
 

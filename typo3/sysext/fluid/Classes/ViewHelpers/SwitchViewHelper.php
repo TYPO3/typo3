@@ -87,7 +87,7 @@ class SwitchViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\SwitchViewHelper
     public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
     {
         if (count($node->getChildNodes())) {
-            throw new StopCompilingException();
+            throw new StopCompilingException('switch view helper', 1476122366);
         }
     }
 }

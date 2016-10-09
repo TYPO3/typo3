@@ -106,7 +106,13 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // mocked method ("getObjectNameByClassName") does not exist _if the mock object is not used_.
         $this->mockCommandManager->getCommandByIdentifier('some_extension_name:default:list');
         $mockCommandManager = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
-        $mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will($this->throwException(new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException()));
+        $mockCommandManager
+            ->expects($this->any())
+            ->method('getCommandByIdentifier')
+            ->with('test:default:list')
+            ->will($this->throwException(
+                new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('testing', 1476050312))
+            );
         $this->requestBuilder->_set('commandManager', $mockCommandManager);
         $request = $this->requestBuilder->build('test:default:list');
         $this->assertSame(\TYPO3\CMS\Extbase\Command\HelpCommandController::class, $request->getControllerObjectName());

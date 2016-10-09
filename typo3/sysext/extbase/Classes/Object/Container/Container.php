@@ -309,7 +309,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
                 } elseif (array_key_exists('defaultValue', $argumentInformation)) {
                     $parameter = $argumentInformation['defaultValue'];
                 } else {
-                    throw new \InvalidArgumentException('not a correct info array of constructor dependencies was passed!');
+                    throw new \InvalidArgumentException('not a correct info array of constructor dependencies was passed!', 1476107941);
                 }
             }
             $parameters[] = $parameter;

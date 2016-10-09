@@ -169,7 +169,7 @@ class EditFileController extends AbstractModule
         $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
         try {
             if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
-                throw new \Exception('Files with that extension are not editable.');
+                throw new \Exception('Files with that extension are not editable.', 1476050135);
             }
 
             // Read file content to edit:

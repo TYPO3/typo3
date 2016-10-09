@@ -116,7 +116,10 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     protected function buildDataMapInternal($className)
     {
         if (!class_exists($className)) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException('Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.');
+            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException(
+                'Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.',
+                1476045117
+            );
         }
         $recordType = null;
         $subclasses = [];

@@ -45,7 +45,7 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(\Exception::class);
         // @TODO expectExceptionCode is 0
-        $this->taskExecutor->expects($this->once())->method('execute')->will($this->throwException(new \Exception()));
+        $this->taskExecutor->expects($this->once())->method('execute')->will($this->throwException(new \Exception('testing', 1476107518)));
         $this->task->_set('taskExecutor', $this->taskExecutor);
         $this->task->expects($this->once())->method('logException');
         $this->task->execute();

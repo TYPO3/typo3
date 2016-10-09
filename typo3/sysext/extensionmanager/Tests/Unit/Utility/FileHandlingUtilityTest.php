@@ -519,7 +519,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('createNestedDirectory')
             ->will($this->returnCallback(function ($path) {
                 if (!in_array($path, ['foo/bar', 'baz/foo'])) {
-                    throw new \Exception('Path "' . $path . '" is not expected to be created');
+                    throw new \Exception('Path "' . $path . '" is not expected to be created', 1476108500);
                 }
             })
             );

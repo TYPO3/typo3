@@ -111,7 +111,7 @@ EOF;
 
         // If no file-param or parameters are given, we must exit
         if (!$fileUid || !isset($parametersArray) || !is_array($parametersArray)) {
-            throw new \InvalidArgumentException('No valid fileUid given');
+            throw new \InvalidArgumentException('No valid fileUid given', 1476048455);
         }
 
         // rebuild the parameter array and check if the HMAC is correct
@@ -121,7 +121,7 @@ EOF;
         $hmacParameter = isset($this->request->getQueryParams()['md5']) ? $this->request->getQueryParams()['md5'] : null;
         $hmac = GeneralUtility::hmac(implode('|', [$fileUid, $parametersEncoded]));
         if ($hmac !== $hmacParameter) {
-            throw new \InvalidArgumentException('hash does not match');
+            throw new \InvalidArgumentException('hash does not match', 1476048456);
         }
 
         // decode the parameters Array

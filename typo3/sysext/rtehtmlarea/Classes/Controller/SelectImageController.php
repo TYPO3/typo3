@@ -342,6 +342,6 @@ class SelectImageController extends AbstractLinkBrowserController
      */
     protected function getCurrentPageId()
     {
-        throw new \RuntimeException('Invalid method call. This function is not supported for image handlers', 14554996791);
+        throw new \RuntimeException('Invalid method call. This function is not supported for image handlers', 1455499679);
     }
 }

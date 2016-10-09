@@ -8,7 +8,7 @@ matrix:
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=no JSUNIT_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes  EXCEPTIONCODE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=no JSUNIT_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
 
 sudo: false
 
@@ -104,9 +104,4 @@ script:
           exit 99;
         fi
       "
-    fi
-
-  - >
-    if [[ "$EXCEPTIONCODE_TEST" == "yes" ]]; then
-      ./typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh
     fi

@@ -41,7 +41,7 @@ class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function echoExceptionWebEscapesExceptionMessage()
     {
         $message = '<b>b</b><script>alert(1);</script>';
-        $exception = new \Exception($message);
+        $exception = new \Exception($message, 1476049363);
         ob_start();
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();

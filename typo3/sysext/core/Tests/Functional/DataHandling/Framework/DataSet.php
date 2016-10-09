@@ -53,7 +53,7 @@ class DataSet
     protected static function readData($fileName)
     {
         if (!file_exists($fileName)) {
-            throw new \RuntimeException('File "' . $fileName . '" does not exist');
+            throw new \RuntimeException('File "' . $fileName . '" does not exist', 1476049619);
         }
 
         $rawData = [];

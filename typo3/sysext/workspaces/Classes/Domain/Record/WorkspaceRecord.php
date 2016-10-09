@@ -203,7 +203,7 @@ class WorkspaceRecord extends AbstractRecord
         $stageId = (int)$stageId;
 
         if (!isset($this->internalStages[$stageId])) {
-            throw new \RuntimeException('Invalid internal stage "' . $stageId . '"');
+            throw new \RuntimeException('Invalid internal stage "' . $stageId . '"', 1476048246);
         }
 
         $record = [

@@ -137,7 +137,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $connection->executeUpdate(Argument::cetera())
             ->shouldBeCalled()
-            ->willThrow(new \Doctrine\DBAL\DBALException());
+            ->willThrow(new \Doctrine\DBAL\DBALException('testing', 1476122315));
 
         $this->assertFalse($this->subject->execute());
     }

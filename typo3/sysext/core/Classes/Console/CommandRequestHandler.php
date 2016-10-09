@@ -96,7 +96,7 @@ class CommandRequestHandler implements RequestHandlerInterface
 
         $GLOBALS['BE_USER']->setBeUserByName($userName);
         if (!$GLOBALS['BE_USER']->user['uid']) {
-            throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 3);
+            throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 1476107260);
         }
 
         $this->bootstrap

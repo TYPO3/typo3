@@ -83,7 +83,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getPropertyThrowsExceptionIfPropertyDoesNotExist()
     {
         $this->expectException(PropertyNotAccessibleException::class);
-        $this->expectExceptionCode(1302855001);
+        $this->expectExceptionCode(1476109666);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty');
     }
 

@@ -21,6 +21,6 @@ class FrontendDefaultFixture extends FrontendFixture
 {
     public function __construct()
     {
-        throw new \RuntimeException('', 1464555650);
+        throw new \RuntimeException('', 1476109149);
     }
 }

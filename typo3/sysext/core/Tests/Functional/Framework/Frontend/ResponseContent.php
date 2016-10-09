@@ -70,6 +70,6 @@ class ResponseContent
             return $this->sections[$sectionIdentifier];
         }
 
-        throw new \RuntimeException('ResponseSection "' . $sectionIdentifier . '" does not exist');
+        throw new \RuntimeException('ResponseSection "' . $sectionIdentifier . '" does not exist', 1476122151);
     }
 }

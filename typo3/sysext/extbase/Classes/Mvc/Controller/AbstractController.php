@@ -288,7 +288,7 @@ abstract class AbstractController implements ControllerInterface
         if ($arguments !== null) {
             $this->request->setArguments($arguments);
         }
-        throw new StopActionException();
+        throw new StopActionException('forward', 1476045801);
     }
 
     /**
@@ -355,7 +355,7 @@ abstract class AbstractController implements ControllerInterface
             $this->response->setStatus($statusCode);
             $this->response->setHeader('Location', (string)$uri);
         }
-        throw new StopActionException();
+        throw new StopActionException('redirectToUri', 1476045828);
     }
 
     /**
@@ -393,7 +393,7 @@ abstract class AbstractController implements ControllerInterface
             }
         }
         $this->response->setContent($content);
-        throw new StopActionException();
+        throw new StopActionException('throwStatus', 1476045871);
     }
 
     /**

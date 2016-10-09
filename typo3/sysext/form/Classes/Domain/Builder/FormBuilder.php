@@ -462,11 +462,11 @@ class FormBuilder
                                     $value = $filter->filter($this->getIncomingData()->getIncomingField($elementName));
                                     $this->getIncomingData()->setIncomingField($elementName, $value);
                                 } else {
-                                    throw new \RuntimeException('Class "' . $filterClassName . '" could not be loaded.');
+                                    throw new \RuntimeException('Class "' . $filterClassName . '" could not be loaded.', 1476122052);
                                 }
                             }
                         } else {
-                            throw new \RuntimeException('Class "' . $filterClassName . '" not registered via TypoScript.');
+                            throw new \RuntimeException('Class "' . $filterClassName . '" not registered via TypoScript.', 1476048485);
                         }
                     }
                 }

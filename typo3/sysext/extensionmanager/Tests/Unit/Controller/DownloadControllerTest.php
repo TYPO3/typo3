@@ -28,7 +28,7 @@ class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown()
     {
         $dummyExceptionMessage = 'exception message';
-        $dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage);
+        $dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage, 1476108614);
 
         $dummyExtensionName = 'dummy_extension';
         $dummyExtension = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)->getMock();
@@ -47,7 +47,7 @@ class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             [
                 $dummyExtensionName => [
                     [
-                        'code' => 0,
+                        'code' => 1476108614,
                         'message' => $dummyExceptionMessage
                     ]
                 ]

@@ -168,7 +168,10 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         $targetType = $typeConverter->getTargetTypeForSource($source, $targetType, $configuration);
 
         if (!is_object($typeConverter) || !$typeConverter instanceof \TYPO3\CMS\Extbase\Property\TypeConverterInterface) {
-            throw new Exception\TypeConverterException('Type converter for "' . $source . '" -> "' . $targetType . '" not found.');
+            throw new Exception\TypeConverterException(
+                'Type converter for "' . $source . '" -> "' . $targetType . '" not found.',
+                1476045062
+            );
         }
 
         $convertedChildProperties = [];
@@ -245,7 +248,10 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if ($converter === null) {
-            throw new Exception\TypeConverterException('No converter found which can be used to convert from "' . $sourceType . '" to "' . $targetType . '".');
+            throw new Exception\TypeConverterException(
+                'No converter found which can be used to convert from "' . $sourceType . '" to "' . $targetType . '".',
+                1476044883
+            );
         }
 
         return $converter;

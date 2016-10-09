@@ -110,7 +110,7 @@ class ErrorHandler implements ErrorHandlerInterface
                     'line ' . $errorLine;
                 die($message);
             }
-            throw new Exception($message, 1);
+            throw new Exception($message, 1476107295);
         } else {
             switch ($errorLevel) {
                 case E_USER_ERROR:

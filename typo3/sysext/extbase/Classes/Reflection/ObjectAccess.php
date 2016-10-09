@@ -117,7 +117,7 @@ class ObjectAccess
             if (property_exists($subject, $propertyName)) {
                 return $subject->{$propertyName};
             } else {
-                throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
+                throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1476109666);
             }
         }
 

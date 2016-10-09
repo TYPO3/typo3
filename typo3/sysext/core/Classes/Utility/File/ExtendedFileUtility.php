@@ -154,7 +154,8 @@ class ExtendedFileUtility extends BasicFileUtility
                     'Invalid argument, received: "%s", expected a value from enumeration \TYPO3\CMS\Core\Resource\DuplicationBehavior (%s)',
                     $existingFilesConflictMode,
                     implode(', ', DuplicationBehavior::getConstants())
-                )
+                ),
+                1476046229
             );
         }
     }

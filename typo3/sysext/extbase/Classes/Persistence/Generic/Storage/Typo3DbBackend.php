@@ -166,7 +166,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     public function updateRow($tableName, array $fieldValues, $isRelation = false)
     {
         if (!isset($fieldValues['uid'])) {
-            throw new \InvalidArgumentException('The given row must contain a value for "uid".');
+            throw new \InvalidArgumentException('The given row must contain a value for "uid".', 1476045164);
         }
 
         $uid = (int)$fieldValues['uid'];

@@ -98,7 +98,7 @@ class GridDataService
         if (is_int($currentWorkspace)) {
             $this->currentWorkspace = $currentWorkspace;
         } else {
-            throw new \InvalidArgumentException('No such workspace defined');
+            throw new \InvalidArgumentException('No such workspace defined', 1476048304);
         }
         $data = [];
         $data['data'] = [];

@@ -413,7 +413,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
                 if ($result === -1) {
                     return false;
                 } elseif ($result === false) {
-                    throw new \RuntimeException('Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1]);
+                    throw new \RuntimeException(
+                        'Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1],
+                        1476046425
+                    );
                 }
             }
         }
@@ -680,7 +683,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             case 'folder_hash':
                 return $this->hashIdentifier($this->getParentFolderIdentifierOfIdentifier($identifier));
             default:
-                throw new \InvalidArgumentException(sprintf('The information "%s" is not available.', $property));
+                throw new \InvalidArgumentException(sprintf('The information "%s" is not available.', $property), 1476047422);
         }
     }
 
@@ -771,7 +774,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             $result = copy($localFilePath, $targetPath);
         }
         if ($result === false || !file_exists($targetPath)) {
-            throw new \RuntimeException('Adding file ' . $localFilePath . ' at ' . $newFileIdentifier . ' failed.');
+            throw new \RuntimeException(
+                'Adding file ' . $localFilePath . ' at ' . $newFileIdentifier . ' failed.',
+                1476046453
+            );
         }
         clearstatcache();
         // Change the permissions of the file

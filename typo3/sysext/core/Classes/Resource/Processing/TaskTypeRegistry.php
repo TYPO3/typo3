@@ -57,7 +57,7 @@ class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface
     {
         $taskClass = $this->getClassForTaskType($taskType);
         if ($taskClass === null) {
-            throw new \RuntimeException('Unknown processing task "' . $taskType . '"');
+            throw new \RuntimeException('Unknown processing task "' . $taskType . '"', 1476049767);
         }
 
         return GeneralUtility::makeInstance($taskClass, $processedFile, $processingConfiguration);

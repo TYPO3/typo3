@@ -39,7 +39,7 @@ abstract class AbstractRecord
             ->execute()
             ->fetch();
         if (empty($record)) {
-            throw new \RuntimeException('Record "' . $tableName . ': ' . $uid . '" not found');
+            throw new \RuntimeException('Record "' . $tableName . ': ' . $uid . '" not found', 1476122008);
         }
         return $record;
     }

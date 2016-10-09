@@ -195,7 +195,10 @@ class PersistentObjectConverter extends ObjectConverter
             }
         } else {
             if ($configuration === null || $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_CREATION_ALLOWED) !== true) {
-                throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
+                throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException(
+                    'Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE',
+                    1476044961
+                );
             }
             $object = $this->buildObject($convertedChildProperties, $targetType);
         }

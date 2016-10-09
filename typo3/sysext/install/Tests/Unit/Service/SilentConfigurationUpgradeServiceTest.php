@@ -106,7 +106,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ['BE/loginSecurityLevel', $current]
         ];
         $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1341397869);
+            throw new \RuntimeException('Path does not exist in array', 1476109311);
         };
 
         $this->createConfigurationManagerWithMockedMethods(
@@ -259,7 +259,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         );
 
         $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1341397869);
+            throw new \RuntimeException('Path does not exist in array', 1476109266);
         };
 
         $this->createConfigurationManagerWithMockedMethods(

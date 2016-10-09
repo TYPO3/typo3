@@ -290,7 +290,7 @@ class TcaRadioItemsTest extends UnitTestCase
                                     || $parameters['row'] !== [ 'aField' => 'aValue' ]
                                     || $parameters['field'] !== 'aField'
                                 ) {
-                                    throw new \UnexpectedValueException('broken', 1438604329);
+                                    throw new \UnexpectedValueException('broken', 1476109434);
                                 }
                             },
                         ],
@@ -352,7 +352,7 @@ class TcaRadioItemsTest extends UnitTestCase
                                 ],
                             ],
                             'itemsProcFunc' => function (array $parameters, $pObj) {
-                                throw new \UnexpectedValueException('anException', 1438604329);
+                                throw new \UnexpectedValueException('anException', 1476109435);
                             },
                         ],
                     ],

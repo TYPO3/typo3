@@ -200,7 +200,7 @@ class MassActionHandler extends AbstractHandler
             $tce->process_cmdmap();
             $errors = $tce->errorLog;
             if (!empty($errors)) {
-                throw new \Exception(implode(', ', $errors));
+                throw new \Exception(implode(', ', $errors), 1476048278);
             }
             // Unset processed records
             foreach ($limitedCmd as $table => $recs) {

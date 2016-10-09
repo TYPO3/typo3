@@ -188,7 +188,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
                                 'break;' .
                             'default:' .
                                 'throw new \InvalidArgumentException(' .
-                                    '\'_callRef currently only allows calls to methods with no more than 9 parameters.\'' .
+                                    '\'_callRef currently only allows calls to methods with no more than 9 parameters.\', 1476049901' .
                                 ');' .
                         '}' .
                         'return $returnValue;' .
@@ -261,7 +261,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
     protected function inject($target, $name, $dependency)
     {
         if (!is_object($target)) {
-            throw new \InvalidArgumentException('Wrong type for argument $target, must be object.');
+            throw new \InvalidArgumentException('Wrong type for argument $target, must be object.', 1476107338);
         }
 
         $objectReflection = new \ReflectionObject($target);
@@ -277,7 +277,10 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
             $property->setAccessible(true);
             $property->setValue($target, $dependency);
         } else {
-            throw new \RuntimeException('Could not inject ' . $name . ' into object of type ' . get_class($target));
+            throw new \RuntimeException(
+                'Could not inject ' . $name . ' into object of type ' . get_class($target),
+                1476107339
+            );
         }
     }
 

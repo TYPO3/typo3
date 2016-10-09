@@ -126,7 +126,7 @@ class WorkspaceService implements SingletonInterface
                 }
         }
         if ($title === false) {
-            throw new \InvalidArgumentException('No such workspace defined');
+            throw new \InvalidArgumentException('No such workspace defined', 1476045469);
         }
         return $title;
     }

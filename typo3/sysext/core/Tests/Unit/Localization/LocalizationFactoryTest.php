@@ -79,7 +79,7 @@ class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $localizationFactory->_set('cacheInstance', $cacheInstance);
         $languageStore->method('hasData')->willReturn(false);
         $languageStore->method('getData')->willReturn([]);
-        $languageStore->method('setConfiguration')->willThrowException(new \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException());
+        $languageStore->method('setConfiguration')->willThrowException(new \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException('testing', 1476049512));
         $cacheInstance->method('get')->willReturn(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = ['foo' => 'bar'];
 

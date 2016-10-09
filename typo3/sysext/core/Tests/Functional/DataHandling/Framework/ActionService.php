@@ -347,7 +347,7 @@ class ActionService
                 $versionedUid = $this->getVersionedId($tableName, $liveUid);
                 if (empty($versionedUid)) {
                     if ($throwException) {
-                        throw new \TYPO3\CMS\Core\Tests\Exception('Versioned UID could not be determined');
+                        throw new \TYPO3\CMS\Core\Tests\Exception('Versioned UID could not be determined', 1476049592);
                     } else {
                         continue;
                     }

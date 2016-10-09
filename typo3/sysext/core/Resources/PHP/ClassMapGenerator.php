@@ -67,7 +67,8 @@ class ClassMapGenerator
             } else {
                 throw new \RuntimeException(
                     'Could not scan for classes inside "' . $path .
-                    '" which does not appear to be a file nor a folder'
+                    '" which does not appear to be a file nor a folder',
+                    1476049953
                 );
             }
         }
@@ -125,14 +126,14 @@ class ClassMapGenerator
             $contents = @php_strip_whitespace($path);
             if (!$contents) {
                 if (!file_exists($path)) {
-                    throw new \Exception('File does not exist');
+                    throw new \Exception('File does not exist', 1476049981);
                 }
                 if (!is_readable($path)) {
-                    throw new \Exception('File is not readable');
+                    throw new \Exception('File is not readable', 1476049990);
                 }
             }
         } catch (\Exception $e) {
-            throw new \RuntimeException('Could not scan for classes inside ' . $path . ": \n" . $e->getMessage(), 0, $e);
+            throw new \RuntimeException('Could not scan for classes inside ' . $path . ": \n" . $e->getMessage(), 1476050009, $e);
         }
 
         // return early if there is no chance of matching anything in this file

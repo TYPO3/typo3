@@ -3,50 +3,84 @@
 #########################
 #
 # Find duplicate exception timestamps and list them.
-# It expects to be run from the core root.
+# Additionally find exceptions that have no exception code.
 #
-# The script searches for duplicate timestamps with
-# two exceptions:
-# 1. timestamps defined by the "IGNORE" array
-# 2. timestamps within Tests directories
+# It expects to be run from the core root.
 #
 ##########################
 
 cd typo3/
 
-# Array of timestamps which are allowed to be non-unique
-IGNORE=("1270853884")
+ignoreFiles=()
+# auto generated file, shouldn't be checked
+ignoreFiles+="sysext/core/Build/Configuration/Acceptance/Support/_generated/AcceptanceTesterActions.php"
+# a exception in here throws up an code from a previous exception
+ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
 
-# The ack / ack-grep command can be different for different OS
-ACK=${ACK:-ack-grep}
+foundNewFile=0
+oldFilename=""
+firstLineOfMatch=""
+foundExceptionInFile=1
+exceptionCodes=()
 
-# Respect only php files and ignore files within a "Tests" directory
-EXCEPTIONS=$(${ACK} --type php --ignore-dir Tests 'throw new' -A5 0>&- | grep '[[:digit:]]\{10\}')
+# grep
+# '-r' recursive
+# '--include '*.php'' in all .php files
+# '-Pzoab' pcre regex, -zo remove all linebreaks for multiline match, treat all files as text, output position "filename:position: match", binary position
+#
+# (?:(?!Exception\()[\w\\])*  negative lookahead. capture all alphanum and \ until we reach "Exception("
+# eat "Exception("
+# (?:(?!\);).|[\r\n])*\);[\r\n]+   negative lookahead again, eat everything including a \n until we reach the first ");", then line breaks
 
-DUPLICATES=$(echo ${EXCEPTIONS} | awk '{
-    for(i=1; i<=NF; i++) {
-        if(match($i, /[0-9]{10}/)) {
-            print $i
-        }
-    }
-}' | cut -d';' -f1 | tr -cd '0-9\012' | sort | uniq -d)
-
-COUNTER=0
-
-for CODE in ${DUPLICATES}; do
-
-    # Ignore timestamps which are defined by the "IGNORE" array
-    if [ ${IGNORE[@]} != ${CODE} ] ; then
-        echo "Possible duplicate exception code $CODE": ${ACK} --type php ${CODE}
-        COUNTER=$((COUNTER+1))
+grep \
+    -r \
+    --include '*.php' \
+    -Pzoab \
+    'new (?:(?!Exception\()[\w\\])*Exception\((?:(?!\);).|[\r\n])*\);[\r\n]+' \
+    | \
+while read line;
+do
+    possibleFilename=`echo ${line} | cut -d':' -f1`
+    if [[ ${possibleFilename} =~ .php$ ]]; then
+        # the matched line consists of a file name match, we're dealing with a new match here.
+        foundNewFile=1
+        oldFilename=${currentFilename}
+        currentFilename=${possibleFilename}
+    else
+        foundNewFile=0
     fi
 
-done
+    # skip file if in blacklist
+    if [[ {$ignoreFiles[@]} =~ ${currentFilename} ]]; then
+        continue
+    fi
 
-if [ ${COUNTER} -gt 0 ] ; then
-    echo "$COUNTER possible duplicate exception codes found."
-    exit 1
-fi
+    # check for match in previous file name
+    if [[ ${foundNewFile} -eq 1 ]] && [[ ${foundExceptionInFile} -eq 0 ]]; then
+        echo "File: $oldFilename"
+        echo "The created exception contains no 10 digit exception code as second argument, in or below this line:"
+        echo "$firstLineOfMatch"
+        exit 1
+    fi
+
+    # reset found flag if we're handling new file
+    if [[ ${foundNewFile} -eq 1 ]]; then
+        foundExceptionInFile=0
+        firstLineOfMatch=${line}
+    fi
+
+    # see if the line consists of an exception code
+    if [[ "$line" =~ .*([0-9]{10}).* ]]; then
+        foundExceptionInFile=1
+        exceptionCode=${BASH_REMATCH[1]}
+        # check if that code was registered already
+        if [[ {$exceptionCodes[@]} =~ ${exceptionCode} ]]; then
+            echo "Duplicate exception code ${exceptionCode} in file:"
+            echo ${currentFilename}
+            exit 1
+        fi
+        exceptionCodes+=${exceptionCode}
+    fi
+done || exit 1
 
 exit 0
-

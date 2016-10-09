@@ -646,6 +646,6 @@ class Query implements QueryInterface
      */
     public function isEmpty($propertyName)
     {
-        throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+        throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__, 1476122265);
     }
 }
