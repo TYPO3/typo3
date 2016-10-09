@@ -320,6 +320,13 @@ class ExpressionBuilder
             case 'sqlite':
             case 'sqlite3':
             case 'pdo_sqlite':
+                if (strpos($value, ':') === 0 || $value === '?') {
+                    throw new \InvalidArgumentException(
+                        'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
+                        1476029421
+                    );
+                }
+
                 return $this->comparison(
                     implode('||', [
                         $this->literal(','),
@@ -475,8 +482,12 @@ class ExpressionBuilder
             ->getDatabasePlatform()
             ->getStringLiteralQuoteCharacter();
 
-        $unquotedValue = trim($value, $quoteChar);
+        $isQuoted = strpos($value, $quoteChar) === 0 && strpos(strrev($value), $quoteChar) === 0;
 
-        return str_replace($quoteChar . $quoteChar, $quoteChar, $unquotedValue);
+        if ($isQuoted) {
+            return str_replace($quoteChar . $quoteChar, $quoteChar, substr($value, 1, -1));
+        }
+
+        return $value;
     }
 }
