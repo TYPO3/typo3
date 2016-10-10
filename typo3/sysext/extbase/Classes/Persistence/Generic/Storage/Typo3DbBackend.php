@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -361,7 +362,23 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $realStatement = $statement->getStatement();
         $parameters = $statement->getBoundVariables();
 
-        if ($realStatement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
+        // The real statement is an instance of the Doctrine DBAL QueryBuilder, so fetching
+        // this directly is possible
+        if ($realStatement instanceof QueryBuilder) {
+            try {
+                $result = $realStatement->execute();
+            } catch (DBALException $e) {
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721);
+            }
+            $rows = $result->fetchAll();
+        } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
+            try {
+                $result = $realStatement->execute($parameters);
+            } catch (DBALException $e) {
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404);
+            }
+            $rows = $result->fetchAll();
+        } elseif ($realStatement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
             $realStatement->execute($parameters);
             $rows = $realStatement->fetchAll();
 
@@ -377,12 +394,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064775);
             }
 
-            $rows = [];
-            while ($row = $statement->fetch()) {
-                if (is_array($row)) {
-                    $rows[] = $row;
-                }
-            }
+            $rows = $statement->fetchAll();
         }
 
         return $rows;

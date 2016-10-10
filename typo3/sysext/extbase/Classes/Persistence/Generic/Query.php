@@ -365,7 +365,7 @@ class Query implements QueryInterface
      * Sets the statement of this query. If you use this, you will lose the abstraction from a concrete storage
      * backend (database).
      *
-     * @param string|\TYPO3\CMS\Core\Database\PreparedStatement $statement The statement
+     * @param string|\TYPO3\CMS\Core\Database\PreparedStatement|\TYPO3\CMS\Core\Database\Query\QueryBuilder|\Doctrine\DBAL\Statement $statement The statement
      * @param array $parameters An array of parameters. These will be bound to placeholders '?' in the $statement.
      * @return QueryInterface
      */
