@@ -95,6 +95,10 @@ class PageGenerator
             $tsfe->absRefPrefix = '';
         }
         if ($tsfe->type && $tsfe->config['config']['frameReloadIfNotInFrameset']) {
+            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+                'frameReloadIfNotInFrameset has been marked as deprecated since TYPO3 v8, ' .
+                'and will be removed in TYPO3 v9.'
+            );
             $tdlLD = $tsfe->tmpl->linkData($tsfe->page, '_top', $tsfe->no_cache, '');
             $tsfe->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($tsfe->sPre) . ' && !parent.view_frame) top.location.href="' . $tsfe->baseUrlWrap($tdlLD['totalURL']) . '"';
         }
@@ -139,8 +143,13 @@ class PageGenerator
                 case 'xhtml_trans':
 
                 case 'xhtml_strict':
-
+                    $tsfe->xhtmlVersion = 100;
+                    break;
                 case 'xhtml_frames':
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+                        'xhtmlDoctype = xhtml_frames  and doctype = xhtml_frames have been marked as deprecated since TYPO3 v8, ' .
+                        'and will be removed in TYPO3 v9.'
+                    );
                     $tsfe->xhtmlVersion = 100;
                     break;
                 case 'xhtml_basic':
@@ -866,6 +875,10 @@ class PageGenerator
         }
         // Header complete, now add content
         if ($tsfe->pSetup['frameSet.']) {
+            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+                'frameSet, FRAME and FRAMESET have been marked as deprecated since TYPO3 v8 ' .
+                'and will be removed in TYPO3 v9.'
+            );
             $fs = GeneralUtility::makeInstance(FramesetRenderer::class);
             $pageRenderer->addBodyContent($fs->make($tsfe->pSetup['frameSet.']));
             $pageRenderer->addBodyContent(LF . '<noframes>' . LF);
