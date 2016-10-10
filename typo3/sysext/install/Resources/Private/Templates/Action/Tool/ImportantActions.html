@@ -25,6 +25,13 @@
 	<f:render partial="Action/Tool/ImportantActions/ClearAllCache" arguments="{_all}"/>
 	<hr />
 
+	<f:if condition="{composerMode}">
+		<f:else>
+			<f:render partial="Action/Tool/ImportantActions/DumpAutoload" arguments="{_all}"/>
+			<hr />
+		</f:else>
+	</f:if>
+
 	<f:render partial="Action/Tool/ImportantActions/ExtensionCompatibilityTester" arguments="{_all}"/>
 	<hr />
 

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -52,6 +53,9 @@ class ImportantActions extends Action\AbstractAction
         if (isset($this->postValues['set']['clearAllCache'])) {
             $actionMessages[] = $this->clearAllCache();
             $actionMessages[] = $this->clearOpcodeCache();
+        }
+        if (isset($this->postValues['set']['dumpAutoload'])) {
+            $actionMessages[] = $this->dumpAutoload();
         }
         if (isset($this->postValues['set']['tcaMigrations'])) {
             $tcaMessages = $this->checkTcaMigrations();
@@ -220,6 +224,24 @@ class ImportantActions extends Action\AbstractAction
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
         $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Successfully cleared all available opcode caches');
+        return $message;
+    }
+
+    /**
+     * Dumps Extension Autoload Information
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function dumpAutoload(): \TYPO3\CMS\Install\Status\StatusInterface
+    {
+        if (Bootstrap::usesComposerClassLoading()) {
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\NoticeStatus::class);
+            $message->setTitle('Skipped generating additional class loading information in composer mode.');
+        } else {
+            ClassLoadingInformation::dumpClassLoadingInformation();
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+            $message->setTitle('Successfully dumped class loading information for extensions.');
+        }
         return $message;
     }
 

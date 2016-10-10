@@ -59,7 +59,10 @@ call_user_func(function () {
         ->disableCoreCache()
         ->initializeCachingFramework()
         // Set all packages to active
-        ->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class)
-        // Find all class names
-        ->ensureClassLoadingInformationExists();
+        ->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class);
+
+    if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
+        // Dump autoload info if in non composer mode
+        \TYPO3\CMS\Core\Core\ClassLoadingInformation::dumpClassLoadingInformation();
+    }
 });

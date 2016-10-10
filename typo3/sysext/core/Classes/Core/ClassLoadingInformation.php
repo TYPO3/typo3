@@ -33,12 +33,12 @@ class ClassLoadingInformation
     /**
      * Base directory storing all autoload information
      */
-    const AUTOLOAD_INFO_DIR = 'typo3temp/var/autoload/';
+    const AUTOLOAD_INFO_DIR = 'typo3conf/autoload/';
 
     /**
      * Base directory storing all autoload information in testing context
      */
-    const AUTOLOAD_INFO_DIR_TESTS = 'typo3temp/var/autoload-tests/';
+    const AUTOLOAD_INFO_DIR_TESTS = 'typo3conf/autoload-tests/';
 
     /**
      * Name of file that contains all classes-filename mappings

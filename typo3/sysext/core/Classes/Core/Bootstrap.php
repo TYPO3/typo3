@@ -438,10 +438,12 @@ class Bootstrap
      *
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Use the Install Tool to dump autoload information.
      */
     public function ensureClassLoadingInformationExists()
     {
         if (!self::$usesComposerClassLoading && !ClassLoadingInformation::isClassLoadingInformationAvailable()) {
+            GeneralUtility::logDeprecatedFunction();
             ClassLoadingInformation::dumpClassLoadingInformation();
             ClassLoadingInformation::registerClassLoadingInformation();
         }
