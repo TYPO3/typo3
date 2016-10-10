@@ -364,6 +364,9 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
                 foreach ($backendLayoutData['__config']['backend_layout.']['rows.'] as $row) {
                     if (!empty($row['columns.'])) {
                         foreach ($row['columns.'] as $column) {
+                            if (!isset($column['colPos'])) {
+                                continue;
+                            }
                             $backendLayoutData['__items'][] = [
                                 $this->getColumnName($column),
                                 $column['colPos'],
