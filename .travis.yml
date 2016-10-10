@@ -82,7 +82,7 @@ script:
 
   - >
     if [[ "$JSUNIT_TESTS" == "yes" ]]; then
-      cd Build && npm install && cd ..
+      cd Build && npm update -g npm && npm install && cd ..
       ./Build/node_modules/karma/bin/karma start typo3/sysext/core/Build/Configuration/JSUnit/karma.conf.js --single-run
     fi
 
