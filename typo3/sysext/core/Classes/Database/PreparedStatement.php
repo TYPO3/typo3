@@ -18,6 +18,10 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
+ * @deprecated  ------------- THE WHOLE CLASS WILL BE REMOVED IN TYPO3 v9 ---------------------
+ * This class has been superseded by Doctrine DBAL in TYPO3 v8, and will be removed in TYPO3 v9
+ * --------------------------------------------------------------------------------------------
+ *
  * TYPO3 prepared statement for DatabaseConnection
  *
  * USE:
@@ -159,9 +163,11 @@ class PreparedStatement
      * @param string $table FROM table, used to call $GLOBALS['TYPO3_DB']->fullQuoteStr().
      * @param array $precompiledQueryParts Components of the query to be executed
      * @access private
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use Doctrine DBAL as it does PreparedStatements built-in
      */
     public function __construct($query, $table, array $precompiledQueryParts = [])
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->query = $query;
         $this->precompiledQueryParts = $precompiledQueryParts;
         $this->table = $table;

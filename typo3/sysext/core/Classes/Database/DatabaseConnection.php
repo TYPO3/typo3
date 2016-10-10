@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
+ * @deprecated  ------------- THE WHOLE CLASS WILL BE REMOVED IN TYPO3 v9 ----------------------------------------------
+ * DatabaseConnection a.k.a. TYPO3_DB has been superseded by Doctrine DBAL in TYPO3 v8, and will be removed in TYPO3 v9
+ * ---------------------------------------------------------------------------------------------------------------------
  * Contains the class "DatabaseConnection" containing functions for building SQL queries
  * and mysqli wrappers, thus providing a foundational API to all database
  * interaction.
@@ -171,6 +174,13 @@ class DatabaseConnection
     protected $postProcessHookObjects = [];
 
     /**
+     * Internal property to mark if a deprecation log warning has been thrown in this request
+     * in order to avoid a load of deprecation.
+     * @var bool
+     */
+    protected $deprecationWarningThrown = false;
+
+    /**
      * Initialize the database connection
      *
      * @return void
@@ -204,6 +214,7 @@ class DatabaseConnection
      */
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
+        $this->logDeprecation();
         $res = $this->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
         if ($this->debugOutput) {
             $this->debug('exec_INSERTquery');
@@ -226,6 +237,7 @@ class DatabaseConnection
      */
     public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = false)
     {
+        $this->logDeprecation();
         $res = $this->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
         if ($this->debugOutput) {
             $this->debug('exec_INSERTmultipleRows');
@@ -249,6 +261,7 @@ class DatabaseConnection
      */
     public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
+        $this->logDeprecation();
         $res = $this->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
         if ($this->debugOutput) {
             $this->debug('exec_UPDATEquery');
@@ -269,6 +282,7 @@ class DatabaseConnection
      */
     public function exec_DELETEquery($table, $where)
     {
+        $this->logDeprecation();
         $res = $this->query($this->DELETEquery($table, $where));
         if ($this->debugOutput) {
             $this->debug('exec_DELETEquery');
@@ -294,6 +308,7 @@ class DatabaseConnection
      */
     public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
     {
+        $this->logDeprecation();
         $query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
         $res = $this->query($query);
         if ($this->debugOutput) {
@@ -328,6 +343,7 @@ class DatabaseConnection
      */
     public function exec_SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
     {
+        $this->logDeprecation();
         $queryParts = $this->getSelectMmQueryParts($select, $local_table, $mm_table, $foreign_table, $whereClause, $groupBy, $orderBy, $limit);
         return $this->exec_SELECT_queryArray($queryParts);
     }
@@ -341,6 +357,7 @@ class DatabaseConnection
      */
     public function exec_SELECT_queryArray($queryParts)
     {
+        $this->logDeprecation();
         return $this->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
     }
 
@@ -360,6 +377,7 @@ class DatabaseConnection
      */
     public function exec_SELECTgetRows($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $uidIndexField = '')
     {
+        $this->logDeprecation();
         $res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
         if ($this->sql_error()) {
             $this->sql_free_result($res);
@@ -399,6 +417,7 @@ class DatabaseConnection
      */
     public function exec_SELECTgetSingleRow($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $numIndex = false)
     {
+        $this->logDeprecation();
         $res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, '1');
         $output = null;
         if ($res !== false) {
@@ -422,6 +441,7 @@ class DatabaseConnection
      */
     public function exec_SELECTcountRows($field, $table, $where = '1=1')
     {
+        $this->logDeprecation();
         $count = false;
         $resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
         if ($resultSet !== false) {
@@ -440,6 +460,7 @@ class DatabaseConnection
      */
     public function exec_TRUNCATEquery($table)
     {
+        $this->logDeprecation();
         $res = $this->query($this->TRUNCATEquery($table));
         if ($this->debugOutput) {
             $this->debug('exec_TRUNCATEquery');
@@ -460,6 +481,7 @@ class DatabaseConnection
      */
     protected function query($query)
     {
+        $this->logDeprecation();
         if (!$this->isConnected) {
             $this->connectDB();
         }
@@ -481,6 +503,7 @@ class DatabaseConnection
      */
     public function INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
+        $this->logDeprecation();
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         // function (contrary to values in the arrays which may be insecure).
         if (!is_array($fields_values) || empty($fields_values)) {
@@ -511,6 +534,7 @@ class DatabaseConnection
      */
     public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = false)
     {
+        $this->logDeprecation();
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         // function (contrary to values in the arrays which may be insecure).
         if (empty($rows)) {
@@ -549,6 +573,7 @@ class DatabaseConnection
      */
     public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
+        $this->logDeprecation();
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         // function (contrary to values in the arrays which may be insecure).
         if (is_string($where)) {
@@ -585,6 +610,7 @@ class DatabaseConnection
      */
     public function DELETEquery($table, $where)
     {
+        $this->logDeprecation();
         if (is_string($where)) {
             foreach ($this->preProcessHookObjects as $hookObject) {
                 /** @var $hookObject PreProcessQueryHookInterface */
@@ -614,6 +640,7 @@ class DatabaseConnection
      */
     public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
     {
+        $this->logDeprecation();
         foreach ($this->preProcessHookObjects as $hookObject) {
             /** @var $hookObject PreProcessQueryHookInterface */
             $hookObject->SELECTquery_preProcessAction($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit, $this);
@@ -645,6 +672,7 @@ class DatabaseConnection
      */
     public function SELECTsubquery($select_fields, $from_table, $where_clause)
     {
+        $this->logDeprecation();
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
         // Build basic query:
         $query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . ((string)$where_clause !== '' ? ' WHERE ' . $where_clause : '');
@@ -674,6 +702,7 @@ class DatabaseConnection
      */
     public function SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
     {
+        $this->logDeprecation();
         $queryParts = $this->getSelectMmQueryParts($select, $local_table, $mm_table, $foreign_table, $whereClause, $groupBy, $orderBy, $limit);
         return $this->SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
     }
@@ -686,6 +715,7 @@ class DatabaseConnection
      */
     public function TRUNCATEquery($table)
     {
+        $this->logDeprecation();
         foreach ($this->preProcessHookObjects as $hookObject) {
             /** @var $hookObject PreProcessQueryHookInterface */
             $hookObject->TRUNCATEquery_preProcessAction($table, $this);
@@ -717,6 +747,7 @@ class DatabaseConnection
      */
     public function listQuery($field, $value, $table)
     {
+        $this->logDeprecation();
         $value = (string)$value;
         if (strpos($value, ',') !== false) {
             throw new \InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !', 1294585862);
@@ -737,6 +768,7 @@ class DatabaseConnection
      */
     public function searchQuery($searchWords, $fields, $table, $constraint = self::AND_Constraint)
     {
+        $this->logDeprecation();
         switch ($constraint) {
             case self::OR_Constraint:
                 $constraint = 'OR';
@@ -774,6 +806,7 @@ class DatabaseConnection
      */
     public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = [])
     {
+        $this->logDeprecation();
         $query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
         /** @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
         $preparedStatement = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\PreparedStatement::class, $query, $from_table, []);
@@ -794,6 +827,7 @@ class DatabaseConnection
      */
     public function prepare_SELECTqueryArray(array $queryParts, array $input_parameters = [])
     {
+        $this->logDeprecation();
         return $this->prepare_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT'], $input_parameters);
     }
 
@@ -807,6 +841,7 @@ class DatabaseConnection
      */
     public function prepare_PREPAREDquery($query, array $queryComponents)
     {
+        $this->logDeprecation();
         if (!$this->isConnected) {
             $this->connectDB();
         }
@@ -839,6 +874,7 @@ class DatabaseConnection
      */
     public function fullQuoteStr($str, $table, $allowNull = false)
     {
+        $this->logDeprecation();
         if (!$this->isConnected) {
             $this->connectDB();
         }
@@ -864,6 +900,7 @@ class DatabaseConnection
      */
     public function fullQuoteArray($arr, $table, $noQuote = false, $allowNull = false)
     {
+        $this->logDeprecation();
         if (is_string($noQuote)) {
             $noQuote = explode(',', $noQuote);
         } elseif (!is_array($noQuote)) {
@@ -892,6 +929,7 @@ class DatabaseConnection
      */
     public function quoteStr($str, $table)
     {
+        $this->logDeprecation();
         if (!$this->isConnected) {
             $this->connectDB();
         }
@@ -908,6 +946,7 @@ class DatabaseConnection
      */
     public function escapeStrForLike($str, $table)
     {
+        $this->logDeprecation();
         return addcslashes($str, '_%');
     }
 
@@ -921,6 +960,7 @@ class DatabaseConnection
      */
     public function cleanIntArray($arr)
     {
+        $this->logDeprecation();
         return array_map('intval', $arr);
     }
 
@@ -934,6 +974,7 @@ class DatabaseConnection
      */
     public function cleanIntList($list)
     {
+        $this->logDeprecation();
         return implode(',', GeneralUtility::intExplode(',', $list));
     }
 
@@ -948,6 +989,7 @@ class DatabaseConnection
      */
     public function stripOrderBy($str)
     {
+        $this->logDeprecation();
         return preg_replace('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
     }
 
@@ -962,6 +1004,7 @@ class DatabaseConnection
      */
     public function stripGroupBy($str)
     {
+        $this->logDeprecation();
         return preg_replace('/^(?:GROUP[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
     }
 
@@ -973,6 +1016,7 @@ class DatabaseConnection
      */
     public function getDateTimeFormats($table)
     {
+        $this->logDeprecation();
         return QueryHelper::getDateTimeFormats();
     }
 
@@ -1029,6 +1073,7 @@ class DatabaseConnection
      */
     public function sql_query($query)
     {
+        $this->logDeprecation();
         $res = $this->query($query);
         if ($this->debugOutput) {
             $this->debug('sql_query', $query);
@@ -1043,6 +1088,7 @@ class DatabaseConnection
      */
     public function sql_error()
     {
+        $this->logDeprecation();
         return $this->link->error;
     }
 
@@ -1053,6 +1099,7 @@ class DatabaseConnection
      */
     public function sql_errno()
     {
+        $this->logDeprecation();
         return $this->link->errno;
     }
 
@@ -1064,6 +1111,7 @@ class DatabaseConnection
      */
     public function sql_num_rows($res)
     {
+        $this->logDeprecation();
         if ($this->debug_check_recordset($res)) {
             return $res->num_rows;
         } else {
@@ -1080,6 +1128,7 @@ class DatabaseConnection
      */
     public function sql_fetch_assoc($res)
     {
+        $this->logDeprecation();
         if ($this->debug_check_recordset($res)) {
             $result = $res->fetch_assoc();
             if ($result === null) {
@@ -1102,6 +1151,7 @@ class DatabaseConnection
      */
     public function sql_fetch_row($res)
     {
+        $this->logDeprecation();
         if ($this->debug_check_recordset($res)) {
             $result = $res->fetch_row();
             if ($result === null) {
@@ -1123,6 +1173,7 @@ class DatabaseConnection
      */
     public function sql_free_result($res)
     {
+        $this->logDeprecation();
         if ($this->debug_check_recordset($res) && is_object($res)) {
             $res->free();
             return true;
@@ -1138,6 +1189,7 @@ class DatabaseConnection
      */
     public function sql_insert_id()
     {
+        $this->logDeprecation();
         return $this->link->insert_id;
     }
 
@@ -1160,6 +1212,7 @@ class DatabaseConnection
      */
     public function sql_data_seek($res, $seek)
     {
+        $this->logDeprecation();
         if ($this->debug_check_recordset($res)) {
             return $res->data_seek($seek);
         } else {
@@ -1323,6 +1376,7 @@ class DatabaseConnection
      */
     public function admin_get_dbs()
     {
+        $this->logDeprecation();
         $dbArr = [];
         $db_list = $this->query('SELECT SCHEMA_NAME FROM information_schema.SCHEMATA');
         if ($db_list === false) {
@@ -1356,6 +1410,7 @@ class DatabaseConnection
      */
     public function admin_get_tables()
     {
+        $this->logDeprecation();
         $whichTables = [];
         $tables_result = $this->query('SHOW TABLE STATUS FROM `' . $this->databaseName . '`');
         if ($tables_result !== false) {
@@ -1380,6 +1435,7 @@ class DatabaseConnection
      */
     public function admin_get_fields($tableName)
     {
+        $this->logDeprecation();
         $output = [];
         $columns_res = $this->query('SHOW FULL COLUMNS FROM `' . $tableName . '`');
         if ($columns_res !== false) {
@@ -1400,6 +1456,7 @@ class DatabaseConnection
      */
     public function admin_get_keys($tableName)
     {
+        $this->logDeprecation();
         $output = [];
         $keyRes = $this->query('SHOW KEYS FROM `' . $tableName . '`');
         if ($keyRes !== false) {
@@ -1425,6 +1482,7 @@ class DatabaseConnection
      */
     public function admin_get_charsets()
     {
+        $this->logDeprecation();
         $output = [];
         $columns_res = $this->query('SHOW CHARACTER SET');
         if ($columns_res !== false) {
@@ -1444,6 +1502,7 @@ class DatabaseConnection
      */
     public function admin_query($query)
     {
+        $this->logDeprecation();
         $res = $this->query($query);
         if ($this->debugOutput) {
             $this->debug('admin_query', $query);
@@ -1581,6 +1640,7 @@ class DatabaseConnection
      */
     public function connectDB()
     {
+        $this->logDeprecation();
         // Early return if connected already
         if ($this->isConnected) {
             return;
@@ -1745,6 +1805,7 @@ class DatabaseConnection
      */
     public function getDatabaseHandle()
     {
+        $this->logDeprecation();
         return $this->link;
     }
 
@@ -1765,6 +1826,7 @@ class DatabaseConnection
      */
     public function getServerVersion()
     {
+        $this->logDeprecation();
         return $this->link->server_info;
     }
 
@@ -1782,6 +1844,7 @@ class DatabaseConnection
      */
     public function debug($func, $query = '')
     {
+        $this->logDeprecation();
         $error = $this->sql_error();
         if ($error || (int)$this->debugOutput === 2) {
             \TYPO3\CMS\Core\Utility\DebugUtility::debug(
@@ -1807,6 +1870,7 @@ class DatabaseConnection
      */
     public function debug_check_recordset($res)
     {
+        $this->logDeprecation();
         if ($res !== false && $res !== null) {
             return true;
         }
@@ -1948,5 +2012,18 @@ class DatabaseConnection
             'initializeCommandsAfterConnect',
             'default_charset',
         ];
+    }
+
+    /**
+     * function to call a deprecation log entry (but only once per request / class)
+     */
+    protected function logDeprecation()
+    {
+        if (!$this->deprecationWarningThrown) {
+            $this->deprecationWarningThrown = true;
+            GeneralUtility::deprecationLog('DatabaseConnection a.k.a. $["TYPO3_DB"] has been marked as deprecated in'
+            . ' TYPO3 v8 and will be removed in TYPO3 v9. Please use the newly available ConnectionPool and QueryBuilder'
+            . ' classes.');
+        }
     }
 }
