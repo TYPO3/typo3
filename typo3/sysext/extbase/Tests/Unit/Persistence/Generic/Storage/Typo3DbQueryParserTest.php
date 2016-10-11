@@ -13,19 +13,30 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
-class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class Typo3DbQueryParserTest extends UnitTestCase
 {
     /**
-     * @var array
+     * @var arary
      */
     protected $singletonInstances;
 
@@ -46,6 +57,255 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         GeneralUtility::purgeInstances();
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderDoesNotAddAndWhereWithEmptyConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        // Test part: getConstraint returns no constraint object, andWhere() should not be called
+        $queryProphecy->getConstraint()->willReturn(null);
+        $queryBuilderProphecy->andWhere()->shouldNotBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderThrowsExceptionOnNotImplementedConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        // Test part: getConstraint returns not implemented object
+        $constraintProphecy = $this->prophesize(ConstraintInterface::class);
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1476199898);
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderAddsSimpleAndWhere()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        // Test part: getConstraint returns simple constraint, and should push to andWhere()
+        $constraintProphecy = $this->prophesize(ComparisonInterface::class);
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+        $subject->expects($this->once())->method('parseComparison')->willReturn('heinz');
+        $queryBuilderProphecy->andWhere('heinz')->shouldBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderAddsNotConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        $constraintProphecy = $this->prophesize(NotInterface::class);
+        $subConstraintProphecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint()->shouldBeCalled()->willReturn($subConstraintProphecy->reveal());
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+        $subject->expects($this->once())->method('parseComparison')->willReturn('heinz');
+        $queryBuilderProphecy->andWhere(' NOT(heinz)')->shouldBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderAddsAndConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        $constraintProphecy = $this->prophesize(AndInterface::class);
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+        $constraint1Prophecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
+        $constraint2Prophecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint2()->willReturn($constraint2Prophecy->reveal());
+        $subject->expects($this->any())->method('parseComparison')->willReturn('heinz');
+        $expressionProphecy = $this->prophesize(ExpressionBuilder::class);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionProphecy->reveal());
+        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
+        $compositeExpressionProphecy->__toString()->willReturn('heinz AND heinz');
+        $compositeExpressionRevelation = $compositeExpressionProphecy->reveal();
+        $expressionProphecy->andX('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
+        $queryBuilderProphecy->andWhere($compositeExpressionRevelation)->shouldBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderNotAddsInvalidAndConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        $constraintProphecy = $this->prophesize(AndInterface::class);
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+        $constraint1Prophecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
+        // no result for constraint2
+        $constraintProphecy->getConstraint2()->willReturn(null);
+
+        // not be called
+        $queryBuilderProphecy->andWhere()->shouldNotBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderAddsOrConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        $constraintProphecy = $this->prophesize(OrInterface::class);
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+        $constraint1Prophecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
+        $constraint2Prophecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint2()->willReturn($constraint2Prophecy->reveal());
+        $subject->expects($this->any())->method('parseComparison')->willReturn('heinz');
+        $expressionProphecy = $this->prophesize(ExpressionBuilder::class);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionProphecy->reveal());
+        $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
+        $compositeExpressionProphecy->__toString()->willReturn('heinz OR heinz');
+        $compositeExpressionRevelation = $compositeExpressionProphecy->reveal();
+        $expressionProphecy->orX('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
+        $queryBuilderProphecy->andWhere($compositeExpressionRevelation)->shouldBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderNotAddsInvalidOrConstraint()
+    {
+        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
+        $subject = $this->getAccessibleMock(
+            Typo3DbQueryParser::class,
+            // Shut down some methods not important for this test
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+        );
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
+
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $sourceProphecy = $this->prophesize(SourceInterface::class);
+        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
+        $queryProphecy->getOrderings()->willReturn([]);
+
+        $constraintProphecy = $this->prophesize(OrInterface::class);
+        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
+        $constraint1Prophecy = $this->prophesize(ComparisonInterface::class);
+        $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
+        // no result for constraint2
+        $constraintProphecy->getConstraint2()->willReturn(null);
+
+        // not be called
+        $queryBuilderProphecy->andWhere()->shouldNotBeCalled();
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
     }
 
     /**
@@ -97,7 +357,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ];
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit_Framework_MockObject_MockObject $querySettings */
         $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
@@ -119,7 +379,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->setMethods(['dummy'])
             ->getMock();
         $querySettings->setLanguageUid('1');
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
@@ -137,7 +397,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'languageField' => 'sys_language_uid'
         ];
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
@@ -157,7 +417,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ];
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
         $querySettings->setLanguageUid(0);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
@@ -176,7 +436,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ];
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
@@ -196,7 +456,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ];
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
 
@@ -220,7 +480,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ];
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $compositeExpression= $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
@@ -246,7 +506,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ];
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
 
@@ -280,8 +540,8 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $queryBuilderProphet->addOrderBy('tx_myext_tablename.converted_fieldname', 'ASC')->shouldBeCalledTimes(1);
 
-        $orderings = ['fooProperty' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $orderings = ['fooProperty' => QueryInterface::ORDER_ASCENDING];
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $mockTypo3DbQueryParser->_callRef('parseOrderings', $orderings, $mockSource);
@@ -306,7 +566,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockDataMapper->expects($this->never())->method('convertClassNameToTableName');
         $mockDataMapper->expects($this->never())->method('convertPropertyNameToColumnName');
         $orderings = ['fooProperty' => 'unsupported_order'];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
 
         $mockTypo3DbQueryParser->_callRef('parseOrderings', $orderings, $mockSource);
@@ -329,10 +589,10 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockDataMapper->expects($this->any())->method('convertClassNameToTableName')->with('Tx_MyExt_ClassName')->will($this->returnValue('tx_myext_tablename'));
         $mockDataMapper->expects($this->any())->method('convertPropertyNameToColumnName')->will($this->returnValue('converted_fieldname'));
         $orderings = [
-            'fooProperty' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-            'barProperty' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+            'fooProperty' => QueryInterface::ORDER_ASCENDING,
+            'barProperty' => QueryInterface::ORDER_DESCENDING
         ];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
@@ -404,7 +664,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->getMock();
         $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue($mode == 'FE'));
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
         $resultSql = $mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         $this->assertSame($expectedSql, $resultSql);
@@ -465,7 +725,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->getMock();
         $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue($mode == 'FE'));
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
         $actualSql = $mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         $this->assertSame($expectedSql, $actualSql);
@@ -500,7 +760,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->getMock();
         $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue(true));
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
         $mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         unset($GLOBALS['TCA'][$tableName]);
@@ -551,7 +811,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'rootLevel' => $rootLevel
         ];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_callRef('getPageIdStatement', $table, $table, $storagePageIds);

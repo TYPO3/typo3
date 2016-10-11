@@ -121,8 +121,15 @@ class Typo3DbQueryParser
         // Find the right table name
         $source = $query->getSource();
         $this->initializeQueryBuilder($source);
-        $wherePredicates = $this->parseConstraint($query->getConstraint(), $source);
-        $this->queryBuilder->andWhere($wherePredicates);
+
+        $constraint = $query->getConstraint();
+        if ($constraint instanceof Qom\ConstraintInterface) {
+            $wherePredicates = $this->parseConstraint($constraint, $source);
+            if (!empty($wherePredicates)) {
+                $this->queryBuilder->andWhere($wherePredicates);
+            }
+        }
+
         $this->parseOrderings($query->getOrderings(), $source);
         $this->addTypo3Constraints($query);
 
@@ -176,25 +183,42 @@ class Typo3DbQueryParser
      * @param Qom\ConstraintInterface $constraint The constraint
      * @param Qom\SourceInterface $source The source
      * @return CompositeExpression|string
+     * @throws \RuntimeException
      */
-    protected function parseConstraint(Qom\ConstraintInterface $constraint = null, Qom\SourceInterface $source)
+    protected function parseConstraint(Qom\ConstraintInterface $constraint, Qom\SourceInterface $source)
     {
         if ($constraint instanceof Qom\AndInterface) {
-            return $this->queryBuilder->expr()->andX(
-                $this->parseConstraint($constraint->getConstraint1(), $source),
-                $this->parseConstraint($constraint->getConstraint2(), $source)
-            );
+            $constraint1 = $constraint->getConstraint1();
+            $constraint2 = $constraint->getConstraint2();
+            if (($constraint1 instanceof Qom\ConstraintInterface)
+                && ($constraint2 instanceof Qom\ConstraintInterface)
+            ) {
+                return $this->queryBuilder->expr()->andX(
+                    $this->parseConstraint($constraint1, $source),
+                    $this->parseConstraint($constraint2, $source)
+                );
+            } else {
+                return '';
+            }
         } elseif ($constraint instanceof Qom\OrInterface) {
-            return $this->queryBuilder->expr()->orX(
-                $this->parseConstraint($constraint->getConstraint1(), $source),
-                $this->parseConstraint($constraint->getConstraint2(), $source)
-            );
+            $constraint1 = $constraint->getConstraint1();
+            $constraint2 = $constraint->getConstraint2();
+            if (($constraint1 instanceof Qom\ConstraintInterface)
+                && ($constraint2 instanceof Qom\ConstraintInterface)
+            ) {
+                return $this->queryBuilder->expr()->orX(
+                    $this->parseConstraint($constraint->getConstraint1(), $source),
+                    $this->parseConstraint($constraint->getConstraint2(), $source)
+                );
+            } else {
+                return '';
+            }
         } elseif ($constraint instanceof Qom\NotInterface) {
             return ' NOT(' . $this->parseConstraint($constraint->getConstraint(), $source) . ')';
         } elseif ($constraint instanceof Qom\ComparisonInterface) {
             return $this->parseComparison($constraint, $source);
         } else {
-            // exception?
+            throw new \RuntimeException('not implemented', 1476199898);
         }
     }
 
@@ -551,11 +575,17 @@ class Typo3DbQueryParser
     {
         $whereClause = [];
         if ($querySettings->getRespectSysLanguage()) {
-            $whereClause[] = $this->getSysLanguageStatement($tableName, $tableAlias, $querySettings);
+            $systemLanguageStatement = $this->getSysLanguageStatement($tableName, $tableAlias, $querySettings);
+            if (!empty($systemLanguageStatement)) {
+                $whereClause[] = $systemLanguageStatement;
+            }
         }
 
         if ($querySettings->getRespectStoragePage()) {
-            $whereClause[] = $this->getPageIdStatement($tableName, $tableAlias, $querySettings->getStoragePageIds());
+            $pageIdStatement = $this->getPageIdStatement($tableName, $tableAlias, $querySettings->getStoragePageIds());
+            if (!empty($pageIdStatement)) {
+                $whereClause[] = $pageIdStatement;
+            }
         }
 
         return $whereClause;
