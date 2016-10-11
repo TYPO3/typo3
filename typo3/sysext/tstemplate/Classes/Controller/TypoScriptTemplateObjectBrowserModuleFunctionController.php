@@ -377,7 +377,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             }
             // Ending section displayoptions
         }
-
+        $this->getPageRenderer();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
             'EXT:tstemplate/Resources/Private/Templates/TemplateObjectBrowserModuleFunction.html'

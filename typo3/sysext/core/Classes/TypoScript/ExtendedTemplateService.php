@@ -274,10 +274,10 @@ class ExtendedTemplateService extends TemplateService
         $marker = substr(md5($matches[0]), 0, 6);
         switch ($this->constantMode) {
             case 'const':
-                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $marker . '_B##' . $matches[0] . '##' . $marker . '_E##' : $matches[0];
+                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $marker . '_B##' . $this->flatSetup[$matches[1]] . '##' . $marker . '_M##' . $matches[0] . '##' . $marker . '_E##' : $matches[0];
                 break;
             case 'subst':
-                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $marker . '_B##' . $this->flatSetup[$matches[1]] . '##' . $marker . '_E##' : $matches[0];
+                $ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $marker . '_B##' . $matches[0] . '##' . $marker . '_M##' . $this->flatSetup[$matches[1]] . '##' . $marker . '_E##' : $matches[0];
                 break;
             case 'untouched':
                 $ret_val = $matches[0];
@@ -289,7 +289,8 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * Substitute markers
+     * Substitute markers added in substituteConstantsCallBack()
+     * with ##6chars_B##value1##6chars_M##value2##6chars_E##
      *
      * @param string $all
      * @return string
@@ -300,9 +301,9 @@ class ExtendedTemplateService extends TemplateService
             case 'const':
             case 'subst':
                 $all = preg_replace(
-                    '/##[a-z0-9]{6}_B##((?:(?!##[a-z0-9]{6}_E##).)+)?##[a-z0-9]{6}_E##/',
-                        '<strong style="color: green;">$1</strong>',
-                        $all
+                    '/##[a-z0-9]{6}_B##(.*?)##[a-z0-9]{6}_M##(.*?)##[a-z0-9]{6}_E##/',
+                    '<strong class="text-success" data-toggle="tooltip" data-placement="top" data-title="$1" title="$1">$2</strong>',
+                    $all
                 );
                 break;
             default:
@@ -312,7 +313,7 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * Parse constants with respect to the constant-editor in this module.
-     * In particular comments in the code are registered.
+     * In particular comments in the code are registered and the edit_divider is taken into account.
      *
      * @return array
      */
