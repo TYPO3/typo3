@@ -7444,6 +7444,13 @@ body {
 .toolbar-item .dropdown-menu {
   width: 350px;
 }
+.toolbar-item .dropdown-menu .text-muted {
+  color: #8c8c8c;
+}
+.toolbar-item .dropdown-menu a:hover .text-muted,
+.toolbar-item .dropdown-menu a:focus .text-muted {
+  color: #a6a6a6;
+}
 @media (max-width: 991px) {
   .toolbar-item .dropdown-menu {
     overflow: auto;

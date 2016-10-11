@@ -71,6 +71,16 @@
 .toolbar-item {
 	.dropdown-menu {
 		width: 350px;
+
+		.text-muted {
+			color: lighten(@text-muted, 10%);
+		}
+		a:hover,
+		a:focus {
+			.text-muted {
+				color: lighten(@text-muted, 20%);
+			}
+		}
 	}
 	@media (max-width: @scaffold-breakpoint-max) {
 		.dropdown-menu {
