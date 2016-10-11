@@ -5931,16 +5931,6 @@ class ContentObjectRenderer
                     if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
                         $addQueryParams = '';
                     }
-                    if ($conf['useCacheHash']) {
-                        $params = $tsfe->linkVars . $addQueryParams . '&id=' . $linkDetails['pageuid'];
-                        if (trim($params, '& ') != '') {
-                            /** @var $cacheHash CacheHashCalculator */
-                            $cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
-                            $cHash = $cacheHash->generateForParameters($params);
-                            $addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
-                        }
-                        unset($params);
-                    }
                     $targetDomain = '';
                     $currentDomain = (string)$this->getEnvironmentVariable('HTTP_HOST');
                     // Mount pages are always local and never link to another domain
@@ -5981,6 +5971,16 @@ class ContentObjectRenderer
                         if (!$targetDomain || $tsfe->domainNameMatchesCurrentRequest($targetDomain)) {
                             $targetDomain = '';
                         }
+                    }
+                    if ($conf['useCacheHash']) {
+                        $params = $tsfe->linkVars . $addQueryParams . '&id=' . $page['uid'];
+                        if (trim($params, '& ') != '') {
+                            /** @var $cacheHash CacheHashCalculator */
+                            $cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
+                            $cHash = $cacheHash->generateForParameters($params);
+                            $addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
+                        }
+                        unset($params);
                     }
                     $absoluteUrlScheme = 'http';
                     // URL shall be absolute:
