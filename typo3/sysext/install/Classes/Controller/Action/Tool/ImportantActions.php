@@ -88,7 +88,14 @@ class ImportantActions extends Action\AbstractAction
             $actionMessages = array_merge($actionMessages, $this->databaseAnalyzerExecute());
         }
         if (isset($this->postValues['set']['databaseAnalyzerAnalyze'])) {
-            $actionMessages[] = $this->databaseAnalyzerAnalyze();
+            try {
+                $actionMessages[] = $this->databaseAnalyzerAnalyze();
+            } catch (\TYPO3\CMS\Core\Database\Schema\Exception\StatementException $e) {
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $message->setTitle('Database analysis failed');
+                $message->setMessage($e->getMessage());
+                $actionMessages[] = $message;
+            }
         }
 
         $this->view->assign('actionMessages', $actionMessages);

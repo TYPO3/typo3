@@ -435,7 +435,16 @@ class SchemaMigrator
 
             // We need to keep multiple table definitions at this point so
             // that Extensions can modify existing tables.
-            $tables[] = $createTableParser->parse();
+            try {
+                $tables[] = $createTableParser->parse();
+            } catch (\TYPO3\CMS\Core\Database\Schema\Exception\StatementException $statementException) {
+                // Enrich the error message with the full invalid statement
+                throw new \TYPO3\CMS\Core\Database\Schema\Exception\StatementException(
+                    $statementException->getMessage() . ' in statement ' . $statement,
+                    1476171315,
+                    $statementException
+                );
+            }
         }
 
         // Flatten the array of arrays by one level

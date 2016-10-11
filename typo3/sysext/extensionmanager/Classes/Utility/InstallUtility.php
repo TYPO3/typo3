@@ -383,7 +383,14 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             $extTablesSqlContent .= file_get_contents($extTablesSqlFile);
         }
         if ($extTablesSqlContent !== '') {
-            $this->updateDbWithExtTablesSql($extTablesSqlContent);
+            try {
+                $this->updateDbWithExtTablesSql($extTablesSqlContent);
+            } catch (\TYPO3\CMS\Core\Database\Schema\Exception\StatementException $e) {
+                throw new ExtensionManagerException(
+                    $e->getMessage(),
+                    1476340371
+                );
+            }
         }
 
         $this->importStaticSqlFile($extension['siteRelPath']);
