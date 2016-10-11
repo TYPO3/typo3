@@ -1611,28 +1611,36 @@ class EditDocumentController extends AbstractModule
                         if ($this->getBackendUser()->checkLanguageAccess($lang['uid'])) {
                             $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.new')) . ']';
                             // Create url for creating a localized record
+                            $addOption = true;
                             if ($newTranslation) {
                                 $redirectUrl = BackendUtility::getModuleUrl('record_edit', [
                                     'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
                                     'returnUrl' => $this->retUrl
                                 ]);
-                                $href = BackendUtility::getLinkToDataHandlerAction(
-                                    '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'],
-                                    $redirectUrl
-                                );
+
+                                if ($currentLanguage === 0) {
+                                    $href = BackendUtility::getLinkToDataHandlerAction(
+                                        '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'],
+                                        $redirectUrl
+                                    );
+                                } else {
+                                    $addOption = false;
+                                }
                             } else {
                                 $href = BackendUtility::getModuleUrl('record_edit', [
                                     'edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']' => 'edit',
                                     'returnUrl' => $this->retUrl
                                 ]);
                             }
-                            $menuItem = $languageMenu->makeMenuItem()
-                                ->setTitle($lang['title'] . $newTranslation)
-                                ->setHref($href);
-                            if ((int)$lang['uid'] === $currentLanguage) {
-                                $menuItem->setActive(true);
+                            if ($addOption) {
+                                $menuItem = $languageMenu->makeMenuItem()
+                                                         ->setTitle($lang['title'] . $newTranslation)
+                                                         ->setHref($href);
+                                if ((int)$lang['uid'] === $currentLanguage) {
+                                    $menuItem->setActive(true);
+                                }
+                                $languageMenu->addMenuItem($menuItem);
                             }
-                            $languageMenu->addMenuItem($menuItem);
                         }
                     }
                     $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
