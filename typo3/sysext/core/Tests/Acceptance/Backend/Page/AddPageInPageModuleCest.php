@@ -25,7 +25,7 @@ class AddPageInPageModuleCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForText('Web>Page module');
         $I->switchToIFrame();
     }
@@ -54,7 +54,7 @@ class AddPageInPageModuleCest
         $I->click($contextMenuNew);
 
         // Switch to content frame
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
 
         // New page select position wizard
         $I->click('i[title="Insert the new page here"]');

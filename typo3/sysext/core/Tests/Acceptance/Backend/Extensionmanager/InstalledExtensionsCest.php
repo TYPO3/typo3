@@ -35,7 +35,7 @@ class InstalledExtensionsCest
         });
 
         $I->click('Extensions', '#typo3-module-menu');
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForElementVisible('#typo3-extension-list');
     }
 
@@ -82,7 +82,7 @@ class InstalledExtensionsCest
         $I->canSeeElement('.typo3-module-menu-item');
         $I->cantSeeElement('#web_RecyclerRecycler');
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
         $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
@@ -105,7 +105,7 @@ class InstalledExtensionsCest
         $I->switchToIFrame();
         $I->canSeeElement('#web_RecyclerRecycler');
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
         $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');

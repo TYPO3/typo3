@@ -33,7 +33,7 @@ class PageModuleCest
     public function checkThatPageModuleHasAHeadline(Admin $I)
     {
         $I->click('Page');
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->canSee('Web>Page module', 'h4');
     }
 }

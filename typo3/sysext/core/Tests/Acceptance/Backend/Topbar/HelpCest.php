@@ -36,7 +36,7 @@ class HelpCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForText('Web>Page module');
         $I->switchToIFrame();
     }
@@ -61,7 +61,7 @@ class HelpCest
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);
         $I->click('Styleguide', self::$topBarModuleSelector);
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->see('TYPO3 CMS Backend Styleguide', 'h1');
     }
 }

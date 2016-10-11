@@ -33,7 +33,7 @@ class ListUserCest
         $I->click('Backend users');
 
         // switch to content iframe
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
     }
 
     /**

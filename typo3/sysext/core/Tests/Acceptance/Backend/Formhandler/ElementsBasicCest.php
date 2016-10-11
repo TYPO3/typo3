@@ -35,7 +35,7 @@ class ElementsBasicCest
 
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
     }
 
     /**

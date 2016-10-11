@@ -49,7 +49,7 @@ class SearchCest
         $I->canSee('Backend user', self::$topBarModuleSelector);
         $I->click('.icon-status-user-admin', self::$topBarModuleSelector);
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "admin" on root level');
     }
@@ -81,7 +81,7 @@ class SearchCest
         $I->canSee('fileadmin/ (auto-created)', self::$topBarModuleSelector);
         $I->click('.t3js-live-search-show-all', self::$topBarModuleSelector);
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForElementVisible('form[name="dblistForm"]');
         $I->canSee('fileadmin/ (auto-created)');
     }

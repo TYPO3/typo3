@@ -33,7 +33,7 @@ class TasksCest
         $I->click('Scheduler', '#system_txschedulerM1');
 
         // switch to content iframe
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
     }
 
     /**
@@ -89,13 +89,13 @@ class TasksCest
         $I->click('//a[contains(@title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
         $modalDialog->clickButtonInDialog('Cancel');
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
 
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
         $I->click('//a[contains(@title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->see('The task was successfully deleted.');
         $I->see('No tasks defined yet');
     }

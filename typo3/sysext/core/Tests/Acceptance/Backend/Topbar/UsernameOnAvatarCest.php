@@ -25,7 +25,7 @@ class UsernameOnAvatarCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForText('Web>Page module');
         $I->switchToIFrame();
     }

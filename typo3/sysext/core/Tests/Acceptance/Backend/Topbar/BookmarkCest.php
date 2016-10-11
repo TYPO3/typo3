@@ -45,7 +45,7 @@ class BookmarkCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForText('Web>Page module');
     }
 
@@ -72,7 +72,7 @@ class BookmarkCest
         // open the scheduler module as we would like to put it into the bookmark liste
         $I->click('Scheduler', '#typo3-module-menu');
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
 
         $I->click(self::$docHeaderBookmarkButtonSelector);
         // cancel the action to test the functionality
@@ -81,7 +81,7 @@ class BookmarkCest
         // check if the list is still empty
         $this->checkThatBookmarkListIsInitiallyEmpty($I);
 
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->click(self::$docHeaderBookmarkButtonSelector);
 
         $dialog->clickButtonInDialog('OK');
@@ -106,7 +106,7 @@ class BookmarkCest
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->click('Scheduled tasks', self::$topBarModuleSelector);
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->canSee('Scheduled tasks', 'h1');
     }
 

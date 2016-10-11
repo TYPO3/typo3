@@ -37,7 +37,7 @@ class CategoryTreeCest
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
         $I->click('#web_list');
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         $I->waitForElement('#recordlist-sys_category');
         $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5, 100]);
     }
@@ -50,7 +50,7 @@ class CategoryTreeCest
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
         $I->click('#web_list');
-        $I->switchToIFrame('content');
+        $I->switchToIFrame('contentIframe');
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Change title and level to root
