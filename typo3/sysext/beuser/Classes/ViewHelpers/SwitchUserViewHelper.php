@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
@@ -28,6 +29,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class SwitchUserViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -47,14 +50,6 @@ class SwitchUserViewHelper extends AbstractViewHelper
     /**
      * Render link with sprite icon to change current backend user to target
      *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

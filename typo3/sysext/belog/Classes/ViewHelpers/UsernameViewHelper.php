@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get username from backend user id
@@ -26,6 +27,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class UsernameViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * First level cache of user names
      *
@@ -45,23 +48,11 @@ class UsernameViewHelper extends AbstractViewHelper
     /**
      * Resolve user name from backend user id.
      *
-     * @return string Username or an empty string if there is no user with that UID
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
-     * @return string
+     * @return string Username or an empty string if there is no user with that UID
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

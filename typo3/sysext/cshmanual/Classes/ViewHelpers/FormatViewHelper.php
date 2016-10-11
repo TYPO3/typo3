@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Cshmanual\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Format the given content
@@ -24,6 +25,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class FormatViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * Disable the output escaping interceptor
      *
@@ -44,24 +47,12 @@ class FormatViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('content', 'string', '', false, '');
+        $this->registerArgument('content', 'string', '');
     }
 
     /**
      * Format the content
      *
-     * @return string
-     */
-    public function render()
-    {
-        return self::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -70,9 +61,6 @@ class FormatViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (empty($content)) {
-            $content = $renderChildrenClosure();
-        }
-        return nl2br(trim(strip_tags($content, '<strong><em><b><i>')));
+        return nl2br(trim(strip_tags($renderChildrenClosure(), '<strong><em><b><i>')));
     }
 }

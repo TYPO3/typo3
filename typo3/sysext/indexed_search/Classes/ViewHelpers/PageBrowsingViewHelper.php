@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Page browser for indexed search, and only useful here, as the
@@ -29,6 +30,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PageBrowsingViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -52,20 +55,6 @@ class PageBrowsingViewHelper extends AbstractViewHelper
         $this->registerArgument('resultsPerPage', 'int', '', true);
         $this->registerArgument('currentPage', 'int', '', false, 0);
         $this->registerArgument('freeIndexUid', 'int', '');
-    }
-
-    /**
-     * Main render function
-     *
-     * @return string The content
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

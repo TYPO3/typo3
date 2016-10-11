@@ -19,12 +19,15 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Class ReplaceFileViewHelper
  */
 class ReplaceFileViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      */
@@ -33,20 +36,6 @@ class ReplaceFileViewHelper extends AbstractViewHelper
         parent::initializeArguments();
         $this->registerArgument('file', \TYPO3\CMS\Core\Resource\AbstractFile::class, '', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
-    }
-
-    /**
-     * Renders a link to replace a file
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

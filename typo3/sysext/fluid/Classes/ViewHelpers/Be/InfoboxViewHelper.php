@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * View helper for rendering a styled content infobox markup.
@@ -47,6 +48,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class InfoboxViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     const STATE_NOTICE = -2;
     const STATE_INFO = -1;
     const STATE_OK = 0;
@@ -68,24 +71,11 @@ class InfoboxViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('title', 'string', 'The title of the info box');
         $this->registerArgument('message', 'string', 'The message of the info box, if NULL tag content is used');
+        $this->registerArgument('title', 'string', 'The title of the info box');
         $this->registerArgument('state', 'int', 'The state of the box, InfoboxViewHelper::STATE_*', false, self::STATE_NOTICE);
         $this->registerArgument('iconName', 'string', 'The icon name from font awesome, NULL sets default icon');
         $this->registerArgument('disableIcon', 'bool', 'If set to TRUE, the icon is not rendered.', false, false);
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**
@@ -98,7 +88,7 @@ class InfoboxViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $title = $arguments['title'];
-        $message = $arguments['message'];
+        $message = $renderChildrenClosure();
         $state = $arguments['state'];
         $isInRange = MathUtility::isIntegerInRange($state, -2, 2);
         if (!$isInRange) {
@@ -107,11 +97,6 @@ class InfoboxViewHelper extends AbstractViewHelper
 
         $iconName = $arguments['iconName'];
         $disableIcon = $arguments['disableIcon'];
-        if ($message === null) {
-            $messageTemplate = $renderChildrenClosure();
-        } else {
-            $messageTemplate = htmlspecialchars($message);
-        }
         $classes = [
             self::STATE_NOTICE => 'notice',
             self::STATE_INFO => 'info',
@@ -150,7 +135,7 @@ class InfoboxViewHelper extends AbstractViewHelper
                     $iconTemplate .
                     '<div class="media-body">' .
                         $titleTemplate .
-                        '<div class="callout-body">' . $messageTemplate . '</div>' .
+                        '<div class="callout-body">' . $message . '</div>' .
                     '</div>' .
                 '</div>' .
             '</div>';

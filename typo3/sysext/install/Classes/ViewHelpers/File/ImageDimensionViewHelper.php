@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get width or height from image file
@@ -33,6 +34,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ImageDimensionViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -53,24 +56,12 @@ class ImageDimensionViewHelper extends AbstractViewHelper
      * Get width / height from image file
      *
      * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
-     * @return int width or height
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      *
-     * @return string
+     * @return int width or height
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

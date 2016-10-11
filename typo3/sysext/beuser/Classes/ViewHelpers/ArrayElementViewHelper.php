@@ -17,12 +17,15 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 use TYPO3\CMS\Beuser\Exception;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get a value from an array by given key.
  */
 class ArrayElementViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initializes the arguments
      */
@@ -36,16 +39,6 @@ class ArrayElementViewHelper extends AbstractViewHelper
 
     /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
-    }
-
-    /**
-     * Return array element by key.
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure

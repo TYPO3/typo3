@@ -18,12 +18,15 @@ use Closure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Class DeleteFileViewHelper
  */
 class DeleteFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      */
@@ -32,20 +35,6 @@ class DeleteFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
         parent::initializeArguments();
         $this->registerArgument('file', \TYPO3\CMS\Core\Resource\AbstractFile::class, '', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
-    }
-
-    /**
-     * Renders a link to delete the file
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

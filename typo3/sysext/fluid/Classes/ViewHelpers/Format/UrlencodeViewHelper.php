@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html (applying PHPs rawurlencode() function)
@@ -42,6 +43,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class UrlencodeViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -64,32 +67,16 @@ class UrlencodeViewHelper extends AbstractViewHelper
      * Escapes special characters with their escaped counterparts as needed using PHPs rawurlencode() function.
      *
      * @see http://www.php.net/manual/function.rawurlencode.php
-     * @api
-     * @return mixed
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
-     * @return string
+     * @return mixed
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $arguments['value'];
+        $value = $renderChildrenClosure();
 
-        if ($value === null) {
-            $value = $renderChildrenClosure();
-        }
         if (!is_string($value)) {
             return $value;
         }

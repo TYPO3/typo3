@@ -16,12 +16,18 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * FlagValue viewhelper
  */
 class FlagValueViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -31,18 +37,6 @@ class FlagValueViewHelper extends AbstractViewHelper
     /**
      * Render additional flag information
      *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

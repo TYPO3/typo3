@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Formats an object implementing \DateTimeInterface.
@@ -82,6 +83,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class DateViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * Needed as child node's output can return a DateTime object which can't be escaped
      *
@@ -101,21 +104,6 @@ class DateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render the supplied DateTime object as a formatted date.
-     *
-     * @return string Formatted date
-     * @throws Exception
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -125,7 +113,6 @@ class DateViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $date = $arguments['date'];
         $format = $arguments['format'];
         $base = $arguments['base'] === null ? time() : $arguments['base'];
         if (is_string($base)) {
@@ -136,11 +123,9 @@ class DateViewHelper extends AbstractViewHelper
             $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
         }
 
+        $date = $renderChildrenClosure();
         if ($date === null) {
-            $date = $renderChildrenClosure();
-            if ($date === null) {
-                return '';
-            }
+            return '';
         }
 
         if (is_string($date)) {

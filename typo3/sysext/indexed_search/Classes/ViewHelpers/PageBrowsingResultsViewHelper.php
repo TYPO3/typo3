@@ -17,6 +17,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * renders the header of the results page
@@ -24,6 +25,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PageBrowsingResultsViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -40,20 +43,6 @@ class PageBrowsingResultsViewHelper extends AbstractViewHelper
         $this->registerArgument('numberOfResults', 'int', '', true);
         $this->registerArgument('resultsPerPage', 'int', '', true);
         $this->registerArgument('currentPage', 'int', '', false, 1);
-    }
-
-    /**
-     * main render function
-     *
-     * @return string the content
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

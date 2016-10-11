@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  */
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Email URI view helper.
@@ -32,6 +33,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class EmailViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      *
@@ -45,28 +48,11 @@ class EmailViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
-     * @return string Rendered email link
-     */
-    public function render()
-    {
-        $email = $this->arguments['email'];
-
-        return static::renderStatic(
-            [
-                'email' => $email,
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
-     * @return string
+     * @return string Rendered email link
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * This ViewHelper generates a HTML dump of the tagged variable.
@@ -39,6 +40,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class DebugViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * This prevents double escaping as the output is encoded in DebuggerUtility::var_dump
      *
@@ -73,18 +76,6 @@ class DebugViewHelper extends AbstractViewHelper
     /**
      * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
      *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

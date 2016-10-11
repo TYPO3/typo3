@@ -19,12 +19,15 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Class EditSysFileMetadataRecordViewHelper
  */
 class EditSysFileMetadataRecordViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      */
@@ -33,20 +36,6 @@ class EditSysFileMetadataRecordViewHelper extends AbstractViewHelper
         parent::initializeArguments();
         $this->registerArgument('uid', 'int', '', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
-    }
-
-    /**
-     * Renders a link to edit sys_file_metadata
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

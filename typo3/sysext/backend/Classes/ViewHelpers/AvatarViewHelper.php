@@ -18,12 +18,15 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get avatar for backend user
  */
 class AvatarViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -40,20 +43,6 @@ class AvatarViewHelper extends AbstractViewHelper
         $this->registerArgument('backendUser', 'int', 'Uid of the user', false, 0);
         $this->registerArgument('size', 'int', 'width and height of the image', false, 32);
         $this->registerArgument('showIcon', 'bool', 'show the record icon', false, false);
-    }
-
-    /**
-     * Resolve user avatar from backend user id.
-     *
-     * @return string html image tag
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Wrapper for PHPs nl2br function.
@@ -39,6 +40,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class Nl2brViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var bool
      */
@@ -56,20 +59,6 @@ class Nl2brViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Replaces newline characters by HTML line breaks.
-     *
-     * @return string the altered string.
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * Applies nl2br() on the specified value.
      *
      * @param array $arguments
@@ -79,11 +68,6 @@ class Nl2brViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $arguments['value'];
-        if ($value === null) {
-            $value = $renderChildrenClosure();
-        }
-
-        return nl2br($value);
+        return nl2br($renderChildrenClosure());
     }
 }

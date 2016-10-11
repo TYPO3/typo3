@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A view helper for creating URIs to resources.
@@ -31,6 +32,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      *
@@ -48,31 +51,10 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     /**
      * Render the URI to the resource. The filename is used from child content.
      *
-     * @return string The URI to the resource
-     * @api
-     */
-    public function render()
-    {
-        $path = $this->arguments['path'];
-        $extensionName = $this->arguments['extensionName'];
-        $absolute = $this->arguments['absolute'];
-
-        return static::renderStatic(
-            [
-                'path' => $path,
-                'extensionName' => $extensionName,
-                'absolute' => $absolute
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @return string
+     * @return string The URI to the resource
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

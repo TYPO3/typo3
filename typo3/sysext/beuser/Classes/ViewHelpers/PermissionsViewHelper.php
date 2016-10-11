@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Render permission icon group (user / group / others) of the "Access" module.
@@ -26,6 +27,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PermissionsViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -51,16 +54,6 @@ class PermissionsViewHelper extends AbstractViewHelper
 
     /**
      * Return permissions.
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
-    }
-
-    /**
-     * Static rendering method
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure

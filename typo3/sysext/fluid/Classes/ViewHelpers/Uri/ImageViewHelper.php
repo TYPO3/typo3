@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Resizes a given image (if required) and returns its relative path.
@@ -63,6 +64,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ImageViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      */
@@ -85,20 +88,6 @@ class ImageViewHelper extends AbstractViewHelper
     /**
      * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src
      *
-     * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/ImgResource/
-     * @throws Exception
-     * @return string path to the image
-     */
-    public function render()
-    {
-        return self::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

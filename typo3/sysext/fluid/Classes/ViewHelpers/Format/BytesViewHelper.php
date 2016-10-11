@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Formats an integer with a byte count into human-readable form.
@@ -53,6 +54,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class BytesViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
@@ -79,26 +81,11 @@ class BytesViewHelper extends AbstractViewHelper
     /**
      * Render the supplied byte count as a human readable string.
      *
-     * @return string Formatted byte count
-     * @api
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
-     * Applies htmlspecialchars() on the specified value.
-     *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      *
-     * @return string
+     * @return string Formatted byte count
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
@@ -109,10 +96,7 @@ class BytesViewHelper extends AbstractViewHelper
         }
         $units = GeneralUtility::trimExplode(',', $units, true);
 
-        $value = $arguments['value'];
-        if ($value === null) {
-            $value = $renderChildrenClosure();
-        }
+        $value = $renderChildrenClosure();
 
         if (is_numeric($value)) {
             $value = (float)$value;

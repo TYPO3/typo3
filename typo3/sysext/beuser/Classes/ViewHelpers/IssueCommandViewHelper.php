@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Render a link to DataHandler command
@@ -26,6 +27,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IssueCommandViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initializes the arguments
      */
@@ -39,20 +42,12 @@ class IssueCommandViewHelper extends AbstractViewHelper
     /**
      * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
      *
-     * @return string URL to tce_db.php + parameters
-     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()
-     */
-    public function render()
-    {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
-     * @return string
+     * @return string URL to tce_db.php + parameters
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
