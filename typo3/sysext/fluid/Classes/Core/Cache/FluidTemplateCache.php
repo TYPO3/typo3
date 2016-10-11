@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Fluid\Core\Cache;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
+use TYPO3Fluid\Fluid\Core\Cache\FluidCacheWarmerInterface;
+use TYPO3Fluid\Fluid\Core\Cache\StandardCacheWarmer;
 
 /**
  * Class FluidTemplateCache
@@ -59,5 +61,13 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
             $sourceCode = substr($sourceCode, 6);
         }
         parent::set($entryIdentifier, $sourceCode, $tags, time() + 86400);
+    }
+
+    /**
+     * @return FluidCacheWarmerInterface
+     */
+    public function getCacheWarmer()
+    {
+        return new StandardCacheWarmer();
     }
 }
