@@ -2342,7 +2342,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 $properties['file'] = GeneralUtility::resolveBackPath($properties['file']);
                 $properties['file'] = GeneralUtility::createVersionNumberedFilename($properties['file']);
                 $async = ($properties['async']) ? ' async="async"' : '';
-                $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
+                $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '" crossorigin="anonymous"' : '';
                 $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $integrity . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
@@ -2385,7 +2385,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 $file = GeneralUtility::resolveBackPath($file);
                 $file = GeneralUtility::createVersionNumberedFilename($file);
                 $async = ($properties['async']) ? ' async="async"' : '';
-                $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
+                $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '" crossorigin="anonymous"' : '';
                 $tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $integrity . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
