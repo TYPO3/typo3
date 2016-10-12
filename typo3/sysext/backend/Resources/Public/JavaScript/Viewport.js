@@ -35,7 +35,7 @@ define(
 			doLayout: function () {
 				TYPO3.Backend.NavigationContainer.cleanup();
 				TYPO3.Backend.NavigationContainer.calculateScrollbar();
-				if (Ext.getCmp('typo3-pagetree') !== undefined) {
+				if (typeof Ext.getCmp('typo3-pagetree') !== 'undefined') {
 					Ext.getCmp('typo3-pagetree').doLayout();
 				}
 			},
@@ -53,6 +53,13 @@ define(
 				}
 			},
 			NavigationContainer: {
+				PageTree: {
+					refreshTree: function() {
+						if (typeof Ext.getCmp('typo3-pagetree') !== 'undefined') {
+							Ext.getCmp('typo3-pagetree').activeTree.refreshTree();
+						}
+					}
+				},
 				toggle: function () {
 					$('.t3js-scaffold').toggleClass('scaffold-content-navigation-expanded')
 				},
