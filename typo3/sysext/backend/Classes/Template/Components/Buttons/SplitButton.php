@@ -155,7 +155,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
         $content = '
         <div class="btn-group t3js-splitbutton">
             <button' . $attributesString . '>
-                ' . $items['primary']->getIcon()->render() . '
+                ' . $items['primary']->getIcon()->render('inline') . '
                 ' . htmlspecialchars($items['primary']->getTitle()) . '
             </button>
             <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -184,7 +184,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
             }
             $content .= '
                 <li>
-                    <a' . $optionAttributesString . '>' . $option->getIcon()->render() . ' '
+                    <a' . $optionAttributesString . '>' . $option->getIcon()->render('inline') . ' '
                     . htmlspecialchars($option->getTitle()) . '</a>
                 </li>
             ';
