@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
@@ -140,7 +140,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @var bool
      */
-    protected $isOnline = false;
+    protected $isOnline = null;
 
     /**
      * @var bool
@@ -160,11 +160,6 @@ class ResourceStorage implements ResourceStorageInterface
     const PROCESSING_FOLDER_LEVELS = 2;
 
     /**
-     * @var \TYPO3\CMS\Core\Log\Logger
-     */
-    protected $logger;
-
-    /**
      * Constructor for a storage object.
      *
      * @param Driver\DriverInterface $driver
@@ -172,22 +167,12 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function __construct(Driver\DriverInterface $driver, array $storageRecord)
     {
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        $this->logger = $logManager->getLogger(__CLASS__);
-
         $this->storageRecord = $storageRecord;
         $this->configuration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
         $this->capabilities =
             ($this->storageRecord['is_browsable'] ? self::CAPABILITY_BROWSABLE : 0) |
             ($this->storageRecord['is_public'] ? self::CAPABILITY_PUBLIC : 0) |
             ($this->storageRecord['is_writable'] ? self::CAPABILITY_WRITABLE : 0);
-
-        if ($this->getUid() === 0) {
-            // Legacy storage is always online
-            $this->isOnline = true;
-        } else {
-            $this->isOnline = (bool)$this->storageRecord['is_online'];
-        }
 
         $this->driver = $driver;
         $this->driver->setStorageUid($storageRecord['uid']);
@@ -196,16 +181,8 @@ class ResourceStorage implements ResourceStorageInterface
             $this->driver->processConfiguration();
         } catch (Exception\InvalidConfigurationException $e) {
             // configuration error
-            // mark this storage as offline
-            $this->isOnline = false;
-
-            if (TYPO3_REQUESTTYPE === TYPO3_REQUESTTYPE_BE) {
-                $this->logger->error(
-                    'The storage "%s" has been turned offline due to a configuration error.',
-                    [$this->storageRecord['name']]
-                );
-                $this->markAsPermanentlyOffline();
-            }
+            // mark this storage as permanently unusable
+            $this->markAsPermanentlyOffline();
         }
         $this->driver->initialize();
         $this->capabilities = $this->driver->getCapabilities();
@@ -372,8 +349,29 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function isOnline()
     {
-        if (TYPO3_REQUESTTYPE !== TYPO3_REQUESTTYPE_BE) {
-            return true;
+        if ($this->isOnline === null) {
+            if ($this->getUid() === 0) {
+                $this->isOnline = true;
+            }
+            // the storage is not marked as online for a longer time
+            if ($this->storageRecord['is_online'] == 0) {
+                $this->isOnline = false;
+            }
+            if ($this->isOnline !== false) {
+                // all files are ALWAYS available in the frontend
+                if (TYPO3_MODE === 'FE') {
+                    $this->isOnline = true;
+                } else {
+                    // check if the storage is disabled temporary for now
+                    $registryObject = GeneralUtility::makeInstance(Registry::class);
+                    $offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
+                    if ($offlineUntil && $offlineUntil > time()) {
+                        $this->isOnline = false;
+                    } else {
+                        $this->isOnline = true;
+                    }
+                }
+            }
         }
         return $this->isOnline;
     }
@@ -409,6 +407,22 @@ class ResourceStorage implements ResourceStorageInterface
                     ['uid' => (int)$this->getUid()]
                 );
         }
+        $this->storageRecord['is_online'] = 0;
+        $this->isOnline = false;
+    }
+
+    /**
+     * Marks this storage as offline for the next 5 minutes.
+     *
+     * Non-permanent: This typically happens for remote storages
+     * that are "flaky" and not available all the time.
+     *
+     * @return void
+     */
+    public function markAsTemporaryOffline()
+    {
+        $registryObject = GeneralUtility::makeInstance(Registry::class);
+        $registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
         $this->storageRecord['is_online'] = 0;
         $this->isOnline = false;
     }
