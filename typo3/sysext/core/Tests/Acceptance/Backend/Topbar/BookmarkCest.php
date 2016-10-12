@@ -47,6 +47,7 @@ class BookmarkCest
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
         $I->switchToIFrame('contentIframe');
         $I->waitForText('Web>Page module');
+        $I->switchToIFrame();
     }
 
     /**
@@ -70,7 +71,7 @@ class BookmarkCest
     {
         $I->switchToIFrame();
         // open the scheduler module as we would like to put it into the bookmark liste
-        $I->click('Scheduler', '#typo3-module-menu');
+        $I->click('Scheduler', '.scaffold-modulemenu');
 
         $I->switchToIFrame('contentIframe');
 
@@ -117,11 +118,11 @@ class BookmarkCest
     public function checkIfEditBookmarkItemWorks(Admin $I)
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
-        $firstShortcutSelector = self::$topBarModuleSelector . ' .shortcut';
-        $I->click('.shortcut-edit', $firstShortcutSelector);
-
-        $I->fillField($firstShortcutSelector . ' input[name="shortcut-title"]', 'Scheduled tasks renamed');
-        $I->click('.shortcut-form-save', $firstShortcutSelector);
+        $firstShortcutSelector = self::$topBarModuleSelector . ' .t3js-topbar-shortcut';
+        $I->click('.t3js-shortcut-edit', $firstShortcutSelector);
+        $secondShortcutSelector = self::$topBarModuleSelector . ' form.shortcut-form';
+        $I->fillField($secondShortcutSelector . ' input[name="shortcut-title"]', 'Scheduled tasks renamed');
+        $I->click('.shortcut-form-save', $secondShortcutSelector);
 
         // searching in a specific context fails with an "Stale Element Reference Exception"
         // see http://docs.seleniumhq.org/exceptions/stale_element_reference.jsp
@@ -138,7 +139,7 @@ class BookmarkCest
         $this->clickBookmarkDropdownToggleInTopbar($I);
 
         $I->canSee('Scheduled tasks renamed', self::$topBarModuleSelector);
-        $I->click('.shortcut-delete', self::$topBarModuleSelector . ' .shortcut');
+        $I->click('.t3js-shortcut-delete', self::$topBarModuleSelector . ' .t3js-topbar-shortcut');
         $dialog->clickButtonInDialog('OK');
 
         $I->cantSee('Scheduled tasks renamed', self::$topBarModuleSelector);
@@ -149,7 +150,6 @@ class BookmarkCest
      */
     protected function clickBookmarkDropdownToggleInTopbar(Admin $I)
     {
-        $I->switchToIFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
     }
 }
