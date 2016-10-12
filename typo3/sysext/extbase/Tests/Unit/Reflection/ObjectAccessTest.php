@@ -308,8 +308,19 @@ class ObjectAccessTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     public function getGettablePropertyNamesReturnsAllPropertiesWhichAreAvailable()
     {
         $gettablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($this->dummyObject);
-        $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2'];
+        $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'someValue'];
         $this->assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
+    }
+
+    /**
+     * @test
+     */
+    public function getGettablePropertyNamesRespectsMethodArguments()
+    {
+        $dateTimeZone = new \DateTimeZone('+2');
+        $gettablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($dateTimeZone);
+        $expectedPropertyNames = ['location', 'name'];
+        $this->assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames does not respect method arguments.');
     }
 
     /**
@@ -348,7 +359,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
             'property' => 'string1',
             'property2' => null,
             'publicProperty' => null,
-            'publicProperty2' => 42
+            'publicProperty2' => 42,
+            'someValue' => true,
         ];
         $this->assertEquals($allProperties, $expectedProperties, 'expectedProperties did not return the right values for the properties.');
     }

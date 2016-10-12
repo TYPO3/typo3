@@ -226,25 +226,41 @@ class ObjectAccess
             throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1237301369);
         }
         if ($object instanceof \stdClass) {
-            $declaredPropertyNames = array_keys((array)$object);
-        } else {
-            $declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
+            $properties = array_keys((array)$object);
+            sort($properties);
+            return $properties;
         }
-        foreach (get_class_methods($object) as $methodName) {
-            if (is_callable([$object, $methodName])) {
-                if (substr($methodName, 0, 2) === 'is') {
-                    $declaredPropertyNames[] = lcfirst(substr($methodName, 2));
+
+        $reflection = new \ReflectionClass($object);
+        $declaredPropertyNames = array_map(
+            function (\ReflectionProperty $property) {
+                return $property->getName();
+            },
+            $reflection->getProperties(\ReflectionProperty::IS_PUBLIC)
+        );
+        foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            $methodParameters = $method->getParameters();
+            if (!empty($methodParameters)) {
+                foreach ($methodParameters as $parameter) {
+                    if (!$parameter->isOptional()) {
+                        continue 2;
+                    }
                 }
-                if (substr($methodName, 0, 3) === 'get') {
-                    $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
-                }
-                if (substr($methodName, 0, 3) === 'has') {
-                    $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
-                }
+            }
+            $methodName = $method->getName();
+            if (substr($methodName, 0, 2) === 'is') {
+                $declaredPropertyNames[] = lcfirst(substr($methodName, 2));
+            }
+            if (substr($methodName, 0, 3) === 'get') {
+                $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
+            }
+            if (substr($methodName, 0, 3) === 'has') {
+                $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
             }
         }
         $propertyNames = array_unique($declaredPropertyNames);
         sort($propertyNames);
+
         return $propertyNames;
     }
 

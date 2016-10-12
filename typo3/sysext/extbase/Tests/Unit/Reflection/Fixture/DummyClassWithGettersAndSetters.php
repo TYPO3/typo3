@@ -145,4 +145,14 @@ class DummyClassWithGettersAndSetters
     {
         return $this->anotherBooleanProperty;
     }
+
+    /**
+     * @param int $value
+     *
+     * @return bool
+     */
+    public function hasSomeValue($value = 42)
+    {
+        return true;
+    }
 }
