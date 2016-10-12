@@ -114,7 +114,7 @@ define(
 						});
 				},
 				getUrl: function() {
-					return $('.t3js-scaffold-content-navigation-iframe').attr('src');
+					return $('.t3js-scaffold-content-module-iframe').attr('src');
 				},
 				refresh: function() {
 					console.log('refresh content');
