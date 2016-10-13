@@ -67,8 +67,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	 */
 	RteLinkBrowser.initialize = function() {
 		var callerWindow;
-		if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.iframe !== 'undefined') {
-			callerWindow = top.TYPO3.Backend.ContentContainer.iframe;
+		if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.get() !== 'undefined') {
+			callerWindow = top.TYPO3.Backend.ContentContainer.get();
 		} else {
 			callerWindow = window.parent;
 		}
