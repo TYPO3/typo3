@@ -355,7 +355,7 @@ class Testbase
                 1397406356
             );
         }
-        return $originalConfigurationArray;
+        return $originalConfigurationArray['DB'];
     }
 
     /**

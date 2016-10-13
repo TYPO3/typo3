@@ -223,7 +223,7 @@ abstract class FunctionalTestCase extends BaseTestCase
             $testbase->setUpInstanceCoreLinks($this->instancePath);
             $testbase->linkTestExtensionsToInstance($this->instancePath, $this->testExtensionsToLoad);
             $testbase->linkPathsInTestInstance($this->instancePath, $this->pathsToLinkInTestInstance);
-            $localConfiguration = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
+            $localConfiguration['DB'] = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
             $originalDatabaseName = $localConfiguration['DB']['Connections']['Default']['dbname'];
             // Append the unique identifier to the base database name to end up with a single database per test case
             $localConfiguration['DB']['Connections']['Default']['dbname'] = $originalDatabaseName . '_ft' . $this->identifier;

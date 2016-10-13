@@ -187,7 +187,7 @@ class AcceptanceCoreEnvironment extends Extension
         );
         $testbase->linkTestExtensionsToInstance($instancePath, $testExtensionsToLoad);
         $testbase->linkPathsInTestInstance($instancePath, $this->pathsToLinkInTestInstance);
-        $localConfiguration = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
+        $localConfiguration['DB'] = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
         $originalDatabaseName = $localConfiguration['DB']['Connections']['Default']['dbname'];
         // Append the unique identifier to the base database name to end up with a single database per test case
         $localConfiguration['DB']['Connections']['Default']['dbname'] = $originalDatabaseName . '_at';
@@ -197,6 +197,7 @@ class AcceptanceCoreEnvironment extends Extension
         $localConfiguration['BE']['debug'] = true;
         $localConfiguration['BE']['lockHashKeyWords'] = '';
         $localConfiguration['BE']['installToolPassword'] = '$P$notnotnotnotnotnot.validvalidva';
+        $localConfiguration['BE']['loginSecurityLevel'] = 'rsa';
         $localConfiguration['SYS']['isInitialInstallationInProgress'] = false;
         $localConfiguration['SYS']['isInitialDatabaseImportDone'] = true;
         $localConfiguration['SYS']['displayErrors'] = false;
