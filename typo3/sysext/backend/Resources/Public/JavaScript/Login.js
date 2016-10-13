@@ -41,6 +41,7 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	 * Hide all form fields and show a progress message and icon
 	 */
 	BackendLogin.showLoginProcess = function() {
+		BackendLogin.showLoadingIndicator();
 		$(options.error).addClass('hidden');
 		$(options.errorNoCookies).addClass('hidden');
 	};
