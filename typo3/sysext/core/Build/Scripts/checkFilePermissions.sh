@@ -17,7 +17,8 @@ IGNORE[2]="typo3/sysext/core/Build/Scripts/checkFilePermissions.sh"
 IGNORE[3]="typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh"
 IGNORE[4]="typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh"
 IGNORE[5]="typo3/sysext/core/Build/Scripts/xlfcheck.sh"
-IGNORE[6]="typo3/sysext/core/bin/typo3"
+IGNORE[6]="typo3/sysext/core/Build/Scripts/validateRstFiles.sh"
+IGNORE[7]="typo3/sysext/core/bin/typo3"
 
 COUNTER=0
 
