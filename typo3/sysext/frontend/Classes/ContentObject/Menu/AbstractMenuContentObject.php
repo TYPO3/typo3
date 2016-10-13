@@ -938,6 +938,9 @@ class AbstractMenuContentObject {
 	protected function analyzeCacheHashRequirements($queryString) {
 		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($queryString);
 		if (count($parameters) > 0) {
+			if (!isset($parameters['id'])) {
+				$queryString .= '&id=' . $GLOBALS['TSFE']->id;
+			}
 			$cacheHashCalculator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
 			/** @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
 			$cHashParameters = $cacheHashCalculator->getRelevantParameters($queryString);
