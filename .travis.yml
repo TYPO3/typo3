@@ -8,7 +8,7 @@ matrix:
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=no JSUNIT_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes JSUNIT_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
 
 sudo: false
 
@@ -52,7 +52,6 @@ before_script:
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer install
-  - typo3/sysext/core/Build/Configuration/TravisNginxFpm/ConfigureStartNginxFpm.sh
   - mkdir -p typo3temp/var/tests
   - export typo3DatabaseName="typo3"
   - export typo3DatabaseHost="localhost"
@@ -73,11 +72,6 @@ script:
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
       ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 10
       parallel --jobs 4 -a <(seq 0 9) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
-    fi
-
-  - >
-    if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
-      ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml --debug
     fi
 
   - >
