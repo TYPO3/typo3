@@ -260,7 +260,7 @@ require(
 			// refresh the HTML by fetching the menu again
 			refreshMenu: function () {
 				$.ajax(TYPO3.settings.ajaxUrls['modulemenu']).done(function (result) {
-					$('#typo3-menu').replaceWith(result.menu);
+					$('#menu').replaceWith(result.menu);
 					if (top.currentModuleLoaded) {
 						TYPO3.ModuleMenu.App.highlightModuleMenuItem(top.currentModuleLoaded);
 					}
