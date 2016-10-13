@@ -76,6 +76,14 @@ class ListViewHelper extends AbstractViewHelper
             $this->getPageConstraints($includeNotInMenu, $includeMenuSeparator)
         );
 
+        $tempPagesForSort = [];
+        foreach ($pageUids as $pageUid) {
+            if ($pages[$pageUid]) {
+                $tempPagesForSort[$pageUid] = $pages[$pageUid];
+            }
+        }
+        $pages = $tempPagesForSort;
+
         $output = '';
 
         if (!empty($pages)) {
