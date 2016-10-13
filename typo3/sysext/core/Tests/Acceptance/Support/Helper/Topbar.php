@@ -24,21 +24,14 @@ class Topbar
      *
      * @var string
      */
-    public static $containerSelector = '.t3js-scaffold-topbar';
+    public static $containerSelector = '.t3js-scaffold-toolbar';
 
     /**
      * Selector for the dropdown container
      *
      * @var string
      */
-    public static $dropdownContainerSelector = '.dropdown-menu';
-
-    /**
-     * Selector for the dropdown container
-     *
-     * @var string
-     */
-    public static $dropdownListSelector = '.dropdown-menu .dropdown-list';
+    public static $dropdownListSelector = '.dropdown-menu';
 
     /**
      * Selector for the dropdown toggle

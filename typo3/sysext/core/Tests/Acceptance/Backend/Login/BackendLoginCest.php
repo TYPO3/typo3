@@ -107,7 +107,7 @@ class BackendLoginCest
         $this->login($I, 'editor', 'password');
 
         // user is redirected to 'about modules' after login, but must not see the 'admin tools' section
-        $I->cantSee('Admin tools', '#typo3-menu');
+        $I->cantSee('Admin tools', '#menu');
 
         $topBarItemSelector = Topbar::$containerSelector . ' ' . Topbar::$dropdownToggleSelector . ' *';
 
@@ -139,7 +139,7 @@ class BackendLoginCest
         $I->click('#t3-login-submit-section > button');
         // wait for the next to element to indicate if the backend was loaded successful
         $I->waitForElement('.nav', 30);
-        $I->waitForElement('#typo3-contentContainer iframe', 30);
+        $I->waitForElement('.scaffold-content iframe', 30);
         $I->seeCookie('be_lastLoginProvider');
         $I->seeCookie('be_typo_user');
     }

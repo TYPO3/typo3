@@ -27,14 +27,12 @@ class InstalledExtensionsCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('contentIframe');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
 
-        // clear the localstorage to fix problems in phantomJs where the search
-        // sometimes is preserved over multiple sessions
-        $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) {
-            $webDriver->executeScript('localStorage.clear();');
-        });
-
-        $I->click('Extensions', '#typo3-module-menu');
+        $I->click('Extensions', '#menu');
         $I->switchToIFrame('contentIframe');
         $I->waitForElementVisible('#typo3-extension-list');
     }
@@ -79,7 +77,7 @@ class InstalledExtensionsCest
     public function checkIfInstallingAnExtensionWithBackendModuleAddsTheModuleToTheModuleMenu(Admin $I)
     {
         $I->switchToIFrame();
-        $I->canSeeElement('.typo3-module-menu-item');
+        $I->canSeeElement('.modulemenu-item-link');
         $I->cantSeeElement('#web_RecyclerRecycler');
 
         $I->switchToIFrame('contentIframe');

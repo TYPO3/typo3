@@ -35,6 +35,10 @@ class SearchCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('contentIframe');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
     }
 
     /**
@@ -47,7 +51,7 @@ class SearchCest
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
 
         $I->canSee('Backend user', self::$topBarModuleSelector);
-        $I->click('.icon-status-user-admin', self::$topBarModuleSelector);
+        $I->click('admin', self::$topBarModuleSelector);
 
         $I->switchToIFrame('contentIframe');
         $I->waitForElementVisible('#EditDocumentController');

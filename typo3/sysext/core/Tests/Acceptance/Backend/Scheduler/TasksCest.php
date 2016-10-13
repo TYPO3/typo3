@@ -28,6 +28,10 @@ class TasksCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('contentIframe');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
 
         $I->see('Scheduler', '#system_txschedulerM1');
         $I->click('Scheduler', '#system_txschedulerM1');

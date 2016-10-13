@@ -29,7 +29,7 @@ class ModuleMenuCest
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
         $I->switchToIFrame('contentIframe');
-        $I->waitForText('Web>Page module');
+        $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
     }
 
@@ -38,22 +38,22 @@ class ModuleMenuCest
      */
     public function checkIfModuleMenuIsCollapsible(Admin $I)
     {
-        // A sub-element of web module is show
-        $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
-        $I->seeElement('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        // A sub-element of web module is shown
+        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
+        $I->seeElement('#web .modulemenu-group-container .modulemenu-item');
 
         // Collapse web module and verify sub elements are hidden
         $I->wantTo('collapse the menu element');
-        $I->waitForElementVisible('#web .typo3-module-menu-group-header');
-        $I->click('#web .typo3-module-menu-group-header');
-        $I->waitForElementNotVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
-        $I->dontSeeElement('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->waitForElementVisible('#web .modulemenu-group-header');
+        $I->click('#web .modulemenu-group-header');
+        $I->waitForElementNotVisible('#web .modulemenu-group-container .modulemenu-item');
+        $I->dontSeeElement('#web .modulemenu-group-container .modulemenu-item');
 
         // Expand again and verify sub elements are shown
         $I->wantTo('expand the menu element again');
-        $I->click('#web .typo3-module-menu-group-header');
-        $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
-        $I->seeElement('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->click('#web .modulemenu-group-header');
+        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
+        $I->seeElement('#web .modulemenu-group-container .modulemenu-item');
     }
 
     /**
@@ -61,11 +61,11 @@ class ModuleMenuCest
      */
     public function selectingAModuleDoesHighlightIt(Admin $I)
     {
-        $I->seeNumberOfElements('#web .typo3-module-menu-item-link', [2, 20]);
+        $I->seeNumberOfElements('#web .modulemenu-item-link', [2, 20]);
 
         $I->wantTo('check that the second element has no "active" class\'');
         $I->cantSeeElement('#web #web_list.active');
-        $I->click('#web #web_list .typo3-module-menu-item-link');
+        $I->click('#web #web_list .modulemenu-item-link');
 
         $I->wantTo('see that the second element has an "active" class');
         $I->canSeeElement('#web #web_list.active');

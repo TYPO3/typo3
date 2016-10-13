@@ -46,7 +46,7 @@ class BookmarkCest
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
         $I->switchToIFrame('contentIframe');
-        $I->waitForText('Web>Page module');
+        $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
     }
 
@@ -88,7 +88,7 @@ class BookmarkCest
         $dialog->clickButtonInDialog('OK');
 
         $this->clickBookmarkDropdownToggleInTopbar($I);
-        $I->waitForText('Scheduled tasks', 15, self::$topBarModuleSelector . ' ' . Topbar::$dropdownContainerSelector);
+        $I->waitForText('Scheduled tasks', 15, self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
 
         // @test complete test when https://forge.typo3.org/issues/75689 is fixed
         $scenario->comment(

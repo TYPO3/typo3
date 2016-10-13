@@ -27,6 +27,10 @@ class CategoryTreeCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('contentIframe');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
     }
 
     /**
@@ -35,7 +39,7 @@ class CategoryTreeCest
     public function checkIfCategoryListIsAvailable(Admin $I)
     {
         // A sub-element of web module is show
-        $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
         $I->switchToIFrame('contentIframe');
         $I->waitForElement('#recordlist-sys_category');
@@ -48,7 +52,7 @@ class CategoryTreeCest
     public function editCategoryItem(Admin $I)
     {
         // A sub-element of web module is show
-        $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
         $I->switchToIFrame('contentIframe');
         // Select category with id 7

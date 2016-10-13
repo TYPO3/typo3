@@ -220,6 +220,7 @@ class AcceptanceCoreEnvironment extends Extension
             'rsaauth',
             'saltedpasswords',
             'backend',
+            'about',
             'belog',
             'install',
             't3skin',
@@ -255,6 +256,9 @@ class AcceptanceCoreEnvironment extends Extension
 
         $styleguideGenerator = new Generator();
         $styleguideGenerator->create();
+
+        // @todo: Find out why that is needed to execute the first test successfully
+        $this->cleanupTypo3Environment();
     }
 
     /**
