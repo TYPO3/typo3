@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -63,6 +64,40 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist->setLMargin = 0;
         $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dblist->pI_showUser = 1;
+
+        switch ((int)$this->pObj->MOD_SETTINGS['pages']) {
+            case 1:
+                $dblist->fieldArray = ['title', 'uid'] + array_keys($this->cleanTableNames());
+                break;
+            case 2:
+                $dblist->fieldArray = [
+                    'title',
+                    'uid',
+                    'lastUpdated',
+                    'newUntil',
+                    'no_cache',
+                    'cache_timeout',
+                    'php_tree_stop',
+                    'TSconfig',
+                    'is_siteroot',
+                    'fe_login_mode'
+                ];
+                break;
+            default:
+                $dblist->fieldArray = [
+                    'title',
+                    'uid',
+                    'alias',
+                    'starttime',
+                    'endtime',
+                    'fe_group',
+                    'target',
+                    'url',
+                    'shortcut',
+                    'shortcut_mode'
+                ];
+        }
+
         // PAGES:
         $this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];
         // ONLY for the sake of dblist module which uses this value.
@@ -87,5 +122,44 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
             }
         }
         return $theOutput;
+    }
+
+    /**
+     * Function, which fills in the internal array, $this->allowedTableNames with all tables to
+     * which the user has access. Also a set of standard tables (pages, static_template, sys_filemounts, etc...)
+     * are filtered out. So what is left is basically all tables which makes sense to list content from.
+     *
+     * @return string[]
+     */
+    protected function cleanTableNames()
+    {
+        // Get all table names:
+        $tableNames = array_flip(array_keys($GLOBALS['TCA']));
+        // Unset common names:
+        unset($tableNames['pages']);
+        unset($tableNames['static_template']);
+        unset($tableNames['sys_filemounts']);
+        unset($tableNames['sys_action']);
+        unset($tableNames['sys_workflows']);
+        unset($tableNames['be_users']);
+        unset($tableNames['be_groups']);
+        $allowedTableNames = [];
+        // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
+        if (is_array($tableNames)) {
+            foreach ($tableNames as $k => $v) {
+                if (!$GLOBALS['TCA'][$k]['ctrl']['hideTable'] && $this->getBackendUser()->check('tables_select', $k)) {
+                    $allowedTableNames['table_' . $k] = $k;
+                }
+            }
+        }
+        return $allowedTableNames;
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

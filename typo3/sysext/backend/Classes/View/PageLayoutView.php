@@ -325,40 +325,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         }
         // If there was found a page:
         if (is_array($row)) {
-            // Select which fields to show:
-            $pKey = $this->getPageLayoutController()->MOD_SETTINGS['pages'];
-            switch ($pKey) {
-                case 1:
-                    $this->fieldArray = ['title', 'uid'] + array_keys($this->cleanTableNames());
-                    break;
-                case 2:
-                    $this->fieldArray = [
-                        'title',
-                        'uid',
-                        'lastUpdated',
-                        'newUntil',
-                        'no_cache',
-                        'cache_timeout',
-                        'php_tree_stop',
-                        'TSconfig',
-                        'is_siteroot',
-                        'fe_login_mode'
-                    ];
-                    break;
-                default:
-                    $this->fieldArray = [
-                        'title',
-                        'uid',
-                        'alias',
-                        'starttime',
-                        'endtime',
-                        'fe_group',
-                        'target',
-                        'url',
-                        'shortcut',
-                        'shortcut_mode'
-                    ];
-            }
             // Getting select-depth:
             $depth = (int)$this->getPageLayoutController()->MOD_SETTINGS['pages_levels'];
             // Overriding a few things:
@@ -2356,37 +2322,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     {
         $title = htmlspecialchars($this->getLanguageService()->getLL($label));
         return '<span title="' . $title . '">' . $this->iconFactory->getIcon('status-status-edit-read-only', Icon::SIZE_SMALL)->render() . '</span>';
-    }
-
-    /**
-     * Function, which fills in the internal array, $this->allowedTableNames with all tables to
-     * which the user has access. Also a set of standard tables (pages, static_template, sys_filemounts, etc...)
-     * are filtered out. So what is left is basically all tables which makes sense to list content from.
-     *
-     * @return array
-     */
-    protected function cleanTableNames()
-    {
-        // Get all table names:
-        $tableNames = array_flip(array_keys($GLOBALS['TCA']));
-        // Unset common names:
-        unset($tableNames['pages']);
-        unset($tableNames['static_template']);
-        unset($tableNames['sys_filemounts']);
-        unset($tableNames['sys_action']);
-        unset($tableNames['sys_workflows']);
-        unset($tableNames['be_users']);
-        unset($tableNames['be_groups']);
-        $allowedTableNames = [];
-        // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
-        if (is_array($tableNames)) {
-            foreach ($tableNames as $k => $v) {
-                if (!$GLOBALS['TCA'][$k]['ctrl']['hideTable'] && $this->getBackendUser()->check('tables_select', $k)) {
-                    $allowedTableNames['table_' . $k] = $k;
-                }
-            }
-        }
-        return $allowedTableNames;
     }
 
     /*****************************************
