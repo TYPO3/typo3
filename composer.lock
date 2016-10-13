@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d871cb37d3ddba70d6b9bc6324aee61c",
-    "content-hash": "7b9db90f3627e82a91c23748c8e70920",
+    "hash": "46f644d4073e537db72d40863fb31541",
+    "content-hash": "b96f1764a6d015f19d8a115367e58d26",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1234,16 +1234,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "1.1.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3Fluid/Fluid.git",
-                "reference": "8d9fb64825eb79302b36f973fc2f48e7f19841df"
+                "reference": "008e3156d9d1878d91aec73b40e659ccfd032899"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/8d9fb64825eb79302b36f973fc2f48e7f19841df",
-                "reference": "8d9fb64825eb79302b36f973fc2f48e7f19841df",
+                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/008e3156d9d1878d91aec73b40e659ccfd032899",
+                "reference": "008e3156d9d1878d91aec73b40e659ccfd032899",
                 "shasum": ""
             },
             "require": {
@@ -1252,7 +1252,8 @@
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
                 "phpunit/phpunit": "^4.8",
-                "satooshi/php-coveralls": "^1.0"
+                "satooshi/php-coveralls": "^1.0",
+                "squizlabs/php_codesniffer": "^2.7"
             },
             "bin": [
                 "bin/fluid"
@@ -1268,7 +1269,7 @@
                 "LGPL-3.0"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2016-10-12 12:10:55"
+            "time": "2016-10-13 13:13:27"
         }
     ],
     "packages-dev": [
