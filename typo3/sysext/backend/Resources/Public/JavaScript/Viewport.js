@@ -112,6 +112,7 @@ define(
 			 * Contentcontainer
 			 */
 			ContentContainer: {
+				'iframe': $('.t3js-scaffold-content-module-iframe')[0].contentWindow,
 				setUrl: function (urlToLoad) {
 					TYPO3.Backend.Loader.start();
 					$('.t3js-scaffold-content-module-iframe')
