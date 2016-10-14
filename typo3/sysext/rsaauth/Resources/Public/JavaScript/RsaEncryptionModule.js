@@ -42,6 +42,13 @@ define(['jquery', './RsaLibrary'], function($) {
 		registerForm: function(form) {
 			var $form = $(form);
 
+			if ($form.data('rsaRegistered')) {
+				// Do not register form twice
+				return;
+			}
+			// Mark form as registered
+			$form.data('rsaRegistered', true);
+
 			// Store the original submit handler that is executed later
 			$form.data('original-onsubmit', $form.attr('onsubmit'));
 
