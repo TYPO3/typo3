@@ -39,7 +39,12 @@ require(
 					me.showModule(top.startInModule[0], top.startInModule[1]);
 				} else {
 					// fetch first module
-					me.showModule($('.t3js-mainmodule:first').attr('id'));
+					if ($('.t3js-mainmodule:first').attr('id')) {
+						me.showModule($('.t3js-mainmodule:first').attr('id'));
+					}
+					// else case: the main module has no entries, this is probably a backend
+					// user with very little access rights, maybe only the logout button and
+					// a user settings module in topbar.
 				}
 
 				// check if module menu should be collapsed or not
