@@ -17,7 +17,7 @@
 				<li class="list-tree-control-open">
 					<span class="list-tree-group">
 						<span class="list-tree-icon">{activePageIcon -> f:format.raw()}</span>
-						<span class="list-tree-title">{activePageTitle}</span>
+						<span class="list-tree-title">{activePageTitle -> f:format.raw()}</span>
 					</span>
 					<ul>
 						<f:for each="{contentElements}" as="content">
@@ -26,7 +26,7 @@
 									<span class="list-tree-icon">{content.icon -> f:format.raw()}</span>
 									<span class="list-tree-title">
 										<a href="{content.url}" class="t3js-pageLink">
-											{content.title}
+											{content.title -> f:format.raw()}
 										</a>
 									</span>
 								</span>
