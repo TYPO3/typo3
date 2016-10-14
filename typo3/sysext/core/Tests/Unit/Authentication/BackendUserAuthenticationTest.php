@@ -740,6 +740,56 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider jsConfirmationsWithUnsetBits
+     *
+     * @param int $jsConfirmation
+     * @param int $typeChangeAllowed
+     * @param int $copyMovePasteAllowed
+     * @param int $deleteAllowed
+     * @param int $feEditAllowed
+     * @param int $otherAllowed
+     */
+    public function jsConfirmationAllowsUnsettingBitsInValue($jsConfirmation, $typeChangeAllowed, $copyMovePasteAllowed, $deleteAllowed, $feEditAllowed, $otherAllowed)
+    {
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['getTSConfig'])
+            ->getMock();
+        $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => $jsConfirmation]);
+
+        $this->assertEquals($typeChangeAllowed, $subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+        $this->assertEquals($copyMovePasteAllowed, $subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
+        $this->assertEquals($deleteAllowed, $subject->jsConfirmation(JsConfirmation::DELETE));
+        $this->assertEquals($feEditAllowed, $subject->jsConfirmation(JsConfirmation::FE_EDIT));
+        $this->assertEquals($otherAllowed, $subject->jsConfirmation(JsConfirmation::OTHER));
+    }
+
+    /**
+     * @return array
+     */
+    public function jsConfirmationsWithUnsetBits()
+    {
+        return [
+            'All except "type change" and "copy/move/paste"' => [
+                252,
+                false,
+                false,
+                true,
+                true,
+                true,
+            ],
+            'All except "other"' => [
+                127,
+                true,
+                true,
+                true,
+                true,
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet()
     {
