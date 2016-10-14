@@ -1316,7 +1316,7 @@ class PageRepository
         // If show_hidden was not changed during the previous evaluation, do it here.
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages')
+            ->getQueryBuilderForTable($table)
             ->expr();
         $constraints = [];
         if (is_array($ctrl)) {
