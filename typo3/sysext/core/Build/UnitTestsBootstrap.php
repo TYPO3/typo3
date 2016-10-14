@@ -64,5 +64,6 @@ call_user_func(function () {
     if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
         // Dump autoload info if in non composer mode
         \TYPO3\CMS\Core\Core\ClassLoadingInformation::dumpClassLoadingInformation();
+        \TYPO3\CMS\Core\Core\ClassLoadingInformation::registerClassLoadingInformation();
     }
 });
