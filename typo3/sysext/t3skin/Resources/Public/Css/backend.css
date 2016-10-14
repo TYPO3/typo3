@@ -12605,6 +12605,7 @@ iframe {
   border-collapse: separate;
   border-spacing: 10px 0;
   width: 100%;
+  table-layout: fixed;
 }
 .t3-grid-container {
   margin: 0px -10px 18px;
