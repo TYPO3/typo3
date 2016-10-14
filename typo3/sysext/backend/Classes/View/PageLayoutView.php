@@ -773,7 +773,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
                 $grid .= '<colgroup>';
                 for ($i = 0; $i < $colCount; $i++) {
-                    $grid .= '<col style="width:' . 100 / $colCount . '%"></col>';
+                    $grid .= '<col />';
                 }
                 $grid .= '</colgroup>';
                 // Cycle through rows
