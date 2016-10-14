@@ -52,6 +52,9 @@ class JsConfirmation extends Enumeration
      */
     const ALL = 255;
 
+    /**
+     * @var int
+     */
     const __default = self::ALL;
 
     /**
@@ -84,13 +87,7 @@ class JsConfirmation extends Enumeration
      */
     protected function setValue($value)
     {
-        if ($value < 255) {
-            if (($value & self::$allowedValues) !== $value) {
-                throw new Exception\InvalidEnumerationValueException(
-                    sprintf('Invalid value %s for %s', $value, __CLASS__),
-                    1457175152
-                );
-            }
+        if ($this->isValid($value)) {
             $this->value = $value;
         } else {
             parent::setValue($value);
@@ -106,15 +103,10 @@ class JsConfirmation extends Enumeration
     protected function isValid($value)
     {
         if ($value < 255) {
-            return ($value & self::$allowedValues) === $value;
+            // Check for combined bitmask or bitmask with bits unset from self::ALL
+            $unsetValues = (self::ALL ^ $value);
+            return ($value & self::$allowedValues) === $value || $unsetValues === ($unsetValues & self::$allowedValues);
         }
-
-        $value = (string)$value;
-        foreach (static::$enumConstants[static::class] as $constantValue) {
-            if ($value === (string)$constantValue) {
-                return true;
-            }
-        }
-        return false;
+        return parent::isValid($value);
     }
 }
