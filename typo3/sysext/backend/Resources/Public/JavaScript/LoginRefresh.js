@@ -16,7 +16,7 @@
  * Task that periodically checks if a blocking event in the backend occurred and
  * displays a proper dialog to the user.
  */
-define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryptionModule', 'bootstrap'], function($, Typo3Notification, RsaEncryption) {
+define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Typo3Notification) {
 	'use strict';
 
 	/**
@@ -237,13 +237,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 					LoginRefresh.$loginForm.find('form').submit();
 				})
 		);
-		var $LoginRefreshForm = LoginRefresh.$loginForm.find('#beLoginRefresh');
-		if (undefined !== RsaEncryption) {
-			RsaEncryption.registerForm($LoginRefreshForm.get(0));
-		}
-		LoginRefresh.registerDefaultModalEvents($LoginRefreshForm).on('submit', LoginRefresh.submitForm);
-
+		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$loginForm).on('submit', LoginRefresh.submitForm);
 		$('body').append(LoginRefresh.$loginForm);
+		if (require.specified('TYPO3/CMS/Rsaauth/RsaEncryptionModule')) {
+			require(['TYPO3/CMS/Rsaauth/RsaEncryptionModule'], function(RsaEncryption) {
+				RsaEncryption.registerForm($('#beLoginRefresh').get(0));
+			});
+		}
 	};
 
 	/**
