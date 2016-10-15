@@ -173,7 +173,7 @@ tt_content.' . $pluginSignature . ' {
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $defaultModuleConfiguration = [
             'access' => 'admin',
-            'icon' => 'EXT:extbase/ext_icon.png',
+            'icon' => 'EXT:extbase/Resources/Public/Icons/Extension.png',
             'labels' => ''
         ];
         if ($mainModuleName !== '' && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {

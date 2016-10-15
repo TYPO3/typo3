@@ -128,7 +128,7 @@ class ExtensionRepository
             $extensionIcon = ExtensionManagementUtility::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
         }
         if (empty($extensionIcon)) {
-            $extensionIcon = ExtensionManagementUtility::siteRelPath('core') . 'ext_icon.png';
+            $extensionIcon = ExtensionManagementUtility::siteRelPath('core') . 'Resources/Public/Icons/Extension.png';
         } else {
             $extensionIcon = '../' . $extensionEntry['siteRelPath'] . '/' . $extensionIcon;
         }

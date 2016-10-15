@@ -52,8 +52,9 @@ overwriteSettings:
     Private:
       #Language: merge
       #Templates: keep
-
-  ext_icon.gif: keep
+    Public:
+      Icons:
+        Extension.gif: keep
 
 #  ext_localconf.php: merge
 

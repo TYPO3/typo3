@@ -4238,17 +4238,17 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFileAbsFileNameDateprovider()
     {
         return [
-            'typo3/sysext/core/ext_icon.png' => ['typo3/sysext/core/ext_icon.png', PATH_site . 'typo3/sysext/core/ext_icon.png'],
-            'sysext/core/ext_icon.png' => ['sysext/core/ext_icon.png', PATH_site . 'sysext/core/ext_icon.png'],
-            './typo3/sysext/core/ext_icon.png' => ['./typo3/sysext/core/ext_icon.png', PATH_site . './typo3/sysext/core/ext_icon.png'],
+            'typo3/sysext/core/Resources/Public/Icons/Extension.png' => ['typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'],
+            'sysext/core/Resources/Public/Icons/Extension.png' => ['sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'sysext/core/Resources/Public/Icons/Extension.png'],
+            './typo3/sysext/core/Resources/Public/Icons/Extension.png' => ['./typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . './typo3/sysext/core/Resources/Public/Icons/Extension.png'],
             'fileadmin/foo.txt' => ['fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
             './fileadmin/foo.txt' => ['./fileadmin/foo.txt', PATH_site . './fileadmin/foo.txt'],
-            '../sysext/core/ext_icon.png' => ['../sysext/core/ext_icon.png', ''],
+            '../sysext/core/Resources/Public/Icons/Extension.png' => ['../sysext/core/Resources/Public/Icons/Extension.png', ''],
             '../fileadmin/foo.txt' => ['../fileadmin/foo.txt', ''],
-            'PATH_site . ../sysext/core/ext_icon.png' => [PATH_site . '../sysext/core/ext_icon.png', ''],
+            'PATH_site . ../sysext/core/Resources/Public/Icons/Extension.png' => [PATH_site . '../sysext/core/Resources/Public/Icons/Extension.png', ''],
             'PATH_site . fileadmin/foo.txt' => [PATH_site . 'fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
-            'PATH_site . typo3/sysext/core/ext_icon.png' => [PATH_site . 'typo3/sysext/core/ext_icon.png', PATH_site . 'typo3/sysext/core/ext_icon.png'],
-            'EXT:foo/ext_icon.png' => ['EXT:foo/ext_icon.png', PATH_site . 'typo3/sysext/foo/ext_icon.png']
+            'PATH_site . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'],
+            'EXT:foo/Resources/Public/Icons/Extension.png' => ['EXT:foo/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/foo/Resources/Public/Icons/Extension.png']
         ];
     }
 
