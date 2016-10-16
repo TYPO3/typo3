@@ -101,6 +101,9 @@ class PageGenerator
         $tsfe->compensateFieldWidth = '' . $tsfe->config['config']['compensateFieldWidth'];
         $tsfe->lockFilePath = '' . $tsfe->config['config']['lockFilePath'];
         $tsfe->lockFilePath = $tsfe->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
+        if (isset($tsfe->config['config']['noScaleUp'])) {
+            GeneralUtility::deprecationLog('The TypoScript property "config.noScaleUp" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please use the global TYPO3 configuration setting "GFX/processor_allowUpscaling" instead.');
+        }
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($tsfe->config['config']['noScaleUp']) ? !$tsfe->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
         $tsfe->ATagParams = trim($tsfe->config['config']['ATagParams']) ? ' ' . trim($tsfe->config['config']['ATagParams']) : '';
         if ($tsfe->config['config']['setJS_mouseOver']) {

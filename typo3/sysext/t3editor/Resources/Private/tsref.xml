@@ -621,7 +621,7 @@ Please take note that this tag is required for XHTML compliant output, so you sh
 		</property>
 		<property name="noScaleUp" type="boolean">
 			<description><![CDATA[Normally images are scaled to the size specified via TypoScript. This also forces small images to be scaled to a larger size. This is not always a good thing.
-If this property is set, images are not allowed to be scaled up in size. This parameter clears the $this->mayScaleUp var of the class \TYPO3\CMS\Core\Imaging\GraphicalFunctions (often "gifbuilder").]]></description>
+If this property is set, images are not allowed to be scaled up in size. This parameter clears the $this->mayScaleUp var of the class \TYPO3\CMS\Core\Imaging\GraphicalFunctions (often "gifbuilder"). Deprecated since TYPO3 CMS 8.4, will be removed in TYPO3 CMS 9.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
