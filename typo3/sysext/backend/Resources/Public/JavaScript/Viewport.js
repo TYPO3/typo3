@@ -35,6 +35,7 @@ define(
 			doLayout: function () {
 				TYPO3.Backend.NavigationContainer.cleanup();
 				TYPO3.Backend.NavigationContainer.calculateScrollbar();
+				$('.t3js-topbar-header').css('padding-right', $('.t3js-scaffold-toolbar').outerWidth());
 				if (typeof Ext.getCmp('typo3-pagetree') !== 'undefined') {
 					Ext.getCmp('typo3-pagetree').doLayout();
 				}

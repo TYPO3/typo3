@@ -7339,9 +7339,14 @@ body {
 }
 .topbar-header {
   padding-left: 80px;
-  padding-right: 80px;
+}
+@media (max-width: 991px) {
+  .topbar-header {
+    padding-right: 80px !important;
+  }
 }
 .topbar-header-site {
+  overflow: hidden;
   position: relative;
   display: block;
   max-width: 100%;
@@ -7350,11 +7355,6 @@ body {
   padding-left: 1em;
   padding-right: 1em;
   white-space: nowrap;
-}
-@media (min-width: 992px) {
-  .topbar-header-site {
-    display: inline-block;
-  }
 }
 .topbar-header-site:before,
 .topbar-header-site:after {
@@ -7366,18 +7366,18 @@ body {
   width: 1em;
 }
 .topbar-header-site:before {
-  left: 0;
-  background: linear-gradient(to right, #1f1f1e 0%, rgba(31, 31, 30, 0) 100%);
+  right: 0;
+  background: #1f1f1e;
 }
 .topbar-header-site:after {
-  right: 0;
+  right: 1em;
   background: linear-gradient(to right, rgba(31, 31, 30, 0) 0%, #1f1f1e 100%);
 }
 .typo3-in-workspace .topbar-header-site {
   background-color: #6d860d;
 }
 .typo3-in-workspace .topbar-header-site:before {
-  background: linear-gradient(to right, #6d860d 0%, rgba(109, 134, 13, 0) 100%);
+  background: #6d860d;
 }
 .typo3-in-workspace .topbar-header-site:after {
   background: linear-gradient(to right, rgba(109, 134, 13, 0) 0%, #6d860d 100%);
@@ -7409,6 +7409,7 @@ body {
 @media (min-width: 992px) {
   .toolbar {
     padding: 0;
+    background-color: #1f1f1e;
   }
 }
 .toolbar:after {
@@ -7420,6 +7421,11 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+.toolbar-list:after {
+  clear: both;
+  display: table;
+  content: '';
 }
 .toolbar-item {
   padding: 4px;

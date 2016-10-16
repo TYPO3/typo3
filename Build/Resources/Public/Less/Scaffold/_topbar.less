@@ -123,14 +123,14 @@
 //
 .topbar-header {
 	padding-left: @topbar-button-width * 2;
-	padding-right: @topbar-button-width * 2;
+	@media (max-width: @scaffold-breakpoint-max) {
+		padding-right: (@topbar-button-width * 2)!important;
+	}
 }
 .topbar-header-site {
+	overflow: hidden;
 	position: relative;
 	display: block;
-	@media (min-width: @scaffold-breakpoint) {
-		display: inline-block;
-	}
 	max-width: 100%;
 	height: @topbar-height;
 	line-height: @topbar-height;
@@ -147,11 +147,11 @@
 		width: 1em;
 	}
 	&:before {
-		left: 0;
-		background: linear-gradient(to right, fade(@topbar-bg, 100%) 0%, fade(@topbar-bg, 0%) 100%);
+		right: 0;
+		background: @topbar-bg;
 	}
 	&:after {
-		right: 0;
+		right: 1em;
 		background: linear-gradient(to right, fade(@topbar-bg, 0%) 0%, fade(@topbar-bg, 100%) 100%);
 	}
 }
@@ -159,7 +159,7 @@
 	.topbar-header-site {
 		background-color: @topbar-workspace-bg;
 		&:before {
-			background: linear-gradient(to right, fade(@topbar-workspace-bg, 100%) 0%, fade(@topbar-workspace-bg, 0%) 100%);
+			background: @topbar-workspace-bg;
 		}
 		&:after {
 			background: linear-gradient(to right, fade(@topbar-workspace-bg, 0%) 0%, fade(@topbar-workspace-bg, 100%) 100%);

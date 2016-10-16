@@ -33,6 +33,7 @@
 	padding: 8px;
 	@media (min-width: @scaffold-breakpoint) {
 		padding: 0;
+		background-color: @scaffold-topbar-bg;
 	}
 	&:after {
 		clear: both;
@@ -45,6 +46,11 @@
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	&:after {
+		clear: both;
+		display: table;
+		content: '';
+	}
 }
 
 // Toolbar Item
