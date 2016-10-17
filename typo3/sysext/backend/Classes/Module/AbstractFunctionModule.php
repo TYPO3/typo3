@@ -292,6 +292,7 @@ abstract class AbstractFunctionModule
      */
     protected function getBackPath()
     {
+        GeneralUtility::logDeprecatedFunction();
         return '';
     }
 
