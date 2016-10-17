@@ -322,7 +322,7 @@ class ElementInformationController
             if ($url) {
                 $showLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
-						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
+						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render('inline') . '
 						' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.show')) . '
 					</a>';
             }
