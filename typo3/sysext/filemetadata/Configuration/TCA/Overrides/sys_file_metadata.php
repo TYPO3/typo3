@@ -165,9 +165,9 @@ $tca = [
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.caption',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'trim'
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 3,
             ],
         ],
         'creator_tool' => [
@@ -227,9 +227,9 @@ $tca = [
             'exclude' => true,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.copyright',
             'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim'
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 3,
             ],
         ],
         'location_country' => [
