@@ -158,6 +158,11 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
         unset($types['default']);
         $types = array_keys($types);
         $types[] = PageRepository::DOKTYPE_DEFAULT;
+        $types[] = PageRepository::DOKTYPE_LINK;
+        $types[] = PageRepository::DOKTYPE_SHORTCUT;
+        $types[] = PageRepository::DOKTYPE_MOUNTPOINT;
+        $types[] = PageRepository::DOKTYPE_SPACER;
+
         if (!$this->getBackendUser()->isAdmin() && isset($this->getBackendUser()->groupData['pagetypes_select'])) {
             $types = GeneralUtility::trimExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
         }
