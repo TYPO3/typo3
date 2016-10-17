@@ -1,20 +1,26 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<div class="media">
-	<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
+<div class="media media-new-content-element-wizard">
 		<f:if condition="{onClickEvent} == ''">
 			<div class="media-left">
 				<input type="radio" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}" onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
 			</div>
 		</f:if>
-		{content -> f:format.raw()}
+		<f:if condition="{content}">
+		<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
+			{content -> f:format.raw()}
+		</a>
+		</f:if>
 		<div class="media-left">
-			{icon -> f:format.raw()}
+			<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
+				{icon -> f:format.raw()}
+			</a>
 		</div>
 		<div class="media-body">
-			<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
-			<br />
-			{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
+			<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
+				<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
+				<br />
+				{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
+			</a>
 		</div>
-	</a>
 </div>
 </html>

@@ -12852,6 +12852,9 @@ textarea.formengine-textarea {
   padding-bottom: 0;
   border: none;
 }
+.media-new-content-element-wizard .media-left input {
+  margin-left: 2px;
+}
 .query-builder .form-inline > .form-control-clearable {
   display: inline;
 }
