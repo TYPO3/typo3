@@ -7536,6 +7536,12 @@ class ContentObjectRenderer
             $queryBuilder->groupBy(...$queryParts['groupBy']);
         }
 
+        if (is_array($queryParts['orderBy'])) {
+            foreach ($queryParts['orderBy'] as $orderBy) {
+                $queryBuilder->addOrderBy(...$orderBy);
+            }
+        }
+
         // Fields:
         if ($conf['selectFields']) {
             $queryBuilder->selectLiteral($this->sanitizeSelectPart($conf['selectFields'], $table));
