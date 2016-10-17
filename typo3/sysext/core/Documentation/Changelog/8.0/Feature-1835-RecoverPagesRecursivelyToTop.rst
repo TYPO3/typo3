@@ -5,6 +5,8 @@
 Feature: #1835 - Recover pages recursively to top of rootline
 =============================================================
 
+See :issue:`1835`
+
 Description
 ===========
 
