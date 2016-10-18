@@ -211,27 +211,24 @@ class AllConfiguration extends Action\AbstractAction
 
         $commentArray = [];
         $lines = explode(LF, $string);
-        $in = 0;
+        $inConfiguration = false;
         $mainKey = '';
         foreach ($lines as $lc) {
             $lc = trim($lc);
-            if ($in) {
+            if ($inConfiguration) {
                 if ($lc === '];') {
-                    $in = 0;
-                } else {
-                    if (preg_match('/["\']([[:alnum:]_-]*)["\'][[:space:]]*=>(.*)/i', $lc, $reg)) {
-                        preg_match('/,[\\t\\s]*\\/\\/(.*)/i', $reg[2], $creg);
-                        $theComment = trim($creg[1]);
-                        if (substr(trim($reg[2]), 0, 1) === '[' && $reg[1] === strtoupper($reg[1])) {
-                            $mainKey = trim($reg[1]);
-                        } elseif ($mainKey) {
-                            $commentArray[$mainKey][$reg[1]] = $theComment;
-                        }
+                    break;
+                }
+                if (preg_match('#["\']([\\w_-]*)["\']\\s*=>\\s*(?:(\\[).*|(?!//).*//\\s*(.*))#i', $lc, $reg)) {
+                    if ($reg[2] === '[' && $reg[1] === strtoupper($reg[1])) {
+                        $mainKey = $reg[1];
+                    } elseif ($mainKey) {
+                        $commentArray[$mainKey][$reg[1]] = $reg[3];
                     }
                 }
             }
             if ($lc === 'return [') {
-                $in = 1;
+                $inConfiguration = true;
             }
         }
         return $commentArray;
