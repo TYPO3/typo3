@@ -115,6 +115,30 @@ class MailUtility
     }
 
     /**
+     * Gets a default "reply-to" for mail messages (email and name).
+     *
+     * Ready to be passed to $mail->setReplyTo()
+     *
+     * @return array List of email-addresses. Specifying a realname can be done in the form of "replyToName <replyTo@example.com>".
+     */
+    public static function getSystemReplyTo(): array
+    {
+        $mailConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+        $replyToAddress = $mailConfiguration['defaultMailReplyToAddress'];
+        if (empty($replyToAddress) || !GeneralUtility::validEmail($replyToAddress)) {
+            return [];
+        }
+
+        if (!empty($mailConfiguration['defaultMailReplyToName'])) {
+            $replyTo = [$replyToAddress => $mailConfiguration['defaultMailReplyToName']];
+        } else {
+            $replyTo = [$replyToAddress];
+        }
+
+        return $replyTo;
+    }
+
+    /**
      * Breaks up a single line of text for emails
      * Words - longer than $lineWidth - will not be split into parts
      *

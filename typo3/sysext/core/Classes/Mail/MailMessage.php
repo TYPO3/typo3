@@ -63,6 +63,12 @@ class MailMessage extends \Swift_Message
         if (empty($this->getFrom())) {
             $this->setFrom(MailUtility::getSystemFrom());
         }
+        if (empty($this->getReplyTo())) {
+            $replyTo = MailUtility::getSystemReplyTo();
+            if (!empty($replyTo)) {
+                $this->setReplyTo($replyTo);
+            }
+        }
         $this->initializeMailer();
         $this->sent = true;
         $this->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);

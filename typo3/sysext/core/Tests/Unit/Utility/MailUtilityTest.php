@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MailUtility;
+
 /**
  * Testcase for the \TYPO3\CMS\Core\Utility\MailUtility class.
  */
@@ -40,7 +42,7 @@ class MailUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function breakLinesForEmailReturnsEmptyStringIfEmptryStringIsGiven()
     {
-        $this->assertEmpty(\TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail(''));
+        $this->assertEmpty(MailUtility::breakLinesForEmail(''));
     }
 
     /**
@@ -51,7 +53,7 @@ class MailUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $newlineChar = LF;
         $lineWidth = 76;
         $str = 'This text is not longer than 76 chars and therefore will not be broken.';
-        $returnString = \TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
+        $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
         $this->assertEquals(1, count(explode($newlineChar, $returnString)));
     }
 
@@ -63,7 +65,7 @@ class MailUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $newlineChar = LF;
         $lineWidth = 50;
         $str = 'This text is longer than 50 chars and therefore will be broken.';
-        $returnString = \TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
+        $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
         $this->assertEquals(2, count(explode($newlineChar, $returnString)));
     }
 
@@ -76,7 +78,7 @@ class MailUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $lineWidth = 10;
         // first space after 20 chars (more than $lineWidth)
         $str = 'abcdefghijklmnopqrst uvwxyz 123456';
-        $returnString = \TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
+        $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
         $this->assertEquals($returnString, 'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456');
     }
 
@@ -86,7 +88,7 @@ class MailUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function breakLinesForEmailBreaksTextIfLineIsLongerThanTheLineWidth()
     {
         $str = 'Mein Link auf eine News (Link: http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)';
-        $returnString = \TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail($str);
+        $returnString = MailUtility::breakLinesForEmail($str);
         $this->assertEquals($returnString, 'Mein Link auf eine News (Link:' . LF . 'http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)');
     }
 
@@ -123,7 +125,45 @@ class MailUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function parseAddressesTest($source, $addressList)
     {
-        $returnArray = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($source);
+        $returnArray = MailUtility::parseAddresses($source);
         $this->assertEquals($addressList, $returnArray);
+    }
+
+    /**
+     * @return array
+     */
+    public function replyToProvider(): array
+    {
+        return [
+            'only address' => [
+                ['defaultMailReplyToAddress' => 'noreply@example.org', 'defaultMailReplyToName' => ''],
+                ['noreply@example.org'],
+            ],
+            'name and address' => [
+                ['defaultMailReplyToAddress' => 'noreply@example.org', 'defaultMailReplyToName' => 'John Doe'],
+                ['noreply@example.org' => 'John Doe'],
+            ],
+            'no address' => [
+                ['defaultMailReplyToAddress' => '', 'defaultMailReplyToName' => ''],
+                [],
+            ],
+            'invalid address' => [
+                ['defaultMailReplyToAddress' => 'foo', 'defaultMailReplyToName' => ''],
+                [],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider replyToProvider
+     * @param array $configuration
+     * @param array $expectedReplyTo
+     */
+    public function getSystemReplyToTest(array $configuration, array $expectedReplyTo)
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $configuration;
+        $returnArray = MailUtility::getSystemReplyTo();
+        $this->assertSame($expectedReplyTo, $returnArray);
     }
 }

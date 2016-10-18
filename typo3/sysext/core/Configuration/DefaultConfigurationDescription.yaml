@@ -484,10 +484,16 @@ MAIL:
             description: '<em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.'
         defaultMailFromAddress:
             type: text
-            description: 'This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).'
+            description: 'This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (eg. info@example.org).'
         defaultMailFromName:
             type: text
             description: 'This default name is used when no other "from" name is set for a TYPO3-generated email.'
+        defaultMailReplyToAddress:
+            type: text
+            description: 'This default email address is used when no other "reply-to" address is set for a TYPO3-generated email. You can specify an email address only (eg. info@example.org).'
+        defaultMailReplyToName:
+            type: text
+            description: 'This default name is used when no other "reply-to" name is set for a TYPO3-generated email.'
 HTTP:
     type: container
     items:
