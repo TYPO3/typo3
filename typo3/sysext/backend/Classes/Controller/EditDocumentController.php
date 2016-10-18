@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -816,9 +817,7 @@ class EditDocumentController
             }
         }
 
-        $linkParameters = [
-            'no_cache' => 1,
-        ];
+        $linkParameters = [];
 
         // language handling
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
@@ -855,11 +854,19 @@ class EditDocumentController
             $linkParameters = array_replace($linkParameters, $additionalGetParameters);
         }
 
-        // anchor with uid of content element]
-        $anchorSection = $table === 'tt_content' ? '#c' . $recordId : '';
+        if (!empty($previewConfiguration['useCacheHash'])) {
+            /** @var CacheHashCalculator */
+            $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
+            $fullLinkParameters = GeneralUtility::implodeArrayForUrl('', array_merge($linkParameters, ['id' => $previewPageId]));
+            $cacheHashParameters = $cacheHashCalculator->getRelevantParameters($fullLinkParameters);
+            $linkParameters['cHash'] = $cacheHashCalculator->calculateCacheHash($cacheHashParameters);
+        } else {
+            $linkParameters['no_cache'] = 1;
+        }
 
         $this->popViewId = $previewPageId;
         $this->popViewId_addParams = GeneralUtility::implodeArrayForUrl('', $linkParameters, '', false, true);
+        $anchorSection = $table === 'tt_content' ? '#c' . $recordId : '';
 
         $previewPageRootline = BackendUtility::BEgetRootLine($this->popViewId);
         return '
