@@ -4,7 +4,7 @@
 Deprecation: #78279 - Deprecate top.TYPO3.Backend.ContentContainer.iframe
 =========================================================================
 
-See :forge:`78279`
+See :issue:`78279`
 
 Description
 ===========
@@ -28,3 +28,5 @@ Migration
 =========
 
 Use accessor method :js:`top.TYPO3.Backend.ContentContainer.get()` instead.
+
+.. index:: Backend

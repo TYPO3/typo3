@@ -4,7 +4,7 @@
 Deprecation: #78134 - Deprecate TypoScript option config.noScaleUp
 ==================================================================
 
-See :forge:`78317`
+See :issue:`78317`
 
 Description
 ===========
