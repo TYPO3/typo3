@@ -87,7 +87,7 @@ define(
 					return $('.t3js-scaffold-content-navigation-iframe').attr('src');
 				},
 				refresh: function() {
-					console.log('refresh navi');
+					// refresh navi
 				},
 				calculateScrollbar: function (){
 					TYPO3.Backend.NavigationContainer.cleanup();
@@ -126,7 +126,7 @@ define(
 					return $('.t3js-scaffold-content-module-iframe').attr('src');
 				},
 				refresh: function() {
-					console.log('refresh content');
+					// refresh content
 				},
 				getIdFromUrl: function() {
 					if(this.getUrl) {
@@ -143,5 +143,3 @@ define(
 		return TYPO3.Backend;
 	}
 );
-
-
