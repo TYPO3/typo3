@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -828,9 +829,7 @@ class EditDocumentController extends AbstractModule
             }
         }
 
-        $linkParameters = [
-            'no_cache' => 1,
-        ];
+        $linkParameters = [];
 
         // language handling
         $languageField = isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
@@ -869,6 +868,16 @@ class EditDocumentController extends AbstractModule
                 $previewConfiguration['additionalGetParameters.']
             );
             $linkParameters = array_replace($linkParameters, $additionalGetParameters);
+        }
+
+        if (!empty($previewConfiguration['useCacheHash'])) {
+            /** @var CacheHashCalculator */
+            $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
+            $fullLinkParameters = GeneralUtility::implodeArrayForUrl('', array_merge($linkParameters, ['id' => $previewPageId]));
+            $cacheHashParameters = $cacheHashCalculator->getRelevantParameters($fullLinkParameters);
+            $linkParameters['cHash'] = $cacheHashCalculator->calculateCacheHash($cacheHashParameters);
+        } else {
+            $linkParameters['no_cache'] = 1;
         }
 
         $this->popViewId = $previewPageId;
