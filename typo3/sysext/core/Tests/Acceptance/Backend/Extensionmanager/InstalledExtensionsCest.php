@@ -28,12 +28,12 @@ class InstalledExtensionsCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
 
         $I->click('Extensions', '#menu');
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->waitForElementVisible('#typo3-extension-list');
     }
 
@@ -80,7 +80,7 @@ class InstalledExtensionsCest
         $I->canSeeElement('.modulemenu-item-link');
         $I->cantSeeElement('#web_RecyclerRecycler');
 
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
         $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
@@ -103,7 +103,7 @@ class InstalledExtensionsCest
         $I->switchToIFrame();
         $I->canSeeElement('#web_RecyclerRecycler');
 
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
         $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');

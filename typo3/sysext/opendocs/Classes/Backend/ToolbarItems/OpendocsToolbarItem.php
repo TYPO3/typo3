@@ -180,7 +180,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
             $entry .= $icon;
             $entry .= '</div>';
             $entry .= '<div class="dropdown-table-column dropdown-table-title">';
-            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="contentIframe">';
+            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="list_frame">';
             $entry .= $label;
             $entry .= '</a>';
             $entry .= '</div>';
@@ -197,7 +197,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
             $entry .= $icon;
             $entry .= '</div>';
             $entry .= '<div class="dropdown-table-column dropdown-table-title">';
-            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="contentIframe">';
+            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="list_frame">';
             $entry .= $label;
             $entry .= '</a>';
             $entry .= '</div>';

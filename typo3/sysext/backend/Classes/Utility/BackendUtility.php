@@ -3477,8 +3477,8 @@ class BackendUtility
                         break;
                     case 'updateFolderTree':
                         $signals[] = '
-								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationIframe) {
-									top.TYPO3.Backend.NavigationIframe.refresh();
+								if (top && top.nav_frame && top.nav_frame.location) {
+									top.nav_frame.location.reload(true);
 								}';
                         break;
                     case 'updateModuleMenu':

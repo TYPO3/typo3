@@ -29,7 +29,7 @@ class TasksCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
 
@@ -37,7 +37,7 @@ class TasksCest
         $I->click('Scheduler', '#system_txschedulerM1');
 
         // switch to content iframe
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
     }
 
     /**
@@ -93,13 +93,13 @@ class TasksCest
         $I->click('//a[contains(@title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
         $modalDialog->clickButtonInDialog('Cancel');
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
 
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
         $I->click('//a[contains(@title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
 
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->see('The task was successfully deleted.');
         $I->see('No tasks defined yet');
     }

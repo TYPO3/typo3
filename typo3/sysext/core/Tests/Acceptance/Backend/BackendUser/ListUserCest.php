@@ -29,7 +29,7 @@ class ListUserCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
 
@@ -37,7 +37,7 @@ class ListUserCest
         $I->click('Backend users');
 
         // switch to content iframe
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
     }
 
     /**

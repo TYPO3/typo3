@@ -131,8 +131,8 @@ function loadEditId(id,addGetVars)	{	//
 	top.fsMod.recentIds.web = id;
 	top.fsMod.navFrameHighlightedID.web = "pages" + id + "_0";		// For highlighting
 
-	if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
-		top.content.nav_frame.refresh_nav();
+	if (top.nav_frame && top.nav_frame.refresh_nav) {
+		top.nav_frame.refresh_nav();
 	}
 	if (TYPO3.configuration.pageModule) {
 		top.goToModule(TYPO3.configuration.pageModule, 0, addGetVars?addGetVars:"");
@@ -157,6 +157,26 @@ function getModuleUrl(inUrl)	{	//
 
 
 
+// Backwards-compatible layer for "old" ExtJS-based code
+// which was in use (top.content) before TYPO3 8.4. Now, the direct "top.nav_frame" and "top.list_frame"
+// calls do work directly.
+// @deprecated since TYPO3 v8, will be removed in TYPO3 v9, this functionality will be removed in TYPO3 v9.
+TYPO3.jQuery(document).on('ready', function() {
+	top.content = {
+		list_frame: top.list_frame,
+		nav_frame: top.nav_frame
+	};
+	// top.nav.refresh() is currently used by the clickmenu inline JS code, and can be removed afterwards
+	top.nav = {
+		refresh: function() {
+			if (top.nav_frame && top.nav_frame.refresh_nav) {
+				top.nav_frame.refresh_nav();
+			} else if (top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer.PageTree) {
+				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+			}
+		}
+	};
+});
 
 	// Used by Frameset Modules
 var currentSubScript = "";

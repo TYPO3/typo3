@@ -426,8 +426,8 @@ class RecordList extends AbstractModule
 					top.fsMod.recentIds["web"]=id;
 					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
 
-					if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
-						top.content.nav_frame.refresh_nav();
+					if (top.nav_frame && top.nav_frame.refresh_nav) {
+						top.nav_frame.refresh_nav();
 					}
 				}
 				' . $this->moduleTemplate->redirectUrls($listUrl) . '

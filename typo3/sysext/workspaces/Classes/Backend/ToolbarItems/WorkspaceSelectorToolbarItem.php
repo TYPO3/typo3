@@ -127,7 +127,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
                             ' . $stateUncheckedIcon . '
                         </div>
                         <div class="dropdown-table-column">
-                            <a href="#" target="contentIframe" data-module="web_WorkspacesWorkspaces" class="t3js-workspaces-modulelink">
+                            <a href="#" target="list_frame" data-module="web_WorkspacesWorkspaces" class="t3js-workspaces-modulelink">
                                 ' . htmlspecialchars($languageService->getLL('bookmark_workspace')) . '
                             </a>
                         </div>

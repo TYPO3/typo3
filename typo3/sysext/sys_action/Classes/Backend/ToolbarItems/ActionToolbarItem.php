@@ -81,7 +81,7 @@ class ActionToolbarItem implements ToolbarItemInterface
             $actionMenu[] = $linkConf[2];
             $actionMenu[] = '</div>';
             $actionMenu[] = '<div class="dropdown-table-column dropdown-table-title">';
-            $actionMenu[] = '<a class="t3js-topbar-link" href="' . htmlspecialchars($linkConf[1]) . '" target="contentIframe">';
+            $actionMenu[] = '<a class="t3js-topbar-link" href="' . htmlspecialchars($linkConf[1]) . '" target="list_frame">';
             $actionMenu[] = htmlspecialchars($linkConf[0]);
             $actionMenu[] = '</a>';
             $actionMenu[] = '</div>';

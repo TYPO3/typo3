@@ -45,7 +45,7 @@ class BookmarkCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
     }
@@ -73,7 +73,7 @@ class BookmarkCest
         // open the scheduler module as we would like to put it into the bookmark liste
         $I->click('Scheduler', '.scaffold-modulemenu');
 
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
 
         $I->click(self::$docHeaderBookmarkButtonSelector);
         // cancel the action to test the functionality
@@ -82,7 +82,7 @@ class BookmarkCest
         // check if the list is still empty
         $this->checkThatBookmarkListIsInitiallyEmpty($I);
 
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->click(self::$docHeaderBookmarkButtonSelector);
 
         $dialog->clickButtonInDialog('OK');
@@ -107,7 +107,7 @@ class BookmarkCest
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->click('Scheduled tasks', self::$topBarModuleSelector);
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->canSee('Scheduled tasks', 'h1');
     }
 

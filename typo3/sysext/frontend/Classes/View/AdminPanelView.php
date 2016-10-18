@@ -492,8 +492,8 @@ class AdminPanelView
                 $out .= $this->extGetItem('', '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('
 						if (parent.opener && parent.opener.top && parent.opener.top.TS) {
 							parent.opener.top.fsMod.recentIds["web"]=' . (int)$this->getTypoScriptFrontendController()->page['uid'] . ';
-							if (parent.opener.top.content && parent.opener.top.content.nav_frame && parent.opener.top.content.nav_frame.refresh_nav) {
-								parent.opener.top.content.nav_frame.refresh_nav();
+							if (parent.opener.top && parent.opener.top.nav_frame && parent.opener.top.nav_frame.refresh_nav) {
+								parent.opener.top.nav_frame.refresh_nav();
 							}
 							parent.opener.top.goToModule("' . $pageModule . '");
 							parent.opener.top.focus();

@@ -64,9 +64,10 @@ class ClickMenuController
         $clickMenu->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
         $content = $clickMenu->init();
-        if (is_array($content)) {
-            $response->getBody()->write(json_encode($content));
+        if (!is_array($content)) {
+            $content = [];
         }
+        $response->getBody()->write(json_encode($content));
         return $response;
     }
 

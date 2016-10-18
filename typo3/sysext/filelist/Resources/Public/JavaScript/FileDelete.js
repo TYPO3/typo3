@@ -24,7 +24,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 		if (redirectUrl) {
 			redirectUrl = top.rawurlencode(redirectUrl);
 		} else {
-			redirectUrl = top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);
+			redirectUrl = top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);
 		}
 		var identifier = $anchorElement.data('identifier');
 		var veriCode = $anchorElement.data('veriCode');
@@ -49,11 +49,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 					Modal.dismiss();
 				} else if (e.target.name === 'yes') {
 					Modal.dismiss();
-					top.content.list_frame.location.href = deleteUrl + '&redirect=' + redirectUrl;
+					top.list_frame.location.href = deleteUrl + '&redirect=' + redirectUrl;
 				}
 			});
 		} else {
-			top.content.list_frame.location.href = deleteUrl + '&redirect=' + redirectUrl;
+			top.list_frame.location.href = deleteUrl + '&redirect=' + redirectUrl;
 		}
 	});
 

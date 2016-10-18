@@ -1,8 +1,8 @@
 <f:if condition="{reloadPageFrame}">
     <script type="text/javascript">
         /*<![CDATA[*/
-        if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
-            top.content.nav_frame.refresh_nav();
+        if (top.nav_frame && top.nav_frame.refresh_nav) {
+            top.nav_frame.refresh_nav();
         }
         /*]]>*/
     </script>

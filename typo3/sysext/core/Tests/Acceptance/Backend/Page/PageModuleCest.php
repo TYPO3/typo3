@@ -26,7 +26,7 @@ class PageModuleCest
     {
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
     }
@@ -37,7 +37,7 @@ class PageModuleCest
     public function checkThatPageModuleHasAHeadline(Admin $I)
     {
         $I->click('Page');
-        $I->switchToIFrame('contentIframe');
+        $I->switchToIFrame('list_frame');
         $I->canSee('Web>Page module', 'h4');
     }
 }

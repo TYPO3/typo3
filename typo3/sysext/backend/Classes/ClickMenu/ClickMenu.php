@@ -483,8 +483,8 @@ class ClickMenu
      */
     public function urlRefForCM($url, $retUrl = '', $hideCM = true, $overrideLoc = '')
     {
-        $loc = 'top.content.list_frame';
-        return ($overrideLoc ? 'var docRef=' . $overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:' . $loc)
+        $loc = 'top.list_frame';
+        return ($overrideLoc ? 'var docRef=' . $overrideLoc : 'var docRef=(top.list_frame)?top.list_frame:' . $loc)
             . '; docRef.location.href=' . GeneralUtility::quoteJSvalue($url) . ($retUrl ? '+' . GeneralUtility::quoteJSvalue('&' . $retUrl . '=') . '+top.rawurlencode('
             . $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '')
             . ';';
@@ -531,7 +531,7 @@ class ClickMenu
      */
     public function DB_paste($table, $uid, $type, $elInfo)
     {
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $jsCode = $loc . '.location.href='
             . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=')
             . ' + top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+'
@@ -754,7 +754,7 @@ class ClickMenu
         // If another module was specified, replace the default Page module with the new one
         $newPageModule = trim($this->backendUser->getTSConfigVal('options.overridePageModule'));
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $iconName = 'actions-open';
         if ($table === 'pages') {
             $iconName = 'actions-page-open';
@@ -782,7 +782,7 @@ class ClickMenu
      */
     public function DB_new($table, $uid)
     {
-        $frame = 'top.content.list_frame';
+        $frame = 'top.list_frame';
         $location = $this->frameLocation($frame . '.document');
         $module = $this->listFrame
             ? GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', ['edit[' . $table . '][-' . $uid . ']' => 'new']) . '&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
@@ -803,7 +803,7 @@ class ClickMenu
      */
     public function DB_delete($table, $uid, $elInfo)
     {
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $jsCode = $loc . '.location.href='
             . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=')
             . '+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+'
@@ -872,7 +872,7 @@ class ClickMenu
         return $this->linkItem(
             $this->label('tempMountPoint'),
             $this->iconFactory->getIcon('actions-pagetree-mountroot', Icon::SIZE_SMALL)->render(),
-            'if (top.content.nav_frame) {
+            'if (top.nav_frame) {
 				var node = top.TYPO3.Backend.NavigationContainer.PageTree.getSelected();
 				if (node === null) {
 					return false;
@@ -917,7 +917,7 @@ class ClickMenu
     public function DB_changeFlag($table, $rec, $flagField, $title)
     {
         $uid = $rec['_ORIG_uid'] ?: $rec['uid'];
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' .
             GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
             $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
@@ -1086,7 +1086,7 @@ class ClickMenu
      */
     public function FILE_launch($path, $moduleName, $type, $iconName, $noReturnUrl = false)
     {
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $scriptUrl = BackendUtility::getModuleUrl($moduleName);
 
         $editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
@@ -1134,7 +1134,7 @@ class ClickMenu
      */
     public function FILE_delete($path)
     {
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $jsCode = $loc . '.location.href='
             . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=')
             . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document'))
@@ -1179,7 +1179,7 @@ class ClickMenu
      */
     public function FILE_paste($path, $target, $elInfo)
     {
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
 
         $jsCode = $loc . '.location.href='
             . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=')
@@ -1288,7 +1288,7 @@ class ClickMenu
     public function dragDrop_copymovepage($srcUid, $dstUid, $action, $into)
     {
         $negativeSign = $into === 'into' ? '' : '-';
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=' .
             GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
             $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
@@ -1314,7 +1314,7 @@ class ClickMenu
      */
     public function dragDrop_copymovefolder($srcPath, $dstPath, $action)
     {
-        $loc = 'top.content.list_frame';
+        $loc = 'top.list_frame';
         $editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=' .
             GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=') . '+top.rawurlencode(' .
             $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .

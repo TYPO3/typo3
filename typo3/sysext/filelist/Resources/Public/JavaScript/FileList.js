@@ -28,7 +28,7 @@ define(['jquery'], function($) {
 		event.preventDefault();
 
 		var url = $(this).attr('data-url');
-		top.content.list_frame.location.href=url;
+		top.list_frame.location.href=url;
 	});
 
 	$('a.btn.filelist-file-view').click(function(event) {
@@ -42,14 +42,14 @@ define(['jquery'], function($) {
 		event.preventDefault();
 
 		var url = $(this).attr('data-url');
-		top.content.list_frame.location.href=url;
+		top.list_frame.location.href=url;
 	});
 
 	$('a.btn.filelist-file-rename').click(function(event) {
 		event.preventDefault();
 
 		var url = $(this).attr('data-url');
-		top.content.list_frame.location.href=url;
+		top.list_frame.location.href=url;
 	});
 
 	$('a.btn.filelist-file-info').click(function(event) {
