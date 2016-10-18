@@ -15,7 +15,7 @@ module.exports = function(config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			{ pattern: 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-2.2.3.js', included: true },
+			{ pattern: 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-3.1.1.js', included: true },
 			{ pattern: 'typo3/sysext/**/Resources/Public/JavaScript/**/*.js', included: false },
 			{ pattern: 'typo3/sysext/**/Tests/JavaScript/**/*.js', included: false },
 			'typo3/sysext/core/Build/Configuration/JSUnit/Helper.js',
