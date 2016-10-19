@@ -36,7 +36,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         $I->amOnPage('/typo3/index.php');
 
-        // @todo: There is a bug in PhantomJS where adding a cookie fails.
+        // @todo: There is a bug in PhantomJS / firefox (?) where adding a cookie fails.
         // This bug will be fixed in the next PhantomJS version but i also found
         // this workaround. First reset / delete the cookie and than set it and catch
         // the webdriver exception as the cookie has been set successful.

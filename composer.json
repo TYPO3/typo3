@@ -56,8 +56,6 @@
 		"codeception/codeception": "^2.2",
 		"se/selenium-server-standalone": "~2.53",
 		"7elix/styleguide": "~8.0.0",
-		"site5/phantoman": "^1.0",
-		"jakoch/phantomjs-installer": "2.1.1-p06",
 		"friendsofphp/php-cs-fixer": "^1.12"
 	},
 	"suggest": {
@@ -219,13 +217,5 @@
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/"
 		},
 		"classmap": ["typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/"]
-	},
-	"scripts": {
-		"post-install-cmd": [
-			"PhantomInstaller\\Installer::installPhantomJS"
-		],
-		"post-update-cmd": [
-			"PhantomInstaller\\Installer::installPhantomJS"
-		]
 	}
 }

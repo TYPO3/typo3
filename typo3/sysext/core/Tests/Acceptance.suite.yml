@@ -7,8 +7,8 @@ modules:
   config:
     WebDriver:
       url: http://localhost:8000/typo3temp/var/tests/acceptance
-      browser: phantomjs
-      port: 4445
+      browser: firefox
+      port: 4444
       window_size: 1440x570
       wait: 1
       restart: true
@@ -20,10 +20,3 @@ modules:
         # You have to ensure that the element is in the viewport by your own before clicking it!
         # You can simply do that by scrolling to it.
         elementScrollBehavior: 1
-env:
-  firefox:
-    modules:
-      config:
-        WebDriver:
-          browser: firefox
-          port: 4444
