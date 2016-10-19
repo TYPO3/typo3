@@ -46,7 +46,7 @@ var inline = {
 			return;
 		}
 
-		var $recordHeader = TYPO3.jQuery(this);
+		var $recordHeader = $triggerElement.closest('.panel-heading');
 		inline.expandCollapseRecord(
 			$recordHeader.attr('id').replace(/_header$/, ''),
 			$recordHeader.attr('data-expandSingle'),
@@ -1323,8 +1323,8 @@ var inline = {
 /*]]>*/
 (function ($) {
 	$(function () {
-		$(document).on('click', '[data-toggle="formengine-inline"]', function() {
-			inline.toggleEvent();
+		$(document).on('click', '[data-toggle="formengine-inline"]', function(event) {
+			inline.toggleEvent(event);
 		});
 	});
 })(TYPO3.jQuery);
