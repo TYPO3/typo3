@@ -365,8 +365,8 @@ class PageLayoutController
         $this->MOD_MENU = [
             'tt_content_showHidden' => '',
             'function' => [
-                0 => $lang->getLL('m_function_0'),
                 1 => $lang->getLL('m_function_1'),
+                0 => $lang->getLL('m_function_0'),
                 2 => $lang->getLL('m_function_2')
             ],
             'language' => [
