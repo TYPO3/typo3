@@ -162,6 +162,9 @@ If you click the folder title in the Folder Tree you will see the sub-module loa
 			<trans-unit id="tcatree.findItem">
 				<source>Find Item</source>
 			</trans-unit>
+			<trans-unit id="tcatree.msg_save_first">
+				<source>Please save the content element before selecting a category.</source>
+			</trans-unit>
 			<trans-unit id="list_module.alttitle">
 				<source>The Web&gt;List module</source>
 			</trans-unit>
