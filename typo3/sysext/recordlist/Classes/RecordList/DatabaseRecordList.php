@@ -1007,7 +1007,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             && isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
             && !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])
         ) {
-            $theData['parent'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+            $theData['_l10nparent_'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         }
         $rowOutput .= $this->addElement(1, $theIcon, $theData, $row_bgColor);
         // Finally, return table row element:
