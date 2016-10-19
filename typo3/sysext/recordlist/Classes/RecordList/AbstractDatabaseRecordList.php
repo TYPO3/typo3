@@ -911,12 +911,12 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $tablePidField = $table === 'pages' ? 'uid' : 'pid';
         // Make query, only if table is valid and a search string is actually defined:
         if (empty($this->searchString)) {
-            return '1=1';
+            return '';
         }
 
         $searchableFields = $this->getSearchFields($table);
         if (empty($searchableFields)) {
-            return '1=1';
+            return '';
         }
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
