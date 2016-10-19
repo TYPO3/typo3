@@ -10,15 +10,16 @@
 ##########################
 
 # Array of files to ignore the file permission check
-IGNORE=()
-IGNORE[0]="typo3/cli_dispatch.phpsh"
-IGNORE[1]="typo3/sysext/core/Build/Scripts/cglFixMyCommit.sh"
-IGNORE[2]="typo3/sysext/core/Build/Scripts/checkFilePermissions.sh"
-IGNORE[3]="typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh"
-IGNORE[4]="typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh"
-IGNORE[5]="typo3/sysext/core/Build/Scripts/xlfcheck.sh"
-IGNORE[6]="typo3/sysext/core/Build/Scripts/validateRstFiles.sh"
-IGNORE[7]="typo3/sysext/core/bin/typo3"
+IGNORE=(
+  "typo3/cli_dispatch.phpsh"
+  "typo3/sysext/core/Build/Scripts/cglFixMyCommit.sh"
+  "typo3/sysext/core/Build/Scripts/checkFilePermissions.sh"
+  "typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh"
+  "typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh"
+  "typo3/sysext/core/Build/Scripts/xlfcheck.sh"
+  "typo3/sysext/core/Build/Scripts/validateRstFiles.sh"
+  "typo3/sysext/core/bin/typo3"
+)
 
 COUNTER=0
 
