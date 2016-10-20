@@ -335,7 +335,7 @@ class PaletteAndSingleContainer extends AbstractContainer
     {
         $fieldSetClass = 'form-section';
         if ($paletteHidden) {
-            $fieldSetClass = 'hide';
+            $fieldSetClass .= ' hide';
         }
 
         $result = [];
