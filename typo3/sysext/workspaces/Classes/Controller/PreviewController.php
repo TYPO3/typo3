@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,13 +65,6 @@ class PreviewController extends AbstractController
         parent::initializeAction();
         $this->stageService = GeneralUtility::makeInstance(StagesService::class);
         $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
-        $this->pageRenderer->loadExtJS(false, false);
-        // Load  JavaScript:
-        $this->pageRenderer->addExtDirectCode([
-            'TYPO3.Workspaces',
-            'TYPO3.ExtDirectStateProvider'
-        ]);
         $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
@@ -150,7 +142,6 @@ class PreviewController extends AbstractController
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Preview');
         $this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
-        $this->pageRenderer->addInlineSetting('Workspaces', 'token', FormProtectionFactory::get('backend')->generateToken('extDirect'));
 
         $cssFile = 'EXT:workspaces/Resources/Public/Css/preview.css';
         $cssFile = GeneralUtility::getFileAbsFileName($cssFile);

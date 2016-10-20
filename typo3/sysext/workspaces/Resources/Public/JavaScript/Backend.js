@@ -124,8 +124,8 @@ define([
 				);
 				Wizard.addFinalProcessingSlide(function() {
 					// We passed this slide, swap the record now
-					Workspaces.sendExtDirectRequest(
-						Workspaces.generateExtDirectActionsPayload('swapSingleRecord', [
+					Workspaces.sendRemoteRequest(
+						Workspaces.generateRemoteActionsPayload('swapSingleRecord', [
 							$tr.data('table'),
 							$tr.data('t3ver_oid'),
 							$tr.data('uid')
@@ -224,9 +224,9 @@ define([
 			var $me = $(this);
 			Backend.settings.language = $me.val();
 
-			Workspaces.sendExtDirectRequest([
-				Workspaces.generateExtDirectActionsPayload('saveLanguageSelection', [$me.val()]),
-				Workspaces.generateExtDirectPayload('getWorkspaceInfos', Backend.settings)
+			Workspaces.sendRemoteRequest([
+				Workspaces.generateRemoteActionsPayload('saveLanguageSelection', [$me.val()]),
+				Workspaces.generateRemotePayload('getWorkspaceInfos', Backend.settings)
 			]).done(function(response) {
 				Backend.elements.$languageSelector.prev().html($me.find(':selected').data('icon'));
 				Backend.renderWorkspaceInfos(response[1].result);
@@ -377,8 +377,8 @@ define([
 			throw 'Invalid direction given.';
 		}
 
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectActionsPayload(stageWindowAction, [
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemoteActionsPayload(stageWindowAction, [
 				$row.data('uid'), $row.data('table'), $row.data('t3ver_oid')
 			])
 		).done(function(response) {
@@ -396,9 +396,9 @@ define([
 						elements: []
 					};
 
-					Workspaces.sendExtDirectRequest([
-						Workspaces.generateExtDirectActionsPayload(stageExecuteAction, [serializedForm]),
-						Workspaces.generateExtDirectPayload('getWorkspaceInfos', Backend.settings)
+					Workspaces.sendRemoteRequest([
+						Workspaces.generateRemoteActionsPayload(stageExecuteAction, [serializedForm]),
+						Workspaces.generateRemotePayload('getWorkspaceInfos', Backend.settings)
 					]).done(function(response) {
 						$modal.modal('hide');
 						Backend.renderWorkspaceInfos(response[1].result);
@@ -413,11 +413,11 @@ define([
 	 * Loads the workspace components, like available stage actions and items of the workspace
 	 */
 	Backend.loadWorkspaceComponents = function() {
-		Workspaces.sendExtDirectRequest([
-			Workspaces.generateExtDirectPayload('getWorkspaceInfos', Backend.settings),
-			Workspaces.generateExtDirectPayload('getStageActions', {}),
-			Workspaces.generateExtDirectMassActionsPayload('getMassStageActions', {}),
-			Workspaces.generateExtDirectPayload('getSystemLanguages', {})
+		Workspaces.sendRemoteRequest([
+			Workspaces.generateRemotePayload('getWorkspaceInfos', Backend.settings),
+			Workspaces.generateRemotePayload('getStageActions', {}),
+			Workspaces.generateRemoteMassActionsPayload('getMassStageActions', {}),
+			Workspaces.generateRemotePayload('getSystemLanguages', {})
 		]).done(function(response) {
 			Backend.elements.$depthSelector.prop('disabled', false);
 
@@ -466,8 +466,8 @@ define([
 	 * @protected
 	 */
 	Backend.getWorkspaceInfos = function() {
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectPayload('getWorkspaceInfos', Backend.settings)
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemotePayload('getWorkspaceInfos', Backend.settings)
 		).done(function(response) {
 			Backend.renderWorkspaceInfos(response[0].result);
 		});
@@ -627,8 +627,8 @@ define([
 
 		var $tr = $(e.target).closest('tr');
 
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectPayload('getRowDetails', {
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemotePayload('getRowDetails', {
 				stage: $tr.data('stage'),
 				t3ver_oid: $tr.data('t3ver_oid'),
 				table: $tr.data('table'),
@@ -756,8 +756,8 @@ define([
 	Backend.openPreview = function(e) {
 		var $tr = $(e.target).closest('tr');
 
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectActionsPayload('viewSingleRecord', [
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemoteActionsPayload('viewSingleRecord', [
 				$tr.data('table'), $tr.data('uid')
 			])
 		).done(function(response) {
@@ -849,8 +849,8 @@ define([
 		);
 		$modal.on('button.clicked', function(e) {
 			if (e.target.name === 'ok') {
-				Workspaces.sendExtDirectRequest([
-					Workspaces.generateExtDirectActionsPayload('deleteSingleRecord', [
+				Workspaces.sendRemoteRequest([
+					Workspaces.generateRemoteActionsPayload('deleteSingleRecord', [
 						$tr.data('table'),
 						$tr.data('uid')
 					])
@@ -930,8 +930,8 @@ define([
 			Severity.warning
 		);
 		Wizard.addFinalProcessingSlide(function() {
-			Workspaces.sendExtDirectRequest(
-				Workspaces.generateExtDirectActionsPayload('executeSelectionAction', {
+			Workspaces.sendRemoteRequest(
+				Workspaces.generateRemoteActionsPayload('executeSelectionAction', {
 					action: selectedAction,
 					selection: affectedRecords
 				})
@@ -1014,8 +1014,8 @@ define([
 			Severity.warning
 		);
 		Wizard.addFinalProcessingSlide(function() {
-			Workspaces.sendExtDirectRequest(
-				Workspaces.generateExtDirectMassActionsPayload(massAction, {
+			Workspaces.sendRemoteRequest(
+				Workspaces.generateRemoteMassActionsPayload(massAction, {
 					init: true,
 					total: 0,
 					processed: 0,
@@ -1024,8 +1024,8 @@ define([
 				})
 			).done(function(response) {
 				var payload = response[0].result;
-				Workspaces.sendExtDirectRequest(
-					Workspaces.generateExtDirectMassActionsPayload(massAction, payload)
+				Workspaces.sendRemoteRequest(
+					Workspaces.generateRemoteMassActionsPayload(massAction, payload)
 				).done(function() {
 					Backend.getWorkspaceInfos();
 					Wizard.dismiss();
@@ -1056,8 +1056,8 @@ define([
 				t3ver_oid: affected[2]
 			});
 		}
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectActionsPayload('sendToSpecificStageWindow', [
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemoteActionsPayload('sendToSpecificStageWindow', [
 				stage, affectedRecords
 			])
 		).done(function(response) {
@@ -1072,9 +1072,9 @@ define([
 						nextStage: stage
 					};
 
-					Workspaces.sendExtDirectRequest([
-						Workspaces.generateExtDirectActionsPayload('sendToSpecificStageExecute', [serializedForm]),
-						Workspaces.generateExtDirectPayload('getWorkspaceInfos', Backend.settings)
+					Workspaces.sendRemoteRequest([
+						Workspaces.generateRemoteActionsPayload('sendToSpecificStageExecute', [serializedForm]),
+						Workspaces.generateRemotePayload('getWorkspaceInfos', Backend.settings)
 					]).done(function(response) {
 						$modal.modal('hide');
 						Backend.renderWorkspaceInfos(response[1].result);
@@ -1098,7 +1098,6 @@ define([
 
 	/**
 	 * Renders the action button based on the user's permission.
-	 * This method is intended to be dropped once we don't the ExtDirect stuff anymore.
 	 *
 	 * @returns {$}
 	 * @private
@@ -1114,8 +1113,8 @@ define([
 	 * Fetches and renders available preview links
 	 */
 	Backend.generatePreviewLinks = function() {
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectActionsPayload('generateWorkspacePreviewLinksForAllLanguages', [
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemoteActionsPayload('generateWorkspacePreviewLinksForAllLanguages', [
 				Backend.settings.id
 			])
 		).done(function(response) {

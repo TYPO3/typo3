@@ -40,7 +40,7 @@ class ActionHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function sendToSpecificStageExecuteIgnoresDoublePublishes()
     {
-        $actionHandler = new \TYPO3\CMS\Workspaces\ExtDirect\ActionHandler();
+        $actionHandler = new \TYPO3\CMS\Workspaces\Controller\Remote\ActionHandler();
 
         $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/Fixtures/sys_workspace.xml');

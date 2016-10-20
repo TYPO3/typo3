@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\ExtDirect;
+namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -35,9 +35,9 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * ExtDirect server
+ * Class RemoteServer
  */
-class ExtDirectServer extends AbstractHandler
+class RemoteServer extends AbstractHandler
 {
     /**
      * @var GridDataService

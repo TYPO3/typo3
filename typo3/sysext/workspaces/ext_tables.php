@@ -21,26 +21,6 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
             'navigationComponentId' => 'typo3-pagetree'
         ]
     );
-
-    // register ExtDirect
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
-        'TYPO3.Workspaces.ExtDirect',
-        \TYPO3\CMS\Workspaces\ExtDirect\ExtDirectServer::class,
-        'web_WorkspacesWorkspaces',
-        'user,group'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
-        'TYPO3.Workspaces.ExtDirectActions',
-        \TYPO3\CMS\Workspaces\ExtDirect\ActionHandler::class,
-        'web_WorkspacesWorkspaces',
-        'user,group'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
-        'TYPO3.Workspaces.ExtDirectMassActions',
-        \TYPO3\CMS\Workspaces\ExtDirect\MassActionHandler::class,
-        'web_WorkspacesWorkspaces',
-        'user,group'
-    );
 }
 
 // Registers preview link icon

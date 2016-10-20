@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\ExtDirect;
+namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  */
 
 /**
- * Abstract ExtDirect handler
+ * Class AbstractHandler
  */
 abstract class AbstractHandler
 {

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Tests\Unit\ExtDirect;
+namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,12 +22,12 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ExtDirectServer test
+ * RemoteServer test
  */
-class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class RemoteServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Workspaces\ExtDirect\ExtDirectServer
+     * @var \TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer
      */
     protected $subject;
 
@@ -42,7 +42,7 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Workspaces\ExtDirect\ExtDirectServer::class, ['__none']);
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer::class, ['__none']);
     }
 
     /**

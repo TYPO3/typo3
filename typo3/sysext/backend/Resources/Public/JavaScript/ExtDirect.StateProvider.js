@@ -46,7 +46,7 @@ TYPO3.state.ExtDirectProvider = function(config) {
 		 * @param {HttpProvider} this
 		 */
 			'savefailure'
-			);
+	);
 
 		// call parent
 	TYPO3.state.ExtDirectProvider.superclass.constructor.call(this);

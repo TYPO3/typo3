@@ -170,9 +170,9 @@ define([
 		);
 		$modal.on('button.clicked', function(e) {
 			if (e.target.name === 'ok') {
-				Workspaces.sendExtDirectRequest([
-					Workspaces.generateExtDirectActionsPayload('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
-					Workspaces.generateExtDirectActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id])
+				Workspaces.sendRemoteRequest([
+					Workspaces.generateRemoteActionsPayload('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
+					Workspaces.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id])
 				]).done(function(response) {
 					$modal.modal('hide');
 					Preview.renderStageButtons(response[1].result);
@@ -220,8 +220,8 @@ define([
 			throw 'Invalid direction ' + direction + ' requested.';
 		}
 
-		Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectActionsPayload(actionName, [TYPO3.settings.Workspaces.id])
+		Workspaces.sendRemoteRequest(
+			Workspaces.generateRemoteActionsPayload(actionName, [TYPO3.settings.Workspaces.id])
 		).done(function(response) {
 			var $modal = Workspaces.renderSendToStageWindow(response);
 			$modal.on('button.clicked', function (e) {
@@ -232,9 +232,9 @@ define([
 					serializedForm.affects = response[0].result.affects;
 					serializedForm.stageId = $me.data('stageId');
 
-					Workspaces.sendExtDirectRequest([
-						Workspaces.generateExtDirectActionsPayload('sentCollectionToStage', [serializedForm]),
-						Workspaces.generateExtDirectActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id])
+					Workspaces.sendRemoteRequest([
+						Workspaces.generateRemoteActionsPayload('sentCollectionToStage', [serializedForm]),
+						Workspaces.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id])
 					]).done(function(response) {
 						$modal.modal('hide');
 

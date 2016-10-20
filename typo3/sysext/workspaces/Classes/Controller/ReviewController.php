@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -201,14 +200,8 @@ class ReviewController extends AbstractController
     protected function initializeAction()
     {
         parent::initializeAction();
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
-        $this->pageRenderer->loadExtJS(false, false);
         $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
-        // Load  JavaScript:
-        $this->pageRenderer->addExtDirectCode([
-            'TYPO3.Workspaces'
-        ]);
 
         foreach ($this->getAdditionalResourceService()->getLocalizationResources() as $localizationResource) {
             $this->pageRenderer->addInlineLanguageLabelFile($localizationResource);
@@ -216,7 +209,6 @@ class ReviewController extends AbstractController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
-        $this->pageRenderer->addInlineSetting('Workspaces', 'token', FormProtectionFactory::get('backend')->generateToken('extDirect'));
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', (int)GeneralUtility::_GP('id'));
     }
 

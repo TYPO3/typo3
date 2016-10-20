@@ -108,7 +108,7 @@ define(['jquery'], function($) {
 	 * @param {String} title the workspace title
 	 */
 	WorkspacesMenu.performWorkspaceSwitch = function(id, title) {
-		top.TYPO3.Workspaces.workspaceTitle = title;
+		top.TYPO3.Backend.workspaceTitle = title;
 		top.TYPO3.configuration.inWorkspace = id !== 0;
 
 		WorkspacesMenu.updateBackendContext(title);

@@ -22,7 +22,9 @@ define([
 ], function($, Severity, Modal) {
 	'use strict';
 
-	var Workspaces = {};
+	var Workspaces = {
+		tid: 0
+	};
 
 	/**
 	 * Renders the send to stage window
@@ -99,21 +101,20 @@ define([
 	 * @return {$}
 	 */
 	Workspaces.checkIntegrity = function(payload) {
-		return Workspaces.sendExtDirectRequest(
-			Workspaces.generateExtDirectPayload('checkIntegrity', payload)
+		return Workspaces.sendRemoteRequest(
+			Workspaces.generateRemotePayload('checkIntegrity', payload)
 		);
 	};
 
 	/**
-	 * Sends an AJAX request compatible to ExtDirect
-	 * This method is intended to be dropped once we don't the ExtDirect stuff anymore.
+	 * Sends an AJAX request
 	 *
 	 * @param {Object} payload
 	 * @return {$}
 	 */
-	Workspaces.sendExtDirectRequest = function(payload) {
+	Workspaces.sendRemoteRequest = function(payload) {
 		return $.ajax({
-			url: TYPO3.settings.ajaxUrls['ext_direct_route'] + '&namespace=TYPO3.Workspaces',
+			url: TYPO3.settings.ajaxUrls['workspace_dispatch'],
 			method: 'POST',
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'json',
@@ -122,45 +123,45 @@ define([
 	};
 
 	/**
-	 * Generates the payload for ExtDirect
+	 * Generates the payload for a remote call
 	 *
 	 * @param {String} method
 	 * @param {Object} data
 	 * @return {{action, data, method, type}}
 	 */
-	Workspaces.generateExtDirectPayload = function(method, data) {
+	Workspaces.generateRemotePayload = function(method, data) {
 		if (typeof data === 'undefined') {
 			data = {};
 		}
-		return Workspaces.generateExtDirectPayloadBody('ExtDirect', method, data);
+		return Workspaces.generateRemotePayloadBody('RemoteServer', method, data);
 	};
 
 	/**
-	 * Generates the payload for ExtDirectMassActions
+	 * Generates the payload for MassActions
 	 *
 	 * @param {String} method
 	 * @param {Object} data
 	 * @return {{action, data, method, type}}
 	 */
-	Workspaces.generateExtDirectMassActionsPayload = function(method, data) {
+	Workspaces.generateRemoteMassActionsPayload = function(method, data) {
 		if (typeof data === 'undefined') {
 			data = {};
 		}
-		return Workspaces.generateExtDirectPayloadBody('ExtDirectMassActions', method, data);
+		return Workspaces.generateRemotePayloadBody('MassActions', method, data);
 	};
 
 	/**
-	 * Generates the payload for ExtDirectActions
+	 * Generates the payload for Actions
 	 *
 	 * @param {String} method
 	 * @param {Object} data
 	 * @return {{action, data, method, type}}
 	 */
-	Workspaces.generateExtDirectActionsPayload = function(method, data) {
+	Workspaces.generateRemoteActionsPayload = function(method, data) {
 		if (typeof data === 'undefined') {
 			data = [];
 		}
-		return Workspaces.generateExtDirectPayloadBody('ExtDirectActions', method, data);
+		return Workspaces.generateRemotePayloadBody('Actions', method, data);
 	};
 
 	/**
@@ -171,7 +172,7 @@ define([
 	 * @param {Object} data
 	 * @return {{action: String, data: Object, method: String, type: string}}
 	 */
-	Workspaces.generateExtDirectPayloadBody = function(action, method, data) {
+	Workspaces.generateRemotePayloadBody = function(action, method, data) {
 		if (data instanceof Array) {
 			data.push(TYPO3.settings.Workspaces.token);
 		} else {
@@ -184,7 +185,8 @@ define([
 			action: action,
 			data: data,
 			method: method,
-			type: 'rpc'
+			type: 'rpc',
+			tid: Workspaces.tid++
 		};
 	};
 

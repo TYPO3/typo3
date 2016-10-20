@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\ExtDirect;
+namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  */
 
 /**
+ * Class MassActionHandler
  * Class encapsulates all actions which are triggered for all elements within the current workspace.
  */
 class MassActionHandler extends AbstractHandler
