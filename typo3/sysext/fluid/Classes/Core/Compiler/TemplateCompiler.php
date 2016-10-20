@@ -96,6 +96,7 @@ public function getVariableContainer() {
 }
 public function getLayoutName(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface \$renderingContext) {
 \$currentVariableContainer = \$renderingContext->getTemplateVariableContainer();
+\$self = \$this;
 %s
 return %s;
 }
