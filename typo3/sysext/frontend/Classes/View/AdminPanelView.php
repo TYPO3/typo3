@@ -84,13 +84,6 @@ class AdminPanelView
         $typoScriptFrontend->forceTemplateParsing = $this->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
         $typoScriptFrontend->displayEditIcons = $this->extGetFeAdminValue('edit', 'displayIcons');
         $typoScriptFrontend->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
-        if ($this->extGetFeAdminValue('tsdebug', 'displayQueries')) {
-            // Do not override if the value is already set in \TYPO3\CMS\Core\Database\DatabaseConnection
-            if ($this->getDatabaseConnection()->explainOutput == 0) {
-                // Enable execution of EXPLAIN SELECT queries
-                $this->getDatabaseConnection()->explainOutput = 3;
-            }
-        }
         if (GeneralUtility::_GP('ADMCMD_editIcons')) {
             $typoScriptFrontend->displayFieldEditIcons = 1;
         }
@@ -525,14 +518,12 @@ class AdminPanelView
             $out .= $this->extGetItem('tsdebug_displayMessages', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" /><input type="checkbox" id="tsdebug_displayMessages" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"' . ($beuser->uc['TSFE_adminConfig']['tsdebug_displayMessages'] ? ' checked="checked"' : '') . ' />');
             $out .= $this->extGetItem('tsdebug_LR', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" /><input type="checkbox" id="tsdebug_LR" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"' . ($beuser->uc['TSFE_adminConfig']['tsdebug_LR'] ? ' checked="checked"' : '') . ' />');
             $out .= $this->extGetItem('tsdebug_displayContent', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="0" /><input type="checkbox" id="tsdebug_displayContent" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="1"' . ($beuser->uc['TSFE_adminConfig']['tsdebug_displayContent'] ? ' checked="checked"' : '') . ' />');
-            $out .= $this->extGetItem('tsdebug_displayQueries', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="0" /><input type="checkbox" id="tsdebug_displayQueries" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="1"' . ($beuser->uc['TSFE_adminConfig']['tsdebug_displayQueries'] ? ' checked="checked"' : '') . ' />');
             $out .= $this->extGetItem('tsdebug_forceTemplateParsing', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" /><input type="checkbox" id="tsdebug_forceTemplateParsing" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"' . ($beuser->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing'] ? ' checked="checked"' : '') . ' />');
             $timeTracker = $this->getTimeTracker();
             $timeTracker->printConf['flag_tree'] = $this->extGetFeAdminValue('tsdebug', 'tree');
             $timeTracker->printConf['allTime'] = $this->extGetFeAdminValue('tsdebug', 'displayTimes');
             $timeTracker->printConf['flag_messages'] = $this->extGetFeAdminValue('tsdebug', 'displayMessages');
             $timeTracker->printConf['flag_content'] = $this->extGetFeAdminValue('tsdebug', 'displayContent');
-            $timeTracker->printConf['flag_queries'] = $this->extGetFeAdminValue('tsdebug', 'displayQueries');
             $out .= $this->extGetItem('', $timeTracker->printTSlog(), '', 'typo3-adminPanel-tableRow', 'typo3-adminPanel-table-wrapper scroll-table');
         }
         return $out;

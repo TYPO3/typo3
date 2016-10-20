@@ -111,9 +111,6 @@
 			<trans-unit id="tsdebug_displayContent">
 				<source>Display content</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayQueries">
-				<source>Explain SELECT queries</source>
-			</trans-unit>
 			<trans-unit id="info">
 				<source>Info</source>
 			</trans-unit>

@@ -278,7 +278,6 @@ var typoscriptWords = {
 	'displayFieldIcons': 'reserved',
 	'displayIcons': 'reserved',
 	'displayMessages': 'reserved',
-	'displayQueries': 'reserved',
 	'displayRecord': 'reserved',
 	'displayTimes': 'reserved',
 	'distributeX': 'reserved',

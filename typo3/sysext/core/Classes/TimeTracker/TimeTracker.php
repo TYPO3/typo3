@@ -57,7 +57,6 @@ class TimeTracker implements SingletonInterface
         // Determines max length of displayed content FROM FILE cObjects before it gets cropped. Reason is that most FILE cObjects are huge and often used as template-code.
         'flag_tree' => 1,
         'flag_messages' => 1,
-        'flag_queries' => 0,
         'flag_content' => 0,
         'allTime' => 0,
         'keyLgd' => 40
@@ -357,7 +356,6 @@ class TimeTracker implements SingletonInterface
         $flag_tree = $this->printConf['flag_tree'];
         $flag_messages = $this->printConf['flag_messages'];
         $flag_content = $this->printConf['flag_content'];
-        $flag_queries = $this->printConf['flag_queries'];
         $keyLgd = $this->printConf['keyLgd'];
         $c = 0;
         foreach ($this->tsStackLog as $uniqueId => $data) {
@@ -416,9 +414,6 @@ class TimeTracker implements SingletonInterface
                 foreach ($data['message'] as $v) {
                     $msgArr[] = nl2br($v);
                 }
-            }
-            if ($flag_queries && is_array($data['selectQuery'])) {
-                $msgArr[] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($data['selectQuery']);
             }
             if ($flag_content && (string)$data['content'] !== '') {
                 $maxlen = 120;
