@@ -2145,6 +2145,10 @@ class TypoScriptFrontendController
             $res = GeneralUtility::getUrl($code, 1, $headerArr);
             // Header and content are separated by an empty line
             list($header, $content) = explode(CRLF . CRLF, $res, 2);
+            // There can be multiple header blocks when using a proxy with cURL
+            while (substr($content, 0, 4) === 'HTTP') {
+                list($header, $content) = explode(CRLF . CRLF, $content, 2);
+            }
             $content .= CRLF;
             if (false === $res) {
                 // Last chance -- redirect
