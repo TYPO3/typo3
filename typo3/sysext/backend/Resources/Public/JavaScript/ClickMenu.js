@@ -100,7 +100,7 @@ define(['jquery'], function($) {
 		$.ajax(url).done(function(response) {
 			if (!response.getElementsByTagName('data')[0]) {
 				var res = parameters.match(/&reloadListFrame=(0|1|2)(&|$)/);
-				var reloadListFrame = parseInt(res[1], 0);
+				var reloadListFrame = res !== null && parseInt(res[1], 0);
 				if (reloadListFrame) {
 					var doc = reloadListFrame != 2 ? top.content.list_frame : top.content;
 					doc.location.reload(true);
