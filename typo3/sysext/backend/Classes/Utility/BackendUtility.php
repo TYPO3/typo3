@@ -3748,6 +3748,9 @@ class BackendUtility {
 				}
 			} else {
 				$condition = 'ref_uid=' . (int)$ref;
+				if ($table === 'sys_file') {
+					$condition .= ' AND tablename != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_file_metadata', $table);
+				}
 			}
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND ' . $condition . ' AND deleted=0');
 		}
