@@ -43,6 +43,8 @@ class ProductionPreset extends Configuration\AbstractPreset {
 		'SYS/sqlDebug' => 0,
 		'SYS/systemLogLevel' => 2,
 		'SYS/clearCacheSystem' => FALSE,
+		// E_RECOVERABLE_ERROR | E_USER_DEPRECATED
+		'SYS/exceptionalErrors' => 20480,
 	);
 
 	/**
