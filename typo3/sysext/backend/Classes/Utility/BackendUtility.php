@@ -4191,6 +4191,9 @@ class BackendUtility
                 }
             } else {
                 $condition = 'ref_uid=' . (int)$ref;
+                if ($table === 'sys_file') {
+                    $condition .= ' AND tablename != ' . $db->fullQuoteStr('sys_file_metadata', $table);
+                }
             }
             $count = $db->exec_SELECTcountRows('*', 'sys_refindex', 'ref_table=' . $db->fullQuoteStr($table, 'sys_refindex') . ' AND ' . $condition . ' AND deleted=0');
         }
