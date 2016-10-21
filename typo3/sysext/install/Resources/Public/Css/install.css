@@ -7348,7 +7348,6 @@ body {
 .topbar-header-site {
   overflow: hidden;
   position: relative;
-  display: block;
   max-width: 100%;
   height: 45px;
   line-height: 45px;
