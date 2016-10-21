@@ -4139,6 +4139,10 @@ class BackendUtility
                 );
             } else {
                 $queryBuilder->andWhere($queryBuilder->expr()->eq('ref_uid', (int)$ref));
+
+                if ($table === 'sys_file') {
+                    $queryBuilder->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')));
+                }
             }
 
             $count = $queryBuilder->execute()->fetchColumn(0);
