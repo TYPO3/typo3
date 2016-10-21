@@ -4,7 +4,7 @@
 Feature: #78103 - Add missing information status for addSystemMessage
 =====================================================================
 
-See :forge:`78103`
+See :issue:`78103`
 
 Description
 ===========
@@ -18,3 +18,5 @@ Impact
 
 All system information added by `addSystemInformation()` will now pass `InformationStatus::STATUS_NOTICE`
 as default value.
+
+.. index:: Backend
