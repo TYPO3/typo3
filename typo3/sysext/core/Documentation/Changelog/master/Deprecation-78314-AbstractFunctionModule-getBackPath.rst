@@ -28,3 +28,5 @@ Migration
 =========
 
 As the method always returns an empty string (since the backPath functionality is not needed anymore) the PHP call can be removed.
+
+.. index:: Backend, PHP-API
