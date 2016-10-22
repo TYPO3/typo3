@@ -69,10 +69,12 @@ define(
 					$('t3js-scaffold-content').removeAttr('style');
 				},
 				hide: function () {
+					$('.t3js-topbar-button-navigationcomponent').css('visibility', 'hidden');
 					$('.t3js-scaffold').removeClass('scaffold-content-navigation-expanded');
 					$('.t3js-scaffold-content-module').removeAttr('style');
 				},
 				show: function (component) {
+					$('.t3js-topbar-button-navigationcomponent').css('visibility', 'visible');
 					if(component !== undefined) {
 						$('.t3js-scaffold').addClass('scaffold-content-navigation-expanded');
 					}
