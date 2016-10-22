@@ -152,10 +152,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
      */
     protected function isTargetRenderType(array $fieldConfig)
     {
-        return in_array(
-            $fieldConfig['config']['renderType'],
-            ['selectSingle', 'selectSingleBox', 'selectCheckBox', 'selectMultipleSideBySide'],
-            true
-        );
+        return $fieldConfig['config']['renderType'] !== 'selectTree';
     }
 }
