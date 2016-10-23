@@ -23,28 +23,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LoadTcaService
 {
-
     /**
      * Load TCA
+     * Mostly a copy of ExtensionManagementUtility to include TCA without migrations.
+     * To be used in install tool only.
      *
      * This will set up $GLOBALS['TCA']
-     */
-    public function loadExtensionTablesWithoutMigration()
-    {
-        $this->loadBaseTca();
-    }
-
-    /**
-     * Copy of ExtensionManagementUtility to include TCA without migrations
      *
      * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::buildBaseTcaFromSingleFiles
      */
-    protected function loadBaseTca()
+    public function loadExtensionTablesWithoutMigration()
     {
         $GLOBALS['TCA'] = [];
 
-        $activePackages = GeneralUtility::makeInstance(PackageManager::class)
-            ->getActivePackages();
+        $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
 
         // First load "full table" files from Configuration/TCA
         foreach ($activePackages as $package) {
@@ -86,6 +78,39 @@ class LoadTcaService
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Load ext_tables.php of a single extension
+     *
+     * @param string $extensionKey The extension to load a ext_tables.php file from.
+     * @return void
+     */
+    public function loadSingleExtTablesFile(string $extensionKey)
+    {
+        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
+        global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
+        global $PAGES_TYPES, $TBE_STYLES;
+        global $_EXTKEY;
+
+        if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey])) {
+            throw new \RuntimeException(
+                'Extension ' . $extensionKey . ' does not exist in TYPO3_LOADED_EXT',
+                1477217619
+            );
+        }
+
+        $extensionInformation = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
+        $_EXTKEY = $extensionKey;
+        // Load each ext_tables.php file of loaded extensions
+        if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess)
+            && $extensionInformation['ext_tables.php']
+        ) {
+            // $_EXTKEY and $_EXTCONF are available in ext_tables.php
+            // and are explicitly set in cached file as well
+            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+            require $extensionInformation['ext_tables.php'];
         }
     }
 }

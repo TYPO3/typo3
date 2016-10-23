@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -76,7 +75,7 @@ class EidUtility
         // but in fact it is not loaded. The check below ensure that
         // TCA is still loaded if such bad extensions are installed
         if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
-            Bootstrap::getInstance()->loadCachedTca();
+            ExtensionManagementUtility::loadBaseTca();
         }
     }
 

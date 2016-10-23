@@ -215,6 +215,38 @@ TYPO3.Install.ExtensionChecker = {
 	}
 };
 
+TYPO3.Install.TcaExtTablesChecker = {
+	checkTcaExtTables: function() {
+		var self = this;
+		var url = location.href + '&install[controller]=ajax&install[action]=tcaExtTablesCheck';
+
+		$('button', '#tcaExtTablesCheck').hide();
+		$('#tcaExtTablesCheck-loading').show();
+
+		$.ajax({
+			url: url,
+			cache: false,
+			success: function(data) {
+				if (data === 'OK') {
+					$('#tcaExtTablesCheck-loading').hide();
+					$('#tcaExtTablesCheck-ok').show();
+				} else {
+					if (data === 'unauthorized') {
+						location.reload();
+					}
+					$('#tcaExtTablesCheck-loading').hide();
+					// secure me!
+					$('#tcaExtTablesCheck-broken').show().find('.messageText').html(data);
+				}
+			},
+			error: function() {
+				$('#tcaExtTablesCheck-loading').hide();
+				$('#tcaExtTablesCheck-fatal').show();
+			}
+		});
+	}
+};
+
 TYPO3.Install.Status = {
 	getFolderStatus: function() {
 		var url = location.href + '&install[controller]=ajax&install[action]=folderStatus';
@@ -615,6 +647,16 @@ $(function() {
 			var action = $(e.target).data('action');
 			TYPO3.Install.coreUpdate[action]();
 			$(e.target).closest('.t3-install-form-submit').remove();
+		}));
+	}
+
+	// Handle TCA ext_tables check
+	var $tcaExtTablesCheckSection = $('#tcaExtTablesCheck');
+	if ($tcaExtTablesCheckSection) {
+		$tcaExtTablesCheckSection.on('click', 'button', (function(e) {
+			TYPO3.Install.TcaExtTablesChecker.checkTcaExtTables();
+			e.preventDefault();
+			return false;
 		}));
 	}
 

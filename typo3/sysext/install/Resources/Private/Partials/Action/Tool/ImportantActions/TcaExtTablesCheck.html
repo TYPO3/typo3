@@ -1,0 +1,25 @@
+<h3>TCA in ext_tables.php check</h3>
+
+<p>
+	Check if an extension changes $GLOBALS['TCA'] in ext_tables.php.
+</p>
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<div id="tcaExtTablesCheck">
+		<div id="tcaExtTablesCheck-loading" class="t3js-message typo3-message alert alert-loading" role="alert" style="display: none;">
+			<h4>Loading...</h4>
+		</div>
+		<div id="tcaExtTablesCheck-ok" class="t3js-message typo3-message alert alert-success" role="alert" style="display: none;">
+			<h4>No TCA changes in ext_tables.php files. Good job!</h4>
+		</div>
+		<div id="tcaExtTablesCheck-fatal" class="t3js-message typo3-message alert alert-danger" role="alert" style="display: none;">
+			<h4>Something went wrong checking ext_tables.php, use "Check for broken extensions"!</h4>
+		</div>
+		<div id="tcaExtTablesCheck-broken" class="t3js-message typo3-message alert alert-danger" role="alert" style="display: none;">
+				<h4>Extensions change TCA in ext_tables.php, check for ExtensionManagementUtility and $GLOBALS['TCA']:</h4>
+				<p class="messageText"></p>
+		</div>
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'tceExtTablesCheck', text:'Check loaded extensions'}"/>
+	</div>
+</form>

@@ -303,7 +303,6 @@ class Bootstrap
      */
     public function handleRequest($request)
     {
-
         // Resolve request handler that were registered based on the Application
         $requestHandler = $this->resolveRequestHandler($request);
 
@@ -905,34 +904,6 @@ class Bootstrap
             list($server, $address) = explode('/', $url, 2);
             header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
             die;
-        }
-        return $this;
-    }
-
-    /**
-     * Load TCA for frontend
-     *
-     * This method is *only* executed in frontend scope. The idea is to execute the
-     * whole TCA and ext_tables (which manipulate TCA) on first frontend access,
-     * and then cache the full TCA on disk to be used for the next run again.
-     *
-     * This way, ext_tables.php ist not executed every time, but $GLOBALS['TCA']
-     * is still always there.
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function loadCachedTca()
-    {
-        $cacheIdentifier = 'tca_fe_' . sha1((TYPO3_version . PATH_site . 'tca_fe'));
-        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-        $codeCache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
-        if ($codeCache->has($cacheIdentifier)) {
-            // substr is necessary, because the php frontend wraps php code around the cache value
-            $GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
-        } else {
-            $this->loadExtensionTables();
-            $codeCache->set($cacheIdentifier, serialize($GLOBALS['TCA']));
         }
         return $this;
     }

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\MonitorUtility;
@@ -132,7 +133,7 @@ class RequestHandler implements RequestHandlerInterface
                     ->initializeBackendRouter()
                     ->loadExtensionTables();
         } else {
-            $this->bootstrap->loadCachedTca();
+            ExtensionManagementUtility::loadBaseTca();
         }
         $this->controller->checkAlternativeIdMethods();
         $this->controller->clear_preview();
