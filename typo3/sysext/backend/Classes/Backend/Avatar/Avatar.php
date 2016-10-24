@@ -92,7 +92,10 @@ class Avatar
             $backendUser = $this->getBackendUser()->user;
         }
 
-        $avatarImage = $this->getImage($backendUser, $size);
+        $avatarImage = false;
+        if ($backendUser !== null) {
+            $avatarImage = $this->getImage($backendUser, $size);
+        }
 
         if (!$avatarImage) {
             $avatarImage = GeneralUtility::makeInstance(
