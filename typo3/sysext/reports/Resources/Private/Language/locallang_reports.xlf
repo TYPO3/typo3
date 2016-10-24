@@ -18,6 +18,9 @@
 			<trans-unit id="status_wrongValue">
 				<source>Wrong value detected</source>
 			</trans-unit>
+			<trans-unit id="status_info">
+				<source>Information</source>
+			</trans-unit>
 			<trans-unit id="status_insecure">
 				<source>Insecure</source>
 			</trans-unit>
@@ -113,6 +116,9 @@
 			</trans-unit>
 			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok">
 				<source>Your default database uses utf-8. All good.</source>
+			</trans-unit>
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Info">
+				<source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
 			</trans-unit>
 			<trans-unit id="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
