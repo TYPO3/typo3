@@ -57,10 +57,6 @@ use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
  */
 class ContentObjectRendererTest extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $currentLocale;
 
     /**
      * @var array A backup of registered singleton instances
@@ -116,7 +112,6 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->currentLocale = setlocale(LC_NUMERIC, 0);
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 
@@ -146,7 +141,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
     protected function tearDown()
     {
-        setlocale(LC_NUMERIC, $this->currentLocale);
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
@@ -4215,7 +4209,9 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_bytes($expect, $content, $conf)
     {
         $locale = 'en_US.UTF-8';
-        if (!setlocale(LC_NUMERIC, $locale)) {
+        try {
+            $this->setLocale(LC_NUMERIC, $locale);
+        } catch (\PHPUnit_Framework_Exception $e) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
         $conf = ['bytes.' => $conf];

@@ -23,11 +23,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper;
 class DateViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var array Backup of current locale, it is manipulated in tests
-     */
-    protected $backupLocales = [];
-
-    /**
      * @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
      */
     protected $subject;
@@ -45,13 +40,6 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        // Store all locale categories manipulated in tests for reconstruction in tearDown
-        $this->backupLocales = [
-            'LC_COLLATE' => setlocale(LC_COLLATE, 0),
-            'LC_CTYPE' => setlocale(LC_CTYPE, 0),
-            'LC_MONETARY' => setlocale(LC_MONETARY, 0),
-            'LC_TIME' => setlocale(LC_TIME, 0),
-        ];
         $this->timezone = @date_default_timezone_get();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
         $this->viewHelper = new DateViewHelper();
@@ -60,9 +48,6 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
 
     protected function tearDown()
     {
-        foreach ($this->backupLocales as $category => $locale) {
-            setlocale(constant($category), $locale);
-        }
         date_default_timezone_set($this->timezone);
         parent::tearDown();
     }
@@ -475,10 +460,14 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
         // 2013-02-03 11:40 UTC
         $timestamp = '@1359891658';
 
-        if (!setlocale(LC_COLLATE, $locale)) {
+        try {
+            $this->setLocale(LC_COLLATE, $locale);
+            $this->setLocale(LC_CTYPE, $locale);
+            $this->setLocale(LC_MONETARY, $locale);
+            $this->setLocale(LC_TIME, $locale);
+        } catch (\PHPUnit_Framework_Exception $e) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
-        $this->setCustomLocale($locale);
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
@@ -488,15 +477,5 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expected, $actualResult);
-    }
-
-    /**
-     * @param string $locale
-     */
-    protected function setCustomLocale($locale)
-    {
-        setlocale(LC_CTYPE, $locale);
-        setlocale(LC_MONETARY, $locale);
-        setlocale(LC_TIME, $locale);
     }
 }

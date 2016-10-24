@@ -26,34 +26,14 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
-    /**
-     * @var array Backup of current locale, it is manipulated in tests
-     */
-    protected $backupLocales = [];
-
     protected function setUp()
     {
         parent::setUp();
-        // Store all locale categories manipulated in tests for reconstruction in tearDown
-        $this->backupLocales = [
-            'LC_COLLATE' => setlocale(LC_COLLATE, 0),
-            'LC_CTYPE' => setlocale(LC_CTYPE, 0),
-            'LC_MONETARY' => setlocale(LC_MONETARY, 0),
-            'LC_TIME' => setlocale(LC_TIME, 0),
-        ];
         $this->arguments['name'] = '';
         $this->arguments['sortByOptionLabel'] = false;
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
         $this->viewHelper->_set('tag', $this->tagBuilder);
-    }
-
-    protected function tearDown()
-    {
-        foreach ($this->backupLocales as $category => $locale) {
-            setlocale(constant($category), $locale);
-        }
-        parent::tearDown();
     }
 
     /**
@@ -282,16 +262,18 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function optionsAreSortedByLabelIfSortByOptionLabelIsSetAndLocaleEqualsUtf8()
     {
         $locale = 'de_DE.UTF-8';
-        if (!setlocale(LC_COLLATE, $locale)) {
+        try {
+            $this->setLocale(LC_COLLATE, $locale);
+            $this->setLocale(LC_CTYPE, $locale);
+            $this->setLocale(LC_MONETARY, $locale);
+            $this->setLocale(LC_TIME, $locale);
+        } catch (\PHPUnit_Framework_Exception $e) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
-        if (stristr(PHP_OS, 'Darwin')) {
+        if (stristr(PHP_OS, 'Darwin') !== false) {
             $this->markTestSkipped('Test skipped caused by a bug in the C libraries on BSD/OSX');
         }
 
-        setlocale(LC_CTYPE, $locale);
-        setlocale(LC_MONETARY, $locale);
-        setlocale(LC_TIME, $locale);
         $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">Bamberg</option>' . chr(10) . '<option value="value2" selected="selected">Bämm</option>' . chr(10) . '<option value="value3">Bar</option>' . chr(10) . '<option value="value4">Bär</option>' . chr(10) . '<option value="value5">Burg</option>' . chr(10));
