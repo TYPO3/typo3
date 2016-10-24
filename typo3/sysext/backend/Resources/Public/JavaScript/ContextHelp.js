@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Backend/ContextHelp
  * API for context help.
  */
-define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($, Popover) {
 
 	/**
 	 * The main ContextHelp object
@@ -55,13 +55,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 			.attr('data-original-title', title)
 			.attr('data-placement', this.placement)
 			.attr('data-trigger', this.trigger);
-		TYPO3.Popover.popover($element);
+		Popover.popover($element);
 
 		$(document).on('show.bs.popover', ContextHelp.selector, function(evt) {
 			var $me = $(this),
 				description = $me.data('description');
 			if (typeof description !== 'undefined' && description !== '') {
-				TYPO3.Popover.setOptions($me, {
+				Popover.setOptions($me, {
 					title: $me.data('title'),
 					content: description
 				});
@@ -71,7 +71,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 
 			// if help icon is in DocHeader, force open to bottom
 			if ($me.closest('.t3js-module-docheader').length) {
-				TYPO3.Popover.setOption($me, 'placement', 'bottom');
+				Popover.setOption($me, 'placement', 'bottom');
 			}
 		});
 		$(document).on('shown.bs.popover', ContextHelp.selector, function(evt) {
@@ -94,7 +94,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 				// the 'is' for buttons that trigger popups
 				// the 'has' for icons within a button that triggers a popup
 				if (!$triggerElement.is(e.target) && $triggerElement.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-					TYPO3.Popover.hide($triggerElement);
+					Popover.hide($triggerElement);
 				}
 			});
 		});
@@ -115,7 +115,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 				'height=400,width=600,status=0,menubar=0,scrollbars=1'
 			);
 			cshWindow.focus();
-			TYPO3.Popover.hide($trigger);
+			Popover.hide($trigger);
 			return cshWindow;
 		} catch(e) {
 			// do nothing
@@ -142,16 +142,16 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 			}).done(function(data) {
 				var title = data.title || '';
 				var content = data.content || '<p></p>';
-				TYPO3.Popover.setOptions($trigger, {
+				Popover.setOptions($trigger, {
 					title: title,
 					content: content
 				});
 				$trigger
 					.attr('data-loaded', 'true')
 					.one('hidden.bs.popover', function() {
-						TYPO3.Popover.show($trigger);
+						Popover.show($trigger);
 					});
-				TYPO3.Popover.hide($trigger);
+				Popover.hide($trigger);
 			});
 		}
 	};
