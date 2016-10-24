@@ -1636,7 +1636,8 @@ abstract class AbstractUserAuthentication
         $user = false;
         if ($username || $extraWhere) {
             $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($dbUser['table']);
-            $query->getRestrictions()->removeAll();
+            $query->getRestrictions()->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
             $constraints = array_filter([
                 QueryHelper::stripLogicalOperatorPrefix($dbUser['check_pid_clause']),
