@@ -51,8 +51,8 @@ define(['jquery', 'bootstrap'], function($) {
 	 */
 	Popover.setOptions = function($element, options) {
 		options = options || {};
-		var title = options.title || '';
-		var content = options.content || ' ';
+		var title = options.title || $element.data('title') || '';
+		var content = options.content || $element.data('content') || '';
 		$element
 			.attr('data-original-title', title)
 			.attr('data-content', content)
