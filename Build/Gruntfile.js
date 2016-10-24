@@ -387,7 +387,11 @@ module.exports = function(grunt) {
 	 * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
 	 * - 3) Copy all generated JavaScript and Map files to public folders
 	 */
-	grunt.registerTask('scripts', ['tslint', 'ts', 'copy:ts_files']);
+	grunt.registerTask('scripts', ['tslint', 'tsclean', 'ts', 'copy:ts_files']);
+
+	grunt.task.registerTask('tsclean', function() {
+		grunt.file.delete("JavaScript");
+	});
 
 	/**
 	 * grunt build task

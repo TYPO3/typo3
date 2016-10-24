@@ -38,4 +38,3 @@ define(["require", "exports", 'jquery', "TYPO3/CMS/Core/Contrib/jquery.minicolor
     }());
     return new ColorPicker();
 });
-//# sourceMappingURL=ColorPicker.js.map
