@@ -340,7 +340,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-svgmin');
 	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-copy');
 	grunt.loadNpmTasks("grunt-ts");
 	grunt.loadNpmTasks('grunt-tslint');
 	grunt.loadNpmTasks('grunt-typings');
