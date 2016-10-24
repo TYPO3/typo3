@@ -20,6 +20,14 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 abstract class AbstractConditionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper
 {
     /**
+     * Controller Context to use
+     *
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @api
+     */
+    protected $controllerContext;
+
+    /**
      * Renders <f:then> child if $condition is true, otherwise renders <f:else> child.
      *
      * @param bool $condition View helper condition
@@ -32,6 +40,18 @@ abstract class AbstractConditionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHe
             return $this->renderThenChild();
         } else {
             return $this->renderElseChild();
+        }
+    }
+
+    /**
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return void
+     */
+    public function setRenderingContext(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+        parent::setRenderingContext($renderingContext);
+        if ($renderingContext instanceof \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext) {
+            $this->controllerContext = $renderingContext->getControllerContext();
         }
     }
 }
