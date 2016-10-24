@@ -306,15 +306,19 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             if (!is_array($this->moduleLoader->checkMod($moduleName))) {
                 continue;
             }
+            $pageId = $this->getLinkedPageId($row['url']);
+
             if (!$backendUser->isAdmin()) {
-                $pageId = $this->getLinkedPageId($row['url']);
                 if (MathUtility::canBeInterpretedAsInteger($pageId)) {
                     // Check for webmount access
-                    if (!$backendUser->isInWebMount($pageId)) {
+                    if ($backendUser->isInWebMount($pageId) === null) {
                         continue;
                     }
                     // Check for record access
                     $pageRow = BackendUtility::getRecord('pages', $pageId);
+                    if ($pageRow === null) {
+                        continue;
+                    }
                     if (!$backendUser->doesUserHaveAccess($pageRow, ($perms = 1))) {
                         continue;
                     }
@@ -665,7 +669,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         if (!empty($module) && !empty($url)) {
             $shortcutCreated = 'alreadyExists';
 
-            if (!BackendUtility::shortcutExists($url)) {
+            if (!BackendUtility::shortcutExists($url) && !is_array($module)) {
                 $shortcutCreated = $this->addShortcut($url, $shortcutName, $module);
             }
         }
