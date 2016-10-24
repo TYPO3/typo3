@@ -274,6 +274,12 @@ return [
         ],
         'fluid' => [
             'interceptors' => [],
+            'namespaces' => [
+                'f' => [
+                    'TYPO3Fluid\\Fluid\\ViewHelpers',
+                    'TYPO3\\CMS\\Fluid\\ViewHelpers'
+                ]
+            ]
         ],
         'linkHandler' => [ // Array: Available link types, class which implement the LinkHandling interface
             'page'   => \TYPO3\CMS\Core\LinkHandling\PageLinkHandler::class,
