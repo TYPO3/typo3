@@ -8,6 +8,7 @@
   "version": "8.5.0-dev",
   "license": "GPL-2.0+",
   "devDependencies": {
+    "@types/jasmine": "^2.5.35",
     "autoprefixer": "^6.3.7",
     "grunt": "~1.0.1",
     "grunt-bower-just-install": "0.0.3",
