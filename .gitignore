@@ -33,6 +33,7 @@ Build/typings/*
 .cache
 .sass-cache
 .session
+typo3/sysext/*/Resources/Private/TypeScript/*.js
 typo3/sysext/core/Build/Configuration/Acceptance/Support/_generated/*
 typo3/sysext/core/Build/Configuration/Acceptance/Support/AcceptanceTester.php
 phantomjsdriver.log
