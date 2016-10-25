@@ -69,7 +69,7 @@ script:
         export typo3DatabaseHost="localhost";
         export typo3DatabaseUsername="root";
         export typo3DatabasePassword="";
-        ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 14
+        ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 14;
         parallel --jobs 4 -a <(seq 0 13) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
     fi
   - >
