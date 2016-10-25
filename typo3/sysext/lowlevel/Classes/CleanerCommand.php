@@ -55,7 +55,7 @@ class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
     /**
      * @var array
      */
-    public $performanceStatistics = [];
+    protected $recStats = [];
 
     /**
      * @var array
@@ -293,8 +293,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      */
     public function genTree($rootID, $depth = 1000, $echoLevel = 0, $callBack = '')
     {
-        $pt = GeneralUtility::milliseconds();
-        $this->performanceStatistics['genTree()'] = '';
         // Initialize:
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -337,11 +335,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
             'misplaced_inside_tree' => []
         ];
         // Start traversal:
-        $pt2 = GeneralUtility::milliseconds();
-        $this->performanceStatistics['genTree_traverse()'] = '';
-        $this->performanceStatistics['genTree_traverse():TraverseTables'] = '';
         $this->genTree_traverse($rootID, $depth, $echoLevel, $callBack);
-        $this->performanceStatistics['genTree_traverse()'] = GeneralUtility::milliseconds() - $pt2;
         // Sort recStats (for diff'able displays)
         foreach ($this->recStats as $kk => $vv) {
             foreach ($this->recStats[$kk] as $tables => $recArrays) {
@@ -351,26 +345,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         }
         if ($echoLevel > 0) {
             echo LF . LF;
-        }
-        // Processing performance statistics:
-        $this->performanceStatistics['genTree()'] = GeneralUtility::milliseconds() - $pt;
-        // Count records:
-        foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-            // Select all records belonging to page:
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tableName);
-
-            $amount = $queryBuilder
-                ->count('*')
-                ->from($tableName)
-                ->execute()
-                ->fetchColumn(0);
-            $this->performanceStatistics['MySQL_count'][$tableName] = $amount;
-            $this->performanceStatistics['CSV'] .= LF . $tableName . ',' . $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] . ',' . $this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName] . ',' . $this->performanceStatistics['MySQL_count'][$tableName];
-        }
-        $this->performanceStatistics['recStats_size']['(ALL)'] = strlen(serialize($this->recStats));
-        foreach ($this->recStats as $key => $arrcontent) {
-            $this->performanceStatistics['recStats_size'][$key] = strlen(serialize($arrcontent));
         }
     }
 
@@ -431,13 +405,10 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         if ($callBack) {
             $this->{$callBack}('pages', $rootID, $echoLevel, $versionSwapmode, $rootIsVersion);
         }
-        $pt3 = GeneralUtility::milliseconds();
         // Traverse tables of records that belongs to page:
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             if ($tableName !== 'pages') {
                 // Select all records belonging to page:
-                $pt4 = GeneralUtility::milliseconds();
-
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($tableName);
 
@@ -463,9 +434,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 
                 $result = $queryBuilder->execute();
 
-                $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += GeneralUtility::milliseconds() - $pt4;
-                $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += GeneralUtility::milliseconds() - $pt4;
-                $pt5 = GeneralUtility::milliseconds();
                 $count = $result->rowCount();
                 if ($count) {
                     if ($echoLevel == 2) {
@@ -562,13 +530,10 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
                         }
                     }
                 }
-                $this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc']['(ALL)'] += GeneralUtility::milliseconds() - $pt5;
-                $this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName] += GeneralUtility::milliseconds() - $pt5;
             }
         }
         unset($resSub);
         unset($rowSub);
-        $this->performanceStatistics['genTree_traverse():TraverseTables'] += GeneralUtility::milliseconds() - $pt3;
         // Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
         if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
             if ($depth > 0) {
