@@ -229,7 +229,9 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                             $info = '';
                         } else {
                             $status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '';
-                            $info = '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
+                            $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
+                            $info .= '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
+                            $info .= '<span class="t3-icon fa"></span></label></div>';
                             $newOL_js[$langRow['uid']] .= '
 								+(document.webinfoForm['
                                 . GeneralUtility::quoteJSvalue('newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']')
