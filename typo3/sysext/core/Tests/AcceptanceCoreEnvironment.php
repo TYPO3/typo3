@@ -228,7 +228,8 @@ class AcceptanceCoreEnvironment extends Extension
             'recordlist',
             'reports',
             'sv',
-            'scheduler'
+            'scheduler',
+            'tstemplate',
         ];
         $testbase->setUpPackageStates($instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $testExtensionsToLoad);
         $testbase->setUpBasicTypo3Bootstrap($instancePath);
