@@ -334,12 +334,10 @@ class Typo3DbQueryParser
                         $queryBuilderForSubselect->andWhere($additionalWhereForMatchFields);
                     }
 
-                    $this->queryBuilder->andWhere(
-                        $this->queryBuilder->expr()->comparison(
-                            $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
-                            'IN',
-                            '(' . $queryBuilderForSubselect->getSQL() . ')'
-                        )
+                    return $this->queryBuilder->expr()->comparison(
+                        $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
+                        'IN',
+                        '(' . $queryBuilderForSubselect->getSQL() . ')'
                     );
                 } elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
                     $parentKeyFieldName = $columnMap->getParentKeyFieldName();
