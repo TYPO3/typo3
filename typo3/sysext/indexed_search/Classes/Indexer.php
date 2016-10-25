@@ -1852,7 +1852,7 @@ class Indexer
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
                 ->select(
-                    ['item_mtime', 'tstamp'],
+                    ['phash'],
                     'index_phash',
                     [
                         'phash_grouping' => (int)$this->hash['phash_grouping'],
