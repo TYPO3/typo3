@@ -113,130 +113,6 @@ class ElementsBasicCest
                     ''
                 ]
             ],
-            'input_6 eval=date' => [
-                'tests' => [
-                    [
-                        '29-01-2016',
-                        '29-01-2016',
-                        '1454025600',
-                    ],
-                    [
-                        '13-13-2016',
-                        '13-01-2017',
-                        '1484265600',
-                    ],
-                    [
-                        '29-02-2016',
-                        '29-02-2016',
-                        '1456704000',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '29-02-2015',
-                        '01-03-2015',
-                        '1425168000',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_36 dbType=date eval=date' => [
-                'tests' => [
-                    [
-                        '29-01-2016',
-                        '29-01-2016',
-                        '1454025600',
-                    ],
-                    [
-                        '13-13-2016',
-                        '13-01-2017',
-                        '1484265600',
-                    ],
-                    [
-                        '29-02-2016',
-                        '29-02-2016',
-                        '1456704000',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '29-02-2015',
-                        '01-03-2015',
-                        '1425168000',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_7 eval=datetime' => [
-                'tests' => [
-                    [
-                        '05:23 29-01-2016',
-                        '05:23 29-01-2016',
-                        '1454044980',
-                    ],
-                    [
-                        '05:23 13-13-2016',
-                        '05:23 13-01-2017',
-                        '1484284980',
-                    ],
-                    [
-                        '05:23 29-02-2016',
-                        '05:23 29-02-2016',
-                        '1456723380',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '05:23 29-02-2015',
-                        '05:23 01-03-2015',
-                        '1425187380',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_37 dbType=datetime eval=datetime' => [
-                'tests' => [
-                    [
-                        '05:23 29-01-2016',
-                        '05:23 29-01-2016',
-                        '1454044980',
-                    ],
-                    [
-                        '05:23 13-13-2016',
-                        '05:23 13-01-2017',
-                        '1484284980',
-                    ],
-                    [
-                        '05:23 29-02-2016',
-                        '05:23 29-02-2016',
-                        '1456723380',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '05:23 29-02-2015',
-                        '05:23 01-03-2015',
-                        '1425187380',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
             'input_8 eval=double2' => [
                 'tests' => [
                     [
@@ -398,6 +274,222 @@ class ElementsBasicCest
                     '',
                 ]
             ],
+           'input_19 eval=trim' => [
+                'tests' => [
+                    [
+                        ' Kasper ',
+                        'Kasper',
+                    ],
+                    [
+                        ' Kasper TYPO3 ',
+                        'Kasper TYPO3',
+                    ],
+                ],
+                'cleared' => [
+                    '',
+                ]
+            ],
+            // @todo Check why this test is currently broken
+            //'input_20 eval with user function' => [
+            //    [
+            //        'Kasper',
+            //        'KasperJSfoo',
+            //    ]
+            //],
+            'input_23 eval=upper' => [
+                'tests' => [
+                    [
+                        'Kasper TYPO3!',
+                        'KASPER TYPO3!',
+                    ],
+                ],
+                'cleared' => [
+                    '',
+                ]
+            ],
+            'input_25 eval=int, default=0, range lower=-2, range upper=2' => [
+                'tests' => [
+                    [
+                        'Kasper TYPO3',
+                        '0',
+                        '0',
+                    ],
+                    [
+                        '2',
+                        '2',
+                        '2'
+                    ],
+                    [
+                        '-1',
+                        '-1',
+                        '-1',
+                    ],
+                    [
+                        '-3',
+                        '-3',
+                        '-3',
+                        true,
+                        'Expecting a modal with error on trying to save.'
+                    ],
+                    [
+                        '3',
+                        '-3',
+                        '-3',
+                        true,
+                        'Expecting a modal with error on trying to save.'
+                    ],
+                ],
+                'cleared' => [
+                    '0',
+                    '0'
+                ]
+            ],
+        ];
+
+        foreach ($fieldTests as $fieldLabel => $testData) {
+            $formhandler->fillSeeSaveAndClearInputField(
+                $fieldLabel,
+                $testData
+            );
+        }
+    }
+
+    /**
+     * @param Admin $I
+     * @param Formhandler $formhandler
+     */
+    public function checkThatBrowserSideValidationsWorkAndSaveRecordForDateFields(Admin $I, Formhandler $formhandler)
+    {
+        $editRecordLinkCssPath = self::$listViewRecordSelector . ' a[data-original-title="Edit record"]';
+        $I->waitForElement($editRecordLinkCssPath, 30);
+        $I->click($editRecordLinkCssPath);
+        $I->waitForText('Edit Form', 3, 'h1');
+
+        $fieldTests = [
+            'input_6 eval=date' => [
+                'tests' => [
+                    [
+                        '29-01-2016',
+                        '29-01-2016',
+                        '1454025600',
+                    ],
+                    [
+                        '13-13-2016',
+                        '13-01-2017',
+                        '1484265600',
+                    ],
+                    [
+                        '29-02-2016',
+                        '29-02-2016',
+                        '1456704000',
+                        false,
+                        'Check valid leap year input'
+                    ],
+                    [
+                        '29-02-2015',
+                        '01-03-2015',
+                        '1425168000',
+                        false,
+                        'Check invalid leap year transformation'
+                    ],
+                ],
+                'cleared' => [
+                    '0'
+                ]
+            ],
+            'input_36 dbType=date eval=date' => [
+                'tests' => [
+                    [
+                        '29-01-2016',
+                        '29-01-2016',
+                        '1454025600',
+                    ],
+                    [
+                        '13-13-2016',
+                        '13-01-2017',
+                        '1484265600',
+                    ],
+                    [
+                        '29-02-2016',
+                        '29-02-2016',
+                        '1456704000',
+                        false,
+                        'Check valid leap year input'
+                    ],
+                    [
+                        '29-02-2015',
+                        '01-03-2015',
+                        '1425168000',
+                        false,
+                        'Check invalid leap year transformation'
+                    ],
+                ],
+                'cleared' => [
+                    '0'
+                ]
+            ],
+            'input_7 eval=datetime' => [
+                'tests' => [
+                    [
+                        '05:23 29-01-2016',
+                        '05:23 29-01-2016',
+                        '1454044980',
+                    ],
+                    [
+                        '05:23 13-13-2016',
+                        '05:23 13-01-2017',
+                        '1484284980',
+                    ],
+                    [
+                        '05:23 29-02-2016',
+                        '05:23 29-02-2016',
+                        '1456723380',
+                        false,
+                        'Check valid leap year input'
+                    ],
+                    [
+                        '05:23 29-02-2015',
+                        '05:23 01-03-2015',
+                        '1425187380',
+                        false,
+                        'Check invalid leap year transformation'
+                    ],
+                ],
+                'cleared' => [
+                    '0'
+                ]
+            ],
+            'input_37 dbType=datetime eval=datetime' => [
+                'tests' => [
+                    [
+                        '05:23 29-01-2016',
+                        '05:23 29-01-2016',
+                        '1454044980',
+                    ],
+                    [
+                        '05:23 13-13-2016',
+                        '05:23 13-01-2017',
+                        '1484284980',
+                    ],
+                    [
+                        '05:23 29-02-2016',
+                        '05:23 29-02-2016',
+                        '1456723380',
+                        false,
+                        'Check valid leap year input'
+                    ],
+                    [
+                        '05:23 29-02-2015',
+                        '05:23 01-03-2015',
+                        '1425187380',
+                        false,
+                        'Check invalid leap year transformation'
+                    ],
+                ],
+                'cleared' => [
+                    '0'
+                ]
+            ],
             'input_17 eval=time' => [
                 'tests' => [
                     [
@@ -455,39 +547,6 @@ class ElementsBasicCest
                     '00:00:00',
                 ]
             ],
-            'input_19 eval=trim' => [
-                'tests' => [
-                    [
-                        ' Kasper ',
-                        'Kasper',
-                    ],
-                    [
-                        ' Kasper TYPO3 ',
-                        'Kasper TYPO3',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-            // @todo Check why this test is currently broken
-            //'input_20 eval with user function' => [
-            //    [
-            //        'Kasper',
-            //        'KasperJSfoo',
-            //    ]
-            //],
-            'input_23 eval=upper' => [
-                'tests' => [
-                    [
-                        'Kasper TYPO3!',
-                        'KASPER TYPO3!',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
             'input_24 eval=year' => [
                 'tests' => [
 
@@ -512,43 +571,6 @@ class ElementsBasicCest
                 'cleared' => [
                     '0',
                     '0',
-                ]
-            ],
-            'input_25 eval=int, default=0, range lower=-2, range upper=2' => [
-                'tests' => [
-                    [
-                        'Kasper TYPO3',
-                        '0',
-                        '0',
-                    ],
-                    [
-                        '2',
-                        '2',
-                        '2'
-                    ],
-                    [
-                        '-1',
-                        '-1',
-                        '-1',
-                    ],
-                    [
-                        '-3',
-                        '-3',
-                        '-3',
-                        true,
-                        'Expecting a modal with error on trying to save.'
-                    ],
-                    [
-                        '3',
-                        '-3',
-                        '-3',
-                        true,
-                        'Expecting a modal with error on trying to save.'
-                    ],
-                ],
-                'cleared' => [
-                    '0',
-                    '0'
                 ]
             ],
         ];
