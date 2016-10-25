@@ -13,5 +13,9 @@ return [
     'cleanup:deletedrecords' => [
         'class' => \TYPO3\CMS\Lowlevel\Command\DeletedRecordsCommand::class,
         'user' => '_cli_lowlevel'
+    ],
+    'cleanup:flexforms' => [
+        'class' => \TYPO3\CMS\Lowlevel\Command\CleanFlexFormsCommand::class,
+        'user' => '_cli_lowlevel'
     ]
 ];

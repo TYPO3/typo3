@@ -17,5 +17,4 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['lost_files'] = [\TYPO3\CMS\Lowlevel\LostFilesCommand::class];
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['orphan_records'] = [\TYPO3\CMS\Lowlevel\OrphanRecordsCommand::class];
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['versions'] = [\TYPO3\CMS\Lowlevel\VersionsCommand::class];
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['cleanflexform'] = [\TYPO3\CMS\Lowlevel\CleanFlexformCommand::class];
 }
