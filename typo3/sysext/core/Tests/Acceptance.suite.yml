@@ -9,7 +9,7 @@ modules:
       url: http://localhost:8000/typo3temp/var/tests/acceptance
       browser: firefox
       port: 4444
-      window_size: 1440x570
+      window_size: 1280x960
       wait: 1
       restart: true
       capabilities:
