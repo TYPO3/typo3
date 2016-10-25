@@ -1159,6 +1159,21 @@ return [
             \TYPO3\CMS\Core\Log\LogLevel::WARNING => [
                 \TYPO3\CMS\Core\Log\Writer\FileWriter::class => []
             ]
+        ],
+        'TYPO3' => [
+            'CMS' => [
+                'Core' => [
+                    'Resource' => [
+                        'ResourceStorage' => [
+                            'writerConfiguration' => [
+                                \TYPO3\CMS\Core\Log\LogLevel::ERROR => [
+                                    \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => []
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ]
     ],
     'USER' => [],

@@ -180,9 +180,17 @@ class ResourceStorage implements ResourceStorageInterface
         try {
             $this->driver->processConfiguration();
         } catch (Exception\InvalidConfigurationException $e) {
-            // configuration error
-            // mark this storage as permanently unusable
-            $this->markAsPermanentlyOffline();
+            // Configuration error
+            $this->isOnline = false;
+
+            $message = sprintf(
+                'Failed initializing storage [%d] "%s", error: %s',
+                $this->getUid(),
+                $this->getName(),
+                $e->getMessage()
+            );
+
+            $this->getLogger()->error($message);
         }
         $this->driver->initialize();
         $this->capabilities = $this->driver->getCapabilities();
@@ -3011,5 +3019,27 @@ class ResourceStorage implements ResourceStorageInterface
     public function isDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected function getLogger()
+    {
+        /** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+        $logManager = GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Log\LogManager::class
+        );
+        return $logManager->getLogger(get_class($this));
     }
 }
