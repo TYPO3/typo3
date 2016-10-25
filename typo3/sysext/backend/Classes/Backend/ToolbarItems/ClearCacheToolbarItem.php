@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Render cache clearing toolbar item
@@ -121,12 +122,16 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache'));
         $icon = $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render('inline');
-        return '
-            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
-            <span class="toolbar-item-title">' . $title . '</span>
-            ';
+
+        $view = $this->getFluidTemplateObject('ClearCacheToolbarItem.html');
+        $view->assignMultiple([
+                'title' => 'LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache',
+                'icon' => $icon
+            ]
+        );
+
+        return $view->render();
     }
 
     /**
@@ -136,32 +141,14 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $result = [];
-        $result[] = '<h3 class="dropdown-headline">';
-        $result[] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache'));
-        $result[] = '</h3>';
-        $result[] = '<hr>';
-        $result[] = '<div class="dropdown-table">';
-        foreach ($this->cacheActions as $cacheAction) {
-            $title = $cacheAction['description'] ?: $cacheAction['title'];
+        $view = $this->getFluidTemplateObject('ClearCacheToolbarItemDropDown.html');
+        $view->assignMultiple([
+                'title' =>  'LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache',
+                'cacheActions' => $this->cacheActions,
+            ]
+        );
 
-            $result[] = '<div class="dropdown-table-row">';
-
-            $result[] = '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
-            $result[] = $cacheAction['icon'];
-            $result[] = '</div>';
-
-            $result[] = '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">';
-            $result[] = '<a href="' . htmlspecialchars($cacheAction['href']) . '">';
-            $result[] = htmlspecialchars($cacheAction['title']);
-            $result[] = '<br><small class="text-muted">' . htmlspecialchars($title) . '</small>';
-            $result[] = '</a>';
-            $result[] = '</div>';
-
-            $result[] = '</div>';
-        }
-        $result[] = '</div>';
-        return implode(LF, $result);
+        return $view->render();
     }
 
     /**
@@ -222,5 +209,26 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename):StandaloneView
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ToolbarItems')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems')]);
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems/' . $filename));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }
