@@ -89,7 +89,7 @@ define(
 					return $('.t3js-scaffold-content-navigation-iframe').attr('src');
 				},
 				refresh: function() {
-					// refresh navi
+					$('.t3js-scaffold-content-navigation-iframe')[0].contentWindow.location.reload();
 				},
 				calculateScrollbar: function (){
 					TYPO3.Backend.NavigationContainer.cleanup();
@@ -133,7 +133,7 @@ define(
 					return $('.t3js-scaffold-content-module-iframe').attr('src');
 				},
 				refresh: function() {
-					// refresh content
+					$('.t3js-scaffold-content-module-iframe')[0].contentWindow.location.reload();
 				},
 				getIdFromUrl: function() {
 					if(this.getUrl) {
