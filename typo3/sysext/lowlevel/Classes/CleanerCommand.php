@@ -355,14 +355,13 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      * @param int $depth Depth
      * @param int $echoLevel Echo Level
      * @param string $callBack Call back function (from this class or subclass)
-     * @param string $versionSwapmode DON'T set from outside, internal. (indicates we are inside a version of a page) - will be "SWAPMODE:-1" or empty
+     * @param bool $versionSwapmode DON'T set from outside, internal. (indicates we are inside a version of a page)
      * @param int $rootIsVersion DON'T set from outside, internal. (1: Indicates that rootID is a version of a page, 2: ...that it is even a version of a version (which triggers a warning!)
      * @param string $accumulatedPath Internal string that accumulates the path
      * @return void
      * @access private
-     * @todo $versionSwapmode needs to be cleaned up, since page and branch version (0, 1) does not exist anymore
      */
-    public function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = '', $rootIsVersion = 0, $accumulatedPath = '')
+    public function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = false, $rootIsVersion = 0, $accumulatedPath = '')
     {
         // Register page:
         $this->recStats['all']['pages'][$rootID] = $rootID;
@@ -444,8 +443,8 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
                     if ($echoLevel == 3) {
                         echo LF . '	\\-' . $tableName . ':' . $rowSub['uid'];
                     }
-                    // If the rootID represents a version, we must check if the record from this table is allowed to belong to this:
-                    if ($versionSwapmode === 'SWAPMODE:-1') {
+                    // If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
+                    if ($versionSwapmode) {
                         // This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
                         $this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
                         if ($echoLevel > 1) {
@@ -535,41 +534,39 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         unset($resSub);
         unset($rowSub);
         // Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
-        if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
-            if ($depth > 0) {
-                $depth--;
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('pages');
+        if ($depth > 0) {
+            $depth--;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
 
-                $queryBuilder->getRestrictions()->removeAll();
-                if (!$this->genTree_traverseDeleted) {
-                    $queryBuilder->getRestrictions()->add(DeletedRestriction::class);
-                }
-
-                $queryBuilder
-                    ->select('uid')
-                    ->from('pages')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)
-                        )
-                    )
-                    ->orderBy('sorting');
-
-                $result = $queryBuilder->execute();
-                while ($row = $result->fetch()) {
-                    $this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
-                }
+            $queryBuilder->getRestrictions()->removeAll();
+            if (!$this->genTree_traverseDeleted) {
+                $queryBuilder->getRestrictions()->add(DeletedRestriction::class);
             }
-            // Add any versions of pages
-            if ($rootID > 0 && $this->genTree_traverseVersions) {
-                $versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', null, true);
-                if (is_array($versions)) {
-                    foreach ($versions as $verRec) {
-                        if (!$verRec['_CURRENT_VERSION']) {
-                            $this->genTree_traverse($verRec['uid'], $depth, $echoLevel, $callBack, 'SWAPMODE:-1', $versionSwapmode ? 2 : 1, $accumulatedPath . ' [#OFFLINE VERSION: WS#' . $verRec['t3ver_wsid'] . '/Cnt:' . $verRec['t3ver_count'] . ']');
-                        }
+
+            $queryBuilder
+                ->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)
+                    )
+                )
+                ->orderBy('sorting');
+
+            $result = $queryBuilder->execute();
+            while ($row = $result->fetch()) {
+                $this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
+            }
+        }
+        // Add any versions of pages
+        if ($rootID > 0 && $this->genTree_traverseVersions) {
+            $versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', null, true);
+            if (is_array($versions)) {
+                foreach ($versions as $verRec) {
+                    if (!$verRec['_CURRENT_VERSION']) {
+                        $this->genTree_traverse($verRec['uid'], $depth, $echoLevel, $callBack, true, $versionSwapmode ? 2 : 1, $accumulatedPath . ' [#OFFLINE VERSION: WS#' . $verRec['t3ver_wsid'] . '/Cnt:' . $verRec['t3ver_count'] . ']');
                     }
                 }
             }
