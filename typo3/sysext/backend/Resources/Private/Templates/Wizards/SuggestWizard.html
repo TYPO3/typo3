@@ -1,0 +1,21 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<div class="autocomplete t3-form-suggest-container">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <core:icon identifier="actions-search" size="small" />
+        </span>
+        <input type="search" class="t3-form-suggest form-control"
+               placeholder="{f:translate(key: placeholder, htmlEscape: 'TRUE')}"
+               data-fieldname="{fieldname -> f:format.htmlspecialchars()}"
+               data-table="{table -> f:format.htmlspecialchars()}"
+               data-field="{field -> f:format.htmlspecialchars()}"
+               data-uid="{uid}"
+               data-pid="{pid}"
+               data-fieldtype="{fieldtype -> f:format.htmlspecialchars()}"
+               data-minchars="{minchars}"
+               data-recorddata="{recorddata -> f:format.htmlspecialchars()}"
+        />
+    </div>
+</div>
+

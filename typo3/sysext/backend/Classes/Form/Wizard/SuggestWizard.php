@@ -18,12 +18,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -31,6 +30,20 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class SuggestWizard
 {
+
+    /**
+     * @var StandaloneView
+     */
+    protected $view;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->view = $this->getFluidTemplateObject('SuggestWizard.html');
+    }
+
     /**
      * Renders an ajax-enabled text field. Also adds required JS
      *
@@ -43,9 +56,6 @@ class SuggestWizard
      */
     public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config)
     {
-        /** @var $iconFactory IconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $languageService = $this->getLanguageService();
         $isFlexFormField = $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex';
         if ($isFlexFormField) {
             $fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
@@ -79,25 +89,20 @@ class SuggestWizard
             $jsRow = serialize($row);
         }
 
-        $selector = '
-		<div class="autocomplete t3-form-suggest-container">
-			<div class="input-group">
-				<span class="input-group-addon">' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . '</span>
-				<input type="search" class="t3-form-suggest form-control"
-					placeholder="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '"
-					data-fieldname="' . htmlspecialchars($fieldname) . '"
-					data-table="' . htmlspecialchars($table) . '"
-					data-field="' . htmlspecialchars($field) . '"
-					data-uid="' . htmlspecialchars($row['uid']) . '"
-					data-pid="' . (int)$row['pid'] . '"
-					data-fieldtype="' . htmlspecialchars($type) . '"
-					data-minchars="' . (int)$minChars . '"
-					data-recorddata="' . htmlspecialchars($jsRow) . '"
-				/>
-			</div>
-		</div>';
+        $this->view->assignMultiple([
+                'placeholder' => 'LLL:EXT:lang/locallang_core.xlf:labels.findRecord',
+                'fieldname' => $fieldname,
+                'table' => $table,
+                'field' => $field,
+                'uid' => $row['uid'],
+                'pid' => (int)$row['pid'],
+                'fieldtype' => $type,
+                'minchars' => (int)$minChars,
+                'recorddata' => $jsRow
+            ]
+        );
 
-        return $selector;
+        return $this->view->render();
     }
 
     /**
@@ -509,5 +514,30 @@ class SuggestWizard
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename = null):StandaloneView
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+
+        if ($filename === null) {
+            $filename = 'SuggestWizard.html';
+        }
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/Wizards/' . $filename));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }
