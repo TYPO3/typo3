@@ -160,7 +160,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         if ($dataMap->getRecordTypeColumnName() !== null) {
             foreach ($dataMap->getSubclasses() as $subclassName) {
                 $recordSubtype = $this->getDataMap($subclassName)->getRecordType();
-                if ($row[$dataMap->getRecordTypeColumnName()] === $recordSubtype) {
+                if ((string)$row[$dataMap->getRecordTypeColumnName()] === (string)$recordSubtype) {
                     $targetType = $subclassName;
                     break;
                 }
