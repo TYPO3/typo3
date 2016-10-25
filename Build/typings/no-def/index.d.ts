@@ -1,1 +1,1 @@
-/// <reference path="jquery.minicolors.d.ts" />
+import 'jquery.minicolors';

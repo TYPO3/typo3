@@ -151,9 +151,6 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		typings: {
-			install: {}
-		},
 		watch: {
 			options: {
 				livereload: true
@@ -342,7 +339,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks("grunt-ts");
 	grunt.loadNpmTasks('grunt-tslint');
-	grunt.loadNpmTasks('grunt-typings');
 
 	/**
 	 * grunt default task
@@ -371,11 +367,10 @@ module.exports = function(grunt) {
 	 *
 	 * this task does the following things:
 	 * - npm install
-	 * - typings install
 	 * - bower install
 	 * - copy some bower components to a specific destinations because they need to be included via PHP
 	 */
-	grunt.registerTask('update', ['npm-install', 'typings', 'bower_install', 'bowercopy']);
+	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy']);
 
 	/**
 	 * grunt scripts task
