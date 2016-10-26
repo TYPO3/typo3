@@ -151,9 +151,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             ->getQueryBuilderForTable(self::TABLE_NAME);
 
         $searchPlaceholder = $queryBuilder->createNamedParameter($searchString);
-        $searchPlaceholderForLike = $queryBuilder->createNamedParameter(
-            '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%'
-        );
+        $searchPlaceholderForLike = '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%';
 
         $searchConstraints = [
             'extension_key' => $queryBuilder->expr()->eq(
