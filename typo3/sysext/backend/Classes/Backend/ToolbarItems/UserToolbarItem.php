@@ -15,13 +15,13 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
-use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * User toolbar item
@@ -59,7 +59,6 @@ class UserToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $backendUser = $this->getBackendUser();
-        $languageService = $this->getLanguageService();
 
         /** @var Avatar $avatar */
         $avatar =  GeneralUtility::makeInstance(Avatar::class);
@@ -67,22 +66,17 @@ class UserToolbarItem implements ToolbarItemInterface
 
         $realName = $backendUser->user['realName'];
         $username = $backendUser->user['username'];
-        $label = $realName ?: $username;
-        $title = $username;
 
-        // Switch user mode
-        if ($backendUser->user['ses_backuserid']) {
-            $title = $languageService->getLL('switchtouser') . ': ' . $username;
-            $label = $languageService->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
-        }
+        $view = $this->getFluidTemplateObject('UserToolbarItem.html');
+        $view->assignMultiple([
+                'username' => $username,
+                'realName' => $realName,
+                'switchUserMode' => $backendUser->user['ses_backuserid'],
+                'icon' => $icon
+            ]
+        );
 
-        $html = [];
-        $html[] = '<span class="toolbar-item-avatar">' . $icon . '</span>';
-        $html[] = '<span class="toolbar-item-name" title="' . htmlspecialchars($title) . '">';
-        $html[] = htmlspecialchars($label);
-        $html[] = '</span>';
-
-        return implode(LF, $html);
+        return $view->render();
     }
 
     /**
@@ -93,46 +87,24 @@ class UserToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $backendUser = $this->getBackendUser();
-        $languageService = $this->getLanguageService();
-
-        $dropdown = [];
-        $dropdown[] = '<div class="dropdown-table">';
 
         /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         /** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
         $userModuleMenu = $backendModuleRepository->findByModuleName('user');
-        if ($userModuleMenu != false && $userModuleMenu->getChildren()->count() > 0) {
-            foreach ($userModuleMenu->getChildren() as $module) {
-                /** @var BackendModule $module */
-                $dropdown[] = '<div'
-                    . ' class="dropdown-table-row"'
-                    . ' id="' . htmlspecialchars($module->getName()) . '"'
-                    . ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
-                    . ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
-                    . ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
-                    . ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
-                    . '>';
-                $dropdown[] = '<div class="dropdown-table-column dropdown-table-icon">' . $module->getIcon() . '</div>';
-                $dropdown[] = '<div class="dropdown-table-column dropdown-table-title">';
-                $dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="modlink">';
-                $dropdown[] = htmlspecialchars($module->getTitle());
-                $dropdown[] = '</a>';
-                $dropdown[] = '</div>';
-                $dropdown[] = '</div>';
-            }
-        }
-        $dropdown[] = '</div>';
 
-        $dropdown[] = '<hr>';
-        // Logout button
-        $buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
-        $dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top">';
-        $dropdown[] = $this->iconFactory->getIcon('actions-logout', Icon::SIZE_SMALL)->render('inline') . ' ';
-        $dropdown[] = htmlspecialchars($languageService->sL($buttonLabel));
-        $dropdown[] = '</a>';
+        $icon = $this->iconFactory->getIcon('actions-logout', Icon::SIZE_SMALL)->render('inline');
 
-        return implode(LF, $dropdown);
+        $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
+        $view->assignMultiple([
+                'modules' => $userModuleMenu->getChildren(),
+                'logoutUrl' => BackendUtility::getModuleUrl('logout'),
+                'switchUserMode' => $backendUser->user['ses_backuserid'],
+                'icon' => $icon
+            ]
+        );
+
+        return $view->render();
     }
 
     /**
@@ -188,5 +160,26 @@ class UserToolbarItem implements ToolbarItemInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename):StandaloneView
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ToolbarItems')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems')]);
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems/' . $filename));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }

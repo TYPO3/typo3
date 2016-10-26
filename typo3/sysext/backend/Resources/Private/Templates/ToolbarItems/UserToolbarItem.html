@@ -1,0 +1,14 @@
+<span class="toolbar-item-avatar">{icon -> f:format.raw()}</span>
+<f:if condition="{switchUserMode}">
+    <f:then>
+        <span class="toolbar-item-name" title="{f:translate(key: 'LLL:EXT:lang/locallang_misc.xlf:switchtouser', htmlEscape: 'TRUE')} {username}">
+            {f:translate(key: 'LLL:EXT:lang/locallang_misc.xlf:switchtousershort', htmlEscape: 'FALSE')}
+            {f:if(condition: '{realName}', then: '{realname} ({username})', else: '{username}')}
+        </span>
+    </f:then>
+    <f:else>
+        <span class="toolbar-item-name" title="{username}">
+            {f:if(condition: '{realName}', then: '{realName}', else: '{username}')}
+        </span>
+    </f:else>
+</f:if>
