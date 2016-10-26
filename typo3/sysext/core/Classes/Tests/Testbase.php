@@ -313,7 +313,8 @@ class Testbase
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
         $databaseUsername = trim(getenv('typo3DatabaseUsername'));
-        $databasePassword = trim(getenv('typo3DatabasePassword'));
+        $databasePassword = getenv('typo3DatabasePassword');
+        $databasePasswordTrimmed = trim($databasePassword);
         $databasePort = trim(getenv('typo3DatabasePort'));
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
@@ -336,8 +337,8 @@ class Testbase
             if ($databaseUsername) {
                 $originalConfigurationArray['DB']['Connections']['Default']['user'] = $databaseUsername;
             }
-            if ($databasePassword) {
-                $originalConfigurationArray['DB']['Connections']['Default']['password'] = $databasePassword;
+            if ($databasePassword !== false) {
+                $originalConfigurationArray['DB']['Connections']['Default']['password'] = $databasePasswordTrimmed;
             }
             if ($databasePort) {
                 $originalConfigurationArray['DB']['Connections']['Default']['port'] = $databasePort;

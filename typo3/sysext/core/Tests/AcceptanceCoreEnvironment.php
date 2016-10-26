@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests;
 
 /*
@@ -198,7 +199,7 @@ class AcceptanceCoreEnvironment extends Extension
         // $this->configurationToUseInTestInstance if needed again.
         $localConfiguration['BE']['debug'] = true;
         $localConfiguration['BE']['lockHashKeyWords'] = '';
-        $localConfiguration['BE']['installToolPassword'] = '$P$notnotnotnotnotnot.validvalidva';
+        $localConfiguration['BE']['installToolPassword'] = $this->getInstallToolPassword();
         $localConfiguration['BE']['loginSecurityLevel'] = 'rsa';
         $localConfiguration['SYS']['isInitialInstallationInProgress'] = false;
         $localConfiguration['SYS']['isInitialDatabaseImportDone'] = true;
@@ -276,5 +277,23 @@ class AcceptanceCoreEnvironment extends Extension
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('be_users')
             ->update('be_users', ['uc' => null], ['uid' => 1]);
+    }
+
+    /**
+     * Set install tool password. This is either a salted password
+     * of a given typo3InstallToolPassword environment variable, or
+     * a hardcoded value that does not allow login.
+     *
+     * @return string
+     */
+    protected function getInstallToolPassword(): string
+    {
+        $password = getenv('typo3InstallToolPassword');
+        if (!empty($password)) {
+            $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
+            return $saltFactory->getHashedPassword($password);
+        } else {
+            return '$P$notnotnotnotnotnot.validvalidva';
+        }
     }
 }
