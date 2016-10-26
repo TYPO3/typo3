@@ -10,15 +10,17 @@
 				<button class="topbar-button topbar-button-navigationcomponent t3js-topbar-button-navigationcomponent">
 					<core:icon identifier="apps-pagetree-category-collapse-all" alternativeMarkupIdentifier="inline" />
 				</button>
-				<a href="{logoLink}" class="topbar-header-site" target="_blank" title="{siteName} - {applicationVersion}">
-					<span class="topbar-header-site-logo">
-						<img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" title="TYPO3 Content Management System" alt="" />
-					</span>
-					<span class="topbar-header-site-title">
-						<span class="topbar-header-site-name">{siteName}</span>
-						<span class="topbar-header-site-version">{applicationVersion}</span>
-					</span>
-				</a>
+				<div class="topbar-header-site">
+					<a href="./" target="_top" title="{siteName} - {applicationVersion}">
+						<span class="topbar-header-site-logo">
+							<img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" title="TYPO3 Content Management System" alt="" />
+						</span>
+						<span class="topbar-header-site-title">
+							<span class="topbar-header-site-name">{siteName}</span>
+							<span class="topbar-header-site-version">{applicationVersion}</span>
+						</span>
+					</a>
+				</div>
 				<button class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar">
 					<core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
 				</button>

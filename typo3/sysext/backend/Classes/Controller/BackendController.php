@@ -293,7 +293,6 @@ class BackendController
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
-        $view->assign('logoLink', TYPO3_URL_GENERAL);
         $view->assign('applicationVersion', TYPO3_version);
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $view->assign('moduleMenu', $this->generateModuleMenu());
