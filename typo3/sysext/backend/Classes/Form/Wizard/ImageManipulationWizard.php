@@ -54,7 +54,7 @@ class ImageManipulationWizard
 
             $view = $this->getFluidTemplateObject($this->templatePath . 'Wizards/ImageManipulationWizard.html');
             $view->assign('image', $image);
-            $view->assign('zoom', (bool)$queryParams['bool']);
+            $view->assign('zoom', (bool)$queryParams['zoom']);
             $view->assign('ratios', $this->getAvailableRatios($request));
             $content = $view->render();
 
