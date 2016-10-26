@@ -44,7 +44,8 @@ class AjaxController extends AbstractController
         'coreUpdateActivate',
         'folderStatus',
         'environmentStatus',
-        'tcaExtTablesCheck'
+        'tcaExtTablesCheck',
+        'tcaMigrationsCheck',
     ];
 
     /**

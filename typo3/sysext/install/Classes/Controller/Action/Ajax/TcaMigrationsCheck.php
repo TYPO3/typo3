@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
 use TYPO3\CMS\Install\Status\NoticeStatus;
@@ -21,17 +22,10 @@ use TYPO3\CMS\Install\Status\StatusInterface;
 use TYPO3\CMS\Install\View\JsonView;
 
 /**
- * Check ext_tables.php files of loaded extensions for TCA changes.
- *
- * Changing TCA in ext_tables is highly discouraged since core version 7
- * and can break the frontend since core version 8.
- *
- * This test loads all ext_tables.php one-by-one and finds files that
- * still change TCA.
+ * Checks whether the current TCA needs migrations and displays applied migrations.
  */
-class TcaExtTablesCheck extends AbstractAjaxAction
+class TcaMigrationsCheck extends AbstractAjaxAction
 {
-
     /**
      * @var \TYPO3\CMS\Install\View\JsonView
      */
@@ -56,19 +50,19 @@ class TcaExtTablesCheck extends AbstractAjaxAction
     }
 
     /**
-     * Fetches all installed extensions that still mess with the TCA in a way they shouldn't
+     * Load all TCA Migrations and return if there are any todos
      *
-     * @return array status list of extensions that still mess with the TCA
+     * @return array TCA status messages
      */
     protected function executeAction()
     {
         $statusMessages = [];
-        $tcaMessages = $this->checkTcaChangesInExtTables();
+        $tcaMessages = $this->checkTcaMigrations();
 
         foreach ($tcaMessages as $tcaMessage) {
             /** @var $message StatusInterface */
             $message = GeneralUtility::makeInstance(NoticeStatus::class);
-            $message->setTitle($tcaMessage);
+            $message->setMessage($tcaMessage);
             $statusMessages[] = $message;
         }
 
@@ -80,28 +74,15 @@ class TcaExtTablesCheck extends AbstractAjaxAction
     }
 
     /**
-     * Load base TCA, then load each single ext_tables.php file and see if TCA changed.
+     * "TCA migration" action
      *
-     * @return array list of extensions that still mess with the tca
+     * @return array The TCA migration messages
      */
-    protected function checkTcaChangesInExtTables()
+    protected function checkTcaMigrations()
     {
-        $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
-        $loadTcaService->loadExtensionTablesWithoutMigration();
-        $baseTca = $GLOBALS['TCA'];
-        $messages = [];
-        foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionInformation) {
-            if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess)
-                && $extensionInformation['ext_tables.php']
-            ) {
-                $loadTcaService->loadSingleExtTablesFile($extensionKey);
-                $newTca = $GLOBALS['TCA'];
-                if ($newTca !== $baseTca) {
-                    $messages[] = $extensionKey;
-                }
-                $baseTca = $newTca;
-            }
-        }
-        return $messages;
+        GeneralUtility::makeInstance(LoadTcaService::class)->loadExtensionTablesWithoutMigration();
+        $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
+        $GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
+        return $tcaMigration->getMessages();
     }
 }

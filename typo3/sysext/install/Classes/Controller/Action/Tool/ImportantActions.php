@@ -57,26 +57,6 @@ class ImportantActions extends Action\AbstractAction
         if (isset($this->postValues['set']['dumpAutoload'])) {
             $actionMessages[] = $this->dumpAutoload();
         }
-        if (isset($this->postValues['set']['tcaMigrations'])) {
-            $tcaMessages = $this->checkTcaMigrations();
-
-            if (count($tcaMessages) === 0) {
-                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
-                $message->setTitle('No TCA migrations need to be applied');
-                $message->setMessage('Your TCA looks good.');
-                $actionMessages[] = $message;
-            } else {
-                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
-                $message->setTitle('TCA migrations need to be applied');
-                $messageContent = ['Check the following list and apply needed changes. <br><br><ol>'];
-                foreach ($tcaMessages as $tcaMessage) {
-                    $messageContent[] = '<li>' . $tcaMessage . '</li>';
-                }
-                $messageContent[] = '</ol>';
-                $message->setMessage(implode('', $messageContent));
-                $actionMessages[] = $message;
-            }
-        }
 
         // Database analyzer handling
         if (isset($this->postValues['set']['databaseAnalyzerExecute'])
@@ -484,20 +464,7 @@ class ImportantActions extends Action\AbstractAction
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
         $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Analyzed current database');
-        return $message;
-    }
 
-    /**
-     * "TCA migration" action
-     *
-     * @return array The TCA migration messages
-     */
-    protected function checkTcaMigrations()
-    {
-        GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\LoadTcaService::class)
-            ->loadExtensionTablesWithoutMigration();
-        $tcaMigration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Migrations\TcaMigration::class);
-        $GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
-        return $tcaMigration->getMessages();
+        return $message;
     }
 }

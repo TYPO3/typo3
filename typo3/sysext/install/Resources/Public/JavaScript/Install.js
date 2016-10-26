@@ -215,36 +215,183 @@ TYPO3.Install.ExtensionChecker = {
 	}
 };
 
-TYPO3.Install.TcaExtTablesChecker = {
-	checkTcaExtTables: function() {
+TYPO3.Install.TcaIntegrityChecker = {
+
+	/**
+	 * Default output messages
+	 */
+	outputMessages: {
+		tcaMigrationsCheck: {
+			fatalTitle: 'Something went wrong',
+			fatalMessage: 'Use "Check for broken extensions!"',
+			loadingTitle: 'Loading…',
+			loadingMessage: '',
+			successTitle: 'No TCA migrations need to be applied',
+			successMessage: 'Your TCA looks good.',
+			warningTitle: 'TCA migrations need to be applied',
+			warningMessage: 'Check the following list and apply needed changes.'
+		},
+		tcaExtTablesCheck: {
+			fatalTitle: 'Something went wrong',
+			fatalMessage: 'Use "Check for broken extensions!"',
+			loadingTitle: 'Loading…',
+			loadingMessage: '',
+			successTitle: 'No TCA changes in ext_tables.php files. Good job!',
+			successMessage: '',
+			warningTitle: 'Extensions change TCA in ext_tables.php',
+			warningMessage: 'Check for ExtensionManagementUtility and $GLOBALS["TCA"].'
+		}
+	},
+
+	/**
+	 * output DOM Container
+	 */
+	outputContainer: {},
+
+	/**
+	 * Clone of a DOM object acts as message template
+	 */
+	messageTemplate: {},
+
+	/**
+	 * Clone of the DOM object that contains the submit button
+	 */
+	submitButton: {},
+
+	/**
+	 * Fetching the templates out of the DOM
+	 *
+	 * @param tcaIntegrityCheckContainer DOM element id with all needed HTML in it
+	 * @return boolean DOM container could be found and initialization finished
+	 */
+	initialize: function(tcaIntegrityCheckContainer) {
+		var success = false;
+		this.outputContainer[tcaIntegrityCheckContainer] = $('#' + tcaIntegrityCheckContainer);
+
+		if (this.outputContainer[tcaIntegrityCheckContainer]) {
+			// submit button: save and delete
+			if(!this.submitButton[tcaIntegrityCheckContainer]) {
+				var submitButton = this.outputContainer[tcaIntegrityCheckContainer].find('button[type="submit"]');
+				this.submitButton[tcaIntegrityCheckContainer] = submitButton.clone();
+				// submitButton.remove();
+			}
+
+			// message template (for the output): save and delete
+			if(!this.messageTemplate[tcaIntegrityCheckContainer]) {
+				var messageTemplateSection = this.outputContainer[tcaIntegrityCheckContainer].find('.messageTemplate');
+				this.messageTemplate[tcaIntegrityCheckContainer] = messageTemplateSection.children().clone().show();
+				messageTemplateSection.remove();
+			}
+
+			// clear all messages from the run before
+			this.outputContainer[tcaIntegrityCheckContainer].find('.typo3-message:visible ').remove();
+
+			success = true;
+		}
+		return success;
+	},
+
+	checkTcaIntegrity: function(actionName) {
 		var self = this;
-		var url = location.href + '&install[controller]=ajax&install[action]=tcaExtTablesCheck';
+		var url = location.href + '&install[controller]=ajax&install[action]=' + actionName;
 
-		$('button', '#tcaExtTablesCheck').hide();
-		$('#tcaExtTablesCheck-loading').show();
+		var isInitialized = self.initialize(actionName);
+		if(isInitialized) {
+			self.addMessage(
+				'loading',
+				self.outputMessages[actionName].loadingTitle,
+				self.outputMessages[actionName].loadingMessage,
+				actionName
+			);
 
-		$.ajax({
-			url: url,
-			cache: false,
-			success: function(data) {
-				if (data === 'OK') {
-					$('#tcaExtTablesCheck-loading').hide();
-					$('#tcaExtTablesCheck-ok').show();
-				} else {
-					if (data === 'unauthorized') {
+			$.ajax({
+				url: url,
+				cache: false,
+				success: function(data) {
+
+					if(data.success === true && Array.isArray(data.status)) {
+						if(data.status.length > 0) {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							self.addMessage(
+								'warning',
+								self.outputMessages[actionName].warningTitle,
+								self.outputMessages[actionName].warningMessage,
+								actionName
+							);
+							data.status.forEach((function (element) {
+								self.addMessage(
+									element.severity,
+									element.title,
+									element.message,
+									actionName
+								);
+							}));
+						} else {
+							// nothing to complain, everything fine
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							self.addMessage(
+								'success',
+								self.outputMessages[actionName].successTitle,
+								self.outputMessages[actionName].successMessage,
+								actionName
+							);
+						}
+					} else if (data === 'unauthorized') {
 						location.reload();
 					}
-					$('#tcaExtTablesCheck-loading').hide();
-					// secure me!
-					$('#tcaExtTablesCheck-broken').show().find('.messageText').html(data);
+				},
+				error: function() {
+					self.outputContainer[actionName].find('.alert-loading').hide();
+					self.addMessage(
+						'fatal',
+						self.outputMessages[actionName].fatalTitle,
+						self.outputMessages[actionName].fatalMessage,
+						actionName
+					);
 				}
-			},
-			error: function() {
-				$('#tcaExtTablesCheck-loading').hide();
-				$('#tcaExtTablesCheck-fatal').show();
-			}
-		});
+			});
+		}
+	},
+
+	/**
+	 * Move the submit button to the end of the box
+	 *
+	 * @param tcaIntegrityCheckContainer DOM container name
+	 */
+	moveSubmitButtonFurtherDown: function(tcaIntegrityCheckContainer) {
+		console.debug(this.outputContainer[tcaIntegrityCheckContainer], 'this.outputContainer['+[tcaIntegrityCheckContainer]+']');
+
+		// first remove the currently visible button
+		this.outputContainer[tcaIntegrityCheckContainer].find('button[type="submit"]').remove();
+		// then append the cloned template to the end
+		this.outputContainer[tcaIntegrityCheckContainer].append(this.submitButton[tcaIntegrityCheckContainer]);
+	},
+
+	/**
+	 * Show a status message
+	 *
+	 * @param severity
+	 * @param title
+	 * @param message
+	 * @param tcaIntegrityCheckContainer DOM container name
+	 */
+	addMessage: function(severity, title, message, tcaIntegrityCheckContainer) {
+		var domMessage = this.messageTemplate[tcaIntegrityCheckContainer].clone();
+		if (severity) {
+			domMessage.addClass('alert-' + severity);
+		}
+		if (title) {
+			domMessage.find('h4').html(title);
+		}
+		if (message) {
+			domMessage.find('.messageText').html(message);
+		} else {
+			domMessage.find('.messageText').remove();
+		}
+		this.outputContainer[tcaIntegrityCheckContainer].append(domMessage);
+		this.moveSubmitButtonFurtherDown(tcaIntegrityCheckContainer);
 	}
+
 };
 
 TYPO3.Install.Status = {
@@ -654,7 +801,17 @@ $(function() {
 	var $tcaExtTablesCheckSection = $('#tcaExtTablesCheck');
 	if ($tcaExtTablesCheckSection) {
 		$tcaExtTablesCheckSection.on('click', 'button', (function(e) {
-			TYPO3.Install.TcaExtTablesChecker.checkTcaExtTables();
+			TYPO3.Install.TcaIntegrityChecker.checkTcaIntegrity('tcaExtTablesCheck');
+			e.preventDefault();
+			return false;
+		}));
+	}
+
+	// Handle TCA Migrations check
+	var $tcaMigrationsCheckSection = $('#tcaMigrationsCheck');
+	if ($tcaMigrationsCheckSection) {
+		$tcaMigrationsCheckSection.on('click', 'button', (function(e) {
+			TYPO3.Install.TcaIntegrityChecker.checkTcaIntegrity('tcaMigrationsCheck');
 			e.preventDefault();
 			return false;
 		}));
