@@ -72,46 +72,39 @@ class InstalledExtensionsCest
 
     /**
      * @param Admin $I
-     * @return Admin
      */
-    public function checkIfInstallingAnExtensionWithBackendModuleAddsTheModuleToTheModuleMenu(Admin $I)
+    public function checkUninstallingAndInstallingAnExtension(Admin $I)
     {
+        $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');
+        $I->amGoingTo('uninstall extension belog');
+        $I->switchToIFrame();
+        $I->canSeeElement('#system_BelogLog');
+
+        $I->switchToIFrame('list_frame');
+        $I->fillField('Tx_Extensionmanager_extensionkey', 'belog');
+        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
+        $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
+
+        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
+        $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
+
+        $I->switchToIFrame();
+        $I->cantSeeElement('#system_BelogLog');
+
+        $I->amGoingTo('install extension belog');
         $I->switchToIFrame();
         $I->canSeeElement('.modulemenu-item-link');
-        $I->cantSeeElement('#web_RecyclerRecycler');
+        $I->cantSeeElement('#system_BelogLog');
 
         $I->switchToIFrame('list_frame');
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
-        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
-        $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
+        $I->fillField('Tx_Extensionmanager_extensionkey', 'belog');
+        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
+        $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
         $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
 
         $I->switchToIFrame();
-        $I->canSeeElement('#web_RecyclerRecycler');
-
-        return $I;
-    }
-
-    /**
-     * @depends checkIfInstallingAnExtensionWithBackendModuleAddsTheModuleToTheModuleMenu
-     * @param Admin $I
-     */
-    public function checkIfUninstallingAnExtensionWithBackendModuleRemovesTheModuleFromTheModuleMenu(Admin $I)
-    {
-        $I->switchToIFrame();
-        $I->canSeeElement('#web_RecyclerRecycler');
-
-        $I->switchToIFrame('list_frame');
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'recycler');
-        $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
-        $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="recycler"]');
-
-        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
-        $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
-
-        $I->switchToIFrame();
-        $I->cantSeeElement('#web_RecyclerRecycler');
+        $I->canSeeElement('#system_BelogLog');
     }
 }
