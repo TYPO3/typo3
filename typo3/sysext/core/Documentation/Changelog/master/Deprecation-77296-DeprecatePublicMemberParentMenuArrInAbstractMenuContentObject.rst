@@ -15,19 +15,19 @@ The public member parentMenuArr has been added as public member and marked as de
 Impact
 ======
 
-The parentMenuArr will be publicly accessible until it is changed to protected in TYPO3 CMS 9.
+The parentMenuArr will be publicly accessible until it is changed to protected in TYPO3 v9.
 
 
 Affected Installations
 ======================
 
-Instances that have menues with sublevels and using this member in the itemArrayProcFunc.
+Instances that have menus with sublevels and using this member in the itemArrayProcFunc.
 
 
 Migration
 =========
 
-Use the provided api function :php:`getParentMenuArr()` to get the parentMenuArr instead. 
+Use the provided API function :php:`getParentMenuArr()` to get the parentMenuArr instead.
 This method always returns an array.
 
 If you need the direct parent menuitem of the current sublevel use :php:`getParentMenuItem()` method.

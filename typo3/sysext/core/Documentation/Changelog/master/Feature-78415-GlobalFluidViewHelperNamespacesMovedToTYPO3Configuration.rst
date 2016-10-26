@@ -10,8 +10,8 @@ Description
 ===========
 
 By storing Fluid's namespaces in $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] we can allow adding or
-extending the global namespaces from third party packages in for example ext_localconf.php, or by simply specifying
-the namespace arrays in LocalConfiguration.php.
+extending the global namespaces from third party packages in for example :file:`ext_localconf.php` or by simply specifying
+the namespace arrays in :file:`LocalConfiguration.php`.
 
 In terms of performance there is nearly zero impact but in terms of flexibility this should provide the ultimate way
 to manage global namespaces as configuration; something that currently is only possible by implementing custom

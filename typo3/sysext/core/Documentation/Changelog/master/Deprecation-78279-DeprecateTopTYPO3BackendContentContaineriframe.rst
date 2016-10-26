@@ -9,13 +9,13 @@ See :issue:`78279`
 Description
 ===========
 
-The property :js:`top.TYPO3.Backend.ContentContainer.iframe` has been deprecated.
+The property :js:`top.TYPO3.Backend.ContentContainer.iframe` has been marked as deprecated.
 
 
 Impact
 ======
 
-Usage of this property will stop work with TYPO3 v9
+Using this property will stop working in TYPO3 v9.
 
 
 Affected Installations

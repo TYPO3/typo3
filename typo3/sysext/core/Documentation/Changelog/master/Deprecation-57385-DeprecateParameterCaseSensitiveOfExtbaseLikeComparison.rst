@@ -9,7 +9,7 @@ See :issue:`57385`
 Description
 ===========
 
-The argument :php:`$caseSensitive` of the method :php:`Query::like` has been deprecated:
+The argument :php:`$caseSensitive` of the method :php:`Query::like` has been marked as deprecated.
 
 
 Impact

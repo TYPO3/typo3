@@ -9,8 +9,8 @@ See :issue:`78417`
 Description
 ===========
 
-The DeletedRecordsCommand is now using Symfony Console. The new command which behaves like the old code, but uses certain
-different parameters and is located under the following path now:
+The DeletedRecordsCommand is now using Symfony Console. The new command behaves like the old one, but allows using certain
+parameters and is located under the following path now:
 
 `./typo3/sysext/core/bin/typo3 cleanup:deletedrecords`
 
@@ -21,6 +21,7 @@ The following options can be set
 `--depth=4` or `-d=4` to only delete recursively until a certain page tree level.
 
 The PHP class `TYPO3\CMS\Lowlevel\DeletedRecordsCommand` has been removed.
+
 
 Impact
 ======
@@ -33,7 +34,7 @@ Calling the PHP class results in a fatal PHP error.
 Affected Installations
 ======================
 
-Any TYPO3 installation using the previously functioned command or the related PHP class.
+Any TYPO3 installation using the old CLI command or the related PHP class.
 
 
 Migration

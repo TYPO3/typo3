@@ -9,10 +9,11 @@ See :issue:`76085`
 Description
 ===========
 
-A new setting in the admin panel (Preview > Show fluid debug output) enable fluid debug output.
+A new setting in the admin panel (Preview > Show fluid debug output) enables showing fluid debug output.
 If the checkbox is enabled, the path to the template file of a partial and the name of a section will be shown in the
 frontend directly above the markup.
 With this feature an integrator can easily find the correct template and section.
+
 
 Impact
 ======

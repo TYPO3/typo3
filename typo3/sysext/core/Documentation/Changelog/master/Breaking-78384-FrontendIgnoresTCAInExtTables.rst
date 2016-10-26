@@ -30,7 +30,7 @@ provides test "TCA ext_tables check" to find such extensions.
 Migration
 =========
 
-Neither direct write to `$GLOBALS['TCA']` and `$TCA` is allowed, nor indirect write
+In :file:`ext_tables.php` neither direct write to `$GLOBALS['TCA']` and `$TCA` is allowed, nor indirect write
 via `ExtensionManagementUtility` methods. An example list of calls and their new positions:
 
 * `$GLOBALS['TCA`]['someTable'] = `: A full table `TCA` is added. This must be moved

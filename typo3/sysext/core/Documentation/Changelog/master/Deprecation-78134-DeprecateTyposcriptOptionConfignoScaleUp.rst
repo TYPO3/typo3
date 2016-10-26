@@ -15,13 +15,13 @@ The TypoScript setting `config.noScaleUp` has been marked as deprecated.
 Impact
 ======
 
-Using this setting `config.noScaleUp` will trigger a deprecation log entry. It will work, until it get's removed in TYPO3 CMS 9.
+Using this setting `config.noScaleUp` will trigger a deprecation log entry. It will work until it get's removed in TYPO3 v9.
 
 
 Affected Installations
 ======================
 
-Instances that use this Typoscript setting.
+Instances that use this TypoScript setting.
 
 
 Migration
