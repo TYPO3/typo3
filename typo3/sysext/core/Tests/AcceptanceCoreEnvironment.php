@@ -135,6 +135,8 @@ class AcceptanceCoreEnvironment extends Extension
         'typo3/sysext/core/Tests/Acceptance/Fixtures/be_sessions.xml',
         'typo3/sysext/core/Tests/Acceptance/Fixtures/be_groups.xml',
         'typo3/sysext/core/Tests/Acceptance/Fixtures/sys_category.xml',
+        'typo3/sysext/core/Tests/Acceptance/Fixtures/tx_extensionmanager_domain_model_extension.xml',
+        'typo3/sysext/core/Tests/Acceptance/Fixtures/tx_extensionmanager_domain_model_repository.xml',
     ];
 
     /**

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tx_extensionmanager_domain_model_extension>
+        <uid>1</uid>
+        <pid>0</pid>
+        <extension_key>superext</extension_key>
+        <repository>1</repository>
+        <version>1.0.0</version>
+        <alldownloadcounter>1</alldownloadcounter>
+        <downloadcounter>0</downloadcounter>
+        <title>Super extension</title>
+        <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</description>
+        <state>2</state>
+        <review_state>0</review_state>
+        <category>2</category>
+        <last_updated>1474625908</last_updated>
+        <serialized_dependencies>a:1:{s:7:&quot;depends&quot;;a:1:{s:5:&quot;typo3&quot;;s:12:&quot;7.6.0-8.9.99&quot;;}}</serialized_dependencies>
+        <author_name>John Doe</author_name>
+        <author_email>john@doe.com</author_email>
+        <ownerusername>jdoe</ownerusername>
+        <md5hash>fa061138fc220bdfe5c631ba019f9f84</md5hash>
+        <update_comment> Update comment</update_comment>
+        <authorcompany></authorcompany>
+        <integer_version>1000000</integer_version>
+        <current_version>1</current_version>
+        <lastreviewedversion>0</lastreviewedversion>
+    </tx_extensionmanager_domain_model_extension>
+    <tx_extensionmanager_domain_model_extension>
+        <uid>2</uid>
+        <pid>0</pid>
+        <extension_key>neededext</extension_key>
+        <repository>1</repository>
+        <version>2.0.0</version>
+        <alldownloadcounter>2</alldownloadcounter>
+        <downloadcounter>0</downloadcounter>
+        <title>Needed Extension</title>
+        <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</description>
+        <state>2</state>
+        <review_state>0</review_state>
+        <category>5</category>
+        <last_updated>1474977787</last_updated>
+        <serialized_dependencies>a:1:{s:7:&quot;depends&quot;;a:3:{s:5:&quot;typo3&quot;;s:13:&quot;6.2.0-8.4.999&quot;;s:3:&quot;php&quot;;s:13:&quot;5.4.0-7.0.999&quot;;s:9:&quot;scheduler&quot;;s:13:&quot;6.2.0-8.4.999&quot;;}}</serialized_dependencies>
+        <author_name>Dmitry Dulepov</author_name>
+        <author_email>dmitry.dulepov@gmail.com</author_email>
+        <ownerusername>dmitry</ownerusername>
+        <md5hash>b28075aa867d17cc97c7acfe187a71d1</md5hash>
+        <update_comment>no comment</update_comment>
+        <authorcompany></authorcompany>
+        <integer_version>2000000</integer_version>
+        <current_version>1</current_version>
+        <lastreviewedversion>0</lastreviewedversion>
+    </tx_extensionmanager_domain_model_extension>
+
+</dataset>
