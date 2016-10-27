@@ -158,12 +158,9 @@ class PreviewController extends AbstractController
 
         $backendUser->setAndSaveSessionData('workspaces.backend_domain', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
 
-        $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3-topbar@2x.png');
-        list($logoWidth, $logoHeight) = @getimagesize($logoPath);
-
-        // High-resolution?
-        $logoWidth = $logoWidth/2;
-        $logoHeight = $logoHeight/2;
+        $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
+        $logoWidth = 22;
+        $logoHeight = 22;
 
         $this->view->assignMultiple([
             'logoUrl' => PathUtility::getAbsoluteWebPath($logoPath),
