@@ -38,6 +38,6 @@ class LogoCest
      */
     public function checkIfTypo3LogoIsLinked(Admin $I)
     {
-        $I->seeElement('a.topbar-header-site', ['href' => 'https://typo3.org/']);
+        $I->seeElement('//div[@class="topbar-header-site"]/a[@href="./"]');
     }
 }
