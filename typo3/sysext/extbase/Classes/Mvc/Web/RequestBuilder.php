@@ -212,7 +212,10 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             } elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
                 return $this->defaultControllerName;
             }
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller "' . $parameters['controller'] . '" is not allowed by this plugin. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855173);
+            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException(
+                'The controller "' . $parameters['controller'] . '" is not allowed by plugin "' . $this->pluginName . '". Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.',
+                1313855173
+            );
         }
         return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
     }
