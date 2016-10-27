@@ -1,0 +1,23 @@
+<h3 class="dropdown-headline">
+    {f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:toolbarItems.help', htmlEscape: 'FALSE')}
+</h3>
+<hr>
+<div class="dropdown-table">
+    <f:for each="{modules}" as="module">
+        <div class="dropdown-table-row"
+             id="{module.name -> f:format.htmlspecialchars()}"
+             data-modulename="{module.name -> f:format.htmlspecialchars()}"
+             data-navigationcomponentid="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
+             data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
+             data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}">
+            <div class="dropdown-table-column dropdown-table-icon">
+                {module.icon -> f:format.raw()}
+            </div>
+            <div class="dropdown-table-column dropdown-table-title">
+                <f:link.typolink parameter="{module.link}" title="{module.description -> f:format.htmlspecialchars()}" class="modlink">
+                    {module.title}
+                </f:link.typolink>
+            </div>
+        </div>
+    </f:for>
+</div>

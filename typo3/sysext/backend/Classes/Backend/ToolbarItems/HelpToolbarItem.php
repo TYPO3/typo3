@@ -14,12 +14,12 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Help toolbar item
@@ -69,12 +69,16 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.help'));
         $icon = $this->iconFactory->getIcon('apps-toolbar-menu-help', Icon::SIZE_SMALL)->render('inline');
-        return '
-            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
-            <span class="toolbar-item-title">' . $title . '</span>
-            ';
+
+        $view = $this->getFluidTemplateObject('HelpToolbarItem.html');
+        $view->assignMultiple([
+                'title' => 'LLL:EXT:lang/locallang_core.xlf:toolbarItems.help',
+                'icon' => $icon
+            ]
+        );
+
+        return $view->render();
     }
 
     /**
@@ -84,30 +88,14 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $dropdown = [];
-        $dropdown[] = '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.help')) . '</h3>';
-        $dropdown[] = '<hr>';
-        $dropdown[] = '<div class="dropdown-table">';
-        foreach ($this->helpModuleMenu->getChildren() as $module) {
-            /** @var BackendModule $module */
-            $dropdown[] = '<div'
-                . ' class="dropdown-table-row"'
-                . ' id="' . htmlspecialchars($module->getName()) . '"'
-                . ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
-                . ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
-                . ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
-                . ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
-                . '>';
-            $dropdown[] = '<div class="dropdown-table-column dropdown-table-icon">' . $module->getIcon() . '</div>';
-            $dropdown[] = '<div class="dropdown-table-column dropdown-table-title">';
-            $dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="modlink">';
-            $dropdown[] = htmlspecialchars($module->getTitle());
-            $dropdown[] = '</a>';
-            $dropdown[] = '</div>';
-            $dropdown[] = '</div>';
-        }
-        $dropdown[] = '</div>';
-        return implode(LF, $dropdown);
+        $view = $this->getFluidTemplateObject('HelpToolbarItemDropDown.html');
+        $view->assignMultiple([
+                'title' =>  'LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache',
+                'modules' => $this->helpModuleMenu->getChildren()
+            ]
+        );
+
+        return $view->render();
     }
 
     /**
@@ -148,5 +136,26 @@ class HelpToolbarItem implements ToolbarItemInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename):StandaloneView
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ToolbarItems')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems')]);
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems/' . $filename));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }
