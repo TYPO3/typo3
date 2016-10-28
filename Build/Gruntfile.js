@@ -218,6 +218,15 @@ module.exports = function(grunt) {
 					{ dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg', src: '<%= paths.t3icons %>module/module-workspaces.svg' }
 				]
 			},
+			fonts: {
+				files: [
+					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.eot' },
+					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.svg' },
+					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.ttf' },
+					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff' },
+					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff2' }
+				]
+			},
 			npm: {
 				files: [
 					{dest: '<%= paths.install %>Public/JavaScript/tagsort.min.js', src: '<%= paths.npm %>tagsort/tagsort.js'}
