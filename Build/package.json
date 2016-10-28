@@ -10,7 +10,6 @@
   "devDependencies": {
     "@types/jasmine": "^2.5.35",
     "@types/bootstrap": "*",
-    "@types/d3": "*",
     "@types/jquery": "*",
     "@types/jqueryui": "*",
     "@types/nprogress": "*",
