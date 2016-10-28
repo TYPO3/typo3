@@ -264,9 +264,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				link0 = this.document.createElement('link');
 				link0.rel = 'stylesheet';
 				link0.type = 'text/css';
-					// Firefox 3.0.1 does not apply the base URL while Firefox 3.6.8 does so. Do not know in what version this was fixed.
-					// Therefore, for versions before 3.6.8, we prepend the url with the base, if the url is not absolute
-				link0.href = ((UserAgent.isGecko && navigator.productSub < 2010072200 && !/^http(s?):\/{2}/.test(this.config.editedContentStyle)) ? this.config.baseURL : '') + this.config.editedContentStyle;
+				link0.href = this.config.editedContentStyle;
 				head.appendChild(link0);
 				this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Skin CSS set to: ' + link0.href, 'info');
 			}
@@ -276,7 +274,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				var link = this.document.createElement('link');
 				link.rel = 'stylesheet';
 				link.type = 'text/css';
-				link.href = ((UserAgent.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(pageStyle)) ? this.config.baseURL : '') + pageStyle;
+				link.href = pageStyle;
 				head.appendChild(link);
 				this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
 			}
