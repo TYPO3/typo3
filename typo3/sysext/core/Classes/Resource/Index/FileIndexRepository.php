@@ -184,7 +184,7 @@ class FileIndexRepository implements SingletonInterface
             ->select(...$this->fields)
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash), \PDO::PARAM_STR)
+                $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash, \PDO::PARAM_STR))
             )
             ->execute()
             ->fetchAll();
@@ -259,7 +259,7 @@ class FileIndexRepository implements SingletonInterface
             ->where(
                 $queryBuilder->expr()->in(
                     'folder_hash',
-                    $queryBuilder->createNamedParameter($folderIdentifiers, Connection::PARAM_INT_ARRAY)
+                    $queryBuilder->createNamedParameter($folderIdentifiers, Connection::PARAM_STR_ARRAY)
                 ),
                 $queryBuilder->expr()->in(
                     'storage',
