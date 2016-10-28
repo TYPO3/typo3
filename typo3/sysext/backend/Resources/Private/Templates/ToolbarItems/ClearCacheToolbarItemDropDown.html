@@ -4,16 +4,16 @@
 <hr>
 <div class="dropdown-table">
     <f:for each="{cacheActions}" as="cacheAction">
-    <div class="dropdown-table-row">
-        <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">
-            {cacheAction.icon -> f:format.raw()}
-        </div>
-        <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
+        <div class="dropdown-table-row">
             <f:link.typolink parameter="{cacheAction.href}">
-                {cacheAction.title}
-                <br><small class="text-muted">{f:if(condition: cacheAction.description,then: cacheAction.description,else: cacheAction.title)} </small>
+                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">
+                    {cacheAction.icon -> f:format.raw()}
+                </div>
+                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
+                    {cacheAction.title}
+                    <br><small class="text-muted">{f:if(condition: cacheAction.description,then: cacheAction.description,else: cacheAction.title)} </small>
+                </div>
             </f:link.typolink>
         </div>
-    </div>
-</f:for>
+    </f:for>
 </div>
