@@ -793,7 +793,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         } else {
             $response->getBody()->write('failed');
         }
-        return $response->withHeader('Content-Type', 'html');
+        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
     }
 
     /**

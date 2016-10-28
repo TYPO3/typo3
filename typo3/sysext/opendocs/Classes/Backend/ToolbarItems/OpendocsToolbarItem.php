@@ -286,7 +286,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function renderMenu(ServerRequestInterface $request, ResponseInterface $response)
     {
         $response->getBody()->write($this->getDropDown());
-        $response = $response->withHeader('Content-Type', 'html');
+        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
         return $response;
     }
 
