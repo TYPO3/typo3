@@ -180,7 +180,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function install($extensionKey)
     {
-        $extension = $this->enrichExtensionWithDetails($extensionKey);
+        $extension = $this->enrichExtensionWithDetails($extensionKey, false);
         $this->ensureConfiguredDirectoriesExist($extension);
         $this->loadExtension($extensionKey);
         if (!empty($extension['clearcacheonload']) || !empty($extension['clearCacheOnLoad'])) {
@@ -325,13 +325,18 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Fetch additional information for an extension key
      *
      * @param string $extensionKey
+     * @param bool $loadTerInformation
      * @access private
      * @return array
      * @throws ExtensionManagerException
      */
-    public function enrichExtensionWithDetails($extensionKey)
+    public function enrichExtensionWithDetails($extensionKey, $loadTerInformation = true)
     {
         $extension = $this->getExtensionArray($extensionKey);
+        if (!$loadTerInformation) {
+            return $extension;
+        }
+
         $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation([$extensionKey => $extension]);
 
         if (!isset($availableAndInstalledExtensions[$extensionKey])) {
