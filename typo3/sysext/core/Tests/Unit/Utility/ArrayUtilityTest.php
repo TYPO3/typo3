@@ -223,12 +223,39 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function getValueByPathThrowsExceptionIfPathIsNotString()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1477699595);
+
+        ArrayUtility::getValueByPath([], ['']);
+    }
+
+    /**
+     * @test
+     */
     public function getValueByPathThrowsExceptionIfPathIsEmpty()
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341397767);
 
         ArrayUtility::getValueByPath([], '');
+    }
+
+    /**
+     * @test
+     */
+    public function getValueByPathReturnsFirstIndexIfPathIsZero()
+    {
+        $this->assertSame('foo', ArrayUtility::getValueByPath(['foo'], '0'));
+    }
+
+    /**
+     * @test
+     */
+    public function getValueByPathReturnsFirstIndexIfPathSegmentIsZero()
+    {
+        $this->assertSame('bar', ArrayUtility::getValueByPath(['foo' => ['bar']], 'foo/0'));
     }
 
     /**
@@ -242,6 +269,13 @@ class ArrayUtilityTest extends UnitTestCase
     public function getValueByPathInvalidPathDataProvider()
     {
         return [
+            'not existing index' => [
+                [
+                    'foo' => ['foo']
+                ],
+                'foo/1',
+                false
+            ],
             'not existing path 1' => [
                 [
                     'foo' => []
@@ -448,6 +482,33 @@ class ArrayUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1341406402);
 
         ArrayUtility::setValueByPath([], ['foo'], null);
+    }
+
+    /**
+     * @test
+     */
+    public function setValueByPathThrowsExceptionIfPathSegmentIsEmpty()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341406846);
+
+        ArrayUtility::setValueByPath(['foo' => 'bar'], '/foo', 'value');
+    }
+
+    /**
+     * @test
+     */
+    public function setValueByPathCanUseZeroAsPathSegment()
+    {
+        $this->assertSame(['foo' => ['value']], ArrayUtility::setValueByPath(['foo' => []], 'foo/0', 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function setValueByPathCanUseZeroAsPath()
+    {
+        $this->assertSame(['value', 'bar'], ArrayUtility::setValueByPath(['foo', 'bar'], '0', 'value'));
     }
 
     /**
@@ -679,6 +740,28 @@ class ArrayUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1371757720);
 
         ArrayUtility::removeByPath($inputArray, 'foo//bar');
+    }
+
+    /**
+     * @test
+     */
+    public function removeByPathRemovesFirstIndexWithZeroAsPathSegment()
+    {
+        $inputArray = [
+            'foo' => ['bar']
+        ];
+
+        $this->assertSame(['foo' => []], ArrayUtility::removeByPath($inputArray, 'foo/0'));
+    }
+
+    /**
+     * @test
+     */
+    public function removeByPathRemovesFirstIndexWithZeroAsPath()
+    {
+        $inputArray = ['bar'];
+
+        $this->assertSame([], ArrayUtility::removeByPath($inputArray, '0'));
     }
 
     /**
