@@ -223,10 +223,37 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1477699595
+     */
+    public function getValueByPathThrowsExceptionIfPathIsNotString()
+    {
+        ArrayUtility::getValueByPath([], ['']);
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionCode 1341397767
      */
     public function getValueByPathThrowsExceptionIfPathIsEmpty()
     {
         ArrayUtility::getValueByPath([], '');
+    }
+
+    /**
+     * @test
+     */
+    public function getValueByPathReturnsFirstIndexIfPathIsZero()
+    {
+        $this->assertSame('foo', ArrayUtility::getValueByPath(['foo'], '0'));
+    }
+
+    /**
+     * @test
+     */
+    public function getValueByPathReturnsFirstIndexIfPathSegmentIsZero()
+    {
+        $this->assertSame('bar', ArrayUtility::getValueByPath(['foo' => ['bar']], 'foo/0'));
     }
 
     /**
@@ -240,6 +267,13 @@ class ArrayUtilityTest extends UnitTestCase
     public function getValueByPathInvalidPathDataProvider()
     {
         return [
+            'not existing index' => [
+                [
+                    'foo' => ['foo']
+                ],
+                'foo/1',
+                false
+            ],
             'not existing path 1' => [
                 [
                     'foo' => []
@@ -286,6 +320,7 @@ class ArrayUtilityTest extends UnitTestCase
      * @test
      * @dataProvider getValueByPathInvalidPathDataProvider
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1341397869
      * @param array $array
      * @param string $path
      */
@@ -427,6 +462,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1341406194
      */
     public function setValueByPathThrowsExceptionIfPathIsEmpty()
     {
@@ -436,10 +472,37 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1341406402
      */
     public function setValueByPathThrowsExceptionIfPathIsNotAString()
     {
         ArrayUtility::setValueByPath([], ['foo'], null);
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionCode 1341406846
+     */
+    public function setValueByPathThrowsExceptionIfPathSegmentIsEmpty()
+    {
+        ArrayUtility::setValueByPath(['foo' => 'bar'], '/foo', 'value');
+    }
+
+    /**
+     * @test
+     */
+    public function setValueByPathCanUseZeroAsPathSegment()
+    {
+        $this->assertSame(['foo' => ['value']], ArrayUtility::setValueByPath(['foo' => []], 'foo/0', 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function setValueByPathCanUseZeroAsPath()
+    {
+        $this->assertSame(['value', 'bar'], ArrayUtility::setValueByPath(['foo', 'bar'], '0', 'value'));
     }
 
     /**
@@ -637,6 +700,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1371757718
      */
     public function removeByPathThrowsExceptionIfPathIsEmpty()
     {
@@ -646,6 +710,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1371757719
      */
     public function removeByPathThrowsExceptionIfPathIsNotAString()
     {
@@ -655,6 +720,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1371757720
      */
     public function removeByPathThrowsExceptionWithEmptyPathSegment()
     {
@@ -668,7 +734,29 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
+     */
+    public function removeByPathRemovesFirstIndexWithZeroAsPathSegment()
+    {
+        $inputArray = [
+            'foo' => ['bar']
+        ];
+        $this->assertSame(['foo' => []], ArrayUtility::removeByPath($inputArray, 'foo/0'));
+    }
+
+    /**
+     * @test
+     */
+    public function removeByPathRemovesFirstIndexWithZeroAsPath()
+    {
+        $inputArray = ['bar'];
+
+        $this->assertSame([], ArrayUtility::removeByPath($inputArray, '0'));
+    }
+
+    /**
+     * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1371758436
      */
     public function removeByPathThrowsExceptionIfPathDoesNotExistInArray()
     {
@@ -940,6 +1028,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1373727309
      */
     public function sortArraysByKeyThrowsExceptionForNonExistingKey()
     {
@@ -991,6 +1080,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
+     * @expectedExceptionCode 1342294987
      */
     public function arrayExportThrowsExceptionIfObjectShouldBeExported()
     {

@@ -130,7 +130,10 @@ class ArrayUtility
      */
     public static function getValueByPath(array $array, $path, $delimiter = '/')
     {
-        if (empty($path)) {
+        if (!is_string($path)) {
+            throw new \RuntimeException('Path must be a string', 1477699595);
+        }
+        if ($path === '') {
             throw new \RuntimeException('Path must not be empty', 1341397767);
         }
         // Extract parts of the path
@@ -177,11 +180,11 @@ class ArrayUtility
      */
     public static function setValueByPath(array $array, $path, $value, $delimiter = '/')
     {
-        if (empty($path)) {
-            throw new \RuntimeException('Path must not be empty', 1341406194);
-        }
         if (!is_string($path)) {
             throw new \RuntimeException('Path must be a string', 1341406402);
+        }
+        if ($path === '') {
+            throw new \RuntimeException('Path must not be empty', 1341406194);
         }
         // Extract parts of the path
         $path = str_getcsv($path, $delimiter);
@@ -190,7 +193,7 @@ class ArrayUtility
         // Find path in given array
         foreach ($path as $segment) {
             // Fail if the part is empty
-            if (empty($segment)) {
+            if ($segment === '') {
                 throw new \RuntimeException('Invalid path segment specified', 1341406846);
             }
             // Create cell if it doesn't exist
@@ -216,11 +219,11 @@ class ArrayUtility
      */
     public static function removeByPath(array $array, $path, $delimiter = '/')
     {
-        if (empty($path)) {
-            throw new \RuntimeException('Path must not be empty', 1371757718);
-        }
         if (!is_string($path)) {
             throw new \RuntimeException('Path must be a string', 1371757719);
+        }
+        if ($path === '') {
+            throw new \RuntimeException('Path must not be empty', 1371757718);
         }
         // Extract parts of the path
         $path = str_getcsv($path, $delimiter);
@@ -231,7 +234,7 @@ class ArrayUtility
         foreach ($path as $segment) {
             $currentDepth++;
             // Fail if the part is empty
-            if (empty($segment)) {
+            if ($segment === '') {
                 throw new \RuntimeException('Invalid path segment specified', 1371757720);
             }
             if (!array_key_exists($segment, $pointer)) {
@@ -249,7 +252,7 @@ class ArrayUtility
     /**
      * Sorts an array recursively by key
      *
-     * @param $array Array to sort recursively by key
+     * @param array $array Array to sort recursively by key
      * @return array Sorted array
      */
     public static function sortByKeyRecursive(array $array)
