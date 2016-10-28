@@ -1,24 +1,30 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 
-<div class="dropdown-table">
-    <f:for each="{modules}" as="module">
-        <div class="dropdown-table-row"
-             id="{module.name -> f:format.htmlspecialchars()}"
-             data-modulename="{module.name -> f:format.htmlspecialchars()}"
-             data-navigationcomponentid="{module.navigationComponentId -> f:format.htmlspecialchars()}"
-             data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
-             data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}"
-        >
-            <div class="dropdown-table-column dropdown-table-icon">{module.icon -> f:format.raw()}</div>
-            <div class="dropdown-table-column dropdown-table-title">
-                <f:link.typolink parameter="{module.link}" title="{module.description}" class="modlink">
-                    {module.title}
-                </f:link.typolink>
-            </div>
-        </div>
-    </f:for>
-</div>
+<h3 class="dropdown-headline">
+    {f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.user')}
+</h3>
 <hr>
+<f:if condition="{modules}">
+    <div class="dropdown-table">
+        <f:for each="{modules}" as="module">
+            <div class="dropdown-table-row"
+                id="{module.name -> f:format.htmlspecialchars()}"
+                data-modulename="{module.name -> f:format.htmlspecialchars()}"
+                data-navigationcomponentid="{module.navigationComponentId -> f:format.htmlspecialchars()}"
+                data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
+                data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}"
+            >
+                <div class="dropdown-table-column dropdown-table-icon">{module.icon -> f:format.raw()}</div>
+                <div class="dropdown-table-column dropdown-table-title">
+                    <f:link.typolink parameter="{module.link}" title="{module.description}" class="modlink">
+                        {module.title}
+                    </f:link.typolink>
+                </div>
+            </div>
+        </f:for>
+    </div>
+    <hr>
+</f:if>
 <f:link.typolink parameter="{logoutUrl}" class="btn btn-danger pull-right" target="_top">
     {icon -> f:format.raw()}
     <f:if condition="{switchUserMode}">
