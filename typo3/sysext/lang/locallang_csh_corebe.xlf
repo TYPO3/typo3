@@ -159,6 +159,9 @@ If you click the folder title in the Folder Tree you will see the sub-module loa
 			<trans-unit id="tcatree.expandAll">
 				<source>Expand All</source>
 			</trans-unit>
+			<trans-unit id="tcatree.toggleHideUnchecked">
+				<source>hide/show unchecked items</source>
+			</trans-unit>
 			<trans-unit id="tcatree.findItem">
 				<source>Find Item</source>
 			</trans-unit>

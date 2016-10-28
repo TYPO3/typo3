@@ -14,7 +14,7 @@
 /**
  * Module: TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar
  */
-define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function($, Icons) {
+define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Tooltip', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function($, Icons) {
     'use strict';
 
     /**
@@ -66,13 +66,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
                     '<input type="text" class="form-control search-input" placeholder="' + TYPO3.lang['tcatree.findItem'] + '">' +
                 '</div>' +
                 '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
-                '</div>' +
-                '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
-                '</div>' +
-                '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
+                    '<button type="button" data-toggle="tooltip" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
+                    '<button type="button" data-toggle="tooltip" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
+                    '<button type="button" data-toggle="tooltip" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
                 '</div>' +
             '</div>'
         )
@@ -114,7 +110,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
         Icons.getIcon('apps-pagetree-category-collapse-all', Icons.sizes.small).done(function(icon) {
             $toolbar.find('.collapse-all-btn').append(icon);
         });
-        Icons.getIcon('actions-document-select', Icons.sizes.small).done(function(icon) {
+        Icons.getIcon('apps-pagetree-category-toggle-hide-checked', Icons.sizes.small).done(function(icon) {
             $toolbar.find('.hide-unchecked-btn').append(icon);
         });
 
@@ -124,6 +120,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
             me.search.call(me, this);
         });
         $toolbar.find(this.settings.toggleHideUnchecked).on('click', this.toggleHideUnchecked.bind(this));
+        $toolbar.find('[data-toggle="tooltip"]').tooltip();
     };
 
     /**

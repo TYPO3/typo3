@@ -1426,6 +1426,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-category-collaps-all.svg'
             ]
         ],
+        'apps-pagetree-category-toggle-hide-checked' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'check-square'
+            ]
+        ],
         'apps-toolbar-menu-actions' => [
             'provider' => SvgIconProvider::class,
             'options' => [
