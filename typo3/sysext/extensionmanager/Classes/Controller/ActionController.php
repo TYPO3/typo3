@@ -59,7 +59,7 @@ class ActionController extends AbstractController {
 			} else {
 				// install
 				$extension = $this->extensionModelUtility->mapExtensionArrayToModel(
-					$this->installUtility->enrichExtensionWithDetails($extensionKey)
+					$this->installUtility->enrichExtensionWithDetails($extensionKey, FALSE)
 				);
 				if ($this->managementService->installExtension($extension) === FALSE) {
 					$this->redirect('unresolvedDependencies', 'List', NULL, array('extensionKey' => $extensionKey));

@@ -99,7 +99,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function install($extensionKey) {
-		$extension = $this->enrichExtensionWithDetails($extensionKey);
+		$extension = $this->enrichExtensionWithDetails($extensionKey, FALSE);
 		$this->ensureConfiguredDirectoriesExist($extension);
 		if (!$this->isLoaded($extensionKey)) {
 			$this->loadExtension($extensionKey);
@@ -185,16 +185,20 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Fetch additional information for an extension key
 	 *
 	 * @param string $extensionKey
+	 * @param bool $loadTerInformation
 	 * @access private
 	 * @return array
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
-	public function enrichExtensionWithDetails($extensionKey) {
+	public function enrichExtensionWithDetails($extensionKey, $loadTerInformation = TRUE) {
 		$availableExtensions = $this->listUtility->getAvailableExtensions();
 		if (isset($availableExtensions[$extensionKey])) {
 			$extension = $availableExtensions[$extensionKey];
 		} else {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
+		}
+		if (!$loadTerInformation) {
+			return $extension;
 		}
 		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(array($extensionKey => $extension));
 
