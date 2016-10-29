@@ -29,6 +29,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_ContentIdThird = 299;
     const VALUE_ContentIdThirdLocalized = 300;
     const VALUE_LanguageId = 1;
+    const VALUE_LanguageIdSecond = 2;
     const VALUE_WorkspaceId = 1;
 
     const TABLE_Page = 'pages';
@@ -142,6 +143,15 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+    }
+
+    /**
+     * @see DataSet/Assertion/localizeContentRecord.csv
+     */
+    public function localizeContentFromNonDefaultLanguage()
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
     }
 
     /**

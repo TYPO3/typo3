@@ -107,19 +107,19 @@ class LocalizationControllerTest extends FunctionalTestCase
                 'pid' => '1',
                 'sys_language_uid' => '2',
                 'l18n_parent' => '1',
-                'header' => 'Test indhold 1 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test indhold 1',
             ],
             [
                 'pid' => '1',
                 'sys_language_uid' => '2',
                 'l18n_parent' => '2',
-                'header' => 'Test indhold 2 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test indhold 2',
             ],
             [
                 'pid' => '1',
                 'sys_language_uid' => '2',
                 'l18n_parent' => '3',
-                'header' => 'Test indhold 3 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test indhold 3',
             ],
         ];
         $results = $this->getDatabaseConnection()->exec_SELECTgetRows('pid, sys_language_uid, l18n_parent, header', 'tt_content', 'pid = 1 AND sys_language_uid = 2');
