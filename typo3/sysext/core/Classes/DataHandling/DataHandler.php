@@ -4524,16 +4524,28 @@ class DataHandler
             return false;
         }
 
-        if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $table !== 'pages') {
-            if ($this->enableLogging) {
-                $this->newlog('Localization failed; Source record had another language than "Default" or "All" defined!', 1);
+        // Make sure that records which are translated from another language than the default language have a correct
+        // localization source set themselves, before translating them to another language.
+        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0
+            && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
+            && $table !== 'pages') {
+            $localizationParentRecord = BackendUtility::getRecord(
+                $table,
+                $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+            if ((int)$localizationParentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== 0) {
+                if ($this->enableLogging) {
+                    $this->newlog('Localization failed; Source record contained a reference to an original record that is not a default record (which is strange)!', 1);
+                }
+                return false;
             }
-            return false;
         }
 
-        if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0 && $table !== 'pages') {
+        // Default language records must never have a localization parent as they are the origin of any translation.
+        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0
+            && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0
+            && $table !== 'pages') {
             if ($this->enableLogging) {
-                $this->newlog('Localization failed; Source record contained a reference to an original default record (which is strange)!', 1);
+                $this->newlog('Localization failed; Source record contained a reference to an original default record but is a default record itself (which is strange)!', 1);
             }
             return false;
         }
@@ -4558,7 +4570,12 @@ class DataHandler
         $excludeFields = [];
         // Set override values:
         $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
-        $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+        // If the translated record is a default language record, set it's uid as localization parent of the new record.
+        // If translating from any other language, no override is needed; we just can copy the localization parent of
+        // the original record (which is pointing to the correspondent default language record) to the new record.
+        if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0 || $table === 'pages') {
+            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+        }
         // Copy the type (if defined in both tables) from the original record so that translation has same type as original record
         if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
             $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];

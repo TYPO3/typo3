@@ -228,3 +228,6 @@ page {
 [globalVar = GP:L = 1]
 config.sys_language_uid = 1
 [end]
+[globalVar = GP:L = 2]
+config.sys_language_uid = 2
+[end]
