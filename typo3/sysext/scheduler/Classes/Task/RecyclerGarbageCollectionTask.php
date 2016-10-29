@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+
 /**
  * Recycler folder garbage collection task
  *
@@ -65,7 +67,7 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
      * Gets a list of all files in a directory recursively and removes
      * old ones.
      *
-     * @throws \RuntimeException If folders are not found or files can not be deleted
+     * @throws \RuntimeException If folders are not found
      * @param string $directory Path to the directory
      * @param int $timestamp Timestamp of the last file modification
      * @return bool TRUE if success
@@ -88,9 +90,8 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
             }
             // Remove files from _recycler_ that where moved to this folder for more than 'number of days'
             if ($file->isFile() && $timestamp > $file->getCTime()) {
-                if (!@unlink($fileName)) {
-                    throw new \RuntimeException('Could not remove file "' . $fileName . '"', 1301614537);
-                }
+                $fileObject = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($filePath);
+                $fileObject->delete();
             }
         }
         return true;
