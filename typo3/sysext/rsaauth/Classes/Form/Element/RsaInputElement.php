@@ -70,7 +70,7 @@ class RsaInputElement extends AbstractFormElement
                     break;
                 case 'password':
                     $attributes['type'] = 'password';
-                    $attributes['value'] = '********';
+                    $attributes['value'] = $parameterArray['itemFormElValue'] ? '*********' : '';
                     $attributes['autocomplete'] = 'new-' . $fieldName;
                     break;
                 default:
