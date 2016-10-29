@@ -362,35 +362,6 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canWriteConfigurationReturnsFalseIfDirectoryIsNotWritable()
-    {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            $this->markTestSkipped('Test skipped if run on linux as root');
-        } elseif (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Not available on Windows as folders are always writable');
-        }
-        /** @var $subject \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, ['dummy']);
-
-        $directory = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteDirectory = PATH_site . $directory;
-        mkdir($absoluteDirectory);
-        chmod($absoluteDirectory, 0544);
-        clearstatcache();
-
-        $subject->_set('pathTypo3Conf', $directory);
-
-        $result = $subject->canWriteConfiguration();
-
-        chmod($absoluteDirectory, 0755);
-        rmdir($absoluteDirectory);
-
-        $this->assertFalse($result);
-    }
-
-    /**
-     * @test
-     */
     public function canWriteConfigurationReturnsFalseIfLocalConfigurationFileIsNotWritable()
     {
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
