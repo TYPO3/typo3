@@ -90,17 +90,17 @@ class DebugUtilityTest extends UnitTestCase
                     ],
                 ],
                 'array(3 items)' . PHP_EOL
-. '   0 => "foo" (3 chars)' . PHP_EOL
-. '   1 => "bar" (3 chars)' . PHP_EOL
-. '   baz => array(1 item)' . PHP_EOL
-. '      0 => 42 (integer)',
+                    . '   0 => "foo" (3 chars)' . PHP_EOL
+                    . '   1 => "bar" (3 chars)' . PHP_EOL
+                    . '   baz => array(1 item)' . PHP_EOL
+                    . '      0 => 42 (integer)',
             ],
             'Debug object' => [
                 $object,
                 'stdClass prototype object' . PHP_EOL
-. '   foo => public 42 (integer)' . PHP_EOL
-. '   bar => public array(1 item)' . PHP_EOL
-. '      0 => "baz" (3 chars)'
+                    . '   foo => public 42 (integer)' . PHP_EOL
+                    . '   bar => public array(1 item)' . PHP_EOL
+                    . '      0 => "baz" (3 chars)'
             ],
         ];
     }

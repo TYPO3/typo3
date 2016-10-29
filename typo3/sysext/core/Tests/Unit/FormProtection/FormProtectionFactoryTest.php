@@ -22,10 +22,6 @@ use TYPO3\CMS\Core\Registry;
  */
 class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-    protected function setUp()
-    {
-    }
-
     protected function tearDown()
     {
         FormProtectionFactory::purgeInstances();

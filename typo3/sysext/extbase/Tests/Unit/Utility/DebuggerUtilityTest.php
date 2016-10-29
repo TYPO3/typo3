@@ -22,16 +22,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class DebuggerUtilityTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Utility\DebuggerUtility
-     */
-    protected $debugger;
-
-    protected function setUp()
-    {
-        $this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, ['dummy']);
-    }
-
-    /**
      * @test
      */
     public function debuggerRewindsInstancesOfIterator()
@@ -45,7 +35,7 @@ class DebuggerUtilityTest extends UnitTestCase
             $obj->property = $i;
             $objectStorage->attach($obj);
         }
-        $this->debugger->var_dump($objectStorage, null, 8, true, false, true);
+        DebuggerUtility::var_dump($objectStorage, null, 8, true, false, true);
         $this->assertTrue($objectStorage->valid());
     }
 
@@ -56,7 +46,7 @@ class DebuggerUtilityTest extends UnitTestCase
     {
         $testObject = new \stdClass();
         $testObject->foo = 'bar';
-        $result = $this->debugger->var_dump($testObject, null, 8, true, false, true);
+        $result = DebuggerUtility::var_dump($testObject, null, 8, true, false, true);
         $this->assertRegExp('/foo.*bar/', $result);
     }
 

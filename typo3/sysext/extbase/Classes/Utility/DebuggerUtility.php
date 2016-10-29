@@ -513,9 +513,11 @@ class DebuggerUtility
         if ($ansiColors === true) {
             $title = '[1m' . $title . '[0m';
         }
+        $backupBlacklistedClassNames = self::$blacklistedClassNames;
         if (is_array($blacklistedClassNames)) {
             self::$blacklistedClassNames = $blacklistedClassNames;
         }
+        $backupBlacklistedPropertyNames = self::$blacklistedPropertyNames;
         if (is_array($blacklistedPropertyNames)) {
             self::$blacklistedPropertyNames = $blacklistedPropertyNames;
         }
@@ -563,6 +565,8 @@ class DebuggerUtility
 			</div>
 			';
         }
+        self::$blacklistedClassNames = $backupBlacklistedClassNames;
+        self::$blacklistedPropertyNames = $backupBlacklistedPropertyNames;
         if ($return === true) {
             return $css . $output;
         } else {

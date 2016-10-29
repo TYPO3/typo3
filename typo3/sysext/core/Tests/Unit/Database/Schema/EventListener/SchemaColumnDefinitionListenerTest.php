@@ -75,7 +75,11 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
      */
     public function buildsColumnForEnumDataType()
     {
-        Type::addType('enum', EnumType::class);
+        if (Type::hasType('enum')) {
+            Type::overrideType('enum', EnumType::class);
+        } else {
+            Type::addType('enum', EnumType::class);
+        }
         $databasePlatformProphet = $this->prophesize(AbstractPlatform::class);
         $databasePlatformProphet->getDoctrineTypeMapping('enum')->willReturn('enum');
         $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
@@ -99,7 +103,11 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
      */
     public function buildsColumnForSetDataType()
     {
-        Type::addType('set', SetType::class);
+        if (Type::hasType('set')) {
+            Type::overrideType('set', SetType::class);
+        } else {
+            Type::addType('set', SetType::class);
+        }
         $databasePlatformProphet = $this->prophesize(AbstractPlatform::class);
         $databasePlatformProphet->getDoctrineTypeMapping('set')->willReturn('set');
         $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());

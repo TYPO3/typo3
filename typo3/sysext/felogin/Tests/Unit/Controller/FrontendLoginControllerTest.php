@@ -50,10 +50,16 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $testTableName;
 
     /**
+     * @var array
+     */
+    protected $singletonInstances;
+
+    /**
      * Set up
      */
     protected function setUp()
     {
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->gr_list = '0,-1';
         $this->testTableName = 'sys_domain';
@@ -63,6 +69,19 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->accessibleFixture->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->accessibleFixture->_set('frontendController', $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class));
         $this->setUpFakeSitePathAndHost();
+    }
+
+    /**
+     * Tear down
+     */
+    protected function tearDown()
+    {
+        // setUpDatabaseMock() prepares some instances via addInstance(), but not all
+        // tests use that instance. purgeInstances() removes left overs and resets known
+        // singletons afterwards
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
     }
 
     /**

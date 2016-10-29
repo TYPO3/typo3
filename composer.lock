@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "003eade60234f3d5d8f2a088304fb744",
-    "content-hash": "ababc5ccfce6144c72465f283d78d7db",
+    "hash": "038c18ebffccc69e1744eb2700cc7665",
+    "content-hash": "df9342718f5bf608aa509f610d98f69f",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1522,6 +1522,53 @@
                 "webdriver"
             ],
             "time": "2016-10-14 15:16:51"
+        },
+        {
+            "name": "fiunchinho/phpunit-randomizer",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fiunchinho/phpunit-randomizer.git",
+                "reference": "74d656b7991b90278593c6218878336bdb3c6a96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fiunchinho/phpunit-randomizer/zipball/74d656b7991b90278593c6218878336bdb3c6a96",
+                "reference": "74d656b7991b90278593c6218878336bdb3c6a96",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.2 || ^5.0"
+            },
+            "bin": [
+                "bin/phpunit-randomizer"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PHPUnitRandomizer": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Jose Manuel Armesto",
+                    "email": "jose@armesto.net"
+                }
+            ],
+            "description": "Execute your test cases in random order, so you can check if they have hidden dependencies",
+            "homepage": "http://armesto.net/",
+            "keywords": [
+                "phpunit",
+                "testing",
+                "unit testing"
+            ],
+            "time": "2016-05-09 09:58:08"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
