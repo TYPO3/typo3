@@ -16,9 +16,6 @@ addons:
   apt:
     packages:
       - parallel
-      - ack-grep
-      - nginx
-      - realpath
 
 cache:
   directories:
@@ -52,15 +49,10 @@ before_script:
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer install
-  - mkdir -p typo3temp/var/tests
   - export typo3DatabaseName="typo3"
   - export typo3DatabaseHost="localhost"
   - export typo3DatabaseUsername="root"
   - export typo3DatabasePassword=""
-
-before_install:
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start
 
 script:
   - >
@@ -70,8 +62,8 @@ script:
 
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-      ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 10
-      parallel --jobs 4 -a <(seq 0 9) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
+      ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 14
+      parallel --jobs 4 -a <(seq 0 13) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
     fi
 
   - >
