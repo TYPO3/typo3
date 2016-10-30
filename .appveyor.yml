@@ -34,6 +34,7 @@ install:
   - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
   - IF %PHP%==1 echo extension=php_mysqli.dll >> php.ini
   - IF %PHP%==1 echo extension=php_bz2.dll >> php.ini
+  - IF %PHP%==1 echo extension=php_curl.dll >> php.ini
   - IF %PHP%==1 echo memory_limit = 512M >> php.ini
   - cd C:\projects\typotest
   - php -r "readfile('http://getcomposer.org/installer');" | php
