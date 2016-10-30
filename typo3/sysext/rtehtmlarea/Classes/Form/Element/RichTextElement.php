@@ -787,7 +787,7 @@ class RichTextElement extends AbstractFormElement
             }
         } else {
             // Fallback to default content css file if none of the configured files exists and is not empty
-            $contentCssFiles['default'] = PathUtility::getAbsoluteWebPath('EXT:rtehtmlarea/Resources/Public/Css/ContentCss/Default.css');
+            $contentCssFiles['default'] = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:rtehtmlarea/Resources/Public/Css/ContentCss/Default.css'));
         }
         return array_unique($contentCssFiles);
     }
