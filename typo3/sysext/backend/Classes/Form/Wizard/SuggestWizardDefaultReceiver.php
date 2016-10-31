@@ -51,13 +51,6 @@ class SuggestWizardDefaultReceiver
     protected $mmForeignTable = '';
 
     /**
-     * The statement by which records will be ordered
-     *
-     * @var string
-     */
-    protected $orderByStatement = '';
-
-    /**
      * Configuration for this selector from TSconfig
      *
      * @var array
@@ -158,7 +151,6 @@ class SuggestWizardDefaultReceiver
         $this->prepareOrderByStatement();
         $result = $this->queryBuilder->select('*')
             ->from($this->table)
-            ->orderBy($this->orderByStatement)
             ->setFirstResult($start)
             ->setMaxResults(50)
             ->execute();
@@ -306,8 +298,13 @@ class SuggestWizardDefaultReceiver
      */
     protected function prepareOrderByStatement()
     {
-        if ($GLOBALS['TCA'][$this->table]['ctrl']['label']) {
-            $this->orderByStatement = $GLOBALS['TCA'][$this->table]['ctrl']['label'];
+        if (empty($this->config['orderBy'])) {
+            $this->queryBuilder->addOrderBy($GLOBALS['TCA'][$this->table]['ctrl']['label']);
+        } else {
+            foreach (QueryHelper::parseOrderBy($this->config['orderBy']) as $orderPair) {
+                list($fieldName, $order) = $orderPair;
+                $this->queryBuilder->addOrderBy($fieldName, $order);
+            }
         }
     }
 

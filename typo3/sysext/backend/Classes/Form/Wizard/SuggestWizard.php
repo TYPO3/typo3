@@ -260,9 +260,9 @@ class SuggestWizard
         $maxItems = isset($config['maxItemsInResultList']) ? $config['maxItemsInResultList'] : 10;
         $maxItems = min(count($resultRows), $maxItems);
 
-        $listItems = $this->createListItemsFromResultRow($resultRows, $maxItems);
+        array_splice($resultRows, $maxItems);
 
-        $response->getBody()->write(json_encode($listItems));
+        $response->getBody()->write(json_encode(array_values($resultRows)));
         return $response;
     }
 
@@ -442,35 +442,6 @@ class SuggestWizard
         }
 
         return $config;
-    }
-
-    /**
-     * Creates a list of <li> elements from a list of results returned by the receiver.
-     *
-     * @param array $resultRows
-     * @param int $maxItems
-     * @return array
-     */
-    protected function createListItemsFromResultRow(array $resultRows, $maxItems)
-    {
-        if (empty($resultRows)) {
-            return [];
-        }
-        $listItems = [];
-
-        // traverse all found records and sort them
-        $rowsSort = [];
-        foreach ($resultRows as $key => $row) {
-            $rowsSort[$key] = $row['text'];
-        }
-        asort($rowsSort);
-        $rowsSort = array_keys($rowsSort);
-
-        // put together the selector entries
-        for ($i = 0; $i < $maxItems; ++$i) {
-            $listItems[] = $resultRows[$rowsSort[$i]];
-        }
-        return $listItems;
     }
 
     /**
