@@ -268,12 +268,19 @@ class FileIndexRepository implements SingletonInterface
             );
 
         if (isset($fileName)) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->like(
-                    'name',
-                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($fileName) . '%', \PDO::PARAM_STR)
-                )
-            );
+            $nameParts = str_getcsv($fileName, ' ');
+            foreach ($nameParts as $part) {
+                $part = trim($part);
+                if ($part !== '') {
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->like(
+                            'name',
+                            $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($part) . '%',
+                                \PDO::PARAM_STR)
+                        )
+                    );
+                }
+            }
         }
 
         if (!$includeMissing) {
