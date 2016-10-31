@@ -5775,7 +5775,7 @@ class ContentObjectRenderer
                 } catch (Exception $exception) {
                     /** @var \TYPO3\CMS\Core\Log\Logger $logger */
                     $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-                    $logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output');
+                    $logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
                     return null;
                 }
             }
@@ -6098,7 +6098,7 @@ class ContentObjectRenderer
         } catch (Exception $exception) {
             /** @var \TYPO3\CMS\Core\Log\Logger $logger */
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output');
+            $logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
             $fileObject = null;
         }
 
