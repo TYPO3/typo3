@@ -211,7 +211,7 @@ return [
 
     'palettes' => [
         'rte_1' => [
-            'showitem' => 'input_palette_1,rte_palette_1',
+            'showitem' => 'input_palette_1,--linebreak--,rte_palette_1',
         ],
     ],
 
