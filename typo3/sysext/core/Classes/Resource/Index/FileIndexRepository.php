@@ -216,13 +216,24 @@ class FileIndexRepository implements SingletonInterface
         $storageUids = array_unique($storageUids);
         $folderIdentifiers = array_unique($folderIdentifiers);
 
-        $fileRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
+        $db = $this->getDatabaseConnection();
+
+        $nameSearch = '';
+        if (isset($fileName)) {
+            $nameParts = str_getcsv($fileName, ' ');
+            foreach ($nameParts as $part) {
+                $part = trim($part);
+                if ($part !== '') {
+                    $nameSearch .= ' AND name LIKE "%' . $db->escapeStrForLike($db->quoteStr($part, $this->table), $this->table) . '%"';
+                }
+            }
+        }
+
+        $fileRecords = $db->exec_SELECTgetRows(
             implode(',', $this->fields),
             $this->table,
-            'folder_hash IN ( ' . implode(',', $this->getDatabaseConnection()->fullQuoteArray($folderIdentifiers, $this->table)) . ')' .
-            ' AND storage IN (' . implode(',', $storageUids) . ')' .
-            (isset($fileName) ? ' AND name LIKE "%' . $this->getDatabaseConnection()->escapeStrForLike($this->getDatabaseConnection()->quoteStr($fileName, $this->table), $this->table) . '%"' : '') .
-            ($includeMissing ? '' : ' AND missing = 0'),
+            'folder_hash IN ( ' . implode(',', $db->fullQuoteArray($folderIdentifiers, $this->table)) . ')' .
+            ' AND storage IN (' . implode(',', $storageUids) . ')' . $nameSearch . ($includeMissing ? '' : ' AND missing = 0'),
             '',
             '',
             '',
