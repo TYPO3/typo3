@@ -6,9 +6,6 @@
 			<trans-unit id="sys_action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="tx_sys_action">
-				<source>Actions</source>
-			</trans-unit>
 			<trans-unit id="sys_action.hidden">
 				<source>Deactivated:</source>
 			</trans-unit>

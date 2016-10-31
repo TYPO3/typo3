@@ -72,24 +72,6 @@
 			<trans-unit id="action_lowlevelMissing">
 				<source>The extension 'lowlevel' must be installed in order to create a query.</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_hidden">
-				<source>Disable user</source>
-			</trans-unit>
-			<trans-unit id="action_BEu_username">
-				<source>Login name</source>
-			</trans-unit>
-			<trans-unit id="action_BEu_password">
-				<source>Password</source>
-			</trans-unit>
-			<trans-unit id="action_BEu_realName">
-				<source>Real name</source>
-			</trans-unit>
-			<trans-unit id="action_BEu_email">
-				<source>Email</source>
-			</trans-unit>
-			<trans-unit id="action_BEu_usergroups">
-				<source>Member of groups</source>
-			</trans-unit>
 			<trans-unit id="action_t2_result">
 				<source>Result of query</source>
 			</trans-unit>
@@ -107,12 +89,6 @@
 			</trans-unit>
 			<trans-unit id="action_t1_legend_configuration">
 				<source>Configuration</source>
-			</trans-unit>
-			<trans-unit id="action_BEu_db_mount">
-				<source>Pagetree starting points</source>
-			</trans-unit>
-			<trans-unit id="action_t4_edit">
-				<source>Select record to edit:</source>
 			</trans-unit>
 			<trans-unit id="action_toolbaritem">
 				<source>Open System Actions</source>
