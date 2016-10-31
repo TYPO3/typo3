@@ -369,9 +369,6 @@
 			<trans-unit id="oldPassword_failed">
 				<source>Password was NOT updated because you didn't enter the correct current password.</source>
 			</trans-unit>
-			<trans-unit id="adminFunctions">
-				<source>Admin functions</source>
-			</trans-unit>
 			<trans-unit id="enableInstallTool.label">
 				<source>Install Tool Access</source>
 			</trans-unit>
@@ -401,9 +398,6 @@
 			</trans-unit>
 			<trans-unit id="settingsAreReset">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
-			</trans-unit>
-			<trans-unit id="debugInWindow">
-				<source>Display debug messages in a new browser window</source>
 			</trans-unit>
 			<trans-unit id="startModule.firstInMenu">
 				<source>- First module in menu -</source>

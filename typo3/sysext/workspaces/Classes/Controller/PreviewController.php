@@ -226,7 +226,6 @@ class PreviewController extends AbstractController
             'pageModule' => $pageModule,
             'inWorkspace' => $backendUser->workspace !== 0,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
-            'debugInWindow' => $backendUser->uc['debugInWindow'] ? 1 : 0,
             'ContextHelpWindows' => [
                 'width' => 600,
                 'height' => 400

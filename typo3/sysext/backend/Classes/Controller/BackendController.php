@@ -582,7 +582,6 @@ class BackendController
             'pageModule' => $pageModule,
             'inWorkspace' => $beUser->workspace !== 0,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
-            'debugInWindow' => $beUser->uc['debugInWindow'] ? 1 : 0,
             'ContextHelpWindows' => [
                 'width' => 600,
                 'height' => 400
