@@ -752,6 +752,25 @@ class BackendUtility
                 }
             }
 
+            // Add palette fields e.g. for a valid RTE transformation
+            $paletteFieldList = [];
+            foreach ($fieldList as $fieldData) {
+                list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $fieldData);
+                if ($pPalette
+                    && isset($GLOBALS['TCA'][$table]['palettes'][$pPalette])
+                    && is_array($GLOBALS['TCA'][$table]['palettes'][$pPalette])
+                    && isset($GLOBALS['TCA'][$table]['palettes'][$pPalette]['showitem'])
+                ) {
+                    $paletteFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['palettes'][$pPalette]['showitem'], true);
+                    foreach ($paletteFields as $paletteField) {
+                        if ($paletteField !== '--linebreak--') {
+                            $paletteFieldList[] = $paletteField;
+                        }
+                    }
+                }
+            }
+            $fieldList = array_merge($fieldList, $paletteFieldList);
+
             $altFieldList = [];
             // Traverse fields in types config and parse the configuration into a nice array:
             foreach ($fieldList as $k => $v) {
