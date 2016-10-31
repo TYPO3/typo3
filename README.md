@@ -109,7 +109,7 @@ Contributing
 If you want to contribute to the TYPO3 CMS source code, take a look at our
 Contributors Walkthrough and Review System:
 
-* https://wiki.typo3.org/CWT
+* https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/
 * https://review.typo3.org/
 
 The [repository at GitHub](https://github.com/TYPO3/TYPO3.CMS) is a
