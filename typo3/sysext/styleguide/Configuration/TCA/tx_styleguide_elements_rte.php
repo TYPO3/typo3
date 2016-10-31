@@ -173,6 +173,21 @@ return [
                 ],
             ],
         ],
+        'input_palette_1' => [
+            'exclude' => 1,
+            'label' => 'input_palette_1',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'rte_palette_1' => [
+            'exclude' => 1,
+            'label' => 'rte_palette_1',
+            'config' => [
+                'type' => 'text',
+            ],
+            'defaultExtras' => 'richtext:rte_transform',
+        ],
 
 
     ],
@@ -187,10 +202,17 @@ return [
                     rte_inline_1,
                 --div--;in flex,
                     rte_flex_1,
+                --div--;in palette,
+                    --palette--;palette;rte_1,
             ',
         ],
+    ],
 
 
+    'palettes' => [
+        'rte_1' => [
+            'showitem' => 'input_palette_1,rte_palette_1',
+        ],
     ],
 
 
