@@ -12,7 +12,6 @@ return [
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content',
         'delete' => 'deleted',
         'versioningWS' => true,
-        'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'type' => 'CType',
         'hideAtCopy' => true,

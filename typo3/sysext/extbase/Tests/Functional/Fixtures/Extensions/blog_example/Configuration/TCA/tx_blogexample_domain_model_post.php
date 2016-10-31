@@ -8,7 +8,6 @@ return [
         'tstamp'   => 'tstamp',
         'crdate'   => 'crdate',
         'versioningWS' => true,
-        'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l18n_parent',

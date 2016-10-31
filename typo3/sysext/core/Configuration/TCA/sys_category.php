@@ -11,7 +11,6 @@ return [
         'sortby' => 'sorting',
         'versioningWS' => true,
         'rootLevel' => -1,
-        'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',

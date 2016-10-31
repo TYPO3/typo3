@@ -86,17 +86,7 @@ class DataHandlerHook
             $notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : [];
             switch ($action) {
                 case 'new':
-                    // check if page / branch versioning is needed,
-                    // or if "element" version can be used
-                    $versionizeTree = -1;
-                    if (isset($value['treeLevels'])) {
-                        $versionizeTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value['treeLevels'], -1, 100);
-                    }
-                    if ($table == 'pages' && $versionizeTree >= 0) {
-                        $this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
-                    } else {
-                        $tcemainObj->versionizeRecord($table, $id, $value['label']);
-                    }
+                    $tcemainObj->versionizeRecord($table, $id, $value['label']);
                     break;
                 case 'swap':
                     $this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
@@ -755,65 +745,6 @@ class DataHandlerHook
     /*****************************
      *****  CMD versioning  ******
      *****************************/
-    /**
-     * Creates a new version of a page including content and possible subpages.
-     *
-     * @param int $uid Page uid to create new version of.
-     * @param string $label Version label
-     * @param int $versionizeTree Indicating "treeLevel" - "page" (0) or "branch" (>=1) ["element" type must call versionizeRecord() directly]
-     * @param DataHandler $tcemainObj TCEmain object
-     * @return void
-     * @see copyPages()
-     */
-    protected function versionizePages($uid, $label, $versionizeTree, DataHandler $tcemainObj)
-    {
-        $uid = (int)$uid;
-        // returns the branch
-        $brExist = $tcemainObj->doesBranchExist('', $uid, $tcemainObj->pMap['show'], 1);
-        // Checks if we had permissions
-        if ((int)$brExist === -1) {
-            $tcemainObj->newlog('Could not read all subpages to versionize.', 1);
-            return;
-        }
-        // Make list of tables that should come along with a new version of the page:
-        $verTablesArray = [];
-        $allTables = array_keys($GLOBALS['TCA']);
-        foreach ($allTables as $tableName) {
-            if ($tableName != 'pages' && ($versionizeTree > 0 || $GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages'])) {
-                $verTablesArray[] = $tableName;
-            }
-        }
-        // Remove the possible inline child tables from the tables to be versioniozed automatically:
-        $verTablesArray = array_diff($verTablesArray, $this->getPossibleInlineChildTablesOfParentTable('pages'));
-        // Begin to copy pages if we're allowed to:
-        if ($versionizeTree !== -1) {
-            $tcemainObj->newlog('Versioning type "' . $versionizeTree . '" was not allowed in workspace', 1);
-            return;
-        }
-        // Versionize this page:
-        $theNewRootID = $tcemainObj->versionizeRecord('pages', $uid, $label, false, $versionizeTree);
-        if (!$theNewRootID) {
-            $tcemainObj->newlog('The root version could not be created!', 1);
-            return;
-        }
-        $this->rawCopyPageContent($uid, $theNewRootID, $verTablesArray, $tcemainObj);
-        // If we're going to copy recursively...:
-        if ($versionizeTree > 0) {
-            // Get ALL subpages to copy (read permissions respected - they should NOT be...):
-            $CPtable = $tcemainObj->int_pageTreeInfo([], $uid, (int)$versionizeTree, $theNewRootID);
-            // Now copying the subpages
-            foreach ($CPtable as $thePageUid => $thePagePid) {
-                $newPid = $tcemainObj->copyMappingArray['pages'][$thePagePid];
-                if (isset($newPid)) {
-                    $theNewRootID = $tcemainObj->copyRecord_raw('pages', $thePageUid, $newPid);
-                    $this->rawCopyPageContent($thePageUid, $theNewRootID, $verTablesArray, $tcemainObj);
-                } else {
-                    $tcemainObj->newlog('Something went wrong during copying branch (for versioning)', 1);
-                    break;
-                }
-            }
-        }
-    }
 
     /**
      * Swapping versions of a record
@@ -1253,52 +1184,6 @@ class DataHandlerHook
     /*******************************
      *****  helper functions  ******
      *******************************/
-    /**
-     * Copies all records from tables in $copyTablesArray from page with $old_pid to page with $new_pid
-     * Uses raw-copy for the operation (meant for versioning!)
-     *
-     * @param int $oldPageId Current page id.
-     * @param int $newPageId New page id
-     * @param array $copyTablesArray Array of tables from which to copy
-     * @param DataHandler $tcemainObj TCEmain object
-     * @return void
-     * @see versionizePages()
-     */
-    protected function rawCopyPageContent($oldPageId, $newPageId, array $copyTablesArray, DataHandler $tcemainObj)
-    {
-        if (!$newPageId) {
-            return;
-        }
-        foreach ($copyTablesArray as $table) {
-            // all records under the page is copied.
-            if ($table && is_array($GLOBALS['TCA'][$table]) && $table !== 'pages') {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-                $statement = $queryBuilder
-                    ->select('uid')
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($oldPageId, \PDO::PARAM_INT)
-                        )
-                    )
-                    ->execute();
-
-                while ($row = $statement->fetch()) {
-                    // Check, if this record has already been copied by a parent record as relation:
-                    if (!$tcemainObj->copyMappingArray[$table][$row['uid']]) {
-                        // Copying each of the underlying records (method RAW)
-                        $tcemainObj->copyRecord_raw($table, $row['uid'], $newPageId);
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Finds all elements for swapping versions in workspace
@@ -1614,28 +1499,6 @@ class DataHandlerHook
         }
         // Check for the localizations of that element and move them as well
         $tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
-    }
-
-    /**
-     * Gets all possible child tables that are used on each parent table as field.
-     *
-     * @param string $parentTable Name of the parent table
-     * @param array $possibleInlineChildren Collected possible inline children
-     * @return array
-     */
-    protected function getPossibleInlineChildTablesOfParentTable($parentTable, array $possibleInlineChildren = [])
-    {
-        foreach ($GLOBALS['TCA'][$parentTable]['columns'] as $parentField => $parentFieldDefinition) {
-            if (isset($parentFieldDefinition['config']['type'])) {
-                $parentFieldConfiguration = $parentFieldDefinition['config'];
-                if ($parentFieldConfiguration['type'] == 'inline' && isset($parentFieldConfiguration['foreign_table'])) {
-                    if (!in_array($parentFieldConfiguration['foreign_table'], $possibleInlineChildren)) {
-                        $possibleInlineChildren = $this->getPossibleInlineChildTablesOfParentTable($parentFieldConfiguration['foreign_table'], array_merge($possibleInlineChildren, $parentFieldConfiguration['foreign_table']));
-                    }
-                }
-            }
-        }
-        return $possibleInlineChildren;
     }
 
     /**

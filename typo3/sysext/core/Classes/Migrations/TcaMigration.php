@@ -57,6 +57,7 @@ class TcaMigration
         $tca = $this->migrateSelectTreeOptions($tca);
         $tca = $this->migrateTSconfigSoftReferences($tca);
         $tca = $this->migrateShowIfRteOption($tca);
+        $tca = $this->migrateWorkspacesOptions($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -845,6 +846,29 @@ class TcaMigration
                             . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']';
                     }
                 }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Casts "versioningWS" to bool, and removes "versioning_followPages"
+     *
+     * @param array $tca Incoming TCA
+     * @return array Migrated TCA
+     */
+    protected function migrateWorkspacesOptions(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (isset($tableDefinition['ctrl']['versioningWS']) && !is_bool($tableDefinition['ctrl']['versioningWS'])) {
+                $tableDefinition['ctrl']['versioningWS'] = (bool)$tableDefinition['ctrl']['versioningWS'];
+                $this->messages[] = 'The TCA setting \'versioningWS\' was set to a boolean value '
+                    . 'in TCA ' . $table . '[\'ctrl\'][\'versioningWS\']';
+            }
+            if (isset($tableDefinition['ctrl']['versioning_followPages']) && !empty($tableDefinition['ctrl']['versioning_followPages'])) {
+                unset($tableDefinition['ctrl']['versioning_followPages']);
+                $this->messages[] = 'The TCA setting \'versioning_followPages\' was removed as it is unused '
+                    . 'in TCA ' . $table . '[\'ctrl\'][\'versioning_followPages\']';
             }
         }
         return $tca;

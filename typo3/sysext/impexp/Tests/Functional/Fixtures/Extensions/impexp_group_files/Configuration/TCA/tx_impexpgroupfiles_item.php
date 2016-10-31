@@ -11,7 +11,6 @@ return [
         'sortby' => 'sorting',
 
         'versioningWS' => true,
-        'versioning_followPages' => true,
 
         'origUid' => 't3_origuid',
 

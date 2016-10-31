@@ -476,8 +476,8 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
                     if ($echoLevel == 3) {
                         echo LF . '	\\-' . $tableName . ':' . $rowSub['uid'];
                     }
-                    // If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
-                    if ($versionSwapmode === 'SWAPMODE:-1' || ($versionSwapmode === 'SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages'])) {
+                    // If the rootID represents a version, we must check if the record from this table is allowed to belong to this:
+                    if ($versionSwapmode === 'SWAPMODE:-1') {
                         // This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
                         $this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
                         if ($echoLevel > 1) {

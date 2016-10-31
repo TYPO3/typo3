@@ -1569,8 +1569,7 @@ class PageRepository
                     $wsAlt['pid'] = $row['pid'];
                     // For versions of single elements or page+content, preserve online UID and PID
                     // (this will produce true "overlay" of element _content_, not any references)
-                    // For page+content the "_ORIG_uid" should actually be used as PID for selection
-                    // of tables with "versioning_followPages" enabled.
+                    // For page+content the "_ORIG_uid" should actually be used as PID for selection.
                     $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
                     $wsAlt['uid'] = $row['uid'];
                     // Translate page alias as well so links are pointing to the _online_ page:

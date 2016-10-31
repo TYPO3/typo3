@@ -1750,4 +1750,119 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
+
+    public function migrateWorkspaceSettingsDataProvider()
+    {
+        return [
+            'no workspaces enabled' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => false
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => false
+                        ],
+                    ],
+                ]
+            ],
+            'nothing activated' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'label' => 'blabla'
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'label' => 'blabla'
+                        ],
+                    ],
+                ]
+            ],
+            'nothing changed, workspaces enabled' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => true
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => true
+                        ],
+                    ],
+                ]
+            ],
+            'cast workspaces to bool' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => 1
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => true
+                        ],
+                    ],
+                ]
+            ],
+            'cast workspaces v2 to bool' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => 2
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => true
+                        ],
+                    ],
+                ]
+            ],
+            'cast workspaces v2 to bool and remove followpages' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => 2,
+                            'versioning_followPages' => true
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'versioningWS' => true
+                        ],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateWorkspaceSettingsDataProvider
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     */
+    public function migrateWorkspaceSettings(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
 }

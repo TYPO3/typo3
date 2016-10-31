@@ -8,7 +8,6 @@ return [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'versioningWS' => true,
-        'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
         'delete' => 'deleted',

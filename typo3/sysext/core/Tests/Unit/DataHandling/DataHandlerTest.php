@@ -377,7 +377,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 1 => [
                     'version' => [
                         'action' => 'new',
-                        'treeLevels' => -1,
                         'label' => 'Auto-created for WS #1'
                     ]
                 ]

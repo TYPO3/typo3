@@ -1158,7 +1158,6 @@ class DataHandler
                                 $cmd = [];
                                 $cmd[$table][$id]['version'] = [
                                     'action' => 'new',
-                                    'treeLevels' => -1,
                                     // Default is to create a version of the individual records... element versioning that is.
                                     'label' => 'Auto-created for WS #' . $this->BE_USER->workspace
                                 ];

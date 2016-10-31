@@ -5,7 +5,6 @@ return [
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages_language_overlay',
         'versioningWS' => true,
-        'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'crdate' => 'crdate',
         'hideAtCopy' => 1,
