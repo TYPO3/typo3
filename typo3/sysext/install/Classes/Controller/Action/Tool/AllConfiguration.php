@@ -219,7 +219,7 @@ class AllConfiguration extends Action\AbstractAction
                 if ($lc === '];') {
                     break;
                 }
-                if (preg_match('#["\']([\\w_-]*)["\']\\s*=>\\s*(?:(\\[).*|(?!//).*//\\s*(.*))#i', $lc, $reg)) {
+                if (preg_match('#["\']([\\w_-]*)["\']\\s*=>\\s*(?:(\\[).*|(?:(?!//).)*//\\s*(.*))#i', $lc, $reg)) {
                     if ($reg[2] === '[' && $reg[1] === strtoupper($reg[1])) {
                         $mainKey = $reg[1];
                     } elseif ($mainKey) {
