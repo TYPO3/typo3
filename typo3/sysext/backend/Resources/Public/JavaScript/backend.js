@@ -41,12 +41,6 @@ TYPO3 = Ext.apply(TYPO3, {
 });
 
 /**
- * general backend javascript functions
- */
-
-Ext.ns('TYPO3.configuration');
-
-/**
  * jump the backend to a module
  */
 function jump(url, modName, mainModName, pageId) {

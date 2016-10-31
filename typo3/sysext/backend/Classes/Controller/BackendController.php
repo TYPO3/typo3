@@ -65,11 +65,6 @@ class BackendController
     protected $toolbarItems = [];
 
     /**
-     * @var int
-     */
-    protected $menuWidth = 190;
-
-    /**
      * @var bool
      */
     protected $debug;
@@ -164,9 +159,6 @@ class BackendController
         $this->css = '';
 
         $this->initializeToolbarItems();
-        if (isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'])) {
-            $this->menuWidth = (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
-        }
         $this->executeHook('constructPostProcess');
         $this->includeLegacyBackendItems();
     }
@@ -589,8 +581,6 @@ class BackendController
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,
             'inWorkspace' => $beUser->workspace !== 0,
-            'moduleMenuWidth' => $this->menuWidth - 1,
-            'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 45,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
             'debugInWindow' => $beUser->uc['debugInWindow'] ? 1 : 0,
             'ContextHelpWindows' => [
