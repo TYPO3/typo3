@@ -7,7 +7,7 @@
 					<f:if condition="{contentElements}">
 						<f:for each="{contentElements}" as="contentElement">
 							<li>
-								<f:link.page pageUid="{page.uid}" section="c{contentElement.uid}">
+								<f:link.page pageUid="{page.uid}" section="c{contentElement.uid}" target="{page.target}">
 									{contentElement.header}
 								</f:link.page>
 							</li>

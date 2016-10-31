@@ -4,7 +4,7 @@
 		<dl class="ce-menu ce-menu-4">
 			<f:for each="{pages}" as="page">
 				<dt>
-					<f:link.page pageUid="{page.uid}">
+					<f:link.page pageUid="{page.uid}" target="{page.target}">
 						<f:if condition="{page.nav_title}">
 							<f:then>
 								{page.nav_title}
