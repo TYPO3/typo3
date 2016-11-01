@@ -112,7 +112,6 @@ class BackendController
         $this->pageRenderer->loadExtJS();
         // included for the module menu JavaScript, please note that this is subject to change
         $this->pageRenderer->loadJquery();
-        $this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', false);
         $this->pageRenderer->addExtDirectCode();
         // Add default BE javascript
         $this->jsFiles = [
