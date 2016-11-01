@@ -117,7 +117,6 @@ class BackendController
         $this->jsFiles = [
             'locallang' => $this->getLocalLangFileName(),
             'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
-            'modulemenu' => 'EXT:backend/Resources/Public/JavaScript/modulemenu.js',
             'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
             'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
             'iframepanel' => 'EXT:backend/Resources/Public/JavaScript/iframepanel.js',
@@ -128,6 +127,9 @@ class BackendController
 			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('logout')) . ');
 			LoginRefresh.initialize();
 		}');
+
+        // load module menu
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ModuleMenu');
 
         // load Toolbar class
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar');

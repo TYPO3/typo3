@@ -420,7 +420,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
  */
 require(
 	[
-		'TYPO3/CMS/Backend/modulemenu'
+		'TYPO3/CMS/Backend/ModuleMenu'
 	],
 	function () {
 		// extjs loading bugfix

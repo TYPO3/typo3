@@ -20,7 +20,7 @@ require(
 	[
 		'jquery',
 		'TYPO3/CMS/Backend/Icons',
-		'TYPO3/CMS/Backend/modulemenu'
+		'TYPO3/CMS/Backend/ModuleMenu'
 	],
 	function ($) {
 
