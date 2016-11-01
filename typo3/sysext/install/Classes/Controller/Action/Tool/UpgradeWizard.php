@@ -15,11 +15,13 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  */
 
 use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
+use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\Controller\Action;
+use TYPO3\CMS\Install\Status\ErrorStatus;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
 
 /**
@@ -48,33 +50,41 @@ class UpgradeWizard extends Action\AbstractAction
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = [];
         }
 
-        // To make sure DatabaseCharsetUpdate and initialUpdateDatabaseSchema are first wizards, they are added here instead of ext_localconf.php
-        $databaseCharsetUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class, 'databaseCharsetUpdate');
-        if ($databaseCharsetUpdateObject->shouldRenderWizard()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-                ['databaseCharsetUpdate' => \TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class],
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-            );
-        }
-        $initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class, 'initialUpdateDatabaseSchema');
-        if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-                ['initialUpdateDatabaseSchema' => \TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class],
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-            );
-            $this->needsInitialUpdateDatabaseSchema = true;
-        }
+        $actionMessages = [];
 
-        // To make sure finalUpdateDatabaseSchema is last wizard, it is added here instead of ext_localconf.php
-        $finalUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class, 'finalUpdateDatabaseSchema');
-        if ($finalUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = \TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class;
+        try {
+            // To make sure DatabaseCharsetUpdate and initialUpdateDatabaseSchema are first wizards, they are added here instead of ext_localconf.php
+            $databaseCharsetUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class, 'databaseCharsetUpdate');
+            if ($databaseCharsetUpdateObject->shouldRenderWizard()) {
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+                    ['databaseCharsetUpdate' => \TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class],
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+                );
+            }
+            $initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class, 'initialUpdateDatabaseSchema');
+            if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+                    ['initialUpdateDatabaseSchema' => \TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class],
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+                );
+                $this->needsInitialUpdateDatabaseSchema = true;
+            }
+
+            // To make sure finalUpdateDatabaseSchema is last wizard, it is added here instead of ext_localconf.php
+            $finalUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class, 'finalUpdateDatabaseSchema');
+            if ($finalUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = \TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class;
+            }
+        } catch (StatementException $exception) {
+            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+            $message = GeneralUtility::makeInstance(ErrorStatus::class);
+            $message->setTitle('SQL error');
+            $message->setMessage($exception->getMessage());
+            $actionMessages[] = $message;
         }
 
         // Perform silent cache framework table upgrade
         $this->silentCacheFrameworkTableSchemaMigration();
-
-        $actionMessages = [];
 
         if (isset($this->postValues['set']['getUserInput'])) {
             $actionMessages[] = $this->getUserInputForUpdate();
