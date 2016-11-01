@@ -84,6 +84,7 @@ return [
             'label' => 't3editor_reload_1',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => [
                     [
                         'label1',

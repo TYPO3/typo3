@@ -309,7 +309,7 @@ return [
                     'link' => [
                         'type' => 'popup',
                         'title' => 'Link',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+                        'icon' => 'actions-wizard-link',
                         'module' => [
                             'name' => 'wizard_link',
                         ],
@@ -565,14 +565,14 @@ return [
         ],
         'text_15' => [
             'exclude' => 1,
-            'label' => 'text_14 defaultExtras="fixed-font : enable-tab"',
+            'label' => 'text_15 defaultExtras="fixed-font : enable-tab"',
             'config' => [
                 'type' => 'text',
             ],
             'defaultExtras' => 'fixed-font : enable-tab'
         ],
         'text_16' => [
-            'label' => 'text_15 wizard table',
+            'label' => 'text_16 wizard table',
             'config' => [
                 'type' => 'text',
                 'cols' => '40',
@@ -581,7 +581,7 @@ return [
                     'table' => [
                         'type' => 'script',
                         'title' => 'Table wizard',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                        'icon' => 'content-table',
                         'module' => [
                             'name' => 'wizard_table'
                         ],
@@ -594,7 +594,7 @@ return [
             ],
         ],
         'text_17' => [
-            'label' => 'text_16 wizard select',
+            'label' => 'text_17 wizard select',
             'config' => [
                 'type' => 'text',
                 'cols' => '40',
@@ -658,17 +658,6 @@ return [
                     ['foobar', ''],
                     ['foobar', ''],
                 ],
-            ],
-        ],
-        'checkbox_5' => [
-            'exclude' => 1,
-            'label' => 'checkbox_5 showIfRTE=1 (only shown if RTE is enabled for user)',
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    ['foo', ''],
-                ],
-                'showIfRTE' => 1,
             ],
         ],
         'checkbox_6' => [
@@ -1039,7 +1028,7 @@ return [
                                                             <link type="array">
                                                                 <type>popup</type>
                                                                 <title>Link</title>
-                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+                                                                <icon>actions-wizard-link</icon>
                                                                 <module type="array">
                                                                     <name>wizard_link</name>
                                                                     <urlParameters type="array">
@@ -1066,7 +1055,7 @@ return [
                                                             <table type="array">
                                                                 <type>script</type>
                                                                 <title>Table wizard</title>
-                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
+                                                                <icon>content-table</icon>
                                                                 <module type="array">
                                                                     <name>wizard_table</name>
                                                                 </module>
@@ -1210,7 +1199,7 @@ return [
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_14, text_15, text_16, text_17,
                 --div--;check,
-                    checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
+                    checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
                     checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,

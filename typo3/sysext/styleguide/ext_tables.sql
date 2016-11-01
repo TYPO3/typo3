@@ -97,7 +97,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 	checkbox_2 int(11) DEFAULT '0' NOT NULL,
 	checkbox_3 int(11) DEFAULT '0' NOT NULL,
 	checkbox_4 int(11) DEFAULT '0' NOT NULL,
-	checkbox_5 int(11) DEFAULT '0' NOT NULL,
 	checkbox_6 int(11) DEFAULT '0' NOT NULL,
 	checkbox_7 int(11) DEFAULT '0' NOT NULL,
 	checkbox_8 int(11) DEFAULT '0' NOT NULL,

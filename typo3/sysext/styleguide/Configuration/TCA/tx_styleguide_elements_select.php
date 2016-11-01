@@ -423,14 +423,14 @@ return [
                         'module' => [
                             'name' => 'wizard_edit',
                         ],
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+                        'icon' => 'actions-open',
                         'popup_onlyOpenIfSelected' => 1,
                         'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
                     ],
                     'add' => [
                         'type' => 'script',
                         'title' => 'add',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+                        'icon' => 'actions-add',
                         'module' => [
                             'name' => 'wizard_add',
                         ],
@@ -443,7 +443,7 @@ return [
                     'list' => [
                         'type' => 'script',
                         'title' => 'list',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
+                        'icon' => 'actions-system-list-open',
                         'module' => [
                             'name' => 'wizard_list',
                         ],
@@ -713,14 +713,14 @@ return [
                                                                 <module>
                                                                     <name>wizard_edit</name>
                                                                 </module>
-                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif</icon>
+                                                                <icon>actions-open</icon>
                                                                 <popup_onlyOpenIfSelected>1</popup_onlyOpenIfSelected>
                                                                 <JSopenParams>height=350,width=580,status=0,menubar=0,scrollbars=1</JSopenParams>
                                                             </edit>
                                                             <add>
                                                                 <type>script</type>
                                                                 <title>add</title>
-                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif</icon>
+                                                                <icon>actions-add</icon>
                                                                 <module>
                                                                     <name>wizard_add</name>
                                                                 </module>
@@ -733,7 +733,7 @@ return [
                                                             <list>
                                                                 <type>script</type>
                                                                 <title>liste</title>
-                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif</icon>
+                                                                <icon>actions-system-list-open</icon>
                                                                 <module>
                                                                     <name>wizard_list</name>
                                                                 </module>

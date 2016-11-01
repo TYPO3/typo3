@@ -7,11 +7,10 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
-        //'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -28,6 +27,7 @@ return [
             'label' => 'sys_language_uid',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
@@ -42,6 +42,7 @@ return [
             'label' => 'l18n_parent',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => [
                     ['', 0],
                 ],
@@ -66,6 +67,7 @@ return [
 
         'hidden' => [
             'exclude' => 1,
+            'label' => 'disable',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -143,9 +145,17 @@ return [
             ],
         ],
 
+
     ],
 
+
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, text_1, inline_1'],
+        '1' => [
+            'showitem' => '
+                sys_language_uid, l10n_parent, l10n_diffsource, hidden, text_1, inline_1
+            '
+        ],
     ],
+
+
 ];
