@@ -1,3 +1,17 @@
+2016-11-01  c423e5b                  [RELEASE] Release of TYPO3 6.2.28 (TYPO3 Release Team)
+2016-11-01  94ec146  #78494,#76542   [BUGFIX] Prevent installation of incompatible extensions (Benni Mack)
+2016-10-27  cf20781  #73156          [BUGFIX] FrontendContentAdapterService replaces LF chars before concat (Daniel Neugebauer)
+2016-10-25  d262000  #78418          [TASK] splitFunctionalTests.sh in 6.2 (Christian Kuhn)
+2016-10-25  c01ccd3  #78368          [BUGFIX] Fix reference count when ref_table is sys_file (Wouter Wolters)
+2016-10-25  4f5926a  #78408          [TASK] Remove failing test in IntegerValidatorTest (Anja Leichsenring)
+2016-10-21  953119f  #76901          [BUGFIX] Reset SYS/exceptionalErrors in live preset (Benni Mack)
+2016-10-13  44aa8dc  #77956          [BUGFIX] Prevent exception due to missing id in the language menu (Xavier Perseguers)
+2016-10-12  59f7404  #78021          [BUGFIX] Exception with cHashIncludePageId but no id in the URL (Dmitry Dulepov)
+2016-09-30  0aa80a6  #78102          [BUGFIX] Incorrect cHash generation may cause 404 on any page (Dmitry Dulepov)
+2016-09-23  5b6f9fc  #77877          [BUGFIX] Correct show configuration in newContentElement wizard (Nicole Cordes)
+2016-09-13  2c19670                  [TASK] Set TYPO3 version to 6.2.28-dev (TYPO3 Release Team)
+
+
 2016-09-13  46b333a                  [RELEASE] Release of TYPO3 6.2.27 (TYPO3 Release Team)
 2016-09-13  8aecd0c  #76462          [!!!][SECURITY] Mitigate potential cache flooding (Benni Mack)
 2016-09-13  b04d394  #77906          [SECURITY] Fix select_key XSS in PageLayoutView (Georg Ringer)
