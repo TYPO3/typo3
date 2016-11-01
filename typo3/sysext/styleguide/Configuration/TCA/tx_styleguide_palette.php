@@ -156,6 +156,20 @@ return [
                 'type' => 'input',
             ],
         ],
+        'palette_6_1' => [
+            'exclude' => 1,
+            'label' => 'palette_6_1',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'palette_7_1' => [
+            'exclude' => 1,
+            'label' => 'palette_7_1',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
 
 
     ],
@@ -170,6 +184,9 @@ return [
                     --palette--;palette_3;palette_3,
                     --palette--;;palette_4,
                     --palette--;palette_5;palette_5,
+                --div--;hidden palette,
+                    --palette--;palette_6;palette_6,
+                    --palette--;palette_7 (palette_6 hidden);palette_7,
             ',
         ],
     ],
@@ -190,6 +207,13 @@ return [
         ],
         'palette_5' => [
             'showitem' => 'palette_5_1, --linebreak--, palette_5_2',
+        ],
+        'palette_6' => [
+            'showitem' => 'palette_6_1',
+            'isHiddenPalette' => true,
+        ],
+        'palette_7' => [
+            'showitem' => 'palette_7_1',
         ],
     ],
 

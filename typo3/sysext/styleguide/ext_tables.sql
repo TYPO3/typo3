@@ -1757,6 +1757,8 @@ CREATE TABLE tx_styleguide_palette (
 	palette_4_4 text,
 	palette_5_1 text,
 	palette_5_2 text,
+	palette_6_1 text,
+	palette_7_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
