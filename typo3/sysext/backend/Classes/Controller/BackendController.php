@@ -119,7 +119,6 @@ class BackendController
             'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
             'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
             'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
-            'iframepanel' => 'EXT:backend/Resources/Public/JavaScript/iframepanel.js',
         ];
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
