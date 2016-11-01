@@ -107,9 +107,9 @@ return [
                 'maxitems' => 999,
             ],
         ],
-        'group_db_3_multiple' => [
+        'group_db_8' => [
             'exclude' => 1,
-            'label' => 'group_db_3_multiple allowed=tx_styleguide_staticdata, multiple, wizard suggest, disable_controls=browser, position top',
+            'label' => 'group_db_8 allowed=tx_styleguide_staticdata, multiple, wizard suggest, disable_controls=browser, position top',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -392,7 +392,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;internal_type=db,
-                    group_db_1, group_db_2, group_db_3, group_db_3_multiple, group_db_4, group_db_5, group_db_6, group_db_7,
+                    group_db_1, group_db_2, group_db_3, group_db_8, group_db_4, group_db_5, group_db_6, group_db_7,
                 --div--;internal_type=file,
                     group_file_1, group_file_2, group_file_3, group_file_4,
                 --div--;internal_type=folder,
