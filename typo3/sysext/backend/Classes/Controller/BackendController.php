@@ -609,7 +609,6 @@ class BackendController
 	function fsModules() {	//
 		this.recentIds=new Array();					// used by frameset modules to track the most recent used id for list frame.
 		this.navFrameHighlightedID=new Array();		// used by navigation frames to track which row id was highlighted last time
-		this.currentMainLoaded="";
 		this.currentBank="0";
 	}
 	var fsMod = new fsModules();
