@@ -2084,6 +2084,7 @@ CREATE TABLE tx_styleguide_valuesdefault (
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 
 	select_1 text,
+	select_2 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

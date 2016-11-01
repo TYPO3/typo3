@@ -178,6 +178,22 @@ return [
                 'default' => 2,
             ],
         ],
+        'select_2' => [
+            'exclude' => 1,
+            'label' => 'select_2 default=1,3 renderType=selectCheckBox, maxitems=999',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'maxitems' => 999,
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['foo 3', 3],
+                    ['foo 4', 4],
+                ],
+                'default' => '1,3'
+            ],
+        ],
 
     ],
 
@@ -191,7 +207,7 @@ return [
                     checkbox_1, checkbox_2, checkbox_3,
                     radio_1,
                 --div--;select,
-                    select_1,
+                    select_1,select_2,
             ',
         ],
     ],
