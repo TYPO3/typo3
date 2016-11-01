@@ -661,9 +661,18 @@ class BackendController
                 }
             } else {
                 $this->js .= '
-		// Warning about page editing:
-	alert(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ');
-			';
+            // Warning about page editing:
+            require(["TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function(Modal, Severity) {
+                Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ', Severity.notice, [{
+                    text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:close')) . ',
+                    active: true,
+                    btnClass: "btn-info",
+                    name: "cancel",
+                    trigger: function () {
+                        Modal.currentModal.trigger("modal-dismiss");
+                    }
+                }])
+            });';
             }
         }
     }
