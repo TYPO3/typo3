@@ -1,4 +1,5 @@
 language: php
+sudo: false
 
 php:
   - 7.0
@@ -17,6 +18,9 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install:
+  - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
+
 before_script:
   - cd ..
   - git clone --single-branch --branch master --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
@@ -29,7 +33,15 @@ script:
   - >
     echo;
     echo "Running unit tests";
-    ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/styleguide/Tests/Unit/
+    ./bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/styleguide/Tests/Unit/
+  - >
+    echo;
+    echo "Running functional tests";
+    export typo3DatabaseName="typo3";
+    export typo3DatabaseHost="localhost";
+    export typo3DatabaseUsername="root";
+    export typo3DatabasePassword="";
+    ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml typo3conf/ext/styleguide/Tests/Functional/
   - >
     echo;
     echo "Running php lint";

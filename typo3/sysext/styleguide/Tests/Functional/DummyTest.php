@@ -1,7 +1,7 @@
 <?php
-namespace TYPO3\CMS\Styleguide\Tests\Unit;
+namespace TYPO3\CMS\Styleguide\Tests\Functional;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -14,12 +14,12 @@ namespace TYPO3\CMS\Styleguide\Tests\Unit;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
 /**
  * Test case
  */
-class DummyTest extends UnitTestCase
+class DummyTest extends FunctionalTestCase
 {
     /**
      * @test
