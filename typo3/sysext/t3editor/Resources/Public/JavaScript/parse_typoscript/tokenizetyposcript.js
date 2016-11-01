@@ -837,7 +837,6 @@ var typoscriptWords = {
 	'splitChar': 'reserved',
 	'splitRendering': 'reserved',
 	'src': 'reserved',
-	'startInTaskCenter': 'reserved',
 	'stdheader': 'reserved',
 	'stdWrap': 'keyword2',
 	'stdWrap2': 'reserved',

@@ -695,8 +695,6 @@ class BackendController
                 $beUser->writeUC();
             } elseif ($beUser->uc['startModule']) {
                 $startModule = $beUser->uc['startModule'];
-            } elseif ($beUser->uc['startInTaskCenter']) {
-                $startModule = 'user_task';
             }
 
             // check if the start module has additional parameters, so a redirect to a specific
