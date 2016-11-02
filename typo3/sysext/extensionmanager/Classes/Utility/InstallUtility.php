@@ -198,9 +198,10 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
 		}
 		if (!$loadTerInformation) {
-			return $extension;
+			$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfInformation(array($extensionKey => $extension));
+		} else {
+			$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(array($extensionKey => $extension));
 		}
-		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(array($extensionKey => $extension));
 
 		if (!isset($availableAndInstalledExtensions[$extensionKey])) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
