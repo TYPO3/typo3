@@ -37,7 +37,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler|PHPUnit_Framework_MockObject_MockObject
      */
-    protected $tceMainMock;
+    protected $dataHandlerMock;
 
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceFactory|PHPUnit_Framework_MockObject_MockObject
@@ -51,7 +51,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
-        $this->tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)
+        $this->dataHandlerMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)
             ->setMethods(['deleteAction'])
             ->getMock();
         $this->fileFactoryMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\ResourceFactory::class)
@@ -95,9 +95,9 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'disallowedFileExtensions' => $disallowed,
             'values' => $values
         ];
-        $this->tceMainMock->expects($this->never())->method('deleteAction');
+        $this->dataHandlerMock->expects($this->never())->method('deleteAction');
         $this->fileFactoryMock->expects($this->never())->method('getFileReferenceObject');
-        $this->filter->filterInlineChildren($this->parameters, $this->tceMainMock);
+        $this->filter->filterInlineChildren($this->parameters, $this->dataHandlerMock);
     }
 
     /**

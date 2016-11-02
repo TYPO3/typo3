@@ -104,7 +104,7 @@ class RecordList extends AbstractModule
     public $clear_cache;
 
     /**
-     * Command: Eg. "delete" or "setCB" (for TCEmain / clipboard operations)
+     * Command: Eg. "delete" or "setCB" (for DataHandler / clipboard operations)
      *
      * @var string
      */

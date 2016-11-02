@@ -835,9 +835,9 @@ class RelationHandler
                     $this->updateRefIndex($pair[0], $pair[1]);
                 }
             }
-            // Update ref index; In tcemain it is not certain that this will happen because
+            // Update ref index; In DataHandler it is not certain that this will happen because
             // if only the MM field is changed the record itself is not updated and so the ref-index is not either.
-            // This could also have been fixed in updateDB in tcemain, however I decided to do it here ...
+            // This could also have been fixed in updateDB in DataHandler, however I decided to do it here ...
             $this->updateRefIndex($this->currentTable, $uid);
         }
     }
@@ -1311,7 +1311,7 @@ class RelationHandler
     /**
      * Update Reference Index (sys_refindex) for a record
      * Should be called any almost any update to a record which could affect references inside the record.
-     * (copied from TCEmain)
+     * (copied from DataHandler)
      *
      * @param string $table Table name
      * @param int $id Record UID

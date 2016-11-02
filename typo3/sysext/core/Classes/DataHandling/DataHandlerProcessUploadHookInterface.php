@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  */
 
 /**
- * Interface for classes which hook into TCEmain and do additional processing
+ * Interface for classes which hook into DataHandler and do additional processing
  * after the upload of a file.
  */
 interface DataHandlerProcessUploadHookInterface

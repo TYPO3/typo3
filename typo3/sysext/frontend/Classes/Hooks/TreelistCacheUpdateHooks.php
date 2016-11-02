@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class that hooks into TCEmain and listens for updates to pages to update the
+ * Class that hooks into DataHandler and listens for updates to pages to update the
  * treelist cache
  */
 class TreelistCacheUpdateHooks
@@ -59,17 +59,17 @@ class TreelistCacheUpdateHooks
     }
 
     /**
-     * waits for TCEmain commands and looks for changed pages, if found further
+     * waits for DataHandler commands and looks for changed pages, if found further
      * changes take place to determine whether the cache needs to be updated
      *
-     * @param string $status TCEmain operation status, either 'new' or 'update'
+     * @param string $status DataHandler operation status, either 'new' or 'update'
      * @param string $table The DB table the operation was carried out on
      * @param mixed $recordId The record's uid for update records, a string to look the record's uid up after it has been created
-     * @param array $updatedFields Array of changed fiels and their new values
-     * @param DataHandler $tceMain TCEmain parent object
+     * @param array $updatedFields Array of changed fields and their new values
+     * @param DataHandler $dataHandler DataHandler parent object
      * @return void
      */
-    public function processDatamap_afterDatabaseOperations($status, $table, $recordId, array $updatedFields, DataHandler $tceMain)
+    public function processDatamap_afterDatabaseOperations($status, $table, $recordId, array $updatedFields, DataHandler $dataHandler)
     {
         if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
             $affectedPagePid = 0;
@@ -77,7 +77,7 @@ class TreelistCacheUpdateHooks
             if ($status == 'new') {
                 // Detect new pages
                 // Resolve the uid
-                $affectedPageUid = $tceMain->substNEWwithIDs[$recordId];
+                $affectedPageUid = $dataHandler->substNEWwithIDs[$recordId];
                 $affectedPagePid = $updatedFields['pid'];
             } elseif ($status == 'update') {
                 // Detect updated pages
@@ -100,10 +100,10 @@ class TreelistCacheUpdateHooks
      * @param string $table The record's table
      * @param int $recordId The record's uid
      * @param array $commandValue The commands value, typically an array with more detailed command information
-     * @param DataHandler $tceMain The TCEmain parent object
+     * @param DataHandler $dataHandler The DataHandler parent object
      * @return void
      */
-    public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $tceMain)
+    public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $dataHandler)
     {
         $action = (is_array($commandValue) && isset($commandValue['action'])) ? (string)$commandValue['action'] : '';
         if ($table === 'pages' && ($command === 'delete' || ($command === 'version' && $action === 'swap'))) {
@@ -129,7 +129,7 @@ class TreelistCacheUpdateHooks
     }
 
     /**
-     * waits for TCEmain commands and looks for moved pages, if found further
+     * waits for DataHandler commands and looks for moved pages, if found further
      * changes take place to determine whether the cache needs to be updated
      *
      * @param string $table Table name of the moved record
@@ -137,10 +137,10 @@ class TreelistCacheUpdateHooks
      * @param int $destinationPid The record's destination page id
      * @param array $movedRecord The record that moved
      * @param array $updatedFields Array of changed fields
-     * @param DataHandler $tceMain TCEmain parent object
+     * @param DataHandler $dataHandler DataHandler parent object
      * @return void
      */
-    public function moveRecord_firstElementPostProcess($table, $recordId, $destinationPid, array $movedRecord, array $updatedFields, DataHandler $tceMain)
+    public function moveRecord_firstElementPostProcess($table, $recordId, $destinationPid, array $movedRecord, array $updatedFields, DataHandler $dataHandler)
     {
         if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
             $affectedPageUid = $recordId;
@@ -155,7 +155,7 @@ class TreelistCacheUpdateHooks
     }
 
     /**
-     * Waits for TCEmain commands and looks for moved pages, if found further
+     * Waits for DataHandler commands and looks for moved pages, if found further
      * changes take place to determine whether the cache needs to be updated
      *
      * @param string $table Table name of the moved record
@@ -164,10 +164,10 @@ class TreelistCacheUpdateHooks
      * @param int $originalDestinationPid (negative) page id th page has been moved after
      * @param array $movedRecord The record that moved
      * @param array $updatedFields Array of changed fields
-     * @param DataHandler $tceMain TCEmain parent object
+     * @param DataHandler $dataHandler DataHandler parent object
      * @return void
      */
-    public function moveRecord_afterAnotherElementPostProcess($table, $recordId, $destinationPid, $originalDestinationPid, array $movedRecord, array $updatedFields, DataHandler $tceMain)
+    public function moveRecord_afterAnotherElementPostProcess($table, $recordId, $destinationPid, $originalDestinationPid, array $movedRecord, array $updatedFields, DataHandler $dataHandler)
     {
         if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
             $affectedPageUid = $recordId;
@@ -330,7 +330,7 @@ class TreelistCacheUpdateHooks
      * Determines what happened to the page record, this is necessary to clear
      * as less cache entries as needed later
      *
-     * @param string $status TCEmain operation status, either 'new' or 'update'
+     * @param string $status DataHandler operation status, either 'new' or 'update'
      * @param array $updatedFields Array of updated fields
      * @return string List of actions that happened to the page record
      */

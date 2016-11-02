@@ -53,7 +53,7 @@ class Import extends ImportExport
     /**
      * Keys are [tablename]:[new NEWxxx ids (or when updating it is uids)]
      * while values are arrays with table/uid of the original record it is based on.
-     * With the array keys the new ids can be looked up inside tcemain
+     * With the array keys the new ids can be looked up inside DataHandler
      *
      * @var array
      */
@@ -628,7 +628,7 @@ class Import extends ImportExport
             $this->callHook('after_writeRecordsPages', [
                 'tce' => &$tce
             ]);
-            // post-processing: Registering new ids (end all tcemain sessions with this)
+            // post-processing: Registering new ids (end all DataHandler sessions with this)
             $this->addToMapId($tce->substNEWwithIDs);
             // In case of an update, order pages from the page tree correctly:
             if ($this->update && is_array($this->dat['header']['pagetree'])) {
@@ -753,7 +753,7 @@ class Import extends ImportExport
         $this->callHook('after_writeRecordsRecords', [
             'tce' => &$tce
         ]);
-        // post-processing: Removing files and registering new ids (end all tcemain sessions with this)
+        // post-processing: Removing files and registering new ids (end all DataHandler sessions with this)
         $this->addToMapId($tce->substNEWwithIDs);
         // In case of an update, order pages from the page tree correctly:
         if ($this->update) {
@@ -932,7 +932,7 @@ class Import extends ImportExport
     /**
      * Registers the substNEWids in memory.
      *
-     * @param array $substNEWwithIDs From tcemain to be merged into internal mapping variable in this object
+     * @param array $substNEWwithIDs From DataHandler to be merged into internal mapping variable in this object
      * @return void
      * @see writeRecords()
      */
@@ -1070,7 +1070,7 @@ class Import extends ImportExport
      *
      * @param array $itemArray Array of item sets (table/uid) from a dbAnalysis object
      * @param array $itemConfig Array of TCA config of the field the relation to be set on
-     * @return array Array with values [table]_[uid] or [uid] for field of type group / internal_type file_reference. These values have the regular tcemain-input group/select type which means they will automatically be processed into a uid-list or MM relations.
+     * @return array Array with values [table]_[uid] or [uid] for field of type group / internal_type file_reference. These values have the regular DataHandler-input group/select type which means they will automatically be processed into a uid-list or MM relations.
      */
     public function setRelations_db($itemArray, $itemConfig)
     {
@@ -1202,7 +1202,7 @@ class Import extends ImportExport
                                     [$table, $thisNewUid, $field, $config],
                                     'remapListedDBRecords_flexFormCallBack'
                                 );
-                                // The return value is set as an array which means it will be processed by tcemain for file and DB references!
+                                // The return value is set as an array which means it will be processed by DataHandler for file and DB references!
                                 if (is_array($currentValueArray['data'])) {
                                     $updateData[$table][$thisNewUid][$field] = $currentValueArray;
                                 }
@@ -1307,7 +1307,7 @@ class Import extends ImportExport
                                         $iteratorObj = GeneralUtility::makeInstance(DataHandler::class);
                                         $iteratorObj->callBackObj = $this;
                                         $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $uid, $field, $softRefCfgs], 'processSoftReferences_flexFormCallBack');
-                                        // The return value is set as an array which means it will be processed by tcemain for file and DB references!
+                                        // The return value is set as an array which means it will be processed by DataHandler for file and DB references!
                                         if (is_array($currentValueArray['data'])) {
                                             $inData[$table][$thisNewUid][$field] = $currentValueArray;
                                         }

@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * sending the posted data to the object.
  *
  * Used by many smaller forms/links in TYPO3, including the QuickEdit module.
- * Is not used by FormEngine though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
+ * Is not used by FormEngine though (main form rendering script) - that uses the same class (DataHandler) but makes its own initialization (to save the redirect request).
  * For all other cases than FormEngine it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to FormEngine, that will give you easy form-rendering as well.
  */
 class SimpleDataHandlerController
@@ -140,7 +140,7 @@ class SimpleDataHandlerController
         $this->CB = GeneralUtility::_GP('CB');
         $this->vC = GeneralUtility::_GP('vC');
         $this->uPT = GeneralUtility::_GP('uPT');
-        // Creating TCEmain object
+        // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
         // Configuring based on user prefs.
         if ($beUser->uc['recursiveDelete']) {
@@ -196,7 +196,7 @@ class SimpleDataHandlerController
      */
     public function main()
     {
-        // LOAD TCEmain with data and cmd arrays:
+        // LOAD DataHandler with data and cmd arrays:
         $this->tce->start($this->data, $this->cmd);
         if (is_array($this->mirror)) {
             $this->tce->setMirror($this->mirror);

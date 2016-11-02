@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// register the hook to actually do the work within TCEmain
+// register the hook to actually do the work within DataHandler
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['version'] = \TYPO3\CMS\Version\Hook\DataHandlerHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass']['version'] = \TYPO3\CMS\Version\Hook\DataHandlerHook::class;
 

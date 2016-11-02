@@ -151,7 +151,7 @@ class BasicFileUtility
     /**
      * Returns the destination path/filename of a unique filename/foldername in that path.
      * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
-     * This function is used by fx. TCEmain when files are attached to records and needs to be uniquely named in the uploads/* folders
+     * This function is used by fx. DataHandler when files are attached to records and needs to be uniquely named in the uploads/* folders
      *
      * @param string $theFile The input filename to check
      * @param string $theDest The directory for which to return a unique filename for $theFile. $theDest MUST be a valid directory. Should be absolute.

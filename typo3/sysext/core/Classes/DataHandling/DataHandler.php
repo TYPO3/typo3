@@ -3398,7 +3398,7 @@ class DataHandler
         if ($GLOBALS['TCA'][$table]['ctrl']['origUid']) {
             $data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
         }
-        // Do the copy by simply submitting the array through TCEmain:
+        // Do the copy by simply submitting the array through DataHandler:
         /** @var $copyTCE DataHandler */
         $copyTCE = $this->getLocalTCE();
         $copyTCE->start($data, '', $this->BE_USER);
@@ -3584,7 +3584,7 @@ class DataHandler
     /**
      * Copying records, but makes a "raw" copy of a record.
      * Basically the only thing observed is field processing like the copying of files and correction of ids. All other fields are 1-1 copied.
-     * Technically the copy is made with THIS instance of the tcemain class contrary to copyRecord() which creates a new instance and uses the processData() function.
+     * Technically the copy is made with THIS instance of the DataHandler class contrary to copyRecord() which creates a new instance and uses the processData() function.
      * The copy is created by insertNewCopyVersion() which bypasses most of the regular input checking associated with processData() - maybe copyRecord() should even do this as well!?
      * This function is used to create new versions of a record.
      * NOTICE: DOES NOT CHECK PERMISSIONS to create! And since page permissions are just passed through and not changed to the user who executes the copy we cannot enforce permissions without getting an incomplete copy - unless we change permissions of course.
@@ -3722,7 +3722,7 @@ class DataHandler
      */
     public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = [])
     {
-        // Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
+        // Process references and files, currently that means only the files, prepending absolute paths (so the DataHandler engine will detect the file as new and one that should be made into a copy)
         $value = $this->copyRecord_procFilesRefs($conf, $uid, $value);
         $inlineSubType = $this->getInlineFieldType($conf);
         // Get the localization mode for the current (parent) record (keep|select):
@@ -3965,7 +3965,7 @@ class DataHandler
                 }
             }
         }
-        // Implode the new filelist into the new value (all files have absolute paths now which means they will get copied when entering TCEmain as new values...)
+        // Implode the new filelist into the new value (all files have absolute paths now which means they will get copied when entering DataHandler as new values...)
         $value = implode(',', $newValue);
 
         // Return the new value:
@@ -6106,7 +6106,7 @@ class DataHandler
      * @param string $table Table name of the parent record
      * @param int $id Uid of the parent record
      * @param array $incomingFieldArray Reference to the incomingFieldArray of process_datamap
-     * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to TCEmain in process_datamap.
+     * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to DataHandler in process_datamap.
      * @return void
      */
     public function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList)
@@ -8321,7 +8321,7 @@ class DataHandler
      *
      *****************************/
     /**
-     * Logging actions from TCEmain
+     * Logging actions from DataHandler
      *
      * @param string $table Table name the log entry is concerned with. Blank if NA
      * @param int $recuid Record UID. Zero if NA

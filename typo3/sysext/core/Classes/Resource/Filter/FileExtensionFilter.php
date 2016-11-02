@@ -39,13 +39,13 @@ class FileExtensionFilter
     protected $disallowedFileExtensions = null;
 
     /**
-     * Entry method for use as TCEMain "inline" field filter
+     * Entry method for use as DataHandler "inline" field filter
      *
      * @param array $parameters
-     * @param DataHandler $tceMain
+     * @param DataHandler $dataHandler
      * @return array
      */
-    public function filterInlineChildren(array $parameters, DataHandler $tceMain)
+    public function filterInlineChildren(array $parameters, DataHandler $dataHandler)
     {
         $values = $parameters['values'];
         if ($parameters['allowedFileExtensions']) {
@@ -68,7 +68,7 @@ class FileExtensionFilter
                     $cleanValues[] = $value;
                 } else {
                     // Remove the erroneously created reference record again
-                    $tceMain->deleteAction('sys_file_reference', $fileReferenceUid);
+                    $dataHandler->deleteAction('sys_file_reference', $fileReferenceUid);
                 }
             }
         }

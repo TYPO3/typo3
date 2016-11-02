@@ -795,7 +795,7 @@ abstract class AbstractFormElement extends AbstractNode
                     }
                 } else {
                     // If all is allowed, insert all: (This does NOT respect any disallowed extensions,
-                    // but those will be filtered away by the backend TCEmain)
+                    // but those will be filtered away by the backend DataHandler)
                     $output = $elFromTable;
                 }
                 break;

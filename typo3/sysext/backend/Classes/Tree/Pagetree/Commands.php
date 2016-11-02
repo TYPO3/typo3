@@ -187,7 +187,7 @@ class Commands
     }
 
     /**
-     * Process TCEMAIN commands and data maps
+     * Process DataHandler commands and data maps
      *
      * Command Map:
      * Used for moving, recover, remove and some more operations.

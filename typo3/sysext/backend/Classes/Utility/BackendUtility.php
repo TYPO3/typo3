@@ -952,7 +952,7 @@ class BackendUtility
      * @param string $table The table name
      * @param string $fieldName Optional fieldname passed to hook object
      * @param bool $WSOL If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
-     * @param int $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
+     * @param int $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from DataHandler)
      * @return mixed If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
      * @todo: All those nasty details should be covered with tests, also it is very unfortunate the final $srcPointer is not exposed
      */

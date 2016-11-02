@@ -112,7 +112,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $backendUser = $this->getBackendUser();
 
         // The key number 3 of the bparams contains the "allowed" string. Disallowed is not passed to
-        // the element browser at all but only filtered out in TCEMain afterwards
+        // the element browser at all but only filtered out in DataHandler afterwards
         $allowedFileExtensions = GeneralUtility::trimExplode(',', explode('|', $this->bparams)[3], true);
         if (!empty($allowedFileExtensions) && $allowedFileExtensions[0] !== 'sys_file' && $allowedFileExtensions[0] !== '*') {
             // Create new filter object

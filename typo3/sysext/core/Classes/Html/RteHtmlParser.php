@@ -108,7 +108,7 @@ class RteHtmlParser extends HtmlParser
      **********************************************/
     /**
      * Transform value for RTE based on specConf in the direction specified by $direction (rte/db)
-     * This is the main function called from tcemain and transfer data classes
+     * This is the main function called from DataHandler and transfer data classes
      *
      * @param string $value Input value
      * @param array $specConf Special configuration for a field; This is coming from the types-configuration of the field in the TCA. In the types-configuration you can setup features for the field rendering and in particular the RTE takes al its major configuration options from there!

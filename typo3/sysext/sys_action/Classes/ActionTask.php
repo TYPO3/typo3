@@ -593,13 +593,13 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 $newUserId = $key;
             }
         }
-        // Save/update user by using TCEmain
+        // Save/update user by using DataHandler
         if (is_array($data)) {
-            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->start($data, [], $this->getBackendUser());
-            $tce->admin = 1;
-            $tce->process_datamap();
-            $newUserId = (int)$tce->substNEWwithIDs['NEW'];
+            $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $dataHandler->start($data, [], $this->getBackendUser());
+            $dataHandler->admin = 1;
+            $dataHandler->process_datamap();
+            $newUserId = (int)$dataHandler->substNEWwithIDs['NEW'];
             if ($newUserId) {
                 // Create
                 $this->action_createDir($newUserId);

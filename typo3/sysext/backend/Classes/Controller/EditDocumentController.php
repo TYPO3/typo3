@@ -508,7 +508,7 @@ class EditDocumentController extends AbstractModule
     }
 
     /**
-     * Do processing of data, submitting it to TCEmain.
+     * Do processing of data, submitting it to DataHandler.
      *
      * @return void
      */
@@ -548,7 +548,7 @@ class EditDocumentController extends AbstractModule
         if ($beUser->uc['neverHideAtCopy']) {
             $tce->neverHideAtCopy = 1;
         }
-        // Loading TCEmain with data:
+        // Loading DataHandler with data:
         $tce->start($this->data, $this->cmd);
         if (is_array($this->mirror)) {
             $tce->setMirror($this->mirror);
@@ -572,7 +572,7 @@ class EditDocumentController extends AbstractModule
             );
             debug('Error: Referer host did not match with server host.');
         } else {
-            // Perform the saving operation with TCEmain:
+            // Perform the saving operation with DataHandler:
             $tce->process_uploads($_FILES);
             $tce->process_datamap();
             $tce->process_cmdmap();
@@ -1822,7 +1822,7 @@ class EditDocumentController extends AbstractModule
                     // If the record is already a version of "something" pass it by.
                     if ($reqRecord['pid'] == -1) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but
-                        // that is handled inside TCEmain then and in the interface it would clearly be an error of
+                        // that is handled inside DataHandler then and in the interface it would clearly be an error of
                         // links if the user accesses such a scenario)
                         return $reqRecord;
                     } else {

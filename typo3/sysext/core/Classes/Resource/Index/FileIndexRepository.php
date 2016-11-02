@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 /**
  * Repository Class as an abstraction layer to sys_file
  *
- * Every access to table sys_file_metadata which is not handled by TCEmain
+ * Every access to table sys_file_metadata which is not handled by DataHandler
  * has to use this Repository class.
  *
  * This is meant for FAL internal use only!.

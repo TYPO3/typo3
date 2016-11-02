@@ -112,7 +112,7 @@ Example value: "&amp;showUid=###UID###"</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="records_indexonchange.description">
-				<source>If set, new and changed records from this table will be indexed through a hook in the core (TCEmain) meaning that they will be searchable immediately after addition to the system.</source>
+				<source>If set, new and changed records from this table will be indexed through a hook in the core (Datahandler) meaning that they will be searchable immediately after addition to the system.</source>
 			</trans-unit>
 			<trans-unit id="_records_indexonchange.seeAlso">
 				<source>index_config:table2index</source>

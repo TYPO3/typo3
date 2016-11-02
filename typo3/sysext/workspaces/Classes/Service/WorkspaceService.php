@@ -133,13 +133,13 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Building tcemain CMD-array for swapping all versions in a workspace.
+     * Building DataHandler CMD-array for swapping all versions in a workspace.
      *
      * @param int Real workspace ID, cannot be ONLINE (zero).
      * @param bool If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
      * @param int $pageId The page id
      * @param int $language Select specific language only
-     * @return array Command array for tcemain
+     * @return array Command array for DataHandler
      */
     public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0, $language = null)
     {
@@ -168,13 +168,13 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Building tcemain CMD-array for releasing all versions in a workspace.
+     * Building DataHandler CMD-array for releasing all versions in a workspace.
      *
      * @param int Real workspace ID, cannot be ONLINE (zero).
      * @param bool Run Flush (TRUE) or ClearWSID (FALSE) command
      * @param int $pageId The page id
      * @param int $language Select specific language only
-     * @return array Command array for tcemain
+     * @return array Command array for DataHandler
      */
     public function getCmdArrayForFlushWS($wsid, $flush = true, $pageId = 0, $language = null)
     {

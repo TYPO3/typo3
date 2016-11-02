@@ -14,11 +14,11 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -829,17 +829,17 @@ class CrawlerHook
 
     /*************************
      *
-     * Hook functions for TCEmain (indexing of records)
+     * Hook functions for DataHandler (indexing of records)
      *
      *************************/
     /**
-     * TCEmain hook function for on-the-fly indexing of database records
+     * DataHandler hook function for on-the-fly indexing of database records
      *
-     * @param string $command TCEmain command
+     * @param string $command DataHandler command
      * @param string $table Table name
      * @param string $id Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
      * @param mixed $value Target value (ignored)
-     * @param FormEngine $pObj tcemain calling object
+     * @param DataHandler $pObj DataHandler calling object
      * @return void
      */
     public function processCmdmap_preProcess($command, $table, $id, $value, $pObj)
@@ -851,13 +851,13 @@ class CrawlerHook
     }
 
     /**
-     * TCEmain hook function for on-the-fly indexing of database records
+     * DataHandler hook function for on-the-fly indexing of database records
      *
      * @param string $status Status "new" or "update
      * @param string $table Table name
      * @param string $id Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
      * @param array $fieldArray Field array of updated fields in the operation
-     * @param FormEngine $pObj tcemain calling object
+     * @param DataHandler $pObj DataHandler calling object
      * @return void
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj)

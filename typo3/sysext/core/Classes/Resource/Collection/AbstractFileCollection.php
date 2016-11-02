@@ -93,7 +93,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     }
 
     /**
-     * Generates comma-separated list of entry uids for usage in TCEmain
+     * Generates comma-separated list of entry uids for usage in DataHandler
      *
      * @param bool $includeTableName
      * @return string
@@ -110,7 +110,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 
     /**
      * Returns an array of the persistable properties and contents
-     * which are processable by TCEmain.
+     * which are processable by DataHandler.
      *
      * @return array
      */

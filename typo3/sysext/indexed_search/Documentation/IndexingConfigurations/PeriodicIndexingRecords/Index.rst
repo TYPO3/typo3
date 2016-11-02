@@ -40,7 +40,7 @@ define how the search results are shown - this must correspond with
 what the plugin takes of parameters.
 
 A fancy option is the "Index Records immediately when saved" - which
-will index records as they are saved through "TCEmain"!
+will index records as they are saved through "DataHandler"!
 
 In the crawler log you will see the entries for record indexing like
 this:

@@ -371,8 +371,8 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backEndUser->expects($this->once())->method('workspaceCannotEditRecord')->will($this->returnValue(true));
         $backEndUser->expects($this->once())->method('recordEditAccessInternals')->with('pages', 1)->will($this->returnValue(true));
         $subject->BE_USER = $backEndUser;
-        $createdTceMain = $this->createMock(DataHandler::class);
-        $createdTceMain->expects($this->once())->method('start')->with([], [
+        $createdDataHandler = $this->createMock(DataHandler::class);
+        $createdDataHandler->expects($this->once())->method('start')->with([], [
             'pages' => [
                 1 => [
                     'version' => [
@@ -382,9 +382,9 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ]
             ]
         ]);
-        $createdTceMain->expects($this->never())->method('process_datamap');
-        $createdTceMain->expects($this->once())->method('process_cmdmap');
-        GeneralUtility::addInstance(DataHandler::class, $createdTceMain);
+        $createdDataHandler->expects($this->never())->method('process_datamap');
+        $createdDataHandler->expects($this->once())->method('process_cmdmap');
+        GeneralUtility::addInstance(DataHandler::class, $createdDataHandler);
         $subject->process_datamap();
     }
 

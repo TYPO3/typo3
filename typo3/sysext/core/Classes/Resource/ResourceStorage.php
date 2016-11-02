@@ -2729,7 +2729,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Returns the destination path/fileName of a unique fileName/foldername in that path.
      * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
-     * This function is used by fx. TCEmain when files are attached to records and needs to be uniquely named in the uploads/* folders
+     * This function is used by fx. DataHandler when files are attached to records and needs to be uniquely named in the uploads/* folders
      *
      * @param Folder $folder
      * @param string $theFile The input fileName to check

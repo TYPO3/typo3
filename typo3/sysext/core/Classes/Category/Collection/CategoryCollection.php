@@ -212,7 +212,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
 
     /**
      * Returns an array of the persistable properties and contents
-     * which are processable by TCEmain.
+     * which are processable by DataHandler.
      * for internal usage in persist only.
      *
      * @return array

@@ -41,7 +41,7 @@ Assumptions:
 - relevant soft reference parsers applied everywhere file references are used inline
 
 Files may be missing for these reasons (except software bugs):
-- someone manually deleted the file inside fileadmin/ or another user maintained folder. If the reference was a soft reference (opposite to a TCEmain managed file relation from "group" type fields), technically it is not an error although it might be a mistake that someone did so.
+- someone manually deleted the file inside fileadmin/ or another user maintained folder. If the reference was a soft reference (opposite to a DataHandler managed file relation from "group" type fields), technically it is not an error although it might be a mistake that someone did so.
 - someone manually deleted the file inside the uploads/ folder (typically containing managed files) which is an error since no user interaction should take place there.
 
 Automatic Repair of Errors:
@@ -70,7 +70,7 @@ This will show you missing files in the TYPO3 system and only report back if err
         $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
             'headers' => [
-                'managedFilesMissing' => ['List of missing files managed by TCEmain', $listExplain, 3],
+                'managedFilesMissing' => ['List of missing files managed by DataHandler', $listExplain, 3],
                 'softrefFilesMissing' => ['List of missing files registered as a soft reference', $listExplain, 2]
             ],
             'managedFilesMissing' => [],
