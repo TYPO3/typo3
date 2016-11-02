@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "038c18ebffccc69e1744eb2700cc7665",
+    "hash": "85a59a3275a01ce4b7688e4fe775b12e",
     "content-hash": "df9342718f5bf608aa509f610d98f69f",
     "packages": [
         {
@@ -1288,16 +1288,16 @@
     "packages-dev": [
         {
             "name": "7elix/styleguide",
-            "version": "8.0.4",
+            "version": "8.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/7elix/TYPO3.CMS.Styleguide.git",
-                "reference": "19dbef108cbf5fb40df35a223f50e88d847b9e6d"
+                "reference": "b6f4459e1ce268b17b46b68a804840440fe8f4f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/19dbef108cbf5fb40df35a223f50e88d847b9e6d",
-                "reference": "19dbef108cbf5fb40df35a223f50e88d847b9e6d",
+                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/b6f4459e1ce268b17b46b68a804840440fe8f4f0",
+                "reference": "b6f4459e1ce268b17b46b68a804840440fe8f4f0",
                 "shasum": ""
             },
             "type": "typo3-cms-extension",
@@ -1324,7 +1324,7 @@
                 "style guide",
                 "typo3"
             ],
-            "time": "2016-09-02 12:30:37"
+            "time": "2016-11-02 01:46:43"
         },
         {
             "name": "behat/gherkin",
