@@ -190,25 +190,39 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $extensions
      * @return array
      */
-    public function enrichExtensionsWithEmConfAndTerInformation(array $extensions)
+    public function enrichExtensionsWithEmConfInformation(array $extensions)
     {
         foreach ($extensions as $extensionKey => $properties) {
             $emconf = $this->emConfUtility->includeEmConf($properties);
             if ($emconf) {
                 $extensions[$extensionKey] = array_merge($emconf, $properties);
-                $terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version']);
-                if ($terObject !== null) {
-                    $extensions[$extensionKey]['terObject'] = $terObject;
-                    $extensions[$extensionKey]['updateAvailable'] = false;
-                    $extensions[$extensionKey]['updateToVersion'] = null;
-                    $extensionToUpdate = $this->installUtility->getUpdateableVersion($terObject);
-                    if ($extensionToUpdate !== false) {
-                        $extensions[$extensionKey]['updateAvailable'] = true;
-                        $extensions[$extensionKey]['updateToVersion'] = $extensionToUpdate;
-                    }
-                }
             } else {
                 unset($extensions[$extensionKey]);
+            }
+        }
+        return $extensions;
+    }
+
+    /**
+     * Adds the information from the emconf array and TER to the extension information
+     *
+     * @param array $extensions
+     * @return array
+     */
+    public function enrichExtensionsWithEmConfAndTerInformation(array $extensions)
+    {
+        $extensions = $this->enrichExtensionsWithEmConfInformation($extensions);
+        foreach ($extensions as $extensionKey => $properties) {
+            $terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version']);
+            if ($terObject !== null) {
+                $extensions[$extensionKey]['terObject'] = $terObject;
+                $extensions[$extensionKey]['updateAvailable'] = false;
+                $extensions[$extensionKey]['updateToVersion'] = null;
+                $extensionToUpdate = $this->installUtility->getUpdateableVersion($terObject);
+                if ($extensionToUpdate !== false) {
+                    $extensions[$extensionKey]['updateAvailable'] = true;
+                    $extensions[$extensionKey]['updateToVersion'] = $extensionToUpdate;
+                }
             }
         }
         return $extensions;

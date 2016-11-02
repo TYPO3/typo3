@@ -334,10 +334,10 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extension = $this->getExtensionArray($extensionKey);
         if (!$loadTerInformation) {
-            return $extension;
+            $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfInformation([$extensionKey => $extension]);
+        } else {
+            $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation([$extensionKey => $extension]);
         }
-
-        $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation([$extensionKey => $extension]);
 
         if (!isset($availableAndInstalledExtensions[$extensionKey])) {
             throw new ExtensionManagerException(
