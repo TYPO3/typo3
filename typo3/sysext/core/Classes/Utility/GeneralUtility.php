@@ -3517,7 +3517,7 @@ class GeneralUtility
             self::mkdir_deep($temporaryPath);
         }
         if ($fileSuffix === '') {
-            $tempFileName = static::fixWindowsFilePath(tempnam($temporaryPath, $filePrefix));
+            $tempFileName = $temporaryPath . basename(tempnam($temporaryPath, $filePrefix));
         } else {
             do {
                 $tempFileName = $temporaryPath . $filePrefix . mt_rand(1, PHP_INT_MAX) . $fileSuffix;
