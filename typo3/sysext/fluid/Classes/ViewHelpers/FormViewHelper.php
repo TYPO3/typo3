@@ -144,9 +144,10 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
      * @param string $actionUri can be used to overwrite the "action" attribute of the form tag
      * @param string $objectName name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName
      * @param string $hiddenFieldClassName
+     * @param string $addQueryStringMethod Method to use when keeping query parameters (GET or POST, only active if $actionUri is not set)
      * @return string rendered form
      */
-    public function render($action = null, array $arguments = [], $controller = null, $extensionName = null, $pluginName = null, $pageUid = null, $object = null, $pageType = 0, $noCache = false, $noCacheHash = false, $section = '', $format = '', array $additionalParams = [], $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = [], $fieldNamePrefix = null, $actionUri = null, $objectName = null, $hiddenFieldClassName = null)
+    public function render($action = null, array $arguments = [], $controller = null, $extensionName = null, $pluginName = null, $pageUid = null, $object = null, $pageType = 0, $noCache = false, $noCacheHash = false, $section = '', $format = '', array $additionalParams = [], $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = [], $fieldNamePrefix = null, $actionUri = null, $objectName = null, $hiddenFieldClassName = null, $addQueryStringMethod = '')
     {
         $this->setFormActionUri();
         if (strtolower($this->arguments['method']) === 'get') {
@@ -197,7 +198,26 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         } else {
             $uriBuilder = $this->controllerContext->getUriBuilder();
             $pageUid = (int)$this->arguments['pageUid'] > 0 ? (int)$this->arguments['pageUid'] : null;
-            $formActionUri = $uriBuilder->reset()->setTargetPageUid($pageUid)->setTargetPageType($this->arguments['pageType'])->setNoCache($this->arguments['noCache'])->setUseCacheHash(!$this->arguments['noCacheHash'])->setSection($this->arguments['section'])->setCreateAbsoluteUri($this->arguments['absolute'])->setArguments((array)$this->arguments['additionalParams'])->setAddQueryString($this->arguments['addQueryString'])->setArgumentsToBeExcludedFromQueryString((array)$this->arguments['argumentsToBeExcludedFromQueryString'])->setFormat($this->arguments['format'])->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
+            $formActionUri = $uriBuilder
+                ->reset()
+                ->setTargetPageUid($pageUid)
+                ->setTargetPageType($this->arguments['pageType'])
+                ->setNoCache($this->arguments['noCache'])
+                ->setUseCacheHash(!$this->arguments['noCacheHash'])
+                ->setSection($this->arguments['section'])
+                ->setCreateAbsoluteUri($this->arguments['absolute'])
+                ->setArguments((array)$this->arguments['additionalParams'])
+                ->setAddQueryString($this->arguments['addQueryString'])
+                ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])
+                ->setArgumentsToBeExcludedFromQueryString((array)$this->arguments['argumentsToBeExcludedFromQueryString'])
+                ->setFormat($this->arguments['format'])
+                ->uriFor(
+                    $this->arguments['action'],
+                    $this->arguments['arguments'],
+                    $this->arguments['controller'],
+                    $this->arguments['extensionName'],
+                    $this->arguments['pluginName']
+                );
             $this->formActionUriArguments = $uriBuilder->getArguments();
         }
         $this->tag->addAttribute('action', $formActionUri);
