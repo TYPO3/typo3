@@ -15,5 +15,6 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['double_files'] = [\TYPO3\CMS\Lowlevel\DoubleFilesCommand::class];
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['rte_images'] = [\TYPO3\CMS\Lowlevel\RteImagesCommand::class];
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['lost_files'] = [\TYPO3\CMS\Lowlevel\LostFilesCommand::class];
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['orphan_records'] = [\TYPO3\CMS\Lowlevel\OrphanRecordsCommand::class];
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['versions'] = [\TYPO3\CMS\Lowlevel\VersionsCommand::class];
 }
