@@ -208,4 +208,32 @@ abstract class Enumeration implements TypeInterface
     {
         return (string)$this->value;
     }
+
+    /**
+     * Returns the constants name as is, without manipulation (usually all upper case)
+     *
+     * @param string|int $value
+     * @return string
+     */
+    public static function getName($value)
+    {
+        $name = '';
+        $constants = array_flip(static::getConstants());
+        if (array_key_exists($value, $constants)) {
+            $name = $constants[$value];
+        }
+        return $name;
+    }
+
+    /**
+     * Returns the name of the constant, first char upper, underscores as spaces
+     *
+     * @param string|int $value
+     * @return string
+     */
+    public static function getHumanReadableName($value)
+    {
+        $name = static::getName($value);
+        return ucwords(strtolower(str_replace('_', ' ', $name)));
+    }
 }

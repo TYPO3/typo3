@@ -380,4 +380,40 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $enumerationBar = new Enumeration\CompleteEnumeration('foo');
         $this->assertFalse($enumerationFoo->equals($enumerationBar));
     }
+
+    /**
+     * @test
+     */
+    public function getNameProvidesNameForAvailableConstant()
+    {
+        $result = Enumeration\CompleteEnumeration::getName(Enumeration\CompleteEnumeration::INTEGER_VALUE);
+        $this->assertSame('INTEGER_VALUE', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getNameReturnsEmptyStringForNotAvailableConstant()
+    {
+        $result = Enumeration\CompleteEnumeration::getName(42);
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getHumanReadableNameProvidesNameForAvailableConstant()
+    {
+        $result = Enumeration\CompleteEnumeration::getHumanReadableName(Enumeration\CompleteEnumeration::INTEGER_VALUE);
+        $this->assertSame('Integer Value', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getHumanReadableNameReturnsEmptyStringForNotAvailableConstant()
+    {
+        $result = Enumeration\CompleteEnumeration::getName(42);
+        $this->assertSame('', $result);
+    }
 }
