@@ -3506,17 +3506,7 @@ class TypoScriptFrontendController
             $this->sendCacheHeaders();
         }
         // Set headers, if any
-        if (is_array($this->config['config']['additionalHeaders.'])) {
-            ksort($this->config['config']['additionalHeaders.']);
-            foreach ($this->config['config']['additionalHeaders.'] as $options) {
-                header(
-                    trim($options['header']),
-                    // "replace existing headers" is turned on by default, unless turned off
-                    ($options['replace'] !== '0'),
-                    ((int)$options['httpResponseCode'] ?: null)
-                );
-            }
-        }
+        $this->sendAdditionalHeaders();
         // Send appropriate status code in case of temporary content
         if ($this->tempContent) {
             $this->addTempContentHttpHeaders();
@@ -4567,6 +4557,47 @@ class TypoScriptFrontendController
 
             $this->locks[$type]['accessLock']->release();
             $this->locks[$type]['accessLock'] = null;
+        }
+    }
+
+    /**
+     * Send additional headers from config.additionalHeaders
+     *
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::processOutput()
+     */
+    protected function sendAdditionalHeaders()
+    {
+        if (!isset($this->config['config']['additionalHeaders.'])) {
+            return;
+        }
+        ksort($this->config['config']['additionalHeaders.']);
+        foreach ($this->config['config']['additionalHeaders.'] as $options) {
+            if (!is_array($options)) {
+                continue;
+            }
+            $header = $options['header'] ?? '';
+            $header = isset($options['header.'])
+                ? $this->cObj->stdWrap(trim($header), $options['header.'])
+                : trim($header);
+            if ($header === '') {
+                continue;
+            }
+            $replace = $options['replace'] ?? '';
+            $replace = isset($options['replace.'])
+                ? $this->cObj->stdWrap($replace, $options['replace.'])
+                : $replace;
+            $httpResponseCode = $options['httpResponseCode'] ?? '';
+            $httpResponseCode = isset($options['httpResponseCode.'])
+                ? $this->cObj->stdWrap($httpResponseCode, $options['httpResponseCode.'])
+                : $httpResponseCode;
+            $httpResponseCode = (int)$httpResponseCode;
+
+            header(
+                $header,
+                // "replace existing headers" is turned on by default, unless turned off
+                $replace !== '0',
+                $httpResponseCode ?: null
+            );
         }
     }
 

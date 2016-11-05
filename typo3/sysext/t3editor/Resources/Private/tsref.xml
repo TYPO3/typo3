@@ -207,19 +207,33 @@ Note: If you're working on a server where you have both internal and external ac
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="additionalHeaders" type="string">
-			<description><![CDATA[strings divided by "|"
-      This is additional headers. You separate each header by a vertical line "|".  Normally TYPO3 does not send any headers with the Header()-function in PHP.
+		<property name="additionalHeaders" type="additionalHeadersArray">
+			<description><![CDATA[This property can be used to define additional HTTP headers.
 
-Examples:
-Content-Type: text/vnd.wap.wml
-(this will sent a content-header for a WAP-site)
+For each numeric index, there are the following sub-properties:
 
-Content-Type: image/gif | Expires: Mon, 26 Jul 1997 05:00:00 GMT
-(this will sent a content-header for a GIF-file and a Expires header)
+header: The header string.
 
-Location: www.typo3.org
-(This redirects the page to www.typo3.org)]]></description>
+replace: Optional. If set, previous headers with the same name are replaced with the current one. Default is "1".
+
+httpResponseCode: Optional. HTTP status code as an integer.
+
+Example:
+
+config.additionalHeaders {
+   10 {
+      # The header string
+      header = WWW-Authenticate: Negotiate
+
+      # Do not replace previous headers with the same name.
+      replace = 0
+
+      # Force a 401 HTTP response code
+      httpResponseCode = 401
+   }
+   # Always set cache headers to private, overwriting the default TYPO3 Cache-control header
+   20.header = Cache-control: Private
+}]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6996,6 +7010,50 @@ The userfunction must return an <A>-tag.]]></description>
 		<property name="stdWrap" type="stdWrap">
 			<description><![CDATA[stdwrap properties of the listNum...
 ]]></description>
+		</property>
+	</type>
+	<type id="additionalHeadersArray" extends="array">
+		<property name="10" type="additionalHeadersItem">
+			<description><![CDATA[Defines a header.
+
+Must at least contain the header property.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="20" type="additionalHeadersItem">
+			<description><![CDATA[Defines a header.
+
+Must at least contain the header property.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="30" type="additionalHeadersItem">
+			<description><![CDATA[Defines a header.
+
+Must at least contain the header property.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="40" type="additionalHeadersItem">
+			<description><![CDATA[Defines a header.
+
+Must at least contain the header property.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+	</type>
+	<type id="additionalHeadersItem">
+		<property name="header" type="stdWrap">
+			<description><![CDATA[The header string]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="replace" type="stdWrap">
+			<description><![CDATA[Optional.
+
+If set, previous headers with the same name are replaced with the current one.
+
+Default is "1".]]></description>
+			<default><![CDATA[1]]></default>
+		</property>
+		<property name="httpResponseCode" type="stdWrap">
+			<description><![CDATA[Optional. HTTP status code as an integer.]]></description>
+			<default><![CDATA[]]></default>
 		</property>
 	</type>
 </tsRef>
