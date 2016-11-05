@@ -50,6 +50,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class EditDocumentController extends AbstractModule
 {
+    const DOCUMENT_CLOSE_MODE_DEFAULT = 0;
+    const DOCUMENT_CLOSE_MODE_REDIRECT = 1; // works like DOCUMENT_CLOSE_MODE_DEFAULT
+    const DOCUMENT_CLOSE_MODE_CLEAR_ALL = 3;
+    const DOCUMENT_CLOSE_MODE_NO_REDIRECT = 4;
+
     /**
      * GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
      * "&edit[pages][123]=edit". See \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(). Value can be seen
@@ -448,7 +453,7 @@ class EditDocumentController extends AbstractModule
         $this->overrideVals = GeneralUtility::_GP('overrideVals');
         $this->columnsOnly = GeneralUtility::_GP('columnsOnly');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->closeDoc = GeneralUtility::_GP('closeDoc');
+        $this->closeDoc = (int)GeneralUtility::_GP('closeDoc');
         $this->doSave = GeneralUtility::_GP('doSave');
         $this->returnEditConf = GeneralUtility::_GP('returnEditConf');
         $this->localizationMode = GeneralUtility::_GP('localizationMode');
@@ -472,7 +477,7 @@ class EditDocumentController extends AbstractModule
         $this->docDat = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
         $this->docHandler = $this->docDat[0];
         // If a request for closing the document has been sent, act accordingly:
-        if ($this->closeDoc > 0) {
+        if ((int)$this->closeDoc > self::DOCUMENT_CLOSE_MODE_DEFAULT) {
             $this->closeDocument($this->closeDoc);
         }
         // If NO vars are sent to the script, try to read first document:
@@ -637,6 +642,7 @@ class EditDocumentController extends AbstractModule
             }
             // If a document is saved and a new one is created right after.
             if (isset($_POST['_savedoknew']) && is_array($this->editconf)) {
+                $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT);
                 // Finding the current table:
                 reset($this->editconf);
                 $nTable = key($this->editconf);
@@ -693,7 +699,10 @@ class EditDocumentController extends AbstractModule
         }
         //  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED
         // because if not, we just get that element re-listed as new. And we don't want that!
-        if (isset($_POST['_saveandclosedok']) || isset($_POST['_translation_savedok_x']) || $this->closeDoc < 0) {
+        if ((int)$this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
+            || isset($_POST['_saveandclosedok'])
+            || isset($_POST['_translation_savedok_x'])
+        ) {
             $this->closeDocument(abs($this->closeDoc));
         }
     }
@@ -1892,13 +1901,18 @@ class EditDocumentController extends AbstractModule
 
     /**
      * Handling the closing of a document
+     * The argument $mode can be one of this values:
+     * - 0/1 will redirect to $this->retUrl [self::DOCUMENT_CLOSE_MODE_DEFAULT || self::DOCUMENT_CLOSE_MODE_REDIRECT]
+     * - 3 will clear the docHandler (thus closing all documents) [self::DOCUMENT_CLOSE_MODE_CLEAR_ALL]
+     * - 4 will do no redirect [self::DOCUMENT_CLOSE_MODE_NO_REDIRECT]
+     * - other values will call setDocument with ->retUrl
      *
-     * @param int $code Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all
-     * documents) and other values will call setDocument with ->retUrl
+     * @param int $mode the close mode: one of self::DOCUMENT_CLOSE_MODE_*
      * @return void
      */
-    public function closeDocument($code = 0)
+    public function closeDocument($mode = self::DOCUMENT_CLOSE_MODE_DEFAULT)
     {
+        $mode = (int)$mode;
         // If current document is found in docHandler,
         // then unset it, possibly unset it ALL and finally, write it to the session data
         if (isset($this->docHandler[$this->storeUrlMd5])) {
@@ -1914,7 +1928,7 @@ class EditDocumentController extends AbstractModule
             }
             // remove it from the list of the open documents
             unset($this->docHandler[$this->storeUrlMd5]);
-            if ($code == '3') {
+            if ($mode === self::DOCUMENT_CLOSE_MODE_CLEAR_ALL) {
                 $recentDocs = array_merge($this->docHandler, $recentDocs);
                 $this->docHandler = [];
             }
@@ -1922,16 +1936,19 @@ class EditDocumentController extends AbstractModule
             $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->docDat[1]]);
             BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
         }
-        // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by
-        // other scripts, like wizard_add, to know which records was created or so...)
-        if ($this->returnEditConf && $this->retUrl != BackendUtility::getModuleUrl('dummy')) {
-            $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
-        }
-        // If code is NOT set OR set to 1, then make a header location redirect to $this->retUrl
-        if (!$code || $code == 1) {
-            HttpUtility::redirect($this->retUrl);
-        } else {
-            $this->setDocument('', $this->retUrl);
+        if ($mode !== self::DOCUMENT_CLOSE_MODE_NO_REDIRECT) {
+            // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by
+            // other scripts, like wizard_add, to know which records was created or so...)
+            if ($this->returnEditConf && $this->retUrl != BackendUtility::getModuleUrl('dummy')) {
+                $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
+            }
+
+            // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
+            if ($mode === self::DOCUMENT_CLOSE_MODE_DEFAULT || $mode === self::DOCUMENT_CLOSE_MODE_REDIRECT) {
+                HttpUtility::redirect($this->retUrl);
+            } else {
+                $this->setDocument('', $this->retUrl);
+            }
         }
     }
 
