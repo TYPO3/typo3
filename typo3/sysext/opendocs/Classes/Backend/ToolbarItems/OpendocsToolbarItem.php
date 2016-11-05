@@ -63,7 +63,10 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function loadDocsFromUserSession()
     {
         $backendUser = $this->getBackendUser();
-        list($this->openDocs, ) = $backendUser->getModuleData('FormEngine', 'ses') ?: [];
+        $openDocs = $backendUser->getModuleData('FormEngine', 'ses');
+        if ($openDocs !== null) {
+            list($this->openDocs, ) = $openDocs;
+        }
         $this->recentDocs = $backendUser->getModuleData('opendocs::recent') ?: [];
     }
 
