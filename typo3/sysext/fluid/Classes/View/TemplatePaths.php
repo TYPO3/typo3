@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -77,6 +79,12 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         if (empty($extensionKey)) {
             return [];
         }
+        $cache = $this->getRuntimeCache();
+        $cacheIdentifier = 'viewpaths_' . $extensionKey;
+        $configuration = $cache->get($cacheIdentifier);
+        if (!empty($configuration)) {
+            return $configuration;
+        }
 
         $resources = $this->getExtensionPrivateResourcesPath($extensionKey);
         $paths = [
@@ -113,7 +121,16 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             }
         }
 
+        $cache->set($cacheIdentifier, $paths);
         return $paths;
+    }
+
+    /**
+     * @return VariableFrontend
+     */
+    protected function getRuntimeCache()
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
     }
 
     /**
