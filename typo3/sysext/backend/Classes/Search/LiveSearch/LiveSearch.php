@@ -186,7 +186,7 @@ class LiveSearch
                         'pid',
                         $queryBuilder->createNamedParameter($pageIdList, Connection::PARAM_INT_ARRAY)
                     ),
-                    $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin)
+                    $this->makeQuerySearchByTable($queryBuilder, $tableName, $fieldsToSearchWithin)
                 )
                 ->setFirstResult($firstResult)
                 ->setMaxResults($maxResults);
@@ -297,14 +297,13 @@ class LiveSearch
     /**
      * Build the MySql where clause by table.
      *
+     * @param QueryBuilder $queryBuilder
      * @param string $tableName Record table name
      * @param array $fieldsToSearchWithin User right based visible fields where we can search within.
      * @return CompositeExpression
      */
-    protected function makeQuerySearchByTable($tableName, array $fieldsToSearchWithin)
+    protected function makeQuerySearchByTable(QueryBuilder &$queryBuilder, $tableName, array $fieldsToSearchWithin)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-        $expressionBuilder = $queryBuilder->expr();
         $constraints = [];
 
         // If the search string is a simple integer, assemble an equality comparison
@@ -325,23 +324,26 @@ class LiveSearch
                     || $fieldName === 'pid'
                     || ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int'))
                 ) {
-                    $constraints[] = $expressionBuilder->eq(
+                    $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,
-                        $queryBuilder->expr()->literal($this->queryString)
+                        $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
                     );
                 } elseif ($fieldType === 'text'
                     || $fieldType === 'flex'
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
                 ) {
                     // Otherwise and if the field makes sense to be searched, assemble a like condition
-                    $constraints[] = $constraints[] = $expressionBuilder->like(
+                    $constraints[] = $constraints[] = $queryBuilder->expr()->like(
                         $fieldName,
-                        $queryBuilder->quote('%' . (int)$this->queryString . '%')
+                        $queryBuilder->createNamedParameter(
+                            '%' . $queryBuilder->escapeLikeWildcards((int)$this->queryString) . '%',
+                            \PDO::PARAM_STR
+                        )
                     );
                 }
             }
         } else {
-            $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%');
+            $like = '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%';
             foreach ($fieldsToSearchWithin as $fieldName) {
                 if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
                     continue;
@@ -355,14 +357,19 @@ class LiveSearch
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
-                        'LOWER(' . $like . ')'
+                        $queryBuilder->createNamedParameter(strtolower($like), \PDO::PARAM_STR)
                     )
                 );
 
                 if (is_array($fieldConfig['search'])) {
                     if (in_array('case', $fieldConfig['search'], true)) {
                         // Replace case insensitive default constraint
-                        $searchConstraint = $queryBuilder->expr()->andX($queryBuilder->expr()->like($fieldName, $like));
+                        $searchConstraint = $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->like(
+                                $fieldName,
+                                $queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
+                            )
+                        );
                     }
                     // Apply additional condition, if any
                     if ($fieldConfig['search']['andWhere']) {
@@ -388,7 +395,7 @@ class LiveSearch
             return '0=1';
         }
 
-        return $expressionBuilder->orX(...$constraints);
+        return $queryBuilder->expr()->orX(...$constraints);
     }
 
     /**
