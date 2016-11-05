@@ -307,6 +307,32 @@ return [
                 ],
             ],
         ],
+        'flex_5' => [
+            'exclude' => 1,
+            'label' => 'flex_5 no sheets',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <ROOT>
+                                <type>array</type>
+                                <el>
+                                    <input_1>
+                                        <TCEforms>
+                                            <label>input_1</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </TCEforms>
+                                    </input_1>
+                                </el>
+                            </ROOT>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
 
 
     ],
@@ -315,6 +341,8 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
+                --div--;no sheets,
+                    flex_5,
                 --div--;sheet description,
                     flex_1,
                 --div--;section container,

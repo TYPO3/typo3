@@ -719,6 +719,7 @@ CREATE TABLE tx_styleguide_flex (
 	flex_2 text,
 	flex_3 text,
 	flex_4 text,
+	flex_5 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
