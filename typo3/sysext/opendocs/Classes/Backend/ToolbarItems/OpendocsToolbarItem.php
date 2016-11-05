@@ -29,12 +29,12 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     /**
      * @var array
      */
-    protected $openDocs;
+    protected $openDocs = [];
 
     /**
      * @var array
      */
-    protected $recentDocs;
+    protected $recentDocs = [];
 
     /**
      * Constructor
