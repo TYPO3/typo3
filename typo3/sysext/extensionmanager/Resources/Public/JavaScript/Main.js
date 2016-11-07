@@ -247,7 +247,8 @@ define([
 		message += '<form>';
 		var i = 0;
 		$.each(data.updateComments, function(version, comment) {
-			message += '<h3><input type="radio" ' + (i == 0 ? 'checked="checked" ' : '') + 'name="version" value="' + version + '" /> ' + version + '</h3>';
+			comment = comment.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2');
+			message += '<h3><input type="radio" ' + (i === 0 ? 'checked="checked" ' : '') + 'name="version" value="' + version + '" /> ' + version + '</h3>';
 			message += '<div>' + comment + '</div>';
 			i++;
 		});
