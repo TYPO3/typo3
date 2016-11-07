@@ -27,6 +27,15 @@ interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backend
     public function flushByTag($tag);
 
     /**
+     * Removes all cache entries of this cache which are tagged by any of the specified tags.
+     *
+     * @param string[] $tag List of tags
+     * @return void
+     * @api
+     */
+    public function flushByTags(array $tags);
+
+    /**
      * Finds and returns all cache entry identifiers which are tagged by the
      * specified tag
      *

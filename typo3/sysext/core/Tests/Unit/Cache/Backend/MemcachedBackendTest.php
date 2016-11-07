@@ -195,6 +195,22 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    {
+        $backend = $this->setUpBackend();
+        $data = 'some data' . microtime();
+        $backend->set('BackendMemcacheTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendMemcacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendMemcacheTest3', $data, ['UnitTestTag%test']);
+        $backend->flushByTags(['UnitTestTag%special', 'UnitTestTag%boring']);
+        $this->assertFalse($backend->has('BackendMemcacheTest1'), 'BackendMemcacheTest1');
+        $this->assertFalse($backend->has('BackendMemcacheTest2'), 'BackendMemcacheTest2');
+        $this->assertTrue($backend->has('BackendMemcacheTest3'), 'BackendMemcacheTest3');
+    }
+
+    /**
+     * @test
+     */
     public function flushRemovesAllCacheEntries()
     {
         $backend = $this->setUpBackend();

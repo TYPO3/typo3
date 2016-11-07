@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
@@ -349,7 +350,18 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var $subject DataHandler|\PHPUnit_Framework_MockObject_MockObject */
         $subject = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(['newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess', 'recordInfo'])
+            ->setMethods([
+                'newlog',
+                'checkModifyAccessList',
+                'tableReadOnly',
+                'checkRecordUpdateAccess',
+                'recordInfo',
+                'getCacheManager',
+                'registerElementsToBeDeleted',
+                'unsetElementsToBeDeleted',
+                'resetElementsToBeDeleted'
+            ])
+            ->disableOriginalConstructor()
             ->getMock();
 
         $subject->bypassWorkspaceRestrictions = false;
@@ -360,10 +372,18 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ]
             ]
         ];
+
+        $cacheManagerMock = $this->getMockBuilder(CacheManager::class)
+            ->setMethods(['flushCachesInGroupByTags'])
+            ->getMock();
+        $cacheManagerMock->expects($this->once())->method('flushCachesInGroupByTags')->with('pages', []);
+
+        $subject->expects($this->once())->method('getCacheManager')->willReturn($cacheManagerMock);
         $subject->expects($this->once())->method('recordInfo')->will($this->returnValue(null));
         $subject->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(true));
         $subject->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(false));
         $subject->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(true));
+        $subject->expects($this->once())->method('unsetElementsToBeDeleted')->willReturnArgument(0);
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
         $backEndUser = $this->createMock(BackendUserAuthentication::class);

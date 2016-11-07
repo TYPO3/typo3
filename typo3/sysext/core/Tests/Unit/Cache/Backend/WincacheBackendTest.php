@@ -172,6 +172,22 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    {
+        $backend = $this->setUpBackend();
+        $data = 'some data' . microtime();
+        $backend->set('BackendWincacheTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendWincacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendWincacheTest3', $data, ['UnitTestTag%test']);
+        $backend->flushByTag('UnitTestTag%special', 'UnitTestTag%boring');
+        $this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
+        $this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
+        $this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+    }
+
+    /**
+     * @test
+     */
     public function flushRemovesAllCacheEntries()
     {
         $backend = $this->setUpBackend();

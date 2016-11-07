@@ -65,6 +65,10 @@ class FrontendFixture implements FrontendInterface
     {
     }
 
+    public function flushByTags(array $tags)
+    {
+    }
+
     public function collectGarbage()
     {
     }

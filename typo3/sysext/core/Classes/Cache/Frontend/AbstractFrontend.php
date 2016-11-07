@@ -122,6 +122,25 @@ abstract class AbstractFrontend implements FrontendInterface
     }
 
     /**
+     * Removes all cache entries of this cache which are tagged by any of the specified tags.
+     *
+     * @param string[] $tags
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    public function flushByTags(array $tags)
+    {
+        foreach ($tags as $tag) {
+            if (!$this->isValidTag($tag)) {
+                throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057360);
+            }
+        }
+        if ($this->backend instanceof TaggableBackendInterface) {
+            $this->backend->flushByTags($tags);
+        }
+    }
+
+    /**
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
@@ -171,12 +190,20 @@ abstract class AbstractFrontend implements FrontendInterface
     /**
      * Checks the validity of a tag. Returns TRUE if it's valid.
      *
-     * @param string $tag An identifier to be checked for validity
+     * @param string|array $tag An identifier to be checked for validity
      * @return bool
      * @api
      */
     public function isValidTag($tag)
     {
-        return preg_match(self::PATTERN_TAG, $tag) === 1;
+        if (!is_array($tag)) {
+            return preg_match(self::PATTERN_TAG, $tag) === 1;
+        }
+        foreach ($tag as $tagValue) {
+            if (!$this->isValidTag($tagValue)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

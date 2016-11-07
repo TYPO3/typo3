@@ -8113,9 +8113,7 @@ class DataHandler
 
         /** @var CacheManager $cacheManager */
         $cacheManager = $this->getCacheManager();
-        foreach ($tagsToClear as $tag => $_) {
-            $cacheManager->flushCachesInGroupByTag('pages', $tag);
-        }
+        $cacheManager->flushCachesInGroupByTags('pages', array_keys($tagsToClear));
 
         // Execute collected clear cache commands from page TSConfig
         foreach ($clearCacheCommands as $command) {
@@ -8360,9 +8358,7 @@ class DataHandler
         }
         // process caching framwork operations
         if (!empty($tagsToFlush)) {
-            foreach (array_unique($tagsToFlush) as $tag) {
-                $this->getCacheManager()->flushCachesInGroupByTag('pages', $tag);
-            }
+            $this->getCacheManager()->flushCachesInGroupByTags('pages', $tagsToFlush);
         }
 
         // Call post processing function for clear-cache:

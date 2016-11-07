@@ -141,6 +141,28 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
+    public function flushCachesByTagsCallsTheFlushByTagsMethodOfAllRegisteredCaches()
+    {
+        $manager = new CacheManager();
+        $cache1 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTags'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
+        $cache1->expects($this->once())->method('flushByTags')->with($this->equalTo(['theTag']));
+        $manager->registerCache($cache1);
+        $cache2 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTags'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $cache2->expects($this->once())->method('flushByTags')->with($this->equalTo(['theTag']));
+        $manager->registerCache($cache2);
+        $manager->flushCachesByTags(['theTag']);
+    }
+
+    /**
+     * @test
+     */
     public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches()
     {
         $manager = new CacheManager();

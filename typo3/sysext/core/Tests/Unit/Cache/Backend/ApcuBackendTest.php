@@ -209,6 +209,22 @@ class ApcuBackendTest extends UnitTestCase
     /**
      * @test
      */
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    {
+        $backend = $this->setUpBackend();
+        $data = 'some data' . microtime();
+        $backend->set('BackendAPCUTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendAPCUTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendAPCUTest3', $data, ['UnitTestTag%test']);
+        $backend->flushByTags(['UnitTestTag%special', 'UnitTestTag%boring']);
+        $this->assertFalse($backend->has('BackendAPCUTest1'), 'BackendAPCTest1');
+        $this->assertFalse($backend->has('BackendAPCUTest2'), 'BackendAPCTest2');
+        $this->assertTrue($backend->has('BackendAPCUTest3'), 'BackendAPCTest3');
+    }
+
+    /**
+     * @test
+     */
     public function flushRemovesAllCacheEntries()
     {
         $backend = $this->setUpBackend();

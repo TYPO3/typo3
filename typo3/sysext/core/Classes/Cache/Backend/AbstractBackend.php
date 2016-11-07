@@ -107,6 +107,22 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
     }
 
     /**
+     * Backwards compatibility safeguard since re-introducing flushByTags as API.
+     * See https://review.typo3.org/#/c/50537/ comments for patch set 14.
+     *
+     * The method is here even though it is only required for TaggableBackendInterface.
+     * We add it here to ensure third party cache backends do not fail but instead
+     * delegate to a less efficient linear flushing behavior.
+     *
+     * @param string[] $tags
+     * @api
+     */
+    public function flushByTags(array $tags)
+    {
+        array_walk($tags, [$this, 'flushByTag']);
+    }
+
+    /**
      * Calculates the expiry time by the given lifetime. If no lifetime is
      * specified, the default lifetime is used.
      *

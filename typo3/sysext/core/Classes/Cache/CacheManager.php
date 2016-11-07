@@ -163,14 +163,13 @@ class CacheManager implements SingletonInterface
     public function flushCachesInGroup($groupIdentifier)
     {
         $this->createAllCaches();
-        if (isset($this->cacheGroups[$groupIdentifier])) {
-            foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
-                if (isset($this->caches[$cacheIdentifier])) {
-                    $this->caches[$cacheIdentifier]->flush();
-                }
-            }
-        } else {
+        if (!isset($this->cacheGroups[$groupIdentifier])) {
             throw new NoSuchCacheGroupException('No cache in the specified group \'' . $groupIdentifier . '\'', 1390334120);
+        }
+        foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
+            if (isset($this->caches[$cacheIdentifier])) {
+                $this->caches[$cacheIdentifier]->flush();
+            }
         }
     }
 
@@ -179,22 +178,50 @@ class CacheManager implements SingletonInterface
      * caches of a specific group.
      *
      * @param string $groupIdentifier
-     * @param string $tag Tag to search for
+     * @param string|array $tag Tag to search for
      * @return void
      * @throws NoSuchCacheGroupException
      * @api
      */
     public function flushCachesInGroupByTag($groupIdentifier, $tag)
     {
+        if (empty($tag)) {
+            return;
+        }
         $this->createAllCaches();
-        if (isset($this->cacheGroups[$groupIdentifier])) {
-            foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
-                if (isset($this->caches[$cacheIdentifier])) {
-                    $this->caches[$cacheIdentifier]->flushByTag($tag);
-                }
-            }
-        } else {
+        if (!isset($this->cacheGroups[$groupIdentifier])) {
             throw new NoSuchCacheGroupException('No cache in the specified group \'' . $groupIdentifier . '\'', 1390337129);
+        }
+        foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
+            if (isset($this->caches[$cacheIdentifier])) {
+                $this->caches[$cacheIdentifier]->flushByTag($tag);
+            }
+        }
+    }
+
+    /**
+     * Flushes entries tagged by any of the specified tags in all registered
+     * caches of a specific group.
+     *
+     * @param string $groupIdentifier
+     * @param string[] $tag Tags to search for
+     * @return void
+     * @throws NoSuchCacheGroupException
+     * @api
+     */
+    public function flushCachesInGroupByTags($groupIdentifier, array $tags)
+    {
+        if (empty($tag)) {
+            return;
+        }
+        $this->createAllCaches();
+        if (!isset($this->cacheGroups[$groupIdentifier])) {
+            throw new NoSuchCacheGroupException('No cache in the specified group \'' . $groupIdentifier . '\'', 1390337130);
+        }
+        foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
+            if (isset($this->caches[$cacheIdentifier])) {
+                $this->caches[$cacheIdentifier]->flushByTags($tags);
+            }
         }
     }
 
@@ -211,6 +238,21 @@ class CacheManager implements SingletonInterface
         $this->createAllCaches();
         foreach ($this->caches as $cache) {
             $cache->flushByTag($tag);
+        }
+    }
+
+    /**
+     * Flushes entries tagged by any of the specified tags in all registered caches.
+     *
+     * @param string[] $tag Tags to search for
+     * @return void
+     * @api
+     */
+    public function flushCachesByTags(array $tags)
+    {
+        $this->createAllCaches();
+        foreach ($this->caches as $cache) {
+            $cache->flushByTags($tags);
         }
     }
 

@@ -176,6 +176,50 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->flush();
     }
 
+    public function flushByTagCallsDeleteOnConnection()
+    {
+        $frontendProphecy = $this->prophesize(FrontendInterface::class);
+        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+
+        $subject = new Typo3DatabaseBackend('Testing');
+        $subject->setCache($frontendProphecy->reveal());
+
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->delete('cf_cache_test')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->delete('cf_cache_test_tags')->shouldBeCalled()->willReturn(0);
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
+
+        // Two instances are required as there are different tables being cleared
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $subject->flushByTag('Tag');
+    }
+
+    public function flushByTagsCallsDeleteOnConnection()
+    {
+        $frontendProphecy = $this->prophesize(FrontendInterface::class);
+        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+
+        $subject = new Typo3DatabaseBackend('Testing');
+        $subject->setCache($frontendProphecy->reveal());
+
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->delete('cf_cache_test')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->delete('cf_cache_test_tags')->shouldBeCalled()->willReturn(0);
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
+
+        // Two instances are required as there are different tables being cleared
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $subject->flushByTag(['Tag1', 'Tag2']);
+    }
+
     /**
      * @test
      */
@@ -184,6 +228,16 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
-        $subject->flushByTag([]);
+        $subject->flushByTag('Tag');
+    }
+    /**
+     * @test
+     */
+    public function flushByTagsThrowsExceptionIfFrontendWasNotSet()
+    {
+        $subject = new Typo3DatabaseBackend('Testing');
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1236518288);
+        $subject->flushByTags([]);
     }
 }

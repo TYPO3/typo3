@@ -210,6 +210,22 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    {
+        $backend = $this->setUpBackend();
+        $data = 'some data' . microtime();
+        $backend->set('BackendAPCTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
+        $backend->set('BackendAPCTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('BackendAPCTest3', $data, ['UnitTestTag%test']);
+        $backend->flushByTags(['UnitTestTag%special', 'UnitTestTag%boring']);
+        $this->assertFalse($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
+        $this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
+        $this->assertTrue($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
+    }
+
+    /**
+     * @test
+     */
     public function flushRemovesAllCacheEntries()
     {
         $backend = $this->setUpBackend();

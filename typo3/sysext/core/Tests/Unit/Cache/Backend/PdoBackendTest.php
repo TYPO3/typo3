@@ -179,6 +179,22 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    {
+        $backend = $this->setUpBackend();
+        $data = 'some data' . microtime();
+        $backend->set('PdoBackendTest1', $data, ['UnitTestTag%test', 'UnitTestTags%boring']);
+        $backend->set('PdoBackendTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
+        $backend->set('PdoBackendTest3', $data, ['UnitTestTag%test']);
+        $backend->flushByTags(['UnitTestTag%special', 'UnitTestTags%boring']);
+        $this->assertFalse($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
+        $this->assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
+        $this->assertTrue($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
+    }
+
+    /**
+     * @test
+     */
     public function flushRemovesAllCacheEntries()
     {
         $backend = $this->setUpBackend();

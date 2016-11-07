@@ -262,16 +262,35 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     }
 
     /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
+     * Removes all entries tagged by any of the specified tags. Performs the SQL
+     * operation as a bulk query for better performance.
      *
-     * @param string $tag The tag the entries must have
-     * @return void
+     * @param string[] $tags
      */
-    public function flushByTag($tag)
+    public function flushByTags(array $tags)
     {
         $this->throwExceptionIfFrontendDoesNotExist();
 
+        if (empty($tags)) {
+            return;
+        }
+
+        /** @var Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
+
+        // A large set of tags was detected. Process it in chunks to guard against exceeding
+        // maximum SQL query limits.
+        if (count($tags) > 100) {
+            array_walk(array_chunk($tags, 100), [$this, 'flushByTags']);
+            return;
+        }
+        // VERY simple quoting of tags is sufficient here for performance. Tags are already
+        // validated to not contain any bad characters, e.g. they are automatically generated
+        // inside this class and suffixed with a pure integer enforced by DB.
+        $quotedTagList = array_map(function ($value) {
+            return '\'' . $value . '\'';
+        }, $tags);
+
         if ($this->isConnectionMysql($connection)) {
             // Use a optimized query on mysql ... don't use on your own
             // * ansi sql does not know about multi table delete
@@ -281,14 +300,65 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 . ' FROM ' . $this->tagsTable . ' AS tags1'
                 . ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
                 . ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
-                . ' WHERE tags1.tag = ?',
-                [$tag]
+                . ' WHERE tags1.tag IN (' . implode(',', $quotedTagList) . ')'
             );
         } else {
             $queryBuilder = $connection->createQueryBuilder();
             $result = $queryBuilder->select('identifier')
                 ->from($this->tagsTable)
-                ->where($queryBuilder->expr()->eq('tag', $queryBuilder->createNamedParameter($tag, \PDO::PARAM_STR)))
+                ->where('tag IN (' . implode(',', $quotedTagList) . ')')
+                // group by is like DISTINCT and used here to suppress possible duplicate identifiers
+                ->groupBy('identifier')
+                ->execute();
+            $cacheEntryIdentifiers = [];
+            while ($row = $result->fetch()) {
+                $cacheEntryIdentifiers[] = $row['identifier'];
+            }
+            $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
+            $queryBuilder->delete($this->cacheTable)
+                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+                ->execute();
+            $queryBuilder->delete($this->tagsTable)
+                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+                ->execute();
+        }
+    }
+
+    /**
+     * Removes all cache entries of this cache which are tagged by the specified tag.
+     *
+     * @param string $tag The tag the entries must have
+     * @return void
+     */
+    public function flushByTag($tag)
+    {
+        $this->throwExceptionIfFrontendDoesNotExist();
+
+        if (empty($tag)) {
+            return;
+        }
+
+        /** @var Connection $connection */
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
+
+        $quotedTag = '\'' . $tag . '\'';
+
+        if ($this->isConnectionMysql($connection)) {
+            // Use a optimized query on mysql ... don't use on your own
+            // * ansi sql does not know about multi table delete
+            // * doctrine query builder does not support join on delete()
+            $connection->executeQuery(
+                'DELETE tags2, cache1'
+                . ' FROM ' . $this->tagsTable . ' AS tags1'
+                . ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
+                . ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
+                . ' WHERE tags1.tag = ' . $quotedTag
+            );
+        } else {
+            $queryBuilder = $connection->createQueryBuilder();
+            $result = $queryBuilder->select('identifier')
+                ->from($this->tagsTable)
+                ->where('tag = ' . $quotedTag)
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
                 ->execute();

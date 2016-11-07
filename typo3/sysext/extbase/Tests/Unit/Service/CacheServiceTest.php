@@ -41,7 +41,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function clearPageCacheConvertsPageIdsToArray()
     {
-        $this->cacheManagerMock->expects($this->once())->method('flushCachesInGroupByTag')->with('pages', 'pageId_123');
+        $this->cacheManagerMock->expects($this->once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_123']);
         $this->cacheService->clearPageCache(123);
     }
 
@@ -50,7 +50,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function clearPageCacheConvertsPageIdsToNumericArray()
     {
-        $this->cacheManagerMock->expects($this->once())->method('flushCachesInGroupByTag')->with('pages', 'pageId_0');
+        $this->cacheManagerMock->expects($this->once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_0']);
         $this->cacheService->clearPageCache('Foo');
     }
 
@@ -68,9 +68,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function clearPageCacheUsesCacheManagerToFlushCacheOfSpecifiedPages()
     {
-        $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTag')->with('pages', 'pageId_1');
-        $this->cacheManagerMock->expects($this->at(1))->method('flushCachesInGroupByTag')->with('pages', 'pageId_2');
-        $this->cacheManagerMock->expects($this->at(2))->method('flushCachesInGroupByTag')->with('pages', 'pageId_3');
+        $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTags')->with('pages', ['pageId_1', 'pageId_2', 'pageId_3']);
         $this->cacheService->clearPageCache([1, 2, 3]);
     }
 
@@ -79,9 +77,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function clearsCachesOfRegisteredPageIds()
     {
-        $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTag')->with('pages', 'pageId_2');
-        $this->cacheManagerMock->expects($this->at(1))->method('flushCachesInGroupByTag')->with('pages', 'pageId_15');
-        $this->cacheManagerMock->expects($this->at(2))->method('flushCachesInGroupByTag')->with('pages', 'pageId_8');
+        $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTags')->with('pages', ['pageId_2', 'pageId_15', 'pageId_8']);
 
         $this->cacheService->getPageIdStack()->push(8);
         $this->cacheService->getPageIdStack()->push(15);
@@ -95,10 +91,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function clearsCachesOfDuplicateRegisteredPageIdsOnlyOnce()
     {
-        $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTag')->with('pages', 'pageId_2');
-        $this->cacheManagerMock->expects($this->at(1))->method('flushCachesInGroupByTag')->with('pages', 'pageId_15');
-        $this->cacheManagerMock->expects($this->at(2))->method('flushCachesInGroupByTag')->with('pages', 'pageId_8');
-        $this->cacheManagerMock->expects($this->exactly(3))->method('flushCachesInGroupByTag');
+        $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTags')->with('pages', ['pageId_2', 'pageId_15', 'pageId_8']);
 
         $this->cacheService->getPageIdStack()->push(8);
         $this->cacheService->getPageIdStack()->push(15);

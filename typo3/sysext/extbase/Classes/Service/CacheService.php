@@ -67,9 +67,10 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface
             if (!is_array($pageIdsToClear)) {
                 $pageIdsToClear = [(int)$pageIdsToClear];
             }
-            foreach ($pageIdsToClear as $pageId) {
-                $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
-            }
+            $tags = array_map(function ($item) {
+                return 'pageId_' . $item;
+            }, $pageIdsToClear);
+            $this->cacheManager->flushCachesInGroupByTags('pages', $tags);
         }
     }
 
