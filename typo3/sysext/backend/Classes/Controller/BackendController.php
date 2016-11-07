@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -276,7 +277,10 @@ class BackendController
             $logoWidth = 22;
             $logoHeight = 22;
         } else {
-            list($logoWidth, $logoHeight) = @getimagesize($logoPath);
+            // set width/height for custom logo
+            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
+            $logoWidth = $imageInfo->getWidth() ?? '22';
+            $logoHeight = $imageInfo->getHeight() ?? '22';
 
             // High-resolution?
             if (strpos($logoPath, '@2x.') !== false) {
