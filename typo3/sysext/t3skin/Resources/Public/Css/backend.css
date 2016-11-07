@@ -12537,7 +12537,7 @@ iframe {
 .t3-grid-table {
   border-collapse: separate;
   border-spacing: 10px 0;
-  width: 100%;
+  min-width: 100%;
   table-layout: fixed;
 }
 .t3-grid-container {
@@ -12554,7 +12554,7 @@ iframe {
   background: url('../../../../images/backgrounds/layout-not-assigned.png') repeat;
 }
 .t3-page-columns {
-  width: 100%;
+  min-width: 100%;
 }
 .t3-page-column {
   min-width: 150px;
