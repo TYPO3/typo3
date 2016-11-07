@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
@@ -1042,8 +1041,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $urlWithoutSchema = preg_replace('#^https?://#', '', $url);
         $siteUrlWithoutSchema = preg_replace('#^https?://#', '', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-        return StringUtility::beginsWith($urlWithoutSchema . '/', GeneralUtility::getIndpEnv('HTTP_HOST') . '/')
-            && StringUtility::beginsWith($urlWithoutSchema, $siteUrlWithoutSchema);
+        return strpos($urlWithoutSchema . '/', GeneralUtility::getIndpEnv('HTTP_HOST') . '/') === 0
+            && strpos($urlWithoutSchema, $siteUrlWithoutSchema) === 0;
     }
 
     /**

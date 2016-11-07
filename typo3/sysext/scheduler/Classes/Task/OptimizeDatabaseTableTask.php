@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Perform OPTIMIZE TABLE SQL statements
@@ -46,7 +45,7 @@ class OptimizeDatabaseTableTask extends AbstractTask
         foreach ($this->selectedTables as $tableName) {
             $connection = $connectionPool->getConnectionForTable($tableName);
 
-            if (StringUtility::beginsWith($connection->getServerVersion(), 'MySQL')) {
+            if (strpos($connection->getServerVersion(), 'MySQL') === 0) {
                 try {
                     $connection->exec('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
                 } catch (DBALException $e) {

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -1212,7 +1211,7 @@ class TemplateService
     protected function mergeConstantsFromIncludedTsConfigFiles($filesToInclude, $TSdataArray)
     {
         foreach ($filesToInclude as $key => $file) {
-            if (!StringUtility::beginsWith($file, 'EXT:')) {
+            if (strpos($file, 'EXT:') !== 0) {
                 continue;
             }
 
@@ -1246,8 +1245,8 @@ class TemplateService
     {
         if (is_array($setupArray)) {
             foreach ($setupArray as $key => $val) {
-                if ($prefix || !StringUtility::beginsWith($key, 'TSConstantEditor')) {
-                    // We don't want 'TSConstantEditor' in the flattend setup on the first level (190201)
+                if ($prefix || strpos($key, 'TSConstantEditor') !== 0) {
+                    // We don't want 'TSConstantEditor' in the flattened setup on the first level (190201)
                     if (is_array($val)) {
                         $this->flattenSetup($val, $prefix . $key);
                     } else {

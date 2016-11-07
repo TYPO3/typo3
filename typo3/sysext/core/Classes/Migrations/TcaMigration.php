@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Migrations;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Migrate TCA from old to new syntax. Used in bootstrap and Flex Form Data Structures.
@@ -433,12 +432,12 @@ class TcaMigration
                             $path = implode('/', $pathParts);
                             // If the path starts with ext/ or sysext/ migrate it
                             if (
-                                StringUtility::beginsWith($itemConfig[2], 'ext/')
-                                || StringUtility::beginsWith($itemConfig[2], 'sysext/')
+                                strpos($itemConfig[2], 'ext/') === 0
+                                || strpos($itemConfig[2], 'sysext/') === 0
                             ) {
                                 $this->messages[] = '[' . $tcaPath . '] ext/ or sysext/ within the path (' . $path . ') in items array is deprecated, use EXT: reference';
                                 $itemConfig[2] = 'EXT:' . $path;
-                            } elseif (StringUtility::beginsWith($itemConfig[2], 'i/')) {
+                            } elseif (strpos($itemConfig[2], 'i/') === 0) {
                                 $this->messages[] = '[' . $tcaPath . '] i/ within the path (' . $path . ') in items array is deprecated, use EXT: reference';
                                 $itemConfig[2] = 'EXT:t3skin/icons/gfx/' . $itemConfig[2];
                             }
@@ -490,7 +489,7 @@ class TcaMigration
             if (!isset($tableDefinition['ctrl']['iconfile'])) {
                 continue;
             }
-            if (StringUtility::beginsWith($tableDefinition['ctrl']['iconfile'], '../typo3conf/ext/')) {
+            if (strpos($tableDefinition['ctrl']['iconfile'], '../typo3conf/ext/') === 0) {
                 $tableDefinition['ctrl']['iconfile'] = str_replace('../typo3conf/ext/', 'EXT:', $tableDefinition['ctrl']['iconfile']);
                 $tcaPath = implode('.', [$table, 'ctrl', 'iconfile']);
                 $this->messages[] = '[' . $tcaPath . '] relative path to ../typo3conf/ext/ is deprecated, use EXT: instead';

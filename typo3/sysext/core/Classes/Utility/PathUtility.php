@@ -40,7 +40,7 @@ class PathUtility
     public static function getAbsoluteWebPath($targetPath)
     {
         if (self::isAbsolutePath($targetPath)) {
-            if (StringUtility::beginsWith($targetPath, PATH_site)) {
+            if (strpos($targetPath, PATH_site) === 0) {
                 $targetPath = self::stripPathSitePrefix($targetPath);
                 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                     $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;

@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Rsaauth;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\StringUtility;
-
 /**
  * This class decodes rsa protected data
  */
@@ -76,7 +74,7 @@ class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface
                 continue;
             }
 
-            if (!StringUtility::beginsWith($value, 'rsa:')) {
+            if (strpos($value, 'rsa:') !== 0) {
                 continue;
             }
 

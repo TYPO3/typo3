@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Script Class for rendering the Table Wizard
@@ -503,7 +502,7 @@ class TableController extends AbstractWizardController
             $cmd = '';
         }
         if ($cmd && MathUtility::canBeInterpretedAsInteger($kk)) {
-            if (StringUtility::beginsWith($cmd, 'row_')) {
+            if (strpos($cmd, 'row_') === 0) {
                 switch ($cmd) {
                     case 'row_remove':
                         unset($this->TABLECFG['c'][$kk]);
@@ -540,7 +539,7 @@ class TableController extends AbstractWizardController
                 }
                 ksort($this->TABLECFG['c']);
             }
-            if (StringUtility::beginsWith($cmd, 'col_')) {
+            if (strpos($cmd, 'col_') === 0) {
                 foreach ($this->TABLECFG['c'] as $cAK => $value) {
                     switch ($cmd) {
                         case 'col_remove':

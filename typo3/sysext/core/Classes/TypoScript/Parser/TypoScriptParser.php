@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * The TypoScript parser
@@ -495,7 +494,7 @@ class TypoScriptParser
                             $this->lastComment .= rtrim($line) . LF;
                         }
                     }
-                    if (StringUtility::beginsWith($line, '### ERROR')) {
+                    if (strpos($line, '### ERROR') === 0) {
                         $this->error(substr($line, 11));
                     }
                 }
@@ -874,7 +873,7 @@ class TypoScriptParser
                 // load default TypoScript for content rendering templates like
                 // css_styled_content if those have been included through f.e.
                 // <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
-                if (StringUtility::beginsWith(strtolower($filename), 'ext:')) {
+                if (strpos(strtolower($filename), 'ext:') === 0) {
                     $filePointerPathParts = explode('/', substr($filename, 4));
 
                     // remove file part, determine whether to load setup or constants

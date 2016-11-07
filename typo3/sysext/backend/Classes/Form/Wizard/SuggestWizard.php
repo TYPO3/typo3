@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -384,7 +383,7 @@ class SuggestWizard
     protected function isRelevantFlexField($fieldName)
     {
         return !(
-            StringUtility::beginsWith($fieldName, 'ID-') ||
+            strpos($fieldName, 'ID-') === 0 ||
             $fieldName === 'lDEF' ||
             $fieldName === 'vDEF' ||
             $fieldName === 'data' ||

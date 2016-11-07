@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Lang\LanguageService;
@@ -1204,7 +1203,7 @@ class BackendUtility
                     $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
                     // Traversing list
                     foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
-                        if (StringUtility::beginsWith($includeTsConfigFile, 'EXT:')) {
+                        if (strpos($includeTsConfigFile, 'EXT:') === 0) {
                             list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
                                 '/',
                                 substr($includeTsConfigFile, 4),

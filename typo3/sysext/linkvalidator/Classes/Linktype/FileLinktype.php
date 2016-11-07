@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This class provides Check File Links plugin implementation
@@ -34,7 +33,7 @@ class FileLinktype extends AbstractLinktype
      */
     public function fetchType($value, $type, $key)
     {
-        if (StringUtility::beginsWith(strtolower($value['tokenValue']), 'file:')) {
+        if (strpos(strtolower($value['tokenValue']), 'file:') === 0) {
             $type = 'file';
         }
         return $type;

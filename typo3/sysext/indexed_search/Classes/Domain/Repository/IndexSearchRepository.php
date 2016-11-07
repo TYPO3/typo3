@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility;
 
@@ -342,7 +341,7 @@ class IndexSearchRepository
     protected function getResultRows_SQLpointerMysqlFulltext($searchWordsArray, $freeIndexUid = -1)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_fulltext');
-        if (!StringUtility::beginsWith($connection->getServerVersion(), 'MySQL')) {
+        if (strpos($connection->getServerVersion(), 'MySQL') !== 0) {
             throw new \RuntimeException(
                 'Extension indexed_search is configured to use mysql fulltext, but table \'index_fulltext\''
                 . ' is running on a different DBMS.',

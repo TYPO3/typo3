@@ -19,7 +19,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use TYPO3\CMS\Core\Console\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Command Line Interface Request Handler dealing with "cliKey"-based Commands from the cli_dispatch.phpsh script.
@@ -169,7 +168,7 @@ class CliRequestHandler implements RequestHandlerInterface
         if ($GLOBALS['BE_USER']->user['uid']) {
             throw new \RuntimeException('Another user was already loaded which is impossible in CLI mode!', 1476107444);
         }
-        if (!StringUtility::beginsWith($commandLineName, '_CLI_')) {
+        if (strpos($commandLineName, '_CLI_') !== 0) {
             throw new \RuntimeException('Module name, "' . $commandLineName . '", was not prefixed with "_CLI_"', 1476107445);
         }
         $userName = strtolower($commandLineName);

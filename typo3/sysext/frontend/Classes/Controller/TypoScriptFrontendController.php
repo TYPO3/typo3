@@ -44,7 +44,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
@@ -4175,7 +4174,7 @@ class TypoScriptFrontendController
             // This is a hack to work around ___FILE___ resolving symbolic links
             $PATH_site_real = dirname(realpath(PATH_site . 'typo3')) . '/';
             $file = $trace[0]['file'];
-            if (StringUtility::beginsWith($file, $PATH_site_real)) {
+            if (strpos($file, $PATH_site_real) === 0) {
                 $file = str_replace($PATH_site_real, '', $file);
             } else {
                 $file = str_replace(PATH_site, '', $file);

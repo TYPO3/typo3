@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -44,7 +43,7 @@ class BackendUserGroupIntegrityCheck
         $backendUserGroup = BackendUtility::getRecord($table, $id, 'explicit_allowdeny');
         $explicitAllowDenyFields = GeneralUtility::trimExplode(',', $backendUserGroup['explicit_allowdeny']);
         foreach ($explicitAllowDenyFields as $value) {
-            if (StringUtility::beginsWith($value, 'tt_content:list_type:')) {
+            if ($value !== '' && strpos($value, 'tt_content:list_type:') === 0) {
                 if (!in_array('tt_content:CType:list:ALLOW', $explicitAllowDenyFields, true)) {
                     /** @var $flashMessage FlashMessage */
                     $flashMessage = GeneralUtility::makeInstance(

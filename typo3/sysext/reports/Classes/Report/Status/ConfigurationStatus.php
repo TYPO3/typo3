@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -277,7 +276,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-        return StringUtility::beginsWith($connection->getServerVersion(), 'MySQL');
+        return strpos($connection->getServerVersion(), 'MySQL') === 0;
     }
 
     /**
@@ -306,7 +305,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $severity = ReportStatus::OK;
         $statusValue = $this->getLanguageService()->getLL('status_ok');
         // also allow utf8mb4
-        if (!StringUtility::beginsWith($defaultDatabaseCharset, 'utf8')) {
+        if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
             // If the default character set is e.g. latin1, BUT all tables in the system are UTF-8,
             // we assume that TYPO3 has the correct charset for adding tables, and everything is fine
             $nonUtf8TableCollationsFound = $queryBuilder->select('table_collation')

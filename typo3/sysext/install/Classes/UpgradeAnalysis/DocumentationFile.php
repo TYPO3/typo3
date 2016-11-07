@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\UpgradeAnalysis;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Provide information about documentation files
@@ -87,7 +86,7 @@ class DocumentationFile
     protected function extractTagsFromFile(array $file): array
     {
         foreach ($file as $line) {
-            if (StringUtility::beginsWith($line, '.. index::')) {
+            if (strpos($line, '.. index::') === 0) {
                 $tagString = substr($line, strlen('.. index:: '));
                 return GeneralUtility::trimExplode(',', $tagString, true);
             }
@@ -124,7 +123,7 @@ class DocumentationFile
     protected function extractHeadline(array $lines): string
     {
         $index = 0;
-        while (StringUtility::beginsWith($lines[$index], '..') || StringUtility::beginsWith($lines[$index], '==')) {
+        while (strpos($lines[$index], '..') === 0 || strpos($lines[$index], '==') === 0) {
             $index++;
         }
         return trim($lines[$index]);

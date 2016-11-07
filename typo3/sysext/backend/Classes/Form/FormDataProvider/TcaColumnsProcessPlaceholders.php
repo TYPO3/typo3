@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Mark columns that are used by input placeholders for further processing
@@ -43,7 +42,7 @@ class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
             }
 
             // Process __row|field type placeholders
-            if (StringUtility::beginsWith($fieldConfig['config']['placeholder'], '__row|')) {
+            if (strpos($fieldConfig['config']['placeholder'], '__row|') === 0) {
                 // split field names into array and remove the __row indicator
                 $fieldNameArray = array_slice(
                     GeneralUtility::trimExplode('|', $fieldConfig['config']['placeholder'], true),

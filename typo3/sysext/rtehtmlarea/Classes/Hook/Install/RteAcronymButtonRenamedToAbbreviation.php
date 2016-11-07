@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook\Install;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
 
 /**
@@ -115,7 +114,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
 
-        $isMySQL = StringUtility::beginsWith($queryBuilder->getConnection()->getServerVersion(), 'MySQL');
+        $isMySQL = strpos($queryBuilder->getConnection()->getServerVersion(), 'MySQL') === 0;
         if ($isMySQL) {
             $whereClause = $queryBuilder->expr()->comparison(
                 $queryBuilder->quoteIdentifier('TSconfig'),

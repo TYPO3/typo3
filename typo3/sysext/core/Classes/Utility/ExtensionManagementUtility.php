@@ -433,7 +433,7 @@ class ExtensionManagementUtility
                 }
                 if (
                     isset($fieldArrayWithOptions[$fieldNumber + 1])
-                    && StringUtility::beginsWith($fieldArrayWithOptions[$fieldNumber + 1],  '--palette--')
+                    && strpos($fieldArrayWithOptions[$fieldNumber + 1],  '--palette--') === 0
                 ) {
                     // Match for $field and next field is a palette - add fields to this one
                     $paletteName = GeneralUtility::trimExplode(';', $fieldArrayWithOptions[$fieldNumber + 1]);

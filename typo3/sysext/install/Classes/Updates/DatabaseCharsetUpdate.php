@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Install\Updates;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Move "wizard done" flags to system registry
@@ -49,7 +48,7 @@ class DatabaseCharsetUpdate extends AbstractUpdate
         WARNING: This will NOT convert any existing data.';
 
         // check if database charset is utf-8, also allows utf8mb4
-        if (!StringUtility::beginsWith($this->getDefaultDatabaseCharset(), 'utf8')) {
+        if (strpos($this->getDefaultDatabaseCharset(), 'utf8') !== 0) {
             $result = true;
         } else {
             $this->markWizardAsDone();
@@ -97,7 +96,7 @@ class DatabaseCharsetUpdate extends AbstractUpdate
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-        return StringUtility::beginsWith($connection->getServerVersion(), 'MySQL');
+        return strpos($connection->getServerVersion(), 'MySQL') === 0;
     }
 
     /**

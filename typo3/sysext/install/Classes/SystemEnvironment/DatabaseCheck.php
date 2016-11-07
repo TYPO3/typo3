@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Status;
 
 /**
@@ -51,7 +50,7 @@ class DatabaseCheck
         $statusArray = [];
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (!StringUtility::beginsWith($defaultConnection->getServerVersion(), 'MySQL')) {
+        if (strpos($defaultConnection->getServerVersion(), 'MySQL') !== 0) {
             return $statusArray;
         }
         $statusArray[] = $this->checkMysqlVersion($defaultConnection);
@@ -135,7 +134,7 @@ class DatabaseCheck
             ->execute()
             ->fetchColumn();
         // also allow utf8mb4
-        if (!StringUtility::beginsWith($defaultDatabaseCharset, 'utf8')) {
+        if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
             $status = new Status\ErrorStatus();
             $status->setTitle('MySQL database character set check failed');
             $status->setMessage(

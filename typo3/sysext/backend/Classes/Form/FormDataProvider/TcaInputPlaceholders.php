@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -49,7 +48,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             }
 
             // Resolve __row|field type placeholders
-            if (StringUtility::beginsWith($fieldConfig['config']['placeholder'], '__row|')) {
+            if (strpos($fieldConfig['config']['placeholder'], '__row|') === 0) {
                 // split field names into array and remove the __row indicator
                 $fieldNameArray = array_slice(
                     GeneralUtility::trimExplode('|', $fieldConfig['config']['placeholder'], true),
@@ -59,7 +58,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             }
 
             // Resolve placeholders from language files
-            if (StringUtility::beginsWith($fieldConfig['config']['placeholder'], 'LLL:')) {
+            if (strpos($fieldConfig['config']['placeholder'], 'LLL:') === 0) {
                 $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getLanguageService()->sL($fieldConfig['config']['placeholder']);
             }
 

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Compressor
@@ -284,7 +283,7 @@ class ResourceCompressor
                 $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
                 $contents = file_get_contents($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
-                if (StringUtility::beginsWith($contents, "\xEF\xBB\xBF")) {
+                if (strpos($contents, "\xEF\xBB\xBF") === 0) {
                     $contents = substr($contents, 3);
                 }
                 // only fix paths if files aren't already in typo3temp (already processed)

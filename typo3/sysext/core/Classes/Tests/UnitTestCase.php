@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Base test case for unit tests.
@@ -81,7 +80,7 @@ abstract class UnitTestCase extends BaseTestCase
             if (!GeneralUtility::validPathStr($absoluteFileName)) {
                 throw new \RuntimeException('tearDown() cleanup: Filename contains illegal characters', 1410633087);
             }
-            if (!StringUtility::beginsWith($absoluteFileName, PATH_site . 'typo3temp/var/')) {
+            if (strpos($absoluteFileName, PATH_site . 'typo3temp/var/') !== 0) {
                 throw new \RuntimeException(
                     'tearDown() cleanup:  Files to delete must be within typo3temp/var/',
                     1410633412

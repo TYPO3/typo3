@@ -4771,7 +4771,7 @@ class ContentObjectRenderer
                 // tags
                 $len = strcspn(substr($theValue, $pointer), '>') + 1;
                 $data = substr($theValue, $pointer, $len);
-                if (StringUtility::endsWith($data, '/>') && !StringUtility::beginsWith($data, '<link ')) {
+                if (StringUtility::endsWith($data, '/>') && strpos($data, '<link ') !== 0) {
                     $tagContent = substr($data, 1, -2);
                 } else {
                     $tagContent = substr($data, 1, -1);
@@ -5709,7 +5709,7 @@ class ContentObjectRenderer
         }
 
         // Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-        if ($linkHandlerKeyword === 'file' && !StringUtility::beginsWith($linkParameterParts['url'], 'file://')) {
+        if ($linkHandlerKeyword === 'file' && strpos($linkParameterParts['url'], 'file://') !== 0) {
             try {
                 $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
                 // Link to a folder or file
@@ -5849,7 +5849,7 @@ class ContentObjectRenderer
                     $linkLocation = $fileOrFolderObject->getPublicUrl();
                     // Setting title if blank value to link
                     $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-                    $linkLocation = (!StringUtility::beginsWith($linkLocation, '/') ? $tsfe->absRefPrefix : '') . $linkLocation;
+                    $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
 
@@ -6112,7 +6112,7 @@ class ContentObjectRenderer
                     $linkLocation = $linkDetails['file'];
                     // Setting title if blank value to link
                     $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-                    $linkLocation = (!StringUtility::beginsWith($linkLocation, '/') ? $tsfe->absRefPrefix : '') . $linkLocation;
+                    $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
                     if (empty($target)) {
@@ -7782,7 +7782,7 @@ class ContentObjectRenderer
         }
 
         // Static_* tables are allowed to be fetched from root page
-        if (StringUtility::beginsWith($table, 'static_')) {
+        if (strpos($table, 'static_') === 0) {
             $pid_uid_flag++;
         }
 

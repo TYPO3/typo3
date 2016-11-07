@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 
@@ -191,7 +190,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements AdditionalFieldPro
     protected function getOptimizableTablesForConnection(Connection $connection, array $tableNames = []): array
     {
         // Return empty list if the database platform is not MySQL
-        if (!StringUtility::beginsWith($connection->getServerVersion(), 'MySQL')) {
+        if (strpos($connection->getServerVersion(), 'MySQL') !== 0) {
             return [];
         }
 

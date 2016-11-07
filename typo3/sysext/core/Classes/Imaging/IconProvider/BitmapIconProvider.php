@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class BitmapIconProvider provides icons that are classic <img> tags using bitmaps as source
@@ -51,7 +50,7 @@ class BitmapIconProvider implements IconProviderInterface
 
         $source = $options['source'];
 
-        if (StringUtility::beginsWith($source, 'EXT:') || !StringUtility::beginsWith($source, '/')) {
+        if (strpos($source, 'EXT:') === 0 || strpos($source, '/') !== 0) {
             $source = GeneralUtility::getFileAbsFileName($source);
         }
         $source = PathUtility::getAbsoluteWebPath($source);
@@ -73,7 +72,7 @@ class BitmapIconProvider implements IconProviderInterface
 
         $source = $options['source'];
 
-        if (StringUtility::beginsWith($source, 'EXT:') || !StringUtility::beginsWith($source, '/')) {
+        if (strpos($source, 'EXT:') === 0 || strpos($source, '/') !== 0) {
             $source = GeneralUtility::getFileAbsFileName($source);
         }
 
