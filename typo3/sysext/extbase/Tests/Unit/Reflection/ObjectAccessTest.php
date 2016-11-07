@@ -217,6 +217,26 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function getPropertyCanAccessPropertiesOfArrayAccessWithGetterMethodWhenOffsetNotExists()
+    {
+        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass([]);
+        $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'virtual');
+        $this->assertEquals('default-value', $actual, 'getProperty does not work with Array Access property.');
+    }
+
+    /**
+     * @test
+     */
+    public function getPropertyCanAccessPropertiesOfArrayAccessWithPriorityForOffsetIfOffsetExists()
+    {
+        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(['virtual' => 'overridden-value']);
+        $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'virtual');
+        $this->assertEquals('overridden-value', $actual, 'getProperty does not work with Array Access property.');
+    }
+
+    /**
+     * @test
+     */
     public function getPropertyCanAccessPropertiesOfAnArray()
     {
         $array = ['key' => 'value'];

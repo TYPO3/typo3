@@ -86,7 +86,7 @@ class ObjectAccess
         }
 
         // value get based on data type of $subject (possibly converted above)
-        if ($subject instanceof \ArrayAccess || is_array($subject)) {
+        if (($subject instanceof \ArrayAccess && $subject->offsetExists($propertyName)) || is_array($subject)) {
             // isset() is safe; array_key_exists would only be needed to determine
             // if the value is NULL - and that's already what we return as fallback.
             if (isset($subject[$propertyName])) {

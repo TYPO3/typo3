@@ -65,4 +65,12 @@ class ArrayAccessClass implements \ArrayAccess
     {
         unset($this->array[$offset]);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVirtual()
+    {
+        return isset($this->array['virtual']) ? $this->array['virtual'] : 'default-value';
+    }
 }
