@@ -153,7 +153,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
                     $this->title = $data;
                     break;
                 case 'description':
-                    $this->description = $data;
+                    $this->description .= $data;
                     break;
                 case 'state':
                     $this->state = $data;
@@ -168,7 +168,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
                     $this->lastuploaddate = $data;
                     break;
                 case 'uploadcomment':
-                    $this->uploadcomment = $data;
+                    $this->uploadcomment .= $data;
                     break;
                 case 'dependencies':
                     $this->dependencies = $this->convertDependencies($data);

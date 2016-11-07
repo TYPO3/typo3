@@ -389,9 +389,9 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
         // resetting at least class property "version" is mandatory
         // as we need to do some magic in regards to
         // an extension's and version's child node "downloadcounter"
-        $this->version = ($this->title = ($this->versionDownloadCounter = ($this->description = ($this->state = ($this->reviewstate = ($this->category = ($this->lastuploaddate = ($this->uploadcomment = ($this->dependencies = ($this->authorname = ($this->authoremail = ($this->authorcompany = ($this->ownerusername = ($this->t3xfilemd5 = null))))))))))))));
+        $this->version = $this->title = $this->versionDownloadCounter = $this->description = $this->state = $this->reviewstate = $this->category = $this->lastuploaddate = $this->uploadcomment = $this->dependencies = $this->authorname = $this->authoremail = $this->authorcompany = $this->ownerusername = $this->t3xfilemd5 = null;
         if ($resetAll) {
-            $this->extensionKey = ($this->extensionDownloadCounter = null);
+            $this->extensionKey = $this->extensionDownloadCounter = null;
         }
     }
 
