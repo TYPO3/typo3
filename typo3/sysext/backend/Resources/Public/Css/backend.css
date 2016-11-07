@@ -13050,7 +13050,7 @@ textarea.formengine-textarea {
 .t3-grid-table {
   border-collapse: separate;
   border-spacing: 10px 0;
-  width: 100%;
+  min-width: 100%;
   table-layout: fixed;
 }
 .t3-grid-container {
@@ -13067,7 +13067,7 @@ textarea.formengine-textarea {
   background: url('../../../../backend/Resources/Public/Images/Backgrounds/layout-not-assigned.png') repeat;
 }
 .t3-page-columns {
-  width: 100%;
+  min-width: 100%;
 }
 .t3-page-column {
   min-width: 150px;
