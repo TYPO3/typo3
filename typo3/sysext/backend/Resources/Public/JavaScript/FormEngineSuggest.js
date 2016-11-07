@@ -64,6 +64,7 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 			showNoSuggestionNotice: true,
 			noSuggestionNotice: '<div class="autocomplete-info">No results</div>',
 			minLength: minimumCharacters,
+			preventBadQueries: false,
 			// put the AJAX results in the right format
 			transformResult: function(response) {
 				return {
