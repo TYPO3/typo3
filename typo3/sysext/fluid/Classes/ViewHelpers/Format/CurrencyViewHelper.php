@@ -96,7 +96,7 @@ class CurrencyViewHelper extends AbstractViewHelper
         if (empty($floatToFormat)) {
             $floatToFormat = 0.0;
         } else {
-            $floatToFormat = floatval($floatToFormat);
+            $floatToFormat = (float)$floatToFormat;
         }
         $output = number_format($floatToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
         if ($currencySign !== '') {

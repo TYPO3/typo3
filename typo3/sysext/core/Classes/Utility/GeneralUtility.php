@@ -2632,7 +2632,7 @@ class GeneralUtility
      */
     public static function getBytesFromSizeMeasurement($measurement)
     {
-        $bytes = doubleval($measurement);
+        $bytes = (float)$measurement;
         if (stripos($measurement, 'G')) {
             $bytes *= 1024 * 1024 * 1024;
         } elseif (stripos($measurement, 'M')) {
@@ -3179,29 +3179,29 @@ class GeneralUtility
             // Browser version
             switch ($bInfo['BROWSER']) {
                 case 'net':
-                    $bInfo['VERSION'] = doubleval(substr($useragent, 8));
+                    $bInfo['VERSION'] = (float)substr($useragent, 8);
                     if (strpos($useragent, 'Netscape6/') !== false) {
-                        $bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape6/'), 10));
+                        $bInfo['VERSION'] = (float)substr(strstr($useragent, 'Netscape6/'), 10);
                     }
                     // Will we ever know if this was a typo or intention...?! :-(
                     if (strpos($useragent, 'Netscape/6') !== false) {
-                        $bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/6'), 10));
+                        $bInfo['VERSION'] = (float)substr(strstr($useragent, 'Netscape/6'), 10);
                     }
                     if (strpos($useragent, 'Netscape/7') !== false) {
-                        $bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/7'), 9));
+                        $bInfo['VERSION'] = (float)substr(strstr($useragent, 'Netscape/7'), 9);
                     }
                     break;
                 case 'msie':
                     $tmp = strstr($useragent, 'MSIE');
-                    $bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 4)));
+                    $bInfo['VERSION'] = (float)preg_replace('/^[^0-9]*/', '', substr($tmp, 4));
                     break;
                 case 'opera':
                     $tmp = strstr($useragent, 'Opera');
-                    $bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 5)));
+                    $bInfo['VERSION'] = (float)preg_replace('/^[^0-9]*/', '', substr($tmp, 5));
                     break;
                 case 'konqu':
                     $tmp = strstr($useragent, 'Konqueror/');
-                    $bInfo['VERSION'] = doubleval(substr($tmp, 10));
+                    $bInfo['VERSION'] = (float)substr($tmp, 10);
                     break;
             }
             // Client system

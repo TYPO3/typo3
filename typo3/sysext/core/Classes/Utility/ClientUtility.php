@@ -169,7 +169,7 @@ class ClientUtility
     }
 
     /**
-     * Returns the version of a browser; Basically getting doubleval() of the input string,
+     * Returns the version of a browser; Basically getting float value of the input string,
      * stripping of any non-numeric values in the beginning of the string first.
      *
      * @param string $version A string with version number, eg. "/7.32 blablabla
@@ -177,7 +177,7 @@ class ClientUtility
      */
     public static function getVersion($version)
     {
-        return doubleval(preg_replace('/^[^0-9]*/', '', $version));
+        return (float)preg_replace('/^[^0-9]*/', '', $version);
     }
 
     /**

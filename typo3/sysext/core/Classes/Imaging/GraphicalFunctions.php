@@ -1658,7 +1658,7 @@ class GraphicalFunctions
             $effect = strtolower(trim($pairs[0]));
             switch ($effect) {
                 case 'gamma':
-                    $commands .= ' -gamma ' . doubleval($value);
+                    $commands .= ' -gamma ' . (float)$value;
                     break;
                 case 'blur':
                     if (!$this->NO_IM_EFFECTS) {

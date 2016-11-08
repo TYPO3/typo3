@@ -179,7 +179,7 @@ class SpellCheckingController
         if (!$this->pspell_is_available || $this->forceCommandMode) {
             $AspellVersionString = explode('Aspell', shell_exec($this->AspellDirectory . ' -v'));
             $AspellVersion = substr($AspellVersionString[1], 0, 4);
-            if (doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) {
+            if ((float)$AspellVersion < 0.5 && (!$this->pspell_is_available || $this->forceCommandMode)) {
                 echo 'Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode.';
             }
             $this->defaultAspellEncoding = trim(shell_exec($this->AspellDirectory . ' config encoding'));

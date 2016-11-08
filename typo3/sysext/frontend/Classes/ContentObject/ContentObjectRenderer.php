@@ -4495,7 +4495,7 @@ class ContentObjectRenderer
     {
         $decimals = isset($conf['decimals.']) ? $this->stdWrap($conf['decimals'], $conf['decimals.']) : $conf['decimals'];
         $type = isset($conf['roundType.']) ? $this->stdWrap($conf['roundType'], $conf['roundType.']) : $conf['roundType'];
-        $floatVal = floatval($content);
+        $floatVal = (float)$content;
         switch ($type) {
             case 'ceil':
                 $content = ceil($floatVal);
@@ -4524,7 +4524,7 @@ class ContentObjectRenderer
         $decimals = isset($conf['decimals.']) ? (int)$this->stdWrap($conf['decimals'], $conf['decimals.']) : (int)$conf['decimals'];
         $dec_point = isset($conf['dec_point.']) ? $this->stdWrap($conf['dec_point'], $conf['dec_point.']) : $conf['dec_point'];
         $thousands_sep = isset($conf['thousands_sep.']) ? $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.']) : $conf['thousands_sep'];
-        return number_format(floatval($content), $decimals, $dec_point, $thousands_sep);
+        return number_format((float)$content, $decimals, $dec_point, $thousands_sep);
     }
 
     /**
@@ -8098,7 +8098,7 @@ class ContentObjectRenderer
                     $markerValues[$marker] = (int)$tempValue;
                 } else {
                     // Handle float
-                    $markerValues[$marker] = floatval($tempValue);
+                    $markerValues[$marker] = (float)$tempValue;
                 }
             } elseif (is_null($tempValue)) {
                 // It represents NULL
@@ -8114,7 +8114,7 @@ class ContentObjectRenderer
                             if ((int)$listValue == $listValue) {
                                 $tempArray[] = (int)$listValue;
                             } else {
-                                $tempArray[] = floatval($listValue);
+                                $tempArray[] = (float)$listValue;
                             }
                         } else {
                             // If quoted, remove quotes before

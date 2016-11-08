@@ -1097,7 +1097,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $name = htmlspecialchars($registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')');
                     $additionalInformation = $task->getAdditionalInformation();
                     if ($task instanceof \TYPO3\CMS\Scheduler\ProgressProviderInterface) {
-                        $progress = round(floatval($task->getProgress()), 2);
+                        $progress = round((float)$task->getProgress(), 2);
                         $name .= $this->renderTaskProgressBar($progress);
                     }
                     if (!empty($additionalInformation)) {

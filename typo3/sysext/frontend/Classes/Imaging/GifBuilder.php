@@ -761,8 +761,8 @@ class GifBuilder extends GraphicalFunctions
                     }
                     $theVal = (int)$theVal;
                 }
-            } elseif (floatval($theVal)) {
-                $theVal = floatval($theVal);
+            } elseif ((float)$theVal) {
+                $theVal = (float)$theVal;
             } else {
                 $theVal = 0;
             }

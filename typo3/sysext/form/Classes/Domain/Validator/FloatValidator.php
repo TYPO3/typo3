@@ -48,7 +48,7 @@ class FloatValidator extends AbstractValidator
             ],
             $value
         );
-        if ($value != strval(floatval($valueFiltered))) {
+        if ($value != strval((float)$valueFiltered)) {
             $this->addError(
                 $this->renderMessage(
                     $this->options['errorMessage'][0],

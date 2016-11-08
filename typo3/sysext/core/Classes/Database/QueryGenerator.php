@@ -1347,7 +1347,7 @@ class QueryGenerator
                 $inputVal = 0;
             }
         } else {
-            $inputVal = doubleval($conf['inputValue' . $suffix]);
+            $inputVal = (float)$conf['inputValue' . $suffix];
         }
         return $inputVal;
     }
