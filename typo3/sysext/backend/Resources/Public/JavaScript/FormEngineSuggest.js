@@ -22,7 +22,8 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 			field = $searchField.data('field'),
 			uid = $searchField.data('uid'),
 			pid = $searchField.data('pid'),
-			newRecordRow = $searchField.data('recorddata'),
+			dataStructureIdentifier = $searchField.data('datastructureidentifier'),
+			hmac = $searchField.data('hmac'),
 			minimumCharacters = $searchField.data('minchars'),
 			url = TYPO3.settings.ajaxUrls['record_suggest'],
 			params = {
@@ -30,7 +31,8 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 				'field': field,
 				'uid': uid,
 				'pid': pid,
-				'newRecordRow': newRecordRow
+				'dataStructureIdentifier': dataStructureIdentifier,
+				'hmac': hmac
 			},
 			insertValue = function(element) {
 				var insertData = '';

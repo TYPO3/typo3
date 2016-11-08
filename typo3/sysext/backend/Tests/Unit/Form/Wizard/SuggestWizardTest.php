@@ -14,15 +14,85 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Wizard\SuggestWizard;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Test case
  */
 class SuggestWizardTest extends UnitTestCase
 {
+    /**
+     * @test
+     */
+    public function renderSuggestSelectorThrowsExceptionIfFlexFieldDoesNotContainDataStructureIdentifier()
+    {
+        $viewProphecy = $this->prophesize(StandaloneView::class);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1478604742);
+        (new SuggestWizard($viewProphecy->reveal()))->renderSuggestSelector(
+            'aFieldName',
+            'aTable',
+            'aField',
+            ['uid' => 42],
+            [],
+            [
+                'config' => [
+                        'type' => 'flex',
+                        // there should be a 'dataStructureIdentifier' here
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function searchActionThrowsExceptionWithMissingArgument()
+    {
+        $viewProphecy = $this->prophesize(StandaloneView::class);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $serverRequestProphecy->getParsedBody()->willReturn([
+            'value' => 'theSearchValue',
+            'table' => 'aTable',
+            'field' => 'aField',
+            'uid' => 'aUid',
+            'dataStructureIdentifier' => 'anIdentifier',
+            // hmac missing
+        ]);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1478607036);
+        (new SuggestWizard($viewProphecy->reveal()))
+            ->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function searchActionThrowsExceptionWithWrongHmac()
+    {
+        $viewProphecy = $this->prophesize(StandaloneView::class);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $serverRequestProphecy->getParsedBody()->willReturn([
+            'value' => 'theSearchValue',
+            'table' => 'aTable',
+            'field' => 'aField',
+            'uid' => 'aUid',
+            'dataStructureIdentifier' => 'anIdentifier',
+            'hmac' => 'wrongHmac'
+        ]);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1478608245);
+        (new SuggestWizard($viewProphecy->reveal()))
+            ->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
+    }
+
     /**
      * @test
      */

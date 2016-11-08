@@ -732,7 +732,7 @@ class GeneralUtility
      * Returns a proper HMAC on a given input string and secret TYPO3 encryption key.
      *
      * @param string $input Input string to create HMAC from
-     * @param string $additionalSecret additionalSecret to prevent hmac beeing used in a different context
+     * @param string $additionalSecret additionalSecret to prevent hmac being used in a different context
      * @return string resulting (hexadecimal) HMAC currently with a length of 40 (HMAC-SHA-1)
      */
     public static function hmac($input, $additionalSecret = '')

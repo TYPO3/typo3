@@ -111,6 +111,8 @@ class TcaFlexPrepareTest extends UnitTestCase
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
 
         $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
+            = '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}';
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'sheets' => [
                 'sDEF' => [
@@ -187,6 +189,8 @@ class TcaFlexPrepareTest extends UnitTestCase
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
 
         $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
+            = '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}';
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'sheets' => [
                 'sDEF' => [
@@ -240,6 +244,8 @@ class TcaFlexPrepareTest extends UnitTestCase
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
 
         $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
+            = '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}';
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'ROOT' => '',
             'meta' => [],
@@ -318,6 +324,8 @@ class TcaFlexPrepareTest extends UnitTestCase
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
 
         $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
+            = '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}';
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'sheets' => [
                 'sDEF' => [
@@ -422,6 +430,8 @@ class TcaFlexPrepareTest extends UnitTestCase
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
 
         $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
+            = '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}';
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'sheets' => [
                 'sDEF' => [

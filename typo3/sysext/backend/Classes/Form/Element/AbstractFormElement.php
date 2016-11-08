@@ -387,9 +387,15 @@ abstract class AbstractFormElement extends AbstractNode
                     if (!empty($PA['fieldTSConfig']['suggest.']['default.']['hide'])) {
                         break;
                     }
+                    // The suggest wizard needs to know if we're in flex form scope to use the dataStructureIdentifier.
+                    // If so, add the processedTca of the flex config as wizard argument.
+                    $flexFormConfig = [];
+                    if ($this->data['processedTca']['columns'][$field]['config']['type'] === 'flex') {
+                        $flexFormConfig = $this->data['processedTca']['columns'][$field];
+                    }
                     /** @var SuggestWizard $suggestWizard */
                     $suggestWizard = GeneralUtility::makeInstance(SuggestWizard::class);
-                    $otherWizards[] = $suggestWizard->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
+                    $otherWizards[] = $suggestWizard->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA, $flexFormConfig);
                     break;
             }
         }
