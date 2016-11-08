@@ -69,7 +69,7 @@
 							self.location.href= url;
 						}
 					</script>
-					<f:form.textfield id="paginator-{position}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" />
+					<f:form.textfield id="paginator-{position}" name="paginator-target-page" additionalAttributes="{min: '1'}" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" type="number" />
 					</form>
 
 					/ {pagination.numberOfPages}
