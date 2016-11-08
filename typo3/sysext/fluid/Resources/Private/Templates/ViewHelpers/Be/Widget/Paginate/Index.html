@@ -75,7 +75,7 @@
 					<f:translate key="widget.pagination.page" />
 
 					<form onsubmit="return goToPage(this);" style="display:inline;">
-						<f:form.textfield additionalAttributes="{data-number-of-pages: '{pagination.numberOfPages}', data-url: '{f:widget.uri(arguments:{currentPage: 987654321})}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" />
+						<f:form.textfield additionalAttributes="{min: '1', data-number-of-pages: '{pagination.numberOfPages}', data-url: '{f:widget.uri(arguments:{currentPage: 987654321})}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" type="number" />
 					</form>
 
 					/ {pagination.numberOfPages}
