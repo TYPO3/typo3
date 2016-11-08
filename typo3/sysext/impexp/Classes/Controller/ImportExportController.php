@@ -738,9 +738,9 @@ class ImportExportController extends BaseScriptClass
                         $iconAndTitle = $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render()
                             . BackendUtility::getRecordTitle('pages', $record, true);
                     }
+
                     $tableList[] = [
-                        'tableName' => $tableName,
-                        'iconAndTitle' => $iconAndTitle,
+                        'iconAndTitle' => sprintf($this->lang->getLL('makeconfig_tableListEntry'), $tableName, $iconAndTitle),
                         'reference' => $reference
                     ];
                 }

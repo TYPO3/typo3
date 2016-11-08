@@ -78,7 +78,7 @@
 		</div>
 		<div class="col-sm-10">
 			<f:for each="{tableList}" as="table">
-				<f:translate key="makeconfig_tableListEntry" arguments="{0: table.tableName, 1: table.iconAndTitle}" />
+				<f:format.raw>{table.iconAndTitle}</f:format.raw>
 				<f:form.hidden name="tx_impexp[list][]" value="{table.reference}" />
 				<br />
 			</f:for>
