@@ -21,6 +21,57 @@
 var TYPO3 = {};
 TYPO3.Install = {};
 
+TYPO3.Install.Severity = {
+	loading: -3,
+	notice: -2,
+	info: -1,
+	ok: 0,
+	warning: 1,
+	error: 2
+};
+
+TYPO3.Install.Severity.getCssClass = function(severity) {
+	var severityClass;
+	switch (severity) {
+		case TYPO3.Install.Severity.loading:
+			severityClass = 'notice alert-loading';
+			break;
+		case TYPO3.Install.Severity.notice:
+			severityClass = 'notice';
+			break;
+		case TYPO3.Install.Severity.ok:
+			severityClass = 'success';
+			break;
+		case TYPO3.Install.Severity.warning:
+			severityClass = 'warning';
+			break;
+		case TYPO3.Install.Severity.error:
+			severityClass = 'danger';
+			break;
+		case TYPO3.Install.Severity.info:
+		default:
+			severityClass = 'info';
+	}
+	return severityClass;
+};
+
+TYPO3.Install.FlashMessage = {
+	template: $('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>'),
+	render: function(severity, title, message) {
+		var flashMessage = this.template.clone();
+		flashMessage.addClass('alert-' + TYPO3.Install.Severity.getCssClass(severity));
+		if (title) {
+			flashMessage.find('h4').html(title);
+		}
+		if (message) {
+			flashMessage.find('.messageText').html(message);
+		} else {
+			flashMessage.find('.messageText').remove();
+		}
+		return flashMessage;
+	}
+};
+
 TYPO3.Install.Cache = {
 	/**
 	 * Ajax call to clear all caches.
@@ -75,6 +126,7 @@ TYPO3.Install.ExtensionChecker = {
 		var self = this;
 		var url = location.href + '&install[controller]=ajax&install[action]=uninstallExtension' +
 			'&install[uninstallExtension][extensions]=' + extension;
+		var $container = $('#checkExtensions');
 		$.ajax({
 			url: url,
 			cache: false,
@@ -89,15 +141,18 @@ TYPO3.Install.ExtensionChecker = {
 					if (data.substring(data.length - 2) === 'OK') {
 						self.checkExtensionsCompatibility(true);
 					} else {
-						$('.alert-loading', '#checkExtensions').hide();
-						$('.alert-error .messageText', '#checkExtensions').html(
-							'Something went wrong. Check failed.' + '<p>Message:<br />' + data + '</p>'
+						$('.alert-loading', $container).hide();
+						var domMessage = TYPO3.Install.FlashMessage.render(
+							TYPO3.Install.Severity.error,
+							'Something went wrong. Check failed.',
+							'Message: ' + data
 						);
+						$container.append(domMessage);
 					}
 				}
 			},
 			error: function(data) {
-				self.handleCheckExtensionsError();
+				self.handleCheckExtensionsError(data);
 			}
 		});
 	},
@@ -114,7 +169,7 @@ TYPO3.Install.ExtensionChecker = {
 			cache: false,
 			success: function(data) {
 				if (data) {
-					$('.alert-danger .messageText', '#checkExtensions').html(
+					$('.alert-danger .messageText', $checkExtensions).html(
 						'The following extensions are not compatible. Please uninstall them and try again. '
 					);
 					var extensions = data.split(',');
@@ -127,7 +182,7 @@ TYPO3.Install.ExtensionChecker = {
 							'data-extension': $.trim(extension)
 						});
 						var fullButton = unloadButtonWrapper.append(unloadButton);
-						$('.alert-danger .messageText', '#checkExtensions').append(fullButton);
+						$('.alert-danger .messageText', $checkExtensions).append(fullButton);
 					}
 					if (extensions.length) {
 						$(document).on('click', 't3-js-uninstallSingle', function(e) {
@@ -139,7 +194,7 @@ TYPO3.Install.ExtensionChecker = {
 					var unloadAllButton = $('<button />', {
 						text: 'Uninstall all incompatible extensions: ' + data,
 						click: function(e) {
-							$('.alert-loading', '#checkExtensions').show();
+							$('.alert-loading', $checkExtensions).show();
 							self.uninstallExtension(data);
 							e.preventDefault();
 							return false;
@@ -147,19 +202,19 @@ TYPO3.Install.ExtensionChecker = {
 					});
 					unloadButtonWrapper.append('<hr />');
 					var fullUnloadAllButton = unloadButtonWrapper.append(unloadAllButton);
-					$('.alert-danger .messageText', '#checkExtensions').append(fullUnloadAllButton);
+					$('.alert-danger .messageText', $checkExtensions).append(fullUnloadAllButton);
 
-					$('.alert-loading', '#checkExtensions').hide();
-					$('button', '#checkExtensions').show();
-					$('.alert-danger', '#checkExtensions').show();
+					$('.alert-loading', $checkExtensions).hide();
+					$('button', $checkExtensions).show();
+					$('.alert-danger', $checkExtensions).show();
 				} else {
-					$('.t3js-message', '#checkExtensions').hide();
-					$('.alert-success', '#checkExtensions').show();
+					$('.t3js-message', $checkExtensions).hide();
+					$('.alert-success', $checkExtensions).show();
 				}
 			},
 			error: function() {
-				$('.t3js-message', '#checkExtensions').hide();
-				$('.alert-success', '#checkExtensions').show();
+				$('.t3js-message', $checkExtensions).hide();
+				$('.alert-success', $checkExtensions).show();
 			}
 		});
 		$.getJSON(
@@ -167,11 +222,8 @@ TYPO3.Install.ExtensionChecker = {
 			function(data) {
 				$.each(data, function(i, error) {
 					var messageToDisplay = error.message + ' in ' + error.file + ' on line ' + error.line;
-					$checkExtensions.find('.t3js-message.alert-danger').before($(
-						'<div class="t3js-message alert-warning">' +
-						'<h4>' + error.type + '</h4><p class="messageText">' +
-						messageToDisplay + '</p></div><p></p>'
-					));
+					var domMessage = TYPO3.Install.FlashMessage.render(TYPO3.Install.Severity.warning, error.type, messageToDisplay);
+					$checkExtensions.find('.t3js-message.alert-danger').before(domMessage);
 				});
 			}
 		);
@@ -249,11 +301,6 @@ TYPO3.Install.TcaIntegrityChecker = {
 	outputContainer: {},
 
 	/**
-	 * Clone of a DOM object acts as message template
-	 */
-	messageTemplate: {},
-
-	/**
 	 * Clone of the DOM object that contains the submit button
 	 */
 	submitButton: {},
@@ -276,13 +323,6 @@ TYPO3.Install.TcaIntegrityChecker = {
 				// submitButton.remove();
 			}
 
-			// message template (for the output): save and delete
-			if(!this.messageTemplate[tcaIntegrityCheckContainer]) {
-				var messageTemplateSection = this.outputContainer[tcaIntegrityCheckContainer].find('.messageTemplate');
-				this.messageTemplate[tcaIntegrityCheckContainer] = messageTemplateSection.children().clone().show();
-				messageTemplateSection.remove();
-			}
-
 			// clear all messages from the run before
 			this.outputContainer[tcaIntegrityCheckContainer].find('.typo3-message:visible ').remove();
 
@@ -298,7 +338,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 		var isInitialized = self.initialize(actionName);
 		if(isInitialized) {
 			self.addMessage(
-				'loading',
+				TYPO3.Install.Severity.loading,
 				self.outputMessages[actionName].loadingTitle,
 				self.outputMessages[actionName].loadingMessage,
 				actionName
@@ -313,12 +353,13 @@ TYPO3.Install.TcaIntegrityChecker = {
 						if(data.status.length > 0) {
 							self.outputContainer[actionName].find('.alert-loading').hide();
 							self.addMessage(
-								'warning',
+								TYPO3.Install.Severity.warning,
 								self.outputMessages[actionName].warningTitle,
 								self.outputMessages[actionName].warningMessage,
 								actionName
 							);
 							data.status.forEach((function (element) {
+								//noinspection JSUnresolvedVariable
 								self.addMessage(
 									element.severity,
 									element.title,
@@ -330,7 +371,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 							// nothing to complain, everything fine
 							self.outputContainer[actionName].find('.alert-loading').hide();
 							self.addMessage(
-								'success',
+								TYPO3.Install.Severity.ok,
 								self.outputMessages[actionName].successTitle,
 								self.outputMessages[actionName].successMessage,
 								actionName
@@ -343,7 +384,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 				error: function() {
 					self.outputContainer[actionName].find('.alert-loading').hide();
 					self.addMessage(
-						'fatal',
+						TYPO3.Install.Severity.error,
 						self.outputMessages[actionName].fatalTitle,
 						self.outputMessages[actionName].fatalMessage,
 						actionName
@@ -359,8 +400,6 @@ TYPO3.Install.TcaIntegrityChecker = {
 	 * @param tcaIntegrityCheckContainer DOM container name
 	 */
 	moveSubmitButtonFurtherDown: function(tcaIntegrityCheckContainer) {
-		console.debug(this.outputContainer[tcaIntegrityCheckContainer], 'this.outputContainer['+[tcaIntegrityCheckContainer]+']');
-
 		// first remove the currently visible button
 		this.outputContainer[tcaIntegrityCheckContainer].find('button[type="submit"]').remove();
 		// then append the cloned template to the end
@@ -376,18 +415,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 	 * @param tcaIntegrityCheckContainer DOM container name
 	 */
 	addMessage: function(severity, title, message, tcaIntegrityCheckContainer) {
-		var domMessage = this.messageTemplate[tcaIntegrityCheckContainer].clone();
-		if (severity) {
-			domMessage.addClass('alert-' + severity);
-		}
-		if (title) {
-			domMessage.find('h4').html(title);
-		}
-		if (message) {
-			domMessage.find('.messageText').html(message);
-		} else {
-			domMessage.find('.messageText').remove();
-		}
+		var domMessage = TYPO3.Install.FlashMessage.render(severity, title, message);
 		this.outputContainer[tcaIntegrityCheckContainer].append(domMessage);
 		this.moveSubmitButtonFurtherDown(tcaIntegrityCheckContainer);
 	}
@@ -474,11 +502,6 @@ TYPO3.Install.coreUpdate = {
 	},
 
 	/**
-	 * Clone of a DOM object acts as message template
-	 */
-	messageTemplate: null,
-
-	/**
 	 * Clone of a DOM object acts as button template
 	 */
 	buttonTemplate: null,
@@ -487,11 +510,8 @@ TYPO3.Install.coreUpdate = {
 	 * Fetching the templates out of the DOM
 	 */
 	initialize: function() {
-		var messageTemplateSection = $('#messageTemplate');
 		var buttonTemplateSection = $('#buttonTemplate');
-		this.messageTemplate = messageTemplateSection.children().clone();
 		this.buttonTemplate = buttonTemplateSection.children().clone();
-		messageTemplateSection.remove();
 	},
 
 	/**
@@ -579,21 +599,21 @@ TYPO3.Install.coreUpdate = {
 				this.showActionButton(data.action);
 			}
 			if (successMessage) {
-				this.addMessage('success', successMessage);
+				this.addMessage(TYPO3.Install.Severity.ok, successMessage);
 			}
 		} else {
 			// Handle clearcache until it uses the new view object
 			if (data === "OK") {
 				canContinue = true;
 				if (successMessage) {
-					this.addMessage('success', successMessage);
+					this.addMessage(TYPO3.Install.Severity.ok, successMessage);
 				}
 			} else {
 				canContinue = false;
 				if (data.status && typeof(data.status) === 'object') {
 					this.showStatusMessages(data.status);
 				} else {
-					this.addMessage('danger', 'General error');
+					this.addMessage(TYPO3.Install.Severity.error, 'General error');
 				}
 			}
 		}
@@ -606,10 +626,7 @@ TYPO3.Install.coreUpdate = {
 	 * @param messageTitle
 	 */
 	addLoadingMessage: function(messageTitle) {
-		var domMessage = this.messageTemplate.clone();
-		domMessage.find('h4').html(messageTitle);
-		domMessage.addClass('alert-notice');
-		domMessage.find('.messageText').remove();
+		var domMessage = TYPO3.Install.FlashMessage.render(TYPO3.Install.Severity.loading, messageTitle);
 		$('#coreUpdate').append(domMessage);
 	},
 
@@ -617,7 +634,7 @@ TYPO3.Install.coreUpdate = {
 	 * Remove an enabled loading message
 	 */
 	removeLoadingMessage: function() {
-		$('#coreUpdate').find('.alert-notice').closest('.alert').remove();
+		$('#coreUpdate').find('.alert-loading').remove();
 	},
 
 	/**
@@ -629,11 +646,8 @@ TYPO3.Install.coreUpdate = {
 		var self = this;
 		$.each(messages, function(index, element) {
 			var title = false;
-			var severity = false;
 			var message = false;
-			if (element.severity) {
-				severity = element.severity;
-			}
+			var severity = element.severity;
 			if (element.title) {
 				title = element.title;
 			}
@@ -676,18 +690,7 @@ TYPO3.Install.coreUpdate = {
 	 * @param message
 	 */
 	addMessage: function(severity, title, message) {
-		var domMessage = this.messageTemplate.clone();
-		if (severity) {
-			domMessage.addClass('alert-' + severity);
-		}
-		if (title) {
-			domMessage.find('h4').html(title);
-		}
-		if (message) {
-			domMessage.find('.messageText').html(message);
-		} else {
-			domMessage.find('.messageText').remove();
-		}
+		var domMessage = TYPO3.Install.FlashMessage.render(severity, title, message);
 		$('#coreUpdate').append(domMessage);
 	}
 };
@@ -719,13 +722,14 @@ $(function() {
 		$panels.collapse(action);
 	});
 
-	if ($('#configSearch').length > 0) {
+	var $configSearch = $('#configSearch');
+	if ($configSearch.length > 0) {
 		$(window).on('keydown', function(event) {
 			if (event.ctrlKey || event.metaKey) {
 				switch (String.fromCharCode(event.which).toLowerCase()) {
 					case 'f':
 						event.preventDefault();
-						$('#configSearch').focus();
+						$configSearch.focus();
 						break;
 				}
 			}
@@ -775,11 +779,12 @@ $(function() {
 	}).trigger('change');
 
 	// Extension compatibility check
-	$('.t3js-message', '#checkExtensions').hide();
-	$('button', '#checkExtensions').click(function(e) {
-		$('button', '#checkExtensions').hide();
-		$('.t3js-message', '#checkExtensions').hide();
-		$('.alert-loading', '#checkExtensions').show();
+	var $container = $('#checkExtensions');
+	$('.t3js-message', $container).hide();
+	$('button', $container).click(function(e) {
+		$('button', $container).hide();
+		$('.t3js-message', $container).hide();
+		$('.alert-loading', $container).show();
 		TYPO3.Install.ExtensionChecker.checkExtensionsCompatibility(true);
 		e.preventDefault();
 		return false;
@@ -828,7 +833,7 @@ $(function() {
 			return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
 		};
 	});
-	$('#configSearch').keyup(function() {
+	$configSearch.keyup(function() {
 		var typedQuery = $(this).val();
 		$('div.item').each(function() {
 			var $item = $(this);
@@ -840,7 +845,7 @@ $(function() {
 		});
 		$('.searchhit').parent().collapse('show');
 	});
-	var $searchFields = $('#configSearch');
+	var $searchFields = $configSearch;
 	var searchResultShown = ('' !== $searchFields.first().val());
 
 	// make search field clearable
