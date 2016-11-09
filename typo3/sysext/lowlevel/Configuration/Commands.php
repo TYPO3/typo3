@@ -20,6 +20,11 @@ return [
         // needed for updating the reference index (optional)
         'user' => '_cli_lowlevel'
     ],
+    'cleanup:missingrelations' => [
+        'class' => \TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand::class,
+        // needed for updating the reference index (optional)
+        'user' => '_cli_lowlevel'
+    ],
     'cleanup:deletedrecords' => [
         'class' => \TYPO3\CMS\Lowlevel\Command\DeletedRecordsCommand::class,
         'user' => '_cli_lowlevel'
