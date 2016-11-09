@@ -19,9 +19,10 @@
 	<f:render partial="Action/Tool/ImportantActions/ExtensionCompatibilityTester" arguments="{_all}"/>
 	<script type="text/javascript">
 		$(function() {
-			$('button', '#checkExtensions').hide();
-			$('.t3js-message', '#checkExtensions').hide();
-			$('.t3js-message-loading', '#checkExtensions').show();
+			var $container = $('#checkExtensions');
+			$('button', $container).hide();
+			$('.t3js-message', $container).hide();
+			$('.t3js-message-loading', $container).show();
 			TYPO3.Install.ExtensionChecker.checkExtensionsCompatibility(true);
 		});
 	</script>
