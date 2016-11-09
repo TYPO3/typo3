@@ -20,6 +20,11 @@ return [
         // needed for updating the reference index (optional)
         'user' => '_cli_lowlevel'
     ],
+    'cleanup:multiplereferencedfiles' => [
+        'class' => \TYPO3\CMS\Lowlevel\Command\FilesWithMultipleReferencesCommand::class,
+        // needed for updating the reference index (optional)
+        'user' => '_cli_lowlevel'
+    ],
     'cleanup:missingrelations' => [
         'class' => \TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand::class,
         // needed for updating the reference index (optional)
