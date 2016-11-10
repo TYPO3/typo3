@@ -42,7 +42,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
+     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService
      */
     protected $typoScriptService;
 
@@ -81,9 +81,9 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
+     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
      */
-    public function injectTypoScriptService(\TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService)
+    public function injectTypoScriptService(\TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService)
     {
         $this->typoScriptService = $typoScriptService;
     }

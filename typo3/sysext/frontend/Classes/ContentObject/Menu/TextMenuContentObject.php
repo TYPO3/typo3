@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extension class creating text based menus
@@ -57,7 +59,8 @@ class TextMenuContentObject extends AbstractMenuContentObject
         $this->WMresult = '';
         $this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
         $this->WMmenuItems = count($this->result);
-        $this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
         $this->extProc_init();
         foreach ($this->result as $key => $val) {
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
+namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 
 /**
  * Test case
@@ -151,7 +153,7 @@ class TypoScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray($typoScriptSettings, $expectedSettings)
     {
-        $typoScriptService = new \TYPO3\CMS\Extbase\Service\TypoScriptService();
+        $typoScriptService = new TypoScriptService();
         $processedSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptSettings);
         $this->assertEquals($expectedSettings, $processedSettings);
     }
@@ -285,8 +287,131 @@ class TypoScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic)
     {
-        $typoScriptService = new \TYPO3\CMS\Extbase\Service\TypoScriptService();
+        $typoScriptService = new TypoScriptService();
         $converted = $typoScriptService->convertPlainArrayToTypoScriptArray($extbaseTS);
         $this->assertEquals($converted, $classic);
+    }
+
+    /**
+     * @return array
+     */
+    public function explodeConfigurationForOptionSplitProvider()
+    {
+        return [
+            [
+                ['splitConfiguration' => 'a'],
+                3,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'a'],
+                    2 => ['splitConfiguration' => 'a']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b || c'],
+                5,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'c'],
+                    4 => ['splitConfiguration' => 'c']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c'],
+                5,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'c'],
+                    4 => ['splitConfiguration' => 'c']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c |*| d || e'],
+                7,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'c'],
+                    4 => ['splitConfiguration' => 'c'],
+                    5 => ['splitConfiguration' => 'd'],
+                    6 => ['splitConfiguration' => 'e']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c |*| d || e'],
+                4,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'd'],
+                    3 => ['splitConfiguration' => 'e']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c |*| d || e'],
+                3,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'd'],
+                    2 => ['splitConfiguration' => 'e']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*||*| c || d'],
+                7,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'b'],
+                    3 => ['splitConfiguration' => 'b'],
+                    4 => ['splitConfiguration' => 'b'],
+                    5 => ['splitConfiguration' => 'c'],
+                    6 => ['splitConfiguration' => 'd']
+                ]
+            ],
+            [
+                ['splitConfiguration' => '|*||*| a || b'],
+                7,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'a'],
+                    2 => ['splitConfiguration' => 'a'],
+                    3 => ['splitConfiguration' => 'a'],
+                    4 => ['splitConfiguration' => 'a'],
+                    5 => ['splitConfiguration' => 'a'],
+                    6 => ['splitConfiguration' => 'b']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a |*| b || c |*|'],
+                7,
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'b'],
+                    4 => ['splitConfiguration' => 'c'],
+                    5 => ['splitConfiguration' => 'b'],
+                    6 => ['splitConfiguration' => 'c']
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider explodeConfigurationForOptionSplitProvider
+     * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ObjectsAndProperties/Index.html#objects-optionsplit
+     */
+    public function explodeConfigurationForOptionSplitTest($configuration, $splitCount, $expected)
+    {
+        $serviceObject = new TypoScriptService();
+        $actual = $serviceObject->explodeConfigurationForOptionSplit($configuration, $splitCount);
+        $this->assertSame($expected, $actual);
     }
 }

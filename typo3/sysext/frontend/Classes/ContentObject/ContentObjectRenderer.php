@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -1162,7 +1163,8 @@ class ContentObjectRenderer
 
             // apply option split to configurations
             $tsfe = $this->getTypoScriptFrontendController();
-            $srcLayoutOptionSplitted = $tsfe->tmpl->splitConfArray($conf['layout.'][$layoutKey . '.'], count($activeSourceCollections));
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+            $srcLayoutOptionSplitted = $typoScriptService->explodeConfigurationForOptionSplit((array)$conf['layout.'][$layoutKey . '.'], count($activeSourceCollections));
 
             // render sources
             foreach ($activeSourceCollections as $key => $sourceConfiguration) {
@@ -4219,7 +4221,8 @@ class ContentObjectRenderer
                 } else {
                     // init for replacement
                     $splitCount = preg_match_all($search, $content, $matches);
-                    $replaceArray = $this->getTypoScriptFrontendController()->tmpl->splitConfArray([$replace], $splitCount);
+                    $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+                    $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                     $replaceCount = 0;
 
                     $replaceCallback = function ($match) use ($replaceArray, $search, &$replaceCount) {
@@ -4237,7 +4240,8 @@ class ContentObjectRenderer
 
                     // init for replacement
                     $splitCount = preg_match_all($searchPreg, $content, $matches);
-                    $replaceArray = $this->getTypoScriptFrontendController()->tmpl->splitConfArray([$replace], $splitCount);
+                    $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+                    $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                     $replaceCount = 0;
 
                     $replaceCallback = function () use ($replaceArray, $search, &$replaceCount) {

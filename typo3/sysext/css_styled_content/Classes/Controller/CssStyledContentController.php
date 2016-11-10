@@ -14,6 +14,7 @@ namespace TYPO3\CMS\CssStyledContent\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -269,6 +270,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
         if (!$renderMethod || $renderMethod === 'table') {
             return $this->cObj->cObjGetSingle('IMGTEXT', $conf);
         }
+
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+
         $restoreRegisters = false;
         if (isset($conf['preRenderRegisters.'])) {
             $restoreRegisters = true;
@@ -416,7 +420,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
         // Fetches pictures
         $splitArr = [];
         $splitArr['imgObjNum'] = $conf['imgObjNum'];
-        $splitArr = $this->frontendController->tmpl->splitConfArray($splitArr, $imgCount);
+        $splitArr = $typoScriptService->explodeConfigurationForOptionSplit($splitArr, (int)$imgCount);
         // Contains the width of every image row
         $imageRowsFinalWidths = [];
         // Array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
@@ -569,13 +573,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
             if (isset($conf['addClassesCol.'])) {
                 $addClassesCol = $this->cObj->stdWrap($addClassesCol, $conf['addClassesCol.']);
             }
-            $addClassesColConf = $this->frontendController->tmpl->splitConfArray(['addClassesCol' => $addClassesCol], $colCount);
+            $addClassesColConf = $typoScriptService->explodeConfigurationForOptionSplit(['addClassesCol' => $addClassesCol], $colCount);
             // Apply optionSplit to the list of classes that we want to add to each image
             $addClassesImage = $conf['addClassesImage'];
             if (isset($conf['addClassesImage.'])) {
                 $addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
             }
-            $addClassesImageConf = $this->frontendController->tmpl->splitConfArray(['addClassesImage' => $addClassesImage], $imagesInColumns);
+            $addClassesImageConf = $typoScriptService->explodeConfigurationForOptionSplit(['addClassesImage' => $addClassesImage], $imagesInColumns);
             $rows = [];
             $currentImage = 0;
             // Iterate over the rows
@@ -688,7 +692,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
             if (isset($conf['addClassesImage.'])) {
                 $addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
             }
-            $addClassesImageConf = $this->frontendController->tmpl->splitConfArray(['addClassesImage' => $addClassesImage], $colCount);
+            $addClassesImageConf = $typoScriptService->explodeConfigurationForOptionSplit(['addClassesImage' => $addClassesImage], $colCount);
             // Render the images
             $images = '';
             for ($c = 0; $c < $imageWrapCols; $c++) {

@@ -25,7 +25,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit
     protected $abstractConfigurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -113,7 +113,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit
     protected function setUp()
     {
         $this->abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager::class, ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids']);
-        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class);
         $this->abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 

@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
@@ -632,13 +632,13 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         ];
 
         /** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
-        $typoScriptServiceMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\TypoScriptService::class)->getMock();
+        $typoScriptServiceMock = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $typoScriptServiceMock
             ->expects($this->once())
             ->method('convertTypoScriptArrayToPlainArray')
             ->with($configuration['settings.'])
             ->will($this->returnValue($expectedSettingsToBeSet));
-        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class, $typoScriptServiceMock);
+        GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceMock);
 
         $this->standaloneView
             ->expects($this->at(1))

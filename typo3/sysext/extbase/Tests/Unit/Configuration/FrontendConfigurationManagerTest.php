@@ -31,7 +31,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit
     protected $frontendConfigurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -47,7 +47,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit
             ->getMock();
         $this->frontendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, ['dummy']);
         $this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
-        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class);
         $this->frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 

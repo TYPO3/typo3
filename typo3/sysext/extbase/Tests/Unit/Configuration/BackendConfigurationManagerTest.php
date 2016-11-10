@@ -26,7 +26,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\
     protected $backendConfigurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -36,7 +36,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\
     protected function setUp()
     {
         $this->backendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, ['getTypoScriptSetup']);
-        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class);
         $this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 

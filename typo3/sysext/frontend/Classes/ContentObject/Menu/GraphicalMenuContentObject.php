@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -370,7 +371,8 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
         $this->WMresult = '';
         $this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
         $this->WMmenuItems = count($this->result['NO']);
-        $this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
         $this->extProc_init();
         $tsfe = $this->getTypoScriptFrontendController();
         if (!isset($tsfe->additionalJavaScript['JSImgCode'])) {

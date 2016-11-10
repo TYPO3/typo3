@@ -1309,67 +1309,15 @@ class TemplateService
      * @param int $splitCount The number of items for which to generated individual TypoScript arrays
      * @return array The individualized TypoScript array.
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMGTEXT(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use TypoScriptService::explodeConfigurationForOptionSplit() instead
      */
     public function splitConfArray($conf, $splitCount)
     {
-        // Initialize variables:
-        $splitCount = (int)$splitCount;
-        $conf2 = [];
-        if ($splitCount && is_array($conf)) {
-            // Initialize output to carry at least the keys:
-            for ($aKey = 0; $aKey < $splitCount; $aKey++) {
-                $conf2[$aKey] = [];
-            }
-            // Recursive processing of array keys:
-            foreach ($conf as $cKey => $val) {
-                if (is_array($val)) {
-                    $tempConf = $this->splitConfArray($val, $splitCount);
-                    foreach ($tempConf as $aKey => $val2) {
-                        $conf2[$aKey][$cKey] = $val2;
-                    }
-                } else {
-                    // Splitting of all values on this level of the TypoScript object tree:
-                    if ($cKey === 'noTrimWrap' || (!strstr($val, '|*|') && !strstr($val, '||'))) {
-                        for ($aKey = 0; $aKey < $splitCount; $aKey++) {
-                            $conf2[$aKey][$cKey] = $val;
-                        }
-                    } else {
-                        $main = explode('|*|', $val);
-                        $lastC = 0;
-                        $middleC = 0;
-                        $firstC = 0;
-                        if ($main[0]) {
-                            $first = explode('||', $main[0]);
-                            $firstC = count($first);
-                        }
-                        $middle = [];
-                        if ($main[1]) {
-                            $middle = explode('||', $main[1]);
-                            $middleC = count($middle);
-                        }
-                        $last = [];
-                        $value = '';
-                        if ($main[2]) {
-                            $last = explode('||', $main[2]);
-                            $lastC = count($last);
-                            $value = $last[0];
-                        }
-                        for ($aKey = 0; $aKey < $splitCount; $aKey++) {
-                            if ($firstC && isset($first[$aKey])) {
-                                $value = $first[$aKey];
-                            } elseif ($middleC) {
-                                $value = $middle[($aKey - $firstC) % $middleC];
-                            }
-                            if ($lastC && $lastC >= $splitCount - $aKey) {
-                                $value = $last[$lastC - ($splitCount - $aKey)];
-                            }
-                            $conf2[$aKey][$cKey] = trim($value);
-                        }
-                    }
-                }
-            }
+        GeneralUtility::logDeprecatedFunction();
+        if (!is_array($conf)) {
+            return [];
         }
-        return $conf2;
+        return GeneralUtility::makeInstance(TypoScriptService::class)->explodeConfigurationForOptionSplit($conf, (int)$splitCount);
     }
 
     /**
