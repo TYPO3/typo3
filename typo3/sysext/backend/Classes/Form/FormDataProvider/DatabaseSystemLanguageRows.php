@@ -38,7 +38,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
         $languageService = $this->getLanguageService();
 
         $pageTs = $result['pageTsConfig'];
-        $defaultLanguageLabel = $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage');
+        $defaultLanguageLabel = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage');
         if (isset($pageTs['mod.']['SHARED.']['defaultLanguageLabel'])) {
             $defaultLanguageLabel = $pageTs['mod.']['SHARED.']['defaultLanguageLabel'] . ' (' . $languageService->sL($defaultLanguageLabel) . ')';
         }
@@ -51,7 +51,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
             -1 => [
                 // -1: "All" languages
                 'uid' => -1,
-                'title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages'),
+                'title' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
                 // Same as for 0, but iso is used in flex form context only and duplication handled there
                 // @todo: Maybe drop this if flex form language handling is extracted?
                 'iso' => 'DEF',
@@ -99,7 +99,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                 // @todo: This could be relaxed again if flex form language handling is extracted,
                 // @todo: since the rest of the FormEngine code does not rely on iso code?
                 $message = sprintf(
-                    $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.missingLanguageIsocode'),
+                    $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.missingLanguageIsocode'),
                     $row['title'],
                     $uid
                 );

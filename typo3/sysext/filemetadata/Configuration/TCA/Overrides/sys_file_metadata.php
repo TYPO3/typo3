@@ -458,7 +458,7 @@ $tca = [
         ],
         'fe_groups' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -466,15 +466,15 @@ $tca = [
                 'maxitems' => 20,
                 'items' => [
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
                         -1
                     ],
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
                         -2
                     ],
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
                         '--div--'
                     ]
                 ],
@@ -492,6 +492,6 @@ $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'sys_file_metadata',
-        '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category,categories'
+        '--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category,categories'
     );
 }

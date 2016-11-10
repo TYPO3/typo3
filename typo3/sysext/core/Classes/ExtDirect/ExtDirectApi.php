@@ -182,10 +182,10 @@ class ExtDirectApi
     {
         if (!empty($filterNamespaces)) {
             // Namespace error
-            $errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ExtDirect.namespaceError'), __CLASS__, implode(',', $filterNamespaces));
+            $errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ExtDirect.namespaceError'), __CLASS__, implode(',', $filterNamespaces));
         } else {
             // No namespace given
-            $errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ExtDirect.noNamespace'), __CLASS__);
+            $errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ExtDirect.noNamespace'), __CLASS__);
         }
         return $errorMessage;
     }

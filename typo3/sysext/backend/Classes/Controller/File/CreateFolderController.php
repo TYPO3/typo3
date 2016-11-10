@@ -107,8 +107,8 @@ class CreateFolderController extends AbstractModule
         }
         // Cleaning and checking target directory
         if (!$this->folderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError');
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586845);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
@@ -128,12 +128,12 @@ class CreateFolderController extends AbstractModule
             'var path = "' . $this->target . '";
             var confirmTitle = '
             . GeneralUtility::quoteJSvalue(
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:pleaseConfirm')
+                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')
             )
             . ';
             var confirmText = '
             . GeneralUtility::quoteJSvalue(
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw')
+                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.redraw')
             )
             . ';
             function reload(a) {
@@ -167,7 +167,7 @@ class CreateFolderController extends AbstractModule
     public function main()
     {
         $lang = $this->getLanguageService();
-        $pageContent = '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle') . '</h1>';
+        $pageContent = '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.pagetitle') . '</h1>';
 
         if ($this->folderObject->checkActionPermission('add')) {
             $code = '<form role="form" action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
@@ -177,7 +177,7 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="number-of-new-folders">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.number_of_folders') . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '
+							<label for="number-of-new-folders">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.number_of_folders') . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '
 							<div class="form-control-wrap">
 								<div class="input-group">
 									<select class="form-control form-control-adapt" name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
@@ -196,7 +196,7 @@ class CreateFolderController extends AbstractModule
                 $code .= '
 					<div class="form-section">
 						<div class="form-group">
-							<label for="folder_new_' . $a . '">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfolder') . ' ' . ($a + 1) . ':</label>
+							<label for="folder_new_' . $a . '">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfolder') . ' ' . ($a + 1) . ':</label>
 							<div class="form-control-wrap">
 								<input type="text" class="form-control" id="folder_new_' . $a . '" name="file[newfolder][' . $a . '][data]" onchange="changed=true;" />
 								<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" />
@@ -207,13 +207,13 @@ class CreateFolderController extends AbstractModule
             // Making submit button for folder creation:
             $code .= '
 				</div><div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit')) . '" />
+					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.submit')) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
 
             // Switching form tags:
-            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders')) . '</h3>';
+            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfolders')) . '</h3>';
             $pageContent .= '<div>' . $code . '</form></div>';
         }
 
@@ -232,14 +232,14 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newMedia">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.label')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '
+							<label for="newMedia">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
-									placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder')) . '" />
+									placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')) . '" />
 								<input type="hidden" name="file[newMedia][0][target]" value="' . htmlspecialchars($this->target) . '" />
 							</div>
 							<div class="help-block">
-								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.allowedProviders')) . '<br>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders')) . '<br>
 								' . implode(' ', $fileExtList) . '
 							</div>
 						</div>
@@ -249,11 +249,11 @@ class CreateFolderController extends AbstractModule
             // Submit button for creation of a new media:
             $code .= '
 				<div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit')) . '" />
+					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
-            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media')) . '</h3>';
+            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . '</h3>';
             $pageContent .= '<div>' . $code . '</div>';
             $pageContent .= '</form>';
 
@@ -271,13 +271,13 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newfile">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
+							<label for="newfile">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfile')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
 								<input type="hidden" name="file[newfile][0][target]" value="' . htmlspecialchars($this->target) . '" />
 							</div>
 							<div class="help-block">
-								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions')) . '<br>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions')) . '<br>
 								' . implode(' ', $fileExtList) . '
 							</div>
 						</div>
@@ -287,11 +287,11 @@ class CreateFolderController extends AbstractModule
             // Submit button for "creation of a new file":
             $code .= '
 				<div class="form-group">
-					<button class="btn btn-default" name="edit" type="submit" value="1">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit')) . '</button>
+					<button class="btn btn-default" name="edit" type="submit" value="1">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile_submit')) . '</button>
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 			';
-            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile')) . '</h3>';
+            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile')) . '</h3>';
             $pageContent .= '<div>' . $code . '</div>';
             $pageContent .= '</form>';
         }
@@ -301,7 +301,7 @@ class CreateFolderController extends AbstractModule
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                ->setHref($this->returnUrl)
-               ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
+               ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }

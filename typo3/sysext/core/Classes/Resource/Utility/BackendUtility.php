@@ -41,10 +41,10 @@ class BackendUtility
         /** @var FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
-            $lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
+            $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing_text') .
             ' <abbr title="' . htmlspecialchars($file->getStorage()->getName() . ' :: ' . $file->getIdentifier()) . '">' .
             htmlspecialchars($file->getName()) . '</abbr>',
-            $lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'),
+            $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'),
             FlashMessage::ERROR
         );
 

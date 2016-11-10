@@ -156,20 +156,20 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $resetGroupBtn = '';
                     if (!empty($resetGroup)) {
                         $resetGroup[] = 'TYPO3.FormEngine.updateCheckboxState(this);';
-                        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection'));
+                        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.revertSelection'));
                         $resetGroupBtn = '<a href="#" '
                             . 'class="btn btn-default btn-sm" '
                             . 'onclick="' . implode('', $resetGroup) . ' return false;" '
                             . 'title="' . $title . '">'
                             . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' '
-                            . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '</a>';
+                            . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.revertSelection') . '</a>';
                     }
 
                     if (is_array($group['header'])) {
                         $html[] = '<div id="' . $groupId . '" class="panel-collapse collapse" role="tabpanel">';
                     }
                     $checkboxId = uniqid($groupId);
-                    $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall'));
+                    $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.toggleall'));
                     $html[] =    '<div class="table-responsive">';
                     $html[] =        '<table class="table table-transparent table-hover">';
                     $html[] =            '<thead>';

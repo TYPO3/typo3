@@ -165,7 +165,7 @@ class FormProtectionFactory
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.formProtection.tokenInvalid'),
+                $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.formProtection.tokenInvalid'),
                 '',
                 FlashMessage::ERROR,
                 !$isAjaxCall

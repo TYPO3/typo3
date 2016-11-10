@@ -964,9 +964,9 @@ class DataHandlerHook
             // Set log entry for live record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
             if ($propArr['_ORIG_pid'] == -1) {
-                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tcemain.xlf:version_swap.offline_record_updated');
             } else {
-                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
             $theLogId = $dataHandler->log($table, $id, 2, $propArr['pid'], 0, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
             $dataHandler->setHistory($table, $id, $theLogId);
@@ -975,9 +975,9 @@ class DataHandlerHook
             // Set log entry for offline record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $curVersion);
             if ($propArr['_ORIG_pid'] == -1) {
-                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tcemain.xlf:version_swap.offline_record_updated');
             } else {
-                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
             $theLogId = $dataHandler->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, [$propArr['header'], $table . ':' . $swapWith], $propArr['event_pid']);
             $dataHandler->setHistory($table, $swapWith, $theLogId);

@@ -243,7 +243,7 @@ class ElementInformationController
     {
         $title = strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
         if ($this->type === 'folder') {
-            $table = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:folder');
+            $table = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder');
             $icon = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
         } elseif ($this->type === 'file') {
             $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
@@ -278,7 +278,7 @@ class ElementInformationController
         // check if file is marked as missing
         if ($this->fileObject->isMissing()) {
             $previewTag .= '<span class="label label-danger">'
-                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                 . '</span>&nbsp;' . htmlspecialchars($this->fileObject->getName()) . '<br />';
         } else {
 
@@ -323,7 +323,7 @@ class ElementInformationController
                 $showLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
 						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render('inline') . '
-						' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.show')) . '
+						' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.show')) . '
 					</a>';
             }
         }
@@ -345,15 +345,15 @@ class ElementInformationController
         $lang = $this->getLanguageService();
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
-                $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate'));
-                $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp'));
+                $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
+                $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
             }
-            $extraFields['storage'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage'));
-            $extraFields['folder'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_common.xlf:folder'));
+            $extraFields['storage'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'));
+            $extraFields['folder'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder'));
         } else {
-            $extraFields['crdate'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate'));
-            $extraFields['cruser_id'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId'));
-            $extraFields['tstamp'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp'));
+            $extraFields['crdate'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
+            $extraFields['cruser_id'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationUserId'));
+            $extraFields['tstamp'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
 
             // check if the special fields are defined in the TCA ctrl section of the table
             foreach ($extraFields as $fieldName => $fieldLabel) {
@@ -423,7 +423,7 @@ class ElementInformationController
 
             // format file size as bytes/kilobytes/megabytes
             if ($this->type === 'file' && $name === 'size') {
-                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits')));
+                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')));
             }
 
             $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
@@ -461,13 +461,13 @@ class ElementInformationController
             case 'db': {
                 $references = $this->makeRef($this->table, $this->row['uid']);
                 if (!empty($references)) {
-                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
+                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
                     $content .= $references;
                 }
 
                 $referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
                 if (!empty($referencesFrom)) {
-                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem')) . '</h3>';
+                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem')) . '</h3>';
                     $content .= $referencesFrom;
                 }
                 break;
@@ -478,7 +478,7 @@ class ElementInformationController
                     $references = $this->makeRef('_FILE', $this->fileObject);
 
                     if (!empty($references)) {
-                        $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
+                        $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
                         $content .= $references;
                     }
                 }
@@ -502,7 +502,7 @@ class ElementInformationController
             $backLink .= '
 				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '">
 					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '
-					' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back')) . '
+					' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back')) . '
 				</a>';
         }
         return $backLink;
@@ -610,14 +610,14 @@ class ElementInformationController
             // Recordlist button
             $url = BackendUtility::getModuleUrl('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
             $pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
+				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showList') . '">
 					' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '
 				</a>';
 
             // View page button
             $viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
             $pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">
+				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">
 					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
 				</a>';
         }
@@ -675,13 +675,13 @@ class ElementInformationController
             $infoDataHeader = '
 				<tr>
 					<th class="col-icon"></th>
-					<th class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
+					<th class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.title') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.table') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.field') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting') . '</th>
 					<th class="col-control"></th>
 				</tr>';
         }
@@ -723,7 +723,7 @@ class ElementInformationController
 					</td>
 					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'])) . '</td>
 					<td>
-						<span title="' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': '
+						<span title="' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:page') . ': '
                             . htmlspecialchars($parentRecordTitle) . ' (uid=' . $record['pid'] . ')">
 							' . $record['uid'] . '
 						</span>
@@ -738,7 +738,7 @@ class ElementInformationController
                 $infoData[] = '
 				<tr>
 					<td class="col-icon"></td>
-					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
+					<td class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
 					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>
 					<td></td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
@@ -798,14 +798,14 @@ class ElementInformationController
             $infoDataHeader = '
 				<tr>
 					<th class="col-icon"></th>
-					<th class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refString') . '</th>
+					<th class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.title') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.table') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.field') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.refString') . '</th>
 					<th class="col-control"></th>
 				</tr>';
         }
@@ -849,7 +849,7 @@ class ElementInformationController
                 $infoData[] = '
 				<tr>
 					<td class="col-icon"></td>
-					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
+					<td class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
 					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'])) . '</td>
 					<td></td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>

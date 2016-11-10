@@ -153,7 +153,7 @@ class NewRecordController extends AbstractModule
     {
         parent::__construct();
         $GLOBALS['SOBE'] = $this;
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
         $this->init();
     }
 
@@ -189,7 +189,7 @@ class NewRecordController extends AbstractModule
         // Creating content
         $this->content = '';
         $this->content .= '<h1>'
-            . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle')
+            . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle')
             . '</h1>';
         // Id a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {
@@ -340,7 +340,7 @@ class NewRecordController extends AbstractModule
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -370,7 +370,7 @@ class NewRecordController extends AbstractModule
                         '',
                         BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                     ))
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-view',
                         Icon::SIZE_SMALL
@@ -464,11 +464,11 @@ class NewRecordController extends AbstractModule
         $newPageLinks = [];
         if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
             // Create link to new page inside:
-            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside')) . ')', $table, $this->id);
+            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')', $table, $this->id);
         }
         // New pages AFTER this pages
         if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
-            $newPageLinks[] = $this->linkWrap($pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after')) . ')', 'pages', -$this->id);
+            $newPageLinks[] = $this->linkWrap($pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')', 'pages', -$this->id);
         }
         // New pages at selection position
         if ($this->newPagesSelectPosition && $this->showNewRecLink('pages')) {

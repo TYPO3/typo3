@@ -38,10 +38,10 @@ class ImageManipulationElement extends AbstractFormElement
         'enableZoom' => false,
         'allowedExtensions' => null, // default: $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
         'ratios' => [
-            '1.7777777777777777' => 'LLL:EXT:lang/locallang_wizards.xlf:imwizard.ratio.16_9',
-            '1.3333333333333333' => 'LLL:EXT:lang/locallang_wizards.xlf:imwizard.ratio.4_3',
-            '1' => 'LLL:EXT:lang/locallang_wizards.xlf:imwizard.ratio.1_1',
-            'NaN' => 'LLL:EXT:lang/locallang_wizards.xlf:imwizard.ratio.free',
+            '1.7777777777777777' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
+            '1.3333333333333333' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+            '1' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.1_1',
+            'NaN' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
         ]
     ];
 
@@ -120,7 +120,7 @@ class ImageManipulationElement extends AbstractFormElement
             $button = '<button class="btn btn-default t3js-image-manipulation-trigger"';
             $button .= GeneralUtility::implodeAttributes($buttonAttributes, true, true);
             $button .= '><span class="t3-icon fa fa-crop"></span>';
-            $button .= htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.open-editor'));
+            $button .= htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.open-editor'));
             $button .= '</button>';
 
             $attributes = [];
@@ -145,7 +145,7 @@ class ImageManipulationElement extends AbstractFormElement
             ];
         }
 
-        $content .= '<p class="text-muted"><em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.supported-types-message')) . '<br />';
+        $content .= '<p class="text-muted"><em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message')) . '<br />';
         $content .= strtoupper(implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'])));
         $content .= '</em></p>';
 
@@ -251,13 +251,13 @@ class ImageManipulationElement extends AbstractFormElement
 
         $content .= '<div class="table-fit-block table-spacer-wrap">';
         $content .= '<table class="table table-no-borders t3js-image-manipulation-info' . ($imageManipulation === null ? ' hide' : '') . '">';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-x')) . '</td>';
+        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-x')) . '</td>';
         $content .= '<td class="t3js-image-manipulation-info-crop-x">' . $x . 'px</td></tr>';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-y')) . '</td>';
+        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-y')) . '</td>';
         $content .= '<td class="t3js-image-manipulation-info-crop-y">' . $y . 'px</td></tr>';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-width')) . '</td>';
+        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-width')) . '</td>';
         $content .= '<td class="t3js-image-manipulation-info-crop-width">' . $width . 'px</td></tr>';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-height')) . '</td>';
+        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-height')) . '</td>';
         $content .= '<td class="t3js-image-manipulation-info-crop-height">' . $height . 'px</td></tr>';
         $content .= '</table>';
         $content .= '</div>';

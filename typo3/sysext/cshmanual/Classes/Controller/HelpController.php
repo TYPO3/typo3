@@ -168,7 +168,7 @@ class HelpController extends ActionController
         }
         if (isset($getVars['action']) && $getVars['action'] !== 'index') {
             $backButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
                 ->setHref(BackendUtility::getModuleUrl($moduleName));
             $buttonBar->addButton($backButton);

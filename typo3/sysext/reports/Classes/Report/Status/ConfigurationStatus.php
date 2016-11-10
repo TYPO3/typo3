@@ -94,7 +94,7 @@ class ConfigurationStatus implements StatusProviderInterface
             $value = $this->getLanguageService()->getLL('status_empty');
             $severity = ReportStatus::WARNING;
             $url =  BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
-            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
+            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);
     }
@@ -178,7 +178,7 @@ class ConfigurationStatus implements StatusProviderInterface
         if (!empty($failedConnections)) {
             $value = $this->getLanguageService()->getLL('status_connectionFailed');
             $severity = ReportStatus::WARNING;
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
     }
@@ -192,11 +192,11 @@ class ConfigurationStatus implements StatusProviderInterface
     protected function getDeprecationLogStatus()
     {
         $title = $this->getLanguageService()->getLL('status_configuration_DeprecationLog');
-        $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:disabled');
+        $value = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disabled');
         $message = '';
         $severity = ReportStatus::OK;
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
-            $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:enabled');
+            $value = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enabled');
             $message = '<p>' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
             $severity = ReportStatus::NOTICE;
             $logFile = GeneralUtility::getDeprecationLogFileName();

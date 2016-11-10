@@ -1298,8 +1298,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         // Add language labels for ExtDirect
         $this->addInlineLanguageLabelArray([
-            'extDirect_timeoutHeader'  => 'LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader',
-            'extDirect_timeoutMessage' => 'LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage'
+            'extDirect_timeoutHeader'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutHeader',
+            'extDirect_timeoutMessage' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutMessage'
         ], true);
 
         $token = ($api = '');

@@ -11,7 +11,7 @@ $extraContentColumns = [
             'renderType' => 'selectSingle',
             'items' => [
                 [
-                    'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
+                    'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                     ''
                 ],
                 [
@@ -38,7 +38,7 @@ $extraContentColumns = [
             'renderType' => 'selectSingle',
             'items' => [
                 [
-                    'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
+                    'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                     0
                 ],
                 [
@@ -265,7 +265,7 @@ $extraContentColumns = [
             'renderType' => 'selectSingle',
             'items' => [
                 [
-                    'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
+                    'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                     '0'
                 ],
                 [

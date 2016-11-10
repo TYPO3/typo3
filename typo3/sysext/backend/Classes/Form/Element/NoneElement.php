@@ -96,7 +96,7 @@ class NoneElement extends AbstractFormElement
                 if (isset($config['format.']['appendAge']) && $config['format.']['appendAge']) {
                     $age = BackendUtility::calcAge(
                         $GLOBALS['EXEC_TIME'] - $itemValue,
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     );
                     $value .= ' (' . $age . ')';
                 }

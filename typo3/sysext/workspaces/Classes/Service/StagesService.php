@@ -269,13 +269,13 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
     {
         switch ($ver_stage) {
             case self::STAGE_PUBLISH_EXECUTE_ID:
-                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_publish');
+                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_publish');
                 break;
             case self::STAGE_PUBLISH_ID:
                 $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish');
                 break;
             case self::STAGE_EDIT_ID:
-                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing');
+                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing');
                 break;
             default:
                 $stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
@@ -329,7 +329,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
             $nextStage[] = [
                 'uid' => self::STAGE_EDIT_ID,
                 'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
-                    . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
+                    . $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"'
             ];
         }
         return $nextStage;

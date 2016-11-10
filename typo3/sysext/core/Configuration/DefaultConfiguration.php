@@ -774,7 +774,7 @@ return [
 							100 = ITEM
 							100 {
 								name = history
-								label = LLL:EXT:lang/locallang_misc.xlf:CM_history
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_history
 								iconName = actions-document-history-open
 								displayCondition = canShowHistory != 0
 								callbackAction = openHistoryPopUp
@@ -789,7 +789,7 @@ return [
 							100 = ITEM
 							100 {
 								name = view
-								label = LLL:EXT:lang/locallang_core.xlf:cm.view
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.view
 								iconName = actions-document-view
 								displayCondition = canBeViewed != 0
 								callbackAction = viewPage
@@ -798,7 +798,7 @@ return [
 							200 = ITEM
 							200 {
 								name = new
-								label = LLL:EXT:lang/locallang_core.xlf:cm.new
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new
 								iconName = actions-page-new
 								displayCondition = canCreateNewPages != 0
 								callbackAction = newPageWizard
@@ -809,7 +809,7 @@ return [
 							400 = ITEM
 							400 {
 								name = history
-								label = LLL:EXT:lang/locallang_misc.xlf:CM_history
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_history
 								iconName = actions-document-history-open
 								displayCondition = canShowHistory != 0
 								callbackAction = openHistoryPopUp
@@ -824,7 +824,7 @@ return [
 							100 = ITEM
 							100 {
 								name = view
-								label = LLL:EXT:lang/locallang_core.xlf:cm.view
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.view
 								iconName = actions-document-view
 								displayCondition = canBeViewed != 0
 								callbackAction = viewPage
@@ -835,7 +835,7 @@ return [
 							300 = ITEM
 							300 {
 								name = disable
-								label = LLL:EXT:lang/locallang_common.xlf:disable
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable
 								iconName = actions-edit-hide
 								displayCondition = getRecord|hidden = 0 && canBeDisabledAndEnabled != 0
 								callbackAction = disablePage
@@ -844,7 +844,7 @@ return [
 							400 = ITEM
 							400 {
 								name = enable
-								label = LLL:EXT:lang/locallang_common.xlf:enable
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable
 								iconName = actions-edit-unhide
 								displayCondition = getRecord|hidden = 1 && canBeDisabledAndEnabled != 0
 								callbackAction = enablePage
@@ -853,7 +853,7 @@ return [
 							500 = ITEM
 							500 {
 								name = edit
-								label = LLL:EXT:lang/locallang_core.xlf:cm.edit
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.edit
 								iconName = actions-page-open
 								displayCondition = canBeEdited != 0
 								callbackAction = editPageProperties
@@ -862,7 +862,7 @@ return [
 							600 = ITEM
 							600 {
 								name = info
-								label = LLL:EXT:lang/locallang_core.xlf:cm.info
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info
 								iconName = actions-document-info
 								displayCondition = canShowInfo != 0
 								callbackAction = openInfoPopUp
@@ -871,7 +871,7 @@ return [
 							700 = ITEM
 							700 {
 								name = history
-								label = LLL:EXT:lang/locallang_misc.xlf:CM_history
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_history
 								iconName = actions-document-history-open
 								displayCondition = canShowHistory != 0
 								callbackAction = openHistoryPopUp
@@ -881,12 +881,12 @@ return [
 
 							900 = SUBMENU
 							900 {
-								label = LLL:EXT:lang/locallang_core.xlf:cm.copyPasteActions
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copyPasteActions
 
 								100 = ITEM
 								100 {
 									name = new
-									label = LLL:EXT:lang/locallang_core.xlf:cm.new
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new
 									iconName = actions-page-new
 									displayCondition = canCreateNewPages != 0
 									callbackAction = newPageWizard
@@ -897,7 +897,7 @@ return [
 								300 = ITEM
 								300 {
 									name = cut
-									label = LLL:EXT:lang/locallang_core.xlf:cm.cut
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut
 									iconName = actions-edit-cut
 									displayCondition = isInCutMode = 0 && canBeCut != 0 && isMountPoint != 1
 									callbackAction = enableCutMode
@@ -906,7 +906,7 @@ return [
 								400 = ITEM
 								400 {
 									name = cut
-									label = LLL:EXT:lang/locallang_core.xlf:cm.cut
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut
 									iconName = actions-edit-cut-release
 									displayCondition = isInCutMode = 1 && canBeCut != 0
 									callbackAction = disableCutMode
@@ -915,7 +915,7 @@ return [
 								500 = ITEM
 								500 {
 									name = copy
-									label = LLL:EXT:lang/locallang_core.xlf:cm.copy
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy
 									iconName = actions-edit-copy
 									displayCondition = isInCopyMode = 0
 									callbackAction = enableCopyMode
@@ -924,7 +924,7 @@ return [
 								600 = ITEM
 								600 {
 									name = copy
-									label = LLL:EXT:lang/locallang_core.xlf:cm.copy
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy
 									iconName = actions-edit-copy-release
 									displayCondition = isInCopyMode = 1
 									callbackAction = disableCopyMode
@@ -933,7 +933,7 @@ return [
 								700 = ITEM
 								700 {
 									name = pasteInto
-									label = LLL:EXT:lang/locallang_core.xlf:cm.pasteinto
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto
 									iconName = actions-document-paste-into
 									displayCondition = getContextInfo|inCopyMode = 1 || getContextInfo|inCutMode = 1 && canBePastedInto != 0
 									callbackAction = pasteIntoNode
@@ -942,7 +942,7 @@ return [
 								800 = ITEM
 								800 {
 									name = pasteAfter
-									label = LLL:EXT:lang/locallang_core.xlf:cm.pasteafter
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteafter
 									iconName = actions-document-paste-after
 									displayCondition = getContextInfo|inCopyMode = 1 || getContextInfo|inCutMode = 1 && canBePastedAfter != 0
 									callbackAction = pasteAfterNode
@@ -953,7 +953,7 @@ return [
 								1000 = ITEM
 								1000 {
 									name = delete
-									label = LLL:EXT:lang/locallang_core.xlf:cm.delete
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.delete
 									iconName = actions-edit-delete
 									displayCondition = canBeRemoved != 0 && isMountPoint != 1
 									callbackAction = removeNode
@@ -964,7 +964,7 @@ return [
 								1200 = ITEM
 								1200 {
 									name = clearCache
-									label = LLL:EXT:lang/locallang_core.xlf:labels.clear_cache
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache
 									iconName = actions-system-cache-clear
 									callbackAction = clearCacheOfPage
 								}
@@ -972,12 +972,12 @@ return [
 
 							1000 = SUBMENU
 							1000 {
-								label = LLL:EXT:lang/locallang_core.xlf:cm.branchActions
+								label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.branchActions
 
 								100 = ITEM
 								100 {
 									name = mountAsTreeroot
-									label = LLL:EXT:lang/locallang_core.xlf:cm.tempMountPoint
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.tempMountPoint
 									iconName = actions-pagetree-mountroot
 									displayCondition = canBeTemporaryMountPoint != 0 && isMountPoint = 0
 									callbackAction = mountAsTreeRoot
@@ -988,7 +988,7 @@ return [
 								300 = ITEM
 								300 {
 									name = expandBranch
-									label = LLL:EXT:lang/locallang_core.xlf:cm.expandBranch
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.expandBranch
 									iconName = actions-pagetree-expand
 									displayCondition =
 									callbackAction = expandBranch
@@ -997,7 +997,7 @@ return [
 								400 = ITEM
 								400 {
 									name = collapseBranch
-									label = LLL:EXT:lang/locallang_core.xlf:cm.collapseBranch
+									label = LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.collapseBranch
 									iconName = actions-pagetree-collapse
 									displayCondition =
 									callbackAction = collapseBranch
@@ -1027,12 +1027,12 @@ return [
 				sys_category.after = tt_content
 			}
 			mod.web_list.searchLevel.items {
-				-1 = EXT:lang/locallang_core.xlf:labels.searchLevel.infinite
-				0 = EXT:lang/locallang_core.xlf:labels.searchLevel.0
-				1 = EXT:lang/locallang_core.xlf:labels.searchLevel.1
-				2 = EXT:lang/locallang_core.xlf:labels.searchLevel.2
-				3 = EXT:lang/locallang_core.xlf:labels.searchLevel.3
-				4 = EXT:lang/locallang_core.xlf:labels.searchLevel.4
+				-1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
+				0 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
+				1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
+				2 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
+				3 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
+				4 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
 			}
 			mod.wizards.newRecord.pages.show.pageInside=1
 			mod.wizards.newRecord.pages.show.pageAfter=1

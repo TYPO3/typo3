@@ -156,7 +156,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getPhpVersion()
     {
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.phpversion')),
+            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion')),
             'value' => PHP_VERSION,
             'icon' => $this->iconFactory->getIcon('sysinfo-php-version', Icon::SIZE_SMALL)->render()
         ];
@@ -172,7 +172,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
             $this->systemInformation[] = [
                 'title' => $this->getLanguageService()
-                    ->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.database')
+                    ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database')
                     . ' (' . htmlspecialchars($connectionName) . ')',
                 'value' => GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName($connectionName)
@@ -191,7 +191,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         $applicationContext = GeneralUtility::getApplicationContext();
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext')),
+            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext')),
             'value' => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
             'icon' => $this->iconFactory->getIcon('sysinfo-application-context', Icon::SIZE_SMALL)->render()
@@ -209,8 +209,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
         $languageService = $this->getLanguageService();
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.composerMode')),
-            'value' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.enabled')),
+            'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode')),
+            'value' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled')),
             'icon' => $this->iconFactory->getIcon('sysinfo-composer-mode', Icon::SIZE_SMALL)->render()
         ];
     }
@@ -236,7 +236,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
         if (!empty($revision) && !empty($branch)) {
             $this->systemInformation[] = [
-                'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.gitrevision')),
+                'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision')),
                 'value' => sprintf('%s [%s]', $revision, $branch),
                 'icon' => $this->iconFactory->getIcon('sysinfo-git', Icon::SIZE_SMALL)->render()
             ];
@@ -262,7 +262,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
                 $icon = 'windows';
         }
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem')),
+            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem')),
             'value' => $kernelName . ' ' . php_uname('r'),
             'icon' => $this->iconFactory->getIcon('sysinfo-os-' . $icon, Icon::SIZE_SMALL)->render()
         ];
@@ -274,7 +274,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getWebServer()
     {
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.webserver')),
+            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver')),
             'value' => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
             'icon' => $this->iconFactory->getIcon('sysinfo-webserver', Icon::SIZE_SMALL)->render()
         ];
@@ -286,7 +286,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getTypo3Version()
     {
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.typo3-version')),
+            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version')),
             'value' => htmlspecialchars(VersionNumberUtility::getCurrentTypo3Version()),
             'icon' => $this->iconFactory->getIcon('sysinfo-typo3-version', Icon::SIZE_SMALL)->render()
         ];
@@ -376,7 +376,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo'));
+        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo'));
         $icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render('inline');
         return '
             <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>

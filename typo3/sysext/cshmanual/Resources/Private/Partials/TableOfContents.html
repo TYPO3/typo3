@@ -1,19 +1,19 @@
 <h1>
-	<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:manual_title" />
+	<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:manual_title" />
 </h1>
 <p class="lead">
-	<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:description" />
+	<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:description" />
 </p>
 
 <h2>
-	<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:TOC" />
+	<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:TOC" />
 </h2>
 
 <f:if condition="{toc}">
 	<ul>
 		<f:for each="{toc}" as="modules" key="type">
 			<li>
-				<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:TOC_{type}" default="{type}" />
+				<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:TOC_{type}" default="{type}" />
 
 				<ul>
 					<f:for each="{modules}" as="title" key="module">

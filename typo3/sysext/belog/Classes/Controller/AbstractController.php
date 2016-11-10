@@ -311,12 +311,12 @@ abstract class AbstractController extends ActionController
     protected function createPageDepthOptions()
     {
         $options = [
-            0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_0', 'lang'),
-            1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_1', 'lang'),
-            2 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_2', 'lang'),
-            3 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_3', 'lang'),
-            4 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_4', 'lang'),
-            999 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi', 'lang')
+            0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0', 'lang'),
+            1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1', 'lang'),
+            2 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2', 'lang'),
+            3 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3', 'lang'),
+            4 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4', 'lang'),
+            999 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi', 'lang')
         ];
         return $options;
     }

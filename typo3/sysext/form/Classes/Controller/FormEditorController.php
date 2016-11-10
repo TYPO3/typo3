@@ -294,7 +294,7 @@ class FormEditorController extends AbstractBackendController
                 ->setDataAttributes(['identifier' => 'closeButton'])
                 ->setHref(BackendUtility::getModuleUrl('web_FormFormbuilder'))
                 ->setClasses('t3-form-element-close-form-button hidden')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
 
             $saveButton = $buttonBar->makeInputButton()

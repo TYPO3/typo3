@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
         [
             'access' => 'user,group',
             'icon' => 'EXT:cshmanual/Resources/Public/Icons/module-cshmanual.svg',
-            'labels' => 'LLL:EXT:lang/locallang_mod_help_cshmanual.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
         ]
     );
 

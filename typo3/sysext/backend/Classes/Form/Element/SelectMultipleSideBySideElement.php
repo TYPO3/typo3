@@ -164,8 +164,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             'maxitems' => $maxitems,
             'info' => '',
             'headers' => [
-                'selector' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.selected'),
-                'items' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.items'),
+                'selector' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'),
+                'items' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.items'),
                 'selectorbox' => $selectBoxFilterContents,
             ],
             'noBrowser' => 1,

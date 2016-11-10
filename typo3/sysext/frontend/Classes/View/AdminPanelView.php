@@ -249,7 +249,7 @@ class AdminPanelView
      */
     public function display()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_tsfe.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_tsfe.xlf');
         $moduleContent = $updateButton = '';
 
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top']) {
@@ -757,7 +757,7 @@ class AdminPanelView
     /**
      * Translate given key
      *
-     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.xlf
+     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf
      * @param bool $convertWithHtmlspecialchars If TRUE the language-label will be sent through htmlspecialchars
      * @return string The value for the $key
      */

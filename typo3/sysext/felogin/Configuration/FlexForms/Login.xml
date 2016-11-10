@@ -14,7 +14,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -29,7 +29,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -44,7 +44,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -74,7 +74,7 @@
 
 					<recursive>
 						<TCEforms>
-							<label>LLL:EXT:lang/locallang_general.xlf:LGL.recursive</label>
+							<label>LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.recursive</label>
 							<config>
 								<type>select</type>
 								<renderType>selectSingle</renderType>
@@ -174,7 +174,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -245,7 +245,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_common.xlf:disable</numIndex>
+										<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>

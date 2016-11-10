@@ -52,8 +52,8 @@ class UserStorageCapabilityService
                 $lang = $GLOBALS['LANG'];
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    $lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.message.storage_is_no_public'),
-                    $lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.header.storage_is_no_public'),
+                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.message.storage_is_no_public'),
+                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.header.storage_is_no_public'),
                     FlashMessage::WARNING
                 );
 

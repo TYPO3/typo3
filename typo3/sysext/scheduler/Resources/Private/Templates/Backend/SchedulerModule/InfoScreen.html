@@ -23,7 +23,7 @@
 			<f:for each="{registeredClasses}" key="class" as="classInfo">
 				<tr>
 					<td>
-						<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}">
+						<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:new')}">
 							{classInfo.title}
 						</a>
 					</td>
@@ -32,7 +32,7 @@
 					<td>
 						<div class="btn-group" role="group">
 							<span class="btn btn-default">
-								<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}">
+								<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:new')}">
 									<core:icon identifier="actions-document-new" />
 								</a>
 							</span>

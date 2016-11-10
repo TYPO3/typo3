@@ -12,7 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'user,group',
             'name' => 'web_list',
             'icon' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',
-            'labels' => 'LLL:EXT:lang/locallang_mod_web_list.xlf'
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf'
         ]
     );
 
@@ -26,29 +26,29 @@ if (TYPO3_MODE === 'BE') {
 		TCEMAIN.linkHandler {
 			page {
 				handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\PageLinkHandler
-				label = LLL:EXT:lang/locallang_browse_links.xlf:page
+				label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:page
 			}
 			file {
 				handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\FileLinkHandler
-				label = LLL:EXT:lang/locallang_browse_links.xlf:file
+				label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:file
 				displayAfter = page
 				scanAfter = page
 			}
 			folder {
 				handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\FolderLinkHandler
-				label = LLL:EXT:lang/locallang_browse_links.xlf:folder
+				label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:folder
 				displayAfter = file
 				scanAfter = file
 			}
 			url {
 				handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\UrlLinkHandler
-				label = LLL:EXT:lang/locallang_browse_links.xlf:extUrl
+				label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:extUrl
 				displayAfter = folder
 				scanAfter = mail
 			}
 			mail {
 				handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\MailLinkHandler
-				label = LLL:EXT:lang/locallang_browse_links.xlf:email
+				label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:email
 				displayAfter = url
 			}
 		}

@@ -75,7 +75,7 @@ class RteController extends AbstractWizardController
     {
         parent::__construct();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
         $this->init();
@@ -273,7 +273,7 @@ class RteController extends AbstractWizardController
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($closeUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
@@ -283,7 +283,7 @@ class RteController extends AbstractWizardController
                 ->setValue('1')
                 ->setForm('RteController')
                 ->setOnClick('TBE_EDITOR.checkAndDoSubmit(1); return false;')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
             // Save & View
             $saveAndViewButton = $buttonBar->makeInputButton()
@@ -292,7 +292,7 @@ class RteController extends AbstractWizardController
                 ->setForm('RteController')
                 ->setOnClick('document.editform.redirect.value+= ' . GeneralUtility::quoteJSvalue('&popView=1') . '; '
                     . ' TBE_EDITOR.checkAndDoSubmit(1); return false;')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDocShow'))
                 ->setIcon(
                     $this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-view', Icon::SIZE_SMALL)
                 );
@@ -304,7 +304,7 @@ class RteController extends AbstractWizardController
                 ->setForm('RteController')
                 ->setOnClick('document.editform.redirect.value=' . GeneralUtility::quoteJSvalue($closeUrl)
                     . '; TBE_EDITOR.checkAndDoSubmit(1); return false;')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-save-close',
                     Icon::SIZE_SMALL
@@ -332,14 +332,14 @@ class RteController extends AbstractWizardController
                     ) . '; return false;';
 
                 $undoText = $this->getLanguageService()->sL(
-                    'LLL:EXT:lang/locallang_wizards.xlf:rte_undoLastChange'
+                    'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:rte_undoLastChange'
                 );
                 $lastChangeLabel = sprintf(
                     $undoText,
                     BackendUtility::calcAge(
                         ($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']),
                         $this->getLanguageService()->sL(
-                            'LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'
+                            'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'
                         )
                     )
                 );

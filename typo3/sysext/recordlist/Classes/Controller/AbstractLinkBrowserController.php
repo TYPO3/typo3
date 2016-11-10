@@ -127,7 +127,7 @@ abstract class AbstractLinkBrowserController
      */
     protected function init()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_browse_links.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_browse_links.xlf');
     }
 
     /**

@@ -436,7 +436,7 @@ class RecordHistory
             // remove first link
             $singleLine['time'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
             // add time
-            $singleLine['age'] = htmlspecialchars(BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+            $singleLine['age'] = htmlspecialchars(BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')));
             // add age
 
             $singleLine['tableUid'] = $this->linkPage(

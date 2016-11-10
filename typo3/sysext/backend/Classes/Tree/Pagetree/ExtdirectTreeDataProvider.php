@@ -178,7 +178,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
      */
     public function loadResources()
     {
-        $file = 'LLL:EXT:lang/locallang_core.xlf:';
+        $file = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:';
         $indicators = $this->getIndicators();
         $configuration = [
             'LLL' => [

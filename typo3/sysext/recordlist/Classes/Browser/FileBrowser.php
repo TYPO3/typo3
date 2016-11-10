@@ -291,7 +291,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $pDim = '';
             }
             // Create file icon:
-            $size = ' (' . GeneralUtility::formatSize($fileObject->getSize(), $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits')) . ($pDim ? ', ' . $pDim : '') . ')';
+            $size = ' (' . GeneralUtility::formatSize($fileObject->getSize(), $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')) . ($pDim ? ', ' . $pDim : '') . ')';
             $icon = '<span title="' . htmlspecialchars($fileObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
             // Create links for adding the file:
             $filesIndex = count($this->elements);
@@ -413,7 +413,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                     $addParams,
                     'id="checkDisplayThumbs"'
                 )
-                . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs')) . '</label></div>';
+                . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')) . '</label></div>';
             $out .= $thumbNailCheck;
         } else {
             $out .= '<div style="padding-top: 15px;"></div>';

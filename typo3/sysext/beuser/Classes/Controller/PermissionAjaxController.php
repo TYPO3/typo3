@@ -49,7 +49,7 @@ class PermissionAjaxController
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_perm.xlf');
         // Configuration, variable assignment
         $this->conf['page'] = GeneralUtility::_POST('page');
         $this->conf['who'] = GeneralUtility::_POST('who');

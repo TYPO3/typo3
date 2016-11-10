@@ -67,22 +67,22 @@ class VersionView
                 $management = '
 					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', ['table' => 'pages', 'uid' => $onlineId])) . '">
 						' . $iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '
-						' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm')) . '
+						' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ver.mgm')) . '
 					</a>';
                 // Create onchange handler:
                 $onChange = 'window.location.href=this.options[this.selectedIndex].value;';
                 // Controls:
                 if ($id == $onlineId) {
-                    $controls = '<strong class="text-success">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:ver.online')) . '</strong>';
+                    $controls = '<strong class="text-success">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ver.online')) . '</strong>';
                 } elseif (!$noAction) {
                     $href = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap',
                         GeneralUtility::linkThisScript(['id' => $onlineId])
                     );
                     $controls = '
-						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage')) . '">
+						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ver.swapPage')) . '">
 							' . $iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '
-							' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap')) . '
+							' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ver.swap')) . '
 						</a>';
                 }
                 // Write out HTML code:

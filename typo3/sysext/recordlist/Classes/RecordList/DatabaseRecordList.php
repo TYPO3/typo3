@@ -260,7 +260,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
                 $onClick = htmlspecialchars(BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)));
                 $buttons['view'] = '<a href="#" onclick="' . $onClick . '" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">'
+                    . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
                     . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
             }
             // New record on pages that are not locked by editlock
@@ -299,7 +299,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
             // Cache
             $buttons['cache'] = '<a href="' . htmlspecialchars(($this->listURL() . '&clear_cache=1')) . '" title="'
-                . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache')) . '">'
+                . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache')) . '">'
                 . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
             if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
                 || (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
@@ -307,20 +307,20 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             ) {
                 // CSV
                 $buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv')) . '">'
+                    . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.csv')) . '">'
                     . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL)->render() . '</a>';
                 // Export
                 if (ExtensionManagementUtility::isLoaded('impexp')) {
                     $url = BackendUtility::getModuleUrl('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
                     $buttons['export'] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]='
                             . rawurlencode($this->table . ':' . $this->id)) . '" title="'
-                        . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.export')) . '">'
+                        . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.export')) . '">'
                         . $this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL)->render() . '</a>';
                 }
             }
             // Reload
             $buttons['reload'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="'
-                . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload')) . '">'
+                . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload')) . '">'
                 . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
             // Shortcut
             if ($backendUser->mayMakeShortcut()) {
@@ -334,7 +334,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if ($this->returnUrl) {
                 $href = htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl, ['id' => $this->id]));
                 $buttons['back'] = '<a href="' . $href . '" class="typo3-goBack" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack')) . '">'
+                    . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack')) . '">'
                     . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
             }
         }
@@ -394,7 +394,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
                     ->setOnClick($onClick)
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
@@ -432,7 +432,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             // Cache
             $clearCacheButton = $buttonBar->makeLinkButton()
                 ->setHref($this->listURL() . '&clear_cache=1')
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
             if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
@@ -442,7 +442,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 // CSV
                 $csvButton = $buttonBar->makeLinkButton()
                     ->setHref($this->listURL() . '&csv=1')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.csv'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL));
                 $buttonBar->addButton($csvButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 // Export
@@ -450,7 +450,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $url = BackendUtility::getModuleUrl('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
                     $exportButton = $buttonBar->makeLinkButton()
                         ->setHref($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id))
-                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.export'))
+                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.export'))
                         ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL));
                     $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 }
@@ -458,7 +458,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             // Reload
             $reloadButton = $buttonBar->makeLinkButton()
                 ->setHref($this->listURL())
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
                 ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
             // Shortcut
@@ -484,7 +484,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if ($this->returnUrl) {
                 $href = htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl, ['id' => $this->id]));
                 $buttons['back'] = '<a href="' . $href . '" class="typo3-goBack" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack')) . '">'
+                    . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack')) . '">'
                     . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
             }
         }
@@ -604,8 +604,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $selectFields = array_unique($selectFields);
         $fieldListFields = $this->makeFieldList($table, 1);
         if (empty($fieldListFields) && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-            $message = sprintf(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:missingTcaColumnsMessage')), $table, $table);
-            $messageTitle = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:missingTcaColumnsMessageTitle'));
+            $message = sprintf(htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:missingTcaColumnsMessage')), $table, $table);
+            $messageTitle = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:missingTcaColumnsMessageTitle'));
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
@@ -705,8 +705,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 if (!$this->table) {
                     $href = htmlspecialchars(($this->listURL() . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1')));
                     $title = $tableCollapsed
-                        ? htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.expandTable'))
-                        : htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.collapseTable'));
+                        ? htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.expandTable'))
+                        : htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.collapseTable'));
                     $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
                     $collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($table) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($table) . '">' . $icon . '</a>';
                 }
@@ -1064,15 +1064,15 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             switch ((string)$fCol) {
                 case '_PATH_':
                     // Path
-                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels._PATH_')) . ']</i>';
+                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels._PATH_')) . ']</i>';
                     break;
                 case '_REF_':
                     // References
-                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:c__REF_')) . ']</i>';
+                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:c__REF_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_':
                     // Path
-                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels._LOCALIZATION_')) . ']</i>';
+                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels._LOCALIZATION_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_b':
                     // Path
@@ -1311,8 +1311,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $currentPage = floor($this->firstElementNumber / $this->iLimit) + 1;
         // Compile first, previous, next, last and refresh buttons
         if ($currentPage > 1) {
-            $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:first'));
-            $labelPrevious = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:previous'));
+            $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:first'));
+            $labelPrevious = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:previous'));
             $first = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1) . '" title="' . $labelFirst . '">'
                 . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</a></li>';
             $previous = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1) . '" title="' . $labelPrevious . '">'
@@ -1322,8 +1322,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $previous = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</span></li>';
         }
         if ($currentPage < $totalPages) {
-            $labelNext = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:next'));
-            $labelLast = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:last'));
+            $labelNext = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:next'));
+            $labelLast = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:last'));
             $next = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1) . '" title="' . $labelNext . '">'
                 . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</a></li>';
             $last = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages) . '" title="' . $labelLast . '">'
@@ -1335,7 +1335,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $reload = '<li><a href="#" onclick="document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
             . '&pointer=') . '+calculatePointer(document.getElementById(' . GeneralUtility::quoteJSvalue('jumpPage-' . $renderPart)
             . ').value); document.dblistForm.submit(); return true;" title="'
-            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:reload')) . '">'
+            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:reload')) . '">'
             . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a></li>';
         if ($renderPart === 'top') {
             // Add js to traverse a page select input to a pointer value
@@ -1361,7 +1361,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             . '&pointer=') . '+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
 			';
         $pageIndicatorText = sprintf(
-            $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:pageIndicator'),
+            $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator'),
             $pageNumberInput,
             $totalPages
         );
@@ -1371,7 +1371,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         } else {
             $lastElementNumber = $this->totalItems;
         }
-        $rangeIndicator = '<li><span>' . sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:rangeIndicator'), ($this->firstElementNumber + 1), $lastElementNumber) . '</span></li>';
+        $rangeIndicator = '<li><span>' . sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'), ($this->firstElementNumber + 1), $lastElementNumber) . '</span></li>';
 
         $titleColumn = $this->fieldArray[0];
         $data = [
@@ -1439,7 +1439,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         '',
                         ($table === 'tt_content' ? '#' . $row['uid'] : '')
                     )
-                ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">'
+                ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
                 . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $this->addActionToCellGroup($cells, $viewAction, 'view');
         }
@@ -1589,9 +1589,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $refCountMsg = BackendUtility::referenceCount(
                         $table,
                         $row['uid'],
-                        ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord'),
+                        ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                         $this->getReferenceCount($table, $row['uid'])) . BackendUtility::translationCount($table, $row['uid'],
-                        ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')
+                        ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                     );
                 }
 
@@ -1744,7 +1744,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 
                 $cells['copy'] = '<a class="btn btn-default" href="#" onclick="'
                     . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel === 'copy'), ['returnUrl' => ''])) . ');')
-                    . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy')) . '">'
+                    . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '">'
                     . $copyIcon->render() . '</a>';
 
                 // Check permission to cut page or content
@@ -1761,7 +1761,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     if ($permsEdit) {
                         $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), ['returnUrl' => ''])) . ');')
-                        . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut')) . '">'
+                        . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
                     } else {
                         $cells['cut'] = $this->spaceIcon;
@@ -1770,7 +1770,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT) {
                         $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), ['returnUrl' => ''])) . ');')
-                        . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut')) . '">'
+                        . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
                     } else {
                         $cells['cut'] = $this->spaceIcon;
@@ -1983,7 +1983,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 						<tr>
 							<th class="col-checkbox checkbox" colspan="2">
 								<label><input type="checkbox" class="checkbox checkAll" ' . ($checkAllChecked ? ' checked="checked"' : '') . '>
-								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall')) . '</label>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.toggleall')) . '</label>
 							</th>
 						</tr>
 					</thead>
@@ -1993,7 +1993,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 				</table>
 			</div>
 			<input type="submit" name="search" class="btn btn-default" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.setFields')) . '"/>
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.setFields')) . '"/>
 			' . $formElements[1];
         return '<div class="fieldSelectBox">' . $content . '</div>';
     }

@@ -73,7 +73,7 @@ class HelpToolbarItem implements ToolbarItemInterface
 
         $view = $this->getFluidTemplateObject('HelpToolbarItem.html');
         $view->assignMultiple([
-                'title' => 'LLL:EXT:lang/locallang_core.xlf:toolbarItems.help',
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.help',
                 'icon' => $icon
             ]
         );
@@ -90,7 +90,7 @@ class HelpToolbarItem implements ToolbarItemInterface
     {
         $view = $this->getFluidTemplateObject('HelpToolbarItemDropDown.html');
         $view->assignMultiple([
-                'title' =>  'LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache',
+                'title' =>  'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.clearCache_clearCache',
                 'modules' => $this->helpModuleMenu->getChildren()
             ]
         );

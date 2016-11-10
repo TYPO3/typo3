@@ -285,7 +285,7 @@ abstract class AbstractFormElement extends AbstractNode
 
                     $onlyIfSelectedJS = '';
                     if (isset($wizardConfiguration['popup_onlyOpenIfSelected']) && $wizardConfiguration['popup_onlyOpenIfSelected']) {
-                        $notSelectedText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.noSelItemForEdit');
+                        $notSelectedText = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.noSelItemForEdit');
                         $onlyIfSelectedJS =
                             'if (!TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . ')){' .
                                 'alert(' . GeneralUtility::quoteJSvalue($notSelectedText) . ');' .
@@ -560,7 +560,7 @@ abstract class AbstractFormElement extends AbstractNode
 					<a href="#"
 						onclick="' . htmlspecialchars($aOnClick) . '"
 						class="btn btn-default"
-						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_' . ($mode == 'db' ? 'db' : 'file'))) . '">
+						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_' . ($mode == 'db' ? 'db' : 'file'))) . '">
 						' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
 					</a>';
             }
@@ -570,7 +570,7 @@ abstract class AbstractFormElement extends AbstractNode
 						<a href="#"
 							class="btn btn-default t3js-btn-moveoption-top"
 							data-fieldname="' . $fName . '"
-							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_top')) . '">
+							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '">
 							' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render() . '
 						</a>';
                 }
@@ -578,14 +578,14 @@ abstract class AbstractFormElement extends AbstractNode
 					<a href="#"
 						class="btn btn-default t3js-btn-moveoption-up"
 						data-fieldname="' . $fName . '"
-						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_up')) . '">
+						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '">
 						' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '
 					</a>';
                 $icons['L'][] = '
 					<a href="#"
 						class="btn btn-default t3js-btn-moveoption-down"
 						data-fieldname="' . $fName . '"
-						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_down')) . '">
+						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '">
 						' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '
 					</a>';
                 if ($sSize >= 5) {
@@ -593,7 +593,7 @@ abstract class AbstractFormElement extends AbstractNode
 						<a href="#"
 							class="btn btn-default t3js-btn-moveoption-bottom"
 							data-fieldname="' . $fName . '"
-							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_bottom')) . '">
+							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '">
 							' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render() . '
 						</a>';
                 }
@@ -619,7 +619,7 @@ abstract class AbstractFormElement extends AbstractNode
 					<a href="#"
 						class="btn btn-default"
 						onclick="' . htmlspecialchars($aOnClick) . '"
-						title="' . htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . '">
+						title="' . htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . '">
 						' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
 					</a>';
             }
@@ -630,7 +630,7 @@ abstract class AbstractFormElement extends AbstractNode
 					class="btn btn-default t3js-btn-removeoption"
 					onClick="' . $rOnClickInline . '"
 					data-fieldname="' . $fName . '"
-					title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remove_selected')) . '">
+					title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '">
 					' . $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render() . '
 				</a>';
         }

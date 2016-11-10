@@ -72,7 +72,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
                         <div class="form-control-icon">
                             ' . $this->iconFactory->getIcon('apps-toolbar-menu-search', Icon::SIZE_SMALL)->render('inline') . '
                         </div>
-					    <input type="text" class="form-control toolbar-item-search-field t3js-topbar-navigation-search-field" placeholder="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.search')) . '" id="live-search-box" autocomplete="off">
+					    <input type="text" class="form-control toolbar-item-search-field t3js-topbar-navigation-search-field" placeholder="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.search')) . '" id="live-search-box" autocomplete="off">
                     </div>
 				</div>
 			</form>

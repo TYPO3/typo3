@@ -79,6 +79,45 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getParsedData($fileReference, $languageKey, $charset = '', $errorMode = 0, $isLocalizationOverride = false)
     {
+        // @deprecated since TYPO3 v8, will be removed with TYPO3 v9
+        // this is a fallback to convert references to old 'lang' locallang files to the new location
+        if (strpos($fileReference, 'EXT:lang/locallang_') === 0) {
+            $mapping = [
+                'lang/locallang_alt_doc.xlf' => 'lang/Resources/Private/Language/locallang_alt_doc.xlf',
+                'lang/locallang_alt_intro.xlf' => 'lang/Resources/Private/Language/locallang_alt_intro.xlf',
+                'lang/locallang_browse_links.xlf' => 'lang/Resources/Private/Language/locallang_browse_links.xlf',
+                'lang/locallang_common.xlf' => 'lang/Resources/Private/Language/locallang_common.xlf',
+                'lang/locallang_core.xlf' => 'lang/Resources/Private/Language/locallang_core.xlf',
+                'lang/locallang_general.xlf' => 'lang/Resources/Private/Language/locallang_general.xlf',
+                'lang/locallang_login.xlf' => 'lang/Resources/Private/Language/locallang_login.xlf',
+                'lang/locallang_misc.xlf' => 'lang/Resources/Private/Language/locallang_misc.xlf',
+                'lang/locallang_mod_admintools.xlf' => 'lang/Resources/Private/Language/locallang_mod_admintools.xlf',
+                'lang/locallang_mod_file_list.xlf' => 'lang/Resources/Private/Language/locallang_mod_file_list.xlf',
+                'lang/locallang_mod_file.xlf' => 'lang/Resources/Private/Language/locallang_mod_file.xlf',
+                'lang/locallang_mod_help_about.xlf' => 'lang/Resources/Private/Language/locallang_mod_help_about.xlf',
+                'lang/locallang_mod_help_cshmanual.xlf' => 'lang/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
+                'lang/locallang_mod_help.xlf' => 'lang/Resources/Private/Language/locallang_mod_help.xlf',
+                'lang/locallang_mod_system.xlf' => 'lang/Resources/Private/Language/locallang_mod_system.xlf',
+                'lang/locallang_mod_usertools.xlf' => 'lang/Resources/Private/Language/locallang_mod_usertools.xlf',
+                'lang/locallang_mod_user_ws.xlf' => 'lang/Resources/Private/Language/locallang_mod_user_ws.xlf',
+                'lang/locallang_mod_web_func.xlf' => 'lang/Resources/Private/Language/locallang_mod_web_func.xlf',
+                'lang/locallang_mod_web_info.xlf' => 'lang/Resources/Private/Language/locallang_mod_web_info.xlf',
+                'lang/locallang_mod_web_list.xlf' => 'lang/Resources/Private/Language/locallang_mod_web_list.xlf',
+                'lang/locallang_mod_web.xlf' => 'lang/Resources/Private/Language/locallang_mod_web.xlf',
+                'lang/locallang_show_rechis.xlf' => 'lang/Resources/Private/Language/locallang_show_rechis.xlf',
+                'lang/locallang_t3lib_fullsearch.xlf' => 'lang/Resources/Private/Language/locallang_t3lib_fullsearch.xlf',
+                'lang/locallang_tca.xlf' => 'lang/Resources/Private/Language/locallang_tca.xlf',
+                'lang/locallang_tcemain.xlf' => 'lang/Resources/Private/Language/locallang_tcemain.xlf',
+                'lang/locallang_tsfe.xlf' => 'lang/Resources/Private/Language/locallang_tsfe.xlf',
+                'lang/locallang_tsparser.xlf' => 'lang/Resources/Private/Language/locallang_tsparser.xlf',
+                'lang/locallang_view_help.xlf' => 'lang/Resources/Private/Language/locallang_view_help.xlf',
+                'lang/locallang_wizards.xlf' => 'lang/Resources/Private/Language/locallang_wizards.xlf',
+            ];
+            $filePath = substr($fileReference, 4);
+            GeneralUtility::deprecationLog('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v9.');
+            $fileReference = 'EXT:' . $mapping[$filePath];
+        }
+
         $hash = md5($fileReference . $languageKey . $charset);
         $this->errorMode = $errorMode;
 

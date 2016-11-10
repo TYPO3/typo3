@@ -56,7 +56,7 @@ class TimeSinceLastUpdateViewHelper extends AbstractViewHelper
         }
         return \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
             time() - $lastUpdateTime->format('U'),
-            $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+            $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
         );
     }
 }

@@ -107,8 +107,8 @@ class EditFileController extends AbstractModule
         }
         // Cleaning and checking target directory
         if (!$this->fileObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError');
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586841);
         }
         if ($this->fileObject->getStorage()->getUid() === 0) {
@@ -248,7 +248,7 @@ class EditFileController extends AbstractModule
             ->setName('_save')
             ->setValue('1')
             ->setOnClick('document.editform.submit();')
-            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit'))
+            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.submit'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         // Save and Close button
@@ -260,7 +260,7 @@ class EditFileController extends AbstractModule
                 . GeneralUtility::quoteJSvalue($this->returnUrl)
                 . '; document.editform.submit();'
             )
-            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose'))
+            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.saveAndClose'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                 'actions-document-save-close',
                 Icon::SIZE_SMALL
@@ -275,7 +275,7 @@ class EditFileController extends AbstractModule
         $closeButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setOnClick('backToList(); return false;')
-            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel'))
+            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 

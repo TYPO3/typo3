@@ -143,7 +143,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         ]);
         $expectedInlineLabelReturnValue = 'TYPO3.lang = {"myKey":"myValue","myKeyArray1":"myValueArray1","myKeyArray2":"myValueArray2","myKeyArray3":"myValueArray3"';
 
-        $subject->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf');
+        $subject->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
         $expectedLanguageLabel1 = 'labels.beUser';
         $expectedLanguageLabel2 = 'labels.feUser';
 

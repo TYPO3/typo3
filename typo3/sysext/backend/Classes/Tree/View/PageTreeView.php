@@ -126,7 +126,7 @@ class PageTreeView extends AbstractTreeView
     {
         $lang = $this->getLanguageService();
         if ($this->ext_showNavTitle && isset($row['nav_title']) && trim($row['nav_title']) !== '') {
-            $title = '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_tca.xlf:title')) . ' '
+            $title = '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:title')) . ' '
                      . htmlspecialchars(trim($row['title'])) . '">'
                      . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen))
                      . '</span>';
@@ -139,7 +139,7 @@ class PageTreeView extends AbstractTreeView
                          . '</span>';
             }
             $title = trim($row['title']) === ''
-                ? '<em>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</em>'
+                ? '<em>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>'
                 : $title;
         }
         return $title;

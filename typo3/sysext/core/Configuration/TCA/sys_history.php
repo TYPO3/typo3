@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_history',
+        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_history',
         'label' => 'tablename',
         'tstamp' => 'tstamp',
         'adminOnly' => true,

@@ -53,7 +53,7 @@ class ElementHistoryController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_show_rechis.xlf');
         $GLOBALS['SOBE'] = $this;
 
         $this->init();
@@ -154,7 +154,7 @@ class ElementHistoryController extends AbstractModule
         if ($returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($returnUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }

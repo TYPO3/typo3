@@ -597,7 +597,7 @@ class ValidatorTask extends AbstractTask
         $depth = (int)$this->getDepth();
         $additionalInformation[] = $lang->sL($this->languageFile . ':tasks.validate.page') . ': ' . $pageLabel;
         $additionalInformation[] = $lang->sL($this->languageFile . ':tasks.validate.depth') . ': '
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_' . ($depth === 999 ? 'infi' : $depth));
+            . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_' . ($depth === 999 ? 'infi' : $depth));
         $additionalInformation[] = $lang->sL($this->languageFile . ':tasks.validate.email') . ': '
             . $this->getEmail();
 

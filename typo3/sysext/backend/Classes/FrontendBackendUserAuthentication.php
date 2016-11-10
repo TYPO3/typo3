@@ -299,16 +299,16 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      * Returns the label for key. If a translation for the language set in $this->uc['lang']
      * is found that is returned, otherwise the default value.
      * If the global variable $LOCAL_LANG is NOT an array (yet) then this function loads
-     * the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.xlf"
+     * the global $LOCAL_LANG array with the content of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf"
      * such that the values therein can be used for labels in the Admin Panel
      *
-     * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "sysext/lang/locallang_tsfe.xlf
+     * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf
      * @return string The value for the $key
      */
     public function extGetLL($key)
     {
         if (!is_array($GLOBALS['LOCAL_LANG'])) {
-            $this->getLanguageService()->includeLLFile('EXT:lang/locallang_tsfe.xlf');
+            $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_tsfe.xlf');
             if (!is_array($GLOBALS['LOCAL_LANG'])) {
                 $GLOBALS['LOCAL_LANG'] = [];
             }

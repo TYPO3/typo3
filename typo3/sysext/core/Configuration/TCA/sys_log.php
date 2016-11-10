@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_log',
+        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_log',
         'label' => 'details',
         'tstamp' => 'tstamp',
         'adminOnly' => true,

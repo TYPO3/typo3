@@ -44,34 +44,34 @@ $GLOBALS['TBE_MODULES'] = [
     'help' => '',
     '_configuration' => [
         'web' => [
-            'labels' => 'LLL:EXT:lang/locallang_mod_web.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web.xlf',
             'name' => 'web',
             'iconIdentifier' => 'module-web'
         ],
         'file' => [
-            'labels' => 'LLL:EXT:lang/locallang_mod_file.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_file.xlf',
             'navigationFrameModule' => 'file_navframe',
             'name' => 'file',
             'workspaces' => 'online,custom',
             'iconIdentifier' => 'module-file'
         ],
         'user' => [
-            'labels' => 'LLL:EXT:lang/locallang_mod_usertools.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_usertools.xlf',
             'name' => 'user',
             'iconIdentifier' => 'status-user-backend'
         ],
         'tools' => [
-            'labels' => 'LLL:EXT:lang/locallang_mod_admintools.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_admintools.xlf',
             'name' => 'tools',
             'iconIdentifier' => 'module-tools'
         ],
         'system' => [
-            'labels' => 'LLL:EXT:lang/locallang_mod_system.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_system.xlf',
             'name' => 'system',
             'iconIdentifier' => 'module-system'
         ],
         'help' => [
-            'labels' => 'LLL:EXT:lang/locallang_mod_help.xlf',
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_help.xlf',
             'name' => 'help',
             'iconIdentifier' => 'module-help'
         ]

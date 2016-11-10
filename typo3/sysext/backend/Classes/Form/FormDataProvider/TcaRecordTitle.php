@@ -266,8 +266,8 @@ class TcaRecordTitle implements FormDataProviderInterface
         $languageService = $this->getLanguageService();
         if (empty($fieldConfig['items']) || !is_array($fieldConfig['items'])) {
             $title = (bool)$value
-                ? $languageService->sL('LLL:EXT:lang/locallang_common.xlf:yes')
-                : $languageService->sL('LLL:EXT:lang/locallang_common.xlf:no');
+                ? $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes')
+                : $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no');
         } else {
             $labelParts = [];
             foreach ($fieldConfig['items'] as $key => $val) {
@@ -306,7 +306,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                     $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
                     $calculatedAge = BackendUtility::calcAge(
                         abs($ageDelta),
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     );
                     $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
                 }

@@ -152,7 +152,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             return '';
         }
         $link = '<p><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['setTempDBmount' => 0])) . '" class="btn btn-primary">'
-            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount')) . '</a></p>';
+            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.temporaryDBmount')) . '</a></p>';
 
         return $link;
     }

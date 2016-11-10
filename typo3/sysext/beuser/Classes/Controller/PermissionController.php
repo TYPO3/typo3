@@ -173,7 +173,7 @@ class PermissionController extends ActionController
             ])->buildBackendUri();
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($closeUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
                     'actions-document-close',
                     Icon::SIZE_SMALL
@@ -182,7 +182,7 @@ class PermissionController extends ActionController
 
             // SAVE button:
             $saveButton = $buttonBar->makeInputButton()
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                 ->setName('tx_beuser_system_beusertxpermission[submit]')
                 ->setValue('Save')
                 ->setForm('PermissionControllerEdit')

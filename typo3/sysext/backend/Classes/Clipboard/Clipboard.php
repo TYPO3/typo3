@@ -256,8 +256,8 @@ class Clipboard
         $elementCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
         // Copymode Selector menu
         $copymodeUrl = GeneralUtility::linkThisScript();
-        $moveLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
-        $copyLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
+        $moveLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:moveElements'));
+        $copyLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:copyElements'));
 
         $copymodeSelector = '
 			<div class="btn-group">
@@ -295,16 +295,16 @@ class Clipboard
                 $confirmationCheck = true;
             }
             $confirmationMessage = sprintf(
-                $languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'),
+                $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.deleteClip'),
                 $elementCount
             );
             $title = $languageService
-                ->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.delete_elements');
+                ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipboard.delete_elements');
             $returnUrl = $this->deleteUrl(1, ($this->fileMode ? 1 : 0));
             $btnOkText = $languageService
-                ->sL('LLL:EXT:lang/locallang_alt_doc.xlf:buttons.confirm.delete_elements.yes');
+                ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.yes');
             $btnCancelText = $languageService
-                ->sL('LLL:EXT:lang/locallang_alt_doc.xlf:buttons.confirm.delete_elements.no');
+                ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.no');
             $optionArray[] = '<li><a'
                 . (($confirmationCheck) ? ' class="t3js-modal-trigger"' : '')
                 . ' href="' . htmlspecialchars($returnUrl) . '"'
@@ -316,8 +316,8 @@ class Clipboard
                 . htmlspecialchars($title) . '</a></li>';
 
             // Clear clipboard
-            $optionArray[] = '<li><a href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.clear_clipboard')) . '</a></li>';
-            $deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear')) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
+            $optionArray[] = '<li><a href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipboard.clear_clipboard')) . '</a></li>';
+            $deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.clear')) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
 
             // menuSelector
             $menuSelector = '
@@ -751,7 +751,7 @@ class Clipboard
     public function confirmMsgText($table, $rec, $type, $clElements, $columnLabel = '')
     {
         if ($this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
-            $labelKey = 'LLL:EXT:lang/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
+            $labelKey = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
             $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos': ''));
             if ($table == '_FILE') {
                 $thisRecTitle = basename($rec);
@@ -792,7 +792,7 @@ class Clipboard
     }
 
     /**
-     * Clipboard label - getting from "EXT:lang/locallang_core.xlf:"
+     * Clipboard label - getting from "EXT:lang/Resources/Private/Language/locallang_core.xlf:"
      *
      * @param string $key Label Key
      * @param string $Akey Alternative key to "labels
@@ -800,7 +800,7 @@ class Clipboard
      */
     public function clLabel($key, $Akey = 'labels')
     {
-        return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:' . $Akey . '.' . $key));
+        return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:' . $Akey . '.' . $key));
     }
 
     /**

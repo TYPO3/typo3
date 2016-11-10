@@ -6,25 +6,25 @@
 			<div class="modal-panel-sidebar modal-panel-sidebar-right">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-					<h4 class="modal-title"><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.image-manipulation" /></h4>
+					<h4 class="modal-title"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.image-manipulation" /></h4>
 				</div>
 				<div class="modal-body">
 					<form class="form">
 						<div class="form-group">
-							<label><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.image-title" />:</label>
+							<label><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.image-title" />:</label>
 							<p>{f:if(condition:image.properties.title, then:image.properties.title, else:image.name)}</p>
 						</div>
 						<div class="form-group">
-							<label><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.original-dimensions" />:</label>
+							<label><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.original-dimensions" />:</label>
 							<p>{image.properties.width} × {image.properties.height}</p>
 						</div>
 
 						<f:if condition="{ratios}">
 						<div class="form-group">
-							<label for="ratio"><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.aspect-ratio" /></label>
+							<label for="ratio"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio" /></label>
 							<div class="ratio-buttons t3js-ratio-buttons" data-toggle="buttons">
 								<f:for each="{ratios}" as="ratio" key="key" iteration="iteration">
-									<label class="btn btn-default" data-method="setAspectRatio" data-option="{key}" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.set-aspect-ratio')}"><input class="sr-only" id="aspestRatio{iteration.cycle}" name="aspestRatio" value="{key}" type="radio"> <span>{ratio}</span></label>
+									<label class="btn btn-default" data-method="setAspectRatio" data-option="{key}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}"><input class="sr-only" id="aspestRatio{iteration.cycle}" name="aspestRatio" value="{key}" type="radio"> <span>{ratio}</span></label>
 								</f:for>
 							</div>
 						</div>
@@ -32,54 +32,54 @@
 
 						<f:if condition="{zoom}">
 						<div class="form-group t3js-setting-zoom">
-							<label for="zoom"><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.zoom" /></label>
+							<label for="zoom"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.zoom" /></label>
 							<div class="btn-group">
-								<button class="btn btn-default" data-method="zoom" data-option="0.1" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.zoom-in')}"><i class="fa fa-search-plus"></i></button>
-								<button class="btn btn-default" data-method="zoom" data-option="-0.1" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.zoom-out')}"><i class="fa fa-search-minus"></i></button>
+								<button class="btn btn-default" data-method="zoom" data-option="0.1" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.zoom-in')}"><i class="fa fa-search-plus"></i></button>
+								<button class="btn btn-default" data-method="zoom" data-option="-0.1" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.zoom-out')}"><i class="fa fa-search-minus"></i></button>
 							</div>
 						</div>
 						</f:if>
 
 						<div class="form-group">
-							<label><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.selection" /></label>
+							<label><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.selection" /></label>
 							<div class="table-fit-block">
 								<table class="table table-no-borders table-transparent t3js-image-manipulation-info">
 									<tr>
 										<td>
-											<f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-x"/>
+											<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-x"/>
 										</td>
 										<td class="t3js-image-manipulation-info-crop-x"></td>
 									</tr>
 									<tr>
 										<td>
-											<f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-y"/>
+											<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-y"/>
 										</td>
 										<td class="t3js-image-manipulation-info-crop-y"></td>
 									</tr>
 									<tr>
 										<td>
-											<f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-width"/>
+											<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-width"/>
 										</td>
 										<td class="t3js-image-manipulation-info-crop-width"></td>
 									</tr>
 									<tr>
 										<td>
-											<f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.crop-height"/>
+											<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-height"/>
 										</td>
 										<td class="t3js-image-manipulation-info-crop-height"></td>
 									</tr>
 								</table>
 							</div>
 							<div class="form-group">
-								<button class="btn btn-default" data-method="reset" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.reset')}"><i class="fa fa-refresh"></i> {f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.reset')}</button>
+								<button class="btn btn-default" data-method="reset" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}"><i class="fa fa-refresh"></i> {f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}</button>
 							</div>
 						</div>
 
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-default" data-method="dismiss" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.cancel')}"><i class="fa fa-remove"></i> {f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.cancel')}</button>
-					<button class="btn btn-default" data-method="save" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.accept')}"><i class="fa fa-check"></i> {f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.accept')}</button>
+					<button class="btn btn-default" data-method="dismiss" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.cancel')}"><i class="fa fa-remove"></i> {f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.cancel')}</button>
+					<button class="btn btn-default" data-method="save" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.accept')}"><i class="fa fa-check"></i> {f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.accept')}</button>
 				</div>
 			</div>
 
@@ -95,8 +95,8 @@
 	</f:then>
 	<f:else>
 		<div class="alert alert-danger">
-			<h4 class="alert-title"><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.no-image-found" /></h4>
-			<p class="alert-message"><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.no-image-found-message" /></p>
+			<h4 class="alert-title"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.no-image-found" /></h4>
+			<p class="alert-message"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.no-image-found-message" /></p>
 		</div>
 	</f:else>
 </f:if>

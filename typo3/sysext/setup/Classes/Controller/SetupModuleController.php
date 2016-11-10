@@ -434,7 +434,7 @@ class SetupModuleController extends AbstractModule
 
         $saveButton = $buttonBar->makeInputButton()
             ->setName('data[save]')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
             ->setValue('1')
             ->setForm('SetupModuleController')
             ->setShowLabelText(true)

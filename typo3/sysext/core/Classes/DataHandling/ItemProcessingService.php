@@ -61,7 +61,7 @@ class ItemProcessingService
                 $fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
             }
             $message = sprintf(
-                $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.items_proc_func_error'),
+                $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.items_proc_func_error'),
                 $fieldLabel,
                 $exception->getMessage()
             );

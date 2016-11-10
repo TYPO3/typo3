@@ -48,7 +48,7 @@ class OnlineMediaController
             if ($file !== null) {
                 $data['file'] = $file->getUid();
             } else {
-                $data['error'] = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:online_media.error.invalid_url');
+                $data['error'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url');
             }
             $response->getBody()->write(json_encode($data));
         }
@@ -78,15 +78,15 @@ class OnlineMediaController
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
                         $file->getName(),
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.added'),
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.added'),
                         FlashMessage::OK,
                         true
                     );
                 } else {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:online_media.error.invalid_url'),
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:online_media.error.new_media.failed'),
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url'),
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.error.new_media.failed'),
                         FlashMessage::ERROR,
                         true
                     );

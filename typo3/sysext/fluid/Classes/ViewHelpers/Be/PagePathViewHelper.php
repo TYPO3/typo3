@@ -74,7 +74,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
         // Setting the path of the page
-        $pagePath = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
+        $pagePath = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
         $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);

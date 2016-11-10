@@ -48,8 +48,8 @@ class BackendUserGroupIntegrityCheck
                     /** @var $flashMessage FlashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
-                        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:error.backendUserGroupListTypeError.header'),
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
+                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.header'),
                         FlashMessage::WARNING,
                         true
                     );

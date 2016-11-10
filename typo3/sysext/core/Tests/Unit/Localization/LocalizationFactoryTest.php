@@ -44,16 +44,16 @@ class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // Make sure there is no cached version of the label
         GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
         // Get default value
-        $defaultLL = $subject->getParsedData('EXT:lang/locallang_core.xlf', 'default');
+        $defaultLL = $subject->getParsedData('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'default');
         // Clear language cache again
         GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
         // Set override file
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xlf'][$unique] = $file;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/Resources/Private/Language/locallang_core.xlf'][$unique] = $file;
         /** @var $store \TYPO3\CMS\Core\Localization\LanguageStore */
         $store = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class);
-        $store->flushData('EXT:lang/locallang_core.xlf');
+        $store->flushData('EXT:lang/Resources/Private/Language/locallang_core.xlf');
         // Get override value
-        $overrideLL = $subject->getParsedData('EXT:lang/locallang_core.xlf', 'default');
+        $overrideLL = $subject->getParsedData('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'default');
         // Clean up again
         unlink($file);
         $this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');

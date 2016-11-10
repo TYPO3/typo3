@@ -90,7 +90,7 @@ class QueryView
     {
         $this->backendUserAuthentication = $GLOBALS['BE_USER'];
         $this->languageService = $GLOBALS['LANG'];
-        $this->languageService->includeLLFile('EXT:lang/locallang_t3lib_fullsearch.xlf');
+        $this->languageService->includeLLFile('EXT:lang/Resources/Private/Language/locallang_t3lib_fullsearch.xlf');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 

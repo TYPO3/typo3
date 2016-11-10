@@ -123,7 +123,7 @@ class ColorpickerController extends AbstractWizardController
     public function __construct()
     {
         parent::__construct();
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
         $this->init();

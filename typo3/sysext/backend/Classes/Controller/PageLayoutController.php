@@ -1097,7 +1097,7 @@ class PageLayoutController
         $dbList->setLMargin = 0;
         $dbList->doEdit = $this->EDIT_CONTENT;
         $dbList->ext_CALC_PERMS = $this->CALC_PERMS;
-        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
+        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dbList->id = $this->id;
         $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
         $dbList->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
@@ -1205,7 +1205,7 @@ class PageLayoutController
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
             $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
                 ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
                 ->setHref('#');
             $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
@@ -1258,7 +1258,7 @@ class PageLayoutController
         if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
             $viewButton = $this->buttonBar->makeLinkButton()
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
                 ->setHref('#');
 
@@ -1284,7 +1284,7 @@ class PageLayoutController
         if (!$this->modTSconfig['properties']['disableAdvanced']) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
@@ -1373,7 +1373,7 @@ class PageLayoutController
                 $closeButton = $this->buttonBar->makeLinkButton()
                     ->setHref('#')
                     ->setOnClick('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL));
                 $this->buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
 
@@ -1383,7 +1383,7 @@ class PageLayoutController
                     ->setName('_savedok')
                     ->setValue('1')
                     ->setForm('PageLayoutController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveButton);
                 $saveAndCloseButton = $this->buttonBar->makeInputButton()
@@ -1391,7 +1391,7 @@ class PageLayoutController
                     ->setValue('1')
                     ->setForm('PageLayoutController')
                     ->setOnClick('document.editform.redirect.value=\'' . $this->closeUrl . '\';')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveAndCloseButton);
                 $saveAndShowPageButton = $this->buttonBar->makeInputButton()
@@ -1399,7 +1399,7 @@ class PageLayoutController
                     ->setValue('1')
                     ->setForm('PageLayoutController')
                     ->setOnClick('document.editform.redirect.value+=\'&popView=1\';')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow'))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDocShow'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveAndShowPageButton);
                 $this->buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -1434,7 +1434,7 @@ class PageLayoutController
                                     ]
                                 )
                             ) . '; return false;')
-                        ->setTitle(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))))
+                        ->setTitle(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'))))
                         ->setIcon($this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
                     $historyButton = $this->buttonBar->makeLinkButton()
@@ -1726,7 +1726,7 @@ class PageLayoutController
                 $inValue = 'tt_content:' . $cRow['uid'];
                 $isSelected += (int)$edit_record == $inValue;
                 $menuItem = $quickEditMenu->makeMenuItem()
-                    ->setTitle(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $beUser->uc['titleLen']))
+                    ->setTitle(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $beUser->uc['titleLen']))
                     ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=' . $inValue . $retUrlStr)
                     ->setActive($edit_record == $inValue);
                 $quickEditMenu->addMenuItem($menuItem);
@@ -1771,7 +1771,7 @@ class PageLayoutController
             $lang = $this->getLanguageService();
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('languageMenu');
-            $languageMenu->setLabel(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language')));
+            $languageMenu->setLabel(htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language')));
             foreach ($this->MOD_MENU['language'] as $key => $language) {
                 $menuItem = $languageMenu
                     ->makeMenuItem()

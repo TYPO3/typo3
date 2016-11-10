@@ -74,7 +74,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_func.xlf');
         $this->MCONF = [
             'name' => $this->moduleName,
         ];
@@ -203,7 +203,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // View page
             $viewButton = $buttonBar->makeLinkButton()
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
                 ->setHref('#');
             $buttonBar->addButton($viewButton);

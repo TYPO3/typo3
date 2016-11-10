@@ -204,7 +204,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         // Get size and icon:
         $size = GeneralUtility::formatSize(
             $fileOrFolderObject->getSize(),
-            $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits')
+            $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')
         );
 
         return [

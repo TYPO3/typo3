@@ -1,7 +1,7 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 
 <h3 class="dropdown-headline">
-    {f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.user')}
+    {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.user')}
 </h3>
 <hr>
 <f:if condition="{modules}">
@@ -29,10 +29,10 @@
     {icon -> f:format.raw()}
     <f:if condition="{switchUserMode}">
         <f:then>
-            {f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:buttons.exit', htmlEscape: 'FALSE')}
+            {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.exit', htmlEscape: 'FALSE')}
         </f:then>
         <f:else>
-            {f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:buttons.logout', htmlEscape: 'FALSE')}
+            {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.logout', htmlEscape: 'FALSE')}
         </f:else>
     </f:if>
 </f:link.typolink>

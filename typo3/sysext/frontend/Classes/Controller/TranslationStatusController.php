@@ -58,12 +58,12 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $lang = $this->getLanguageService();
         $menuArray = [
             'depth' => [
-                0 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-                1 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-                2 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-                3 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-                4 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
-                999 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
+                0 => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+                1 => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+                2 => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+                3 => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+                4 => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+                999 => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
             ]
         ];
         // Languages:

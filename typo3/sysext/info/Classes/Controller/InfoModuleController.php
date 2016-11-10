@@ -71,7 +71,7 @@ class InfoModuleController extends BaseScriptClass
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->languageService = $GLOBALS['LANG'];
-        $this->languageService->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
+        $this->languageService->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_info.xlf');
 
         $this->backendUser = $GLOBALS['BE_USER'];
 
@@ -167,7 +167,7 @@ class InfoModuleController extends BaseScriptClass
                 '',
                 BackendUtility::BEgetRootLine($this->pageinfo['uid'])
             ))
-            ->setTitle($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
+            ->setTitle($this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         // Shortcut

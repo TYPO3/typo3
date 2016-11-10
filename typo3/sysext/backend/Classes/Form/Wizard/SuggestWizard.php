@@ -100,7 +100,7 @@ class SuggestWizard
         );
 
         $this->view->assignMultiple([
-                'placeholder' => 'LLL:EXT:lang/locallang_core.xlf:labels.findRecord',
+                'placeholder' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.findRecord',
                 'fieldname' => $fieldName,
                 'table' => $table,
                 'field' => $field,

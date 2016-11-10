@@ -194,7 +194,7 @@ class RecordList extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->moduleTemplate->getPageRenderer()->loadJquery();
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
@@ -230,7 +230,7 @@ class RecordList extends AbstractModule
         $this->menuConfig();
         // Store session data
         $backendUser->setAndSaveSessionData(self::class, $sessionData);
-        $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
+        $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf');
     }
 
     /**
@@ -566,7 +566,7 @@ class RecordList extends AbstractModule
             $searchButton
                 ->setHref('#')
                 ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($searchButton,
                 ButtonBar::BUTTON_POSITION_LEFT, 90);

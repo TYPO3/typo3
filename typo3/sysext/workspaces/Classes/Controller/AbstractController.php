@@ -79,15 +79,15 @@ class AbstractController extends ActionController
         $this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
         $this->pageRenderer->addInlineLanguageLabelArray([
             'title' => $lang->getLL('title'),
-            'path' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.path'),
-            'table' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.table'),
-            'depth' => $lang->sL('LLL:EXT:lang/locallang_mod_web_perm.xlf:Depth'),
-            'depth_0' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-            'depth_1' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-            'depth_2' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-            'depth_3' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-            'depth_4' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
-            'depth_infi' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
+            'path' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.path'),
+            'table' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.table'),
+            'depth' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_perm.xlf:Depth'),
+            'depth_0' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+            'depth_1' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+            'depth_2' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+            'depth_3' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+            'depth_4' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+            'depth_infi' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
         ]);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
         $this->assignExtensionSettings();

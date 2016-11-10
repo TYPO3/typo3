@@ -81,7 +81,7 @@ abstract class AbstractItemProvider
                 $fieldLabel = $languageService->sL($result['processedTca']['columns'][$fieldName]['label']);
             }
             $message = sprintf(
-                $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.items_proc_func_error'),
+                $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.items_proc_func_error'),
                 $fieldLabel,
                 $exception->getMessage()
             );
@@ -480,8 +480,8 @@ abstract class AbstractItemProvider
         // Early return on error with flash message
         if (!empty($databaseError)) {
             $msg = $databaseError . '. ';
-            $msg .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
-            $msgTitle = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
+            $msg .= $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
+            $msgTitle = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
             /** @var $flashMessage FlashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $msgTitle, FlashMessage::ERROR, true);
             /** @var $flashMessageService FlashMessageService */
@@ -843,8 +843,8 @@ abstract class AbstractItemProvider
     {
         $languageService = static::getLanguageService();
         $adLabel = [
-            'ALLOW' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allow'),
-            'DENY' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.deny')
+            'ALLOW' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.allow'),
+            'DENY' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.deny')
         ];
         $allowDenyOptions = [];
         foreach ($GLOBALS['TCA'] as $table => $_) {

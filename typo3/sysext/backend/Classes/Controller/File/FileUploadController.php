@@ -70,7 +70,7 @@ class FileUploadController extends AbstractModule
     {
         parent::__construct();
         $GLOBALS['SOBE'] = $this;
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
         $this->init();
     }
 
@@ -103,8 +103,8 @@ class FileUploadController extends AbstractModule
 
         // Cleaning and checking target directory
         if (!$this->folderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError');
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586843);
         }
 
@@ -128,13 +128,13 @@ class FileUploadController extends AbstractModule
         $lang = $this->getLanguageService();
 
         // set page title
-        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle'));
+        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle'));
 
         $pageContent = '<form action="'
             . htmlspecialchars(BackendUtility::getModuleUrl('tce_file'))
             . '" method="post" id="FileUploadController" name="editform" enctype="multipart/form-data">';
         // Make page header:
-        $pageContent .= '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
+        $pageContent .= '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
         $pageContent .= $this->renderUploadForm();
 
         // Header Buttons
@@ -150,7 +150,7 @@ class FileUploadController extends AbstractModule
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
@@ -192,7 +192,7 @@ class FileUploadController extends AbstractModule
         $content .= '
 			<div id="c-submit">
 				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
-				<input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit')) . '" />
+				<input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />
 			</div>
 		';
         return $content;

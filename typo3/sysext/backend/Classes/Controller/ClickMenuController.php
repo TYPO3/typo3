@@ -31,7 +31,7 @@ class ClickMenuController
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
         $GLOBALS['SOBE'] = $this;
         // Setting pseudo module name
         $this->MCONF['name'] = 'xMOD_alt_clickmenu.php';

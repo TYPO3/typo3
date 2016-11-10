@@ -22,14 +22,14 @@ return [
     ],
     'columns' => [
         'hidden' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'config' => [
                 'type' => 'check',
                 'default' => '1'
             ]
         ],
         'starttime' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
                 'size' => 8,
@@ -77,11 +77,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:lang/locallang_core.xlf:labels.depth_0', '0'],
-                    ['LLL:EXT:lang/locallang_core.xlf:labels.depth_1', '1'],
-                    ['LLL:EXT:lang/locallang_core.xlf:labels.depth_2', '2'],
-                    ['LLL:EXT:lang/locallang_core.xlf:labels.depth_3', '3'],
-                    ['LLL:EXT:lang/locallang_core.xlf:labels.depth_4', '4']
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0', '0'],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1', '1'],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2', '2'],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3', '3'],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4', '4']
                 ],
                 'size' => 1,
                 'maxitems' => 1

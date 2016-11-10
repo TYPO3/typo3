@@ -329,7 +329,7 @@ class FolderTreeView extends AbstractTreeView
             // Mark a storage which is not online, as offline
             // maybe someday there will be a special icon for this
             if ($storageObject->isOnline() === false) {
-                $rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
+                $rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
             }
             // Preparing rootRec for the mount
             $icon = $this->iconFactory->getIconForResource($rootLevelFolder, Icon::SIZE_SMALL, null, ['mount-root' => true]);

@@ -59,7 +59,7 @@ call_user_func(function () {
     // Add category tab when categories column exits
     if (!empty($GLOBALS['TCA']['tt_content']['columns']['categories'])) {
         $GLOBALS['TCA']['tt_content']['types']['textmedia']['showitem'] .=
-        ',--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category,
+        ',--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category,
 				categories';
     }
 
@@ -89,7 +89,7 @@ call_user_func(function () {
                 'type' => 'check',
                 'default' => 0,
                 'items' => [
-                    ['LLL:EXT:lang/locallang_core.xml:labels.enabled', 1]
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xml:labels.enabled', 1]
                 ]
             ]
         ],

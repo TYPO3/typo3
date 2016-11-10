@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'user,group',
             'workspaces' => 'online,custom',
             'icon' => 'EXT:filelist/Resources/Public/Icons/module-filelist.svg',
-            'labels' => 'LLL:EXT:lang/locallang_mod_file_list.xlf'
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf'
         ]
     );
 }

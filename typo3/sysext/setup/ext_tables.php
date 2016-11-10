@@ -58,7 +58,7 @@ if (TYPO3_MODE === 'BE') {
                 'csh' => 'passwordCurrent',
             ],
             'avatar' => [
-                'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.avatar',
+                'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
                 'type' => 'avatar',
                 'table' => 'be_users',
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']

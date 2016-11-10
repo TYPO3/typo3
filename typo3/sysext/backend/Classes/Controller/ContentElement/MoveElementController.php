@@ -83,7 +83,7 @@ class MoveElementController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
         $GLOBALS['SOBE'] = $this;
         $this->init();
     }

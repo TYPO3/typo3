@@ -381,30 +381,30 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                         <fieldset class="form-section">
                             <h4 class="form-section-headline">' . $this->getLanguageService()->getLL('action_t1_legend_generalFields') . '</h4>
                             <div class="form-group">
-                                <label for="field_disable">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.disable') . '</label>
+                                <label for="field_disable">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable') . '</label>
                                 <input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
                             </div>
                             <div class="form-group">
-                                <label for="field_realname">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.name') . '</label>
+                                <label for="field_realname">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.name') . '</label>
                                 <input type="text" id="field_realname" class="form-control" name="data[realName]" value="' . htmlspecialchars($vars['realName']) . '" />
                             </div>
                             <div class="form-group">
-                                <label for="field_username">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.username') . '</label>
+                                <label for="field_username">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.username') . '</label>
                                 <input type="text" id="field_username" class="form-control" name="data[username]" value="' . htmlspecialchars($vars['username']) . '" />
                             </div>
                             <div class="form-group">
-                                <label for="field_password">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.password') . '</label>
+                                <label for="field_password">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.password') . '</label>
                                 <input type="password" id="field_password" class="form-control" name="data[password]" value="" />
                             </div>
                             <div class="form-group">
-                                <label for="field_email">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.email') . '</label>
+                                <label for="field_email">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.email') . '</label>
                                 <input type="text" id="field_email" class="form-control" name="data[email]" value="' . htmlspecialchars($vars['email']) . '" />
                             </div>
                         </fieldset>
                         <fieldset class="form-section">
                             <h4 class="form-section-headline">' . $this->getLanguageService()->getLL('action_t1_legend_configuration') . '</h4>
                             <div class="form-group">
-                                <label for="field_usergroup">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup') . '</label>
+                                <label for="field_usergroup">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup') . '</label>
                                 <select id="field_usergroup" class="form-control" name="data[usergroup][]" multiple="multiple">
                                     ' . $this->getUsergroups($record, $vars) . '
                                 </select>

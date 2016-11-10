@@ -87,7 +87,7 @@ class SelectSingleBoxElement extends AbstractFormElement
                 '</div>',
             '</div>',
             '<p>',
-                '<em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL')) . '</em>',
+                '<em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.holdDownCTRL')) . '</em>',
             '</p>',
         ]);
         $html = implode(LF, $html);
@@ -206,7 +206,7 @@ class SelectSingleBoxElement extends AbstractFormElement
             'class' => 'btn btn-default',
             'onclick' => htmlspecialchars(implode(';', $resetCode)),
             // htmlspecialchars() is done by $this->implodeAttributes()
-            'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')
+            'title' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.revertSelection')
         ];
 
         $html = [

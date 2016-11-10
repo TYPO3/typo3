@@ -7,14 +7,14 @@
 
 <f:if condition="{manual.configuration.details}">
 	<h3>
-		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:details" />
+		<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:details" />
 	</h3>
 	<csh:format>{manual.configuration.details}</csh:format>
 </f:if>
 
 <f:if condition="{manual.configuration.syntax}">
 	<h3>
-		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:syntax" />
+		<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:syntax" />
 	</h3>
 	{manual.configuration.syntax -> f:format.raw()}
 </f:if>
@@ -33,7 +33,7 @@
 
 <f:if condition="{manual.seeAlso}">
 	<h3>
-		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:seeAlso" />
+		<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_view_help.xlf:seeAlso" />
 	</h3>
 	<ul>
 		<f:for each="{manual.seeAlso}" as="link">

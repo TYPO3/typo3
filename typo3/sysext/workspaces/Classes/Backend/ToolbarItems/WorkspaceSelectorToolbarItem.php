@@ -71,7 +71,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         if (empty($this->availableWorkspaces)) {
             return '';
         }
-        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace'));
+        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace'));
         $icon = $this->iconFactory->getIcon('apps-toolbar-menu-workspace', Icon::SIZE_SMALL)->render('inline');
         return '
             <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
@@ -149,7 +149,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         }
 
         $workspaceMenu = [
-            '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace')) . '</h3>',
+            '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace')) . '</h3>',
             '<hr>',
             '<div class="dropdown-table">' . implode(LF, $workspaceSections['top']) . '</div>',
             (!empty($workspaceSections['items']) ? '<hr>' : ''),

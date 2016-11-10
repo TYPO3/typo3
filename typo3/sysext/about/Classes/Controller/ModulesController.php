@@ -98,7 +98,7 @@ class ModulesController extends ActionController
                 'TYPO3Version' => TYPO3_version,
                 'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
                 'warningMessages' => $securityWarnings,
-                'warningTitle' => $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
+                'warningTitle' => $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.header'),
                 'modules' => $this->getModulesData()
             ]
         );

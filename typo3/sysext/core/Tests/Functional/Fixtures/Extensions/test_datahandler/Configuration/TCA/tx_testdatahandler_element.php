@@ -9,7 +9,7 @@ return [
         'languageField'            => 'sys_language_uid',
         'transOrigPointerField'    => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
-        'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
+        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'sortby' => 'sorting',
         'delete' => 'deleted',
         'enablecolumns' => [
@@ -24,14 +24,14 @@ return [
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
-            'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+            'label'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.language',
             'config' => [
                 'type'                => 'select',
                 'foreign_table'       => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1],
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0]
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.default_value', 0]
                 ],
                 'default' => 0
             ]
@@ -39,7 +39,7 @@ return [
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude'     => 1,
-            'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+            'label'       => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.l18n_parent',
             'config'      => [
                 'type'  => 'select',
                 'items' => [
@@ -58,7 +58,7 @@ return [
         ],
         'hidden' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.hidden',
             'config' => [
                 'type' => 'check',
                 'default' => 0

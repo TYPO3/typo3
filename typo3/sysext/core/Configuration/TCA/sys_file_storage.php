@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage',
+        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -22,7 +22,7 @@ return [
     ],
     'columns' => [
         'name' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.name',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.name',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -30,7 +30,7 @@ return [
             ]
         ],
         'description' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.description',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
@@ -38,14 +38,14 @@ return [
             ]
         ],
         'is_browsable' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_browsable',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_browsable',
             'config' => [
                 'type' => 'check',
                 'default' => 1
             ]
         ],
         'is_default' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_default',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_default',
             'config' => [
                 'type' => 'check',
                 'default' => 0,
@@ -56,7 +56,7 @@ return [
             ]
         ],
         'is_public' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_public',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_public',
             'config' => [
                 'default' => true,
                 'type' => 'user',
@@ -64,36 +64,36 @@ return [
             ]
         ],
         'is_writable' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_writable',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_writable',
             'config' => [
                 'type' => 'check',
                 'default' => 1
             ]
         ],
         'is_online' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_online',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_online',
             'config' => [
                 'type' => 'check',
                 'default' => 1
             ]
         ],
         'auto_extract_metadata' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.auto_extract_metadata',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.auto_extract_metadata',
             'config' => [
                 'type' => 'check',
                 'default' => 1
             ]
         ],
         'processingfolder' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.processingfolder',
             'config' => [
                 'type' => 'input',
-                'placeholder' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder.placeholder',
+                'placeholder' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.processingfolder.placeholder',
                 'size' => 20
             ]
         ],
         'driver' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.driver',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.driver',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -103,7 +103,7 @@ return [
             ]
         ],
         'configuration' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.configuration',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.configuration',
             'config' => [
                 'type' => 'flex',
                 'ds_pointerField' => 'driver',

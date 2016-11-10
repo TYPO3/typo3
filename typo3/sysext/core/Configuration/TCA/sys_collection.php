@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection',
+        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -34,7 +34,7 @@ return [
     ],
     'columns' => [
         't3ver_label' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -43,15 +43,15 @@ return [
         ],
         'sys_language_uid' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
                 ],
                 'default' => 0,
                 'showIconTable' => true,
@@ -60,7 +60,7 @@ return [
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -79,7 +79,7 @@ return [
         ],
         'hidden' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
                 'default' => 0
@@ -87,7 +87,7 @@ return [
         ],
         'starttime' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
                 'size' => 8,
@@ -98,7 +98,7 @@ return [
         ],
         'endtime' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
                 'size' => 8,
@@ -112,21 +112,21 @@ return [
         ],
         'fe_group' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
                     ['', 0],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login', -1],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.any_login', -2],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.usergroups', '--div--']
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login', -1],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login', -2],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups', '--div--']
                 ],
                 'foreign_table' => 'fe_groups'
             ]
         ],
         'table_name' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.table_name',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection.table_name',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -134,7 +134,7 @@ return [
             ]
         ],
         'items' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.items',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection.items',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -147,7 +147,7 @@ return [
             ]
         ],
         'title' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.title',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection.title',
             'config' => [
                 'type' => 'input',
                 'size' => 60,
@@ -155,7 +155,7 @@ return [
             ]
         ],
         'description' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.description',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 60,
@@ -163,12 +163,12 @@ return [
             ]
         ],
         'type' => [
-            'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.type',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection.type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:lang/locallang_tca.xlf:sys_collection.type.static', 'static']
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_collection.type.static', 'static']
                 ],
                 'default' => 'static'
             ]

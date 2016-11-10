@@ -5,7 +5,7 @@
 	<div class="container-small">
 		<f:render partial="Logo" arguments="{_all}" />
 		<p>
-			<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
+			<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_alt_intro.xlf:introtext2" />
 		</p>
 		<f:if condition="{warningMessages}">
 			<f:be.infobox title="{warningTitle}" state="2">{warningMessages -> f:format.raw()}</f:be.infobox>
@@ -57,7 +57,7 @@
 				</div>
 			</f:if>
 		</f:for>
-		<p><em class="text-muted"><f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" /></em></p>
+		<p><em class="text-muted"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_alt_intro.xlf:endText" /></em></p>
 		<p>{copyRightNotice -> f:format.raw()}</p>
 	</div>
 

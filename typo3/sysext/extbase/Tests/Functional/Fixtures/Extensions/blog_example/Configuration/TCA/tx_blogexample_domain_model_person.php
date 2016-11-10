@@ -9,7 +9,7 @@ return [
         'crdate' => 'crdate',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
-        'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.prependAtCopy',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden'
@@ -22,7 +22,7 @@ return [
     'columns' => [
         'hidden' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.hidden',
             'config' => [
                 'type' => 'check'
             ]

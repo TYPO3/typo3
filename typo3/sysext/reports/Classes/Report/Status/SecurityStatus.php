@@ -62,7 +62,7 @@ class SecurityStatus implements StatusProviderInterface
         if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashIncludePageId'])) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_cache_flooding');
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_cache_flooding');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_cacheFloodingProtection'), $value, $message, $severity);
     }
@@ -80,7 +80,7 @@ class SecurityStatus implements StatusProviderInterface
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_trustedhosts');
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_trustedhosts');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_trustedHostsPattern'), $value, $message, $severity);
     }
@@ -137,7 +137,7 @@ class SecurityStatus implements StatusProviderInterface
                     ]
                 );
                 $message = sprintf(
-                    $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_admin'),
+                    $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.backend_admin'),
                     '<a href="' . htmlspecialchars($editUserAccountUrl) . '">',
                     '</a>'
                 );
@@ -161,7 +161,7 @@ class SecurityStatus implements StatusProviderInterface
             $severity = ReportStatus::ERROR;
             $url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
             $message = sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_encryption'),
+                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_encryption'),
                 '<a href="' . $url . '">',
                 '</a>'
             );
@@ -186,7 +186,7 @@ class SecurityStatus implements StatusProviderInterface
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
             $message = sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
+                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
                 '<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />'
             );
         }
@@ -208,7 +208,7 @@ class SecurityStatus implements StatusProviderInterface
             && GeneralUtility::verifyFilenameAgainstDenyPattern('.htaccess')) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_htaccess');
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_deny_htaccess');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
     }

@@ -272,12 +272,12 @@ class SingleFieldContainer extends AbstractContainer
             $disabled = '';
             $fallbackValue = 0;
             if (strlen(BackendUtility::getRecordTitlePrep($placeholder, 20)) > 0) {
-                $overrideLabel = sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
+                $overrideLabel = sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
             } else {
                 $fallbackValue = 1;
                 $checked = ' checked="checked"';
                 $disabled = ' disabled="disabled"';
-                $overrideLabel = sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override_not_available'), BackendUtility::getRecordTitlePrep($placeholder, 20));
+                $overrideLabel = sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'), BackendUtility::getRecordTitlePrep($placeholder, 20));
             }
 
             $resultArray['additionalJavaScriptPost'][] = 'typo3form.fieldTogglePlaceholder('
@@ -357,7 +357,7 @@ class SingleFieldContainer extends AbstractContainer
                 /** @var IconFactory $iconFactory */
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 if ($defaultLanguageValue !== '') {
-                    $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
+                    $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
                         . $iconFactory->getIcon($this->data['systemLanguageRows'][0]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
                         . $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
                         . $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
@@ -372,7 +372,7 @@ class SingleFieldContainer extends AbstractContainer
                         true
                     );
                     if ($defaultLanguageValue !== '') {
-                        $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
+                        $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
                             . $iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
                             . $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
                             . $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
@@ -434,7 +434,7 @@ class SingleFieldContainer extends AbstractContainer
                     $item .= '
 						<div class="t3-form-original-language-diff">
 							<div class="t3-form-original-language-diffheader">'
-                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig'))
+                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.changeInOrig'))
                             . '</div>
 							<div class="t3-form-original-language-diffcontent">
 								<div class="diff">

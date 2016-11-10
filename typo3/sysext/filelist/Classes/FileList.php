@@ -228,7 +228,7 @@ class FileList extends AbstractRecordList
         $this->bigControlPanel = $bigControlPanel;
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
         $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen']);
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_common.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_common.xlf');
         $this->resourceFactory = ResourceFactory::getInstance();
     }
 
@@ -462,7 +462,7 @@ class FileList extends AbstractRecordList
             $parentFolder = $currentFolder->getParentFolder();
             if ($parentFolder->getIdentifier() !== $currentFolder->getIdentifier() && $currentStorage->isWithinFileMountBoundaries($parentFolder)) {
                 $levelUp = $this->linkWrapDir(
-                    '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.upOneLevel')) . '">'
+                    '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel')) . '">'
                     . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render()
                     . '</span>',
                     $parentFolder
@@ -611,7 +611,7 @@ class FileList extends AbstractRecordList
                     'returnUrl' => $this->listURL()
                 ];
                 $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
+                $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
                 $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $code . '</a>';
             }
         } catch (\Exception $e) {
@@ -749,7 +749,7 @@ class FileList extends AbstractRecordList
 
                         if ($fileObject->isMissing()) {
                             $theData[$field] .= '<span class="label label-danger label-space-left">'
-                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                 . '</span>';
                             // Thumbnails?
                         } elseif ($this->thumbs && ($this->isImage($ext) || $this->isMediaFile($ext))) {
@@ -871,8 +871,8 @@ class FileList extends AbstractRecordList
         // For normal clipboard, add copy/cut buttons:
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected('_FILE', $md5);
-            $copyTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy'));
-            $cutTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut'));
+            $copyTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy'));
+            $cutTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut'));
             $copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
             $cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL)->render();
 
@@ -939,7 +939,7 @@ class FileList extends AbstractRecordList
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
             $url = BackendUtility::getModuleUrl('file_edit', ['target' => $fullIdentifier]);
             $editOnClick = 'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-            $cells['edit'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.editcontent') . '">'
+            $cells['edit'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editcontent') . '">'
                 . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
                 . '</a>';
         } else {
@@ -949,7 +949,7 @@ class FileList extends AbstractRecordList
             $fileUrl = $fileOrFolderObject->getPublicUrl(true);
             if ($fileUrl) {
                 $aOnClick = 'return top.openUrlInWindow(' . GeneralUtility::quoteJSvalue($fileUrl) . ', \'WebFile\');';
-                $cells['view'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.view') . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                $cells['view'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
             } else {
                 $cells['view'] = $this->spaceIcon;
             }
@@ -961,14 +961,14 @@ class FileList extends AbstractRecordList
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
             $url = BackendUtility::getModuleUrl('file_replace', ['target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid()]);
             $replaceOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-            $cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.replace') . '">' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
+            $cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.replace') . '">' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
         // rename the file
         if ($fileOrFolderObject->checkActionPermission('rename')) {
             $url = BackendUtility::getModuleUrl('file_rename', ['target' => $fullIdentifier]);
             $renameOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-            $cells['rename'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($renameOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.rename') . '">' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
+            $cells['rename'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($renameOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.rename') . '">' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['rename'] = $this->spaceIcon;
         }
@@ -979,7 +979,7 @@ class FileList extends AbstractRecordList
             } elseif ($fileOrFolderObject instanceof File) {
                 $infoOnClick = 'top.launchView( \'_FILE\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
             }
-            $cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.info') . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
+            $cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info') . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['info'] = $this->spaceIcon;
         }
@@ -988,10 +988,10 @@ class FileList extends AbstractRecordList
         if ($fileOrFolderObject->checkActionPermission('delete')) {
             $identifier = $fileOrFolderObject->getIdentifier();
             if ($fileOrFolderObject instanceof Folder) {
-                $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFolder'));
+                $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder'));
                 $deleteType = 'delete_folder';
             } else {
-                $referenceCountText = BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile'));
+                $referenceCountText = BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
                 $deleteType = 'delete_file';
             }
 
@@ -1002,8 +1002,8 @@ class FileList extends AbstractRecordList
             }
 
             $deleteUrl = BackendUtility::getModuleUrl('tce_file');
-            $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText;
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete');
+            $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText;
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.delete');
             $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-content="' . htmlspecialchars($confirmationMessage)
                 . '" data-check="' . $confirmationCheck
                 . '" data-delete-url="' . htmlspecialchars($deleteUrl)

@@ -2829,7 +2829,7 @@ class DataHandler
         $set = false;
         /** @var FlashMessage $message */
         $message = GeneralUtility::makeInstance(FlashMessage::class,
-            sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:error.invalidEmail'), $value),
+            sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value),
             '', // header is optional
             FlashMessage::ERROR,
             true // whether message should be stored in session

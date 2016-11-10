@@ -62,7 +62,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             $value = $GLOBALS['LANG']->getLL('status_insecure');
             $severity = Status::ERROR;
             $changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('system_extinstall');
-            $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.installtool_default_password'),
+            $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.installtool_default_password'),
                 '<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">', '</a>');
         }
         return GeneralUtility::makeInstance(Status::class,
@@ -85,10 +85,10 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $severity = Status::WARNING;
                 $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                 $value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledPermanently');
-                $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled'),
+                $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_enabled'),
                     '<code style="white-space: nowrap;">' . $enableInstallToolFile . '</code>');
                 $message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
-                    $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
+                    $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
             } else {
                 if (EnableFileService::installToolEnableFileLifetimeExpired()) {
                     EnableFileService::removeInstallToolEnableFile();
@@ -99,7 +99,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                     $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_installEnabledTemporarily'),
                         '<code style="white-space: nowrap;">' . $enableInstallToolFile . '</code>', floor((@filemtime($enableInstallToolFile) + EnableFileService::INSTALL_TOOL_ENABLE_FILE_LIFETIME - time()) / 60));
                     $message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
-                        $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
+                        $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
                 }
             }
         }

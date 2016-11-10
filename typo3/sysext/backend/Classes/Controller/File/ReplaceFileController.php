@@ -104,8 +104,8 @@ class ReplaceFileController extends AbstractModule
                 ->retrieveFileOrFolderObject('file:' . $this->uid);
         }
         if (!$this->fileOrFolderObject) {
-            $title = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError');
-            $message = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1436895930);
         }
         if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
@@ -158,16 +158,16 @@ class ReplaceFileController extends AbstractModule
         $code .= '
 			<div class="form-group">
 				<input type="checkbox" value="1" id="keepFilename" name="file[replace][1][keepFilename]"> <label for="keepFilename">'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.keepfiletitle')
+            . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.keepfiletitle')
             . '</label>
 			</div>
 
 			<div class="form-group">
-				<label for="file_replace">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.selectfile') . '</label>
+				<label for="file_replace">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.selectfile') . '</label>
 				<div class="input-group col-xs-6">
 					<input type="text" name="fakefile" id="fakefile" class="form-control input-xlarge" readonly>
 					<a class="input-group-addon btn btn-primary" onclick="TYPO3.jQuery(\'#file_replace\').click();">'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.browse')
+            . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.browse')
             . '</a>
 				</div>
 				<input class="form-control" type="file" id="file_replace" name="replace_1" style="visibility: hidden;" />
@@ -187,9 +187,9 @@ class ReplaceFileController extends AbstractModule
         $code .= '
 				<div class="form-group">
 					<input class="btn btn-primary" type="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.submit')) . '" />
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.submit')) . '" />
 					<input class="btn btn-danger" type="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel'))
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel'))
             . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
@@ -207,12 +207,12 @@ class ReplaceFileController extends AbstractModule
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton);
         }
 
-        $this->content .= '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.pagetitle') . '</h1>';
+        $this->content .= '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.pagetitle') . '</h1>';
         // Add the HTML as a section:
         $this->content .= '<div>' . $code . '</div>';
 

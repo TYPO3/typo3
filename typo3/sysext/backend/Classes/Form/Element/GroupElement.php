@@ -140,7 +140,7 @@ class GroupElement extends AbstractFormElement
                             if ($fileObject->isMissing()) {
                                 $thumbnails[] = [
                                     'message' => '<span class="label label-danger">'
-                                        . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                                        . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                         . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />'
                                 ];
                             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
@@ -254,7 +254,7 @@ class GroupElement extends AbstractFormElement
                 $allowedTables = [];
                 if ($allowed[0] === '*') {
                     $allowedTables = [
-                        'name' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables'))
+                        'name' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.allTables'))
                     ];
                 } elseif ($allowed) {
                     foreach ($allowed as $allowedTable) {

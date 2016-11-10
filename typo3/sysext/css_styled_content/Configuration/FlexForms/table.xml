@@ -34,7 +34,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>

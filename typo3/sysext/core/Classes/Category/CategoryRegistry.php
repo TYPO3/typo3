@@ -305,7 +305,7 @@ class CategoryRegistry implements SingletonInterface
     {
         $fieldList = '';
         if (!isset($this->addedCategoryTabs[$tableName])) {
-            $fieldList .= '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category, ';
+            $fieldList .= '--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category, ';
             $this->addedCategoryTabs[$tableName] = $tableName;
         }
         $fieldList .= $fieldName;
@@ -330,7 +330,7 @@ class CategoryRegistry implements SingletonInterface
         // Makes sure to add more TCA to an existing structure
         if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
             // Take specific label into account
-            $label = 'LLL:EXT:lang/locallang_tca.xlf:sys_category.categories';
+            $label = 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.categories';
             if (!empty($options['label'])) {
                 $label = $options['label'];
             }

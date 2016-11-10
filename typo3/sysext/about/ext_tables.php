@@ -12,7 +12,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
         [
             'access' => 'user,group',
             'icon' => 'EXT:about/Resources/Public/Icons/module-about.svg',
-            'labels' => 'LLL:EXT:lang/locallang_mod_help_about.xlf'
+            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_help_about.xlf'
         ]
     );
 

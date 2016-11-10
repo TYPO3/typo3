@@ -731,7 +731,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $table = [];
 
         // Disable checkbox
-        $label = '<label>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:disable') . '</label>';
+        $label = '<label>' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable') . '</label>';
         $table[] =
             '<div class="form-section" id="task_disable_row"><div class="form-group">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_disable', $label)
@@ -1038,7 +1038,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             foreach ($taskGroup['tasks'] as $schedulerRecord) {
                 // Define action icons
                 $link = htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']);
-                $editAction = '<a class="btn btn-default" href="' . $link . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit')) . '" class="icon">' .
+                $editAction = '<a class="btn btn-default" href="' . $link . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:edit')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
                 if ((int)$schedulerRecord['disable'] === 1) {
                     $translationKey = 'enable';
@@ -1049,21 +1049,21 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 }
                 $toggleHiddenAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri
                     . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="'
-                    . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey))
+                    . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:' . $translationKey))
                     . '" class="icon">' . $icon->render() . '</a>';
                 $deleteAction = '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
                     . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete')) . '"'
-                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
+                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete')) . '"'
+                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                     . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('msg.delete')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete')) . '" class="icon">' .
+                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
                 $stopAction = '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
                     . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop')) . '"'
-                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
+                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop')) . '"'
+                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                     . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('msg.stop')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop')) . '" class="icon">' .
+                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
                 $runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1143,9 +1143,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     }
                     // Get multiple executions setting
                     if ($task->getExecution()->getMultiple()) {
-                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:yes');
+                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes');
                     } else {
-                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:no');
+                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no');
                     }
                     // Define checkbox
                     $startExecutionElement = '<label class="btn btn-default btn-checkbox"><input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '"><span class="t3-icon fa"></span></label>';
@@ -1544,7 +1544,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // Add and Reload
         if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden') {
             $reloadButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))
                 ->setHref($this->moduleUri);
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
@@ -1560,7 +1560,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         if ($this->CMD === 'add' || $this->CMD === 'edit') {
             // Close
             $closeButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL))
                 ->setOnClick('document.location=' . GeneralUtility::quoteJSvalue($this->moduleUri))
                 ->setHref('#');
@@ -1572,21 +1572,21 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 ->setValue('save')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:save'));
             $saveButtonDropdown->addItem($saveButton);
             $saveAndNewButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('savenew')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:saveAndCreateNewDoc'));
             $saveButtonDropdown->addItem($saveAndNewButton);
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('saveclose')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
             $saveButtonDropdown->addItem($saveAndCloseButton);
             $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
@@ -1597,7 +1597,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 ->setValue('delete')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete'));
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
         // Shortcut

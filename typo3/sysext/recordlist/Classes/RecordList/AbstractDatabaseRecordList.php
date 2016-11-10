@@ -588,7 +588,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         foreach ($searchLevelItems as $kv => $label) {
             $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
         }
-        $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search_levels')) . '" id="search_levels">' . implode('', $opt) . '</select>';
+        $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')) . '" id="search_levels">' . implode('', $opt) . '</select>';
         // Table with the search box:
         $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
@@ -597,19 +597,19 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                         <div class="panel-body">
                             <div class="form-inline form-inline-spaced">
                                 <div class="form-group">
-									<input class="form-control" type="search" placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString')) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString')) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
+									<input class="form-control" type="search" placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
                                 </div>
                                 <div class="form-group">
-									<label for="search_levels">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels')) . ': </label>
+									<label for="search_levels">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')) . ': </label>
 									' . $lMenu . '
                                 </div>
                                 <div class="form-group">
-									<label for="showLimit">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit')) . ': </label>
-									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit')) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
+									<label for="showLimit">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.label.limit')) . ': </label>
+									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.limit')) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
                                 </div>
                                 <div class="form-group">
-									<button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search')) . '">
-										' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search')) . '
+									<button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.search')) . '">
+										' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.search')) . '
                                     </button>
                                 </div>
                             </div>
@@ -1057,7 +1057,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $origCode = $code;
         // If the title is blank, make a "no title" label:
         if ((string)$code === '') {
-            $code = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</i> - '
+            $code = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</i> - '
                 . htmlspecialchars(BackendUtility::getRecordTitle($table, $row));
         } else {
             $code = htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
@@ -1085,7 +1085,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 if ($table == 'pages' || $table == 'tt_content') {
                     $code = '<a href="#" onclick="' . htmlspecialchars(
                         BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))
-                    ) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">' . $code . '</a>';
+                    ) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $code . '</a>';
                 }
                 break;
             case 'info':

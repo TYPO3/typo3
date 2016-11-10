@@ -5,7 +5,7 @@ return [
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
-        'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
+        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
@@ -40,7 +40,7 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
@@ -48,7 +48,7 @@ return [
             ]
         ],
         'starttime' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'exclude' => true,
             'config' => [
                 'type' => 'input',
@@ -58,7 +58,7 @@ return [
             ]
         ],
         'endtime' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'exclude' => true,
             'config' => [
                 'type' => 'input',
@@ -221,7 +221,7 @@ return [
             ]
         ],
         't3ver_label' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
