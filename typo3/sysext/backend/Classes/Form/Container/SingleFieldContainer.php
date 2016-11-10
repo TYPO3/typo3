@@ -152,7 +152,9 @@ class SingleFieldContainer extends AbstractContainer
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];
         $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($row['uid']) . ',' . GeneralUtility::quoteJSvalue($fieldName) . ',' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ');';
-        $parameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
+        if ($alertMsgOnChange) {
+            $parameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
+        }
 
         // If this is the child of an inline type and it is the field creating the label
         if ($this->isInlineChildAndLabelField($table, $fieldName)) {
