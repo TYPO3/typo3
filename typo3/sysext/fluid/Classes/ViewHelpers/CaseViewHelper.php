@@ -70,7 +70,7 @@ class CaseViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $value = $arguments['value'];
-        $default = $arguments['default'];
+        $default = (bool)$arguments['default'];
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         if ($default !== false) {
             GeneralUtility::deprecationLog('Argument "default" on f:case is deprecated - use f:defaultCase instead');
