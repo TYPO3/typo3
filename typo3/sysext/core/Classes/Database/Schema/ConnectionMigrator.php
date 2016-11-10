@@ -42,6 +42,11 @@ class ConnectionMigrator
     protected $deletedPrefix = 'zzz_deleted_';
 
     /**
+     * @var int
+     */
+    protected $maxTableNameLength = 64;
+
+    /**
      * @var Connection
      */
     protected $connection;
@@ -876,6 +881,13 @@ class ConnectionMigrator
             );
 
             $tableDiff->newName = $this->deletedPrefix . $removedTable->getName();
+            if (strlen($tableDiff->newName) > $this->maxTableNameLength) {
+                $shortTableName = substr(
+                    $removedTable->getName(),
+                    strlen($removedTable->getName()) + strlen($this->deletedPrefix) - $this->maxTableNameLength
+                );
+                $tableDiff->newName = $this->deletedPrefix . $shortTableName;
+            }
             $schemaDiff->changedTables[$index] = $tableDiff;
             unset($schemaDiff->removedTables[$index]);
         }
