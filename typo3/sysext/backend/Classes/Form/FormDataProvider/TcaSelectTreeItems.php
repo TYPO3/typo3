@@ -49,15 +49,16 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
             $fieldConfig['config']['maxitems'] = $this->sanitizeMaxItems($fieldConfig['config']['maxitems']);
 
+            $pageTsConfigAddItems = $this->addItemsFromPageTsConfig($result, $fieldName, []);
             $fieldConfig['config']['items'] = $this->addItemsFromSpecial($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);
-            $staticItems = $fieldConfig['config']['items'];
+            $staticItems = $fieldConfig['config']['items'] + $pageTsConfigAddItems;
 
             $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
             $dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
 
             $fieldConfig['config']['items'] = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
-            $fieldConfig['config']['items'] = $this->addItemsFromPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
+            $fieldConfig['config']['items'] = $pageTsConfigAddItems + $fieldConfig['config']['items'];
             $fieldConfig['config']['items'] = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
 
             $fieldConfig['config']['items'] = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $fieldConfig['config']['items']);
@@ -178,7 +179,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 'selectable' => true,
                 'leaf' => true,
                 'checked' => in_array($item[1], $selectedNodes),
-                'icon' => $item[3]
+                'icon' => $item[2]
             ];
         }
 

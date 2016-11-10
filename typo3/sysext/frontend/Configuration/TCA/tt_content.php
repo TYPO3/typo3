@@ -1015,7 +1015,7 @@ return [
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) ORDER BY sys_category.title ASC',
-                'size' => 50,
+                'size' => 20,
                 'maxitems' => 9999,
                 'treeConfig' => [
                     'parentField' => 'parent',

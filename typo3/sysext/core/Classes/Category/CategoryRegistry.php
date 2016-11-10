@@ -408,7 +408,7 @@ class CategoryRegistry implements SingletonInterface
                 'tablenames' => $tableName,
                 'fieldname' => $fieldName,
             ],
-            'size' => 50,
+            'size' => 20,
             'maxitems' => 9999,
             'treeConfig' => [
                 'parentField' => 'parent',

@@ -153,6 +153,11 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
             node.indeterminate = false;
         });
         this.calculateIndeterminate(this.rootNode);
+        // Initialise "value" attribute of input field after load and revalidate form engine fields
+        this.saveCheckboxes(this.rootNode);
+        if (typeof TYPO3.FormEngine.Validation !== 'undefined' && typeof TYPO3.FormEngine.Validation.validate === 'function') {
+            TYPO3.FormEngine.Validation.validate();
+        }
     };
 
     /**

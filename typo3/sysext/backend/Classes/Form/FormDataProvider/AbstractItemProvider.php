@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -117,6 +118,9 @@ abstract class AbstractItemProvider
     protected function addItemsFromPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
         if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
             && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
         ) {
@@ -132,7 +136,25 @@ abstract class AbstractItemProvider
                     && is_array($addItemsArray[$value . '.'])
                     && !empty($addItemsArray[$value . '.']['icon'])
                 ) {
-                    $icon = $addItemsArray[$value . '.']['icon'];
+                    $iconIdentifier = $addItemsArray[$value . '.']['icon'];
+                    if (!$iconRegistry->isRegistered($iconIdentifier)) {
+                        GeneralUtility::deprecationLog(
+                            'Using a file path for icon in pageTsConfig addItems is deprecated.' .
+                            'Use a registered iconIdentifier instead'
+                        );
+                        $iconPath = GeneralUtility::getFileAbsFileName($iconIdentifier);
+                        if ($iconPath !== '') {
+                            $iconIdentifier = md5($iconPath);
+                            $iconRegistry->registerIcon(
+                                $iconIdentifier,
+                                $iconRegistry->detectIconProvider($iconPath),
+                                [
+                                    'source' => $iconPath
+                                ]
+                            );
+                        }
+                    }
+                    $icon = $iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->getMarkup('inline');
                 }
                 $items[] = [$label, $value, $icon];
             }

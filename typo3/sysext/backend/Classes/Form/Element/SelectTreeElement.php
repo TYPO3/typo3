@@ -69,12 +69,11 @@ class SelectTreeElement extends AbstractFormElement
         $expanded = !empty($appearance['expandAll']);
         $showHeader = !empty($appearance['showHeader']);
         if (isset($config['size']) && (int)$config['size'] > 0) {
-            $height = min(max(count($config['items']), $this->minItemsToShow), (int)$config['size']);
+            $height = max($this->minItemsToShow, (int)$config['size']);
         } else {
             $height = $this->itemsToShow;
         }
         $heightInPx = $height * $this->itemHeight;
-
         $treeWrapperId = 'tree_' . $formElementId;
 
         $flexFormFieldName = !empty($parameterArray['fieldConf']['flexFormFieldName']) ? htmlspecialchars($parameterArray['fieldConf']['flexFormFieldName']) : '';
@@ -95,7 +94,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] = '           data-tree-show-toolbar="' . $showHeader . '"';
         $html[] = '           name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] = '           id="treeinput' . $formElementId . '"';
-        $html[] = '           value="' . htmlspecialchars(implode(',', $config['treeData']['selectedNodes'])) . '"';
+        $html[] = '           value=""';
         $html[] = '    />';
         $html[] = '</div>';
         $html[] = '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $heightInPx . 'px;"></div>';

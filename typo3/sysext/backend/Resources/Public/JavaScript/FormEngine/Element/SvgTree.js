@@ -194,10 +194,46 @@ define(['jquery', 'd3'], function ($, d3) {
                     return;
                 }
                 if (Array.isArray(json)) {
-                    //little hack, so we can use json structure prepared by ExtJsJsonTreeRenderer
-                    json = json[0];
+                    if (json.length > 1) {
+                        // If tree comes with multiple root nodes, add them to a new root
+                        var tmp = {
+                            checked: undefined,
+                            children: [],
+                            expandable: true,
+                            expanded: true,
+                            iconTag: null,
+                            id: '',
+                            identifier: 'root',
+                            leaf: false,
+                            name: '',
+                            overlayIcon: '',
+                            text: '',
+                            uid: ''
+                        };
+                        for (var i = 0; i < json.length; i++) {
+                            var n = json[i];
+                            if (typeof n.identifier === 'undefined') {
+                                n.identifier = n.uid;
+                            }
+                            if (typeof n.name === 'undefined') {
+                                n.name = n.text;
+                            }
+                            if (typeof n.expandable === 'undefined') {
+                                n.expandable = true;
+                            }
+                            if (typeof n.expanded === 'undefined') {
+                                n.expanded = true;
+                            }
+                            if (typeof n.icon !== 'undefined') {
+                                n.iconTag = n.icon;
+                            }
+                            tmp.children.push(n);
+                        }
+                        json = tmp;
+                    } else {
+                        json = json[0];
+                    }
                 }
-
                 var rootNode = d3.hierarchy(json);
                 d3.tree(rootNode);
 
