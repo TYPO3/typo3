@@ -117,6 +117,14 @@ class ReferenceIndex
     public $relations = [];
 
     /**
+     * A cache to avoid that identical rows are refetched from the database
+     *
+     * @var array
+     * @see getRecordRawCached()
+     */
+    protected $recordCache = [];
+
+    /**
      * Number which we can increase if a change in the code means we will have to force a re-generation of the index.
      *
      * @var int
@@ -228,22 +236,15 @@ class ReferenceIndex
         }
 
         // If the table has fields which could contain relations and the record does exist (including deleted-flagged)
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $exists = $queryBuilder
-            ->select('uid')
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-            )
-            ->execute()
-            ->fetch();
-
-        if ($tableRelationFields !== '' && $exists) {
-            // Then, get relations:
-            $relations = $this->generateRefIndexData($tableName, $uid);
-            if (is_array($relations)) {
+        if ($tableRelationFields !== '') {
+            $existingRecord = $this->getRecordRawCached($tableName, $uid);
+            if ($existingRecord) {
+                // Table has relation fields and record exists - get relations
+                $this->relations = [];
+                $relations = $this->generateDataUsingRecord($tableName, $existingRecord);
+                if (!is_array($relations)) {
+                    return $result;
+                }
                 // Traverse the generated index:
                 foreach ($relations as &$relation) {
                     if (!is_array($relation)) {
@@ -265,8 +266,6 @@ class ReferenceIndex
                     }
                 }
                 $result['relations'] = $relations;
-            } else {
-                return $result;
             }
         }
 
@@ -310,49 +309,29 @@ class ReferenceIndex
 
         $this->relations = [];
 
-        // Fetch tableRelationFields and save them in cache if not there yet
-        $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-        if (!$this->runtimeCache->has($cacheId)) {
-            $tableRelationFields = $this->fetchTableRelationFields($tableName);
-            $this->runtimeCache->set($cacheId, $tableRelationFields);
-        } else {
-            $tableRelationFields = $this->runtimeCache->get($cacheId);
-        }
-
-        // Return if there are no fields which could contain relations
-        if ($tableRelationFields === '') {
-            return array_filter($this->relations);
-        }
-
-        $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
-
-        if ($tableRelationFields === '*') {
-            // If one field of a record is of type flex, all fields have to be fetched
-            // to be passed to FlexFormTools->getDataStructureIdentifier()
-            $selectFields = '*';
-        } else {
-            // otherwise only fields that might contain relations are fetched
-            $selectFields = 'uid,' . $tableRelationFields . ($deleteField ? ',' . $deleteField : '');
-        }
-
         // Get raw record from DB
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $record = $queryBuilder
-            ->select(...explode(',', $selectFields))
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-            )
-            ->execute()
-            ->fetch();
+        $record = $this->getRecordRawCached($tableName, $uid);
 
         if (!is_array($record)) {
             return null;
         }
 
-        // Deleted:
+        return $this->generateDataUsingRecord($tableName, $record);
+    }
+
+    /**
+     * Calculate the relations for a record of a given table
+     *
+     * @param string $tableName Table being processed
+     * @param array $record Record from $tableName
+     * @return array
+     */
+    protected function generateDataUsingRecord(string $tableName, array $record) : array
+    {
+        $this->relations = [];
+        $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
+
+        // Is the record deleted?
         $deleted = $deleteField && $record[$deleteField] ? 1 : 0;
 
         // Get all relations from record:
@@ -362,39 +341,39 @@ class ReferenceIndex
             // Based on type
             switch ((string)$fieldRelations['type']) {
                 case 'db':
-                    $this->createEntryData_dbRels($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['itemArray']);
+                    $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['itemArray']);
                     break;
                 case 'file_reference':
                     // not used (see getRelations()), but fallback to file
                 case 'file':
-                    $this->createEntryData_fileRels($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['newValueFiles']);
+                    $this->createEntryDataForFileRelationsUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['newValueFiles']);
                     break;
                 case 'flex':
                     // DB references in FlexForms
                     if (is_array($fieldRelations['flexFormRels']['db'])) {
                         foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
-                            $this->createEntryData_dbRels($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList);
+                            $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList);
                         }
                     }
                     // File references in FlexForms
                     // @todo #65463 Test correct handling of file references in FlexForms
                     if (is_array($fieldRelations['flexFormRels']['file'])) {
                         foreach ($fieldRelations['flexFormRels']['file'] as $flexPointer => $subList) {
-                            $this->createEntryData_fileRels($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList);
+                            $this->createEntryDataForFileRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList);
                         }
                     }
                     // Soft references in FlexForms
                     // @todo #65464 Test correct handling of soft references in FlexForms
                     if (is_array($fieldRelations['flexFormRels']['softrefs'])) {
                         foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
-                            $this->createEntryData_softreferences($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList['keys']);
+                            $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList['keys']);
                         }
                     }
                     break;
             }
             // Soft references in the field
             if (is_array($fieldRelations['softrefs'])) {
-                $this->createEntryData_softreferences($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['softrefs']['keys']);
+                $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['softrefs']['keys']);
             }
         }
 
@@ -420,30 +399,60 @@ class ReferenceIndex
      */
     public function createEntryData($table, $uid, $field, $flexPointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '')
     {
-        if ($this->getWorkspaceId() > 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
-            $element = BackendUtility::getRecord($table, $uid, 't3ver_wsid');
-            if ($element !== null
-                && isset($element['t3ver_wsid'])
-                && (int)$element['t3ver_wsid'] !== $this->getWorkspaceId()
-            ) {
-                // The given element is ws-enabled but doesn't live in the selected workspace
-                // => don't add to index as it's not actually there
-                return null;
+        return $this->createEntryDataUsingRecord(
+            $table,
+            $this->getRecordRawCached($table, $uid),
+            $field,
+            $flexPointer,
+            (int)$deleted,
+            $ref_table,
+            $ref_uid,
+            $ref_string,
+            $sort,
+            $softref_key,
+            $softref_id
+        );
+    }
+
+    /**
+     * Create array with field/value pairs ready to insert in database
+     *
+     * @param string $tableName Tablename of source record (where reference is located)
+     * @param array $record Record from $table
+     * @param string $fieldName Fieldname of source record (where reference is located)
+     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [$field]
+     * @param int $deleted Whether record is deleted-flagged or not
+     * @param string $referencedTable In database references the tablename the reference points to. Keyword "_FILE" indicates that $referenceString is a file reference, keyword "_STRING" indicates special usage (typ. SoftReference) in $referenceString
+     * @param int $referencedUid In database references the UID of the record (zero $referencedTable is "_FILE" or "_STRING")
+     * @param string $referenceString For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
+     * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
+     * @param string $softReferenceKey If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
+     * @param string $softReferenceId Soft reference ID for key. Might be useful for replace operations.
+     * @return array|bool Array to insert in DB or false if record should not be processed
+     */
+    protected function createEntryDataUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, string $referencedTable, int $referencedUid, string $referenceString = '', int $sort = -1, string $softReferenceKey = '', string $softReferenceId = '')
+    {
+        $workspaceId = 0;
+        if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            $workspaceId = $this->getWorkspaceId();
+            if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceId) {
+                // The given record is workspace-enabled but doesn't live in the selected workspace => don't add index as it's not actually there
+                return false;
             }
         }
         return [
-            'tablename' => $table,
-            'recuid' => $uid,
-            'field' => $field,
+            'tablename' => $tableName,
+            'recuid' => $record['uid'],
+            'field' => $fieldName,
             'flexpointer' => $flexPointer,
-            'softref_key' => $softref_key,
-            'softref_id' => $softref_id,
+            'softref_key' => $softReferenceKey,
+            'softref_id' => $softReferenceId,
             'sorting' => $sort,
-            'deleted' => $deleted,
-            'workspace' => $this->getWorkspaceId(),
-            'ref_table' => $ref_table,
-            'ref_uid' => $ref_uid,
-            'ref_string' => mb_substr($ref_string, 0, 1024)
+            'deleted' => (int)$deleted,
+            'workspace' => $workspaceId,
+            'ref_table' => $referencedTable,
+            'ref_uid' => $referencedUid,
+            'ref_string' => mb_substr($referenceString, 0, 1024)
         ];
     }
 
@@ -459,8 +468,30 @@ class ReferenceIndex
      */
     public function createEntryData_dbRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
     {
+        $this->createEntryDataForDatabaseRelationsUsingRecord(
+            $table,
+            $this->getRecordRawCached($table, $uid),
+            $fieldName,
+            $flexPointer,
+            $deleted,
+            $items
+        );
+    }
+
+    /**
+     * Add database references to ->relations array based on fetched record
+     *
+     * @param string $tableName Tablename of source record (where reference is located)
+     * @param array $record Record from $tableName
+     * @param string $fieldName Fieldname of source record (where reference is located)
+     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
+     * @param int $deleted Whether record is deleted-flagged or not
+     * @param array $items Data array with database relations (table/id)
+     */
+    protected function createEntryDataForDatabaseRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $items)
+    {
         foreach ($items as $sort => $i) {
-            $this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, $i['table'], $i['id'], '', $sort);
+            $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $i['table'], $i['id'], '', $sort);
         }
     }
 
@@ -476,12 +507,44 @@ class ReferenceIndex
      */
     public function createEntryData_fileRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
     {
+        $this->createEntryDataForFileRelationsUsingRecord(
+            $table,
+            $this->getRecordRawCached($table, $uid),
+            $fieldName,
+            $flexPointer,
+            $deleted,
+            $items
+        );
+    }
+
+    /**
+     * Add file references to ->relations array based on fetched record
+     *
+     * @param string $tableName Tablename of source record (where reference is located)
+     * @param array $record Record from $tableName
+     * @param string $fieldName Fieldname of source record (where reference is located)
+     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
+     * @param int $deleted Whether record is deleted-flagged or not
+     * @param array $items Data array with file relations
+     */
+    protected function createEntryDataForFileRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $items)
+    {
         foreach ($items as $sort => $i) {
             $filePath = $i['ID_absFile'];
             if (GeneralUtility::isFirstPartOfStr($filePath, PATH_site)) {
                 $filePath = PathUtility::stripPathSitePrefix($filePath);
             }
-            $this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, '_FILE', 0, $filePath, $sort);
+            $this->relations[] = $this->createEntryDataUsingRecord(
+                $tableName,
+                $record,
+                $fieldName,
+                $flexPointer,
+                $deleted,
+                '_FILE',
+                0,
+                $filePath,
+                $sort
+            );
         }
     }
 
@@ -497,25 +560,48 @@ class ReferenceIndex
      */
     public function createEntryData_softreferences($table, $uid, $fieldName, $flexPointer, $deleted, $keys)
     {
-        if (is_array($keys)) {
-            foreach ($keys as $spKey => $elements) {
-                if (is_array($elements)) {
-                    foreach ($elements as $subKey => $el) {
-                        if (is_array($el['subst'])) {
-                            switch ((string)$el['subst']['type']) {
-                                case 'db':
-                                    list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
-                                    $this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
-                                    break;
-                                case 'file_reference':
-                                    // not used (see getRelations()), but fallback to file
-                                case 'file':
-                                    $this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
-                                    break;
-                                case 'string':
-                                    $this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
-                                    break;
-                            }
+        if (!is_array($keys)) {
+            return;
+        }
+        $this->createEntryDataForSoftReferencesUsingRecord(
+            $table,
+            $this->getRecordRawCached($table, $uid),
+            $fieldName,
+            $flexPointer,
+            $deleted,
+            $keys
+        );
+    }
+
+    /**
+     * Add SoftReference references to ->relations array based on fetched record
+     *
+     * @param string $tableName Tablename of source record (where reference is located)
+     * @param array $record Record from $tableName
+     * @param string $fieldName Fieldname of source record (where reference is located)
+     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
+     * @param int $deleted Whether record is deleted-flagged or not
+     * @param array $keys Data array with soft reference keys
+     */
+    protected function createEntryDataForSoftReferencesUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $keys)
+    {
+        foreach ($keys as $spKey => $elements) {
+            if (is_array($elements)) {
+                foreach ($elements as $subKey => $el) {
+                    if (is_array($el['subst'])) {
+                        switch ((string)$el['subst']['type']) {
+                            case 'db':
+                                list($referencedTable, $referencedUid) = explode(':', $el['subst']['recordRef']);
+                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $referencedTable, $referencedUid, '', -1, $spKey, $subKey);
+                                break;
+                            case 'file_reference':
+                                // not used (see getRelations()), but fallback to file
+                            case 'file':
+                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
+                                break;
+                            case 'string':
+                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
+                                break;
                         }
                     }
                 }
@@ -583,7 +669,7 @@ class ReferenceIndex
                     $conf['softref'] = 'typolink';
                 }
                 // Add DB:
-                $resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table, $field);
+                $resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table);
                 if (!empty($resultsFromDatabase)) {
                     // Create an entry for the field with all DB relations:
                     $outRow[$field] = [
@@ -617,8 +703,8 @@ class ReferenceIndex
                 // Soft References:
                 if ((string)$value !== '') {
                     $softRefValue = $value;
-                    $softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
-                    if ($softRefs !== false) {
+                    if (!empty($conf['softref'])) {
+                        $softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
                         foreach ($softRefs as $spKey => $spParams) {
                             $softRefObj = BackendUtility::softRefParserObj($spKey);
                             if (is_object($softRefObj)) {
@@ -648,10 +734,9 @@ class ReferenceIndex
      * @param mixed $dataValue Current value
      * @param array $PA Additional configuration used in calling function
      * @param string $structurePath Path of value in DS structure
-     * @param object $parentObject Object reference to caller (unused)
      * @see DataHandler::checkValue_flex_procInData_travDS(),FlexFormTools::traverseFlexFormXMLData()
      */
-    public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $parentObject)
+    public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath)
     {
         // Removing "data/" in the beginning of path (which points to location in data array)
         $structurePath = substr($structurePath, 5) . '/';
@@ -690,7 +775,7 @@ class ReferenceIndex
             $dsConf['softref'] = 'typolink';
         }
         // Add DB:
-        $resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $table, $field);
+        $resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $table);
         if (!empty($resultsFromDatabase)) {
             // Create an entry for the field with all DB relations:
             $this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
@@ -786,10 +871,9 @@ class ReferenceIndex
      * @param array $conf Field configuration array of type "TCA/columns
      * @param int $uid Field uid
      * @param string $table Table name
-     * @param string $field Field name
-     * @return array If field type is OK it will return an array with the database relations. Else FALSE
+     * @return array|bool If field type is OK it will return an array with the database relations. Else FALSE
      */
-    public function getRelations_procDB($value, $conf, $uid, $table = '', $field = '')
+    public function getRelations_procDB($value, $conf, $uid, $table = '')
     {
         // Get IRRE relations
         if (empty($conf)) {
@@ -1358,6 +1442,76 @@ class ReferenceIndex
             $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
         }
         return [$headerContent, $bodyContent, $errorCount];
+    }
+
+    /**
+     * Gets one record from database and stores it in an internal cache (which expires along with object lifecycle) for faster retrieval
+     *
+     * Assumption:
+     *
+     * - This method is only used from within delegate methods and so only caches queries generated based on the record being indexed; the query
+     *   to select origin side record is uncached
+     * - Origin side records do not change in database while updating the reference index
+     * - Origin record does not get removed while updating index
+     * - Relations may change during indexing, which is why only the origin record is cached and all relations are re-process even when repeating
+     *   indexing of the same origin record
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @return array|false
+     */
+    protected function getRecordRawCached(string $tableName, int $uid)
+    {
+        $recordCacheId = $tableName . ':' . $uid;
+        if (!isset($this->recordCache[$recordCacheId])) {
+
+            // Fetch fields of the table which might contain relations
+            $cacheId = static::$cachePrefixTableRelationFields . $tableName;
+            if (!$this->runtimeCache->has($cacheId)) {
+                $tableRelationFields = $this->fetchTableRelationFields($tableName);
+                $this->runtimeCache->set($cacheId, $tableRelationFields);
+            } else {
+                $tableRelationFields = $this->runtimeCache->get($cacheId);
+            }
+
+            // Return if there are no fields which could contain relations
+            if ($tableRelationFields === '') {
+                return $this->relations;
+            }
+
+            if ($tableRelationFields === '*') {
+                // If one field of a record is of type flex, all fields have to be fetched to be passed to FlexFormTools->getDataStructureIdentifier()
+                $selectFields = '*';
+            } else {
+                // otherwise only fields that might contain relations are fetched
+                $selectFields = 'uid,' . $tableRelationFields;
+                $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
+                if ($deleteField) {
+                    $selectFields .= ',' . $deleteField;
+                }
+                if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+                    $selectFields .= ',t3ver_wsid';
+                }
+            }
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $row = $queryBuilder
+                ->select(...GeneralUtility::trimExplode(',', $selectFields, true))
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    )
+                )
+                ->execute()
+                ->fetch();
+
+            $this->recordCache[$recordCacheId] = $row;
+        }
+        return $this->recordCache[$recordCacheId];
     }
 
     /**
