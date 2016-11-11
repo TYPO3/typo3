@@ -5,7 +5,7 @@
 <div class="dropdown-table">
     <f:for each="{cacheActions}" as="cacheAction">
         <div class="dropdown-table-row">
-            <f:link.typolink parameter="{cacheAction.href}">
+            <f:link.typolink parameter="{cacheAction.href}" class="toolbar-cache-flush-action">
                 <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">
                     {cacheAction.icon -> f:format.raw()}
                 </div>

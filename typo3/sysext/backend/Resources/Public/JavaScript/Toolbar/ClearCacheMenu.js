@@ -27,7 +27,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], 
 	var ClearCacheMenu = {
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
-			menuItemSelector: '.dropdown-menu a',
+			menuItemSelector: 'a.toolbar-cache-flush-action',
 			toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
 		}
 	};

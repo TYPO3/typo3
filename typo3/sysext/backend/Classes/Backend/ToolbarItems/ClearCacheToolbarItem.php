@@ -122,14 +122,22 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render('inline');
-
-        $view = $this->getFluidTemplateObject('ClearCacheToolbarItem.html');
-        $view->assignMultiple([
+        if ($this->hasDropDown()) {
+            $templateReference = 'ClearCacheToolbarItem.html';
+            $icon = $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render('inline');
+            $variables = [
                 'title' => 'LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache',
                 'icon' => $icon
-            ]
-        );
+            ];
+        } else {
+            $templateReference = 'ClearCacheToolbarItemSingle.html';
+            $cacheAction = end($this->cacheActions);
+            $variables['link'] = $cacheAction['href'];
+            $variables['title'] = $cacheAction['title'];
+            $variables['icon'] = $cacheAction['icon'];
+        }
+        $view = $this->getFluidTemplateObject($templateReference);
+        $view->assignMultiple($variables);
 
         return $view->render();
     }
@@ -168,7 +176,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function hasDropDown()
     {
-        return true;
+        return count($this->cacheActions) > 1;
     }
 
     /**
