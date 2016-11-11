@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,7 +83,6 @@ class EditFileController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $GLOBALS['SOBE'] = $this;
         $this->init();
     }
@@ -120,7 +118,7 @@ class EditFileController extends AbstractModule
         }
 
         // Setting the title and the icon
-        $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
+        $icon = $this->moduleTemplate->getIconFactory()->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
         $this->title = $icon
             . htmlspecialchars(
                 $this->fileObject->getStorage()->getName()
