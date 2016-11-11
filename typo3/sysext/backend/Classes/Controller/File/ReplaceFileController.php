@@ -104,8 +104,8 @@ class ReplaceFileController extends AbstractModule
                 ->retrieveFileOrFolderObject('file:' . $this->uid);
         }
         if (!$this->fileOrFolderObject) {
-            $title = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError'));
-            $message = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir'));
+            $title = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError');
+            $message = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1436895930);
         }
         if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
