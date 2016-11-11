@@ -24,13 +24,10 @@ use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionN
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\Configuration;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
-use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -120,20 +117,23 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function __construct(ViewInterface $view = null)
     {
+        parent::__construct($view);
+
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         if ($view) {
             $this->view = $view;
         }
-        $this->setTemplateParser(new TemplateParser());
-        $this->setTemplateCompiler(new TemplateCompiler());
-        $this->setViewHelperInvoker(new ViewHelperInvoker());
-        $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
         $this->setTemplatePaths($objectManager->get(TemplatePaths::class));
         $this->setViewHelperResolver($objectManager->get(ViewHelperResolver::class));
         $this->setVariableProvider($objectManager->get(CmsVariableProvider::class));
-        $this->setTemplateProcessors([
-            $objectManager->get(XmlnsNamespaceTemplatePreProcessor::class),
-        ]);
+        $this->setTemplateProcessors(
+            array_merge(
+                parent::getTemplateProcessors(),
+                [
+                    $objectManager->get(XmlnsNamespaceTemplatePreProcessor::class),
+                ]
+            )
+        );
         /** @var FluidTemplateCache $cache */
         $cache = $objectManager->get(CacheManager::class)->getCache('fluid_template');
         if (is_a($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend'], FluidTemplateCache::class, true)) {
