@@ -116,7 +116,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             $tempBackendUser->userTS_dontGetCached = 1;
             $tempBackendUser->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
             if ($tempBackendUser->user['uid']) {
-                $tempBackendUser->unpack_uc('');
+                $tempBackendUser->unpack_uc();
                 $tempBackendUser->fetchGroupData();
                 // Handle degradation of admin users
                 if ($tempBackendUser->isAdmin()) {

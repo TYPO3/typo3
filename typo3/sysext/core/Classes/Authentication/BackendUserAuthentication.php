@@ -2530,10 +2530,7 @@ This is a dump of the failures:
     {
         // UC - user configuration is a serialized array inside the user object
         // If there is a saved uc we implement that instead of the default one.
-        $temp_theSavedUC = unserialize($this->user['uc']);
-        if (is_array($temp_theSavedUC)) {
-            $this->unpack_uc($temp_theSavedUC);
-        }
+        $this->unpack_uc();
         // Setting defaults if uc is empty
         $updated = false;
         $originalUc = [];

@@ -1015,7 +1015,7 @@ class TypoScriptFrontendController
             }
         }
         $this->fe_user->start();
-        $this->fe_user->unpack_uc('');
+        $this->fe_user->unpack_uc();
         // Gets session data
         $this->fe_user->fetchSessionData();
         $recs = GeneralUtility::_GP('recs');
@@ -1178,7 +1178,7 @@ class TypoScriptFrontendController
             $BE_USER->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
             // Object is initialized
             $BE_USER->start();
-            $BE_USER->unpack_uc('');
+            $BE_USER->unpack_uc();
             if (!empty($BE_USER->user['uid'])) {
                 $BE_USER->fetchGroupData();
                 $this->beUserLogin = true;
