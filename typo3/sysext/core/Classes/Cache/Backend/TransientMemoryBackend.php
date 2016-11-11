@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * This file is a backport from FLOW3
  * @api
  */
-class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
+class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * @var array
@@ -48,9 +48,6 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
     {
         if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1238244992);
-        }
-        if (!is_string($data)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1238244993);
         }
         $this->entries[$entryIdentifier] = $data;
         foreach ($tags as $tag) {

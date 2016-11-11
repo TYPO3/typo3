@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -57,7 +58,10 @@ class VariableFrontend extends AbstractFrontend
                 GeneralUtility::callUserFunction($_funcRef, $params, $this);
             }
         }
-        $this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
+        if (!$this->backend instanceof TransientBackendInterface) {
+            $variable = serialize($variable);
+        }
+        $this->backend->set($entryIdentifier, $variable, $tags, $lifetime);
     }
 
     /**
@@ -81,7 +85,7 @@ class VariableFrontend extends AbstractFrontend
         if ($rawResult === false) {
             return false;
         } else {
-            return unserialize($rawResult);
+            return $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
         }
     }
 
@@ -104,7 +108,7 @@ class VariableFrontend extends AbstractFrontend
         foreach ($identifiers as $identifier) {
             $rawResult = $this->backend->get($identifier);
             if ($rawResult !== false) {
-                $entries[] = unserialize($rawResult);
+                $entries[] = $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
             }
         }
         return $entries;
