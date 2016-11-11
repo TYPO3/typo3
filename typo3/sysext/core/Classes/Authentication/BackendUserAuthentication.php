@@ -302,6 +302,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
         parent::__construct();
         $this->name = self::getCookieName();
         $this->loginType = 'BE';
+        $this->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
+        $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
+        $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+            $this->dontSetCookie = true;
+        }
     }
 
     /**

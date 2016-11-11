@@ -1019,12 +1019,6 @@ class Bootstrap
     {
         /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
         $backendUser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
-        $backendUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        $backendUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
-        $backendUser->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
-            $backendUser->dontSetCookie = true;
-        }
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = $backendUser;

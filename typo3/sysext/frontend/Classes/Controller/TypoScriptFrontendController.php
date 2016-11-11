@@ -1175,7 +1175,6 @@ class TypoScriptFrontendController
             // disable login-attempts to the backend account through this script
             // New backend user object
             $BE_USER = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
-            $BE_USER->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
             // Object is initialized
             $BE_USER->start();
             $BE_USER->unpack_uc();
