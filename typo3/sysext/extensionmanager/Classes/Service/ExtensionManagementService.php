@@ -184,30 +184,50 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
             return false;
         }
 
-        $updatedDependencies = [];
-        $installedDependencies = [];
-        $queue = $this->downloadQueue->getExtensionQueue();
-        $copyQueue = $this->downloadQueue->getExtensionCopyStorage();
-
-        if (!empty($copyQueue)) {
-            $this->copyDependencies($copyQueue);
-        }
         $downloadedDependencies = [];
-        if (array_key_exists('download', $queue)) {
-            $downloadedDependencies = $this->downloadDependencies($queue['download']);
-        }
-        if ($this->automaticInstallationEnabled) {
-            if (array_key_exists('update', $queue)) {
-                $this->downloadDependencies($queue['update']);
-                $updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
+        $updatedDependencies = [];
+        $installQueue = [];
+
+        // First resolve all dependencies and the sub-dependencies until all queues are empty as new extensions might be
+        // added each time
+        // Extensions have to be installed in reverse order. Extensions which were added at last are dependencies of
+        // earlier ones and need to be available before
+        while (!$this->downloadQueue->isCopyQueueEmpty()
+            || !$this->downloadQueue->isQueueEmpty('download')
+            || !$this->downloadQueue->isQueueEmpty('update')
+        ) {
+            // First copy all available extension
+            // This might change other queues again
+            $copyQueue = $this->downloadQueue->resetExtensionCopyStorage();
+            if (!empty($copyQueue)) {
+                $this->copyDependencies($copyQueue);
             }
-            // add extension at the end of the download queue
-            $this->downloadQueue->addExtensionToInstallQueue($extension);
-            $installQueue = $this->downloadQueue->getExtensionInstallStorage();
-            if (!empty($installQueue)) {
-                $installedDependencies = $this->installDependencies($installQueue);
+            $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
+            // Get download and update information
+            $queue = $this->downloadQueue->resetExtensionQueue();
+            if (!empty($queue['download'])) {
+                $downloadedDependencies = array_merge($downloadedDependencies, $this->downloadDependencies($queue['download']));
+            }
+            $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
+            if ($this->automaticInstallationEnabled) {
+                if (!empty($queue['update'])) {
+                    $this->downloadDependencies($queue['update']);
+                    $updatedDependencies = array_merge($updatedDependencies, $this->uninstallDependenciesToBeUpdated($queue['update']));
+                }
+                $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
             }
         }
+
+        // If there were any dependency errors we have to abort here
+        if ($this->dependencyUtility->hasDependencyErrors()) {
+            return false;
+        }
+
+        // Attach extension to install queue
+        $this->downloadQueue->addExtensionToInstallQueue($extension);
+        $installQueue += $this->downloadQueue->resetExtensionInstallStorage();
+        $installedDependencies = $this->installDependencies($installQueue);
+
         return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
     }
 

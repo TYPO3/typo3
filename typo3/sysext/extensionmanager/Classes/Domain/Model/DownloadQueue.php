@@ -181,4 +181,79 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
     {
         return $this->extensionCopyStorage;
     }
+
+    /**
+     * Return whether the queue contains extensions or not
+     *
+     * @param string $stack
+     * @return bool
+     */
+    public function isQueueEmpty($stack = 'download')
+    {
+        return empty($this->extensionStorage[$stack]);
+    }
+
+    /**
+     * Return whether the copy queue contains extensions or not
+     *
+     * @return bool
+     */
+    public function isCopyQueueEmpty()
+    {
+        return empty($this->extensionCopyStorage);
+    }
+
+    /**
+     * Return whether the install queue contains extensions or not
+     *
+     * @return bool
+     */
+    public function isInstallQueueEmpty()
+    {
+        return empty($this->extensionInstallStorage);
+    }
+
+    /**
+     * Resets the extension queue and returns old extensions
+     *
+     * @param string|null $stack if null, all stacks are reset
+     * @return array
+     */
+    public function resetExtensionQueue($stack = null)
+    {
+        $storage = [];
+        if ($stack === null) {
+            $storage = $this->extensionStorage;
+            $this->extensionStorage = [];
+        } elseif (isset($this->extensionStorage[$stack])) {
+            $storage = $this->extensionStorage[$stack];
+            $this->extensionStorage[$stack] = [];
+        }
+
+        return $storage;
+    }
+
+    /**
+     * Resets the copy queue and returns the old extensions
+     * @return array
+     */
+    public function resetExtensionCopyStorage()
+    {
+        $storage = $this->extensionCopyStorage;
+        $this->extensionCopyStorage = [];
+
+        return $storage;
+    }
+
+    /**
+     * Resets the install queue and returns the old extensions
+     * @return array
+     */
+    public function resetExtensionInstallStorage()
+    {
+        $storage = $this->extensionInstallStorage;
+        $this->extensionInstallStorage = [];
+
+        return $storage;
+    }
 }
