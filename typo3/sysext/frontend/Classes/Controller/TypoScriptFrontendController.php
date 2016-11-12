@@ -2583,6 +2583,9 @@ class TypoScriptFrontendController
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
                     $this->config['mainScript'] = trim($this->config['config']['mainScript']) ?: 'index.php';
+                    if (isset($this->config['config']['mainScript']) || $this->config['mainScript'] !== 'index.php') {
+                        $this->logDeprecatedTyposcript('config.mainScript', 'Setting the frontend script to something else than index.php is deprecated as of TYPO3 v8, and will not be possible in TYPO3 v9 without a custom extension');
+                    }
                     // Class for render Header and Footer parts
                     if ($this->pSetup['pageHeaderFooterTemplateFile']) {
                         $file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
