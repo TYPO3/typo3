@@ -483,7 +483,7 @@ class Query implements QueryInterface
             $comparison = $this->qomFactory->comparison(
                 $this->qomFactory->lowerCase($this->qomFactory->propertyValue($propertyName, $this->getSelectorName())),
                 QueryInterface::OPERATOR_EQUAL_TO,
-                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class)->conv_case(\TYPO3\CMS\Extbase\Persistence\Generic\Query::CHARSET, $operand, 'toLower')
+                mb_strtolower($operand, \TYPO3\CMS\Extbase\Persistence\Generic\Query::CHARSET)
             );
         }
         return $comparison;

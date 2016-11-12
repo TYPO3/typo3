@@ -3828,13 +3828,11 @@ class ContentObjectRenderer
      */
     public function substring($content, $options)
     {
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $options = GeneralUtility::intExplode(',', $options . ',');
         if ($options[1]) {
-            return $charsetConverter->substr('utf-8', $content, $options[0], $options[1]);
+            return mb_substr($content, $options[0], $options[1], 'utf-8');
         } else {
-            return $charsetConverter->substr('utf-8', $content, $options[0]);
+            return mb_substr($content, $options[0], null, 'utf-8');
         }
     }
 
@@ -3854,18 +3852,16 @@ class ContentObjectRenderer
         $afterstring = trim($options[1]);
         $crop2space = trim($options[2]);
         if ($chars) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            if ($charsetConverter->strlen('utf-8', $content) > abs($chars)) {
+            if (mb_strlen($content, 'utf-8') > abs($chars)) {
                 $truncatePosition = false;
                 if ($chars < 0) {
-                    $content = $charsetConverter->substr('utf-8', $content, $chars);
+                    $content = mb_substr($content, $chars, null, 'utf-8');
                     if ($crop2space) {
                         $truncatePosition = strpos($content, ' ');
                     }
                     $content = $truncatePosition ? $afterstring . substr($content, $truncatePosition) : $afterstring . $content;
                 } else {
-                    $content = $charsetConverter->substr('utf-8', $content, 0, $chars);
+                    $content = mb_substr($content, 0, $chars, 'utf-8');
                     if ($crop2space) {
                         $truncatePosition = strrpos($content, ' ');
                     }
@@ -3947,13 +3943,11 @@ class ContentObjectRenderer
         $strLen = 0;
         // This is the offset of the content item which was cropped.
         $croppedOffset = null;
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $countSplittedContent = count($splittedContent);
         for ($offset = 0; $offset < $countSplittedContent; $offset++) {
             if ($offset % 2 === 0) {
                 $tempContent = $splittedContent[$offset];
-                $thisStrLen = $charsetConverter->strlen('utf-8', html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'));
+                $thisStrLen = mb_strlen(html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'), 'utf-8');
                 if ($strLen + $thisStrLen > $absChars) {
                     $croppedOffset = $offset;
                     $cropPosition = $absChars - $strLen;
@@ -6768,13 +6762,13 @@ class ContentObjectRenderer
         $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         switch (strtolower($case)) {
             case 'upper':
-                $theValue = $charsetConverter->conv_case('utf-8', $theValue, 'toUpper');
+                $theValue = mb_strtoupper($theValue, 'utf-8');
                 break;
             case 'lower':
-                $theValue = $charsetConverter->conv_case('utf-8', $theValue, 'toLower');
+                $theValue = mb_strtolower($theValue, 'utf-8');
                 break;
             case 'capitalize':
-                $theValue = $charsetConverter->convCapitalize('utf-8', $theValue);
+                $theValue = mb_convert_case($theValue, MB_CASE_TITLE, 'utf-8');
                 break;
             case 'ucfirst':
                 $theValue = $charsetConverter->convCaseFirst('utf-8', $theValue, 'toUpper');

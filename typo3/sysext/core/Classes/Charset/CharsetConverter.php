@@ -54,22 +54,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CharsetConverter implements SingletonInterface
 {
     /**
-     * Possible strategies for handling multi-byte data
-     * Only used for internal purpose
-     * @internal
-     */
-    const STRATEGY_MBSTRING = 'mbstring';
-    const STRATEGY_ICONV = 'iconv';
-    const STRATEGY_FALLBACK = 'fallback';
-
-    /**
-     * Set to one of the strategies above, based on the availability of the environment.
-     *
-     * @var string
-     */
-    protected $conversionStrategy = null;
-
-    /**
      * ASCII Value for chars with no equivalent.
      *
      * @var int
@@ -110,6 +94,7 @@ class CharsetConverter implements SingletonInterface
      * This tells the converter which charsets has four bytes per char:
      *
      * @var array
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9
      */
     public $fourByteSets = [
         'ucs-4' => 1, // 4-byte Unicode
@@ -332,21 +317,11 @@ class CharsetConverter implements SingletonInterface
         }
         // PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
         if ($toCharset === 'utf-8' || !$useEntityForNoChar) {
-            switch ($this->getConversionStrategy()) {
-                case self::STRATEGY_MBSTRING:
-                    $convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
-                    if (false !== $convertedString) {
-                        return $convertedString;
-                    }
-                    // Returns FALSE for unsupported charsets
-                    break;
-                case self::STRATEGY_ICONV:
-                    $convertedString = iconv($fromCharset, $toCharset . '//TRANSLIT', $inputString);
-                    if (false !== $convertedString) {
-                        return $convertedString;
-                    }
-                    break;
+            $convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
+            if (false !== $convertedString) {
+                return $convertedString;
             }
+            // Returns FALSE for unsupported charsets
         }
         if ($fromCharset !== 'utf-8') {
             $inputString = $this->utf8_encode($inputString, $fromCharset);
@@ -436,6 +411,7 @@ class CharsetConverter implements SingletonInterface
             }
             return $outStr;
         }
+        return '';
     }
 
     /**
@@ -504,6 +480,7 @@ class CharsetConverter implements SingletonInterface
             }
             return $outStr;
         }
+        return '';
     }
 
     /**
@@ -773,6 +750,8 @@ class CharsetConverter implements SingletonInterface
                             if (!$detectedType) {
                                 $detectedType = preg_match('/[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+/', $value) ? 'whitespaced' : 'ms-token';
                             }
+                            $hexbyte = '';
+                            $utf8 = '';
                             if ($detectedType === 'ms-token') {
                                 list($hexbyte, $utf8) = preg_split('/[=:]/', $value, 3);
                             } elseif ($detectedType === 'whitespaced') {
@@ -1159,49 +1138,12 @@ class CharsetConverter implements SingletonInterface
      * @param int $len Length (in characters)
      * @return string The substring
      * @see substr(), mb_substr()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_substr() directly
      */
     public function substr($charset, $string, $start, $len = null)
     {
-        if ($len === 0 || $string === '') {
-            return '';
-        }
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            // Cannot omit $len, when specifying charset
-            if ($len === null) {
-                // Save internal encoding
-                $enc = mb_internal_encoding();
-                mb_internal_encoding($charset);
-                $str = mb_substr($string, $start);
-                // Restore internal encoding
-                mb_internal_encoding($enc);
-                return $str;
-            } else {
-                return mb_substr($string, $start, $len, $charset);
-            }
-        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
-            // Cannot omit $len, when specifying charset
-            if ($len === null) {
-                // Save internal encoding
-                $enc = iconv_get_encoding('internal_encoding');
-                iconv_set_encoding('internal_encoding', $charset);
-                $str = iconv_substr($string, $start);
-                // Restore internal encoding
-                iconv_set_encoding('internal_encoding', $enc);
-                return $str;
-            } else {
-                return iconv_substr($string, $start, $len, $charset);
-            }
-        } elseif ($charset === 'utf-8') {
-            return $this->utf8_substr($string, $start, $len);
-        } elseif ($this->eucBasedSets[$charset]) {
-            return $this->euc_substr($string, $start, $charset, $len);
-        } elseif ($this->twoByteSets[$charset]) {
-            return substr($string, $start * 2, $len * 2);
-        } elseif ($this->fourByteSets[$charset]) {
-            return substr($string, $start * 4, $len * 4);
-        }
-        // Treat everything else as single-byte encoding
-        return $len === null ? substr($string, $start) : substr($string, $start, $len);
+        GeneralUtility::logDeprecatedFunction();
+        return mb_substr($string, $start, $len, $charset);
     }
 
     /**
@@ -1212,47 +1154,12 @@ class CharsetConverter implements SingletonInterface
      * @param string $string Character string
      * @return int The number of characters
      * @see strlen()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strlen() directly
      */
     public function strlen($charset, $string)
     {
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            return mb_strlen($string, $charset);
-        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
-            return iconv_strlen($string, $charset);
-        } elseif ($charset === 'utf-8') {
-            return $this->utf8_strlen($string);
-        } elseif ($this->eucBasedSets[$charset]) {
-            return $this->euc_strlen($string, $charset);
-        } elseif ($this->twoByteSets[$charset]) {
-            return strlen($string) / 2;
-        } elseif ($this->fourByteSets[$charset]) {
-            return strlen($string) / 4;
-        }
-        // Treat everything else as single-byte encoding
-        return strlen($string);
-    }
-
-    /**
-     * Method to crop strings using the mb_substr function.
-     *
-     * @param string $charset The character set
-     * @param string $string String to be cropped
-     * @param int $len Crop length (in characters)
-     * @param string $crop Crop signifier
-     * @return string The shortened string
-     * @see mb_strlen(), mb_substr()
-     */
-    protected function cropMbstring($charset, $string, $len, $crop = '')
-    {
-        if ((int)$len === 0 || mb_strlen($string, $charset) <= abs($len)) {
-            return $string;
-        }
-        if ($len > 0) {
-            $string = mb_substr($string, 0, $len, $charset) . $crop;
-        } else {
-            $string = $crop . mb_substr($string, $len, mb_strlen($string, $charset), $charset);
-        }
-        return $string;
+        GeneralUtility::logDeprecatedFunction();
+        return mb_strlen($string, $charset);
     }
 
     /**
@@ -1268,39 +1175,13 @@ class CharsetConverter implements SingletonInterface
      */
     public function crop($charset, $string, $len, $crop = '')
     {
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            return $this->cropMbstring($charset, $string, $len, $crop);
-        }
-        if ((int)$len === 0) {
+        if ((int)$len === 0 || mb_strlen($string, $charset) <= abs($len)) {
             return $string;
         }
-        if ($charset === 'utf-8') {
-            $i = $this->utf8_char2byte_pos($string, $len);
-        } elseif ($this->eucBasedSets[$charset]) {
-            $i = $this->euc_char2byte_pos($string, $len, $charset);
+        if ($len > 0) {
+            $string = mb_substr($string, 0, $len, $charset) . $crop;
         } else {
-            if ($len > 0) {
-                $i = $len;
-            } else {
-                $i = strlen($string) + $len;
-                if ($i <= 0) {
-                    $i = false;
-                }
-            }
-        }
-        // $len outside actual string length
-        if ($i === false) {
-            return $string;
-        } else {
-            if ($len > 0) {
-                if (isset($string[$i])) {
-                    return substr($string, 0, $i) . $crop;
-                }
-            } else {
-                if (isset($string[$i - 1])) {
-                    return $crop . substr($string, $i);
-                }
-            }
+            $string = $crop . mb_substr($string, $len, mb_strlen($string, $charset), $charset);
         }
         return $string;
     }
@@ -1319,23 +1200,7 @@ class CharsetConverter implements SingletonInterface
         if ($len <= 0) {
             return '';
         }
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            return mb_strcut($string, 0, $len, $charset);
-        } elseif ($charset === 'utf-8') {
-            return $this->utf8_strtrunc($string, $len);
-        } elseif ($this->eucBasedSets[$charset]) {
-            return $this->euc_strtrunc($string, $len, $charset);
-        } elseif ($this->twoByteSets[$charset]) {
-            if ($len % 2) {
-                $len--;
-            }
-        } elseif ($this->fourByteSets[$charset]) {
-            $x = $len % 4;
-            // Realign to position dividable by four
-            $len -= $x;
-        }
-        // Treat everything else as single-byte encoding
-        return substr($string, 0, $len);
+        return mb_strcut($string, 0, $len, $charset);
     }
 
     /**
@@ -1351,24 +1216,14 @@ class CharsetConverter implements SingletonInterface
      * @param string $case Case keyword: "toLower" means lowercase conversion, anything else is uppercase (use "toUpper" )
      * @return string The converted string
      * @see strtolower(), strtoupper()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strtolower() or mb_strtoupper() directly
      */
     public function conv_case($charset, $string, $case)
     {
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            if ($case === 'toLower') {
-                $string = mb_strtolower($string, $charset);
-            } else {
-                $string = mb_strtoupper($string, $charset);
-            }
-        } elseif ($charset === 'utf-8') {
-            $string = $this->utf8_char_mapping($string, 'case', $case);
-        } elseif (isset($this->eucBasedSets[$charset])) {
-            $string = $this->euc_char_mapping($string, $charset, 'case', $case);
-        } else {
-            // Treat everything else as single-byte encoding
-            $string = $this->sb_char_mapping($string, $charset, 'case', $case);
-        }
-        return $string;
+        GeneralUtility::logDeprecatedFunction();
+        return $case === 'toLower'
+            ? mb_strtolower($string, $charset)
+            : mb_strtoupper($string, $charset);
     }
 
     /**
@@ -1376,15 +1231,16 @@ class CharsetConverter implements SingletonInterface
      *
      * @param string $charset
      * @param string $string
-     * @param string $case
+     * @param string $case can be 'toLower' or 'toUpper'
      * @return string
-     * @see \TYPO3\CMS\Core\Charset\CharsetConverter::conv_case()
      */
     public function convCaseFirst($charset, $string, $case)
     {
-        $firstChar = $this->substr($charset, $string, 0, 1);
-        $firstChar = $this->conv_case($charset, $firstChar, $case);
-        $remainder = $this->substr($charset, $string, 1);
+        $firstChar = mb_substr($string, 0, 1, $charset);
+        $firstChar = $case === 'toLower'
+            ? mb_strtolower($firstChar, $charset)
+            : mb_strtoupper($firstChar, $charset);
+        $remainder = mb_substr($string, 1, null, $charset);
         return $firstChar . $remainder;
     }
 
@@ -1394,14 +1250,12 @@ class CharsetConverter implements SingletonInterface
      * @param string $charset
      * @param string $string
      * @return string
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_convert_case() directly
      */
     public function convCapitalize($charset, $string)
     {
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            return mb_convert_case($string, MB_CASE_TITLE, $charset);
-        } else {
-            return ucwords($string);
-        }
+        GeneralUtility::logDeprecatedFunction();
+        return mb_convert_case($string, MB_CASE_TITLE, $charset);
     }
 
     /**
@@ -1500,9 +1354,11 @@ class CharsetConverter implements SingletonInterface
      * @param int $len Length (in characters)
      * @return string The substring
      * @see substr()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_substr() directly
      */
     public function utf8_substr($str, $start, $len = null)
     {
+        GeneralUtility::logDeprecatedFunction();
         if ((string)$len === '0') {
             return '';
         }
@@ -1535,9 +1391,11 @@ class CharsetConverter implements SingletonInterface
      * @param string $str UTF-8 multibyte character string
      * @return int The number of characters
      * @see strlen()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strlen() directly
      */
     public function utf8_strlen($str)
     {
+        GeneralUtility::logDeprecatedFunction();
         $n = 0;
         for ($i = 0; isset($str[$i]); $i++) {
             $c = ord($str[$i]);
@@ -1559,9 +1417,11 @@ class CharsetConverter implements SingletonInterface
      * @param int $len The byte length
      * @return string The shortened string
      * @see mb_strcut()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strcut() directly
      */
     public function utf8_strtrunc($str, $len)
     {
+        GeneralUtility::logDeprecatedFunction();
         $i = $len - 1;
         // Part of a multibyte sequence
         if (ord($str[$i]) & 128) {
@@ -1590,25 +1450,12 @@ class CharsetConverter implements SingletonInterface
      * @param int $offset Position to start the search
      * @return int The character position
      * @see strpos()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strpos() directly
      */
     public function utf8_strpos($haystack, $needle, $offset = 0)
     {
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            return mb_strpos($haystack, $needle, $offset, 'utf-8');
-        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
-            return iconv_strpos($haystack, $needle, $offset, 'utf-8');
-        }
-        $byte_offset = $this->utf8_char2byte_pos($haystack, $offset);
-        if ($byte_offset === false) {
-            // Offset beyond string length
-            return false;
-        }
-        $byte_pos = strpos($haystack, $needle, $byte_offset);
-        if ($byte_pos === false) {
-            // Needle not found
-            return false;
-        }
-        return $this->utf8_byte2char_pos($haystack, $byte_pos);
+        GeneralUtility::logDeprecatedFunction();
+        return mb_strpos($haystack, $needle, $offset, 'utf-8');
     }
 
     /**
@@ -1618,20 +1465,12 @@ class CharsetConverter implements SingletonInterface
      * @param string $needle UTF-8 character to search for (single character)
      * @return int The character position
      * @see strrpos()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strrpos() directly
      */
     public function utf8_strrpos($haystack, $needle)
     {
-        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
-            return mb_strrpos($haystack, $needle, 'utf-8');
-        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
-            return iconv_strrpos($haystack, $needle, 'utf-8');
-        }
-        $byte_pos = strrpos($haystack, $needle);
-        if ($byte_pos === false) {
-            // Needle not found
-            return false;
-        }
-        return $this->utf8_byte2char_pos($haystack, $byte_pos);
+        GeneralUtility::logDeprecatedFunction();
+        return mb_strrpos($haystack, $needle, 'utf-8');
     }
 
     /**
@@ -1688,9 +1527,11 @@ class CharsetConverter implements SingletonInterface
      * @param string $str UTF-8 string
      * @param int $pos Byte position
      * @return int Character position
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, former internal function only
      */
     public function utf8_byte2char_pos($str, $pos)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Number of characters
         $n = 0;
         for ($i = $pos; $i > 0; $i--) {
@@ -1737,6 +1578,7 @@ class CharsetConverter implements SingletonInterface
         }
         for ($i = 0; isset($str[$i]); $i++) {
             $c = ord($str[$i]);
+            $mbc = '';
             // single-byte (0xxxxxx)
             if (!($c & 128)) {
                 $mbc = $str[$i];
@@ -1777,9 +1619,11 @@ class CharsetConverter implements SingletonInterface
      * @param string $charset The charset
      * @return string The shortened string
      * @see mb_strcut()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strcut() directly
      */
     public function euc_strtrunc($str, $len, $charset)
     {
+        GeneralUtility::logDeprecatedFunction();
         $shiftJis = $charset === 'shift_jis';
         for ($i = 0; isset($str[$i]) && $i < $len; $i++) {
             $c = ord($str[$i]);
@@ -1813,9 +1657,11 @@ class CharsetConverter implements SingletonInterface
      * @param string $charset The charset
      * @param int $len Length (in characters)
      * @return string the substring
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_substr() directly
      */
     public function euc_substr($str, $start, $charset, $len = null)
     {
+        GeneralUtility::logDeprecatedFunction();
         $byte_start = $this->euc_char2byte_pos($str, $start, $charset);
         if ($byte_start === false) {
             // $start outside string length
@@ -1842,9 +1688,11 @@ class CharsetConverter implements SingletonInterface
      * @param string $charset The charset
      * @return int The number of characters
      * @see strlen()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strlen() directly
      */
     public function euc_strlen($str, $charset)
     {
+        GeneralUtility::logDeprecatedFunction();
         $sjis = $charset === 'shift_jis';
         $n = 0;
         for ($i = 0; isset($str[$i]); $i++) {
@@ -1870,9 +1718,11 @@ class CharsetConverter implements SingletonInterface
      * @param int $pos Character position (negative values start from the end)
      * @param string $charset The charset
      * @return int Byte position
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, former internal function only
      */
     public function euc_char2byte_pos($str, $pos, $charset)
     {
+        GeneralUtility::logDeprecatedFunction();
         $sjis = $charset === 'shift_jis';
         // Number of characters seen
         $n = 0;
@@ -1963,26 +1813,5 @@ class CharsetConverter implements SingletonInterface
             }
         }
         return $out;
-    }
-
-    /**
-     * Checks the selected strategy based on which method is available in the system.
-     * "mbstring" takes precedence over "iconv".
-     * See http://stackoverflow.com/questions/8233517/what-is-the-difference-between-iconv-and-mb-convert-encoding-in-php
-     *
-     * @return string could be "mbstring", "iconv" or "fallback"
-     */
-    protected function getConversionStrategy()
-    {
-        if ($this->conversionStrategy === null) {
-            if (extension_loaded('mbstring')) {
-                $this->conversionStrategy = self::STRATEGY_MBSTRING;
-            } elseif (extension_loaded('iconv')) {
-                $this->conversionStrategy = self::STRATEGY_ICONV;
-            } else {
-                $this->conversionStrategy = self::STRATEGY_FALLBACK;
-            }
-        }
-        return $this->conversionStrategy;
     }
 }

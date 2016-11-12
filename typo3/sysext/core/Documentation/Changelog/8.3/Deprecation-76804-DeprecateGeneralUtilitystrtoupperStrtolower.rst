@@ -35,17 +35,15 @@ Instead of :php:`GeneralUtility::strtoupper($value)` use:
 
 .. code-block:: php
 
-    $charsetConverter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-    $charsetConverter->conv_case('utf-8', $value, 'toUpper');
+    mb_strtoupper($value, 'utf-8');
 
 Instead of :php:`GeneralUtility::strtolower($value)` use:
 
 .. code-block:: php
 
-    $charsetConverter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-    $charsetConverter->conv_case('utf-8', $value, 'toLower');
+    mb_strtolower($value, 'utf-8');
 
 Alternatively use the native implementation of :php:`strtoupper($value)` or :php:`strtolower($value)`
-if the handled string consists of ascii characters only and has no multi-byte characters like umlauts.
+if the handled string consists of ascii characters only.
 
 .. index:: PHP-API

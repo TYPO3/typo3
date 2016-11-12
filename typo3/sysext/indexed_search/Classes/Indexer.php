@@ -1324,7 +1324,7 @@ class Indexer
         if ($maxL) {
             $bodyDescription = preg_replace('/\s+/u', ' ', $contentArr['body']);
             // Shorten the string:
-            $bodyDescription = $this->csObj->strtrunc('utf-8', $bodyDescription, $maxL);
+            $bodyDescription = mb_strcut($bodyDescription, 0, $maxL, 'utf-8');
         }
         return $bodyDescription;
     }

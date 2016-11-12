@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -75,8 +74,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
     public function modMenu()
     {
         $lang = $this->getLanguageService();
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $lang->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf');
         $modMenu = [
             'ts_browser_type' => [
@@ -84,10 +81,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 'setup' => $lang->getLL('setup')
             ],
             'ts_browser_toplevel_setup' => [
-                '0' => $charsetConverter->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
+                '0' => mb_strtolower($lang->getLL('all'), 'utf-8')
             ],
             'ts_browser_toplevel_const' => [
-                '0' => $charsetConverter->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
+                '0' => mb_strtolower($lang->getLL('all'), 'utf-8')
             ],
             'ts_browser_const' => [
                 '0' => $lang->getLL('plainSubstitution'),

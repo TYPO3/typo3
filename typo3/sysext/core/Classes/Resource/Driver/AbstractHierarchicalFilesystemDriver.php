@@ -86,7 +86,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
             $fileIdentifier = $this->canonicalizeAndCheckFilePath($fileIdentifier);
             $fileIdentifier = '/' . ltrim($fileIdentifier, '/');
             if (!$this->isCaseSensitiveFileSystem()) {
-                $fileIdentifier = $this->getCharsetConversion()->conv_case('utf-8', $fileIdentifier, 'toLower');
+                $fileIdentifier = mb_strtolower($fileIdentifier, 'utf-8');
             }
         }
         return $fileIdentifier;

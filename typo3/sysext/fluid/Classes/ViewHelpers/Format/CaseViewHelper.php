@@ -99,11 +99,6 @@ class CaseViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
-     * @var NULL|CharsetConverter
-     */
-    protected static $charsetConverter = null;
-
-    /**
      * Initialize ViewHelper arguments
      *
      * @return void
@@ -150,23 +145,18 @@ class CaseViewHelper extends AbstractViewHelper
             $value = $renderChildrenClosure();
         }
 
-        if (is_null(static::$charsetConverter)) {
-            static::$charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-        }
-        $charsetConverter = static::$charsetConverter;
-
         switch ($mode) {
             case self::CASE_LOWER:
-                $output = $charsetConverter->conv_case('utf-8', $value, 'toLower');
+                $output = mb_strtolower($value, 'utf-8');
                 break;
             case self::CASE_UPPER:
-                $output = $charsetConverter->conv_case('utf-8', $value, 'toUpper');
+                $output = mb_strtoupper($value, 'utf-8');
                 break;
             case self::CASE_CAPITAL:
-                $output = $charsetConverter->substr('utf-8', $charsetConverter->convCaseFirst('utf-8', $value, 'toUpper'), 0, 1) . $charsetConverter->substr('utf-8', $value, 1);
+                $output = GeneralUtility::makeInstance(CharsetConverter::class)->convCaseFirst('utf-8', $value, 'toUpper');
                 break;
             case self::CASE_UNCAPITAL:
-                $output = $charsetConverter->substr('utf-8', $charsetConverter->convCaseFirst('utf-8', $value, 'toLower'), 0, 1) . $charsetConverter->substr('utf-8', $value, 1);
+                $output = GeneralUtility::makeInstance(CharsetConverter::class)->convCaseFirst('utf-8', $value, 'toLower');
                 break;
             case self::CASE_CAPITAL_WORDS:
                 // @todo: Implement method once there is a proper solution with using the CharsetConverter

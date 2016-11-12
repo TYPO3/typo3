@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -1765,9 +1764,7 @@ class DataHandler
         }
         // Secures the string-length to be less than max.
         if ((int)$tcaFieldConf['max'] > 0) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $value = $charsetConverter->substr('utf-8', (string)$value, 0, (int)$tcaFieldConf['max']);
+            $value = mb_substr((string)$value, 0, (int)$tcaFieldConf['max'], 'utf-8');
         }
         // Checking range of value:
         // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
@@ -2750,14 +2747,10 @@ class DataHandler
                     $value = trim($value);
                     break;
                 case 'upper':
-                    /** @var CharsetConverter $charsetConverter */
-                    $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-                    $value = $charsetConverter->conv_case('utf-8', $value, 'toUpper');
+                    $value = mb_strtoupper($value, 'utf-8');
                     break;
                 case 'lower':
-                    /** @var CharsetConverter $charsetConverter */
-                    $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-                    $value = $charsetConverter->conv_case('utf-8', $value, 'toLower');
+                    $value = mb_strtolower($value, 'utf-8');
                     break;
                 case 'required':
                     if (!isset($value) || $value === '') {

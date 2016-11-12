@@ -76,7 +76,7 @@ class Lexer
         $this->debugString = '';
         // Then convert the string to lowercase:
         if (!$this->lexerConf['casesensitive']) {
-            $wordString = $this->csObj->conv_case('utf-8', $wordString, 'toLower');
+            $wordString = mb_strtolower($wordString, 'utf-8');
         }
         // Now, splitting words:
         $len = 0;
@@ -136,11 +136,11 @@ class Lexer
          */
         if ($cType == 'cjk') {
             // Find total string length:
-            $strlen = $this->csObj->strlen('utf-8', $theWord);
+            $strlen = mb_strlen($theWord, 'utf-8');
             // Traverse string length and add words as pairs of two chars:
             for ($a = 0; $a < $strlen; $a++) {
                 if ($strlen == 1 || $a < $strlen - 1) {
-                    $words[] = $this->csObj->substr('utf-8', $theWord, $a, 2);
+                    $words[] = mb_substr($theWord, $a, 2, 'utf-8');
                 }
             }
         } else {

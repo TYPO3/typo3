@@ -4616,7 +4616,7 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'empty string from ISO-8859-15' => [
                 '',
-                iconv('UTF-8', 'ISO-8859-15', ''),
+                mb_convert_encoding('', 'ISO-8859-15', 'UTF-8'),
                 ['csConv' => 'ISO-8859-15']
             ],
             'empty string from BIG-5' => [
@@ -4626,7 +4626,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             '"0" from ISO-8859-15' => [
                 '0',
-                iconv('UTF-8', 'ISO-8859-15', '0'),
+                mb_convert_encoding('0', 'ISO-8859-15', 'UTF-8'),
                 ['csConv' => 'ISO-8859-15']
             ],
             '"0" from BIG-5' => [
@@ -4636,7 +4636,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'euro symbol from ISO-88859-15' => [
                 '€',
-                iconv('UTF-8', 'ISO-8859-15', '€'),
+                mb_convert_encoding('€', 'ISO-8859-15', 'UTF-8'),
                 ['csConv' => 'ISO-8859-15']
             ],
             'good morning from BIG-5' => [

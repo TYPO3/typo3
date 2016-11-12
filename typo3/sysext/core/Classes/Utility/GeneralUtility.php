@@ -1034,7 +1034,7 @@ class GeneralUtility
      *
      * @param string $str Input string
      * @return string Uppercase String
-     * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9, Use \TYPO3\CMS\Core\Charset\CharsetConverter->conv_case() instead
+     * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9, use mb_strtoupper() instead
      */
     public static function strtoupper($str)
     {
@@ -1050,7 +1050,7 @@ class GeneralUtility
      *
      * @param string $str Input string
      * @return string Lowercase String
-     * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9, Use \TYPO3\CMS\Core\Charset\CharsetConverter->conv_case() instead
+     * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9, use mb_strtolower() instead
      */
     public static function strtolower($str)
     {
@@ -1136,9 +1136,8 @@ class GeneralUtility
      */
     public static function camelCaseToLowerCaseUnderscored($string)
     {
-        $charsetConverter = self::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
         $value = preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $string);
-        return $charsetConverter->conv_case('utf-8', $value, 'toLower');
+        return mb_strtolower($value, 'utf-8');
     }
 
     /**

@@ -11,7 +11,7 @@ Description
 ===========
 
 The support for GNU-recode when converting from one charset to another has been dropped. The CharsetConverter
-now only supports `mbstring` and `iconv` as well as the home-made TYPO3-internal conversion.
+now only supports `mbstring`. In case `mbstring` is not present a polyfill will kick in.
 
 
 Impact
@@ -30,7 +30,6 @@ Installations that have the option `$TYPO3_CONF_VARS[SYS][t3lib_cs_convMethod]` 
 Migration
 =========
 
-Use the Install Tool and the Preset information to see which other, better supported conversion libraries (mbstring
-or iconv) are available.
+No migration.
 
 .. index:: PHP-API, LocalConfiguration

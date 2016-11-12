@@ -520,14 +520,14 @@ var selectedDictionary = "' . $this->dictionary . '";
             case 'area':
 
             case 'AREA':
-                $this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
+                $this->text .= '<' . mb_strtolower($tag, $this->parserCharset) . ' ';
                 foreach ($attributes as $key => $val) {
                     $this->text .= $key . '="' . $val . '" ';
                 }
                 $this->text .= ' />';
                 break;
             default:
-                $this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
+                $this->text .= '<' . mb_strtolower($tag, $this->parserCharset) . ' ';
                 foreach ($attributes as $key => $val) {
                     $this->text .= $key . '="' . $val . '" ';
                 }

@@ -72,10 +72,10 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function encode($input)
     {
-        $stringLength = $this->charsetConversion->strlen('utf-8', $input);
+        $stringLength = mb_strlen($input, 'utf-8');
         $encodedString = '';
         for ($i = 0; $i < $stringLength; $i++) {
-            $c = $this->charsetConversion->substr('utf-8', $input, $i, 1);
+            $c = mb_substr($input, $i, 1, 'utf-8');
             $encodedString .= $this->encodeCharacter($c);
         }
         return $encodedString;

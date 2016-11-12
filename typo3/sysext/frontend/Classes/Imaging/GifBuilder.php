@@ -583,7 +583,7 @@ class GifBuilder extends GraphicalFunctions
         // Max length = 100 if automatic line braks are not defined:
         if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
             $tlen = (int)$conf['textMaxLength'] ?: 100;
-            $conf['text'] = $this->csConvObj->substr('utf-8', $conf['text'], 0, $tlen);
+            $conf['text'] = mb_substr($conf['text'], 0, $tlen, 'utf-8');
         }
         if ((string)$conf['text'] != '') {
             // Char range map thingie:
