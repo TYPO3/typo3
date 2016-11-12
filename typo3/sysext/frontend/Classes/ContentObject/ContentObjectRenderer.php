@@ -6046,16 +6046,6 @@ class ContentObjectRenderer {
 						if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
 							$addQueryParams = '';
 						}
-						if ($conf['useCacheHash']) {
-							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams . '&id=' . $link_param;
-							if (trim($params, '& ') != '') {
-								/** @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-								$cacheHash = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-								$cHash = $cacheHash->generateForParameters($params);
-								$addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
-							}
-							unset($params);
-						}
 						$targetDomain = '';
 						$currentDomain = $this->getEnvironmentVariable('HTTP_HOST');
 						// Mount pages are always local and never link to another domain
@@ -6089,6 +6079,16 @@ class ContentObjectRenderer {
 							if (!$targetDomain || $GLOBALS['TSFE']->domainNameMatchesCurrentRequest($targetDomain)) {
 								$targetDomain = '';
 							}
+						}
+						if ($conf['useCacheHash']) {
+							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams . '&id=' . $page['uid'];
+							if (trim($params, '& ') != '') {
+								/** @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
+								$cacheHash = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+								$cHash = $cacheHash->generateForParameters($params);
+								$addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
+							}
+							unset($params);
 						}
 						$absoluteUrlScheme = 'http';
 						// URL shall be absolute:
