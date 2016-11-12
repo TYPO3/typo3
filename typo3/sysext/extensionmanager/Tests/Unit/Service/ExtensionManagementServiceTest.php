@@ -38,8 +38,12 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, ['checkDependencies']);
         $dependencyUtilityMock->expects($this->atLeastOnce())->method('checkDependencies');
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
-        $downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, ['getExtensionQueue', 'addExtensionToInstallQueue']);
-        $downloadQueueMock->expects($this->atLeastOnce())->method('getExtensionQueue')->will($this->returnValue([
+        $downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, ['isCopyQueueEmpty', 'isQueueEmpty', 'resetExtensionQueue', 'addExtensionToInstallQueue']);
+        $downloadQueueMock->expects($this->any())->method('isCopyQueueEmpty')->willReturn(true);
+        $downloadQueueMock->expects($this->at(1))->method('isQueueEmpty')->with('download')->willReturn(false);
+        $downloadQueueMock->expects($this->at(4))->method('isQueueEmpty')->with('download')->willReturn(true);
+        $downloadQueueMock->expects($this->at(5))->method('isQueueEmpty')->with('update')->willReturn(true);
+        $downloadQueueMock->expects($this->atLeastOnce())->method('resetExtensionQueue')->will($this->returnValue([
             'download' => [
                 'foo' => $extensionModelMock
             ]
@@ -67,8 +71,12 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, ['checkDependencies']);
         $dependencyUtilityMock->expects($this->atLeastOnce())->method('checkDependencies');
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
-        $downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, ['getExtensionQueue', 'addExtensionToInstallQueue']);
-        $downloadQueueMock->expects($this->atLeastOnce())->method('getExtensionQueue')->will($this->returnValue([
+        $downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, ['isCopyQueueEmpty', 'isQueueEmpty', 'resetExtensionQueue', 'addExtensionToInstallQueue']);
+        $downloadQueueMock->expects($this->any())->method('isCopyQueueEmpty')->willReturn(true);
+        $downloadQueueMock->expects($this->at(1))->method('isQueueEmpty')->with('download')->willReturn(false);
+        $downloadQueueMock->expects($this->at(4))->method('isQueueEmpty')->with('download')->willReturn(true);
+        $downloadQueueMock->expects($this->at(5))->method('isQueueEmpty')->with('update')->willReturn(true);
+        $downloadQueueMock->expects($this->atLeastOnce())->method('resetExtensionQueue')->will($this->returnValue([
             'update' => [
                 'foo' => $extensionModelMock
             ]
