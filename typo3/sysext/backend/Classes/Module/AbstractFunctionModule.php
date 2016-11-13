@@ -212,7 +212,6 @@ abstract class AbstractFunctionModule
             && (
                 @is_file(($this->thisPath . '/' . $this->localLangFile))
                 || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml'))
-                || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.php'))
             )
         ) {
             $LOCAL_LANG = $this->getLanguageService()->includeLLFile($this->thisPath . '/' . $this->localLangFile, false);
