@@ -190,6 +190,9 @@ class PagePositionMap
                     }
                     // Then set the current prevPid
                     $prevPid = -$prev_dat['row']['pid'];
+                    if ($prevPid !== $dat['row']['pid']) {
+                        $lines[] = '</ul>';
+                    }
                 } else {
                     // In on the same level
                     $prevPid = -$prev_dat['row']['uid'];
@@ -200,9 +203,6 @@ class PagePositionMap
             }
             // print arrow on the same level
             if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-                if (!empty($prev_dat) && $prev_dat['invertedDepth'] < $dat['invertedDepth']) {
-                    $lines[] = '</ul>';
-                }
                 $lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
             }
             // The line with the icon and title:
