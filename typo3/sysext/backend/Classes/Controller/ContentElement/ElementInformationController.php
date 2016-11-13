@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for showing information about an item.
@@ -225,121 +225,101 @@ class ElementInformationController
         }
 
         if (!$typeRendered) {
-            $content .= $this->renderPageTitle();
-            $content .= $this->renderPreview();
-            $content .= $this->renderPropertiesAsTable();
-            $content .= $this->renderReferences();
-            $content.= $this->renderBackButton();
+            // Rendering of the output via fluid
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+            $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+                'EXT:backend/Resources/Private/Templates/ContentElement/ElementInformation.html'
+            ));
+            $view->assignMultiple($this->getPageTitle());
+            $view->assignMultiple($this->getPreview());
+            $view->assignMultiple($this->getPropertiesForTable());
+            $view->assignMultiple($this->getReferences());
+            $view->assignMultiple($this->getBackButton());
+            $content .=  $view->render();
         }
         $this->moduleTemplate->setContent($content);
     }
 
     /**
-     * Render page title with icon, table title and record title
+     * Get page title with icon, table title and record title
      *
-     * @return string
+     * @return array
      */
-    protected function renderPageTitle()
+    protected function getPageTitle() : array
     {
-        $title = strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
+        $pageTitle = [
+            'title' => strip_tags(BackendUtility::getRecordTitle($this->table, $this->row))
+        ];
         if ($this->type === 'folder') {
-            $table = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder');
-            $icon = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
+            $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder');
+            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
         } elseif ($this->type === 'file') {
-            $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $icon = $this->iconFactory->getIconForResource($this->fileObject, Icon::SIZE_SMALL)->render();
+            $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
+            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->fileObject, Icon::SIZE_SMALL)->render();
         } else {
-            $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $icon = $this->iconFactory->getIconForRecord($this->table, $this->row, Icon::SIZE_SMALL);
+            $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
+            $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, Icon::SIZE_SMALL);
         }
-        // Set HTML title tag
-        $this->moduleTemplate->setTitle($table . ': ' . $title);
-        return '<h1>' .
-                ($table ? '<small>' . $table . '</small><br />' : '') .
-                $icon . $title .
-                '</h1>';
+        $this->moduleTemplate->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
+        return $pageTitle;
     }
 
     /**
-     * Render preview for current record
+     * Get preview for current record
      *
-     * @return string
+     * @return array
      */
-    protected function renderPreview()
+    protected function getPreview() : array
     {
+        $preview = [];
         // Perhaps @todo in future: Also display preview for records - without fileObject
         if (!$this->fileObject) {
-            return '';
+            return $preview;
         }
-
-        $previewTag = '';
-        $showLink = '';
 
         // check if file is marked as missing
         if ($this->fileObject->isMissing()) {
-            $previewTag .= '<span class="label label-danger">'
-                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
-                . '</span>&nbsp;' . htmlspecialchars($this->fileObject->getName()) . '<br />';
+            $preview['missingFile'] =$this->fileObject->getName();
         } else {
-
             /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
             $rendererRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
             $fileExtension = $this->fileObject->getExtension();
-            $url = $this->fileObject->getPublicUrl(true);
+            $preview['url'] = $this->fileObject->getPublicUrl(true);
+
+            $width = '590m';
+            $heigth = '400m';
 
             // Check if there is a FileRenderer
             if ($fileRenderer !== null) {
-                $previewTag = $fileRenderer->render(
+                $preview['fileRenderer'] = $fileRenderer->render(
                     $this->fileObject,
-                    '590m',
-                    '400m',
+                    $width,
+                    $heigth,
                     [],
                     true
                 );
 
-            // else check if we can create an Image preview
+                // else check if we can create an Image preview
             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
-                $processedFile = $this->fileObject->process(
-                    ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    [
-                        'width' => '590m',
-                        'height' => '400m'
-                    ]
-                );
-                // Create thumbnail image?
-                if ($processedFile) {
-                    $thumbUrl = $processedFile->getPublicUrl(true);
-                    $previewTag .= '<img class="img-responsive img-thumbnail" src="' . $thumbUrl . '" ' .
-                        'width="' . $processedFile->getProperty('width') . '" ' .
-                        'height="' . $processedFile->getProperty('height') . '" ' .
-                        'alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" ' .
-                        'title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" />';
-                }
-            }
-
-            // Show
-            if ($url) {
-                $showLink .= '
-					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
-						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render('inline') . '
-						' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.show')) . '
-					</a>';
+                $preview['fileObject'] = $this->fileObject;
+                $preview['width'] = $width;
+                $preview['heigth'] = $heigth;
             }
         }
-
-        return ($previewTag ? '<p>' . $previewTag . '</p>' : '') .
-                ($showLink ? '<p>' . $showLink . '</p>' : '');
+        return $preview;
     }
 
     /**
-     * Render property array as html table
+     * Get property array for html table
      *
-     * @return string
+     * @return array
      */
-    protected function renderPropertiesAsTable()
+    protected function getPropertiesForTable() : array
     {
-        $tableRows = [];
+        $propertiesForTable = [];
         $extraFields = [];
 
         $lang = $this->getLanguageService();
@@ -367,6 +347,7 @@ class ElementInformationController
 
         foreach ($extraFields as $name => $fieldLabel) {
             $rowValue = '';
+            $thisRow = [];
             if (!isset($this->row[$name])) {
                 $resourceObject = $this->fileObject ?: $this->folderObject;
                 if ($name === 'storage') {
@@ -379,36 +360,26 @@ class ElementInformationController
             } else {
                 $rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
             }
+            $thisRow['value'] = $rowValue;
+            $thisRow['fieldLabel'] = rtrim($fieldLabel, ':');
             // show the backend username who created the issue
             if ($name === 'cruser_id' && $rowValue) {
                 $creatorRecord = BackendUtility::getRecord('be_users', $rowValue);
                 if ($creatorRecord) {
                     /** @var Avatar $avatar */
                     $avatar = GeneralUtility::makeInstance(Avatar::class);
-                    $icon = $avatar->render($creatorRecord);
-                    $rowValue = '
-                        <div class="media">
-                            <div class="media-left">
-                                ' . $icon . '
-                            </div>
-                            <div class="media-body">
-                                <strong>' . htmlspecialchars($creatorRecord['username']) . '</strong><br>
-                                ' . ($creatorRecord['realName'] ? htmlspecialchars($creatorRecord['realName']) : '') . '
-                            </div>
-                        </div>';
+                    $creatorRecord['icon'] = $avatar->render($creatorRecord);
+                    $thisRow['creatorRecord'] = $creatorRecord;
+                    $thisRow['value'] = '';
                 }
             }
-
-            $tableRows[] = '
-				<tr>
-					<th class="col-nowrap">' . rtrim($fieldLabel, ':') . '</th>
-					<td>' . ($name === 'cruser_id' ? $rowValue : htmlspecialchars($rowValue)) . '</td>
-				</tr>';
+            $propertiesForTable['extraFields'][] = $thisRow;
         }
 
         // Traverse the list of fields to display for the record:
         $fieldList = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'], true);
         foreach ($fieldList as $name) {
+            $thisRow = [];
             $name = trim($name);
             $uid = $this->row['uid'];
 
@@ -431,120 +402,46 @@ class ElementInformationController
                 continue;
             }
 
-            $itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid);
-            $itemLabel = htmlspecialchars($lang->sL(BackendUtility::getItemLabel($this->table, $name)));
-            $tableRows[] = '
-				<tr>
-					<th class="col-nowrap">' . $itemLabel . '</th>
-					<td>' . htmlspecialchars($itemValue) . '</td>
-				</tr>';
+            $thisRow['fieldValue'] = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid);
+            $thisRow['fieldLabel'] = htmlspecialchars($lang->sL(BackendUtility::getItemLabel($this->table, $name)));
+            $propertiesForTable['fields'][] = $thisRow;
         }
-
-        return '
-			<div class="table-fit table-fit-wrap">
-				<table class="table table-striped table-hover">
-					' . implode('', $tableRows) . '
-				</table>
-			</div>';
+        return $propertiesForTable;
     }
 
     /**
-     * Render references section (references from and references to current record)
+     * Get references section (references from and references to current record)
      *
-     * @return string
+     * @return array
      */
-    protected function renderReferences()
+    protected function getReferences() : array
     {
-        $content = '';
-
+        $references = [];
         switch ($this->type) {
             case 'db': {
-                $references = $this->makeRef($this->table, $this->row['uid']);
-                if (!empty($references)) {
-                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
-                    $content .= $references;
-                }
-
-                $referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
-                if (!empty($referencesFrom)) {
-                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem')) . '</h3>';
-                    $content .= $referencesFrom;
-                }
+                $references['refLines'] = $this->makeRef($this->table, $this->row['uid']);
+                $references['refFromLines'] = $this->makeRefFrom($this->table, $this->row['uid']);
                 break;
             }
 
             case 'file': {
                 if ($this->fileObject && $this->fileObject->isIndexed()) {
-                    $references = $this->makeRef('_FILE', $this->fileObject);
-
-                    if (!empty($references)) {
-                        $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
-                        $content .= $references;
-                    }
+                    $references['refLines'] = $this->makeRef('_FILE', $this->fileObject);
                 }
                 break;
             }
         }
-
-        return $content;
+        return $references;
     }
 
     /**
-     * Render a back button, if a returnUrl was provided
+     * Get a back button, if a returnUrl was provided
      *
-     * @return string
+     * @return array
      */
-    protected function renderBackButton()
+    protected function getBackButton() : array
     {
-        $backLink = '';
-        $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'));
-        if ($returnUrl) {
-            $backLink .= '
-				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '">
-					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '
-					' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back')) . '
-				</a>';
-        }
-        return $backLink;
-    }
-
-    /**
-     * Renders file properties as html table
-     *
-     * @param array $fieldList
-     * @return string
-     */
-    protected function renderFileInformationAsTable($fieldList)
-    {
-        $tableRows = [];
-        foreach ($fieldList as $name) {
-            if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
-                continue;
-            }
-            $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
-            if ($isExcluded) {
-                continue;
-            }
-            $uid = $this->row['uid'];
-            $itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid);
-            $itemLabel = htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getItemLabel($this->table, $name)));
-            $tableRows[] = '
-				<tr>
-					<th>' . $itemLabel . '</th>
-					<td>' . htmlspecialchars($itemValue) . '</td>
-				</tr>';
-        }
-
-        if (!$tableRows) {
-            return '';
-        }
-
-        return '
-			<div class="table-fit table-fit-wrap">
-				<table class="table table-striped table-hover">
-					' . implode('', $tableRows) . '
-				</table>
-			</div>';
+        return ['returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'))];
     }
 
     /**
@@ -568,18 +465,19 @@ class ElementInformationController
     }
 
     /**
-     * Returns the rendered record actions
+     * Returns the record actions
      *
      * @param string $table
      * @param int $uid
-     * @return string
+     * @return array
      */
     protected function getRecordActions($table, $uid)
     {
         if ($table === '' || $uid < 0) {
-            return '';
+            return [];
         }
 
+        $actions = [];
         // Edit button
         $urlParameters = [
             'edit' => [
@@ -589,43 +487,24 @@ class ElementInformationController
             ],
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-        $pageActionIcons = '
-			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
-				' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '
-			</a>';
+        $actions['recordEditUrl'] = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $url = BackendUtility::getModuleUrl('record_history', $urlParameters);
-        $pageActionIcons .= '
-			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
-				' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '
-			</a>';
+        $actions['recordHistoryUrl'] = BackendUtility::getModuleUrl('record_history', $urlParameters);
 
         if ($table === 'pages') {
             // Recordlist button
-            $url = BackendUtility::getModuleUrl('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
-            $pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showList') . '">
-					' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '
-				</a>';
+            $actions['webListUrl'] = BackendUtility::getModuleUrl('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
 
             // View page button
-            $viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
-            $pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">
-					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
-				</a>';
+            $actions['viewOnClick'] = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
         }
 
-        return '
-			<div class="btn-group" role="group">
-				' . $pageActionIcons . '
-			</div>';
+        return $actions;
     }
 
     /**
@@ -633,10 +512,11 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param string|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
-     * @return string HTML
+     * @return array
      */
     protected function makeRef($table, $ref)
     {
+        $refLines = [];
         $lang = $this->getLanguageService();
         // Files reside in sys_file table
         if ($table === '_FILE') {
@@ -646,6 +526,7 @@ class ElementInformationController
             $selectTable = $table;
             $selectUid = $ref;
         }
+        /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
         $rows = $queryBuilder
@@ -669,37 +550,20 @@ class ElementInformationController
             ->fetchAll();
 
         // Compile information for title tag:
-        $infoData = [];
-        $infoDataHeader = '';
-        if (!empty($rows)) {
-            $infoDataHeader = '
-				<tr>
-					<th class="col-icon"></th>
-					<th class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.title') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.table') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.field') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting') . '</th>
-					<th class="col-control"></th>
-				</tr>';
-        }
         foreach ($rows as $row) {
             if ($row['tablename'] === 'sys_file_reference') {
                 $row = $this->transformFileReferenceToRecordReference($row);
                 if ($row['tablename'] === null || $row['recuid'] === null) {
-                    return '';
+                    return;
                 }
             }
+            $line = [];
             $record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
             if ($record) {
                 $parentRecord = BackendUtility::getRecord('pages', $record['pid']);
                 $parentRecordTitle = is_array($parentRecord)
                     ? BackendUtility::getRecordTitle('pages', $parentRecord)
                     : '';
-                $icon = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
-                $actions = $this->getRecordActions($row['tablename'], $row['recuid']);
                 $urlParameters = [
                     'edit' => [
                         $row['tablename'] => [
@@ -709,57 +573,23 @@ class ElementInformationController
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ];
                 $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                $infoData[] = '
-				<tr>
-					<td class="col-icon">
-						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '">
-							' . $icon . '
-						</a>
-					</td>
-					<td class="col-title">
-						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '" >
-							' . BackendUtility::getRecordTitle($row['tablename'], $record, true) . '
-						</a>
-					</td>
-					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'])) . '</td>
-					<td>
-						<span title="' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:page') . ': '
-                            . htmlspecialchars($parentRecordTitle) . ' (uid=' . $record['pid'] . ')">
-							' . $record['uid'] . '
-						</span>
-					</td>
-					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
-					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
-					<td>' . htmlspecialchars($row['softref_key']) . '</td>
-					<td>' . htmlspecialchars($row['sorting']) . '</td>
-					<td class="col-control">' . $actions . '</td>
-				</tr>';
+                $line['url'] = $url;
+                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
+                $line['row'] = $row;
+                $line['record'] = $record;
+                $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, true);
+                $line['parentRecordTitle'] = $parentRecordTitle;
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
+                $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid']);
             } else {
-                $infoData[] = '
-				<tr>
-					<td class="col-icon"></td>
-					<td class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
-					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>
-					<td></td>
-					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
-					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
-					<td>' . htmlspecialchars($row['softref_key']) . '</td>
-					<td>' . htmlspecialchars($row['sorting']) . '</td>
-					<td class="col-control"></td>
-				</tr>';
+                $line['row'] = $row;
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename'];
+                $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
             }
+            $refLines[] = $line;
         }
-        $referenceLine = '';
-        if (!empty($infoData)) {
-            $referenceLine = '
-				<div class="table-fit">
-					<table class="table table-striped table-hover">
-						<thead>' . $infoDataHeader . '</thead>
-						<tbody>' . implode('', $infoData) . '</tbody>
-					</table>
-				</div>';
-        }
-        return $referenceLine;
+        return $refLines;
     }
 
     /**
@@ -767,12 +597,14 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param string $ref Filename or uid
-     * @return string HTML
+     * @return array
      */
-    protected function makeRefFrom($table, $ref)
+    protected function makeRefFrom($table, $ref) : array
     {
+        $refFromLines = [];
         $lang = $this->getLanguageService();
 
+        /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
         $rows = $queryBuilder
@@ -792,29 +624,10 @@ class ElementInformationController
             ->fetchAll();
 
         // Compile information for title tag:
-        $infoData = [];
-        $infoDataHeader = '';
-        if (!empty($rows)) {
-            $infoDataHeader = '
-				<tr>
-					<th class="col-icon"></th>
-					<th class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.title') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.table') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.field') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting') . '</th>
-					<th>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.refString') . '</th>
-					<th class="col-control"></th>
-				</tr>';
-        }
         foreach ($rows as $row) {
+            $line = [];
             $record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
             if ($record) {
-                $icon = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
-                $actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-
                 $urlParameters = [
                     'edit' => [
                         $row['ref_table'] => [
@@ -824,55 +637,22 @@ class ElementInformationController
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ];
                 $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                $infoData[] = '
-				<tr>
-					<td class="col-icon">
-						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '">
-							' . $icon . '
-						</a>
-					</td>
-					<td class="col-title">
-						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '" >
-							' . BackendUtility::getRecordTitle($row['ref_table'], $record, true) . '
-						</a>
-					</td>
-					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'])) . '</td>
-					<td>' . htmlspecialchars($row['ref_uid']) . '</td>
-					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
-					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
-					<td>' . htmlspecialchars($row['softref_key']) . '</td>
-					<td>' . htmlspecialchars($row['sorting']) . '</td>
-					<td>' . htmlspecialchars($row['ref_string']) . '</td>
-					<td class="col-control">' . $actions . '</td>
-				</tr>';
+                $line['url'] = $url;
+                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
+                $line['row'] = $row;
+                $line['record'] = $record;
+                $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, true);
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
+                $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
             } else {
-                $infoData[] = '
-				<tr>
-					<td class="col-icon"></td>
-					<td class="col-title">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
-					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'])) . '</td>
-					<td></td>
-					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
-					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
-					<td>' . htmlspecialchars($row['softref_key']) . '</td>
-					<td>' . htmlspecialchars($row['sorting']) . '</td>
-					<td>' . htmlspecialchars($row['ref_string']) . '</td>
-					<td class="col-control"></td>
-				</tr>';
+                $line['row'] = $row;
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
             }
+            $refFromLines[] = $line;
         }
-
-        if (empty($infoData)) {
-            return '';
-        }
-
-        return '
-			<div class="table-fit">
-				<table class="table table-striped table-hover">
-					<thead>' . $infoDataHeader . '</thead>
-					<tbody>' . implode('', $infoData) . '</tbody>
-				</table>
-			</div>';
+        return $refFromLines;
     }
 
     /**
@@ -883,6 +663,7 @@ class ElementInformationController
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord)
     {
+        /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();
