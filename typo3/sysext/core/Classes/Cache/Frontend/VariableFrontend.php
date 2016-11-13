@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -75,10 +76,14 @@ class VariableFrontend extends AbstractFrontend
                 GeneralUtility::callUserFunction($_funcRef, $params, $this);
             }
         }
-        if ($this->useIgBinary === true) {
-            $this->backend->set($entryIdentifier, igbinary_serialize($variable), $tags, $lifetime);
+        if ($this->backend instanceof TransientBackendInterface) {
+                $this->backend->set($entryIdentifier, $variable, $tags, $lifetime);
         } else {
-            $this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
+            if ($this->useIgBinary === true) {
+                $this->backend->set($entryIdentifier, igbinary_serialize($variable), $tags, $lifetime);
+            } else {
+                $this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
+            }
         }
     }
 
@@ -99,7 +104,11 @@ class VariableFrontend extends AbstractFrontend
         if ($rawResult === false) {
             return false;
         } else {
-            return $this->useIgBinary === true ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+            if ($this->backend instanceof TransientBackendInterface) {
+                return $rawResult;
+            } else {
+                return $this->useIgBinary === true ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+            }
         }
     }
 
@@ -121,7 +130,11 @@ class VariableFrontend extends AbstractFrontend
         foreach ($identifiers as $identifier) {
             $rawResult = $this->backend->get($identifier);
             if ($rawResult !== false) {
-                $entries[] = $this->useIgBinary === true ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+                if ($this->backend instanceof TransientBackendInterface) {
+                    $entries[] = $rawResult;
+                } else {
+                    $entries[] = $this->useIgBinary === true ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+                }
             }
         }
         return $entries;
