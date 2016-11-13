@@ -48,9 +48,9 @@ class LocalizationRepository
     }
 
     /**
-     * @param $pageId
-     * @param $colPos
-     * @param $languageId
+     * @param int $pageId
+     * @param int $colPos
+     * @param int $languageId
      * @return int
      */
     public function getLocalizedRecordCount($pageId, $colPos, $languageId)
