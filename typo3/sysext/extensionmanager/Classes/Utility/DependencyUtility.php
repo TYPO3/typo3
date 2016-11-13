@@ -335,6 +335,8 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
                                 1430562374
                             );
                         }
+                        // Dependency check is skipped and the local version has to be installed
+                        $this->managementService->markExtensionForInstallation($extensionKey);
                     }
                 }
             } else {
