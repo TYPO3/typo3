@@ -766,7 +766,6 @@ class Indexer
         // Get links:
         $list = $this->extractHyperLinks($content);
         if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
-            $this->includeCrawlerClass();
             $crawler = GeneralUtility::makeInstance(\tx_crawler_lib::class);
         }
         // Traverse links:
@@ -2098,9 +2097,11 @@ class Indexer
      * Includes the crawler class
      *
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, autoloader is taking care of that functionality
      */
     public function includeCrawlerClass()
     {
+        GeneralUtility::logDeprecatedFunction();
         require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php';
     }
 
