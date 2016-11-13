@@ -101,6 +101,11 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     protected $moduleTemplate;
 
     /**
+     * @var ExtendedTemplateService
+     */
+    protected $templateService;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -443,11 +448,8 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     public function noTemplate($newStandardTemplate = 0)
     {
-        // Defined global here!
-        /** @var ExtendedTemplateService $tmpl */
-        $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $GLOBALS['tmpl'] = $tmpl;
-        $tmpl->init();
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->init();
 
         $moduleContent['state'] = InfoboxViewHelper::STATE_INFO;
 
@@ -475,7 +477,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $moduleContent['selector'] = $selector;
         }
         // Go to previous Page with Template...
-        $previousPage = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
+        $previousPage = $this->templateService->ext_prevPageWithTemplate($this->id, $this->perms_clause);
         if ($previousPage) {
             $urlParameters = [
                 'id' => $previousPage['uid']
@@ -495,12 +497,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     public function templateMenu()
     {
-        /** @var ExtendedTemplateService $tmpl */
-        $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $GLOBALS['tmpl'] = $tmpl;
-        $tmpl->init();
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->init();
 
-        $all = $tmpl->ext_getAllTemplates($this->id);
+        $all = $this->templateService->ext_getAllTemplates($this->id);
         if (count($all) > 1) {
             $this->MOD_MENU['templatesOnPage'] = [];
             foreach ($all as $d) {

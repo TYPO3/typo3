@@ -33,6 +33,22 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
     public $pObj;
 
     /**
+     * The currently selected sys_template record
+     * @var array
+     */
+    protected $templateRow;
+
+    /**
+     * @var ExtendedTemplateService
+     */
+    protected $templateService;
+
+    /**
+     * @var array
+     */
+    protected $constants;
+
+    /**
      * Initialize editor
      *
      * Initializes the module.
@@ -44,25 +60,24 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
      */
     public function initialize_editor($pageId, $template_uid = 0)
     {
-        $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $GLOBALS['tmpl'] = $templateService;
-        $templateService->init();
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->init();
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);
+        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
         // IF there was a template...
-        if (is_array($GLOBALS['tplRow'])) {
+        if (is_array($this->templateRow)) {
             // Gets the rootLine
             $sys_page = GeneralUtility::makeInstance(PageRepository::class);
             $rootLine = $sys_page->getRootLine($pageId);
             // This generates the constants/config + hierarchy info for the template.
-            $templateService->runThroughTemplates($rootLine, $template_uid);
+            $this->templateService->runThroughTemplates($rootLine, $template_uid);
             // The editable constants are returned in an array.
-            $GLOBALS['theConstants'] = $templateService->generateConfig_constants();
+            $this->constants = $this->templateService->generateConfig_constants();
             // The returned constants are sorted in categories, that goes into the $tmpl->categories array
-            $templateService->ext_categorizeEditableConstants($GLOBALS['theConstants']);
+            $this->templateService->ext_categorizeEditableConstants($this->constants);
             // This array will contain key=[expanded constant name], value=line number in template. (after edit_divider, if any)
-            $templateService->ext_regObjectPositions($GLOBALS['tplRow']['constants']);
+            $this->templateService->ext_regObjectPositions($this->templateRow['constants']);
             return true;
         }
         return false;
@@ -76,11 +91,10 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
     public function getHelpConfig()
     {
         $result = [];
-        $templateService = $this->getExtendedTemplateService();
-        if ($templateService->helpConfig['description'] || $templateService->helpConfig['header']) {
-            $result['header'] = $templateService->helpConfig['header'];
-            $result['description'] = explode('//', $templateService->helpConfig['description']);
-            $result['bulletList'] = explode('//', $templateService->helpConfig['bulletlist']);
+        if ($this->templateService->helpConfig['description'] || $this->templateService->helpConfig['header']) {
+            $result['header'] = $this->templateService->helpConfig['header'];
+            $result['description'] = explode('//', $this->templateService->helpConfig['description']);
+            $result['bulletList'] = explode('//', $this->templateService->helpConfig['bulletlist']);
         }
         return $result;
     }
@@ -106,25 +120,22 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
         // initialize
         $existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
         if ($existTemplate) {
-            $templateService = $this->getExtendedTemplateService();
-            $tplRow = $this->getTemplateRow();
-            $theConstants = $this->getConstants();
-            $assigns['siteTitle'] = trim($tplRow['sitetitle']);
-            $assigns['templateRecord'] = $tplRow;
+            $assigns['siteTitle'] = trim($this->templateRow['sitetitle']);
+            $assigns['templateRecord'] = $this->templateRow;
             if ($manyTemplatesMenu) {
                 $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
             }
 
             $this->getPageRenderer();
-            $saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+            $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
             // Update template ?
             if (GeneralUtility::_POST('_savedok')) {
-                $templateService->changed = 0;
-                $templateService->ext_procesInput(GeneralUtility::_POST(), [], $theConstants, $tplRow);
-                if ($templateService->changed) {
+                $this->templateService->changed = 0;
+                $this->templateService->ext_procesInput(GeneralUtility::_POST(), [], $this->constants, $this->templateRow);
+                if ($this->templateService->changed) {
                     // Set the data to be saved
                     $recData = [];
-                    $recData['sys_template'][$saveId]['constants'] = implode($templateService->raw, LF);
+                    $recData['sys_template'][$saveId]['constants'] = implode($this->templateService->raw, LF);
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->start($recData, []);
@@ -132,27 +143,24 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
                     // Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
                     $tce->clear_cacheCmd('all');
                     // re-read the template ...
-                    $this->initialize_editor($this->pObj->id, $template_uid);
                     // re-read the constants as they have changed
-                    $templateService = $this->getExtendedTemplateService();
-                    $tplRow = $this->getTemplateRow();
-                    $theConstants = $this->getConstants();
+                    $this->initialize_editor($this->pObj->id, $template_uid);
                 }
             }
             // Resetting the menu (start). I wonder if this in any way is a violation of the menu-system. Haven't checked. But need to do it here, because the menu is dependent on the categories available.
-            $this->pObj->MOD_MENU['constant_editor_cat'] = $templateService->ext_getCategoryLabelArray();
+            $this->pObj->MOD_MENU['constant_editor_cat'] = $this->templateService->ext_getCategoryLabelArray();
             $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
             // Resetting the menu (stop)
-            $assigns['title'] = $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants');
+            $assigns['title'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], 'constants');
             if (!empty($this->pObj->MOD_MENU['constant_editor_cat'])) {
                 $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
             }
             // Category and constant editor config:
             $category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
-            $templateService->ext_getTSCE_config($category);
+            $this->templateService->ext_getTSCE_config($category);
 
-            $printFields = trim($templateService->ext_printFields($theConstants, $category));
-            foreach ($templateService->getInlineJavaScript() as $name => $inlineJavaScript) {
+            $printFields = trim($this->templateService->ext_printFields($this->constants, $category));
+            foreach ($this->templateService->getInlineJavaScript() as $name => $inlineJavaScript) {
                 $this->pageRenderer->addJsInlineCode($name, $inlineJavaScript);
             }
 
@@ -174,29 +182,5 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             $theOutput = $this->pObj->noTemplate(1);
         }
         return $theOutput;
-    }
-
-    /**
-     * @return ExtendedTemplateService
-     */
-    protected function getExtendedTemplateService()
-    {
-        return $GLOBALS['tmpl'];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getTemplateRow()
-    {
-        return $GLOBALS['tplRow'];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getConstants()
-    {
-        return $GLOBALS['theConstants'];
     }
 }

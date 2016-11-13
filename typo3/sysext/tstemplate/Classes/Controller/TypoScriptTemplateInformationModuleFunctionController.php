@@ -42,6 +42,17 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
     public $pObj;
 
     /**
+     * The currently selected sys_template record
+     * @var array
+     */
+    protected $templateRow;
+
+    /**
+     * @var ExtendedTemplateService
+     */
+    protected $templateService;
+
+    /**
      * Gets the data for a row of a HTML table in the fluid template
      *
      * @param string $label The label to be shown (e.g. 'Title:', 'Sitetitle:')
@@ -81,8 +92,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
     }
 
     /**
-     * Create an instance of \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService in
-     * $GLOBALS['tmpl'] and looks for the first (visible) template
+     * Create an instance of \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
+     * and looks for the first (visible) template
      * record. If $template_uid was given and greater than zero, this record will be checked.
      *
      * Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -93,15 +104,13 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
      */
     public function initialize_editor($pageId, $template_uid = 0)
     {
-        /** @var ExtendedTemplateService $tmpl */
-        $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $GLOBALS['tmpl'] = $tmpl;
-        $tmpl->init();
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->init();
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $GLOBALS['tplRow'] = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
-        if (is_array($GLOBALS['tplRow'])) {
-            $GLOBALS['tplRow'] = $this->processTemplateRowAfterLoading($GLOBALS['tplRow']);
+        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
+        if (is_array($this->templateRow)) {
+            $this->templateRow = $this->processTemplateRowAfterLoading($this->templateRow);
             return true;
         }
         return false;
@@ -163,10 +172,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
         }
         // Initialize
         $existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
-        $tplRow = $GLOBALS['tplRow'];
         $saveId = 0;
         if ($existTemplate) {
-            $saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+            $saveId = $this->templateRow['_ORIG_uid'] ? : $this->templateRow['uid'];
         }
         // Create extension template
         $newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
@@ -219,7 +227,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                     $this->tce_processed = true;
                     // re-read the template ...
                     $this->initialize_editor($this->pObj->id, $template_uid);
-                    $tplRow = $GLOBALS['tplRow'];
                     // reload template menu
                     $manyTemplatesMenu = $this->pObj->templateMenu();
                 }
@@ -237,9 +244,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                     }
                 }
             }
-            $assigns['title'] = trim($tplRow['title']);
-            $assigns['siteTitle'] = trim($tplRow['sitetitle']);
-            $assigns['templateRecord'] = $tplRow;
+            $assigns['title'] = trim($this->templateRow['title']);
+            $assigns['siteTitle'] = trim($this->templateRow['sitetitle']);
+            $assigns['templateRecord'] = $this->templateRow;
             if ($manyTemplatesMenu) {
                 $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
             }
@@ -251,29 +258,29 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
             }
             if (isset($e['constants'])) {
                 $assigns['showConstantsEditor'] = true;
-                $assigns['constants'] = $tplRow['constants'];
+                $assigns['constants'] = $this->templateRow['constants'];
                 $assigns['constantsLabel'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
             }
             if (isset($e['config'])) {
                 $assigns['showConfigEditor'] = true;
-                $assigns['config'] = $tplRow['config'];
+                $assigns['config'] = $this->templateRow['config'];
                 $assigns['configLabel'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
             }
 
             // Processing:
             $tableRows = [];
-            $tableRows[] = $this->tableRowData($lang->getLL('title'), htmlspecialchars($tplRow['title']), 'title', $tplRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('sitetitle'), htmlspecialchars($tplRow['sitetitle']), 'sitetitle', $tplRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('description'), nl2br(htmlspecialchars($tplRow['description'])), 'description', $tplRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($tplRow['constants']) ? count(explode(LF, $tplRow['constants'])) : 0), 'constants', $tplRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($tplRow['config']) ? count(explode(LF, $tplRow['config'])) : 0), 'config', $tplRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('title'), htmlspecialchars($this->templateRow['title']), 'title', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('sitetitle'), htmlspecialchars($this->templateRow['sitetitle']), 'sitetitle', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('description'), nl2br(htmlspecialchars($this->templateRow['description'])), 'description', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($this->templateRow['constants']) ? count(explode(LF, $this->templateRow['constants'])) : 0), 'constants', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($this->templateRow['config']) ? count(explode(LF, $this->templateRow['config'])) : 0), 'config', $this->templateRow['uid']);
             $assigns['tableRows'] = $tableRows;
 
             // Edit all icon:
             $urlParameters = [
                 'edit' => [
                     'sys_template' => [
-                        $tplRow['uid'] => 'edit'
+                        $this->templateRow['uid'] => 'edit'
                     ]
                 ],
                 'createExtension' => 0,
@@ -297,7 +304,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                         'theOutput' => &$theOutput,
                         'POST' => $POST,
                         'e' => $e,
-                        'tplRow' => $tplRow,
+                        'tplRow' => $this->templateRow,
                         'numberOfRows' => $numberOfRows
                     ];
                     foreach ($postOutputProcessingHook as $hookFunction) {

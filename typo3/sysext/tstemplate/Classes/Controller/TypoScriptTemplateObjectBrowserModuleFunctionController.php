@@ -42,6 +42,17 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
     public $pObj;
 
     /**
+     * The currently selected sys_template record
+     * @var array
+     */
+    protected $templateRow;
+
+    /**
+     * @var ExtendedTemplateService
+     */
+    protected $templateService;
+
+    /**
      * Init
      *
      * @param TypoScriptTemplateModuleController $pObj
@@ -120,19 +131,18 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
     public function initialize_editor($pageId, $template_uid = 0)
     {
         // Defined global here!
-        $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $GLOBALS['tmpl'] = $templateService;
-        $templateService->init();
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->init();
 
         // Gets the rootLine
         $sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $rootLine = $sys_page->getRootLine($pageId);
         // This generates the constants/config + hierarchy info for the template.
-        $templateService->runThroughTemplates($rootLine, $template_uid);
+        $this->templateService->runThroughTemplates($rootLine, $template_uid);
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);
-        return is_array($GLOBALS['tplRow']);
+        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
+        return is_array($this->templateRow);
     }
 
     /**
@@ -153,15 +163,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         }
         $bType = $this->pObj->MOD_SETTINGS['ts_browser_type'];
         $existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
-        $tplRow = $this->getTemplateRow();
         // initialize
         $assigns = [];
         $assigns['LLPrefix'] = 'LLL:' . $this->localLanguageFilePath . ':';
         $assigns['existTemplate'] = $existTemplate;
         $assigns['tsBrowserType'] = $this->pObj->MOD_SETTINGS['ts_browser_type'];
         if ($existTemplate) {
-            $assigns['templateRecord'] = $tplRow;
-            $assigns['linkWrapTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants'));
+            $assigns['templateRecord'] = $this->templateRow;
+            $assigns['linkWrapTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], ($bType == 'setup' ? 'config' : 'constants'));
             $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
             if ($POST['add_property'] || $POST['update_value'] || $POST['clear_object']) {
@@ -200,11 +209,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                     }
                 }
                 if ($line) {
-                    $saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+                    $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
                     // Set the data to be saved
                     $recData = [];
                     $field = $bType == 'setup' ? 'config' : 'constants';
-                    $recData['sys_template'][$saveId][$field] = $tplRow[$field] . $line;
+                    $recData['sys_template'][$saveId][$field] = $this->templateRow[$field] . $line;
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     // Initialize
@@ -219,11 +228,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             }
         }
         $tsbr = GeneralUtility::_GET('tsbr');
-        $templateService = $this->getExtendedTemplateService();
         $update = 0;
         if (is_array($tsbr)) {
             // If any plus-signs were clicked, it's registred.
-            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
+            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
             $update = 1;
         }
         if ($POST['Submit']) {
@@ -234,34 +242,34 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         if ($update) {
             $this->getBackendUserAuthentication()->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
         }
-        $templateService->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
-        $templateService->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
+        $this->templateService->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
+        $this->templateService->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
         // This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
-        $templateService->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
-        if ($this->pObj->sObj && $templateService->constantMode) {
-            $templateService->constantMode = 'untouched';
+        $this->templateService->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
+        if ($this->pObj->sObj && $this->templateService->constantMode) {
+            $this->templateService->constantMode = 'untouched';
         }
-        $templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
-        $templateService->fixedLgd = $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
-        $templateService->linkObjects = true;
-        $templateService->ext_regLinenumbers = true;
-        $templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
-        $templateService->bType = $bType;
+        $this->templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
+        $this->templateService->fixedLgd = $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
+        $this->templateService->linkObjects = true;
+        $this->templateService->ext_regLinenumbers = true;
+        $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
+        $this->templateService->bType = $bType;
         if ($this->pObj->MOD_SETTINGS['ts_browser_type'] == 'const') {
-            $templateService->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
+            $this->templateService->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
         } else {
-            $templateService->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
+            $this->templateService->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
         }
-        $templateService->generateConfig();
+        $this->templateService->generateConfig();
         if ($bType == 'setup') {
-            $theSetup = $templateService->setup;
+            $theSetup = $this->templateService->setup;
         } else {
-            $theSetup = $templateService->setup_constants;
+            $theSetup = $this->templateService->setup_constants;
         }
         // EDIT A VALUE:
         $assigns['typoScriptPath'] = $this->pObj->sObj;
         if ($this->pObj->sObj) {
-            list($theSetup, $theSetupValue) = $templateService->ext_getSetup($theSetup, $this->pObj->sObj ? $this->pObj->sObj : '');
+            list($theSetup, $theSetupValue) = $this->templateService->ext_getSetup($theSetup, $this->pObj->sObj ? $this->pObj->sObj : '');
             $assigns['theSetupValue'] = $theSetupValue;
             if ($existTemplate === false) {
                 $noTemplateMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noCurrentTemplate'), $lang->getLL('edit'), FlashMessage::ERROR);
@@ -283,13 +291,13 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $assigns['moduleUrlObjectListAction'] = $aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0';
             }
         } else {
-            $templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
+            $this->templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
             if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
                 // If any POST-vars are send, update the condition array
                 $searchString = GeneralUtility::_POST('search_field');
                 try {
-                    $templateService->tsbrowser_depthKeys =
-                        $templateService->ext_getSearchKeys(
+                    $this->templateService->tsbrowser_depthKeys =
+                        $this->templateService->ext_getSearchKeys(
                             $theSetup,
                             '',
                             $searchString,
@@ -316,19 +324,19 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
-            list($theSetup, $theSetupValue) = $templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ? $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] : '');
-            $tree = $templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
-            $tree = $templateService->substituteCMarkers($tree);
+            list($theSetup, $theSetupValue) = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ? $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] : '');
+            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
+            $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [
                 'id' => $this->pObj->id
             ];
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
             // Parser Errors:
             $pEkey = $bType == 'setup' ? 'config' : 'constants';
-            $assigns['hasParseErrors'] = !empty($templateService->parserErrors[$pEkey]);
-            if (!empty($templateService->parserErrors[$pEkey])) {
+            $assigns['hasParseErrors'] = !empty($this->templateService->parserErrors[$pEkey]);
+            if (!empty($this->templateService->parserErrors[$pEkey])) {
                 $assigns['showErrorDetailsUri'] = $aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-';
-                $assigns['parseErrors'] = $templateService->parserErrors[$pEkey];
+                $assigns['parseErrors'] = $this->templateService->parserErrors[$pEkey];
             }
 
             if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
@@ -354,14 +362,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             }
 
             // Conditions:
-            $assigns['hasConditions'] = is_array($templateService->sections) && !empty($templateService->sections);
-            if (is_array($templateService->sections) && !empty($templateService->sections)) {
+            $assigns['hasConditions'] = is_array($this->templateService->sections) && !empty($this->templateService->sections);
+            if (is_array($this->templateService->sections) && !empty($this->templateService->sections)) {
                 $tsConditions = [];
-                foreach ($templateService->sections as $key => $val) {
+                foreach ($this->templateService->sections as $key => $val) {
                     $tsConditions[] = [
                         'key' => $key,
                         'value' => $val,
-                        'label' => $templateService->substituteCMarkers(htmlspecialchars($val)),
+                        'label' => $this->templateService->substituteCMarkers(htmlspecialchars($val)),
                         'isSet' => $this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? true : false
                     ];
                 }
@@ -392,21 +400,5 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
-    }
-
-    /**
-     * @return ExtendedTemplateService
-     */
-    protected function getExtendedTemplateService()
-    {
-        return $GLOBALS['tmpl'];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getTemplateRow()
-    {
-        return $GLOBALS['tplRow'];
     }
 }

@@ -37,6 +37,17 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
     protected $localLanguageFilePath;
 
     /**
+     * The currently selected sys_template record
+     * @var array
+     */
+    protected $templateRow;
+
+    /**
+     * @var ExtendedTemplateService
+     */
+    protected $templateService;
+
+    /**
      * Init
      *
      * @param TypoScriptTemplateModuleController $pObj
@@ -77,20 +88,19 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
     public function initialize_editor($pageId, $templateUid = 0)
     {
         // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-        $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $GLOBALS['tmpl'] = $templateService;
-        $templateService->init();
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $this->templateService->init();
 
         // Gets the rootLine
         $sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $GLOBALS['rootLine'] = $sys_page->getRootLine($pageId);
+        $rootLine = $sys_page->getRootLine($pageId);
 
         // This generates the constants/config + hierarchy info for the template.
-        $templateService->runThroughTemplates($GLOBALS['rootLine'], $templateUid);
+        $this->templateService->runThroughTemplates($rootLine, $templateUid);
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $templateUid);
-        return is_array($GLOBALS['tplRow']);
+        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $templateUid);
+        return is_array($this->templateRow);
     }
 
     /**
@@ -113,17 +123,16 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
 
         $assigns['existTemplate'] = $this->initialize_editor($this->pObj->id, $template_uid);
         if ($assigns['existTemplate']) {
-            $assigns['siteTitle'] = trim($GLOBALS['tplRow']['sitetitle']);
-            $assigns['templateRecord'] = $GLOBALS['tplRow'];
-            $assigns['linkWrappedTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']);
+            $assigns['siteTitle'] = trim($this->templateRow['sitetitle']);
+            $assigns['templateRecord'] = $this->templateRow;
+            $assigns['linkWrappedTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title']);
         }
 
-        $templateService = $GLOBALS['tmpl'];
-        $templateService->clearList_const_temp = array_flip($templateService->clearList_const);
-        $templateService->clearList_setup_temp = array_flip($templateService->clearList_setup);
-        $pointer = count($templateService->hierarchyInfo);
-        $hierarchyInfo = $templateService->ext_process_hierarchyInfo([], $pointer);
-        $assigns['hierarchy'] = implode(array_reverse($templateService->ext_getTemplateHierarchyArr(
+        $this->templateService->clearList_const_temp = array_flip($this->templateService->clearList_const);
+        $this->templateService->clearList_setup_temp = array_flip($this->templateService->clearList_setup);
+        $pointer = count($this->templateService->hierarchyInfo);
+        $hierarchyInfo = $this->templateService->ext_process_hierarchyInfo([], $pointer);
+        $assigns['hierarchy'] = implode(array_reverse($this->templateService->ext_getTemplateHierarchyArr(
             $hierarchyInfo,
             '',
             [],
@@ -131,7 +140,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         )), '');
 
         $urlParameters = [
-            'id' => $GLOBALS['SOBE']->id,
+            'id' => $this->pObj->id,
             'template' => 'all'
         ];
         $assigns['moduleLink'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
@@ -172,15 +181,15 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         }
 
         if ($template) {
-            $templateService->ext_lineNumberOffset = 0;
-            $templateService->ext_lineNumberOffset_mode = 'const';
+            $this->templateService->ext_lineNumberOffset = 0;
+            $this->templateService->ext_lineNumberOffset_mode = 'const';
             $assigns['constants'] = [];
-            foreach ($templateService->constants as $key => $val) {
-                $currentTemplateId = $templateService->hierarchyInfo[$key]['templateID'];
+            foreach ($this->templateService->constants as $key => $val) {
+                $currentTemplateId = $this->templateService->hierarchyInfo[$key]['templateID'];
                 if ($currentTemplateId == $template || $template === 'all') {
                     $assigns['constants'][] = [
-                        'title' => $templateService->hierarchyInfo[$key]['title'],
-                        'content' => $templateService->ext_outputTS(
+                        'title' => $this->templateService->hierarchyInfo[$key]['title'],
+                        'content' => $this->templateService->ext_outputTS(
                             [$val],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
@@ -193,19 +202,19 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                         break;
                     }
                 }
-                $templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
+                $this->templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
             }
 
             // Output Setup
-            $templateService->ext_lineNumberOffset = 0;
-            $templateService->ext_lineNumberOffset_mode = 'setup';
+            $this->templateService->ext_lineNumberOffset = 0;
+            $this->templateService->ext_lineNumberOffset_mode = 'setup';
             $assigns['setups'] = [];
-            foreach ($templateService->config as $key => $val) {
-                $currentTemplateId = $templateService->hierarchyInfo[$key]['templateID'];
+            foreach ($this->templateService->config as $key => $val) {
+                $currentTemplateId = $this->templateService->hierarchyInfo[$key]['templateID'];
                 if ($currentTemplateId == $template || $template === 'all') {
                     $assigns['setups'][] = [
-                        'title' => $templateService->hierarchyInfo[$key]['title'],
-                        'content' => $templateService->ext_outputTS(
+                        'title' => $this->templateService->hierarchyInfo[$key]['title'],
+                        'content' => $this->templateService->ext_outputTS(
                             [$val],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
@@ -218,7 +227,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                         break;
                     }
                 }
-                $templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
+                $this->templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
             }
         }
 
