@@ -243,7 +243,6 @@ abstract class AbstractRecordList
                         if ($icon) {
                             $out .= $icon;
                         }
-                    } else {
                     }
                 }
             }
