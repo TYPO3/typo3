@@ -39,10 +39,12 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     protected $sessionDataLifetime = 86400;
 
     /**
-     * if > 0 : session-timeout in seconds.
-     * if FALSE/<0 : no timeout.
-     * if string: The string is field name from the user table where the timeout can be found.
-     * @var string|int
+     * Session timeout (on the server)
+     *
+     * If >0: session-timeout in seconds.
+     * If 0: no timeout.
+     *
+     * @var int
      */
     public $sessionTimeout = 6000;
 
