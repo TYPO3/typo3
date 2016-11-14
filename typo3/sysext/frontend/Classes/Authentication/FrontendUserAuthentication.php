@@ -138,6 +138,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'];
         $this->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
         $this->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
+        $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionTimeout'];
     }
 
     /**
@@ -161,7 +162,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function start()
     {
-        if ((int)$this->sessionTimeout > 0 && $this->sessionTimeout < $this->lifetime) {
+        if ($this->sessionTimeout > 0 && $this->sessionTimeout < $this->lifetime) {
             // If server session timeout is non-zero but less than client session timeout: Copy this value instead.
             $this->sessionTimeout = $this->lifetime;
         }

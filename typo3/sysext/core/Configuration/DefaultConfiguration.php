@@ -1018,6 +1018,7 @@ return [
         'lockIP' => 2,
         'loginSecurityLevel' => '',
         'lifetime' => 0,
+        'sessionTimeout' => 6000,
         'sessionDataLifetime' => 86400,
         'permalogin' => 0,
         'cookieDomain' => '',

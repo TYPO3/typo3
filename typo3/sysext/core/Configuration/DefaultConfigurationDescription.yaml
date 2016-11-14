@@ -255,7 +255,7 @@ BE:
             description: 'Session IP locking for backend users. See <a href="#FE-lockIP">[FE][lockIP]</a> for details.'
         sessionTimeout:
             type: int
-            description: 'Seconds. Session time out for backend users. The value must be at least 180 to avoid side effects. Default is 3600 seconds = 1 hour.'
+            description: 'Session time out for backend users in seconds. The value must be at least 180 to avoid side effects. Default is 28.800 seconds = 8 hours.'
         IPmaskList:
             type: list
             description: 'Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP())</code>'
@@ -389,6 +389,9 @@ FE:
         lifetime:
             type: int
             description: 'If >0 and the option permalogin is >=0, the cookie of FE users will have a lifetime of the number of seconds this value indicates. Otherwise it will be a session cookie (deleted when browser is shut down). Setting this value to 604800 will result in automatic login of FE users during a whole week, 86400 will keep the FE users logged in for a day.'
+        sessionTimeout:
+            type: int
+            description: 'Server side session timeout for frontend users in seconds. Will be overwritten by the lifetime property if the lifetime is longer.'
         sessionDataLifetime:
             type: int
             description: 'If >0, the session data of an anonymous session will timeout and be removed after the number of seconds given (86400 seconds represents 24 hours).'
