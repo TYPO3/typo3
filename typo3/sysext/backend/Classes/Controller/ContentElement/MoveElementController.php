@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for rendering the move-element wizard display
@@ -105,7 +106,6 @@ class MoveElementController extends AbstractModule
         $this->makeCopy = GeneralUtility::_GP('makeCopy');
         // Select-pages where clause for read-access:
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
-        $this->content = '<h1>' . $this->getLanguageService()->getLL('movingElement') . '</h1>';
     }
 
     /**
@@ -134,20 +134,20 @@ class MoveElementController extends AbstractModule
     {
         $lang = $this->getLanguageService();
         if ($this->page_id) {
+            $assigns = [];
             $backendUser = $this->getBackendUser();
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             // Get record for element:
             $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
             // Headerline: Icon, record title:
-            $headerLine = '<span ' . BackendUtility::getRecordToolTip($elRow, $this->table) . '>' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
-            $headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, true);
+            $assigns['table'] = $this->table;
+            $assigns['elRow'] = $elRow;
+            $assigns['recordTooltip'] = BackendUtility::getRecordToolTip($elRow, $this->table);
+            $assigns['recordTitle'] = BackendUtility::getRecordTitle($this->table, $elRow, true);
             // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy])) . ';';
-            $headerLine .= '<div><input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . htmlspecialchars($lang->getLL('makeCopy')) . '</label></div>';
-            // Add the header-content to the module content:
-            $this->content .= '<div>' . $headerLine . '</div>';
-            // Reset variable to pick up the module content in:
-            $code = '';
+            $assigns['makeCopyChecked'] = $this->makeCopy ? ' checked="checked"' : '';
+            $assigns['makeCopyOnClick'] = $onClick;
             // IF the table is "pages":
             if ((string)$this->table == 'pages') {
                 // Get page record (if accessible):
@@ -161,14 +161,18 @@ class MoveElementController extends AbstractModule
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid])) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
+                                $assigns['pages']['goUpUrl'] = GeneralUtility::linkThisScript([
+                                    'uid' => (int)$pageInfo['pid'],
+                                    'moveUid' => $this->moveUid
+                                ]);
                             } else {
-                                $code .= $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
+                                $assigns['pages']['pidPageInfo'] = $pidPageInfo;
                             }
+                            $assigns['pages']['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
                         }
                     }
                     // Create the position tree:
-                    $code .= $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    $assigns['pages']['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
                 }
             }
             // IF the table is "tt_content":
@@ -187,13 +191,9 @@ class MoveElementController extends AbstractModule
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
                     $posMap->cur_sys_language = $this->sys_language;
                     // Headerline for the parent page: Icon, record title:
-                    $headerLine = '<span ' . BackendUtility::getRecordToolTip($pageInfo, 'pages') . '>'
-                        . $this->moduleTemplate->getIconFactory()->getIconForRecord(
-                            'pages',
-                            $pageInfo,
-                            Icon::SIZE_SMALL
-                        )->render() . '</span>';
-                    $headerLine .= BackendUtility::getRecordTitle('pages', $pageInfo, true);
+                    $assigns['ttContent']['pageInfo'] = $pageInfo;
+                    $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordToolTip($pageInfo, 'pages');
+                    $assigns['ttContent']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
                     // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
                     // SHARED page-TSconfig settings.
                     // $modTSconfig_SHARED = BackendUtility::getModTSconfig($this->pageId, 'mod.SHARED');
@@ -205,30 +205,35 @@ class MoveElementController extends AbstractModule
                     // Removing duplicates, if any
                     $colPosList = implode(',', array_unique($colPosIds));
                     // Adding parent page-header and the content element columns from position-map:
-                    $code = $headerLine . '<br />';
-                    $code .= $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);
+                    $assigns['ttContent']['contentElementColumns'] = $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);
                     // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
-                    $code .= '<br /><br />';
                     if ($pageInfo['pid']) {
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript([
+                                $assigns['ttContent']['goUpUrl'] = GeneralUtility::linkThisScript([
                                     'uid' => (int)$pageInfo['pid'],
                                     'moveUid' => $this->moveUid
-                                ])) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
+                                ]);
                             } else {
-                                $code .= $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
+                                $assigns['ttContent']['pidPageInfo'] = $pidPageInfo;
                             }
+                            $assigns['ttContent']['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
                         }
                     }
                     // Create the position tree (for pages):
-                    $code .= $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    $assigns['ttContent']['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
                 }
             }
-            // Add the $code content as a new section to the module:
-            $this->content .= '<h2>' . $lang->getLL('selectPositionOfElement') . '</h2>';
-            $this->content .= '<div>' . $code . '</div>';
+            // Rendering of the output via fluid
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+            $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+                'EXT:backend/Resources/Private/Templates/ContentElement/MoveElement.html'
+            ));
+            $view->assignMultiple($assigns);
+            $this->content .=  $view->render();
         }
         // Setting up the buttons and markers for docheader
         $this->getButtons();
