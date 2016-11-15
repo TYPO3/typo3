@@ -6261,7 +6261,7 @@ class ContentObjectRenderer
             $isUrlModified = false;
             // Set scheme and host if not yet part of the URL:
             if (empty($urlParts['host'])) {
-                $urlParts['scheme'] = 'http';
+                $urlParts['scheme'] = $this->getEnvironmentVariable('TYPO3_SSL') ? 'https' : 'http';
                 $urlParts['host'] = $this->getEnvironmentVariable('HTTP_HOST');
                 $urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
                 // absRefPrefix has been prepended to $url beforehand
