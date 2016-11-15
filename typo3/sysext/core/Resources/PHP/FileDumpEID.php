@@ -25,13 +25,17 @@ if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('p')) {
 
 if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac(implode('|', $parameters), 'resourceStorageDumpFile') === \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('token')) {
 	if (isset($parameters['f'])) {
-		$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($parameters['f']);
-		if ($file->isDeleted() || $file->isMissing()) {
+		try {
+			$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($parameters['f']);
+			if ($file->isDeleted() || $file->isMissing()) {
+				$file = NULL;
+			}
+		} catch (\Exception $e) {
 			$file = NULL;
 		}
 	} else {
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository')->findByUid($parameters['p']);
-		if ($file->isDeleted()) {
+		if (!$file || $file->isDeleted()) {
 			$file = NULL;
 		}
 	}
