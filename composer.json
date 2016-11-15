@@ -34,7 +34,7 @@
 		"ext-session": "*",
 		"ext-xml": "*",
 		"psr/log": "1.0.*@dev",
-		"pear/http_request2": "~2.2.1",
+		"pear/http_request2": "~2.3.0",
 		"swiftmailer/swiftmailer": "~5.4.1",
 		"symfony/console": "^2.7 || ^3.0",
 		"symfony/finder": "^2.7 || ^3.0",
@@ -211,9 +211,5 @@
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/"
 		},
 		"classmap": ["typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/"]
-	},
-	"include-path": [
-		"vendor/pear/http_request2/",
-		"vendor/pear/net_url2/"
-	]
+	}
 }
