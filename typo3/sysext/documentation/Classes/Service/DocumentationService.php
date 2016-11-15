@@ -177,11 +177,9 @@ class DocumentationService {
 		}
 
 		if (!$hasArchive) {
-			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-			$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\HttpRequest', $packageUrl);
-			$response = $http->send();
-			if ($response->getStatus() == 200) {
-				GeneralUtility::writeFile($absolutePathToZipFile, $response->getBody());
+			$content = GeneralUtility::getUrl($packageUrl);
+			if (!empty($content)) {
+				GeneralUtility::writeFile($absolutePathToZipFile, $content);
 			}
 		}
 
