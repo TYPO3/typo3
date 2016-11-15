@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
@@ -68,7 +69,14 @@ class RequestHandler implements RequestHandlerInterface
         $this->boot($pathToRoute === '/login');
 
         // Check if the router has the available route and dispatch.
-        return $this->dispatch($request);
+        try {
+            return $this->dispatch($request);
+
+        // When token was invalid redirect to login
+        } catch (InvalidRequestTokenException $e) {
+            $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
+            \TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
+        }
     }
 
     /**
