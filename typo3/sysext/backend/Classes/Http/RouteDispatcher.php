@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -46,7 +46,7 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         $route = $router->matchRequest($request);
         $request = $request->withAttribute('route', $route);
         if (!$this->isValidRequest($request)) {
-            throw new RouteNotFoundException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
+            throw new InvalidRequestTokenException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
         }
 
         $targetIdentifier = $route->getOption('target');
