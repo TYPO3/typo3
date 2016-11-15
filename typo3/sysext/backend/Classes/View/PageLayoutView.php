@@ -451,18 +451,23 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         }
         if ($userCanEditPage) {
             $languageOverlayId = 0;
-            $overlayExpressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages_language_overlay')
-                ->getExpressionBuilder();
-            $constraint = $overlayExpressionBuilder->eq(
+                ->createQueryBuilder();
+            $constraint = $queryBuilder->expr()->eq(
                 'sys_language_uid',
-                (int)$this->tt_contentConfig['sys_language_uid']
+                $queryBuilder->createNamedParameter($this->tt_contentConfig['sys_language_uid'], \PDO::PARAM_INT)
             );
             $pageOverlayRecord = BackendUtility::getRecordsByField(
                 'pages_language_overlay',
                 'pid',
                 (int)$this->id,
-                $constraint
+                $constraint,
+                '',
+                '',
+                '',
+                true,
+                $queryBuilder
             );
             if (!empty($pageOverlayRecord[0]['uid'])) {
                 $languageOverlayId = $pageOverlayRecord[0]['uid'];

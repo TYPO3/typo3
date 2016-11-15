@@ -156,12 +156,21 @@ class DeletedRecords
         if (trim($filter) !== '') {
             $labelConstraint = $queryBuilder->expr()->like(
                 $tcaCtrl['label'],
-                $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($filter) . '%')
+                $queryBuilder->createNamedParameter(
+                    $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($filter) . '%'),
+                    \PDO::PARAM_STR
+                )
             );
             if (MathUtility::canBeInterpretedAsInteger($filter)) {
                 $filterConstraint = $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('uid', (int)$filter),
-                    $queryBuilder->expr()->eq('pid', (int)$filter),
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
+                    ),
                     $labelConstraint
                 );
             } else {
@@ -176,7 +185,7 @@ class DeletedRecords
                 ->count('*')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->neq($deletedField, 0),
+                    $queryBuilder->expr()->neq($deletedField, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                     $filterConstraint
                 )
@@ -246,15 +255,23 @@ class DeletedRecords
         }
         // query for actual deleted records
         if ($allowQuery) {
+            $where = $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                ),
+                $filterConstraint
+            );
             $recordsToCheck = BackendUtility::getRecordsByField(
                 $table,
                 $deletedField,
                 '1',
-                ' AND ' . $queryBuilder->expr()->andX($queryBuilder->expr()->eq('pid', (int)$id), $filterConstraint),
+                ' AND ' . $where,
                 '',
                 '',
                 $limit,
-                false
+                false,
+                $queryBuilder
             );
             if ($recordsToCheck) {
                 $this->checkRecordAccess($table, $recordsToCheck);

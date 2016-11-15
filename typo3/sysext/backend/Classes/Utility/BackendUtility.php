@@ -219,6 +219,7 @@ class BackendUtility
      * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
+     * @param null|QueryBuilder $queryBuilder The queryBuilder must be provided, if the parameter $whereClause is given and the concept of prepared statement was used. Example within self::firstDomainRecord()
      * @return mixed Multidimensional array with selected records (if any is selected)
      */
     public static function getRecordsByField(
@@ -229,10 +230,14 @@ class BackendUtility
         $groupBy = '',
         $orderBy = '',
         $limit = '',
-        $useDeleteClause = true
+        $useDeleteClause = true,
+        $queryBuilder = null
     ) {
         if (is_array($GLOBALS['TCA'][$theTable])) {
-            $queryBuilder = static::getQueryBuilderForTable($theTable);
+            if (null === $queryBuilder) {
+                $queryBuilder = static::getQueryBuilderForTable($theTable);
+            }
+
             // Show all records except versioning placeholders
             $queryBuilder->getRestrictions()
                 ->removeAll()
@@ -388,11 +393,10 @@ class BackendUtility
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                          ->getQueryBuilderForTable($table);
-            $expressionBuilder = $queryBuilder->expr();
+                ->getQueryBuilderForTable($table);
 
-            $constraint = $expressionBuilder->andX(
-                $expressionBuilder->eq(
+            $constraint = $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq(
                     $tcaCtrl['languageField'],
                     $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
                 ),
@@ -406,7 +410,9 @@ class BackendUtility
                 (string)$constraint,
                 '',
                 '',
-                1
+                1,
+                true,
+                $queryBuilder
             );
         }
         return $recordLocalization;
@@ -3965,13 +3971,29 @@ class BackendUtility
      */
     public static function firstDomainRecord($rootLine)
     {
-        $expressionBuilder = $queryBuilder = static::getQueryBuilderForTable('sys_domain')->expr();
-        $constraint = $expressionBuilder->andX(
-            $expressionBuilder->eq('redirectTo', $expressionBuilder->literal('')),
-            $expressionBuilder->eq('hidden', 0)
+        $queryBuilder = static::getQueryBuilderForTable('sys_domain');
+        $constraint = $queryBuilder->expr()->andX(
+            $queryBuilder->expr()->eq(
+                'redirectTo',
+                $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+            ),
+            $queryBuilder->expr()->eq(
+                'hidden',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            )
         );
         foreach ($rootLine as $row) {
-            $dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], (string)$constraint, '', 'sorting');
+            $dRec = self::getRecordsByField(
+                'sys_domain',
+                'pid',
+                $row['uid'],
+                (string)$constraint,
+                '',
+                'sorting',
+                '',
+                true,
+                $queryBuilder
+            );
             if (is_array($dRec)) {
                 $dRecord = reset($dRec);
                 return rtrim($dRecord['domainName'], '/');
