@@ -218,6 +218,7 @@ class LoginController
                 'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
             ],
             'copyright' => BackendUtility::TYPO3_copyRightNotice(),
+            'redirectUrl' => $this->redirectUrl,
             'loginNewsItems' => $this->getSystemNews(),
             'loginProviderIdentifier' => $this->loginProviderIdentifier,
             'loginProviders' => $this->loginProviders
