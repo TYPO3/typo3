@@ -23,7 +23,8 @@
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\Fluid\\": "Classes/"
-		}
+		},
+		"classmap": ["Resources/PHP/"]
 	},
 	"autoload-dev": {
 		"psr-4": {
