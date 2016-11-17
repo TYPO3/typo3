@@ -832,6 +832,7 @@ abstract class AbstractUserAuthentication
             ['ses_id' => $this->id],
             ['ses_id' => $oldSessionId, 'ses_name' => $this->name]
         );
+        $this->user['ses_id'] = $this->id;
         $this->newSessionID = true;
     }
 
