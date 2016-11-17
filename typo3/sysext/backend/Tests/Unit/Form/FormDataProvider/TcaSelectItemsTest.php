@@ -1251,6 +1251,32 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataThrowsExceptionForInvalidFileFolder()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'fileFolder' => 'EXT:non_existing/Resources/Public/',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1479399227);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
     public function addDataAddsItemsByAddItemsFromPageTsConfig()
     {
         $input = [

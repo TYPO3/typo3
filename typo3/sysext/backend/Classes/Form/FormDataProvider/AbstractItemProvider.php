@@ -390,6 +390,7 @@ abstract class AbstractItemProvider
      * @param string $fieldName Current handle field name
      * @param array $items Incoming items
      * @return array Modified item array
+     * @throws \RuntimeException
      */
     protected function addItemsFromFolder(array $result, $fieldName, array $items)
     {
@@ -399,8 +400,14 @@ abstract class AbstractItemProvider
             return $items;
         }
 
-        $fileFolder = $result['processedTca']['columns'][$fieldName]['config']['fileFolder'];
-        $fileFolder = GeneralUtility::getFileAbsFileName($fileFolder);
+        $fileFolderRaw = $result['processedTca']['columns'][$fieldName]['config']['fileFolder'];
+        $fileFolder = GeneralUtility::getFileAbsFileName($fileFolderRaw);
+        if ($fileFolder === '') {
+            throw new \RuntimeException(
+                'Invalid folder given for item processing: ' . $fileFolderRaw . ' for table ' . $result['tableName'] . ', field ' . $fieldName,
+                1479399227
+            );
+        }
         $fileFolder = rtrim($fileFolder, '/') . '/';
 
         if (@is_dir($fileFolder)) {
