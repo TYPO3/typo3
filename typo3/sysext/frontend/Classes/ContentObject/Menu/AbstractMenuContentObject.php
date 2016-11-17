@@ -1627,7 +1627,7 @@ abstract class AbstractMenuContentObject
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL([
                 'parameter' => $shortcut['uid'],
                 'additionalParams' => $addParams . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
-                'linkAccessRestrictedPages' => $this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE'
+                'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages'])
             ]);
         }
         if ($shortcut) {
@@ -2128,7 +2128,7 @@ abstract class AbstractMenuContentObject
         if ($page['sectionIndex_uid']) {
             $conf['section'] = $page['sectionIndex_uid'];
         }
-        $conf['linkAccessRestrictedPages'] = $this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE';
+        $conf['linkAccessRestrictedPages'] = !empty($this->mconf['showAccessRestrictedPages']);
         $this->parent_cObj->typoLink('|', $conf);
         $LD = $this->parent_cObj->lastTypoLinkLD;
         $LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;

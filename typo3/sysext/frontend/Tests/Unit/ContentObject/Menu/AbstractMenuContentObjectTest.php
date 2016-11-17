@@ -292,4 +292,253 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->assertEquals($expectedResult, $this->subject->isItemState('IFSUB', 0));
     }
+
+    /**
+     * @return array
+     */
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiurationDataProvider()
+    {
+        return [
+            'standard parameter without access protected setting' => [
+                [
+                    'parameter' => 1,
+                    'linkAccessRestrictedPages' => false,
+                    'useCacheHash' => true
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                ['uid' => 1],
+                '',
+                0,
+                '',
+                '',
+                '',
+                ''
+            ],
+            'standard parameter with access protected setting' => [
+                [
+                    'parameter' => 10,
+                    'linkAccessRestrictedPages' => true,
+                    'useCacheHash' => true
+                ],
+                [
+                    'showAccessRestrictedPages' => true
+                ],
+                true,
+                ['uid' => 10],
+                '',
+                0,
+                '',
+                '',
+                '',
+                ''
+            ],
+            'standard parameter with access protected setting "NONE" casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
+                [
+                    'parameter' => 10,
+                    'linkAccessRestrictedPages' => true,
+                    'useCacheHash' => true
+                ],
+                [
+                    'showAccessRestrictedPages' => 'NONE'
+                ],
+                true,
+                ['uid' => 10],
+                '',
+                0,
+                '',
+                '',
+                '',
+                ''
+            ],
+            'standard parameter with access protected setting (int)67 casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
+                [
+                    'parameter' => 10,
+                    'linkAccessRestrictedPages' => true,
+                    'useCacheHash' => true
+                ],
+                [
+                    'showAccessRestrictedPages' => 67
+                ],
+                true,
+                ['uid' => 10],
+                '',
+                0,
+                '',
+                '',
+                '',
+                ''
+            ],
+            'standard parameter with target' => [
+                [
+                    'parameter' => 1,
+                    'target' => '_blank',
+                    'linkAccessRestrictedPages' => false,
+                    'useCacheHash' => true
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                ['uid' => 1],
+                '_blank',
+                0,
+                '',
+                '',
+                '',
+                ''
+            ],
+            'parameter with typeOverride=10' => [
+                [
+                    'parameter' => '10,10',
+                    'linkAccessRestrictedPages' => false,
+                    'useCacheHash' => true
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                ['uid' => 10],
+                '',
+                0,
+                '',
+                '',
+                '',
+                10
+            ],
+            'parameter with target and typeOverride=10' => [
+                [
+                    'parameter' => '10,10',
+                    'linkAccessRestrictedPages' => false,
+                    'useCacheHash' => true,
+                    'target' => '_self'
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                ['uid' => 10],
+                '_self',
+                0,
+                '',
+                '',
+                '',
+                10
+            ],
+            'parameter with invalid value in typeOverride=foobar ignores typeOverride' => [
+                [
+                    'parameter' => 20,
+                    'linkAccessRestrictedPages' => false,
+                    'useCacheHash' => true,
+                    'target' => '_self'
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                ['uid' => 20],
+                '_self',
+                0,
+                '',
+                '',
+                '',
+                'foobar'
+            ],
+            'standard parameter with section name' => [
+                [
+                    'parameter' => 10,
+                    'target' => '_blank',
+                    'linkAccessRestrictedPages' => false,
+                    'no_cache' => true,
+                    'section' => 'section-name'
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                [
+                    'uid' => 10,
+                    'sectionIndex_uid' => 'section-name'
+                ],
+                '_blank',
+                1,
+                '',
+                '',
+                '',
+                ''
+            ],
+            'standard parameter with additional parameters' => [
+                [
+                    'parameter' => 10,
+                    'linkAccessRestrictedPages' => false,
+                    'no_cache' => true,
+                    'section' => 'section-name',
+                    'additionalParams' => '&test=foobar'
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                [
+                    'uid' => 10,
+                    'sectionIndex_uid' => 'section-name'
+                ],
+                '',
+                1,
+                '',
+                '',
+                '&test=foobar',
+                ''
+            ],
+            'overridden page array uid value gets used as parameter' => [
+                [
+                    'parameter' => 99,
+                    'linkAccessRestrictedPages' => false,
+                    'no_cache' => true,
+                    'section' => 'section-name'
+                ],
+                [
+                    'showAccessRestrictedPages' => false
+                ],
+                true,
+                [
+                    'uid' => 10,
+                    'sectionIndex_uid' => 'section-name'
+                ],
+                '',
+                1,
+                '',
+                ['uid' => 99],
+                '',
+                ''
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider menuTypoLinkCreatesExpectedTypoLinkConfiurationDataProvider
+     * @param array $expected
+     * @param array $mconf
+     * @param bool $useCacheHash
+     * @param array $page
+     * @param mixed $oTarget
+     * @param int $no_cache
+     * @param string $script
+     * @param string $overrideArray
+     * @param string $addParams
+     * @param string $typeOverride
+     */
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash = true, array $page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
+    {
+        $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+            ->setMethods(['typoLink'])
+            ->getMock();
+        $this->subject->mconf = $mconf;
+        $this->subject->_set('useCacheHash', $useCacheHash);
+        $this->subject->parent_cObj->expects($this->once())->method('typoLink')->with('|', $expected);
+        $this->subject->menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray, $addParams, $typeOverride);
+    }
 }
