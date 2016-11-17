@@ -1632,11 +1632,13 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
+     * Is set by runThroughTemplates(), previously set via TemplateAnalyzerModuleFunctionController from the outside
+     *
      * @return array
      */
     protected function getRootLine()
     {
-        return isset($GLOBALS['rootLine']) ? $GLOBALS['rootLine'] : [];
+        return is_array($this->absoluteRootLine) ? $this->absoluteRootLine : [];
     }
 
     /**
