@@ -3740,6 +3740,10 @@ class GeneralUtility
         }
         // Check for persistent object token, "&"
         if ($funcRef[0] === '&') {
+            self::deprecationLog('Using the persistent object token "&" when resolving "' . $funcRef . '"  for '
+                . 'GeneralUtility::callUserFunc() is deprecated since TYPO3 v8. Make sure to implement '
+                . 'SingletonInterface to achieve the same functionality. This functionality will be removed in TYPO3 v9 '
+                . 'and will then result in a fatal PHP error.');
             $funcRef = substr($funcRef, 1);
             $storePersistentObject = true;
         } else {
