@@ -3806,7 +3806,8 @@ class GeneralUtility
     }
 
     /**
-     * This method should be avoided, as it will be deprecated soon. Instead use makeInstance() directly.
+     * This method should be avoided, as it will be deprecated completely in TYPO3 v9, and will be removed in TYPO3 v10.
+     * Instead use makeInstance() directly.
      *
      * Creates and returns reference to a user defined object.
      * This function can return an object reference if you like.
@@ -3829,19 +3830,16 @@ class GeneralUtility
             self::deprecationLog('Using file references to resolve "' . $classRef . '" has been deprecated in TYPO3 v8 '
                 . 'when calling GeneralUtility::getUserObj(), make sure the class is available via the class loader. '
                 . 'This functionality will be removed in TYPO3 v9.');
-            list($file, $class) = self::revExplode(':', $classRef, 2);
+            list($file, $classRef) = self::revExplode(':', $classRef, 2);
             $requireFile = self::getFileAbsFileName($file);
             if ($requireFile) {
                 require_once $requireFile;
             }
-        } else {
-            $class = $classRef;
         }
 
         // Check if class exists:
-        if (class_exists($class)) {
-            $classObj = self::makeInstance($class);
-            return $classObj;
+        if (class_exists($classRef)) {
+            return self::makeInstance($classRef);
         }
     }
 
