@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
@@ -129,7 +128,7 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws RouteNotFoundException when no route is registered
+     * @throws InvalidRequestTokenException if the request could not be verified
      * @throws \InvalidArgumentException when a route is found but the target of the route cannot be called
      */
     protected function dispatch($request)

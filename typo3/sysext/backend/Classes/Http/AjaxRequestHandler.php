@@ -16,9 +16,8 @@ namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
@@ -151,7 +150,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * @param ServerRequestInterface $request
      * @return ResponseInterface $response
      * @throws ResourceNotFoundException if no valid route was found
-     * @throws RouteNotFoundException if the request could not be verified
+     * @throws InvalidRequestTokenException if the request could not be verified
      */
     protected function dispatch(ServerRequestInterface $request)
     {
