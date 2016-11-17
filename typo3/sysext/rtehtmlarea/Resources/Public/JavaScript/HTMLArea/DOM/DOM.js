@@ -220,7 +220,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			if (typeof HTMLArea.classesRequiredBy !== 'undefined') {
 				var classes = Dom.getClassNames(node);
 				for (var i = classes.length; --i >= 0;) {
-					if (typeof HTMLArea.classesRequiredBy[classes[i]] !== 'undefined' && HTMLArea.classesRequiredBy[classes[i]].indexOf(className) !== -1) {
+					if (typeof HTMLArea.classesRequiredBy[className] !== 'undefined' && HTMLArea.classesRequiredBy[className].indexOf(classes[i]) !== -1) {
 						return true;
 					}
 				}
