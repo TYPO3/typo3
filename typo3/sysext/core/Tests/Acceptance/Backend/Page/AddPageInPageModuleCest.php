@@ -65,7 +65,6 @@ class AddPageInPageModuleCest
 
         // Check empty
         $I->amGoingTo('check empty error');
-        $I->click($saveButton);
         $I->wait(2);
         $editControllerDiv = '#EditDocumentController > div';
         $generalTab = $editControllerDiv . ' > div:nth-child(1) > ul > li';

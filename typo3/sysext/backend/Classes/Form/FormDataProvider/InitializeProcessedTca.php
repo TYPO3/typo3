@@ -30,16 +30,19 @@ class InitializeProcessedTca implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        if (
-            !isset($GLOBALS['TCA'][$result['tableName']])
-            || !is_array($GLOBALS['TCA'][$result['tableName']])
-        ) {
-            throw new \UnexpectedValueException(
-                'TCA for table ' . $result['tableName'] . ' not found',
-                1437914223
-            );
+        if (empty($result['processedTca'])) {
+            if (
+                !isset($GLOBALS['TCA'][$result['tableName']])
+                || !is_array($GLOBALS['TCA'][$result['tableName']])
+            ) {
+                throw new \UnexpectedValueException(
+                    'TCA for table ' . $result['tableName'] . ' not found',
+                    1437914223
+                );
+            }
+
+            $result['processedTca'] = $GLOBALS['TCA'][$result['tableName']];
         }
-        $result['processedTca'] = $GLOBALS['TCA'][$result['tableName']];
 
         if (!is_array($result['processedTca']['columns'])) {
             throw new \UnexpectedValueException(

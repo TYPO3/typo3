@@ -76,7 +76,12 @@ class SelectTreeElement extends AbstractFormElement
         $heightInPx = $height * $this->itemHeight;
         $treeWrapperId = 'tree_' . $formElementId;
 
-        $flexFormFieldName = !empty($parameterArray['fieldConf']['flexFormFieldName']) ? htmlspecialchars($parameterArray['fieldConf']['flexFormFieldName']) : '';
+        $fieldName = $this->data['fieldName'];
+        $flexDataStructureIdentifier = '';
+        if ($this->data['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
+            $flexDataStructureIdentifier = $this->data['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'];
+        }
+
         $html = [];
         $html[] = '<div class="typo3-tceforms-tree">';
         $html[] = '    <input class="treeRecord" type="hidden"';
@@ -85,8 +90,9 @@ class SelectTreeElement extends AbstractFormElement
         $html[] = '           data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] = '           data-table="' . htmlspecialchars($this->data['tableName']) . '"';
         $html[] = '           data-field="' . htmlspecialchars($this->data['fieldName']) . '"';
-        $html[] = '           data-flex-form-field-name="' . $flexFormFieldName . '"';
+        $html[] = '           data-flex-form-datastructure-identifier="' . htmlspecialchars($flexDataStructureIdentifier) . '"';
         $html[] = '           data-uid="' . (int)$this->data['vanillaUid'] . '"';
+        $html[] = '           data-recordtypevalue="' . $this->data['recordTypeValue'] . '"';
         $html[] = '           data-command="' . htmlspecialchars($this->data['command']) . '"';
         $html[] = '           data-read-only="' . $readOnly . '"';
         $html[] = '           data-tree-exclusive-keys="' . htmlspecialchars($exclusiveKeys) . '"';

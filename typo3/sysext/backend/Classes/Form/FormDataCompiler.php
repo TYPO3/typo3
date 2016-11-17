@@ -190,7 +190,7 @@ class FormDataCompiler
             // can be shown. This array holds those additional language records, Array key is sys_language_uid.
             'additionalLanguageRows' => [],
             // The tca record type value of the record. Forced to string, there can be "named" type values.
-            'recordTypeValue' => '0',
+            'recordTypeValue' => '',
             // TCA of table with processed fields. After processing, this array contains merged and resolved
             // array data, items were resolved, only used types are set, renderTypes are set.
             'processedTca' => [],
@@ -203,6 +203,10 @@ class FormDataCompiler
             // of the record this flex form is embedded in is transferred in case features like single fields
             // itemsProcFunc need to have this data at hand to do their job.
             'flexParentDatabaseRow' => [],
+
+            // If true, TcaSelectTreeItems data provider will compile tree items. This is false by default since
+            // on opening a record items are not calculated but are fetch in an ajax request, see SelectTreeController.
+            'selectTreeCompileItems' => false,
 
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
             // This array is "flat", an inline structure with parent uid 1 having firstChild uid 2 having secondChild uid 3

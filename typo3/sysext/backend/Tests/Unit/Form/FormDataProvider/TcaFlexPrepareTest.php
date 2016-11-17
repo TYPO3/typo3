@@ -67,6 +67,53 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataKeepsExistingDataStructure()
+    {
+        $input = [
+            'systemLanguageRows' => [],
+            'tableName' => 'aTableName',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                    'meta' => [],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'aFlexField' => [
+                                                    'label' => 'aFlexFieldLabel',
+                                                    'config' => [
+                                                        'type' => 'input',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'meta' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataSetsParsedDataStructureArray()
     {
         $input = [

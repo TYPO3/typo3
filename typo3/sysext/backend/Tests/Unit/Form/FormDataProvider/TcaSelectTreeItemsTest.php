@@ -175,13 +175,13 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'selectTreeCompileItems' => true,
         ];
 
         $expected = $input;
         $expected['databaseRow']['aField'] = ['1'];
         $expected['processedTca']['columns']['aField']['config']['treeData'] = [
             'items' => [['fake', 'tree', 'data']],
-            'selectedNodes' => []
         ];
         $this->assertEquals($expected, $this->subject->addData($input));
     }
@@ -247,6 +247,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'selectTreeCompileItems' => true,
         ];
 
         $this->subject->addData($input);

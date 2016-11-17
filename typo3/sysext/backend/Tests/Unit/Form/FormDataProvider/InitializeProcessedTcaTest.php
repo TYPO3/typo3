@@ -51,6 +51,23 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataKeepsGivenProcessedTca()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'afield' => [],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet()
     {
         $input = [

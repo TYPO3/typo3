@@ -46,6 +46,11 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
             );
         }
 
+        // Guard clause to suppress any calculation if record type value has been set from outside already
+        if ($result['recordTypeValue'] !== '') {
+            return $result;
+        }
+
         $recordTypeValue = '0';
         if (!empty($result['processedTca']['ctrl']['type'])) {
             $tcaTypeField = $result['processedTca']['ctrl']['type'];

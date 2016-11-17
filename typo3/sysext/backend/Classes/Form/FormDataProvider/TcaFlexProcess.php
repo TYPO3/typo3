@@ -468,6 +468,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                 $singleFieldName => $singleFieldConfiguration,
                                             ],
                                         ],
+                                        'selectTreeCompileItems' => false,
                                         'flexParentDatabaseRow' => $result['databaseRow'],
                                     ];
                                     $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
@@ -518,6 +519,8 @@ class TcaFlexProcess implements FormDataProviderInterface
                     'columns' => [],
                 ],
                 'flexParentDatabaseRow' => $result['databaseRow'],
+                // Whether to compile TCA tree items - inherit from parent
+                'selectTreeCompileItems' => $result['selectTreeCompileItems'],
             ];
 
             if (!empty($tcaNewColumns)) {

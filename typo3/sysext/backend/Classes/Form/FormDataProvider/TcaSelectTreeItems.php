@@ -46,41 +46,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 continue;
             }
 
-            $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
             $fieldConfig['config']['maxitems'] = $this->sanitizeMaxItems($fieldConfig['config']['maxitems']);
-
-            $pageTsConfigAddItems = $this->addItemsFromPageTsConfig($result, $fieldName, []);
-            $fieldConfig['config']['items'] = $this->addItemsFromSpecial($result, $fieldName, $fieldConfig['config']['items']);
-            $fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);
-            $staticItems = $fieldConfig['config']['items'] + $pageTsConfigAddItems;
-
-            $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
-            $dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
-
-            $fieldConfig['config']['items'] = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
-            $fieldConfig['config']['items'] = $pageTsConfigAddItems + $fieldConfig['config']['items'];
-            $fieldConfig['config']['items'] = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
-
-            $fieldConfig['config']['items'] = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $fieldConfig['config']['items']);
-            $fieldConfig['config']['items'] = $this->removeItemsByUserAuthMode($result, $fieldName, $fieldConfig['config']['items']);
-            $fieldConfig['config']['items'] = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $fieldConfig['config']['items']);
-
-            // Resolve "itemsProcFunc"
-            if (!empty($fieldConfig['config']['itemsProcFunc'])) {
-                $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
-                // itemsProcFunc must not be used anymore
-                unset($fieldConfig['config']['itemsProcFunc']);
-            }
-
-            // Translate labels
-            $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
-
-            $staticValues = $this->getStaticValues($fieldConfig['config']['items'], $dynamicItems);
-            $result['databaseRow'][$fieldName] = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
-            $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, $staticValues);
-
-            // Keys may contain table names, so a numeric array is created
-            $fieldConfig['config']['items'] = array_values($fieldConfig['config']['items']);
 
             // A couple of tree specific config parameters can be overwritten via page TS.
             // Pick those that influence the data fetching and write them into the config
@@ -102,7 +68,44 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 }
             }
 
-            $fieldConfig['config']['treeData'] = $this->renderTree($result, $fieldConfig, $fieldName, $staticItems);
+            if ($result['selectTreeCompileItems']) {
+                $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
+
+                $pageTsConfigAddItems = $this->addItemsFromPageTsConfig($result, $fieldName, []);
+                $fieldConfig['config']['items'] = $this->addItemsFromSpecial($result, $fieldName, $fieldConfig['config']['items']);
+                $fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);
+                $staticItems = $fieldConfig['config']['items'] + $pageTsConfigAddItems;
+
+                $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
+                $dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
+
+                $fieldConfig['config']['items'] = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
+                $fieldConfig['config']['items'] = $pageTsConfigAddItems + $fieldConfig['config']['items'];
+                $fieldConfig['config']['items'] = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
+
+                $fieldConfig['config']['items'] = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $fieldConfig['config']['items']);
+                $fieldConfig['config']['items'] = $this->removeItemsByUserAuthMode($result, $fieldName, $fieldConfig['config']['items']);
+                $fieldConfig['config']['items'] = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $fieldConfig['config']['items']);
+
+                // Resolve "itemsProcFunc"
+                if (!empty($fieldConfig['config']['itemsProcFunc'])) {
+                    $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
+                    // itemsProcFunc must not be used anymore
+                    unset($fieldConfig['config']['itemsProcFunc']);
+                }
+
+                // Translate labels
+                $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
+
+                $staticValues = $this->getStaticValues($fieldConfig['config']['items'], $dynamicItems);
+                $result['databaseRow'][$fieldName] = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
+                $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, $staticValues);
+
+                // Keys may contain table names, so a numeric array is created
+                $fieldConfig['config']['items'] = array_values($fieldConfig['config']['items']);
+
+                $fieldConfig['config']['treeData'] = $this->renderTree($result, $fieldConfig, $fieldName, $staticItems);
+            }
 
             $result['processedTca']['columns'][$fieldName] = $fieldConfig;
         }
@@ -151,7 +154,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
 
         $treeConfig = [
             'items' => $treeItems,
-            'selectedNodes' => $this->prepareSelectedNodes($fieldConfig['config']['items'], $result['databaseRow'][$fieldName])
         ];
 
         return $treeConfig;
@@ -184,31 +186,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
         }
 
         return $additionalItems;
-    }
-
-    /**
-     * Make sure to only keep the selected nodes that are really available in the database and for the user
-     * (e.g. after permissions etc)
-     *
-     * @param array $itemArray
-     * @param array $databaseValues
-     * @return array
-     * @todo: this is ugly - should be removed with the tree rewrite
-     */
-    protected function prepareSelectedNodes(array $itemArray, array $databaseValues)
-    {
-        $selectedNodes = [];
-        if (!empty($databaseValues)) {
-            foreach ($databaseValues as $selectedNode) {
-                foreach ($itemArray as $possibleSelectBoxItem) {
-                    if ((string)$possibleSelectBoxItem[1] === (string)$selectedNode) {
-                        $selectedNodes[] = $selectedNode;
-                    }
-                }
-            }
-        }
-
-        return $selectedNodes;
     }
 
     /**

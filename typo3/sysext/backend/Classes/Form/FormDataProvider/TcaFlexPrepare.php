@@ -63,16 +63,21 @@ class TcaFlexPrepare implements FormDataProviderInterface
      */
     protected function initializeDataStructure(array $result, $fieldName)
     {
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-            $result['processedTca']['columns'][$fieldName],
-            $result['tableName'],
-            $fieldName,
-            $result['databaseRow']
-        );
-        // Add the identifier to TCA to use it later during rendering
-        $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
-        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        if (!isset($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'])) {
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                $result['processedTca']['columns'][$fieldName],
+                $result['tableName'],
+                $fieldName,
+                $result['databaseRow']
+            );
+            // Add the identifier to TCA to use it later during rendering
+            $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
+            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        } else {
+            // Assume the data structure has been given from outside if the data structure identifier is already set.
+            $dataStructureArray = $result['processedTca']['columns'][$fieldName]['config']['ds'];
+        }
         if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
             $dataStructureArray['meta'] = [];
         }
