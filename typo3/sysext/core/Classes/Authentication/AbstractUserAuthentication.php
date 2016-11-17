@@ -900,6 +900,7 @@ abstract class AbstractUserAuthentication {
 				. ' AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table),
 			array('ses_id' => $this->id)
 		);
+		$this->user['ses_id'] = $this->id;
 		$this->newSessionID = TRUE;
 	}
 
