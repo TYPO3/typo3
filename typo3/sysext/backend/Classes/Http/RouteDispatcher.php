@@ -35,7 +35,7 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
      * @param ServerRequestInterface $request the current server request
      * @param ResponseInterface $response the prepared response
      * @return ResponseInterface the filled response by the callable / controller/action
-     * @throws RouteNotFoundException if the route was not found
+     * @throws InvalidRequestTokenException if the route was not found
      * @throws \InvalidArgumentException if the defined target for the route is invalid
      */
     public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
