@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -279,7 +280,11 @@ class BackendController
         // Render the TYPO3 logo in the left corner
         $logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/typo3-topbar@2x.png';
         $logoPath = GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
-        list($logoWidth, $logoHeight) = @getimagesize($logoPath);
+
+        // set width/height for custom logo
+        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
+        $logoWidth = $imageInfo->getWidth() ?: '22';
+        $logoHeight = $imageInfo->getHeight() ?: '22';
 
         // High-resolution?
         if (strpos($logoUrl, '@2x.') !== false) {
