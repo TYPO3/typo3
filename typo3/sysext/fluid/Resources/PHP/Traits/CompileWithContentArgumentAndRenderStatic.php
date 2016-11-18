@@ -96,7 +96,7 @@ trait CompileWithContentArgumentAndRenderStatic {
     ) {
         $contentArgumentName = $this->resolveContentArgumentName();
         return sprintf(
-            '%s::renderStatic(%s, isset(%s[\'%s\']) ? function() use (%s); return %s[\'%s\']; } : %s, $renderingContext)',
+            '%s::renderStatic(%s, isset(%s[\'%s\']) ? function() use (%s) { return %s[\'%s\']; } : %s, $renderingContext)',
             static::class,
             $argumentsName,
             $argumentsName,
