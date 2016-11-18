@@ -24,10 +24,13 @@ use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionN
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\Configuration;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -117,12 +120,21 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function __construct(ViewInterface $view = null)
     {
-        parent::__construct($view);
+        if ($view !== null) {
+            // Note: if $view is received here this indicates internal framework instancing
+            // and it is safe to call the parent constructor. Custom, non-view-providing
+            // usages will only perform the initialisation below (which is sufficient mind you!)
+            parent::__construct($view);
+        } else {
+            // Reproduced partial initialisation from parent::__construct; minus the custom
+            // implementations we attach below.
+            $this->setTemplateParser(new TemplateParser());
+            $this->setTemplateCompiler(new TemplateCompiler());
+            $this->setViewHelperInvoker(new ViewHelperInvoker());
+            $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
+        }
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        if ($view) {
-            $this->view = $view;
-        }
         $this->setTemplatePaths($objectManager->get(TemplatePaths::class));
         $this->setViewHelperResolver($objectManager->get(ViewHelperResolver::class));
         $this->setVariableProvider($objectManager->get(CmsVariableProvider::class));
