@@ -1,0 +1,5 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:flashMessages class="flashmessages" />
+<f:if condition="{formConfiguration}">
+    <formvh:render overrideConfiguration="{formConfiguration}"/>
+</f:if>

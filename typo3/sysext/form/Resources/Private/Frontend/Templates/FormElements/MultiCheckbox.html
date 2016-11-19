@@ -1,0 +1,20 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <div id="{element.uniqueIdentifier}" class="inputs-list">
+        <f:for each="{element.properties.options}" as="label" key="value">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <formvh:form.checkbox
+                            property="{element.identifier}"
+                            multiple="1"
+                            class="{element.properties.elementClassAttribute}"
+                            value="{value}"
+                            errorClass="{element.properties.elementErrorClassAttribute}"
+                    />
+                    <span>{formvh:translateElementProperty(element: element, property: 'options.{value}')}</span>
+                </label>
+            </div>
+        </f:for>
+    </div>
+</f:section>

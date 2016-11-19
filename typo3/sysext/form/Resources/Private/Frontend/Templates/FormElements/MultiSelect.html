@@ -1,0 +1,12 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <f:form.select
+            property="{element.identifier}"
+            id="{element.uniqueIdentifier}"
+            class="{element.properties.elementClassAttribute} form-control"
+            options="{formvh:translateElementProperty(element: element, property: 'options')}"
+            multiple="multiple"
+            errorClass="{element.properties.elementErrorClassAttribute}"
+    />
+</f:section>

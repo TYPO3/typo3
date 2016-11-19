@@ -1,8 +1,0 @@
-<f:if condition="{model.showElement}">
-	<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
-		{f:render(partial: '{themeName}/Confirmation/AdditionalElements/Label', arguments: {model: model, themeName: themeName})}
-		<f:for each="{model.additionalArguments.uploadedFiles}" as="uploadedFile">
-			{uploadedFile.name}<br />
-		</f:for>
-	</li>
-</f:if>

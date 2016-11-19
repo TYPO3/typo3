@@ -1,2 +1,0 @@
-# Enable the FORM wizard by default for all users
-setup.default.tx_form.showWizardByDefault = 1

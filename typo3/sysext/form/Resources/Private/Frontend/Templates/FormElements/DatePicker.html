@@ -1,0 +1,47 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <formvh:form.datePicker
+        id="{element.uniqueIdentifier}"
+        property="{element.identifier}"
+        placeholder="{formvh:translateElementProperty(element: element, property: 'placeholder')}"
+        dateFormat="{element.properties.dateFormat}"
+        initialDate="{element.properties.initialDate}"
+        enableDatePicker="{element.properties.enableDatePicker}"
+        class="{element.properties.elementClassAttribute}"
+        errorClass="{element.properties.elementErrorClassAttribute}"
+        additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}"
+    >
+        <f:if condition="{element.rootForm.renderingOptions.previewMode}">
+            <f:else>
+                <f:if condition="{element.properties.enableDatePicker}">
+                    <script type="text/javascript">
+                        if ("undefined" !== typeof $) {
+                            $(function() {
+                                $("#<f:format.raw>{element.uniqueIdentifier}</f:format.raw>").datepicker({
+                                    dateFormat: "<f:format.raw>{datePickerDateFormat}</f:format.raw>"
+                                }).on("keydown", function(e) {
+                                    // By using "backspace" or "delete", you can clear the datepicker again.
+                                    if(e.keyCode == 8 || e.keyCode == 46) {
+                                        e.preventDefault();
+                                        $.datepicker._clearDate(this);
+                                    }
+                                });
+                            });
+                        }
+                    </script>
+                </f:if>
+            </f:else>
+        </f:if>
+    </formvh:form.datePicker>
+
+    <f:if condition="{element.properties.displayTimeSelector}">
+        <formvh:form.timePicker
+                id="{element.uniqueIdentifier}-time"
+                property="{element.identifier}"
+                initialDate="{element.properties.initialDate}"
+                class="{element.properties.timeSelectorClassAttribute} form-control"
+                errorClass="{element.properties.elementErrorClassAttribute}"
+        />
+    </f:if>
+</f:section>

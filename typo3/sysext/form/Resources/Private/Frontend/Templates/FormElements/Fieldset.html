@@ -1,0 +1,9 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<fieldset id="{section.uniqueIdentifier}" class="form-group{f:if(condition: section.properties.elementClassAttribute, then: ' {section.properties.elementClassAttribute}')}">
+    <f:if condition="{section.label}">
+        <legend>{formvh:translateElementProperty(element: section, property: 'label')}</legend>
+    </f:if>
+    <f:for each="{section.elements}" as="element">
+        <formvh:renderRenderable renderable="{element}" />
+    </f:for>
+</fieldset>

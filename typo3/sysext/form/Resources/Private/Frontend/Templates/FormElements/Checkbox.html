@@ -1,0 +1,15 @@
+<f:layout name="Field" />
+<f:section name="field">
+    <div class="form-check">
+        <label class="{element.properties.elementClassAttribute} form-check-label">
+            <f:form.checkbox
+                    property="{element.identifier}"
+                    id="{element.uniqueIdentifier}"
+                    class="{element.properties.elementClassAttribute}"
+                    value="{element.properties.value}"
+                    errorClass="{element.properties.elementErrorClassAttribute}"
+                    additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}"
+            />
+        </label>
+    </div>
+</f:section>

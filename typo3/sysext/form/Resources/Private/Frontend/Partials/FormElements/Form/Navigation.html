@@ -1,0 +1,25 @@
+<nav class="form-navigation">
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group">
+            <f:if condition="{form.previousPage}">
+                <span class="previous">
+                    <f:form.button property="__currentPage" value="{form.previousPage.index}" class="btn btn-cancel">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
+                </span>
+            </f:if>
+            <f:if condition="{form.nextPage}">
+                <f:then>
+                    <span class="next">
+                        <f:form.button property="__currentPage" value="{form.nextPage.index}" class="btn btn-primary">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'nextButtonLabel')}</f:form.button>
+                    </span>
+                </f:then>
+                <f:else>
+                    <span class="next submit">
+                        <f:form.button property="__currentPage" value="{form.pages -> f:count()}" class="btn btn-primary">
+                            {formvh:translateElementProperty(element: form, renderingOptionProperty: 'submitButtonLabel')}
+                        </f:form.button>
+                    </span>
+                </f:else>
+            </f:if>
+        </div>
+    </div>
+</nav>

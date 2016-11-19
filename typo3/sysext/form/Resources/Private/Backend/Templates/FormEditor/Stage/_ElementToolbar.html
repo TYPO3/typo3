@@ -1,0 +1,35 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<div class="btn-toolbar-container" data-identifier="elementToolbar">
+    <div class="btn-toolbar" data-identifier="elementToolbarButtons">
+        <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-default" href="#" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}" data-identifier="stageElementToolbarNewElement"><core:icon identifier="actions-document-new" alternativeMarkupIdentifier="inline" /></a>
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <div class="btn-group t3-form-dropdown-buttons" data-identifier="stageElementToolbarNewElementSplitButton">
+               <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}">
+                   <core:icon identifier="actions-document-new" alternativeMarkupIdentifier="inline" />
+                   <span class="caret"></span>
+                   <span class="sr-only">Toggle Dropdown</span>
+               </button>
+               <ul class="dropdown-menu">
+                  <li data-no-sorting>
+                     <a href="#" data-identifier="stageElementToolbarNewElementSplitButtonInside">
+                         <core:icon identifier="t3-form-icon-insert-in" alternativeMarkupIdentifier="inline" />
+                         <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element.inside" />
+                     </a>
+                  </li>
+                  <li data-no-sorting>
+                     <a href="#" data-identifier="stageElementToolbarNewElementSplitButtonAfter">
+                         <core:icon identifier="t3-form-icon-insert-after" alternativeMarkupIdentifier="inline" />
+                         <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element.after" />
+                     </a>
+                  </li>
+               </ul>
+            </div>
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-default" href="#" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.remove')}" data-identifier="stageElementToolbarRemoveElement"><core:icon identifier="actions-edit-delete" alternativeMarkupIdentifier="inline" /></a>
+        </div>
+    </div>
+</div>

@@ -1,14 +1,14 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Form',
-    'description' => 'Form Library, Plugin and Wizard',
-    'category' => 'plugin',
+    'description' => 'Form Library, Plugin and Editor',
+    'category' => 'misc',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 1,
-    'author' => 'Patrick Broens, Ralf Zimmermann',
-    'author_email' => 'patrick@patrickbroens.nl, ralf.zimmermann@tritum.de',
+    'author' => 'Form Team',
+    'author_email' => '',
     'author_company' => '',
     'version' => '8.5.0',
     'constraints' => [

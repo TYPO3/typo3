@@ -1,0 +1,91 @@
+<?php
+declare(strict_types=1);
+namespace TYPO3\CMS\Form\Controller;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+
+/**
+ * The abstract form backend controller
+ *
+ * Scope: backend
+ */
+abstract class AbstractBackendController extends ActionController
+{
+
+    /**
+     * @var array
+     */
+    protected $formSettings;
+
+    /**
+     * @var \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface
+     */
+    protected $formPersistenceManager;
+
+    /**
+     * @param \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager
+     * @return void
+     * @internal
+     */
+    public function injectFormPersistenceManager(\TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager)
+    {
+        $this->formPersistenceManager = $formPersistenceManager;
+    }
+
+    /**
+     * @internal
+     */
+    public function initializeObject()
+    {
+        $this->formSettings = $this->objectManager->get(ConfigurationManagerInterface::class)
+            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+    }
+
+    /**
+     * Convert arrays with EXT: resource paths to web paths
+     *
+     * Input:
+     * [
+     *   100 => 'EXT:form/Resources/Public/Css/form.css'
+     * ]
+     *
+     * Output:
+     *
+     * [
+     *   0 => 'typo3/sysext/form/Resources/Public/Css/form.css'
+     * ]
+     *
+     * @param array $resourcePaths
+     * @return array
+     */
+    protected function resolveResourcePaths(array $resourcePaths): array
+    {
+        $return = [];
+        foreach ($resourcePaths as $resourcePath) {
+            $fullResourcePath = GeneralUtility::getFileAbsFileName($resourcePath);
+            $resourcePath = PathUtility::getAbsoluteWebPath($fullResourcePath);
+            if (empty($resourcePath)) {
+                continue;
+            }
+            $return[] = $resourcePath;
+        }
+
+        return $return;
+    }
+}

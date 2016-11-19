@@ -1,0 +1,12 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <f:form.textfield
+            property="{element.identifier}"
+            id="{element.uniqueIdentifier}"
+            class="{element.properties.elementClassAttribute} form-control"
+            placeholder="{formvh:translateElementProperty(element: element, property: 'placeholder')}"
+            errorClass="{element.properties.elementErrorClassAttribute}"
+            required="{element.required}"
+    />
+</f:section>

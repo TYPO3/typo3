@@ -1,0 +1,43 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<fieldset class="form-group">
+    <f:if condition="{page.label}">
+        <legend>{formvh:translateElementProperty(element: page, property: 'label')}</legend>
+    </f:if>
+    <div class="table-responsive">
+        <table class="table">
+            <formvh:renderAllFormValues renderable="{page.rootForm}">
+                <tr>
+                    <td class="summary-table-first-col">{formvh:translateElementProperty(element: formValue.element, property: 'label')}</td>
+                    <td>
+                        <f:if condition="{formValue.value}">
+                            <f:then>
+                                <f:if condition="{0: formValue.element.type} == {0: 'ImageUpload'}">
+                                    <f:then>
+                                        <f:image image="{formValue.value}" maxWidth="{formValue.element.properties.imageMaxWidth}" maxHeight="{formValue.element.properties.imageMaxHeight}" alt="{formvh:translateElementProperty(element: formValue.element, property: 'altText')}" />
+                                    </f:then>
+                                    <f:else>
+                                        <f:if condition="{formValue.isMultiValue}">
+                                            <f:then>
+                                                <ul>
+                                                    <f:for each="{formValue.processedValue}" as="value">
+                                                        <li>{value}</li>
+                                                    </f:for>
+                                                </ul>
+                                            </f:then>
+                                            <f:else>
+                                                {formValue.processedValue}
+                                            </f:else>
+                                        </f:if>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                -
+                            </f:else>
+                        </f:if>
+                    </td>
+                </tr>
+            </formvh:renderAllFormValues>
+        </table>
+    </div>
+</fieldset>

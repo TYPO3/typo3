@@ -1,0 +1,132 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          ########### TCE Forms CONFIGURATION ###########
+
+          ### FINISHERS ###
+          finishersDefinition:
+            EmailToSender:
+              FormEngine:
+                __inheritances:
+                  10: 'TYPO3.CMS.Form.mixins.FormEngineEmailMixin'
+
+            EmailToReceiver:
+              FormEngine:
+                __inheritances:
+                  10: 'TYPO3.CMS.Form.mixins.FormEngineEmailMixin'
+                label: 'tt_content.finishersDefinition.EmailToReceiver.label'
+                elements:
+                  subject:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.subject.label'
+                  recipientAddress:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.recipientAddress.label'
+                  recipientName:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.recipientName.label'
+                  senderAddress:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.senderAddress.label'
+                  senderName:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.senderName.label'
+                  replyToAddress:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.replyToAddress.label'
+                  carbonCopyAddress:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.carbonCopyAddress.label'
+                  blindCarbonCopyAddress:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyAddress.label'
+                  format:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.format.label'
+                  translation:
+                    language:
+                      label: 'tt_content.finishersDefinition.EmailToReceiver.language.label'
+                      config:
+                        type: select
+                        renderType: 'selectSingle'
+                        minitems: 1
+                        maxitems: 1
+                        size: 1
+                        items:
+                          10:
+                            0: 'tt_content.finishersDefinition.EmailToReceiver.language.1'
+                            1: 'default'
+
+            Redirect:
+              FormEngine:
+                __inheritances:
+                  10: 'TYPO3.CMS.Form.mixins.FormEngineTranslationSettingsMixin'
+                label: 'tt_content.finishersDefinition.Redirect.label'
+                elements:
+                  pageUid:
+                    label: 'tt_content.finishersDefinition.Redirect.pageUid.label'
+                    config:
+                      type: 'group'
+                      internal_type: 'db'
+                      allowed: 'pages'
+                      size: 1
+                      minitems: 1
+                      maxitems: 1
+                      show_thumbs: 0
+                  additionalParameters:
+                    label: 'tt_content.finishersDefinition.Redirect.additionalParameters.label'
+                    config:
+                      type: 'input'
+
+      ########### MIXINS ###########
+      mixins:
+        FormEngineTranslationSettingsMixin:
+          translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+
+        FormEngineEmailMixin:
+          __inheritances:
+            10: 'TYPO3.CMS.Form.mixins.FormEngineTranslationSettingsMixin'
+          label: 'tt_content.finishersDefinition.EmailToSender.label'
+          elements:
+            subject:
+              label: 'tt_content.finishersDefinition.EmailToSender.subject.label'
+              config:
+                type: 'input'
+            recipientAddress:
+              label: 'tt_content.finishersDefinition.EmailToSender.recipientAddress.label'
+              config:
+                type: 'input'
+                eval: 'required'
+            recipientName:
+              label: 'tt_content.finishersDefinition.EmailToSender.recipientName.label'
+              config:
+                type: 'input'
+            senderAddress:
+              label: 'tt_content.finishersDefinition.EmailToSender.senderAddress.label'
+              config:
+                type: 'input'
+                eval: 'required'
+            senderName:
+              label: 'tt_content.finishersDefinition.EmailToSender.senderName.label'
+              config:
+                type: 'input'
+            replyToAddress:
+              label: 'tt_content.finishersDefinition.EmailToSender.replyToAddress.label'
+              config:
+                type: 'input'
+            carbonCopyAddress:
+              label: 'tt_content.finishersDefinition.EmailToSender.carbonCopyAddress.label'
+              config:
+                type: 'input'
+            blindCarbonCopyAddress:
+              label: 'tt_content.finishersDefinition.EmailToSender.blindCarbonCopyAddress.label'
+              config:
+                type: 'input'
+            format:
+              label: 'tt_content.finishersDefinition.EmailToSender.format.label'
+              config:
+                type: select
+                renderType: 'selectSingle'
+                minitems: 1
+                maxitems: 1
+                size: 1
+                items:
+                  10:
+                    0: 'tt_content.finishersDefinition.EmailToSender.format.1'
+                    1: 'html'
+                  20:
+                    0: 'tt_content.finishersDefinition.EmailToSender.format.2'
+                    1: 'plaintext'

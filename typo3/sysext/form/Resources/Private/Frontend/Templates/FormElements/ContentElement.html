@@ -1,0 +1,22 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:if condition="{element.rootForm.renderingOptions.previewMode}">
+    <f:then>
+        <div class="clearfix">
+            <f:if condition="{element.properties.contentElementUid}">
+                <f:then>
+                    <formvh:be.renderContentElementPreview contentElementUid="{element.properties.contentElementUid}" />
+                </f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.elements.ContentElement.selectContentElement" />
+                </f:else>
+            </f:if>
+        </div>
+    </f:then>
+    <f:else>
+        <f:if condition="{element.properties.contentElementUid}">
+            <div class="clearfix{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')}">
+                <f:cObject typoscriptObjectPath="lib.tx_form.contentElementRendering">{element.properties.contentElementUid}</f:cObject>
+            </div>
+        </f:if>
+    </f:else>
+</f:if>

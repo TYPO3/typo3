@@ -1,0 +1,340 @@
+TYPO3:
+  CMS:
+    Form:
+      persistenceManager:
+        allowedFileMounts:
+          10: 1:/user_upload/
+        allowSaveToExtensionPaths: false
+        #allowedExtensionPaths:
+          #10: EXT:example/Resources/Private/Forms/
+
+      prototypes:
+        standard:
+
+          ########### DEFAULT FORM ELEMENT DEFINITIONS ###########
+          formElementsDefinition:
+
+            ### BASE ELEMENTS ###
+            Form:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
+              rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
+              renderingOptions:
+                renderableNameInTemplate: 'form'
+                honeypot:
+                  enable: true
+                  formElementToUse: 'Honeypot'
+
+            ### FORM ELEMENTS: CONTAINER ###
+            Page:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\Page'
+              renderingOptions:
+                renderableNameInTemplate: 'page'
+
+            SummaryPage:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.Page'
+
+            Fieldset:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\Section'
+              renderingOptions:
+                renderableNameInTemplate: 'section'
+
+            ### FORM ELEMENTS: INPUT ###
+            Text:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.TextMixin'
+
+            Password:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.TextMixin'
+
+            AdvancedPassword:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.Password'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword'
+              properties:
+                elementClassAttribute: 'input-medium'
+                confirmationLabel: ''
+                # Optional description (hint) for the first password input element
+                #passwordDescription: ''
+                confirmationClassAttribute: 'input-medium'
+
+            Textarea:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.TextMixin'
+              properties:
+                elementClassAttribute: 'xxlarge'
+
+            Honeypot:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.TextMixin'
+              properties:
+                renderAsHiddenField: false
+                styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
+
+            ### FORM ELEMENTS: SELECT ###
+            Checkbox:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+              properties:
+                elementClassAttribute: 'add-on'
+                value: 1
+
+            MultiCheckbox:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.MultiSelectionMixin'
+
+            MultiSelect:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.MultiSelectionMixin'
+              properties:
+                elementClassAttribute: 'xlarge'
+
+            RadioButton:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.SingleSelectionMixin'
+              properties:
+                elementClassAttribute: 'xlarge'
+
+            SingleSelect:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.SingleSelectionMixin'
+
+            ### FORM ELEMENTS: CUSTOM ###
+            DatePicker:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker'
+              properties:
+                elementClassAttribute: 'small'
+                timeSelectorClassAttribute: 'mini'
+                dateFormat: 'Y-m-d'
+                enableDatePicker: true
+                displayTimeSelector: false
+
+            StaticText:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.ReadOnlyFormElementMixin'
+              properties:
+                text: ''
+
+            Hidden:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+
+            ContentElement:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.ReadOnlyFormElementMixin'
+              properties:
+                contentElementUid: ''
+
+            ### FORM ELEMENTS: UPLOADS ###
+            FileUpload:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FileUploadMixin'
+              properties:
+                allowedMimeTypes: ['application/doc', 'application/docx', 'application/odt', 'application/pdf']
+
+            ImageUpload:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FileUploadMixin'
+              properties:
+                allowedMimeTypes: ['image/jpeg', 'image/png', 'image/bmp']
+                elementClassAttribute: 'lightbox'
+                imageLinkMaxWidth: 500
+                imageMaxWidth: 500
+                imageMaxHeight: 500
+
+          ### FINISHERS ###
+
+          finishersDefinition:
+            Closure:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher'
+              options:
+                #closure:
+
+            Confirmation:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher'
+              #options:
+                #message: ''
+
+            EmailToSender:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.finishersEmailMixin'
+
+            EmailToReceiver:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.finishersEmailMixin'
+
+            DeleteUploads:
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\DeleteUploadsFinisher'
+
+            FlashMessage:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\FlashMessageFinisher'
+              #options:
+                #messageBody: ''
+                #messageTitle: ''
+                #messageArguments: {}
+                #messageCode: 0
+                #severity: 0
+
+            Redirect:
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher'
+              #options:
+                #pageUid: 1
+                #additionalParameters: ''
+                #delay: 0
+                #statusCode: 303
+
+            SaveToDatabase:
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher'
+              #options:
+                #table: ''
+                #elements:
+                #  <elementIdentifier>:
+                #    mapOnDatabaseColumn: sender_name
+                #    saveFileIdentifierInsteadOfUid: 'false'
+
+          ### VALIDATORS ###
+          validatorsDefinition:
+            NotEmpty:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'
+            DateTime:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator'
+            Alphanumeric:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator'
+            Text:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\TextValidator'
+            StringLength:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator'
+              #options:
+                #minimum: 0
+                #maximum: 0
+            EmailAddress:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator'
+            Integer:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator'
+            Float:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\FloatValidator'
+            NumberRange:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator'
+              #options:
+                #minimum: 0
+                #maximum: 0
+            RegularExpression:
+              implementationClassName: 'TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator'
+              #options:
+                #regularExpression: '/^.*$/'
+            Count:
+              implementationClassName: 'TYPO3\CMS\Form\Mvc\Validation\CountValidator'
+              #options:
+                #minimum: 0
+                #maximum: 0
+
+      ########### MIXINS ###########
+      mixins:
+        translationSettingsMixin:
+          translation:
+            translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+            translatePropertyValueIfEmpty: true
+
+        finishersTranslationSettingsMixin:
+          options:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.translationSettingsMixin'
+
+        ########### FORM ELEMENT MIXINS ###########
+        formElementMixins:
+          BaseFormElementMixin:
+            renderingOptions:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.translationSettingsMixin'
+
+              templateRootPaths:
+                10: 'EXT:form/Resources/Private/Frontend/Templates/FormElements/'
+              partialRootPaths:
+                10: 'EXT:form/Resources/Private/Frontend/Partials/FormElements/'
+              layoutRootPaths:
+                10: 'EXT:form/Resources/Private/Frontend/Layouts/FormElements/'
+
+              # It is possible to set a full path to a template e.g. for custom elements
+              # In this case 'templateRootPaths' will be ignored
+              # templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/FormElements/RadioButton.html'
+
+              # set this to TRUE if you want to avoid exceptions for FormElements without definitions
+              skipUnknownElements: true
+
+          ReadOnlyFormElementMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
+            implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+            renderingOptions:
+              renderableNameInTemplate: 'element'
+
+          FormElementMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
+            implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+            properties:
+              containerClassAttribute: 'input'
+              elementClassAttribute: ''
+              elementErrorClassAttribute: 'error'
+            renderingOptions:
+              renderableNameInTemplate: 'element'
+
+          TextMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+
+          SelectionMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+
+          SingleSelectionMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.SelectionMixin'
+
+          MultiSelectionMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.SelectionMixin'
+
+          FileUploadMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+            implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload'
+            properties:
+              saveToFileMount: '1:/user_upload/'
+
+        finishersEmailMixin:
+          __inheritances:
+            10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
+          implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher'
+          options:
+            #subject: ''
+            #recipientAddress: ''
+            #recipientName: ''
+            #senderAddress:
+            #senderName: ''
+            #replyToAddress: ''
+            #carbonCopyAddress: ''
+            #blindCarbonCopyAddress: ''
+            #format: 'html'
+            #attachUploads: true
+            #translation:
+            #  language: 'default'
+            # {@format} depends the 'format' value
+            templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
+            #partialRootPaths: []
+            #layoutRootPaths: []
+            #variables: {}

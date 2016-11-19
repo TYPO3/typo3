@@ -1,0 +1,9 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<fieldset class="form-group">
+    <f:if condition="{page.label}">
+        <legend>{formvh:translateElementProperty(element: page, property: 'label')}</legend>
+    </f:if>
+    <f:for each="{page.elements}" as="element">
+        <formvh:renderRenderable renderable="{element}" />
+    </f:for>
+</fieldset>

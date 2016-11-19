@@ -1,0 +1,54 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+{namespace formvh = TYPO3\CMS\Form\ViewHelpers}
+
+<formvh:be.pageRenderer
+    loadExtJsTheme="false"
+    loadJQuery="true"
+    includeCssFiles="{stylesheets}"
+    addInlineSettings="{addInlineSettings}"
+    includeJsFiles="{0: 'EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js'}"
+/>
+
+<div data-identifier="moduleLoadingIndicator" class="form-editor-loading-spinner">
+    <core:icon identifier="spinner-circle-dark" size="default" />
+    <div class="form-editor-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+</div>
+
+<div data-identifier="moduleWrapper" class="hidden">
+    <f:for each="{formEditorTemplates}" key="formEditorTemplateName" as="formEditorTemplate">
+        <script type="text/x-formeditor-template" data-template-name="{formEditorTemplateName}">
+            <f:format.raw>{formEditorTemplate}</f:format.raw>
+        </script>
+    </f:for>
+
+    <section id="t3-form-navigation-component" class="t3-form-x-component" data-identifier="structureSection">
+        <div id="t3-form-structure-panel">
+            <f:render section="ElementSidebarTree"/>
+        </div>
+    </section>
+
+    <section id="t3-form-stage-container" data-identifier="stageContainer">
+        <div id="t3-form-stage-inner-container">
+            <header id="t3-form-stage-header">
+                <f:render section="Header"/>
+            </header>
+            <div id="t3-form-stage-content">
+                <f:render section="Stage"/>
+            </div>
+        </div>
+    </section>
+
+    <section id="t3-form-inspector-panels-container" class="t3-form-x-component" data-identifier="inspectorSection">
+        <f:render section="Inspector"/>
+    </section>
+</div>
+
+<script type="text/javascript">
+    require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.mediator}', '{dynamicRequireJsModules.viewModel}'], function (formEditorApp, mediator, viewModel) {
+        window.TYPO3.FORMEDITOR_APP = formEditorApp.getInstance(
+            <f:format.htmlentitiesDecode>{formEditorAppInitialData}</f:format.htmlentitiesDecode>,
+            mediator,
+            viewModel
+        ).run();
+    });
+</script>

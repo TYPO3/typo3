@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1477653834" source-language="en" datatype="plaintext" original="messages" date="2016-10-09T03:38:32Z" product-name="form">
+        <header/>
+        <body>
+            <trans-unit id="formManager.form_name" xml:space="preserve">
+                <source>Form name</source>
+            </trans-unit>
+            <trans-unit id="formManager.new_form_name" xml:space="preserve">
+                <source>New form name</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_save_path" xml:space="preserve">
+                <source>Form storage</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_prototype" xml:space="preserve">
+                <source>Form prototype</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_template" xml:space="preserve">
+                <source>Start template</source>
+            </trans-unit>
+            <trans-unit id="formManager.cancel" xml:space="preserve">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="formManager.remove_form" xml:space="preserve">
+                <source>Remove</source>
+            </trans-unit>
+            <trans-unit id="formManager.remove_form_title" xml:space="preserve">
+                <source>Remove form</source>
+            </trans-unit>
+            <trans-unit id="formManager.remove_form_message" xml:space="preserve">
+                <source>Are you sure that you want to remove this form?</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step1.title" xml:space="preserve">
+                <source>Create new form</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step1.advanced" xml:space="preserve">
+                <source>Advanced settings</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step2.title" xml:space="preserve">
+                <source>Advanced settings</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step3.title" xml:space="preserve">
+                <source>Ready</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step3.message" xml:space="preserve">
+                <source>Now you are ready to create your new form.</source>
+            </trans-unit>
+            <trans-unit id="formManager.duplicateFormWizard.step1.title" xml:space="preserve">
+                <source>Duplicate form "{0}"</source>
+            </trans-unit>
+            <trans-unit id="formManager.no_references" xml:space="preserve">
+                <source>There are no references yet</source>
+            </trans-unit>
+            <trans-unit id="formManager.page" xml:space="preserve">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="formManager.record" xml:space="preserve">
+                <source>Record</source>
+            </trans-unit>
+            <trans-unit id="formManager.references.title" xml:space="preserve">
+                <source>References</source>
+            </trans-unit>
+            <trans-unit id="formManager.references.headline" xml:space="preserve">
+                <source>References for "{0}"</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

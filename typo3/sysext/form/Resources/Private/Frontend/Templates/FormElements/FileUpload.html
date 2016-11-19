@@ -1,0 +1,11 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <formvh:form.uploadedResource property="{element.identifier}" as="resource" additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}" accept="{element.properties.allowedMimeTypes}">
+        <f:if condition="{resource}">
+            <div id="{element.uniqueIdentifier}-preview">
+                {resource.originalResource.originalFile.name}
+            </div>
+        </f:if>
+    </formvh:form.uploadedResource>
+</f:section>

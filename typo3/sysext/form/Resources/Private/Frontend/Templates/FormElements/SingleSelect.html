@@ -1,0 +1,12 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <f:form.select
+            property="{element.identifier}"
+            id="{element.uniqueIdentifier}"
+            options="{formvh:translateElementProperty(element: element, property: 'options')}"
+            class="{element.properties.elementClassAttribute} form-control"
+            errorClass="{element.properties.elementErrorClassAttribute}"
+            additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}"
+    />
+</f:section>

@@ -1,0 +1,8 @@
+<f:if condition="{element.properties.renderAsHiddenField}">
+    <f:then>
+        <f:form.hidden property="{element.identifier}" id="{element.uniqueIdentifier}" additionalAttributes="{autocomplete: 'off'}" />
+    </f:then>
+    <f:else>
+        <f:form.textfield property="{element.identifier}" id="{element.uniqueIdentifier}" class="{element.properties.elementClassAttribute}" additionalAttributes="{autocomplete: 'off'}" style="{element.properties.styleAttribute}" />
+    </f:else>
+</f:if>

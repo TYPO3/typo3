@@ -1,0 +1,7 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:form object="{form}" action="perform" method="post" id="{form.identifier}" section="{form.identifier}" enctype="multipart/form-data">
+    <formvh:renderRenderable renderable="{form.currentPage}" />
+    <div class="actions">
+        <f:render partial="Form/Navigation" arguments="{form: form}" />
+    </div>
+</formvh:form>

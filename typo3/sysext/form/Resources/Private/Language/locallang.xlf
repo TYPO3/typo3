@@ -1,209 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-	<file t3:id="1415814824" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="form">
-		<header/>
-		<body>
-			<trans-unit id="tx_form_domain_model_element_button.value">
-				<source>Push this button</source>
-			</trans-unit>
-			<trans-unit id="tx_form_domain_model_element_submit.value">
-				<source>Submit form</source>
-			</trans-unit>
-			<trans-unit id="tx_form_domain_model_element_reset.value">
-				<source>Clear form</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphabetic.message">
-				<source>Use alphabetic characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphabetic.message2">
-				<source>whitespace allowed</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphabetic.error">
-				<source>The value contains not only alphabetic characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphanumeric.message">
-				<source>Use alphanumeric characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphanumeric.message2">
-				<source>whitespace allowed</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphanumeric.error">
-				<source>The value contains not only alphanumeric characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.message">
-				<source>The value must be between %minimum and %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.message2">
-				<source>inclusively</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.error">
-				<source>The value is not between %minimum and %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.error2">
-				<source>inclusively</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.message">
-				<source>(%format)</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.A">
-				<source>dddd</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.a">
-				<source>ddd</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.d">
-				<source>dd</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.e">
-				<source>d</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.B">
-				<source>mmmm</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.b">
-				<source>mmm</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.m">
-				<source>mm</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.Y">
-				<source>yyyy</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.y">
-				<source>yy</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.H">
-				<source>HH</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.I">
-				<source>hh</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.M">
-				<source>mm</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.S">
-				<source>ss</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.error">
-				<source>The value does not appear to be a valid date</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_digit.message">
-				<source>Use digit characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_digit.error">
-				<source>The value contains not only digit characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_email.message">
-				<source>(john.doe@domain.com)</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_email.error">
-				<source>This is not a valid email address</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_equals.message">
-				<source>This field must be equal to '%field'</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_equals.error">
-				<source>The value does not equal the value in field '%field'</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileallowedtypes.message">
-				<source>(%allowedTypes)</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileallowedtypes.error">
-				<source>The file type is not allowed</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_filemaximumsize.message">
-				<source>The filesize must be smaller than %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_filemaximumsize.error">
-				<source>The filesize is too big</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileminimumsize.message">
-				<source>The filesize must be bigger than %minimum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileminimumsize.error">
-				<source>The filesize is too small</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_float.message">
-				<source>Enter a float</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_float.error">
-				<source>The value does not appear to be a float</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_greaterthan.message">
-				<source>The value must be greater than %minimum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_greaterthan.error">
-				<source>The value does not appear to be greater than %minimum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_inarray.message">
-				<source>Only a few values are possible</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_inarray.error">
-				<source>The value does not appear to be valid</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_integer.message">
-				<source>Use an integer</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_integer.error">
-				<source>The value does not appear to be an integer</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_ip.message">
-				<source>(123.123.123.123)</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_ip.error">
-				<source>The value does not appear to be a valid IP address</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.message">
-				<source>The length of the value must have a minimum of %minimum characters</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.message2">
-				<source>and a maximum of %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.error">
-				<source>The value is less than %minimum characters long</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.error2">
-				<source>or longer than %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_lessthan.message">
-				<source>The value must be less than %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_lessthan.error">
-				<source>The value does not appear to be less than %maximum</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_regexp.message">
-				<source>Use the right pattern</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_regexp.error">
-				<source>The value does not match against pattern</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_required.message">
-				<source>Required</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_required.error">
-				<source>This field is required</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_uri.message">
-				<source>The value must be a URI</source>
-			</trans-unit>
-			<trans-unit id="tx_form_system_validate_uri.error">
-				<source>The value does not appear to be a URI</source>
-			</trans-unit>
-			<trans-unit id="tx_form_view_confirmation.message">
-				<source>Please check your input and confirm by using the appropriate button</source>
-			</trans-unit>
-			<trans-unit id="tx_form_view_confirmation.confirm">
-				<source>Confirm</source>
-			</trans-unit>
-			<trans-unit id="tx_form_view_confirmation.donotconfirm">
-				<source>Go back to the form</source>
-			</trans-unit>
-			<trans-unit id="tx_form_view_mail.success">
-				<source>The form has been sent successfully by mail</source>
-			</trans-unit>
-			<trans-unit id="tx_form_view_mail.error">
-				<source>There was an error when sending the form by mail</source>
-			</trans-unit>
-		</body>
-	</file>
+    <file t3:id="1475977066" source-language="en" datatype="plaintext" original="messages" date="2016-10-09T03:38:32Z" product-name="form">
+        <header/>
+        <body>
+            <trans-unit id="element.Form.renderingOptions.submitButtonLabel" xml:space="preserve">
+                <source>Submit</source>
+            </trans-unit>
+            <trans-unit id="element.Page.renderingOptions.previousButtonLabel" xml:space="preserve">
+                <source>previous Page</source>
+            </trans-unit>
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+                <source>next Page</source>
+            </trans-unit>
+            <trans-unit id="element.SummaryPage.renderingOptions.previousButtonLabel" xml:space="preserve">
+                <source>previous Page</source>
+            </trans-unit>
+            <trans-unit id="element.SummaryPage.renderingOptions.nextButtonLabel" xml:space="preserve">
+                <source>next Page</source>
+            </trans-unit>
+            <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve">
+                <source>uploaded image</source>
+            </trans-unit>
+
+            <trans-unit id="validation.error.1221560910" xml:space="preserve">
+                <source>This field is mandatory</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221560718" xml:space="preserve">
+                <source>This field is mandatory</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1347992400" xml:space="preserve">
+                <source>This field is mandatory</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1347992453" xml:space="preserve">
+                <source>This field is mandatory</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1238087674" xml:space="preserve">
+                <source>Please enter a valid Date</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221551320" xml:space="preserve">
+                <source>Please enter letters or digits</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221565786" xml:space="preserve">
+                <source>Please enter a valid text (e.g. without XML tags)</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1238110957" xml:space="preserve">
+                <source>Please enter a valid text</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1269883975" xml:space="preserve">
+                <source>Please enter a valid text</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1428504122" xml:space="preserve">
+                <source>Please enter a text between %s and %s characters</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1238108068" xml:space="preserve">
+                <source>Please enter a text which is longer than %s characters</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1238108069" xml:space="preserve">
+                <source>Please enter a text which is not longer than %s characters</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221559976" xml:space="preserve">
+                <source>Please enter a valid email address</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221560494" xml:space="preserve">
+                <source>Please enter a valid number</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221560288" xml:space="preserve">
+                <source>Please enter a valid floating point number</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221563685" xml:space="preserve">
+                <source>Please enter a valid number</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221561046" xml:space="preserve">
+                <source>Please enter a valid number between %s and %s</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1221565130" xml:space="preserve">
+                <source>Please enter a valid value</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1475002976" xml:space="preserve">
+                <source>The given subject is not countable.</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1475002994" xml:space="preserve">
+                <source>Please enter a valid number between %s and %s</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1471708997" xml:space="preserve">
+                <source>The given value was not an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1471708998" xml:space="preserve">
+                <source>The media type "%s" is not allowed for this file.</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1476396435" xml:space="preserve">
+                <source>Do not fill this field</source>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>

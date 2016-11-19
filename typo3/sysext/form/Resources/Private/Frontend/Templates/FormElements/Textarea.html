@@ -1,0 +1,13 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<f:layout name="Field" />
+<f:section name="field">
+    <f:form.textarea
+            property="{element.identifier}"
+            id="{element.uniqueIdentifier}"
+            class="{element.properties.elementClassAttribute} form-control"
+            rows="{element.properties.rows}"
+            cols="{element.properties.cols}"
+            errorClass="{element.properties.elementErrorClassAttribute}"
+            additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\', placeholder: \'{formvh:translateElementProperty(element: element, property: \"placeholder\")}\'}', else: '{placeholder: \'{formvh:translateElementProperty(element: element, property: \"placeholder\")}\'}')}"
+    />
+</f:section>

@@ -1,0 +1,8 @@
+type: 'Form'
+identifier: 'blankForm'
+label: '[Blank Form]'
+renderables:
+    -
+        type: 'Page'
+        identifier: 'page-1'
+        label: 'Page'

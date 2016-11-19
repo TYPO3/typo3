@@ -1,0 +1,64 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<f:layout name="FormEditor" />
+
+<f:section name="ElementSidebarTree">
+    <div class="t3-form-x-component-inner-wrapper">
+        <div id="t3-form-navigation-component-tree-root-container" data-identifier="treeRootContainer">
+            <core:icon identifier="content-elements-mailform" />
+            <span id="t3-form-navigation-component-tree-root" data-identifier="treeRootElement"></span>
+        </div>
+        <div class="tree" data-identifier="structure-element"></div>
+        <div class="form-group col-sm-12">
+            <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-default t3-form-element-new-page-button" href="#" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button')}" data-identifier="treeNewPageBottom"><core:icon identifier="actions-page-new" /> {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button')}</a>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="Header">
+    <h1><span id="t3-form-form-definition-label" data-identifier="formDefinitionLabel"></span></h1>
+</f:section>
+
+<f:section name="Stage">
+    <div class="panel panel-default" data-identifier="stagePanel">
+        <div class="panel-heading" data-identifier="panelHeading">
+            <span data-identifier="stageHeaderToolbar">
+                <div class="btn-group">
+                    <button class="btn btn-default" title="" data-identifier="buttonViewModePreview"><core:icon identifier="actions-document-view" alternativeMarkupIdentifier="inline" /></button>
+                    <button class="btn btn-default" title="" data-identifier="buttonViewModeAbstract"><core:icon identifier="actions-document-open" alternativeMarkupIdentifier="inline" /></button>
+                </div>
+                <div class="pull-right">
+                    <span class="paginiation-label" data-identifier="paginationTitle"></span>
+                    <div class="btn-group">
+                        <button class="btn btn-default" title="" data-identifier="buttonPaginationPrevious"><core:icon identifier="actions-view-paging-previous" alternativeMarkupIdentifier="inline" /></button>
+                        <button class="btn btn-default" title="" data-identifier="buttonPaginationNext"><core:icon identifier="actions-view-paging-next" alternativeMarkupIdentifier="inline" /></button>
+                    </div>
+                </div>
+            </span>
+        </div>
+        <div class="form-section" data-identifier="stageSection">
+            <div class="row">
+                <div id="t3-form-stage" class="form-group col-sm-12" data-identifier="stageArea"></div>
+            </div>
+            <div class="row" data-identifier="stageNewElementRow">
+                <div class="form-group col-sm-12">
+                    <div class="t3-form-new-element-container">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a class="btn btn-default" href="#" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}" data-identifier="stageNewElementBottom"><core:icon identifier="actions-document-new" /> {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="Inspector">
+    <div id="t3-form-inspector-panels">
+        <div class="t3-form-x-component-inner-wrapper">
+            <div id="t3-form-inspector" data-identifier="inspector"></div>
+        </div>
+    </div>
+</f:section>

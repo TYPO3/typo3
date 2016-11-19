@@ -1,0 +1,47 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<div class="form-editor">
+    <div class="t3-form-control-group form-group property-grid">
+        <label><span data-template-property="label" /></label>
+        <div data-editor="new-property-grid" data-template-property="newPropertyPath">
+
+            <table class="table table-hover" data-identifier="propertyGridContainer">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Label</th>
+                        <th>Value</th>
+                        <th>Selected</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-identifier="rowItem">
+                        <td><span class="sort-row-field" data-identifier="sortRow"><core:icon identifier="actions-move-move" /></span></td>
+                        <td><input type="text" class="form-control" value="" data-identifier="label" /></td>
+                        <td><input type="text" class="form-control" value="" data-identifier="value" /></td>
+                        <td><input type="checkbox" data-identifier="selectValue" /></td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-default" title="Remove this row" data-identifier="deleteRow"><core:icon identifier="actions-delete" /></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-identifier="addRowItem">
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-default" title="Add a new row" data-identifier="addRow"><core:icon identifier="actions-add" /></button>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div data-editor="property-grid" data-template-property="propertyPath" class="t3-form-grid" />
+    </div>
+</div>

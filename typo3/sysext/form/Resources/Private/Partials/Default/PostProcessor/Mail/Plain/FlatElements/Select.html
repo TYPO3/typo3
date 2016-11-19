@@ -1,3 +1,0 @@
-{namespace form=TYPO3\CMS\Form\ViewHelpers}<f:if condition="{model.showElement}"><form:plainMail labelContent="{model}" newLineAfterLabel="1" indent="4" /><f:for each="{form:aggregateSelectOptions(model:model)}" as="option"><f:if condition="{option.options}"><f:then><f:for each="{option.options}" as="optgroupOption"><f:if condition="{optgroupOption.selected}"><form:plainMail content="{optgroupOption.label}" />
-</f:if></f:for></f:then><f:else><f:if condition="{option.selected}"><form:plainMail content="{option.label}" />
-</f:if></f:else></f:if></f:for><form:plainMail indent="-4"/></f:if>

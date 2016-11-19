@@ -1,0 +1,9 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<div class="clearfix">
+    <f:if condition="{element.label}">
+        <h2>{formvh:translateElementProperty(element: element, property: 'label')}</h2>
+    </f:if>
+    <f:if condition="{element.properties.text}">
+        <p{f:if(condition: element.properties.elementClassAttribute, then: ' class="{element.properties.elementClassAttribute}"')}>{formvh:translateElementProperty(element: element, property: 'text') -> f:format.nl2br()}</p>
+    </f:if>
+</div>
