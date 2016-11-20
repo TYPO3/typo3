@@ -1795,7 +1795,7 @@ class GeneralUtility
         if (!empty($firstLevelCache[$identifier])) {
             $array = $firstLevelCache[$identifier];
         } else {
-            $array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
+            $array = self::xml2arrayProcess(trim($string), $NSprefix, $reportDocTag);
             // Store content in first level cache
             $firstLevelCache[$identifier] = $array;
         }

@@ -4632,6 +4632,76 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function providerForXml2Array(): array
+    {
+        return [
+            'inputWithoutWhitespaces' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+                <T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3FlexForms>'
+            ],
+            'inputWithPrecedingWhitespaces' => [
+                '
+                <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+                <T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3FlexForms>'
+            ],
+            'inputWithTrailingWhitespaces' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+                <T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3FlexForms>
+                '
+            ],
+            'inputWithPrecedingAndTrailingWhitespaces' => [
+                '
+                <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+                <T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3FlexForms>
+                '
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerForXml2Array
+     * @param string $input
+     */
+    public function xml2ArrayDealsProperlyWithWhitespace(string $input)
+    {
+        $expected = [
+            'data' => [
+                'settings.persistenceIdentifier' => [
+                    'vDEF' => 'egon',
+                ]
+            ],
+        ];
+        $this->assertSame($expected, GeneralUtility::xml2array($input));
+    }
+
+    /**
      * @test
      * @dataProvider idnaEncodeDataProvider
      * @param $actual
