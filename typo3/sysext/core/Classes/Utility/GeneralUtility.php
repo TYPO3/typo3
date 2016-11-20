@@ -2216,7 +2216,7 @@ class GeneralUtility
             // @todo: Is this cache really required? It basically substitutes a little cpu work with a db query?
             $array = PageRepository::getHash($identifier, 0);
             if (!is_array($array)) {
-                $array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
+                $array = self::xml2arrayProcess(trim($string), $NSprefix, $reportDocTag);
                 PageRepository::storeHash($identifier, $array, 'ident_xml2array');
             }
             // Store content in first level cache
