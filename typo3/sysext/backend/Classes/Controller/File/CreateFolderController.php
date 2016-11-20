@@ -24,9 +24,12 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
+ * Script class for the create-new script
+ *
+ * Displays forms for creating folders (1 to 10), a media asset or a new file.
  */
 class CreateFolderController extends AbstractModule
 {
@@ -167,133 +170,54 @@ class CreateFolderController extends AbstractModule
     public function main()
     {
         $lang = $this->getLanguageService();
-        $pageContent = '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.pagetitle') . '</h1>';
-
+        $assigns = [];
+        $assigns['target'] = $this->target;
         if ($this->folderObject->checkActionPermission('add')) {
-            $code = '<form role="form" action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
+            $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+            $assigns['cshFileNewFolder'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder');
             // Making the selector box for the number of concurrent folder-creations
             $this->number = MathUtility::forceIntegerInRange($this->number, 1, 10);
-            $code .= '
-				<div class="form-group">
-					<div class="form-section">
-						<div class="form-group">
-							<label for="number-of-new-folders">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.number_of_folders') . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '
-							<div class="form-control-wrap">
-								<div class="input-group">
-									<select class="form-control form-control-adapt" name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
             for ($a = 1; $a <= $this->folderNumber; $a++) {
-                $code .= '<option value="' . $a . '"' . ($this->number == $a ? ' selected="selected"' : '') . '>' . $a . '</option>';
+                $options = [];
+                $options['value'] = $a;
+                $options['selected'] = ($this->number == $a ? ' selected="selected"' : '');
+                $assigns['options'][] = $options;
             }
-            $code .= '
-									</select>
-								</div>
-							</div>
-						</div>
-					</div>
-				';
             // Making the number of new-folder boxes needed:
             for ($a = 0; $a < $this->number; $a++) {
-                $code .= '
-					<div class="form-section">
-						<div class="form-group">
-							<label for="folder_new_' . $a . '">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfolder') . ' ' . ($a + 1) . ':</label>
-							<div class="form-control-wrap">
-								<input type="text" class="form-control" id="folder_new_' . $a . '" name="file[newfolder][' . $a . '][data]" onchange="changed=true;" />
-								<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" />
-							</div>
-						</div>
-					</div>';
+                $folder = [];
+                $folder['this'] = $a;
+                $folder['next'] = $a + 1;
+                $assigns['folders'][] = $folder;
             }
             // Making submit button for folder creation:
-            $code .= '
-				</div><div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.submit')) . '" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-				</div>
-				';
-
-            // Switching form tags:
-            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfolders')) . '</h3>';
-            $pageContent .= '<div>' . $code . '</form></div>';
+            $assigns['returnUrl'] = $this->returnUrl;
         }
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
-            $pageContent .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('online_media')) . '" method="post" name="editform2">';
+            $assigns['moduleUrlOnlineMedia'] = BackendUtility::getModuleUrl('online_media');
+            $assigns['cshFileNewMedia'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia');
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
             $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
             foreach ($onlineMediaFileExt as $fileExt) {
                 if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
-                    $fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+                    $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
                 }
             }
-            // Add form fields for adding media files:
-            $code = '
-				<div class="form-group">
-					<div class="form-section">
-						<div class="form-group">
-							<label for="newMedia">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '
-							<div class="form-control-wrap">
-								<input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
-									placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')) . '" />
-								<input type="hidden" name="file[newMedia][0][target]" value="' . htmlspecialchars($this->target) . '" />
-							</div>
-							<div class="help-block">
-								' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders')) . '<br>
-								' . implode(' ', $fileExtList) . '
-							</div>
-						</div>
-					</div>
-				</div>
-				';
-            // Submit button for creation of a new media:
-            $code .= '
-				<div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')) . '" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-				</div>
-				';
-            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . '</h3>';
-            $pageContent .= '<div>' . $code . '</div>';
-            $pageContent .= '</form>';
+            $assigns['fileExtList'] = $fileExtList;
 
-            $pageContent .= '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform3">';
-            // Create a list of allowed file extensions with the nice format "*.jpg, *.gif" etc.
+            $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+            $assigns['cshFileNewFile'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile');
+            // Create a list of allowed file extensions with a text format "*.txt, *.css" etc.
             $fileExtList = [];
             $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
             foreach ($textFileExt as $fileExt) {
                 if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
-                    $fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+                    $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
                 }
             }
-            // Add form fields for creation of a new, blank text file:
-            $code = '
-				<div class="form-group">
-					<div class="form-section">
-						<div class="form-group">
-							<label for="newfile">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfile')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
-							<div class="form-control-wrap">
-								<input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
-								<input type="hidden" name="file[newfile][0][target]" value="' . htmlspecialchars($this->target) . '" />
-							</div>
-							<div class="help-block">
-								' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions')) . '<br>
-								' . implode(' ', $fileExtList) . '
-							</div>
-						</div>
-					</div>
-				</div>
-				';
-            // Submit button for "creation of a new file":
-            $code .= '
-				<div class="form-group">
-					<button class="btn btn-default" name="edit" type="submit" value="1">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile_submit')) . '</button>
-					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-				</div>
-			';
-            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile')) . '</h3>';
-            $pageContent .= '<div>' . $code . '</div>';
-            $pageContent .= '</form>';
+            $assigns['txtFileExtList'] = $fileExtList;
         }
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -306,7 +230,15 @@ class CreateFolderController extends AbstractModule
             $buttonBar->addButton($backButton);
         }
 
-        $this->content .= '<div>' . $pageContent . '</div>';
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/File/CreateFolder.html'
+        ));
+        $view->assignMultiple($assigns);
+        $this->content = $view->render();
         $this->moduleTemplate->setContent($this->content);
     }
 
