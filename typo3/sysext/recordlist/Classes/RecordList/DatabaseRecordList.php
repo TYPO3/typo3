@@ -1148,7 +1148,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             $cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
                         }
                     }
-                    $theData[$fCol] = '<div class="btn-group" role="group">' . implode('', $cells) . '</div>';
+                    $theData[$fCol] = '';
+                    if (isset($cells['edit']) && isset($cells['delete'])) {
+                        $theData[$fCol] .= '<div class="btn-group" role="group">' . $cells['edit'] . $cells['delete'] . '</div>';
+                        unset($cells['edit'], $cells['delete']);
+                    }
+                    $theData[$fCol] .= '<div class="btn-group" role="group">' . implode('', $cells) . '</div>';
                     break;
                 case '_CONTROL_':
                     // Control panel:
