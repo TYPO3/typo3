@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for rendering the file editing screen
@@ -144,7 +145,7 @@ class EditFileController extends AbstractModule
     public function main()
     {
         $this->getButtons();
-        // Hook	before compiling the output
+        // Hook: before compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
             $preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
             if (is_array($preOutputProcessingHook)) {
@@ -158,12 +159,10 @@ class EditFileController extends AbstractModule
             }
         }
 
-        $pageContent = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" id="EditFileController" name="editform">';
-        $pageContent .= '<h1>'
-            . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle')
-            . ' ' . htmlspecialchars($this->fileObject->getName()) . '</h1>';
+        $assigns = [];
+        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+        $assigns['fileName'] = $this->fileObject->getName();
 
-        $code = '';
         $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
         try {
             if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
@@ -178,24 +177,24 @@ class EditFileController extends AbstractModule
                 'target' => $this->origTarget,
                 'returnUrl' => $this->returnUrl
             ]);
-            $code .= '
-                <div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off"  class="form-control text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
-					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
-				</div>
-				<br />';
+            $assigns['uid'] = $this->fileObject->getUid();
+            $assigns['fileContent'] = $fileContent;
+            $assigns['hValue'] = $hValue;
         } catch (\Exception $e) {
-            $code .= sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'),
-                $extList
-            );
+            $assigns['extList'] = $extList;
         }
 
-        // Ending of section and outputting editing form:
-        $pageContent .= $code;
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/File/EditFile.html'
+        ));
+        $view->assignMultiple($assigns);
+        $pageContent = $view->render();
 
-        // Hook	after compiling the output
+        // Hook: after compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
             $postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
             if (is_array($postOutputProcessingHook)) {
@@ -208,9 +207,8 @@ class EditFileController extends AbstractModule
                 }
             }
         }
-        $pageContent .= '</form>';
-        $this->content = $pageContent;
 
+        $this->content .= $pageContent;
         $this->moduleTemplate->setContent($this->content);
     }
 
