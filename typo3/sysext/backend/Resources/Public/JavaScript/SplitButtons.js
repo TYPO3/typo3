@@ -31,6 +31,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	 * Initializes the save handling
 	 */
 	SplitButtons.initializeSaveHandling = function() {
+		var preventExec = false;
 		var elements = [
 			'button[form]',
 			'button[name^="_save"]',
@@ -39,45 +40,49 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 			'a[data-name="CMD"][data-value^="save"]'
 		].join(',');
 		$('.t3js-module-docheader').on('click', elements, function(e) {
-			var $me = $(this),
-				linkedForm = $me.attr('form') || $me.attr('data-form') || null,
-				$form = linkedForm ? $('#' + linkedForm) : $me.closest('form'),
-				name = $me.data('name') || this.name,
-				value = $me.data('value') || this.value,
-				$elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', value);
+			// prevent doubleclick double submission bug in chrome,
+			// see https://forge.typo3.org/issues/77942
+			if (!preventExec) {
+				preventExec = true;
+				var $me = $(this),
+					linkedForm = $me.attr('form') || $me.attr('data-form') || null,
+					$form = linkedForm ? $('#' + linkedForm) : $me.closest('form'),
+					name = $me.data('name') || this.name,
+					value = $me.data('value') || this.value,
+					$elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', value);
 
-			// Run any preSubmit callbacks
-			for (var i = 0; i < SplitButtons.preSubmitCallbacks.length; ++i) {
-				SplitButtons.preSubmitCallbacks[i](e);
-			}
-
-			$form.append($elem);
-
-			// Disable submit buttons
-			$form.on('submit', function() {
-				if ($form.find('.has-error').length > 0) {
-					return false;
+				// Run any preSubmit callbacks
+				for (var i = 0; i < SplitButtons.preSubmitCallbacks.length; ++i) {
+					SplitButtons.preSubmitCallbacks[i](e);
 				}
+				$form.append($elem);
+				// Disable submit buttons
+				$form.on('submit', function() {
+					if ($form.find('.has-error').length > 0) {
+						preventExec = false;
+						return false;
+					}
 
-				var $affectedButton,
-					$splitButton = $me.closest('.t3js-splitbutton');
+					var $affectedButton,
+						$splitButton = $me.closest('.t3js-splitbutton');
 
-				if ($splitButton.length > 0) {
-					$splitButton.find('button').prop('disabled', true);
-					$affectedButton = $splitButton.children().first();
-				} else {
-					$me.prop('disabled', true);
-					$affectedButton = $me;
-				}
+					if ($splitButton.length > 0) {
+						$splitButton.find('button').prop('disabled', true);
+						$affectedButton = $splitButton.children().first();
+					} else {
+						$me.prop('disabled', true);
+						$affectedButton = $me;
+					}
 
-				Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(markup) {
-					$affectedButton.find('.t3js-icon').replaceWith(markup);
+					Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(markup) {
+						$affectedButton.find('.t3js-icon').replaceWith(markup);
+					});
 				});
-			});
 
-			if ((e.currentTarget.tagName === 'A' || $me.attr('form')) && !e.isDefaultPrevented()) {
-				$form.submit();
-				e.preventDefault();
+				if ((e.currentTarget.tagName === 'A' || $me.attr('form')) && !e.isDefaultPrevented()) {
+					$form.submit();
+					e.preventDefault();
+				}
 			}
 		});
 	};
