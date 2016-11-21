@@ -5049,11 +5049,22 @@ class DataHandler
         }
         // Update reference index:
         $this->updateRefIndex($table, $uid);
+
+        // We track calls to update the reference index as to avoid calling it twice
+        // with the same arguments. This is done because reference indexing is quite
+        // costly and the update reference index stack usually contain duplicates.
+        // NB: also filled and checked in loop below. The initialisation prevents
+        // running the "root" record twice if it appears in the stack twice.
+        $updateReferenceIndexCalls = [[$table, $uid]];
+
         // If there are entries in the updateRefIndexStack
         if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
             while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
-                // $args[0]: table, $args[1]: uid
-                $this->updateRefIndex($args[0], $args[1]);
+                if (!in_array($args, $updateReferenceIndexCalls, true)) {
+                    // $args[0]: table, $args[1]: uid
+                    $this->updateRefIndex($args[0], $args[1]);
+                    $updateReferenceIndexCalls[] = $args;
+                }
             }
             unset($this->updateRefIndexStack[$table][$uid]);
         }
