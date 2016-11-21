@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for the rename-file form.
@@ -138,27 +139,11 @@ class RenameFileController extends AbstractModule
         } else {
             $fileIdentifier = $this->fileOrFolderObject->getUid();
         }
-        $pageContent = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform" role="form">';
-        // Making the formfields for renaming:
-        $pageContent .= '
-
-			<div class="form-group">
-				<input class="form-control" type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '" ' . $this->getDocumentTemplate()->formWidth(40) . ' />
-				<input type="hidden" name="file[rename][0][data]" value="' . htmlspecialchars($fileIdentifier) . '" />
-			</div>
-		';
-        // Making submit button:
-        $pageContent .= '
-			<div class="form-group">
-				<input class="btn btn-primary" type="submit" value="' .
-                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit')) . '" />
-				<input class="btn btn-danger" type="submit" value="' .
-                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel')) .
-                '" onclick="backToList(); return false;" />
-				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-			</div>
-		';
-        $pageContent .= '</form>';
+        $assigns = [];
+        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+        $assigns['fileName'] = $this->fileOrFolderObject->getName();
+        $assigns['fileIdentifier'] = $fileIdentifier;
+        $assigns['returnUrl'] = $this->returnUrl;
 
         // Create buttons
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -178,11 +163,15 @@ class RenameFileController extends AbstractModule
             $buttonBar->addButton($backButton);
         }
 
-        // set header
-        $this->content = '<h1>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle') . '</h1>';
-
-        // add section
-        $this->content .= '<div>' . $pageContent . '</div>';
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/File/RenameFile.html'
+        ));
+        $view->assignMultiple($assigns);
+        $this->content = $view->render();
         $this->moduleTemplate->setContent($this->content);
     }
 
