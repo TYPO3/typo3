@@ -22,7 +22,7 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 			field = $searchField.data('field'),
 			uid = $searchField.data('uid'),
 			pid = $searchField.data('pid'),
-			newRecordRow = $searchField.data('recorddata'),
+			newRecordRow = $searchField.attr('data-recorddata'),
 			minimumCharacters = $searchField.data('minchars'),
 			url = TYPO3.settings.ajaxUrls['record_suggest'],
 			params = {

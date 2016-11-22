@@ -76,7 +76,7 @@ class SuggestWizard
             // Ff we have a new record, we hand that row over to JS.
             // This way we can properly retrieve the configuration of our wizard
             // if it is shown in a flexform
-            $jsRow = serialize($row);
+            $jsRow = json_encode($row);
         }
 
         $selector = '
@@ -130,7 +130,7 @@ class SuggestWizard
                 $pageId = $row['pid'];
             }
         } else {
-            $row = unserialize($newRecordRow);
+            $row = json_decode($newRecordRow, true);
         }
         $TSconfig = BackendUtility::getPagesTSconfig($pageId);
         $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
