@@ -4133,22 +4133,22 @@ class BackendUtility
      */
     public static function explodeSoftRefParserList($parserList)
     {
+        // Return immediately if list is blank:
+        if ($parserList === '') {
+            return false;
+        }
+
         $runtimeCache = self::getRuntimeCache();
         $cacheId = 'backend-softRefList-' . md5($parserList);
-        if ($runtimeCache->has($cacheId)) {
-            return $runtimeCache->get($cacheId);
+        $parserListCache = $runtimeCache->get($cacheId);
+        if ($parserListCache !== false) {
+            return $parserListCache;
         }
 
         // Looking for global parsers:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) {
             GeneralUtility::deprecationLog('The hook softRefParser_GL is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8');
             $parserList = implode(',', array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) . ',' . $parserList;
-        }
-
-        // Return immediately if list is blank:
-        if ($parserList === '') {
-            $runtimeCache->set($cacheId, false);
-            return false;
         }
 
         // Otherwise parse the list:
