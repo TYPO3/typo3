@@ -3874,7 +3874,7 @@ Connection: close
 	 */
 	static public function validPathStr($theFile) {
 		return strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE
-			&& !preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile);
+			&& preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile) === 0;
 	}
 
 	/**

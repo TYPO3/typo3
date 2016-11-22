@@ -4237,14 +4237,34 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function validPathStrInvalidCharactersDataProvider() {
-		return array(
+		$data = array(
 			'double slash in path' => array('path//path'),
 			'backslash in path' => array('path\\path'),
 			'directory up in path' => array('path/../path'),
 			'directory up at the beginning' => array('../path'),
-			'NUL character in path' => array('path path'),
-			'BS character in path' => array('pathpath')
+			'NUL character in path' => array('path' . chr(0) . 'path'),
+			'BS character in path' => array('path' . chr(8) . 'path'),
+			'invalid UTF-8-sequence' => array("\xc0" . 'path/path'),
+   			'Could be overlong NUL in some UTF-8 implementations, invalid in RFC3629' => array("\xc0\x80" . 'path/path'),
 		);
+
+		// Mixing with regular utf-8
+		$utf8Characters = 'Ссылка/';
+		foreach ($data as $key => $value) {
+			$data[$key . ' with UTF-8 characters prepended'] = array($utf8Characters . $value[0]);
+			$data[$key . ' with UTF-8 characters appended'] = array($value[0] . $utf8Characters);
+		}
+
+		// Encoding with UTF-16
+		foreach ($data as $key => $value) {
+			$data[$key . ' encoded with UTF-16'] = array(mb_convert_encoding($value[0], 'UTF-16'));
+		}
+
+		// Valid paths encoded with UTF-16
+		$data['Valid path but UTF-16 encoded'] = array(mb_convert_encoding('fileadmin/foo.txt', 'UTF-16'));
+		$data['UTF-8 characters with UTF-16 encoded'] = array(mb_convert_encoding('fileadmin/templates/Ссылка (fce).xml', 'UTF-16'));
+
+		return $data;
 	}
 
 	/**
@@ -4259,12 +4279,27 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for positive values within validPathStr()
+	 */
+	public function validPathStrDataProvider()
+	{
+		$data = array(
+			'normal ascii path' => array('fileadmin/templates/myfile..xml'),
+			'special character' => array('fileadmin/templates/Ссылка (fce).xml')
+		);
+
+		return $data;
+	}
+
+	/**
 	 * Tests whether Unicode characters are recognized as valid file name characters.
 	 *
+	 * @dataProvider validPathStrDataProvider
 	 * @test
 	 */
-	public function validPathStrWorksWithUnicodeFileNames() {
-		$this->assertTrue(Utility\GeneralUtility::validPathStr('fileadmin/templates/Ссылка (fce).xml'));
+	public function validPathStrWorksWithUnicodeFileNames($path)
+	{
+		$this->assertTrue(Utility\GeneralUtility::validPathStr($path));
 	}
 
 	/**
