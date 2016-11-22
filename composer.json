@@ -57,7 +57,8 @@
 		"se/selenium-server-standalone": "~2.53",
 		"7elix/styleguide": "~8.0.0",
 		"friendsofphp/php-cs-fixer": "^1.12",
-		"fiunchinho/phpunit-randomizer": "~2.0.3"
+		"fiunchinho/phpunit-randomizer": "~2.0.3",
+		"symfony/polyfill-mbstring": "~1.0"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",

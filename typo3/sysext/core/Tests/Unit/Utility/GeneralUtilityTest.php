@@ -4294,14 +4294,30 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validPathStrInvalidCharactersDataProvider()
     {
-        return [
+        $data = [
             'double slash in path' => ['path//path'],
             'backslash in path' => ['path\\path'],
             'directory up in path' => ['path/../path'],
             'directory up at the beginning' => ['../path'],
             'NUL character in path' => ['path' . chr(0) . 'path'],
-            'BS character in path' => ['path' . chr(8) . 'path']
+            'BS character in path' => ['path' . chr(8) . 'path'],
+            'invalid UTF-8-sequence' => ["\xc0" . 'path/path'],
+            'Could be overlong NUL in some UTF-8 implementations, invalid in RFC3629' => ["\xc0\x80" . 'path/path'],
         ];
+
+        // Mixing with regular utf-8
+        $utf8Characters = 'Ссылка/';
+        foreach ($data as $key => $value) {
+            $data[$key . ' with UTF-8 characters prepended'] = [$utf8Characters . $value[0]];
+            $data[$key . ' with UTF-8 characters appended'] = [$value[0] . $utf8Characters];
+        }
+
+        // Encoding with UTF-16
+        foreach ($data as $key => $value) {
+            $data[$key . ' encoded with UTF-16'] = [mb_convert_encoding($value[0], 'UTF-16')];
+        }
+
+        return $data;
     }
 
     /**
@@ -4317,13 +4333,27 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for positive values within validPathStr()
+     */
+    public function validPathStrDataProvider()
+    {
+        $data = [
+            'normal ascii path' => ['fileadmin/templates/myfile..xml'],
+            'special character' => ['fileadmin/templates/Ссылка (fce).xml']
+        ];
+
+        return $data;
+    }
+
+    /**
      * Tests whether Unicode characters are recognized as valid file name characters.
      *
+     * @dataProvider validPathStrDataProvider
      * @test
      */
-    public function validPathStrWorksWithUnicodeFileNames()
+    public function validPathStrWorksWithUnicodeFileNames($path)
     {
-        $this->assertTrue(GeneralUtility::validPathStr('fileadmin/templates/Ссылка (fce).xml'));
+        $this->assertTrue(GeneralUtility::validPathStr($path));
     }
 
     /**

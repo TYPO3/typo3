@@ -3314,12 +3314,11 @@ class GeneralUtility
      * @param string $theFile File path to evaluate
      * @return bool TRUE, $theFile is allowed path string, FALSE otherwise
      * @see http://php.net/manual/en/security.filesystem.nullbytes.php
-     * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
      */
     public static function validPathStr($theFile)
     {
         return strpos($theFile, '//') === false && strpos($theFile, '\\') === false
-            && !preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile);
+            && preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile) === 0;
     }
 
     /**
