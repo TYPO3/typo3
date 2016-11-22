@@ -103,7 +103,7 @@ class SuggestElement {
 			// Ff we have a new record, we hand that row over to JS.
 			// This way we can properly retrieve the configuration of our wizard
 			// if it is shown in a flexform
-			$jsRow = serialize($row);
+			$jsRow = json_encode($row);
 		}
 
 		// Replace "-" with ucwords for the JS object name
@@ -176,7 +176,7 @@ class SuggestElement {
 				$pageId = $row['pid'];
 			}
 		} else {
-			$row = unserialize($newRecordRow);
+			$row = json_decode($newRecordRow, TRUE);
 		}
 		$TSconfig = BackendUtility::getPagesTSconfig($pageId);
 		$queryTables = array();
