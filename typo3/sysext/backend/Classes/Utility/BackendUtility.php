@@ -4103,19 +4103,20 @@ class BackendUtility
      *
      * @param string $parserList softRef parser list
      * @return array|bool Array where the parser key is the key and the value is the parameter string, FALSE if no parsers were found
+     * @throws \InvalidArgumentException
      */
     public static function explodeSoftRefParserList($parserList)
     {
-        $runtimeCache = self::getRuntimeCache();
-        $cacheId = 'backend-softRefList-' . md5($parserList);
-        if ($runtimeCache->has($cacheId)) {
-            return $runtimeCache->get($cacheId);
-        }
-
         // Return immediately if list is blank:
         if ($parserList === '') {
-            $runtimeCache->set($cacheId, false);
             return false;
+        }
+
+        $runtimeCache = self::getRuntimeCache();
+        $cacheId = 'backend-softRefList-' . md5($parserList);
+        $parserListCache = $runtimeCache->get($cacheId);
+        if ($parserListCache !== false) {
+            return $parserListCache;
         }
 
         // Otherwise parse the list:
