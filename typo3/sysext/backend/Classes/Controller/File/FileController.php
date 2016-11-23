@@ -217,8 +217,10 @@ class FileController
         $this->main();
         $errors = $this->fileProcessor->getErrorMessages();
         if (!empty($errors)) {
-            $response->getBody()->write(implode(',', $errors));
-            $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+            $response->getBody()->write('<t3err>' . implode(',', $errors) . '</t3err>');
+            $response = $response
+                ->withHeader('Content-Type', 'text/html; charset=utf-8')
+                ->withStatus(500, '(AJAX)');
         } else {
             $flatResult = [];
             foreach ($this->fileData as $action => $results) {

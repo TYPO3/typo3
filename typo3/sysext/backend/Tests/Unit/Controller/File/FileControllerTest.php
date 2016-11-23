@@ -142,4 +142,32 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->fileController->processAjaxRequest($this->request, $this->response);
     }
+
+    /**
+     * @test
+     */
+    public function processAjaxRequestReturnsStatus200IfNoErrorOccures()
+    {
+        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
+
+        $fileData = ['editfile' => [true]];
+        $this->fileController->_set('fileProcessor', $this->mockFileProcessor);
+        $this->fileController->_set('fileData', $fileData);
+        $this->fileController->_set('redirect', false);
+
+        $result = $this->fileController->processAjaxRequest($this->request, $this->response);
+        $this->assertEquals(200, $result->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function processAjaxRequestReturnsStatus500IfErrorOccurs()
+    {
+        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
+        $this->mockFileProcessor->expects($this->any())->method('getErrorMessages')->will($this->returnValue(['error occured']));
+        $this->fileController->_set('fileProcessor', $this->mockFileProcessor);
+        $result = $this->fileController->processAjaxRequest($this->request, $this->response);
+        $this->assertEquals(500, $result->getStatusCode());
+    }
 }
