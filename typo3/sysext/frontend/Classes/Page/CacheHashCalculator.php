@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Logic for cHash calculation
  */
-class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
+class CacheHashCalculator implements SingletonInterface
 {
     /**
      * @var array Parameters that are relevant for cacheHash calculation. Optional.
@@ -73,6 +75,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $queryString Query-parameters: "&xxx=yyy&zzz=uuu
      * @return string Hash of all the values
+     * @throws \RuntimeException
      */
     public function generateForParameters($queryString)
     {
@@ -94,8 +97,9 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
         $hasRequiredParameter = false;
         $parameterNames = array_keys($this->splitQueryStringToArray($queryString));
         foreach ($parameterNames as $parameterName) {
-            if (in_array($parameterName, $this->requireCacheHashPresenceParameters)) {
+            if (in_array($parameterName, $this->requireCacheHashPresenceParameters, true)) {
                 $hasRequiredParameter = true;
+                break;
             }
         }
         return $hasRequiredParameter;
@@ -107,6 +111,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $queryString Query-parameters: "&xxx=yyy&zzz=uuu
      * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of
+     * @throws \RuntimeException
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::makeCacheHash(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
      */
     public function getRelevantParameters($queryString)
@@ -120,7 +125,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
             if ($this->hasCachedParametersWhiteList() && !$this->isInCachedParametersWhiteList($parameterName)) {
                 continue;
             }
-            if ((is_null($parameterValue) || $parameterValue === '') && !$this->isAllowedWithEmptyValue($parameterName)) {
+            if (($parameterValue === null || $parameterValue === '') && !$this->isAllowedWithEmptyValue($parameterName)) {
                 continue;
             }
             $relevantParameters[$parameterName] = $parameterValue;
@@ -145,7 +150,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
      *
      * e.g. foo[bar]=baz will be array('foo[bar]' => 'baz')
      *
-     * @param $queryString
+     * @param string $queryString
      * @return array
      */
     protected function splitQueryStringToArray($queryString)
@@ -165,14 +170,14 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Checks whether the given parameter starts with TSFE_ADMIN_PANEL
-     * stristr check added to avoid bad performance
+     * stripos check added to avoid bad performance
      *
      * @param string $key
      * @return bool
      */
     protected function isAdminPanelParameter($key)
     {
-        return stristr($key, 'TSFE_ADMIN_PANEL') !== false && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
+        return stripos($key, 'TSFE_ADMIN_PANEL') !== false && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
     }
 
     /**
@@ -187,14 +192,14 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Checks whether the given parameter should be exluded from cHash calculation
+     * Checks whether the given parameter should be excluded from cHash calculation
      *
      * @param string $key
      * @return bool
      */
     protected function isExcludedParameter($key)
     {
-        return in_array($key, $this->excludedParameters);
+        return in_array($key, $this->excludedParameters, true);
     }
 
     /**
@@ -205,7 +210,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function isInCachedParametersWhiteList($key)
     {
-        return in_array($key, $this->cachedParametersWhiteList);
+        return in_array($key, $this->cachedParametersWhiteList, true);
     }
 
     /**
@@ -226,7 +231,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function isAllowedWithEmptyValue($key)
     {
-        return !($this->excludeAllEmptyParameters || in_array($key, $this->excludedParametersIfEmpty));
+        return !($this->excludeAllEmptyParameters || in_array($key, $this->excludedParametersIfEmpty, true));
     }
 
     /**
