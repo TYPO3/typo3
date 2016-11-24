@@ -41,53 +41,6 @@ The solution clearly is to set the configuration option mentioned above to a val
 			<trans-unit id="language.image_descr">
 				<source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
 			</trans-unit>
-			<trans-unit id="option_condensedMode.alttitle">
-				<source>Condensed Mode</source>
-			</trans-unit>
-			<trans-unit id="option_condensedMode.description">
-				<source>If set, the backend will not load the Web-submodules and File-submodules in a frameset but allow the page and folder trees to load the submodule in the main content frame. This allows for a better display on small screens.</source>
-			</trans-unit>
-			<trans-unit id="_option_condensedMode.seeAlso">
-				<source>_MOD_user_setup:option_noMenuMode</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="_option_condensedMode.image" xml:space="preserve">
-				<source>EXT:setup/Resources/Public/Images/cshimages/setup3.png,
-EXT:setup/Resources/Public/Images/cshimages/setup4.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="option_condensedMode.image_descr" xml:space="preserve">
-				<source>In this example Condensed Mode is enabled. The page tree is &lt;em&gt;not&lt;/em&gt; shown in the normal navigation frame but rather in the full content frame to the right of the menu.
-When a page title is clicked in the page tree the module page (here the Web &gt; List module) will be loaded in the &lt;u&gt;same&lt;/u&gt; frame of the backend. In this way Condensed Mode saves horizontal screen space since the navigation frame is removed - but it takes an extra click if you need to go to another page.</source>
-			</trans-unit>
-			<trans-unit id="option_noMenuMode.alttitle">
-				<source>Navigation Mode</source>
-			</trans-unit>
-			<trans-unit id="option_noMenuMode.description">
-				<source>Setting alternative backend menu modes</source>
-			</trans-unit>
-			<trans-unit id="option_noMenuMode.details" xml:space="preserve">
-				<source>By default you navigate between backend modules with the menu in the left frame. By this option you can select alternative navigation modes:
-
-&lt;b&gt;Selectorbox in top frame:&lt;/b&gt;
-If set, the backend will not load the left menu frame but rather put a selector-box menu in the topframe. This saves a lot of space on small screens.
-
-&lt;b&gt;Icons in top frame&lt;/b&gt;
-This option shows all menu items in the top frame as a horizontal list of icons. This is for experienced users only who knows the order of modules and can recognize them based on their icon.</source>
-			</trans-unit>
-			<trans-unit id="_option_noMenuMode.seeAlso">
-				<source>_MOD_user_setup:option_condensedMode</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="_option_noMenuMode.image" xml:space="preserve">
-				<source>EXT:setup/Resources/Public/Images/cshimages/setup1.png,
-EXT:setup/Resources/Public/Images/cshimages/setup2.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="option_noMenuMode.image_descr" xml:space="preserve">
-				<source>The "Selectorbox" menu. Selecting an item makes the backend jump to that module.
-The "Icons" menu. As you can see you will need to know the icons by heart. You can also position the mouse over the icon and the tool-tip text will reveal the module name.</source>
-			</trans-unit>
 			<trans-unit id="option_startModule.alttitle">
 				<source>Start module</source>
 			</trans-unit>
@@ -142,12 +95,6 @@ The default module is "About Modules".</source>
 			<trans-unit id="option_recursiveDelete.details">
 				<source>You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</source>
 			</trans-unit>
-			<trans-unit id="option_edit_wideDocument.alttitle">
-				<source>Wide document background</source>
-			</trans-unit>
-			<trans-unit id="option_edit_wideDocument.description">
-				<source>Setting this option will enlarge the default width of record editing forms in TYPO3 by around 50%</source>
-			</trans-unit>
 			<trans-unit id="option_edit_RTE.alttitle">
 				<source>Enable Rich Text Editor</source>
 			</trans-unit>
@@ -173,15 +120,6 @@ The default module is "About Modules".</source>
 			<trans-unit id="_option_edit_docModuleUpload.image">
 				<source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="option_enableFlashUploader.alttitle">
-				<source>Enable Flash Uploader</source>
-			</trans-unit>
-			<trans-unit id="option_enableFlashUploader.description">
-				<source>This option will enable a flash-based uploader that allows you to select multiple files at once when uploading files. If you enable this option, make sure that your browser has the latest Flash plugin (Flash 9 or higher) installed in order to make this feature work.</source>
-			</trans-unit>
-			<trans-unit id="option_edit_showFieldHelp.alttitle">
-				<source>Context Sensitive Help mode</source>
 			</trans-unit>
 			<trans-unit id="option_resizeTextareas.alttitle">
 				<source>Make Textareas Resizable</source>
@@ -212,37 +150,6 @@ The default module is "About Modules".</source>
 			</trans-unit>
 			<trans-unit id="option_showHiddenFilesAndFolders.details">
 				<source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
-			</trans-unit>
-			<trans-unit id="option_edit_showFieldHelp.description">
-				<source>Defines the mode of Context Sensitive Help (CSH) in TYPO3. The default is that small help icons are shown everywhere a help item is available. You can click the icon and help will appear in a window for you.</source>
-			</trans-unit>
-			<trans-unit id="option_edit_showFieldHelp.details" xml:space="preserve">
-				<source>Alternatively you can select that descriptions are shown inline. This is useful for people who are still learning how TYPO3 works and want to browse the backend with descriptions shown directly.
-Finally experienced users will want to totally disable the help icons if they seem to just bloat the backend interface.
-
-Context Sensitive Help is also available as a full user manual in the Help&gt;Manual module.</source>
-			</trans-unit>
-			<trans-unit id="_option_edit_showFieldHelp.image" xml:space="preserve">
-				<source>EXT:setup/Resources/Public/Images/cshimages/setup11.png,
-EXT:setup/Resources/Public/Images/cshimages/setup10.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="option_edit_showFieldHelp.image_descr" xml:space="preserve">
-				<source>The default mode, "Display help icon only", will show the help icons with no additional text.
-When "Display full text message" is selected you will see a short description shown together with the help icon and framed into a box. Clicking the help icon always links to the full description of the element shown in a pop-up window.</source>
-			</trans-unit>
-			<trans-unit id="option_disableCMlayers.alttitle">
-				<source>Disable Popup Context Menus</source>
-			</trans-unit>
-			<trans-unit id="option_disableCMlayers.description">
-				<source>When an icon for a file or database record is shown inside the TYPO3 backend you can often click on the icon and a contextual menu will appear over the icon with options related to it. You can disable this behaviour by this option. However you probably don't want to do that.</source>
-			</trans-unit>
-			<trans-unit id="_option_disableCMlayers.image">
-				<source>EXT:setup/Resources/Public/Images/cshimages/setup9.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="option_disableCMlayers.image_descr">
-				<source>This is the context menu (or "Clickmenu") of a page in the page tree. Notice that it is activated by a regular "left-click" opposite to the normal "right-click" activation known from most Operating Systems.</source>
 			</trans-unit>
 			<trans-unit id="option_beUser_realName.alttitle">
 				<source>Your real name</source>

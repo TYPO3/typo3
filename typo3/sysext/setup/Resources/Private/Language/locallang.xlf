@@ -228,21 +228,6 @@
 			<trans-unit id="showThumbs">
 				<source>Show Thumbnails by default</source>
 			</trans-unit>
-			<trans-unit id="condensedMode">
-				<source>Use condensed mode in backend (for small screens)</source>
-			</trans-unit>
-			<trans-unit id="noMenuMode">
-				<source>Select navigation mode</source>
-			</trans-unit>
-			<trans-unit id="noMenuMode_def">
-				<source>Left frame menu (default)</source>
-			</trans-unit>
-			<trans-unit id="noMenuMode_sel">
-				<source>Selectorbox in top frame</source>
-			</trans-unit>
-			<trans-unit id="noMenuMode_icons">
-				<source>Icons in top frame</source>
-			</trans-unit>
 			<trans-unit id="startModule">
 				<source>Start up in the following module</source>
 			</trans-unit>
@@ -255,21 +240,6 @@
 			<trans-unit id="maxTitleLen">
 				<source>Max. Title Length</source>
 			</trans-unit>
-			<trans-unit id="edit_showFieldHelp">
-				<source>Context Sensitive Help mode</source>
-			</trans-unit>
-			<trans-unit id="edit_showFieldHelp_none">
-				<source>Display no help information</source>
-			</trans-unit>
-			<trans-unit id="edit_showFieldHelp_icon">
-				<source>Display help icon only</source>
-			</trans-unit>
-			<trans-unit id="edit_showFieldHelp_message">
-				<source>Display full text message</source>
-			</trans-unit>
-			<trans-unit id="edit_wideDocument">
-				<source>Wide document background</source>
-			</trans-unit>
 			<trans-unit id="edit_RTE">
 				<source>Enable Rich Text Editor (if available)</source>
 			</trans-unit>
@@ -278,9 +248,6 @@
 			</trans-unit>
 			<trans-unit id="showHiddenFilesAndFolders">
 				<source>Show hidden files and folders in the filelist</source>
-			</trans-unit>
-			<trans-unit id="enableFlashUploader">
-				<source>Enable Flash Uploader (requires Flash 9+)</source>
 			</trans-unit>
 			<trans-unit id="resizeTextareas">
 				<source>Make Textareas resizable</source>
@@ -299,9 +266,6 @@
 			</trans-unit>
 			<trans-unit id="edit_functions">
 				<source>Edit</source>
-			</trans-unit>
-			<trans-unit id="disableCMlayers">
-				<source>Disable Popup Context Menus</source>
 			</trans-unit>
 			<trans-unit id="setToStandard">
 				<source>Reset all Values to default</source>
