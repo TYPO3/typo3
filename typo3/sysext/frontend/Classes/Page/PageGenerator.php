@@ -141,7 +141,6 @@ class PageGenerator
             // Checking XHTML-docytpe
             switch ((string)$tsfe->config['config']['xhtmlDoctype']) {
                 case 'xhtml_trans':
-
                 case 'xhtml_strict':
                     $tsfe->xhtmlVersion = 100;
                     break;
@@ -156,7 +155,6 @@ class PageGenerator
                     $tsfe->xhtmlVersion = 105;
                     break;
                 case 'xhtml_11':
-
                 case 'xhtml+rdfa_10':
                     $tsfe->xhtmlVersion = 110;
                     break;
@@ -434,7 +432,7 @@ class PageGenerator
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
                             }
-                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop'], '');
+                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
                         } else {
                             $pageRenderer->addCssFile(
                                 $ss,
@@ -467,7 +465,7 @@ class PageGenerator
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
                             }
-                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop'], '');
+                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
                         } else {
                             $pageRenderer->addCssLibrary(
                                 $ss,
@@ -783,7 +781,7 @@ class PageGenerator
             }
         }
         if (!$tsfe->config['config']['removeDefaultJS']) {
-            // inlude default and inlineJS
+            // include default and inlineJS
             if ($scriptJsCode) {
                 $pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $tsfe->config['config']['compressJs']);
             }
@@ -1149,7 +1147,7 @@ class PageGenerator
      * Adds inline CSS code, by respecting the inlineStyle2TempFile option
      *
      * @param string $cssStyles the inline CSS styling
-     * @param bool $excludeFromConcatenation option to see if it should be conctatenated
+     * @param bool $excludeFromConcatenation option to see if it should be concatenated
      * @param string $inlineBlockName the block name to add it
      */
     protected static function addCssToPageRenderer($cssStyles, $excludeFromConcatenation = false, $inlineBlockName = 'TSFEinlineStyle')
