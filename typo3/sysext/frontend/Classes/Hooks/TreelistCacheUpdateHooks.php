@@ -71,15 +71,15 @@ class TreelistCacheUpdateHooks
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $recordId, array $updatedFields, DataHandler $dataHandler)
     {
-        if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
+        if ($table === 'pages' && $this->requiresUpdate($updatedFields)) {
             $affectedPagePid = 0;
             $affectedPageUid = 0;
-            if ($status == 'new') {
+            if ($status === 'new') {
                 // Detect new pages
                 // Resolve the uid
                 $affectedPageUid = $dataHandler->substNEWwithIDs[$recordId];
                 $affectedPagePid = $updatedFields['pid'];
-            } elseif ($status == 'update') {
+            } elseif ($status === 'update') {
                 // Detect updated pages
                 $affectedPageUid = $recordId;
                 // When updating a page the pid is not directly available so we
@@ -142,7 +142,7 @@ class TreelistCacheUpdateHooks
      */
     public function moveRecord_firstElementPostProcess($table, $recordId, $destinationPid, array $movedRecord, array $updatedFields, DataHandler $dataHandler)
     {
-        if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
+        if ($table === 'pages' && $this->requiresUpdate($updatedFields)) {
             $affectedPageUid = $recordId;
             $affectedPageOldPid = $movedRecord['pid'];
             $affectedPageNewPid = $updatedFields['pid'];
@@ -169,7 +169,7 @@ class TreelistCacheUpdateHooks
      */
     public function moveRecord_afterAnotherElementPostProcess($table, $recordId, $destinationPid, $originalDestinationPid, array $movedRecord, array $updatedFields, DataHandler $dataHandler)
     {
-        if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
+        if ($table === 'pages' && $this->requiresUpdate($updatedFields)) {
             $affectedPageUid = $recordId;
             $affectedPageOldPid = $movedRecord['pid'];
             $affectedPageNewPid = $updatedFields['pid'];
@@ -192,7 +192,7 @@ class TreelistCacheUpdateHooks
         $requiresUpdate = false;
         $updatedFieldNames = array_keys($updatedFields);
         foreach ($updatedFieldNames as $updatedFieldName) {
-            if (in_array($updatedFieldName, $this->updateRequiringFields)) {
+            if (in_array($updatedFieldName, $this->updateRequiringFields, true)) {
                 $requiresUpdate = true;
                 break;
             }
@@ -201,7 +201,7 @@ class TreelistCacheUpdateHooks
     }
 
     /**
-     * Calls the cache maintainance functions according to the determined actions
+     * Calls the cache maintenance functions according to the determined actions
      *
      * @param int $affectedPage uid of the affected page
      * @param int $affectedParentPage parent uid of the affected page
@@ -230,7 +230,7 @@ class TreelistCacheUpdateHooks
         // From time to time clean the cache from expired entries
         // (theoretically every 1000 calls)
         $randomNumber = rand(1, 1000);
-        if ($randomNumber == 500) {
+        if ($randomNumber === 500) {
             $this->removeExpiredCacheEntries();
         }
     }
@@ -337,10 +337,10 @@ class TreelistCacheUpdateHooks
     protected function determineClearCacheActions($status, $updatedFields)
     {
         $actions = [];
-        if ($status == 'new') {
+        if ($status === 'new') {
             // New page
             $actions['allParents'] = true;
-        } elseif ($status == 'update') {
+        } elseif ($status === 'update') {
             $updatedFieldNames = array_keys($updatedFields);
             foreach ($updatedFieldNames as $updatedFieldName) {
                 switch ($updatedFieldName) {
@@ -375,7 +375,7 @@ class TreelistCacheUpdateHooks
                         }
                         break;
                     default:
-                        if (in_array($updatedFieldName, $this->updateRequiringFields)) {
+                        if (in_array($updatedFieldName, $this->updateRequiringFields, true)) {
                             $actions['uidInTreelist'] = true;
                         }
                 }
