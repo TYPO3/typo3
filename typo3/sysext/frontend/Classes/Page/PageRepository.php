@@ -531,7 +531,7 @@ class PageRepository
      * in records from the same table)
      *
      * @param string $table Table name
-     * @param array $row Record to overlay. Must containt uid, pid and $table]['ctrl']['languageField']
+     * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
      * @param int $sys_language_content Pointer to the sys_language uid for content on the site.
      * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is FALSE)
      * @throws \UnexpectedValueException
@@ -644,7 +644,7 @@ class PageRepository
 
     /**
      * Returns an array with page rows for subpages of a certain page ID. This is used for menus in the frontend.
-     * If there are mount points in overlay mode the _MP_PARAM field is set to the corret MPvar.
+     * If there are mount points in overlay mode the _MP_PARAM field is set to the correct MPvar.
      *
      * If the $pageId being input does in itself require MPvars to define a correct
      * rootline these must be handled externally to this function.
@@ -685,7 +685,7 @@ class PageRepository
      * Internal method used by getMenu() and getMenuForPages()
      * Returns an array with page rows for subpages with pid is in $pageIds or uid is in $pageIds, depending on $parentPages
      * This is used for menus. If there are mount points in overlay mode
-     * the _MP_PARAM field is set to the corret MPvar.
+     * the _MP_PARAM field is set to the correct MPvar.
      *
      * If the $pageIds being input does in itself require MPvars to define a correct
      * rootline these must be handled externally to this function.
@@ -695,7 +695,7 @@ class PageRepository
      * @param string $sortField The field to sort by. Default is "sorting
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
-     * @param bool $parentPages Whether the uid list is meant as list of parent pages or the page itself TRUE means id list is checked agains pid field
+     * @param bool $parentPages Whether the uid list is meant as list of parent pages or the page itself TRUE means id list is checked against pid field
      * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
@@ -1493,7 +1493,6 @@ class PageRepository
         if ($this->versioningPreview && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
             $oid = 0;
             $wsid = 0;
-            // Have to hardcode it for "pages" table since TCA is not loaded at this moment!
             // Check values for t3ver_oid and t3ver_wsid:
             if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
                 // If "t3ver_oid" is already a field, just set this:
@@ -1819,7 +1818,6 @@ class PageRepository
             $ws = $this->workspaceCache[$wsid];
         } else {
             if ($wsid > 0) {
-                // No $GLOBALS['TCA'] yet!
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('sys_workspace');
                 $queryBuilder->getRestrictions()->removeAll();
