@@ -106,10 +106,10 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $this->expandFolder = isset($request->getQueryParams()['expandFolder']) ? $request->getQueryParams()['expandFolder'] : null;
         if (!empty($this->linkParts) && !isset($this->expandFolder)) {
             $this->expandFolder = $this->linkParts['url'][$this->mode];
+            if ($this->expandFolder instanceof File) {
+                $this->expandFolder = $this->expandFolder->getParentFolder();
+            }
             if ($this->expandFolder instanceof Folder) {
-                if ($this->mode === 'file') {
-                    $this->expandFolder = $this->expandFolder->getParentFolder();
-                }
                 $this->expandFolder = $this->expandFolder->getCombinedIdentifier();
             }
         }
