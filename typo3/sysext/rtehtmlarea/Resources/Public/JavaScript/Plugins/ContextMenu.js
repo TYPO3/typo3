@@ -94,8 +94,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				y: 0
 			};
 			var onMouseUpdate = function(e) {
-				self.mousePosition.x = e.pageX;
-				self.mousePosition.y = e.pageY;
+				self.mousePosition.x = e.clientX;
+				self.mousePosition.y = e.clientY;
 			};
 			Event.on(this.editor.document.documentElement, 'mousemove', onMouseUpdate);
 			Event.on(this.editor.document.documentElement, 'mouseenter', onMouseUpdate);
