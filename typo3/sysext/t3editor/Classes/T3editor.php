@@ -16,7 +16,9 @@ namespace TYPO3\CMS\T3editor;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -100,13 +102,12 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      * Set mode by file
      *
      * @param string $file
-     * @return string
+     * @return void
      */
     public function setModeByFile($file)
     {
         $fileInfo = GeneralUtility::split_fileref($file);
-        // @TODO: @FIXME: the method setModeByType returns void, so this method will never return a string
-        return $this->setModeByType($fileInfo['fileext']);
+        $this->setModeByType($fileInfo['fileext']);
     }
 
     /**
@@ -169,7 +170,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
         // Disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
         $GLOBALS['BE_USER']->uc['disablePMKTextarea'] = 1;
 
-        $this->extPath = PathUtility::getAbsoluteWebPath(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor'));
+        $this->extPath = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('t3editor'));
         $this->codemirrorPath = $this->extPath . $this->codemirrorPath;
     }
 
@@ -239,6 +240,8 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
             case self::MODE_MIXED:
                 $parserfile = ['tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js'];
                 break;
+            default:
+                $parserfile = [];
         }
         return json_encode($parserfile);
     }
@@ -362,8 +365,8 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
                     'exceptionCode' => $e->getCode()
                 ];
             }
-            /** @var \TYPO3\CMS\Core\Http\Response $response */
-            $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+            /** @var Response $response */
+            $response = GeneralUtility::makeInstance(Response::class);
             $response->getBody()->write(json_encode($responseContent));
         }
 
@@ -385,8 +388,8 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
         if (is_array($plugins)) {
             $result = array_values($plugins);
         }
-        $request->getBody()->write(json_encode($result));
-        return $request;
+        $response->getBody()->write(json_encode($result));
+        return $response;
     }
 
     /**
