@@ -86,7 +86,9 @@ define([
 				var $me = $(this),
 					$firstGroupItem = $me.parent().find('.list-group-item:first'),
 					direction = $me.data('direction'),
-					itemHeight = $firstGroupItem.outerHeight(),
+					// itemHeight is guarded against becoming less than 150px tall by hardcoded boundary. Avoids case of
+					// zero-pixel height when calculating the editor document height fails.
+					itemHeight = Math.max($firstGroupItem.outerHeight(), 150),
 					listGroup = $firstGroupItem.parent(),
 					scrollTop = direction === 'down'
 						? listGroup.scrollTop() + itemHeight
