@@ -83,18 +83,16 @@ class BackendUtility
      */
     public static function deleteClause($table, $tableAlias = '')
     {
+        if (empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
+            return '';
+        }
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
             ->expr();
-
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-            return ' AND ' . $expressionBuilder->eq(
-                ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
-                0
-            );
-        } else {
-            return '';
-        }
+        return ' AND ' . $expressionBuilder->eq(
+            ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
+            0
+        );
     }
 
     /**
