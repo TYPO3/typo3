@@ -114,7 +114,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $renderedRecordList = $this->renderTableRecords($allowedTables);
 
         $this->initDocumentTemplate();
-        $content = $this->doc->startPage('TBE record selector');
+        $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('recordSelector')));
         $content .= $this->doc->getFlashMessages();
 
         $content .= '

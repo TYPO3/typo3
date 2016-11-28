@@ -99,7 +99,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         }
 
         $this->initDocumentTemplate();
-        $content = $this->doc->startPage('TBE folder selector');
+        $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('folderSelector')));
         $content .= $this->doc->getFlashMessages();
 
         // Putting the parts together, side by side:

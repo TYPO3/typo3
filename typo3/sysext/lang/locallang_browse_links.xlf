@@ -105,6 +105,15 @@
 			<trans-unit id="importSelection">
 				<source>Import selection</source>
 			</trans-unit>
+			<trans-unit id="recordSelector">
+				<source>Record selector</source>
+			</trans-unit>
+			<trans-unit id="fileSelector">
+				<source>File selector</source>
+			</trans-unit>
+			<trans-unit id="folderSelector">
+				<source>Folder selector</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -186,7 +186,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 
         $this->initDocumentTemplate();
         // Starting content:
-        $content = $this->doc->startPage('TBE file selector');
+        $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('fileSelector')));
         $content .= $this->doc->getFlashMessages();
 
         // Insert the upload form on top, if so configured
