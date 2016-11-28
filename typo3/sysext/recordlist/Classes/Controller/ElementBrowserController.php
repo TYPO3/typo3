@@ -88,7 +88,7 @@ class ElementBrowserController
     {
         // Fallback for old calls, which use mode "wizard" or "rte" for link selection
         if ($this->mode === 'wizard' || $this->mode === 'rte') {
-            return $response->withStatus(303)->withHeader('Location', BackendUtility::getModuleUrl('wizard_link', $_GET, false, true));
+            return $response->withStatus(303)->withHeader('Location', BackendUtility::getModuleUrl('wizard_link', $_GET));
         }
 
         $response->getBody()->write($this->main());

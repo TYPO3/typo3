@@ -640,7 +640,7 @@ class ClickMenu
         $urlParams = [];
         $urlParams['id'] = $table === 'pages' ? $uid : $rec['pid'];
         $urlParams['table'] = $table === 'pages' ? '' : $table;
-        $url = BackendUtility::getModuleUrl('web_list', $urlParams, '', true);
+        $url = BackendUtility::getModuleUrl('web_list', $urlParams);
         return $this->linkItem(
             htmlspecialchars($this->languageService->getLL('CM_db_list')),
             $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render(),
