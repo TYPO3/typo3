@@ -10,8 +10,8 @@
 				</a>
 				<span class="typo3-topbar-site-name">{activeWorkspace}</span>
 			</div>
-			<div class="typo3-topbar-tabs t3js-workspace-tabs" style="float: left; height: 100%;">
-				<ul class="nav nav-tabs" role="tablist" style="position: absolute; bottom: 0">
+			<div class="typo3-topbar-tabs t3js-workspace-tabs">
+				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#visual" aria-controls="visual" role="tab" data-toggle="tab" data-actions="true"><f:translate key="preview.visualPreview" /></a></li>
 					<li role="presentation"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" data-actions="false"><f:translate key="preview.listView" /></a></li>
 				</ul>
@@ -19,14 +19,15 @@
 			<div class="typo3-topbar-workspace-actions t3js-workspace-actions">
 				<div class="workspace-action">
 					<div class="slider-wrapper">
-						<b>Live</b><div
+						<span>Published Version</span><div
 						id="workspace-stage-slider"
 						data-slider-min="0"
 						data-slider-max="100"
 						data-slider-value="100"
+						data-slider-tooltip="hide"
 						style="width: 150px;"
 					></div>
-						<b>Workspace</b>
+						<span>Staged Version</span>
 					</div>
 				</div>
 				<div class="workspace-action t3js-stage-buttons">
