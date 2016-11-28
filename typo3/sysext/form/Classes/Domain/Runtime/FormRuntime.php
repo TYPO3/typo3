@@ -404,6 +404,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 $propertyPathsForWhichPropertyMappingShouldHappen[$temporaryPropertyPath] = $temporaryPropertyPath;
             }
         };
+
+        $value = null;
+        $page->onSubmit($this, $value, $requestArguments);
         foreach ($page->getElementsRecursively() as $element) {
             try {
                 $value = ArrayUtility::getValueByPath($requestArguments, $element->getIdentifier(), '.');
