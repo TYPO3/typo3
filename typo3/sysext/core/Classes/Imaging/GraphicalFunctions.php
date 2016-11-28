@@ -361,7 +361,6 @@ class GraphicalFunctions
         }
         // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
-        $this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -sharpen 50 -quality ' . $this->jpegQuality);
         $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
         if ($gfxConf['gdlib_png']) {
             $this->gifExtension = 'png';
@@ -372,14 +371,14 @@ class GraphicalFunctions
         // Effects in Imagemagick 5+ tends to render very slowly!!
         // - therefore must be disabled in order not to perform sharpen, blurring and such.
         $this->NO_IM_EFFECTS = 1;
-        $this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality);
+        $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
 
         // ... but if 'processor_effects' is set, enable effects
         if ($gfxConf['processor_effects']) {
             $this->NO_IM_EFFECTS = 0;
             $this->V5_EFFECTS = 1;
             if ($gfxConf['processor_effects'] > 0) {
-                $this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . (int)$gfxConf['jpg_quality'] . $this->v5_sharpen(10));
+                $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . (int)$gfxConf['jpg_quality'] . $this->v5_sharpen(10);
             }
         }
         // Secures that images are not scaled up.
