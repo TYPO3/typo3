@@ -2180,6 +2180,8 @@ class GraphicalFunctions
             $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
         }
         $command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+        // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
+        $command .= ' -colorspace ' . $this->colorspace;
         $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
         if ($this->alternativeOutputKey) {
             $theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
