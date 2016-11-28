@@ -275,7 +275,7 @@ return [
 
         'select_checkbox_1' => [
             'exclude' => 1,
-            'label' => 'select_checkbox_1',
+            'label' => 'select_checkbox_1, implicit maxitems=1',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -288,7 +288,21 @@ return [
         ],
         'select_checkbox_2' => [
             'exclude' => 1,
-            'label' => 'select_checkbox_2 icons, description',
+            'label' => 'select_checkbox_2, maxitems=999',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'maxitems' => 999,
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['foo 3', 3],
+                ],
+            ],
+        ],
+        'select_checkbox_3' => [
+            'exclude' => 1,
+            'label' => 'select_checkbox_3 icons, description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -771,7 +785,7 @@ return [
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1,
                 --div--;renderType=selectCheckBox,
-                    select_checkbox_1, select_checkbox_2,
+                    select_checkbox_1, select_checkbox_2, select_checkbox_3,
                 --div--;renderType=selectMultipleSideBySide,
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,

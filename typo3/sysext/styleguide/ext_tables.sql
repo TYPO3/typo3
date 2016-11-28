@@ -480,6 +480,7 @@ CREATE TABLE tx_styleguide_elements_select (
 
 	select_checkbox_1 text,
 	select_checkbox_2 text,
+	select_checkbox_3 text,
 
 	select_multiplesidebyside_1 text,
 	select_multiplesidebyside_2 text,
