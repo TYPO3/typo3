@@ -141,7 +141,7 @@ abstract class AbstractUserAuthentication
      * Session timeout (on the server)
      *
      * If >0: session-timeout in seconds.
-     * If 0: no timeout.
+     * If <=0: Instant logout after login.
      *
      * @var int
      */

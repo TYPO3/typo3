@@ -252,7 +252,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      * Session timeout (on the server)
      *
      * If >0: session-timeout in seconds.
-     * If 0: no timeout.
+     * If <=0: Instant logout after login.
+     * The value must be at least 180 to avoid side effects.
      *
      * @var int
      */
