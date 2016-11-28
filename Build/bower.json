@@ -45,6 +45,7 @@
     "wmdbsystems-typo3-icons": "^0.0.11",
     "matchHeight": "matchheight#^0.7.0",
     "jquery-minicolors": "^2.2.4",
-    "d3": "^4.2.2"
+    "d3": "^4.2.2",
+    "ckeditor": "^4.6.0"
   }
 }

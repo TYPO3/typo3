@@ -1,0 +1,29 @@
+{
+	"name": "typo3/cms-rte-ckeditor",
+	"type": "typo3-cms-framework",
+	"description": "CKEditor for the TYPO3 ecosystem",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0+"],
+
+	"require": {
+		"typo3/cms-core": "*"
+	},
+	"replace": {
+		"rte_ckeditor": "*"
+	},
+	"suggest": {
+		"typo3/cms-setup": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\RteCKEditor\\": "Classes/"
+		}
+	}
+}

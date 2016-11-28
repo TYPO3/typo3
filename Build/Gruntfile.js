@@ -40,6 +40,7 @@ module.exports = function(grunt) {
 			backend   : '<%= paths.sysext %>backend/Resources/',
 			t3editor  : '<%= paths.sysext %>t3editor/Resources/',
 			workspaces: '<%= paths.sysext %>workspaces/Resources/',
+			ckeditor  : '<%= paths.sysext %>rte_ckeditor/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			bower     : 'bower_components/',
 			flags     : '<%= paths.bower %>region-flags/svg/',
@@ -249,6 +250,17 @@ module.exports = function(grunt) {
 					// For example, one of the files copied here is
 					// 'lodash/dist/lodash.js' -> 'public/js/libs/lodash/lodash.js'
 					'<%= paths.sysext %>core/Resources/Public/Images/colorpicker': 'jquery-minicolors/*.png'
+				}
+			},
+			ckeditor: {
+				options: {
+					destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib"
+				},
+				files: {
+					'ckeditor.js': 'ckeditor/ckeditor.js',
+					'plugins/': 'ckeditor/plugins/',
+					'skins/': 'ckeditor/skins/',
+					'lang/': 'ckeditor/lang/'
 				}
 			},
 			all: {
