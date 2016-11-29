@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
+use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -1327,7 +1328,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $timeTracker->push('fetch_the_id rootLine/', '');
         // We store the originally requested id
         $this->requestedId = $this->id;
-        $this->getPageAndRootlineWithDomain($this->domainStartPage);
+        try {
+            $this->getPageAndRootlineWithDomain($this->domainStartPage);
+        } catch (ShortcutTargetPageNotFoundException $e) {
+            $this->pageNotFound = 1;
+        }
         $timeTracker->pull();
         // @todo: in the future, the check if "pageNotFound_handling" is configured should go away, but this breaks
         // Functional tests in workspaces currently
@@ -1541,7 +1546,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
      * @param bool $disableGroupCheck If true, the group check is disabled when fetching the target page (needed e.g. for menu generation)
      * @throws \RuntimeException
-     * @throws PageNotFoundException
+     * @throws ShortcutTargetPageNotFoundException
      * @return mixed Returns the page record of the page that the shortcut pointed to.
      * @access private
      * @see getPageAndRootline()
@@ -1571,7 +1576,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
                 if (empty($page)) {
                     $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
-                    throw new PageNotFoundException($message, 1301648328);
+                    throw new ShortcutTargetPageNotFoundException($message, 1301648328);
                 }
                 break;
             case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
@@ -1579,14 +1584,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $page = $this->sys_page->getPage($parent['pid'], $disableGroupCheck);
                 if (empty($page)) {
                     $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
-                    throw new PageNotFoundException($message, 1301648358);
+                    throw new ShortcutTargetPageNotFoundException($message, 1301648358);
                 }
                 break;
             default:
                 $page = $this->sys_page->getPage($idArray[0], $disableGroupCheck);
                 if (empty($page)) {
                     $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-                    throw new PageNotFoundException($message, 1301648404);
+                    throw new ShortcutTargetPageNotFoundException($message, 1301648404);
                 }
         }
         // Check if short cut page was a shortcut itself, if so look up recursively:
