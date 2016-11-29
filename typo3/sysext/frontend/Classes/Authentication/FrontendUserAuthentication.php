@@ -154,6 +154,9 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->sendNoCacheHeaders = false;
         $this->getFallBack = true;
         $this->getMethodEnabled = true;
+        $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'];
+        $this->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
+        $this->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
     }
 
     /**

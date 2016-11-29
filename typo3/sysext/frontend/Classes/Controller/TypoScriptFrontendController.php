@@ -992,9 +992,6 @@ class TypoScriptFrontendController
     public function initFEuser()
     {
         $this->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
-        $this->fe_user->lockIP = $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'];
-        $this->fe_user->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
-        $this->fe_user->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
         // List of pid's acceptable
         $pid = GeneralUtility::_GP('pid');
         $this->fe_user->checkPid_value = $pid ? implode(',', GeneralUtility::intExplode(',', $pid)) : 0;
