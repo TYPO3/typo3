@@ -11348,6 +11348,9 @@ a.t3-form-original-language-diffheader:focus {
 .t3-form-original-language-diffcontent {
   padding: 2px;
 }
+.t3-form-original-language .icon {
+  margin-right: 5px;
+}
 .typo3-TCEforms .typo3-TCEforms-checkboxArray td {
   padding-right: 5px;
 }
