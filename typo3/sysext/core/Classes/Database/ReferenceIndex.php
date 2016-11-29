@@ -122,7 +122,7 @@ class ReferenceIndex
      * @var int
      * @see updateRefIndexTable()
      */
-    public $hashVersion = 1;
+    public $hashVersion = 2;
 
     /**
      * Current workspace id
@@ -209,8 +209,8 @@ class ReferenceIndex
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
 
-        // Get current index from Database with hash as index using $uidIndexField
-        // no restrictions are needed, since sys_refindex is not a TCA table
+        // Get current index from database with hash as index using $uidIndexField
+        // No restrictions are needed, since sys_refindex is not a TCA table
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $queryResult = $queryBuilder->select('*')->from('sys_refindex')->where(
@@ -236,14 +236,23 @@ class ReferenceIndex
                     if (!is_array($relation)) {
                         continue;
                     }
-                    $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
-                    // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
+
+                    // Exclude sorting from the list of hashed fields as generateRefIndexData()
+                    // can generate arbitrary sorting values
+                    // @see createEntryData_dbRels and createEntryData_fileRels
+                    $relation['hash'] = md5(
+                        implode('///', array_diff_key($relation, ['sorting' => true]))
+                        . '///'
+                        . $this->hashVersion
+                    );
+
+                    // First, check if already indexed and if so, unset that row
+                    // (so in the end we know which rows to remove!)
                     if (isset($currentRelations[$relation['hash']])) {
                         unset($currentRelations[$relation['hash']]);
                         $result['keptNodes']++;
                         $relation['_ACTION'] = 'KEPT';
                     } else {
-                        // If new, add it:
                         if (!$testOnly) {
                             $connection->insert('sys_refindex', $relation);
                         }
