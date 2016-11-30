@@ -4361,8 +4361,9 @@ class ContentObjectRenderer
                     $attrib['align'] = $defaultAlign;
                 }
                 $params = GeneralUtility::implodeAttributes($attrib, true);
-                if (!($conf['removeWrapping'] && !($emptyTag && $conf['removeWrapping.']['keepSingleTag']))) {
-                    if ($emptyTag) {
+                if (!$conf['removeWrapping'] || ($emptyTag && $conf['removeWrapping.']['keepSingleTag'])) {
+                    $selfClosingTagList = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+                    if ($emptyTag && in_array(strtolower($uTagName), $selfClosingTagList, true)) {
                         $str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . ' />';
                     } else {
                         $str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . '>' . $str_content . '</' . strtolower($uTagName) . '>';
