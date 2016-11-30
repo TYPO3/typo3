@@ -202,10 +202,13 @@ TYPO3:
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher'
               #options:
                 #table: ''
+                #mode: 'insert'
+                #whereClause: []
                 #elements:
                 #  <elementIdentifier>:
                 #    mapOnDatabaseColumn: sender_name
-                #    saveFileIdentifierInsteadOfUid: 'false'
+                #    saveFileIdentifierInsteadOfUid: false
+                #    skipIfValueIsNull: false
 
           ### VALIDATORS ###
           validatorsDefinition:

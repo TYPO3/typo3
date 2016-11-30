@@ -35,6 +35,8 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      */
     protected $defaultOptions = [
         'table' => null,
+        'mode' => 'insert',
+        'whereClause' => [],
         'elements' => [],
     ];
 
@@ -47,6 +49,16 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
+        if (
+            $this->options['mode'] === 'update'
+            && empty($this->options['whereClause'])
+        ) {
+            throw new FinisherException(
+                'An empty option "whereClause" is not allowed in update mode.',
+                1480469086
+            );
+        }
+
         $table = $this->parseOption('table');
         $elementsConfiguration = $this->parseOption('elements');
 
@@ -60,7 +72,10 @@ class SaveToDatabaseFinisher extends AbstractFinisher
         $databaseColumns = $schemaManager->listTableColumns($table);
         foreach ($elementsConfiguration as $elementIdentifier => $elementConfiguration) {
             if (!array_key_exists($elementConfiguration['mapOnDatabaseColumn'], $databaseColumns)) {
-                throw new FinisherException('The column "' . $elementConfiguration['mapOnDatabaseColumn'] . '" does not exist in table "' . $table . '".', 1476362572);
+                throw new FinisherException(
+                    'The column "' . $elementConfiguration['mapOnDatabaseColumn'] . '" does not exist in table "' . $table . '".',
+                    1476362572
+                );
             }
         }
 
@@ -68,6 +83,15 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
         $insertData = [];
         foreach ($this->finisherContext->getFormValues() as $elementIdentifier => $elementValue) {
+            if (
+                $elementValue === null
+                && isset($elementsConfiguration[$elementIdentifier])
+                && isset($elementsConfiguration[$elementIdentifier]['skipIfValueIsNull'])
+                && $elementsConfiguration[$elementIdentifier]['skipIfValueIsNull'] === true
+            ) {
+                continue;
+            }
+
             $element = $formRuntime->getFormDefinition()->getElementByIdentifier($elementIdentifier);
             if (
                 !$element instanceof FormElementInterface
@@ -94,7 +118,15 @@ class SaveToDatabaseFinisher extends AbstractFinisher
         }
 
         if (!empty($insertData)) {
-            $databaseConnection->insert($table, $insertData);
+            if ($this->options['mode'] === 'update') {
+                $databaseConnection->update(
+                    $table,
+                    $insertData,
+                    $this->options['whereClause']
+                );
+            } else {
+                $databaseConnection->insert($table, $insertData);
+            }
         }
     }
 }
