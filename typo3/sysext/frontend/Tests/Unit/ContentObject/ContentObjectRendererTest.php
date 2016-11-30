@@ -5071,6 +5071,120 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     }
 
     /**
+     * Check if stdWrap_encapsLines uses self closing tags
+     * only for allowed tags according to
+     * @see https://www.w3.org/TR/html5/syntax.html#void-elements
+     *
+     * @test
+     * @dataProvider html5SelfClosingTagsDataprovider
+     */
+    public function stdWrap_encapsLines_HTML5SelfClosingTags(string $input, string $expected)
+    {
+        $rteParseFunc = $this->getLibParseFunc_RTE();
+
+        $conf = [
+            'encapsLines' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines'],
+            'encapsLines.' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines.'],
+        ];
+        // don't add an &nbsp; to tag without content
+        $conf['encapsLines.']['innerStdWrap_all.']['ifBlank'] = '';
+        $additionalEncapsTags = ['a', 'b', 'span'];
+
+        // We want to allow any tag to be an encapsulating tag
+        // since this is possible and we don't want an additional tag to be wrapped around.
+        $conf['encapsLines.']['encapsTagList'] .= ',' . implode(',', $additionalEncapsTags);
+        $conf['encapsLines.']['encapsTagList'] .= ',' . implode(',', [$input]);
+
+        // Check if we get a self-closing tag for
+        // empty tags where this is allowed according to HTML5
+        $content = '<' . $input . ' id="myId" class="bodytext" />';
+        $result = $this->subject->stdWrap_encapsLines($content, $conf);
+        $this->assertSame($expected, $result);
+    }
+
+    public function html5SelfClosingTagsDataprovider()
+    {
+        return [
+            'areaTag_selfclosing' => [
+                'input' => 'area',
+                'expected' => '<area id="myId" class="bodytext" />'
+            ],
+            'base_selfclosing' => [
+                'input' => 'base',
+                'expected' => '<base id="myId" class="bodytext" />'
+            ],
+            'br_selfclosing' => [
+                'input' => 'br',
+                'expected' => '<br id="myId" class="bodytext" />'
+            ],
+            'col_selfclosing' => [
+                'input' => 'col',
+                'expected' => '<col id="myId" class="bodytext" />'
+            ],
+            'embed_selfclosing' => [
+                'input' => 'embed',
+                'expected' => '<embed id="myId" class="bodytext" />'
+            ],
+            'hr_selfclosing' => [
+                'input' => 'hr',
+                'expected' => '<hr id="myId" class="bodytext" />'
+            ],
+            'img_selfclosing'  => [
+                'input' => 'img',
+                'expected' => '<img id="myId" class="bodytext" />'
+            ],
+            'input_selfclosing' => [
+                'input' => 'input',
+                'expected' => '<input id="myId" class="bodytext" />'
+            ],
+            'keygen_selfclosing' => [
+                'input' => 'keygen',
+                'expected' => '<keygen id="myId" class="bodytext" />'
+            ],
+            'link_selfclosing' => [
+                'input' => 'link',
+                'expected' => '<link id="myId" class="bodytext" />'
+            ],
+            'meta_selfclosing' => [
+                'input' => 'meta',
+                'expected' => '<meta id="myId" class="bodytext" />'
+            ],
+            'param_selfclosing' => [
+                'input' => 'param',
+                'expected' => '<param id="myId" class="bodytext" />'
+            ],
+            'source_selfclosing' => [
+                'input' => 'source',
+                'expected' => '<source id="myId" class="bodytext" />'
+            ],
+            'track_selfclosing' => [
+                'input' => 'track',
+                'expected' => '<track id="myId" class="bodytext" />'
+            ],
+            'wbr_selfclosing' => [
+                'input' => 'wbr',
+                'expected' => '<wbr id="myId" class="bodytext" />'
+            ],
+            'p_notselfclosing' => [
+                'input' => 'p',
+                'expected' => '<p id="myId" class="bodytext"></p>'
+            ],
+            'a_notselfclosing' => [
+                'input' => 'a',
+                'expected' => '<a id="myId" class="bodytext"></a>'
+            ],
+            'strong_notselfclosing' => [
+                'input' => 'strong',
+                'expected' => '<strong id="myId" class="bodytext"></strong>'
+            ],
+            'span_notselfclosing' => [
+                'input' => 'span',
+                'expected' => '<span id="myId" class="bodytext"></span>'
+            ],
+        ];
+    }
+
+    /**
      * Data provider for stdWrap_editPanel.
      *
      * @return [$expect, $content, $login, $times, $will]
