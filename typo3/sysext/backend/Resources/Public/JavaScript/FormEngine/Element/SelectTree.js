@@ -59,7 +59,7 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
             nodeSelection
                 .selectAll('.tree-check use')
                 .attr('visibility', function (node) {
-                    var checked = Boolean(node.data.checked);
+                    var checked = Boolean(node.checked);
                     if (d3.select(this).classed('icon-checked') && checked) {
                         return 'visible';
                     } else if (d3.select(this).classed('icon-indeterminate') && node.indeterminate && !checked) {
@@ -85,7 +85,7 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
             //this can be simplified to single "use" element with changing href on click when we drop IE11 on WIN7 support
             var g = nodeSelection.filter(function (node) {
                     //do not render checkbox if node is not selectable
-                    return me.isNodeSelectable(node) || Boolean(node.data.checked);
+                    return me.isNodeSelectable(node) || Boolean(node.checked);
                 })
                 .append('g')
                 .attr('class', 'tree-check')
@@ -124,7 +124,7 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
         }
 
         return node.children.some(function (child) {
-            if (child.data.checked || child.indeterminate) {
+            if (child.checked || child.indeterminate) {
                 return true;
             }
         });
@@ -138,8 +138,9 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
     SelectTree.prototype.updateAncestorsIndetermineState = function (node) {
         var me = this;
         //foreach ancestor except node itself
-        node.ancestors().slice(1).forEach(function (n) {
-            n.indeterminate = (node.data.checked || node.indeterminate) ? true : me.hasCheckedOrIndeterminateChildren(n);
+        node.parents.forEach(function (index) {
+            var n = me.nodes[index];
+            n.indeterminate = (node.checked || node.indeterminate) ? true : me.hasCheckedOrIndeterminateChildren(n);
         });
     };
 
@@ -149,12 +150,12 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
      * It's done once after loading data. Later indeterminate state is updated just for the subset of nodes
      */
     SelectTree.prototype.loadDataAfter = function () {
-        this.rootNode.each(function (node) {
+        this.nodes.forEach(function (node) {
             node.indeterminate = false;
         });
-        this.calculateIndeterminate(this.rootNode);
+        this.calculateIndeterminate(this.nodes);
         // Initialise "value" attribute of input field after load and revalidate form engine fields
-        this.saveCheckboxes(this.rootNode);
+        this.saveCheckboxes(this.nodes);
         if (typeof TYPO3.FormEngine.Validation !== 'undefined' && typeof TYPO3.FormEngine.Validation.validate === 'function') {
             TYPO3.FormEngine.Validation.validate();
         }
@@ -172,7 +173,7 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
         }
 
         node.eachAfter(function (n) {
-            if ((n.data.checked || n.indeterminate) && n.parent) {
+            if ((n.checked || n.indeterminate) && n.parent) {
                 n.parent.indeterminate = true;
             }
         })
@@ -197,7 +198,7 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
         if (typeof this.settings.input !== 'undefined') {
             var selectedNodes = this.getSelectedNodes();
             this.settings.input.val(selectedNodes.map(function (d) {
-                    return d.data.identifier
+                    return d.identifier
             }));
         }
     };

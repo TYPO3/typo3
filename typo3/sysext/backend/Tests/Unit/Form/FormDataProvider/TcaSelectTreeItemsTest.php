@@ -180,8 +180,8 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         $expected = $input;
         $expected['databaseRow']['aField'] = ['1'];
-        $expected['processedTca']['columns']['aField']['config']['treeData'] = [
-            'items' => [['fake', 'tree', 'data']],
+        $expected['processedTca']['columns']['aField']['config']['items'] = [
+            'fake', 'tree', 'data',
         ];
         $this->assertEquals($expected, $this->subject->addData($input));
     }
@@ -207,6 +207,9 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         /** @var  TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
         $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
         GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
+        $tableConfigurationTreeProphecy->render()->willReturn([]);
+        $tableConfigurationTreeProphecy->setDataProvider(Argument::cetera())->shouldBeCalled();
+        $tableConfigurationTreeProphecy->setNodeRenderer(Argument::cetera())->shouldBeCalled();
 
         $input = [
             'tableName' => 'aTable',

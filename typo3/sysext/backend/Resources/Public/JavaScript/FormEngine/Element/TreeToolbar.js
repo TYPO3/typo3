@@ -146,10 +146,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Tooltip', 'TYPO3
         var me = this,
             name = $(input).val();
 
-        this.tree.rootNode.open = false;
-        this.tree.rootNode.eachBefore(function (node, i) {
+        this.tree.nodes[0].open = false;
+        this.tree.nodes.forEach(function (node) {
             var regex = new RegExp(name, 'i');
-            if (regex.test(node.data.name)) {
+            if (regex.test(node.name)) {
                 me.showParents(node);
                 node.open = true;
                 node.hidden = false;
@@ -173,8 +173,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Tooltip', 'TYPO3
         this._hideUncheckedState = !this._hideUncheckedState;
 
         if (this._hideUncheckedState) {
-            this.tree.rootNode.eachBefore(function (node, i) {
-                if (node.data.checked) {
+            this.tree.nodes.forEach(function (node) {
+                if (node.checked) {
                     me.showParents(node);
                     node.open = true;
                     node.hidden = false;
@@ -184,7 +184,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Tooltip', 'TYPO3
                 }
             });
         } else {
-            this.tree.rootNode.eachBefore(function (node, i) {
+            this.tree.nodes.forEach(function (node) {
                 node.hidden = false;
             });
         }
@@ -199,14 +199,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Tooltip', 'TYPO3
      * @returns {Boolean}
      */
     TreeToolbar.prototype.showParents = function (node) {
-        if (!node.parent) {
+        if (node.parents.length === 0) {
             return true;
         }
 
-        node.parent.hidden = false;
+        var parent = this.tree.nodes[node.parents[0]];
+        parent.hidden = false;
         //expand parent node
-        node.parent.open = true;
-        this.showParents(node.parent);
+        parent.open = true;
+        this.showParents(parent);
     };
 
     return TreeToolbar;

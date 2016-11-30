@@ -26,7 +26,7 @@ class TreeDataProviderFactory
      * @param array $tcaConfiguration
      * @param $table
      * @param $field
-     * @param $currentValue
+     * @param array $currentValue The current database row, handing over 'uid' is enough
      * @return DatabaseTreeDataProvider
      * @throws \InvalidArgumentException
      */
@@ -45,7 +45,6 @@ class TreeDataProviderFactory
             $tcaConfiguration['internal_type'] = 'db';
         }
         if ($tcaConfiguration['internal_type'] === 'db') {
-            $unselectableUids = [];
             if ($dataProvider === null) {
                 $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class);
             }
@@ -53,7 +52,9 @@ class TreeDataProviderFactory
                 $tableName = $tcaConfiguration['foreign_table'];
                 $dataProvider->setTableName($tableName);
                 if ($tableName == $table) {
-                    $unselectableUids[] = $currentValue['uid'];
+                    // The uid of the currently opened row can not be selected in a table relation to "self"
+                    $unselectableUids = [ $currentValue['uid'] ];
+                    $dataProvider->setItemUnselectableList($unselectableUids);
                 }
             } else {
                 throw new \InvalidArgumentException('TCA Tree configuration is invalid: "foreign_table" not set', 1288215888);
@@ -64,7 +65,6 @@ class TreeDataProviderFactory
                 $dataProvider->setLabelField($GLOBALS['TCA'][$tableName]['ctrl']['label']);
             }
             $dataProvider->setTreeId(md5($table . '|' . $field));
-            $dataProvider->setSelectedList($currentValue);
 
             $treeConfiguration = $tcaConfiguration['treeConfig'];
             if (isset($treeConfiguration['rootUid'])) {
@@ -90,7 +90,6 @@ class TreeDataProviderFactory
             } else {
                 throw new \InvalidArgumentException('TCA Tree configuration is invalid: neither "childrenField" nor "parentField" is set', 1288215889);
             }
-            $dataProvider->setItemUnselectableList($unselectableUids);
         } elseif ($tcaConfiguration['internal_type'] === 'file' && $dataProvider === null) {
             // @todo Not implemented yet
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet', 1288215891);

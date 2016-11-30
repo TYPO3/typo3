@@ -105,12 +105,12 @@ class SelectTreeController
 
         if ($formData['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
             $treeData = $formData['processedTca']['columns'][$fieldName]['config']['ds']
-                ['sheets'][$flexFormPath[3]]['ROOT']['el'][$flexFormPath[5]]['config']['treeData'];
+                ['sheets'][$flexFormPath[3]]['ROOT']['el'][$flexFormPath[5]]['config']['items'];
         } else {
-            $treeData = $formData['processedTca']['columns'][$fieldName]['config']['treeData'];
+            $treeData = $formData['processedTca']['columns'][$fieldName]['config']['items'];
         }
 
-        $json = json_encode($treeData['items']);
+        $json = json_encode($treeData);
         $response->getBody()->write($json);
         return $response;
     }

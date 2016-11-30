@@ -1358,8 +1358,9 @@ abstract class AbstractItemProvider
      * @param array $itemArray All item records for the select field
      * @param array $dynamicItemArray Item records from dynamic sources
      * @return array
+     * @todo: Check method usage, it's probably bogus in select context and was removed from select tree already.
      */
-    public function getStaticValues($itemArray, $dynamicItemArray)
+    protected function getStaticValues($itemArray, $dynamicItemArray)
     {
         $staticValues = [];
         foreach ($itemArray as $key => $item) {

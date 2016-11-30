@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode;
 
 /**
  * Renderer for unordered lists
@@ -36,11 +38,14 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
      */
     public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = true)
     {
-        $nodeArray = $this->getNodeArray($node);
+        $nodeArray = [];
+        $nodeArray[] = $this->getNodeArray($node);
         if ($recursive && $node->hasChildNodes()) {
             $this->recursionLevel++;
             $children = $this->renderNodeCollection($node->getChildNodes());
-            $nodeArray['children'] = $children;
+            foreach ($children as $child) {
+                $nodeArray[] = $child;
+            }
             $this->recursionLevel--;
         }
         return $nodeArray;
@@ -49,7 +54,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
     /**
      * Get node array
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node
+     * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode|DatabaseTreeNode $node
      * @return array
      */
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
@@ -64,27 +69,29 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
             $iconMarkup = $node->getIcon();
         }
         $nodeArray = [
-            'iconTag' => $iconMarkup,
-            'text' => htmlspecialchars($node->getLabel()),
-            'leaf' => !$node->hasChildNodes(),
-            'id' => htmlspecialchars($node->getId()),
-            'uid' => htmlspecialchars($node->getId()),
-
-            //svgtree
+            'identifier' => htmlspecialchars($node->getId()),
+            // No need for htmlspecialchars() here as d3 is using 'textContent' property of the HTML DOM node
+            'name' => $node->getLabel(),
             'icon' => $iconMarkup,
             'overlayIcon' => $overlayIconMarkup,
-            'identifier' => htmlspecialchars($node->getId()),
-            //no need for htmlspecialhars here as d3 is using 'textContent' property of the HTML DOM node
-            'name' => $node->getLabel(),
+            'depth' => $this->recursionLevel,
+            'hasChildren' => (bool)$node->hasChildNodes(),
+            'selectable' => true,
         ];
-
+        if ($node instanceof DatabaseTreeNode) {
+            $nodeArray['checked'] = (bool)$node->getSelected();
+            if (!$node->getSelectable()) {
+                $nodeArray['checked'] = false;
+                $nodeArray['selectable'] = false;
+            }
+        }
         return $nodeArray;
     }
 
     /**
      * Renders a node collection recursive or just a single instance
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
+     * @param \TYPO3\CMS\Backend\Tree\AbstractTree $tree
      * @param bool $recursive
      * @return string
      */
@@ -98,14 +105,24 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
     /**
      * Renders an tree recursive or just a single instance
      *
-     * @param \TYPO3\CMS\Backend\Tree\AbstractTree $node
+     * @param TreeNodeCollection $collection
      * @param bool $recursive
      * @return array
      */
-    public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = true)
+    public function renderNodeCollection(TreeNodeCollection $collection, $recursive = true)
     {
+        $treeItems = [];
         foreach ($collection as $node) {
-            $treeItems[] = $this->renderNode($node, $recursive);
+            $allNodes = $this->renderNode($node, $recursive);
+            if ($allNodes[0]) {
+                $treeItems[] = $allNodes[0];
+            }
+            $nodeCount = count($allNodes);
+            if ($nodeCount > 1) {
+                for ($i = 1; $i < $nodeCount; $i++) {
+                    $treeItems[] = $allNodes[$i];
+                }
+            }
         }
         return $treeItems;
     }
