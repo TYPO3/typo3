@@ -36,6 +36,13 @@ class SystemStatusUpdateTask extends AbstractTask
     protected $notificationEmail = null;
 
     /**
+     * Checkbox for to send all types of notification, not only problems
+     *
+     * @var bool
+     */
+    protected $notificationAll = false;
+
+    /**
      * Executes the System Status Update task, determining the highest severity of
      * status reports and saving that to the registry to be displayed at login
      * if necessary.
@@ -51,7 +58,7 @@ class SystemStatusUpdateTask extends AbstractTask
         $systemStatus = $statusReport->getDetailedSystemStatus();
         $highestSeverity = $statusReport->getHighestSeverity($systemStatus);
         $registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-        if ($highestSeverity > Status::OK) {
+        if (($highestSeverity > Status::OK) || $this->getNotificationAll()) {
             $this->sendNotificationEmail($systemStatus);
         }
         return true;
@@ -90,7 +97,7 @@ class SystemStatusUpdateTask extends AbstractTask
         foreach ($systemStatus as $statusProvider) {
             /** @var Status $status */
             foreach ($statusProvider as $status) {
-                if ($status->getSeverity() > Status::OK) {
+                if ($this->getNotificationAll() || ($status->getSeverity() > Status::OK)) {
                     $systemIssues[] = (string)$status . CRLF . $status->getMessage() . CRLF . CRLF;
                 }
             }
@@ -101,7 +108,7 @@ class SystemStatusUpdateTask extends AbstractTask
             $sendEmailsTo[] = $notificationEmail;
         }
         $subject = sprintf($this->getLanguageService()->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $message = sprintf($this->getLanguageService()->getLL('status_problemNotification'), '', '');
+        $message = $this->getNotificationAll() ? $this->getLanguageService()->getLL('status_allNotification') : $this->getLanguageService()->getLL('status_problemNotification');
         $message .= CRLF . CRLF;
         $message .= $this->getLanguageService()->getLL('status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;
@@ -116,6 +123,22 @@ class SystemStatusUpdateTask extends AbstractTask
         $mail->setSubject($subject);
         $mail->setBody($message);
         $mail->send();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getNotificationAll(): bool
+    {
+        return $this->notificationAll;
+    }
+
+    /**
+     * @param bool $notificationAll
+     */
+    public function setNotificationAll(bool $notificationAll)
+    {
+        $this->notificationAll = $notificationAll;
     }
 
     /**

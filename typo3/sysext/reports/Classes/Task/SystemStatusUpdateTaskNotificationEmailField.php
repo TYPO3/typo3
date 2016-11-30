@@ -31,7 +31,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
      *
      * @var array
      */
-    protected $fields = ['notificationEmail'];
+    protected $fields = ['notificationEmail', 'notificationAll'];
 
     /**
      * Field prefix.
@@ -52,6 +52,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
     {
         if ($schedulerModule->CMD == 'edit') {
             $taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
+            $taskInfo[$this->fieldPrefix . 'NotificationAll'] = $task->getNotificationAll();
         }
             // build html for additional email field
         $fieldName = $this->getFullFieldName('notificationEmail');
@@ -62,6 +63,18 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails',
+            'cshKey' => '',
+            'cshLabel' => $fieldId
+        ];
+
+        // build html for additional mail all checkbox field
+        $fieldName = $this->getFullFieldName('notificationAll');
+        $fieldId = 'task_' . $fieldName;
+        $fieldHtml = '<input type="checkbox" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" value="1"' . ($taskInfo[$fieldName] ? ' checked="checked"' : '') . '>';
+
+        $additionalFields[$fieldId] = [
+            'code' => $fieldHtml,
+            'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationAll',
             'cshKey' => '',
             'cshLabel' => $fieldId
         ];
@@ -106,6 +119,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
             throw new \InvalidArgumentException('Expected a task of type ' . SystemStatusUpdateTask::class . ', but got ' . get_class($task), 1295012802);
         }
         $task->setNotificationEmail($submittedData[$this->fieldPrefix . 'NotificationEmail']);
+        $task->setNotificationAll(!empty($submittedData[$this->fieldPrefix . 'NotificationAll']));
     }
 
     /**

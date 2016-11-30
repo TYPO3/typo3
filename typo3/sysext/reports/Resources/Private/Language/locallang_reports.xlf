@@ -55,7 +55,10 @@
 				<source>Update Incomplete</source>
 			</trans-unit>
 			<trans-unit id="status_problemNotification">
-				<source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+				<source>One or more problems were detected with your TYPO3 installation. Please check the status report for more information.</source>
+			</trans-unit>
+			<trans-unit id="status_allNotification">
+				<source>This report contains all System Status Notifications from your TYPO3 installation. Please check the status report for more information.</source>
 			</trans-unit>
 			<trans-unit id="status_typo3">
 				<source>TYPO3 System</source>
@@ -281,6 +284,9 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			</trans-unit>
 			<trans-unit id="status_updateTaskField_notificationEmails_invalid">
 				<source>Empty or invalid notification email addresses.</source>
+			</trans-unit>
+			<trans-unit id="status_updateTaskField_notificationAll">
+				<source>Always send notification mail (not only on errors or warnings)</source>
 			</trans-unit>
 			<trans-unit id="status_updateTask_email_subject">
 				<source>System Status Notification for site %s</source>
