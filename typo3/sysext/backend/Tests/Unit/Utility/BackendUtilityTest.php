@@ -924,7 +924,6 @@ class BackendUtilityTest extends UnitTestCase
                 [
                     'foo' => [
                         'ctrl' => [
-                            'transOrigPointerTable' => '',
                             'transOrigPointerField' => 'origUid'
                         ],
                         'columns' => [
@@ -941,38 +940,6 @@ class BackendUtilityTest extends UnitTestCase
                 [
                     'origUid' => 1,
                     'field2' => 'fdas',
-                    'field3' => 'trans',
-                ]
-            ],
-            'other table: mergeIfNotBlank' => [
-                'foo',
-                [
-                    'origUid' => 1,
-                    'field2' => '',
-                    'field3' => 'trans',
-                ],
-                [
-                    'foo' => [
-                        'ctrl' => [
-                            'transOrigPointerTable' => 'bar',
-                            'transOrigPointerField' => 'origUid'
-                        ]
-                    ],
-                    'bar' => [
-                        'columns' => [
-                            'field2' => ['l10n_mode' => 'mergeIfNotBlank'],
-                            'field3' => ['l10n_mode' => 'mergeIfNotBlank']
-                        ]
-                    ]
-                ],
-                [
-                    'origUid' => 0,
-                    'field2' => 'basic',
-                    'field3' => '',
-                ],
-                [
-                    'origUid' => 1,
-                    'field2' => 'basic',
                     'field3' => 'trans',
                 ]
             ],
@@ -986,41 +953,8 @@ class BackendUtilityTest extends UnitTestCase
                 [
                     'foo' => [
                         'ctrl' => [
-                            'transOrigPointerTable' => '',
                             'transOrigPointerField' => 'origUid'
                         ],
-                        'columns' => [
-                            'field2' => ['l10n_mode' => 'exclude'],
-                            'field3' => ['l10n_mode' => 'exclude']
-                        ]
-                    ]
-                ],
-                [
-                    'origUid' => 0,
-                    'field2' => 'basic',
-                    'field3' => '',
-                ],
-                [
-                    'origUid' => 1,
-                    'field2' => 'basic',
-                    'field3' => '',
-                ]
-            ],
-            'other table: exclude' => [
-                'foo',
-                [
-                    'origUid' => 1,
-                    'field2' => 'fdas',
-                    'field3' => 'trans',
-                ],
-                [
-                    'foo' => [
-                        'ctrl' => [
-                            'transOrigPointerTable' => 'bar',
-                            'transOrigPointerField' => 'origUid'
-                        ]
-                    ],
-                    'bar' => [
                         'columns' => [
                             'field2' => ['l10n_mode' => 'exclude'],
                             'field3' => ['l10n_mode' => 'exclude']
@@ -1056,11 +990,7 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function replaceL10nModeFieldsReplacesFields($table, array $row, array $tca, array $originalRow, $expected)
     {
-        if (!empty($tca[$table]['ctrl']['transOrigPointerTable'])) {
-            $tableName = $tca[$table]['ctrl']['transOrigPointerTable'];
-        } else {
-            $tableName = $table;
-        }
+        $tableName = $table === 'pages_language_overlay' ? 'pages' : $table;
 
         list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection($tableName);
 

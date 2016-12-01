@@ -318,9 +318,9 @@ class LocalizationRepository
     {
         $recordLocalization = false;
 
-        // Check if translations are stored in other table
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
-            $table = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
+        // Pages still stores translations in the pages_language_overlay table, all other tables store in themself
+        if ($table === 'pages') {
+            $table = 'pages_language_overlay';
         }
 
         if (BackendUtility::isTableLocalizable($table)) {

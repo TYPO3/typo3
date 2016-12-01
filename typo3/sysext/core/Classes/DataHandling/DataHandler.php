@@ -1424,7 +1424,7 @@ class DataHandler
             BackendUtility::fixVersioningPid($table, $currentRecord);
             // Get original language record if available:
             if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
-                $lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ?: $table;
+                $lookUpTable = $table === 'pages_language_overlay' ? 'pages' : $table;
                 $originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
                 BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
                 $originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
@@ -4114,7 +4114,7 @@ class DataHandler
     public function copyL10nOverlayRecords($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = '')
     {
         // There's no need to perform this for page-records or for tables that are not localizable
-        if (!BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+        if (!BackendUtility::isTableLocalizable($table) ||  $table === 'pages' || $table === 'pages_language_overlay') {
             return;
         }
         $where = '';
@@ -4465,7 +4465,7 @@ class DataHandler
     public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid)
     {
         // There's no need to perform this for page-records or not localizable tables
-        if (!BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+        if (!BackendUtility::isTableLocalizable($table) || $table === 'pages' || $table === 'pages_language_overlay') {
             return;
         }
         $where = '';
@@ -4500,7 +4500,6 @@ class DataHandler
 
     /**
      * Localizes a record to another system language
-     * In reality it only works if transOrigPointerTable is not set. For "pages" the implementation is hardcoded
      *
      * @param string $table Table name
      * @param int $uid Record uid (to be localized)
@@ -4516,7 +4515,7 @@ class DataHandler
         }
 
         $this->registerNestedElementCall($table, $uid, 'localize');
-        if ((!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] || $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) && $table !== 'pages') {
+        if ((!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] || $table === 'pages_language_overay') && $table !== 'pages') {
             if ($this->enableLogging) {
                 $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
             }
@@ -4574,7 +4573,7 @@ class DataHandler
         }
 
         if ($table === 'pages') {
-            $pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . (int)$langRec['uid']));
+            $pass = !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . (int)$langRec['uid']));
             $Ttable = 'pages_language_overlay';
         } else {
             $pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . (int)$row['pid']));
@@ -5395,7 +5394,7 @@ class DataHandler
     public function deleteL10nOverlayRecords($table, $uid)
     {
         // Check whether table can be localized or has a different table defined to store localizations:
-        if (!BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+        if (!BackendUtility::isTableLocalizable($table) || $table === 'pages' || $table === 'pages_language_overlay') {
             return;
         }
         $where = '';

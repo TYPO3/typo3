@@ -21,7 +21,6 @@ return [
             'endtime' => 'endtime',
             'fe_group' => 'fe_group'
         ],
-        'transForeignTable' => 'pages_language_overlay',
         'typeicon_column' => 'doktype',
         'typeicon_classes' => [
             '1' => 'apps-pagetree-page-default',

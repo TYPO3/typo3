@@ -552,7 +552,7 @@ class PageRepository
             if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
                 // Return record for ALL languages untouched
                 // TODO: Fix call stack to prevent this situation in the first place
-                if (!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
+                if ($tableName !== 'pages_language_overlay' && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
                     // Will not be able to work with other tables (Just didn't implement it yet;
                     // Requires a scan over all tables [ctrl] part for first FIND the table that
                     // carries localization information for this table (which could even be more
@@ -1881,8 +1881,8 @@ class PageRepository
             $localizedId = $element['_PAGES_OVERLAY_UID'];
         }
 
-        if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['transForeignTable'])) {
-            $tableName = $GLOBALS['TCA'][$tableName]['ctrl']['transForeignTable'];
+        if ($tableName === 'pages') {
+            $tableName = 'pages_language_overlay';
         }
 
         $isTableLocalizable = (

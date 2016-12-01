@@ -1541,7 +1541,8 @@ class EditDocumentController extends AbstractModule
         // Table editable and activated for languages?
         if ($this->getBackendUser()->check('tables_modify', $table)
             && $languageField
-            && $transOrigPointerField && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']
+            && $transOrigPointerField
+            && $table !== 'pages_language_overlay'
         ) {
             if (is_null($pid)) {
                 $row = BackendUtility::getRecord($table, $uid, 'pid');

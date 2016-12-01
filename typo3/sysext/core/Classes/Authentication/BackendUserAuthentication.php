@@ -699,9 +699,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
     public function checkFullLanguagesAccess($table, $record)
     {
         $recordLocalizationAccess = $this->checkLanguageAccess(0);
-        if ($recordLocalizationAccess && (BackendUtility::isTableLocalizable($table) || isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']))) {
-            if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
-                $l10nTable = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
+        if ($recordLocalizationAccess && (BackendUtility::isTableLocalizable($table) || $table === 'pages')) {
+            if ($table === 'pages') {
+                $l10nTable = 'pages_language_overlay';
                 $pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
                 $pointerValue = $record['uid'];
             } else {
@@ -779,7 +779,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                 return false;
             }
         } elseif (
-            isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess &&
+            $table === 'pages' && $checkFullLanguageAccess &&
             !$this->checkFullLanguagesAccess($table, $idOrRow)
         ) {
             return false;

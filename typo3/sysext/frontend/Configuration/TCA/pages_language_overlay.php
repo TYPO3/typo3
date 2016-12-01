@@ -17,7 +17,6 @@ return [
             'endtime' => 'endtime'
         ],
         'transOrigPointerField' => 'pid',
-        'transOrigPointerTable' => 'pages',
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'shadowColumnsForNewPlaceholders' => 'title',
         'languageField' => 'sys_language_uid',

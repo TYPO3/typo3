@@ -496,7 +496,7 @@ class Clipboard
     {
         $lines = [];
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-        if ($table !== 'pages' && BackendUtility::isTableLocalizable($table) && !$tcaCtrl['transOrigPointerTable']) {
+        if ($table !== 'pages' && BackendUtility::isTableLocalizable($table) && $table !== 'pages_language_overlay') {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()

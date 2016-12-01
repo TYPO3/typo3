@@ -514,8 +514,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
         $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-            && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
+                     && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+                     && $tableName !== 'pages_language_overlay';
         $tableCollapsed = (bool)$this->tablesCollapsed[$table];
         // prepare space icon
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
@@ -1005,7 +1005,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $theData['uid'] = $row['uid'];
         if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
             && isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
-            && !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])
+            && $table !== 'pages_language_overlay'
         ) {
             $theData['_l10nparent_'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         }

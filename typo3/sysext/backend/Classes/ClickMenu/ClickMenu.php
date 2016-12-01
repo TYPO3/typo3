@@ -229,7 +229,7 @@ class ClickMenu
         // Used to hide cut,copy icons for l10n-records
         $l10nOverlay = false;
         // Should only be performed for overlay-records within the same table
-        if (BackendUtility::isTableLocalizable($table) && !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+        if (BackendUtility::isTableLocalizable($table) && $table !== 'pages_language_overlay') {
             $l10nOverlay = (int)$this->rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         }
         // If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.

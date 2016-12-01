@@ -47,8 +47,8 @@ class DatabaseLanguageRows implements FormDataProviderInterface
             ) {
                 // Table pages has its overlays in pages_language_overlay, this is accounted here
                 $tableNameWithDefaultRecords = $result['tableName'];
-                if (!empty($result['processedTca']['ctrl']['transOrigPointerTable'])) {
-                    $tableNameWithDefaultRecords = $result['processedTca']['ctrl']['transOrigPointerTable'];
+                if ($tableNameWithDefaultRecords === 'pages_language_overlay') {
+                    $tableNameWithDefaultRecords = 'pages';
                 }
 
                 // Default language record of localized record

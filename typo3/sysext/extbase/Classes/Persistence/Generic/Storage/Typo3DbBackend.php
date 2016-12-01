@@ -532,7 +532,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
                 && isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
                 && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                && !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
+                && $tableName !== 'pages_language_overlay'
             ) {
                 if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
                     && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
@@ -563,8 +563,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             if ($tableName == 'pages') {
                 $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
             } elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-                && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
-                && !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
+                      && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
+                      && $tableName !== 'pages_language_overlay'
             ) {
                 if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], [-1, 0])) {
                     $overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
