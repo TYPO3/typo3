@@ -2,19 +2,19 @@
 
 var tests = [];
 var paths = {
-	'jquery-ui': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
-	'datatables': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
-	'matchheight': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.matchHeight-min',
-	'nprogress': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
-	'moment': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/moment',
-	'cropper': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/cropper.min',
-	'imagesloaded': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/imagesloaded.pkgd.min',
+	'jquery-ui': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
+	'datatables': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
+	'matchheight': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.matchHeight-min',
+	'nprogress': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
+	'moment': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/moment',
+	'cropper': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/cropper.min',
+	'imagesloaded': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/imagesloaded.pkgd.min',
 	'bootstrap': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
-	'twbs/bootstrap-datetimepicker': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
-	'autosize': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize',
-	'taboverride': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/taboverride.min',
-	'twbs/bootstrap-slider': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
-	'jquery/autocomplete': '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.autocomplete'
+	'twbs/bootstrap-datetimepicker': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
+	'autosize': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize',
+	'taboverride': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/taboverride.min',
+	'twbs/bootstrap-slider': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
+	'jquery/autocomplete': '/base/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.autocomplete'
 };
 
 /**
