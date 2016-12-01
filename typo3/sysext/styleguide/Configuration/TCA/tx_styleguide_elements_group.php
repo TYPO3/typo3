@@ -312,6 +312,24 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </group_db_1>
+                                            <group_db_2>
+                                                <TCEforms>
+                                                    <label>group_db_2 wizard suggest, order by uid DESC</label>
+                                                    <config>
+                                                        <type>group</type>
+                                                        <internal_type>db</internal_type>
+                                                        <allowed>tx_styleguide_staticdata</allowed>
+                                                        <wizards>
+                                                            <suggest>
+                                                                <type>suggest</type>
+                                                                <default>
+                                                                    <orderBy>uid DESC</orderBy>
+                                                                </default>
+                                                            </suggest>
+                                                        </wizards>
+                                                    </config>
+                                                </TCEforms>
+                                            </group_db_2>
                                         </el>
                                     </ROOT>
                                 </sDb>
