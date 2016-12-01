@@ -4134,7 +4134,7 @@ class BackendUtility
     public static function explodeSoftRefParserList($parserList)
     {
         // Return immediately if list is blank:
-        if ($parserList === '') {
+        if ((string)$parserList === '') {
             return false;
         }
 
