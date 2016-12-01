@@ -419,16 +419,9 @@ class ResourceCompressor
      */
     protected function getFilenameFromMainDir($filename)
     {
-        $docRoot = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
-        $fileNameWithoutSlash = ltrim($filename, '/');
-
-        // if the file exists in the document root
-        if (is_file($docRoot . '/' . $fileNameWithoutSlash)) {
-            return substr($docRoot . '/' . $fileNameWithoutSlash, strlen($this->rootPath));
-        }
         // if the file exists in the root path, just return the $filename
-        if (is_file($this->rootPath . $fileNameWithoutSlash)) {
-            return $fileNameWithoutSlash;
+        if (is_file($this->rootPath . ltrim($filename, '/'))) {
+            return ltrim($filename, '/');
         }
         // if the file is from a special TYPO3 internal directory, add the missing typo3/ prefix
         if (is_file(realpath(PATH_site . TYPO3_mainDir . $filename))) {
@@ -440,7 +433,7 @@ class ResourceCompressor
         } elseif (strpos($filename, '../') === 0) {
             $file = GeneralUtility::resolveBackPath(PATH_typo3 . $filename);
         } else {
-            $file = PATH_site . $fileNameWithoutSlash;
+            $file = PATH_site . ltrim($filename, '/');
         }
 
         // check if the file exists, and if so, return the path relative to TYPO3_mainDir
