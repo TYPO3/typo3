@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -239,6 +242,32 @@ class FluidTemplateContentObject extends AbstractContentObject
         $requestControllerActionName = isset($conf['extbase.']['controllerActionName.']) ? $this->cObj->stdWrap($conf['extbase.']['controllerActionName'], $conf['extbase.']['controllerActionName.']) : $conf['extbase.']['controllerActionName'];
         if ($requestControllerActionName) {
             $this->view->getRequest()->setControllerActionName($requestControllerActionName);
+        }
+
+        if (
+            $requestPluginName
+            && $requestControllerExtensionName
+            && $requestControllerName
+            && $requestControllerActionName
+        ) {
+            $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManager::class);
+            $configurationManager->setConfiguration([
+                'extensionName' => $requestControllerExtensionName,
+                'pluginName' => $requestPluginName,
+            ]);
+
+            if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$requestControllerExtensionName]['plugins'][$requestPluginName]['controllers'])) {
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$requestControllerExtensionName]['plugins'][$requestPluginName]['controllers'] = [
+                    $requestControllerName => [
+                        'actions' => [
+                            $requestControllerActionName,
+                        ],
+                    ],
+                ];
+            }
+
+            $requestBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(RequestBuilder::class);
+            $this->view->getRenderingContext()->getControllerContext()->setRequest($requestBuilder->build());
         }
     }
 
