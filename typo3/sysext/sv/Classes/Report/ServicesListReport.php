@@ -24,13 +24,10 @@ use TYPO3\CMS\Reports\ReportInterface;
 
 /**
  * This class provides a report displaying a list of all installed services
- * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
  */
 class ServicesListReport implements ReportInterface
 {
     /**
-     * Back-reference to the calling reports module
-     *
      * @var ReportController
      */
     protected $reportsModule;
@@ -141,8 +138,7 @@ class ServicesListReport implements ReportInterface
      */
     protected function getExecutablesSearchPathList()
     {
-        $addInvalidSearchPaths = true;
-        $searchPaths = CommandUtility::getPaths($addInvalidSearchPaths);
+        $searchPaths = CommandUtility::getPaths(true);
         $result = [];
 
         foreach ($searchPaths as $path => $isValid) {
@@ -211,18 +207,8 @@ class ServicesListReport implements ReportInterface
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
      * Method to check if the service in path is available
-     * @param $isValid
+     * @param bool|string $isValid
      * @return array
      */
     private function getServicePathStatus($isValid): array
@@ -238,5 +224,15 @@ class ServicesListReport implements ReportInterface
             'statusCSSClass' => $statusCSSClass,
             'accessible' => $accessible
         ];
+    }
+
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
