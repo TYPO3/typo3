@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -149,52 +150,11 @@ class ReplaceFileController extends AbstractModule
      */
     public function main()
     {
-        $lang = $this->getLanguageService();
-        $code = '<form action="'
-            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file'))
-            . '" role="form" method="post" name="editform" enctype="multipart/form-data">';
-
-        // Making the formfields for renaming:
-        $code .= '
-			<div class="form-group">
-				<input type="checkbox" value="1" id="keepFilename" name="file[replace][1][keepFilename]"> <label for="keepFilename">'
-            . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.keepfiletitle')
-            . '</label>
-			</div>
-
-			<div class="form-group">
-				<label for="file_replace">' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.selectfile') . '</label>
-				<div class="input-group col-xs-6">
-					<input type="text" name="fakefile" id="fakefile" class="form-control input-xlarge" readonly>
-					<a class="input-group-addon btn btn-primary" onclick="TYPO3.jQuery(\'#file_replace\').click();">'
-            . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.browse')
-            . '</a>
-				</div>
-				<input class="form-control" type="file" id="file_replace" name="replace_1" style="visibility: hidden;" />
-			</div>
-
-			<script>
-			TYPO3.jQuery(\'#file_replace\').change(function(){
-				TYPO3.jQuery(\'#fakefile\').val(TYPO3.jQuery(this).val());
-			});
-			</script>
-
-			<input type="hidden" name="overwriteExistingFiles" value="replace" />
-			<input type="hidden" name="file[replace][1][data]" value="1" />
-			<input type="hidden" name="file[replace][1][uid]" value="' . $this->uid . '" />
-		';
-        // Making submit button:
-        $code .= '
-				<div class="form-group">
-					<input class="btn btn-primary" type="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.submit')) . '" />
-					<input class="btn btn-danger" type="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel'))
-            . '" onclick="backToList(); return false;" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-				</div>
-		';
-        $code .= '</form>';
+        // Assign variables used by the fluid template
+        $assigns = [];
+        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+        $assigns['uid'] = $this->uid;
+        $assigns['returnUrl'] = $this->returnUrl;
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // csh button
@@ -207,14 +167,20 @@ class ReplaceFileController extends AbstractModule
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton);
         }
 
-        $this->content .= '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.pagetitle') . '</h1>';
-        // Add the HTML as a section:
-        $this->content .= '<div>' . $code . '</div>';
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/File/ReplaceFile.html'
+        ));
+        $view->assignMultiple($assigns);
+        $this->content = $view->render();
 
         $this->moduleTemplate->setContent($this->content);
     }
