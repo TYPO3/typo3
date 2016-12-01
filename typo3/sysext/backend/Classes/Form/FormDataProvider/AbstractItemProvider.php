@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -793,10 +794,19 @@ abstract class AbstractItemProvider
     }
 
     /**
-     * Returns all registered FlexForm definitions
+     * Returns FlexForm data structures it finds. Used in select "special" for be_groups
+     * to set "exclude" flags for single flex form fields.
      *
-     * Note: This only finds flex forms registered in 'ds' config sections.
+     * This only finds flex forms registered in 'ds' config sections.
      * This does not resolve other sophisticated flex form data structure references.
+     *
+     * @todo: This approach is limited and doesn't find everything. It works for casual tt_content plugins, though:
+     * @todo: The data structure identifier determination depends on data row, but we don't have all rows at hand here.
+     * @todo: The code thus "guesses" some standard data structure identifier scenarios and tries to resolve those.
+     * @todo: This guessing can not be solved in a good way. A general registry of "all" possible data structures is
+     * @todo: probably not wanted, since that wouldn't work for truly dynamic DS calculations. Probably the only
+     * @todo: thing we could do here is a hook to allow extensions declaring specific data structures to
+     * @todo: allow backend admins to set exclude flags for certain fields in those cases.
      *
      * @param string $table Table to handle
      * @return array Data structures
@@ -815,7 +825,6 @@ abstract class AbstractItemProvider
                     // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
                     $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
                     $extIdent = $identFields[0];
-                    // @todo: This approach is limited and doesn't find everything. It works for tt_content plugins, though.
                     if (!empty($identFields[1]) && $identFields[1] !== 'list' && $identFields[1] !== '*') {
                         $extIdent = $identFields[1];
                     }
@@ -825,8 +834,14 @@ abstract class AbstractItemProvider
                         'fieldName' => $tableField,
                         'dataStructureKey' => $flexFormKey,
                     ]);
-                    $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
-                    $flexForms[$tableField][$extIdent] = $dataStructure;
+                    try {
+                        $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
+                        $flexForms[$tableField][$extIdent] = $dataStructure;
+                    } catch (InvalidIdentifierException $e) {
+                        // Deliberately empty: The DS identifier is guesswork and the flex ds parser throws
+                        // this exception if it can not resolve to a valid data structure. This is "ok" here
+                        // and the exception is just eaten.
+                    }
                 }
             }
         }

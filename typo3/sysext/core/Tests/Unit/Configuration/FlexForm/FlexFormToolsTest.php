@@ -1314,7 +1314,7 @@ class FlexFormToolsTest extends UnitTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478106090);
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }

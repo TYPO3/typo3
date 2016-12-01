@@ -689,9 +689,11 @@ class FlexFormTools
             $dataStructure = GeneralUtility::xml2array($dataStructure);
         }
 
-        // Throw if it still is not an array, probably because GeneralUtility::xml2array() failed
+        // Throw if it still is not an array, probably because GeneralUtility::xml2array() failed.
+        // This also may happen if artificial identifiers were constructed which don't resolve. The
+        // flex form "exclude" access rights systems does that -> catchable
         if (!is_array($dataStructure)) {
-            throw new \RuntimeException(
+            throw new InvalidIdentifierException(
                 'Parse error: Data structure could not be resolved to a valid structure.',
                 1478106090
             );
