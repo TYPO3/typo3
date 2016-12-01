@@ -1167,6 +1167,7 @@ return [
                         'ResourceStorage' => [
                             'writerConfiguration' => [
                                 \TYPO3\CMS\Core\Log\LogLevel::ERROR => [
+                                    \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
                                     \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => []
                                 ]
                             ]
