@@ -52,10 +52,10 @@ return [
         'target' => Controller\FormInlineAjaxController::class . '::expandOrCollapseAction'
     ],
 
-    // Search records
+    // FormEngine suggest wizard result generator
     'record_suggest' => [
         'path' => '/wizard/suggest/search',
-        'target' => \TYPO3\CMS\Backend\Form\Wizard\SuggestWizard::class . '::searchAction'
+        'target' => \TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController::class . '::searchAction'
     ],
 
     // Fetch the tree-structured data from a record for the tree selection
