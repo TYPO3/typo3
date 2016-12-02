@@ -1865,4 +1865,53 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
+
+    /**
+     * @return array
+     */
+    public function migrateTranslationTableDataProvider()
+    {
+        return [
+            'remove transForeignTable' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'transForeignTable' => 'pages_language_overlay',
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [],
+                    ],
+                ]
+            ],
+            'remove transOrigPointerTable' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'transOrigPointerTable' => 'pages',
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [],
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     * @test
+     * @dataProvider migrateTranslationTableDataProvider
+     */
+    public function migrateTranslationTable(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
 }

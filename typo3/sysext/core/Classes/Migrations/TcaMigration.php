@@ -57,6 +57,7 @@ class TcaMigration
         $tca = $this->migrateTSconfigSoftReferences($tca);
         $tca = $this->migrateShowIfRteOption($tca);
         $tca = $this->migrateWorkspacesOptions($tca);
+        $tca = $this->migrateTranslationTable($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -868,6 +869,30 @@ class TcaMigration
                 unset($tableDefinition['ctrl']['versioning_followPages']);
                 $this->messages[] = 'The TCA setting \'versioning_followPages\' was removed as it is unused '
                     . 'in TCA ' . $table . '[\'ctrl\'][\'versioning_followPages\']';
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes "transForeignTable" and "transOrigPointerTable" which has been
+     * used for tables "pages" and "pages_languages_overlay" in the core only.
+     *
+     * @param array $tca
+     * @return array Migrated TCA
+     */
+    protected function migrateTranslationTable(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!empty($tableDefinition['ctrl']['transForeignTable'])) {
+                unset($tableDefinition['ctrl']['transForeignTable']);
+                $this->messages[] = 'The TCA setting \'transForeignTable\' was removed '
+                    . 'in TCA ' . $table . '[\'ctrl\'][\'transForeignTable\']';
+            }
+            if (!empty($tableDefinition['ctrl']['transOrigPointerTable'])) {
+                unset($tableDefinition['ctrl']['transOrigPointerTable']);
+                $this->messages[] = 'The TCA setting \'transOrigPointerTable\' was removed '
+                    . 'in TCA ' . $table . '[\'ctrl\'][\'transOrigPointerTable\']';
             }
         }
         return $tca;
