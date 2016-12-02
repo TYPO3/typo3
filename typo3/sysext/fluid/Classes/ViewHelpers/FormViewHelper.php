@@ -158,7 +158,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
         $content .= $this->renderAdditionalIdentityFields();
         $content .= $this->renderHiddenReferrerFields();
-        $content .= $this->renderHiddenSecuredReferrerField();
 
         // Render the trusted list of all properties after everything else has been rendered
         $content .= $this->renderTrustedPropertiesField();
@@ -171,7 +170,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $this->removeFormObjectNameFromViewHelperVariableContainer();
         $this->removeFormFieldNamesFromViewHelperVariableContainer();
         $this->removeCheckboxFieldNamesFromViewHelperVariableContainer();
-        $this->removeSecuredHiddenFieldsRenderedFromViewHelperVariableContainer();
         return $this->tag->render();
     }
 
@@ -243,46 +241,23 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $vendorName = $request->getControllerVendorName();
         $controllerName = $request->getControllerName();
         $actionName = $request->getControllerActionName();
-        $result = LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . LF;
-        if ($vendorName !== null) {
-            $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . LF;
-        }
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . LF;
-        $result .= $this->renderHiddenSecuredReferrerField();
-
-        return $result;
-    }
-
-    /**
-     * Renders hidden form field for secured referrer information about the current controller and action.
-     *
-     * This method is called twice, to deal with subclasses of this class in a most compatible way
-     *
-     * @return string Hidden field with secured referrer information
-     */
-    protected function renderHiddenSecuredReferrerField()
-    {
-        if ($this->hasSecuredHiddenFieldsRendered()) {
-            return '';
-        }
-        $request = $this->renderingContext->getControllerContext()->getRequest();
-        $extensionName = $request->getControllerExtensionName();
-        $vendorName = $request->getControllerVendorName();
-        $controllerName = $request->getControllerName();
-        $actionName = $request->getControllerActionName();
         $actionRequest = [
             '@extension' => $extensionName,
             '@controller' => $controllerName,
             '@action' => $actionName,
         ];
+
+        $result = LF;
+        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . LF;
         if ($vendorName !== null) {
+            $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . LF;
             $actionRequest['@vendor'] = $vendorName;
         }
-        $result = '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@request]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(serialize($actionRequest))) . '" />' . LF;
-        $this->addSecuredHiddenFieldsRenderedToViewHelperVariableContainer();
+        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . LF;
+        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . LF;
+        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@request]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(serialize($actionRequest))) . '" />' . LF;
+
         return $result;
     }
 
@@ -396,32 +371,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         if ($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'renderedHiddenFields')) {
             $this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'renderedHiddenFields');
         }
-    }
-
-    /**
-     * Adds flag to indicate the secured hidden fields have been rendered to the ViewHelperVariableContainer
-     */
-    protected function addSecuredHiddenFieldsRenderedToViewHelperVariableContainer()
-    {
-        $this->viewHelperVariableContainer->add(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'securedHiddenFieldsRendered', true);
-    }
-
-    /**
-     * Checks whether the secured hidden fields have been rendered
-     *
-     * @return bool
-     */
-    protected function hasSecuredHiddenFieldsRendered()
-    {
-        return $this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'securedHiddenFieldsRendered');
-    }
-
-    /**
-     * Removes flag to indicate the secured hidden fields have been rendered from the ViewHelperVariableContainer
-     */
-    protected function removeSecuredHiddenFieldsRenderedFromViewHelperVariableContainer()
-    {
-        $this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'securedHiddenFieldsRendered');
     }
 
     /**
