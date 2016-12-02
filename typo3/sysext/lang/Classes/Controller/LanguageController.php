@@ -239,6 +239,23 @@ class LanguageController extends ActionController
     }
 
     /**
+     * Remove a language
+     *
+     * @param array $data The request data
+     * @return void
+     */
+    public function removeLanguageAction(array $data)
+    {
+        $response = ['success' => false];
+        if (!empty($data['locale'])) {
+            $response = $this->languageRepository->deactivateByLocale($data['locale']);
+            $absoluteLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . 'l10n/' . $data['locale']);
+            GeneralUtility::rmdir($absoluteLanguagePath, true);
+        }
+        $this->view->assign('response', $response);
+    }
+
+    /**
      * DocHeaderMenu
      */
     protected function prepareDocHeaderMenu()
@@ -258,6 +275,7 @@ class LanguageController extends ActionController
             'flashmessage.canceled',
             'flashmessage.languageActivated',
             'flashmessage.languageDeactivated',
+            'flashmessage.languageRemoved',
             'flashmessage.noLanguageActivated',
             'flashmessage.errorOccurred',
             'table.processing',

@@ -49,6 +49,7 @@ define(['jquery',
 			activateIcon: 'span.activateIcon',
 			deactivateIcon: 'span.deactivateIcon',
 			downloadIcon: 'span.downloadIcon',
+			removeIcon: 'span.removeIcon',
 			loadingIcon: 'span.loadingIcon',
 			completeIcon: 'span.completeIcon',
 			progressBar: 'div.progressBar',
@@ -146,6 +147,31 @@ define(['jquery',
 			if (status === 'success' && response.success) {
 				$row.removeClass(LanguageModule.classes.enabled).removeClass(LanguageModule.classes.complete).addClass(LanguageModule.classes.disabled);
 				LanguageModule.displaySuccess(LanguageModule.labels.languageDeactivated);
+			} else {
+				LanguageModule.displayError(LanguageModule.labels.errorOccurred);
+			}
+		});
+	};
+
+	/**
+	 * Remove a language
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
+	 */
+	LanguageModule.removeLanguageAction = function(triggerElement, parameters) {
+		var $row = $(triggerElement).closest('tr'),
+			locale = $row.data('locale'),
+			$lastUpdate = $(LanguageModule.identifiers.lastUpdate, $row);
+
+		if ($row.hasClass(LanguageModule.classes.processing)) {
+			LanguageModule.abortAjaxRequest();
+		}
+		LanguageModule.executeAjaxRequest(LanguageModule.settings.removeLanguageUri, {locale: locale}, function(response, status) {
+			if (status === 'success' && response.success) {
+				$row.removeClass(LanguageModule.classes.enabled).removeClass(LanguageModule.classes.complete).addClass(LanguageModule.classes.disabled);
+				$lastUpdate.html('');
+				LanguageModule.displaySuccess(LanguageModule.labels.languageRemoved);
 			} else {
 				LanguageModule.displayError(LanguageModule.labels.errorOccurred);
 			}
@@ -261,6 +287,7 @@ define(['jquery',
 			activate: $(LanguageModule.identifiers.activateIcon, LanguageModule.context).html(),
 			deactivate: $(LanguageModule.identifiers.deactivateIcon, LanguageModule.context).html(),
 			download: $(LanguageModule.identifiers.downloadIcon, LanguageModule.context).html(),
+			remove: $(LanguageModule.identifiers.removeIcon, LanguageModule.context).html(),
 			loading: $(LanguageModule.identifiers.loadingIcon, LanguageModule.context).html(),
 			complete: $(LanguageModule.identifiers.completeIcon, LanguageModule.context).html(),
 			progressBar: $(LanguageModule.identifiers.progressBar, LanguageModule.context).html()
@@ -270,7 +297,7 @@ define(['jquery',
 	/**
 	 * Build labels
 	 *
-	 * @returns {{processing: *, search: *, loadingRecords: *, zeroRecords: *, emptyTable: *, dateFormat: *, errorHeader: *, infoHeader: *, successHeader: *, languageActivated: *, errorOccurred: *, languageDeactivated: *, updateComplete: *}}
+	 * @returns {{processing: *, search: *, loadingRecords: *, zeroRecords: *, emptyTable: *, dateFormat: *, errorHeader: *, infoHeader: *, successHeader: *, languageActivated: *, errorOccurred: *, languageDeactivated: *, languageRemoved: *, updateComplete: *}}
 	 */
 	LanguageModule.buildLabels = function() {
 		return {
@@ -286,6 +313,7 @@ define(['jquery',
 			languageActivated: TYPO3.lang['flashmessage.languageActivated'],
 			errorOccurred: TYPO3.lang['flashmessage.errorOccurred'],
 			languageDeactivated: TYPO3.lang['flashmessage.languageDeactivated'],
+			languageRemoved: TYPO3.lang['flashmessage.languageRemoved'],
 			noLanguageActivated: TYPO3.lang['flashmessage.noLanguageActivated'],
 			updateComplete: TYPO3.lang['flashmessage.updateComplete'],
 			canceled: TYPO3.lang['flashmessage.canceled']
@@ -341,6 +369,7 @@ define(['jquery',
 				render: function(data, type, row) {
 					var links = [
 						LanguageModule.buildActionLink('updateTranslation', data, LanguageModule.icons.download),
+						LanguageModule.buildActionLink('removeTranslation', data, LanguageModule.icons.remove),
 						LanguageModule.buildLoadingIndicator(),
 						LanguageModule.buildCompleteIndicator()
 					];

@@ -13701,6 +13701,7 @@ div.typo3-module-lang table.t3-datatable tr.disabled {
   color: #aaaaaa;
 }
 div.typo3-module-lang table.t3-datatable tr.disabled a.deactivateLanguageLink,
+div.typo3-module-lang table.t3-datatable tr.disabled a.removeLanguageLink,
 div.typo3-module-lang table.t3-datatable tr.disabled a.updateLanguageLink,
 div.typo3-module-lang table.t3-datatable tr.disabled a.updateTranslationLink {
   display: none;
@@ -13726,6 +13727,10 @@ div.typo3-module-lang table.t3-datatable tr.complete div.progressBar {
   display: inline;
   cursor: default;
 }
+div.typo3-module-lang table.t3-datatable tr.processing a.removeLanguageLink,
+div.typo3-module-lang table.t3-datatable td.processing a.removeLanguageLink,
+div.typo3-module-lang table.t3-datatable tr.complete a.removeLanguageLink,
+div.typo3-module-lang table.t3-datatable td.complete a.removeLanguageLink,
 div.typo3-module-lang table.t3-datatable tr.processing a.updateLanguageLink,
 div.typo3-module-lang table.t3-datatable td.processing a.updateLanguageLink,
 div.typo3-module-lang table.t3-datatable tr.complete a.updateLanguageLink,

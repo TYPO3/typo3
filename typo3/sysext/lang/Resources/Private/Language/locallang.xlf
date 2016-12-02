@@ -59,6 +59,9 @@
 			<trans-unit id="flashmessage.languageDeactivated">
 				<source>Language was successfully deactivated.</source>
 			</trans-unit>
+			<trans-unit id="flashmessage.languageRemoved">
+				<source>Language was successfully deactivated and removed.</source>
+			</trans-unit>
 			<trans-unit id="flashmessage.errorOccurred">
 				<source>The request has failed.</source>
 			</trans-unit>
