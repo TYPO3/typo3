@@ -76,8 +76,10 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderRequestHashField', 'addFormObjectToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setArguments(array('name' => $objectName));
-		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName', $objectName);
-		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
+		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper',
+			'formObjectName', $objectName);
+		$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
+		$viewHelper->_set('tag', $this->tagBuilder);
 		$viewHelper->render();
 	}
 
@@ -89,8 +91,10 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderRequestHashField', 'addFormObjectToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setArguments(array('name' => 'formName', 'objectName' => $objectName));
-		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName', $objectName);
-		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
+		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper',
+			'formObjectName', $objectName);
+		$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
+		$viewHelper->_set('tag', $this->tagBuilder);
 		$viewHelper->render();
 	}
 
@@ -241,8 +245,10 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderRequestHashField', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setArguments(array('fieldNamePrefix' => $prefix));
-		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', $prefix);
-		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
+		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper',
+			'fieldNamePrefix', $prefix);
+		$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
+		$viewHelper->_set('tag', $this->tagBuilder);
 		$viewHelper->render();
 	}
 
@@ -256,8 +262,10 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper->_set('extensionService', $this->mockExtensionService);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setArguments(array('extensionName' => 'SomeExtension', 'pluginName' => 'SomePlugin'));
-		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', $expectedPrefix);
-		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
+		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper',
+			'fieldNamePrefix', $expectedPrefix);
+		$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
+		$viewHelper->_set('tag', $this->tagBuilder);
 		$viewHelper->render();
 	}
 
