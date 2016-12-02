@@ -311,11 +311,8 @@ class Check
     {
         $minimumMaximumExecutionTime = 30;
         $recommendedMaximumExecutionTime = 240;
-        $currentMaximumExecutionTime = (int)ini_get('max_execution_time');
-        if (PHP_SAPI === 'cli' && $currentMaximumExecutionTime === 0) {
-            $status = new Status\NoticeStatus();
-            $status->setTitle('Infinite PHP script execution time detected, which is admissible on the CLI');
-        } elseif ($currentMaximumExecutionTime === 0) {
+        $currentMaximumExecutionTime = ini_get('max_execution_time');
+        if ($currentMaximumExecutionTime == 0) {
             $status = new Status\WarningStatus();
             $status->setTitle('Infinite PHP script execution time');
             $status->setMessage(
@@ -351,7 +348,6 @@ class Check
             $status->setTitle('Maximum PHP script execution time is equal to or more than '
                 . $recommendedMaximumExecutionTime);
         }
-
         return $status;
     }
 
