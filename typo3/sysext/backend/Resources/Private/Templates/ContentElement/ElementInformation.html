@@ -6,12 +6,7 @@
     </f:if>
 </h1>
 <f:if condition="{missingFile}">
-    <p>
-        <span class="label label-danger">
-            <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing" />
-        </span>
-        &nbsp;{missingFile}<br />
-    </p>
+    <f:be.infobox title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="1">{missingFile}</f:be.infobox>
 </f:if>
 <f:if condition="{fileRenderer}">
     <p>
@@ -28,7 +23,7 @@
 </f:if>
 <f:if condition="{url}">
     <p>
-        <a class="btn btn-primary" href="{url}" target="_blank">
+        <a class="btn btn-default" href="{url}" target="_blank">
             <core:icon identifier="actions-document-view" size="small" alternativeMarkupIdentifier="inline" />
             <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.show" />
         </a>
@@ -189,19 +184,25 @@
 
 <f:section name="action">
     <div class="btn-group" role="group">
-        <a class="btn btn-default btn-sm" href="{line.recordEditUrl}">
-            <core:icon identifier="actions-open" size="small" />
-        </a>
-        <a class="btn btn-default btn-sm" href="{line.recordHistoryUrl}">
-            <core:icon identifier="actions-document-history-open" size="small" />
-        </a>
-        <f:if condition="{line.webListUrl}">
-            <a class="btn btn-default btn-sm" href="{line.webListUrl}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:labels.showList')}">
-                <core:icon identifier="actions-system-list-open" size="small" />
-            </a>
+	<f:if condition="{line.webListUrl}">
             <a class="btn btn-default btn-sm" href="#" onclick="{line.viewOnClick}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:labels.showPage')}">
                 <core:icon identifier="actions-document-view" size="small" />
             </a>
-        </f:if>
+	</f:if>
+        <a class="btn btn-default btn-sm" href="{line.recordEditUrl}">
+            <core:icon identifier="actions-open" size="small" />
+        </a>
     </div>
+    <div class="btn-group" role="group">
+        <a class="btn btn-default btn-sm" href="{line.recordHistoryUrl}">
+            <core:icon identifier="actions-document-history-open" size="small" />
+        </a>
+    </div>
+    <f:if condition="{line.webListUrl}">
+        <div class="btn-group" role="group">
+            <a class="btn btn-default btn-sm" href="{line.webListUrl}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:labels.showList')}">
+                <core:icon identifier="actions-system-list-open" size="small" />
+            </a>
+        </div>
+    </f:if>
 </f:section>
