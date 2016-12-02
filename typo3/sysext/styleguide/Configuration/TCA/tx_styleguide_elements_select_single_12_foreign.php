@@ -20,22 +20,22 @@ return [
 
         'sys_language_uid' => [
             'exclude' => 1,
-            'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+            'label'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1],
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0]
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
                 ]
             ]
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -52,7 +52,7 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
                 'default' => '0'
