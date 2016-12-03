@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Category;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Utility\DisplayConditionEvaluator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -130,27 +131,15 @@ class CategoryRegistry implements SingletonInterface
     }
 
     /**
-     * Returns a list of category fields for a given table for populating selector "category_field"
-     * in tt_content table (called as itemsProcFunc).
+     * Returns a list of category fields for the table configured in the categoryFieldsTable setting.
+     * For use in an itemsProcFunc of a TCA select field.
      *
-     * @param array $configuration Current field configuration
-     * @throws \UnexpectedValueException
+     * @param array $configuration The TCA and row arrays passed to the itemsProcFunc.
      * @return void
      */
-    public function getCategoryFieldsForTable(array &$configuration)
+    public function getCategoryFieldItems(array &$configuration)
     {
-        $table = '';
-        $menuType = isset($configuration['row']['menu_type'][0]) ? $configuration['row']['menu_type'][0] : '';
-        // Define the table being looked up from the type of menu
-        if ($menuType === 'categorized_pages') {
-            $table = 'pages';
-        } elseif ($menuType === 'categorized_content') {
-            $table = 'tt_content';
-        }
-        // Return early if no table is defined
-        if (empty($table)) {
-            throw new \UnexpectedValueException('The given menu_type is not supported.', 1381823570);
-        }
+        $table = $this->getActiveCategoryFieldsTable($configuration);
         // Loop on all registries and find entries for the correct table
         foreach ($this->registry as $tableName => $fields) {
             if ($tableName === $table) {
@@ -160,6 +149,113 @@ class CategoryRegistry implements SingletonInterface
                 }
             }
         }
+    }
+
+    /**
+     * Tries to determine of which table the category fields should be collected.
+     * It looks in the categoryFieldsTable TCA entry in the config section of the current field.
+     *
+     * It is possible to pass a plain string with a table name or an array of table names
+     * that can be activated with an active condition. There must exactly be one active
+     * table at once. A possible array configuration might look like this:
+     *
+     * 'categoryFieldsTable' => array(
+     *     'categorized_pages' => array(
+     *         'table' => 'pages',
+     *         'activeCondition' => 'FIELD:menu_type:=:categorized_pages'
+     *     ),
+     *     'categorized_content' => array(
+     *         'table' => 'tt_content',
+     *         'activeCondition' => 'FIELD:menu_type:=:categorized_content'
+     *     )
+     * ),
+     *
+     * @param array $configuration The TCA and row arrays passed to the itemsProcFunc.
+     * @throws \RuntimeException In case of an invalid configuration.
+     * @return string
+     */
+    protected function getActiveCategoryFieldsTable(array $configuration)
+    {
+        $fieldAndTableInfo = sprintf(' (field: %s, table: %s)', $configuration['field'], $configuration['table']);
+
+        if (empty($configuration['config']['categoryFieldsTable'])) {
+            throw new \RuntimeException(
+                'The categoryFieldsTable setting is missing in the config section' . $fieldAndTableInfo,
+                1447273908
+            );
+        }
+
+        if (is_string($configuration['config']['categoryFieldsTable'])) {
+            return $configuration['config']['categoryFieldsTable'];
+        }
+
+        if (!is_array($configuration['config']['categoryFieldsTable'])) {
+            throw new \RuntimeException(
+                sprintf(
+                    'The categoryFieldsTable table setting must be a string or an array, %s given' . $fieldAndTableInfo,
+                    gettype($configuration['config']['categoryFieldsTable'])
+                ),
+                1447274126
+            );
+        }
+
+        $activeTable = null;
+
+        foreach ($configuration['config']['categoryFieldsTable'] as $configKey => $tableConfig) {
+            if (empty($tableConfig['table'])) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'The table setting is missing for the categoryFieldsTable %s' . $fieldAndTableInfo,
+                        $configKey
+                    ),
+                    1447274131
+                );
+            }
+            if (empty($tableConfig['activeCondition'])) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'The activeCondition setting is missing for the categoryFieldsTable %s' . $fieldAndTableInfo,
+                        $configKey
+                    ),
+                    1480786868
+                );
+            }
+
+            if ($this->getDisplayConditionEvaluator()->evaluateDisplayCondition(
+                $tableConfig['activeCondition'],
+                $configuration['row']
+            )
+            ) {
+                if (!empty($activeTable)) {
+                    throw new \RuntimeException(
+                        sprintf(
+                            'There must only be one active categoryFieldsTable. Multiple active tables (%s, %s) '
+                            . 'were found' . $fieldAndTableInfo,
+                            $activeTable,
+                            $tableConfig['table']
+                        ),
+                        1480787321
+                    );
+                }
+                $activeTable = $tableConfig['table'];
+            }
+        }
+
+        if (empty($activeTable)) {
+            throw new \RuntimeException('No active was found' . $fieldAndTableInfo, 1447274507);
+        }
+
+        return $activeTable;
+    }
+
+    /**
+     * Returns the display condition evaluator utility class.
+     *
+     * @return DisplayConditionEvaluator
+     */
+    protected function getDisplayConditionEvaluator()
+    {
+        return GeneralUtility::makeInstance(DisplayConditionEvaluator::class);
     }
 
     /**
