@@ -118,7 +118,7 @@
 				<source>Workspace Warning</source>
 			</trans-unit>
 			<trans-unit id="WorkspaceWarningText">
-				<source>Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
+				<source>Permissions you set in the workspace are effective on the elements only after they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
 			</trans-unit>
 			<trans-unit id="notSet">
 				<source>not set</source>
