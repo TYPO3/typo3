@@ -85,11 +85,14 @@ return [
         ],
     ],
     'types' => [
-        '0' => ['showitem' => '--palette--;;mount, description, base, path, read_only']
-    ],
-    'palettes' => [
-        'mount' => [
-            'showitem' => 'title,hidden',
-        ],
+        '0' => ['showitem' => '
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                title,base, path,read_only,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                hidden,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                description,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ']
     ],
 ];

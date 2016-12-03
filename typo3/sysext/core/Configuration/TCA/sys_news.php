@@ -84,7 +84,16 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'hidden, title, content, --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime',
+            'showitem' => '
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                    title,content,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                    hidden, --palette--;;timeRestriction,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            ',
         ],
+    ],
+    'palettes' => [
+        'timeRestriction' => ['showitem' => 'starttime, endtime']
     ],
 ];

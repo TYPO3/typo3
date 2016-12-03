@@ -381,15 +381,34 @@ return [
         ],
     ],
     'types' => [
-        '0' => ['showitem' => 'disable, username, password, description, avatar, usergroup, admin, realName, email, lang, lastlogin,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.rights, userMods, allowed_languages,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces, workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options, lockToDomain, disableIPlock, TSconfig,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, starttime,endtime,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.extended'],
-        '1' => ['showitem' => 'disable, username, password, avatar,description, usergroup, admin, realName, email, lang, lastlogin,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options, disableIPlock, TSconfig, db_mountpoints, options, file_mountpoints,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, starttime,endtime,
-			--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.extended']
-    ]
+        '0' => ['showitem' => '
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
+            --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.rights,
+                userMods, allowed_languages,
+            --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces,
+                workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,
+            --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
+                lockToDomain, disableIPlock, TSconfig,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                disable,--palette--;;timeRestriction,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                description,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        '],
+        '1' => ['showitem' => '
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
+            --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
+                disableIPlock, TSconfig, db_mountpoints, options, file_mountpoints,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                disable,--palette--;;timeRestriction,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                description,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ']
+    ],
+    'palettes' => [
+        'timeRestriction' => ['showitem' => 'starttime, endtime']
+    ],
 ];

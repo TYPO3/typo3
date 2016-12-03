@@ -72,9 +72,15 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'title,icon,config,
-            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.tabs.access, hidden,
-            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.tabs.extended, description',
+            'showitem' => '
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                    title,icon,config,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                    hidden,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                    description,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            ',
         ],
     ]
 ];

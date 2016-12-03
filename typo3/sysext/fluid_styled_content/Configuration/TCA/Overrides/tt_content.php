@@ -35,33 +35,33 @@ call_user_func(function () {
     ];
     $GLOBALS['TCA']['tt_content']['types']['textmedia'] = [
         'showitem' => '
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.general;general,
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,
-				bodytext;' . $frontendLanguageFilePrefix . 'bodytext_formlabel,
-			--div--;' . $frontendLanguageFilePrefix . 'tabs.media,
-				assets,
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.imagelinks;imagelinks,
-			--div--;' . $frontendLanguageFilePrefix . 'tabs.appearance,
-				layout;' . $frontendLanguageFilePrefix . 'layout_formlabel,
-				--palette--;' . $languageFilePrefix . 'tt_content.palette.mediaAdjustments;mediaAdjustments,
-				--palette--;' . $languageFilePrefix . 'tt_content.palette.gallerySettings;gallerySettings,
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.appearanceLinks;appearanceLinks,
-			--div--;' . $frontendLanguageFilePrefix . 'tabs.access,
-				hidden;' . $frontendLanguageFilePrefix . 'field.default.hidden,
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.access;access,
-			--div--;' . $frontendLanguageFilePrefix . 'tabs.extended,rowDescription
-		',
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                --palette--;' . $frontendLanguageFilePrefix . 'palette.general;general,
+                --palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,
+                bodytext;' . $frontendLanguageFilePrefix . 'bodytext_formlabel,
+            --div--;' . $frontendLanguageFilePrefix . 'tabs.media,
+                assets,
+                --palette--;' . $frontendLanguageFilePrefix . 'palette.imagelinks;imagelinks,
+            --div--;' . $frontendLanguageFilePrefix . 'tabs.appearance,
+                layout;' . $frontendLanguageFilePrefix . 'layout_formlabel,
+                --palette--;' . $languageFilePrefix . 'tt_content.palette.mediaAdjustments;mediaAdjustments,
+                --palette--;' . $languageFilePrefix . 'tt_content.palette.gallerySettings;gallerySettings,
+                --palette--;' . $frontendLanguageFilePrefix . 'palette.appearanceLinks;appearanceLinks,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --palette--;;language,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --palette--;;hidden,
+                --palette--;' . $frontendLanguageFilePrefix . 'palette.access;access,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                categories,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                rowDescription,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ',
         'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'richtext:rte_transform']]
     ];
 
     $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['search']['andWhere'] .= ' OR CType=\'textmedia\'';
-
-    // Add category tab when categories column exits
-    if (!empty($GLOBALS['TCA']['tt_content']['columns']['categories'])) {
-        $GLOBALS['TCA']['tt_content']['types']['textmedia']['showitem'] .=
-        ',--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category,
-				categories';
-    }
 
     // Add table wizard
     $GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap:wizards[table]';

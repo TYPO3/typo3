@@ -58,6 +58,12 @@ return [
         ]
     ],
     'types' => [
-        '0' => ['showitem' => 'category, personal, subject, message']
+        '0' => ['showitem' => '
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                category, subject,message,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                personal,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ']
     ]
 ];

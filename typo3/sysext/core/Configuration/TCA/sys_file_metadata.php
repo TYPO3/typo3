@@ -125,7 +125,17 @@ return [
         ]
     ],
     'types' => [
-        '1' => ['showitem' => 'fileinfo, title, description, alternative']
+        '1' => ['showitem' => '
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                fileinfo, title, description, alternative,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --palette--;;language,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                categories,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ']
     ],
-    'palettes' => []
+    'palettes' => [
+        'language' => ['showitem' => 'sys_language_uid, l10n_parent'],
+    ]
 ];

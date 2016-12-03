@@ -96,7 +96,15 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'hidden, --palette--;;1, sys_language_uid, type, term, acronym',
+            'showitem' => '
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                    type, term, acronym,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                    sys_language_uid,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                    hidden,--palette--;;1,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            ',
         ],
     ],
     'palettes' => [

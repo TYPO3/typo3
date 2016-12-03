@@ -231,9 +231,20 @@ return [
     ],
     'types' => [
         '1' => ['showitem' => '
-			hidden, title, sitetitle, constants, config, description,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.options, clear, root, nextLevel,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.include, includeStaticAfterBasedOn, include_static_file, basedOn, static_file_mode,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.access, starttime, endtime']
-    ]
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                title, sitetitle, constants, config,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.options,
+                clear, root, nextLevel,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.include,
+                includeStaticAfterBasedOn, include_static_file, basedOn, static_file_mode,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                hidden,--palette--;;timeRestriction,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                description,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ']
+    ],
+    'palettes' => [
+        'timeRestriction' => ['showitem' => 'starttime, endtime'],
+    ],
 ];

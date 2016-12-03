@@ -8,6 +8,7 @@ return [
         'cruser_id' => 'cruser_id',
         'default_sortby' => 'ORDER BY name',
         'delete' => 'deleted',
+        'descriptionColumn' => 'description',
         'rootLevel' => true,
         'versioningWS_alwaysAllowLiveEdit' => true, // Only have LIVE records of file storages
         'enablecolumns' => [],
@@ -112,7 +113,17 @@ return [
         ]
     ],
     'types' => [
-        '0' => ['showitem' => 'name, description, --div--;Configuration, driver, configuration, is_default, auto_extract_metadata, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online']
+        '0' => ['showitem' => '
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                    name, driver, configuration, is_default, auto_extract_metadata, processingfolder, 
+            --div--;Access capabilities,
+                    --palette--;Capabilities;capabilities,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                    is_online,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                description,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+        ']
     ],
     'palettes' => [
         'capabilities' => [
