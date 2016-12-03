@@ -44,7 +44,44 @@ class ConnectionMigrator
     /**
      * @var int
      */
-    protected $maxTableNameLength = 64;
+    protected $tableAndFieldMaxNameLengthsPerDbPlatform = [
+        'default' => [
+            'tables' => 30,
+            'columns' => 30
+        ],
+        'mysql' => [
+            'tables' => 64,
+            'columns' => 64
+        ],
+        'drizzle_pdo_mysql' => 'mysql',
+        'mysqli' => 'mysql',
+        'pdo_mysql' => 'mysql',
+        'pdo_sqlite' => 'mysql',
+        'postgresql' => [
+            'tables' => 63,
+            'columns' => 63
+        ],
+        'sqlserver' => [
+            'tables' => 128,
+            'columns' => 128
+        ],
+        'pdo_sqlsrv' => 'sqlserver',
+        'sqlsrv' => 'sqlserver',
+        'ibm' => [
+            'tables' => 30,
+            'columns' => 30
+        ],
+        'ibm_db2' => 'ibm',
+        'pdo_ibm' => 'ibm',
+        'oci8' => [
+            'tables' => 30,
+            'columns' => 30
+        ],
+        'sqlanywhere' => [
+            'tables' => 128,
+            'columns' => 128
+        ]
+    ];
 
     /**
      * @var Connection
@@ -880,14 +917,7 @@ class ConnectionMigrator
                 $fromTable = $removedTable
             );
 
-            $tableDiff->newName = $this->deletedPrefix . $removedTable->getName();
-            if (strlen($tableDiff->newName) > $this->maxTableNameLength) {
-                $shortTableName = substr(
-                    $removedTable->getName(),
-                    strlen($removedTable->getName()) + strlen($this->deletedPrefix) - $this->maxTableNameLength
-                );
-                $tableDiff->newName = $this->deletedPrefix . $shortTableName;
-            }
+            $tableDiff->newName = substr($this->deletedPrefix . $removedTable->getName(), 0, $this->getMaxTableNameLength());
             $schemaDiff->changedTables[$index] = $tableDiff;
             unset($schemaDiff->removedTables[$index]);
         }
@@ -917,8 +947,9 @@ class ConnectionMigrator
                 }
 
                 // Build a new column object with the same properties as the removed column
+                $renamedColumnName = substr($this->deletedPrefix . $removedColumn->getName(), 0, $this->getMaxColumnNameLength());
                 $renamedColumn = new Column(
-                    $this->connection->quoteIdentifier($this->deletedPrefix . $removedColumn->getName()),
+                    $this->connection->quoteIdentifier($renamedColumnName),
                     $removedColumn->getType(),
                     array_diff_key($removedColumn->toArray(), ['name', 'type'])
                 );
@@ -941,6 +972,57 @@ class ConnectionMigrator
         }
 
         return $schemaDiff;
+    }
+
+    /**
+     * Retrieve the database platform-specific limitations on column and schema name sizes as
+     * defined in the tableAndFieldMaxNameLengthsPerDbPlatform property.
+     *
+     * @param string $databasePlatform
+     * @return array
+     */
+    protected function getTableAndFieldNameMaxLengths(string $databasePlatform = '')
+    {
+        if ($databasePlatform === '') {
+            $databasePlatform = $this->connection->getDatabasePlatform()->getName();
+        }
+        $databasePlatform = strtolower($databasePlatform);
+
+        if (isset($this->tableAndFieldMaxNameLengthsPerDbPlatform[$databasePlatform])) {
+            $nameLengthRestrictions = $this->tableAndFieldMaxNameLengthsPerDbPlatform[$databasePlatform];
+        } else {
+            $nameLengthRestrictions = $this->tableAndFieldMaxNameLengthsPerDbPlatform['default'];
+        }
+
+        if (is_string($nameLengthRestrictions)) {
+            return $this->getTableAndFieldNameMaxLengths($nameLengthRestrictions);
+        } else {
+            return $nameLengthRestrictions;
+        }
+    }
+
+    /**
+     * Get the maximum table name length possible for the given DB platform.
+     *
+     * @param string $databasePlatform
+     * @return string
+     */
+    protected function getMaxTableNameLength(string $databasePlatform = '')
+    {
+        $nameLengthRestrictions = $this->getTableAndFieldNameMaxLengths($databasePlatform);
+        return $nameLengthRestrictions['tables'];
+    }
+
+    /**
+     * Get the maximum column name length possible for the given DB platform.
+     *
+     * @param string $databasePlatform
+     * @return string
+     */
+    protected function getMaxColumnNameLength(string $databasePlatform = '')
+    {
+        $nameLengthRestrictions = $this->getTableAndFieldNameMaxLengths($databasePlatform);
+        return $nameLengthRestrictions['columns'];
     }
 
     /**
