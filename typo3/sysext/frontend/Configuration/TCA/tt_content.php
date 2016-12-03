@@ -1034,17 +1034,7 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'itemsProcFunc' => \TYPO3\CMS\Core\Category\CategoryRegistry::class . '->getCategoryFieldItems',
-                'categoryFieldsTable' => [
-                    'categorized_pages' => [
-                        'table' => 'pages',
-                        'activeCondition' => 'FIELD:menu_type:=:categorized_pages'
-                    ],
-                    'categorized_content' => [
-                        'table' => 'tt_content',
-                        'activeCondition' => 'FIELD:menu_type:=:categorized_content'
-                    ]
-                ]
+                'itemsProcFunc' => \TYPO3\CMS\Core\Category\CategoryRegistry::class . '->getCategoryFieldsForTable',
             ]
         ],
         'table_caption' => [
