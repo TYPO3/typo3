@@ -231,6 +231,15 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * @see DataSet/Assertion/deleteContentAndPage.csv
+     */
+    public function deleteContentAndPage()
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+    }
+
+    /**
      * @see DataSet/Assertion/copyPageRecord.csv
      */
     public function copyPage()

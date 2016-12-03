@@ -298,6 +298,13 @@ class DataHandler
     public $copyMappingArray_merged = [];
 
     /**
+     * Per-table array with UIDs that have been deleted.
+     *
+     * @var array
+     */
+    protected $deletedRecords = [];
+
+    /**
      * A map between input file name and final destination for files being attached to records.
      *
      * @var array
@@ -4978,6 +4985,7 @@ class DataHandler
                     ->update($table, $updateFields, ['uid' => (int)$uid]);
                 // Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
                 if (!$undeleteRecord) {
+                    $this->deletedRecords[$table][] = (int)$uid;
                     $this->deleteL10nOverlayRecords($table, $uid);
                 }
             } catch (DBALException $e) {
@@ -5020,6 +5028,7 @@ class DataHandler
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable($table)
                     ->delete($table, ['uid' => (int)$uid]);
+                $this->deletedRecords[$table][] = (int)$uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
             } catch (DBALException $e) {
                 $databaseErrorMessage = $e->getPrevious()->getMessage();
@@ -8515,6 +8524,22 @@ class DataHandler
             }
         }
         return $result;
+    }
+
+    /**
+     * Determines whether a particular record has been deleted
+     * using DataHandler::deleteRecord() in this instance.
+     *
+     * @param string $tableName
+     * @param string $uid
+     * @return bool
+     */
+    public function hasDeletedRecord($tableName, $uid)
+    {
+        return
+            !empty($this->deletedRecords[$tableName])
+            && in_array($uid, $this->deletedRecords[$tableName])
+        ;
     }
 
     /**

@@ -280,6 +280,20 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
     /**
      * @test
+     * @see DataSet/Assertion/deleteContentAndPage.csv
+     */
+    public function deleteContentAndPage()
+    {
+        parent::deleteContentAndPage();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('deleteContentAndPage');
+
+        $response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, false);
+        $this->assertContains('PageNotFoundException', $response->getError());
+    }
+
+    /**
+     * @test
      * @see DataSet/Assertion/copyPageRecord.csv
      */
     public function copyPage()

@@ -265,6 +265,20 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
     /**
      * @test
+     * @see DataSet/Assertion/deleteContentAndPage.csv
+     */
+    public function deleteContentAndPage()
+    {
+        parent::deleteContentAndPage();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('deleteContentAndPage');
+
+        $response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, false);
+        $this->assertContains('PageNotFoundException', $response->getError());
+    }
+
+    /**
+     * @test
      * @see DataSet/Assertion/copyPageRecord.csv
      */
     public function copyPage()
@@ -372,10 +386,6 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
      */
     public function createPlaceholdersAndDeleteDraftParentPage()
     {
-        // @todo These two log entries could be avoided in DataHandlerHook, but are expected
-        // "[newlog()] Error: You cannot swap versions for a record you do not have access to edit!"
-        $this->expectedErrorLogEntries = 2;
-
         parent::createPlaceholdersAndDeleteDraftParentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');

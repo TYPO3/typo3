@@ -765,6 +765,11 @@ class DataHandlerHook
 
         // Check prerequisites before start swapping
 
+        // Skip records that have been deleted during the current execution
+        if ($dataHandler->hasDeletedRecord($table, $id)) {
+            return;
+        }
+
         // First, check if we may actually edit the online record
         if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
             $dataHandler->newlog('Error: You cannot swap versions for a record you do not have access to edit!', 1);
