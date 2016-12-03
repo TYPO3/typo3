@@ -85,11 +85,10 @@ class LanguageRepository
      */
     public function __construct()
     {
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-        try {
-            $globalSettings = $configurationManager->getLocalConfigurationValueByPath($this->configurationPath);
-            $this->selectedLocales = (array)$globalSettings['availableLanguages'];
-        } catch (\Exception $e) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'])) {
+            $this->selectedLocales = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'];
+        } else {
+            $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->setLocalConfigurationValueByPath(
                 $this->configurationPath,
                 ['availableLanguages' => []]
