@@ -34,6 +34,7 @@ class ConnectionMigratorTest extends UnitTestCase
      */
     public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval()
     {
+        $maxTableNameLength = 64;
         $ridiculouslyLongTableName = 'table_name_that_is_ridiculously_long_' . random_bytes(200);
         $tableMock = $this->getAccessibleMock(Table::class, ['getQuotedName'], [$ridiculouslyLongTableName]);
         $tableMock->expects($this->any())->method('getQuotedName')->withAnyParameters()->will($this->returnValue($ridiculouslyLongTableName));
@@ -52,8 +53,8 @@ class ConnectionMigratorTest extends UnitTestCase
 
         $this->assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->newName);
         $this->assertLessThanOrEqual(
-            strlen($renamedSchemaDiff->changedTables[0]->newName),
-            $this->maxTableNameLength
+            $maxTableNameLength,
+            strlen($renamedSchemaDiff->changedTables[0]->newName)
         );
     }
 }
