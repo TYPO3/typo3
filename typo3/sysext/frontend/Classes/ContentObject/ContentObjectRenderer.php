@@ -4881,15 +4881,23 @@ class ContentObjectRenderer
      */
     public function encaps_lineSplit($theValue, $conf)
     {
+        if ((string)$theValue === '') {
+            return '';
+        }
         $lParts = explode(LF, $theValue);
+
+        // When the last element is an empty linebreak we need to remove it, otherwise we will have a duplicate empty line.
+        $lastPartIndex = count($lParts) - 1;
+        if ($lParts[$lastPartIndex] === '' && trim($lParts[$lastPartIndex - 1], CR) === '') {
+            array_pop($lParts);
+        }
+
         $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), true);
         $nonWrappedTag = $conf['nonWrappedTag'];
         $defaultAlign = isset($conf['defaultAlign.'])
             ? trim($this->stdWrap($conf['defaultAlign'], $conf['defaultAlign.']))
             : trim($conf['defaultAlign']);
-        if ((string)$theValue === '') {
-            return '';
-        }
+
         $str_content = '';
         foreach ($lParts as $k => $l) {
             $sameBeginEnd = 0;

@@ -2584,6 +2584,26 @@ class ContentObjectRendererTest extends UnitTestCase
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
             ],
+            'Empty lines are not duplicated' => [
+                LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Multiple empty lines with no text' => [
+                LF . LF . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Empty lines are not duplicated at the end of content' => [
+                'test' . LF . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Empty lines are not trimmed' => [
+                LF . 'test' . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
         ];
     }
 
