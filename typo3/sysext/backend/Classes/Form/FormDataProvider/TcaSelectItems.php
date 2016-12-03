@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Resolve select items, set processed item list in processedTca, sanitize and resolve database field
@@ -43,7 +44,10 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             }
 
             $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
-            $fieldConfig['config']['maxitems'] = $this->sanitizeMaxItems($fieldConfig['config']['maxitems']);
+            $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'], 0, 99999);
+            if ($fieldConfig['config']['maxitems'] === 0) {
+                $fieldConfig['config']['maxitems'] = 99999;
+            }
 
             $fieldConfig['config']['items'] = $this->addItemsFromSpecial($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);

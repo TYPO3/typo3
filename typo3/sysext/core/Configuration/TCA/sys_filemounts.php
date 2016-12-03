@@ -9,7 +9,6 @@ return [
         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts',
         'adminOnly' => true,
         'rootLevel' => 1,
-        'requestUpdate' => 'base',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden'
@@ -51,6 +50,7 @@ return [
         ],
         'base' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.baseStorage',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

@@ -332,7 +332,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'languages',
-                'maxitems' => 1000,
             ]
         ],
         'TSconfig' => [
@@ -376,7 +375,6 @@ return [
                 ],
                 'size' => 20,
                 'minitems' => 0,
-                'maxitems' => 9999
             ]
         ],
     ],

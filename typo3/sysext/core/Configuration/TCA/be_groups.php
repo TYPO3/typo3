@@ -182,7 +182,6 @@ return [
                 'renderType' => 'selectCheckBox',
                 'special' => 'exclude',
                 'size' => 25,
-                'maxitems' => 1000,
                 'autoSizeMax' => 50,
             ]
         ],
@@ -192,7 +191,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'explicitValues',
-                'maxitems' => 1000,
             ]
         ],
         'allowed_languages' => [
@@ -201,7 +199,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'languages',
-                'maxitems' => 1000,
             ]
         ],
         'custom_options' => [
@@ -210,7 +207,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'custom',
-                'maxitems' => 1000,
             ]
         ],
         'hidden' => [
@@ -295,7 +291,6 @@ return [
                 ],
                 'size' => 20,
                 'minitems' => 0,
-                'maxitems' => 9999
             ]
         ]
     ],

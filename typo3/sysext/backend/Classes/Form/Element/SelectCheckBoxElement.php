@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Creates a widget with check box elements.
  *
- * This is rendered for config type=select, renderType=selectCheckBox, maxitems > 1
+ * This is rendered for config type=select, renderType=selectCheckBox
  */
 class SelectCheckBoxElement extends AbstractFormElement
 {

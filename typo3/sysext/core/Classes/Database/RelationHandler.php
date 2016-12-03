@@ -1273,9 +1273,11 @@ class RelationHandler
      * Prepare items from itemArray to be transferred to the TCEforms interface (as a comma list)
      *
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function readyForInterface()
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!is_array($this->itemArray)) {
             return false;
         }
@@ -1291,6 +1293,33 @@ class RelationHandler
             }
         }
         return implode(',', $output);
+    }
+
+    /**
+     * This method is typically called after getFromDB().
+     * $this->results holds a list of resolved and valid relations,
+     * $this->itemArray hold a list of "selected" relations from the incoming selection array.
+     * The difference is that "itemArray" may hold a single table/uid combination multiple times,
+     * for instance in a type=group relation having multiple=true, while "results" hold each
+     * resolved relation only once.
+     * The methods creates a sanitized "itemArray" from resolved "results" list, normalized
+     * the return array to always contain both table name and uid, and keep incoming
+     * "itemArray" sort order and keeps "multiple" selections.
+     *
+     * @return array
+     */
+    public function getResolvedItemArray(): array
+    {
+        $itemArray = [];
+        foreach ($this->itemArray as $item) {
+            if (isset($this->results[$item['table']][$item['id']])) {
+                $itemArray[] = [
+                    'table' => $item['table'],
+                    'uid' => $item['id'],
+                ];
+            }
+        }
+        return $itemArray;
     }
 
     /**

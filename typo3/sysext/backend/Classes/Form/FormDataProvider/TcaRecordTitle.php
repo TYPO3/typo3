@@ -238,20 +238,17 @@ class TcaRecordTitle implements FormDataProviderInterface
      */
     protected function getRecordTitleForGroupType($value, $fieldConfig)
     {
-        if ($fieldConfig['internal_type'] !== 'db') {
-            return implode(', ', GeneralUtility::trimExplode(',', $value, true));
+        $labelParts = [];
+        foreach ($value as $singleValue) {
+            if (isset($singleValue['uidOrPath'])) {
+                $labelParts[] = $singleValue['uidOrPath'];
+            } elseif (isset($singleValue['folder'])) {
+                $labelParts[] = $singleValue['folder'];
+            } else {
+                $labelParts[] = $singleValue['title'];
+            }
         }
-        $labelParts = array_map(
-            function ($rawLabelItem) {
-                return array_pop(GeneralUtility::trimExplode('|', $rawLabelItem, true, 2));
-            },
-            GeneralUtility::trimExplode(',', $value, true)
-        );
-        if (!empty($labelParts)) {
-            sort($labelParts);
-            return implode(', ', $labelParts);
-        }
-        return '';
+        return implode(', ', $labelParts);
     }
 
     /**

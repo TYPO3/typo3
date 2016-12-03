@@ -149,7 +149,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_post_tag_mm',
-                'maxitems' => 9999,
                 'appearance' => [
                     'useCombination' => 1,
                     'useSortable' => 1,
@@ -166,7 +165,6 @@ return [
                 'foreign_table' => 'tx_blogexample_domain_model_comment',
                 'foreign_field' => 'post',
                 'size' => 10,
-                'maxitems' => 9999,
                 'autoSizeMax' => 30,
                 'multiple' => 0,
                 'appearance' => [
@@ -182,7 +180,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 10,
-                'maxitems' => 9999,
                 'autoSizeMax' => 30,
                 'multiple' => 0,
                 'foreign_table' => 'tx_blogexample_domain_model_post',

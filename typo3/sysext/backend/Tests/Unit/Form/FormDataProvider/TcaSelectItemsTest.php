@@ -234,7 +234,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'aValue',
                                 ],
                             ],
-                            'maxitems' => 1
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -281,7 +281,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     3 => null,
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -342,7 +342,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'special' => 'tables',
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -405,7 +405,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                             'renderType' => 'selectSingle',
                             'special' => 'pagetypes',
                             'items' => [],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -1297,7 +1297,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     null,
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -1356,7 +1356,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     null,
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -1861,7 +1861,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     3 => null,
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -1939,7 +1939,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                             'foreign_table' => 'fTable',
                             'foreign_table_prefix' => 'aPrefix',
                             'items' => [],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2026,7 +2026,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2122,7 +2122,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2178,7 +2178,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2234,7 +2234,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2313,7 +2313,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2369,7 +2369,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2431,7 +2431,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2489,7 +2489,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ]
@@ -2538,7 +2538,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     null,
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -2589,7 +2589,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     1 => 'remove',
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -2667,7 +2667,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     3 => null,
                 ],
             ],
-            'maxitems' => 1,
+            'maxitems' => 99999,
         ];
 
         $this->assertSame($expected, $this->subject->addData($input));
@@ -2827,7 +2827,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     null,
                                 ],
                             ],
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                         ],
                     ],
                 ],
@@ -3080,7 +3080,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                             'items' => [],
                         ],
                     ],
@@ -3202,7 +3202,7 @@ class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'maxitems' => 1,
+                            'maxitems' => 99999,
                             'items' => [
                                 ['foo', 'foo', null, null],
                             ],

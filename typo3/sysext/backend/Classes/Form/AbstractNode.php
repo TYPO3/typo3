@@ -70,7 +70,6 @@ abstract class AbstractNode implements NodeInterface
             'stylesheetFiles' => [],
             // can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
             'requireJsModules' => [],
-            'extJSCODE' => '',
             'inlineData' => [],
             'html' => '',
         ];
@@ -161,21 +160,13 @@ abstract class AbstractNode implements NodeInterface
         }
         if (!empty($config['maxitems']) || !empty($config['minitems'])) {
             $minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
-            $maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;
+            $maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 99999;
             $type = ($config['type']) ?: 'range';
-            if ($config['type'] === 'select' && $config['renderType'] !== 'selectTree' && $maxItems <= 1 && $minItems > 0) {
-                $validationRules[] = [
-                    'type' => $type,
-                    'minItems' => 1,
-                    'maxItems' => 100000
-                ];
-            } else {
-                $validationRules[] = [
-                    'type' => $type,
-                    'minItems' => $minItems,
-                    'maxItems' => $maxItems
-                ];
-            }
+            $validationRules[] = [
+                'type' => $type,
+                'minItems' => $minItems,
+                'maxItems' => $maxItems
+            ];
         }
         if (!empty($config['required'])) {
             $validationRules[] = ['type' => 'required'];

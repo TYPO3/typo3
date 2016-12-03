@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Data provider for type=select + renderType=selectTree fields.
@@ -26,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Used in combination with SelectTreeElement to create the base HTML for trees,
  * does a little bit of sanitation and preparation then.
  *
- * Used in combination with SelectTreeController to fetch the final tree list, this is
+ * Used in combination with FormSelectTreeAjaxController to fetch the final tree list, this is
  * triggered if $result['selectTreeCompileItems'] is set to true. This way the tree item
  * calculation is only triggered if needed in this ajax context. Writes the prepared
  * item array to ['config']['items'] in this case.
@@ -54,7 +55,10 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 continue;
             }
 
-            $fieldConfig['config']['maxitems'] = $this->sanitizeMaxItems($fieldConfig['config']['maxitems']);
+            $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'], 0, 99999);
+            if ($fieldConfig['config']['maxitems'] === 0) {
+                $fieldConfig['config']['maxitems'] = 99999;
+            }
 
             // A couple of tree specific config parameters can be overwritten via page TS.
             // Pick those that influence the data fetching and write them into the config

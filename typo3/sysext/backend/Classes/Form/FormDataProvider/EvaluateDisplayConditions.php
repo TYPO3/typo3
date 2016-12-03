@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 /*
@@ -16,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class EvaluateDisplayConditions implements the TCA 'displayCond' option.
@@ -27,295 +29,759 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     /**
      * Remove fields from processedTca columns that should not be displayed.
      *
-     * @param array $result
-     * @return array
-     */
-    public function addData(array $result)
-    {
-        $result = $this->removeFlexformFields($result);
-        $result = $this->removeFlexformSheets($result);
-        $result = $this->removeTcaColumns($result);
-
-        return $result;
-    }
-
-    /**
-     * Evaluate the TCA column display conditions and remove columns that are not displayed
+     * Strategy of the parser is to first find all displayCond in given tca
+     * and within all type=flex fields to parse them into an array. This condition
+     * array contains all information to evaluate that condition in a second
+     * step that - depending on evaluation result - then throws away or keeps the field.
      *
      * @param array $result
      * @return array
      */
-    protected function removeTcaColumns($result)
+    public function addData(array $result): array
     {
+        $result = $this->parseDisplayConditions($result);
+        $result = $this->evaluateConditions($result);
+        return $result;
+    }
+
+    /**
+     * Find all 'displayCond' in TCA and flex forms and substitute them with an
+     * array representation that contains all relevant data to
+     * evaluate the condition later. For "FIELD" conditions the helper methods
+     * findFieldValue() is used to find the value of the referenced field to put
+     * that value into the returned array, too. This is important since the referenced
+     * field is "relative" to the position of the field that has the display condition.
+     * For instance, "FIELD:aField:=:foo" within a flex form field references a field
+     * value from the same sheet, and there are many more complex scenarios to resolve.
+     *
+     * @param array $result Incoming result array
+     * @throws \RuntimeException
+     * @return array Modified result array with all displayCond parsed into arrays
+     */
+    protected function parseDisplayConditions(array $result): array
+    {
+        $flexColumns = [];
         foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
+            if ($columnConfiguration['config']['type'] === 'flex') {
+                $flexColumns[$columnName] = $columnConfiguration;
+            }
             if (!isset($columnConfiguration['displayCond'])) {
                 continue;
             }
-
-            if (!$this->evaluateDisplayCondition($columnConfiguration['displayCond'], $result['databaseRow'])) {
-                unset($result['processedTca']['columns'][$columnName]);
-            }
+            $result['processedTca']['columns'][$columnName]['displayCond'] = $this->parseConditionRecursive(
+                $columnConfiguration['displayCond'],
+                $result['databaseRow']
+            );
         }
 
-        return $result;
-    }
-
-    /**
-     * Remove flexform sheets from processed tca if hidden by display conditions
-     *
-     * @param array $result
-     * @return array
-     */
-    protected function removeFlexformSheets($result)
-    {
-        foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
-            if (!isset($columnConfiguration['config']['type'])
-                || $columnConfiguration['config']['type'] !== 'flex'
-                || !isset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
-                || !is_array($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
-            ) {
-                continue;
-            }
-
-            $flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : [];
-            $flexFormRowData = $this->flattenFlexformRowData($flexFormRowData);
-            $flexFormRowData['parentRec'] = $result['databaseRow'];
-
-            $flexFormSheets = $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'];
-            foreach ($flexFormSheets as $sheetName => $sheetConfiguration) {
-                if (!isset($sheetConfiguration['ROOT']['displayCond'])) {
-                    continue;
-                }
-                if (!$this->evaluateDisplayCondition($sheetConfiguration['ROOT']['displayCond'], $flexFormRowData, true)) {
-                    unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]);
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Remove fields from flexform sheets if hidden by display conditions
-     *
-     * @param array $result
-     * @return array
-     */
-    protected function removeFlexformFields($result)
-    {
-        foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
-            if (!isset($columnConfiguration['config']['type'])
-                || $columnConfiguration['config']['type'] !== 'flex'
-                || !isset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
-                || !is_array($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
-            ) {
-                continue;
-            }
-
-            $flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : [];
-            $flexFormRowData['parentRec'] = $result['databaseRow'];
-
-            foreach ($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
-                $flexFormSheetRowData = $flexFormRowData[$sheetName]['lDEF'];
-                $flexFormSheetRowData['parentRec'] = $result['databaseRow'];
-                $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName] = $this->removeFlexformFieldsRecursive(
-                    $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName],
-                    $flexFormSheetRowData
-                );
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Remove fields from flexform data structure
-     *
-     * @param array $structure Given hierarchy
-     * @param array $flexFormRowData
-     * @return array Modified hierarchy
-     */
-    protected function removeFlexformFieldsRecursive($structure, $flexFormRowData)
-    {
-        $newStructure = [];
-        foreach ($structure as $key => $value) {
-            if ($key === 'el' && is_array($value)) {
-                $newSubStructure = [];
-                foreach ($value as $subKey => $subValue) {
-                    if (!isset($subValue['displayCond']) || $this->evaluateDisplayCondition($subValue['displayCond'], $flexFormRowData, true)) {
-                        $newSubStructure[$subKey] = $subValue;
+        foreach ($flexColumns as $columnName => $flexColumn) {
+            $sheetNameFieldNames = [];
+            foreach ($flexColumn['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+                // Create a list of all sheet names with field names combinations for later 'sheetName.fieldName' lookups
+                // 'one.sheet.one.field' as key, with array of "sheetName" and "fieldName" as value
+                if (isset($sheetConfiguration['ROOT']['el']) && is_array($sheetConfiguration['ROOT']['el'])) {
+                    foreach ($sheetConfiguration['ROOT']['el'] as $flexElementName => $flexElementConfiguration) {
+                        // section container have no value in its own
+                        if (isset($flexElementConfiguration['type']) && $flexElementConfiguration['type'] === 'array'
+                            && isset($flexElementConfiguration['section']) && $flexElementConfiguration['section'] == 1
+                        ) {
+                            continue;
+                        }
+                        $combinedKey = $sheetName . '.' . $flexElementName;
+                        if (array_key_exists($combinedKey, $sheetNameFieldNames)) {
+                            throw new \RuntimeException(
+                                'Ambiguous sheet name and field name combination: Sheet "' . $sheetNameFieldNames[$combinedKey]['sheetName']
+                                . '" with field name "' . $sheetNameFieldNames[$combinedKey]['fieldName'] . '" overlaps with sheet "'
+                                . $sheetName . '" and field name "' . $flexElementName . '". Do not do that.',
+                                1481483061
+                            );
+                        }
+                        $sheetNameFieldNames[$combinedKey] = [
+                            'sheetName' => $sheetName,
+                            'fieldName' => $flexElementName,
+                        ];
                     }
                 }
-                $value = $newSubStructure;
             }
-            if (is_array($value)) {
-                $value = $this->removeFlexformFieldsRecursive($value, $flexFormRowData);
-            }
-            $newStructure[$key] = $value;
-        }
-
-        return $newStructure;
-    }
-
-    /**
-     * Flatten the Flexform data row for sheet level display conditions that use SheetName.FieldName
-     *
-     * @param array $flexFormRowData
-     * @return array
-     */
-    protected function flattenFlexformRowData($flexFormRowData)
-    {
-        $flatFlexFormRowData = [];
-        foreach ($flexFormRowData as $sheetName => $sheetConfiguration) {
-            foreach ($sheetConfiguration['lDEF'] as $fieldName => $fieldConfiguration) {
-                $flatFlexFormRowData[$sheetName . '.' . $fieldName] = $fieldConfiguration;
-            }
-        }
-
-        return $flatFlexFormRowData;
-    }
-
-    /**
-     * Evaluates the provided condition and returns TRUE if the form
-     * element should be displayed.
-     *
-     * The condition string is separated by colons and the first part
-     * indicates what type of evaluation should be performed.
-     *
-     * @param string $displayCondition
-     * @param array $record
-     * @param bool $flexformContext
-     * @param int $recursionLevel Internal level of recursion
-     * @return bool TRUE if condition evaluates successfully
-     */
-    protected function evaluateDisplayCondition($displayCondition, array $record = [], $flexformContext = false, $recursionLevel = 0)
-    {
-        if ($recursionLevel > 99) {
-            // This should not happen, treat as misconfiguration
-            return true;
-        }
-        if (!is_array($displayCondition)) {
-            // DisplayCondition is not an array - just get its value
-            $result = $this->evaluateSingleDisplayCondition($displayCondition, $record, $flexformContext);
-        } else {
-            // Multiple conditions given as array ('AND|OR' => condition array)
-            $conditionEvaluations = [
-                'AND' => [],
-                'OR' => [],
-            ];
-            foreach ($displayCondition as $logicalOperator => $groupedDisplayConditions) {
-                $logicalOperator = strtoupper($logicalOperator);
-                if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
-                    // Invalid line. Skip it.
-                    continue;
-                } else {
-                    foreach ($groupedDisplayConditions as $key => $singleDisplayCondition) {
-                        $key = strtoupper($key);
-                        if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
-                            // Recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
-                            $conditionEvaluations[$logicalOperator][] = $this->evaluateDisplayCondition(
-                                [$key => $singleDisplayCondition],
-                                $record,
-                                $flexformContext,
-                                $recursionLevel + 1
+            foreach ($flexColumn['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+                if (isset($sheetConfiguration['ROOT']['displayCond'])) {
+                    // Condition on a flex sheet
+                    $flexContext = [
+                        'context' => 'flexSheet',
+                        'sheetNameFieldNames' => $sheetNameFieldNames,
+                        'currentSheetName' => $sheetName,
+                        'flexFormRowData' => $result['databaseRow'][$columnName],
+                    ];
+                    $parsedDisplayCondition = $this->parseConditionRecursive(
+                        $sheetConfiguration['ROOT']['displayCond'],
+                        $result['databaseRow'],
+                        $flexContext
+                    );
+                    $result['processedTca']['columns'][$columnName]['config']['ds']
+                        ['sheets'][$sheetName]['ROOT']['displayCond']
+                        = $parsedDisplayCondition;
+                }
+                if (isset($sheetConfiguration['ROOT']['el']) && is_array($sheetConfiguration['ROOT']['el'])) {
+                    foreach ($sheetConfiguration['ROOT']['el'] as $flexElementName => $flexElementConfiguration) {
+                        if (isset($flexElementConfiguration['displayCond'])) {
+                            // Condition on a flex element
+                            $flexContext = [
+                                'context' => 'flexField',
+                                'sheetNameFieldNames' => $sheetNameFieldNames,
+                                'currentSheetName' => $sheetName,
+                                'currentFieldName' => $flexElementName,
+                                'flexFormDataStructure' => $result['processedTca']['columns'][$columnName]['config']['ds'],
+                                'flexFormRowData' => $result['databaseRow'][$columnName],
+                            ];
+                            $parsedDisplayCondition = $this->parseConditionRecursive(
+                                $flexElementConfiguration['displayCond'],
+                                $result['databaseRow'],
+                                $flexContext
                             );
-                        } else {
-                            // Condition statement: collect evaluation of this single condition.
-                            $conditionEvaluations[$logicalOperator][] = $this->evaluateSingleDisplayCondition(
-                                $singleDisplayCondition,
-                                $record,
-                                $flexformContext
-                            );
+                            $result['processedTca']['columns'][$columnName]['config']['ds']
+                                ['sheets'][$sheetName]['ROOT']
+                                ['el'][$flexElementName]['displayCond']
+                                = $parsedDisplayCondition;
+                        }
+                        if (isset($flexElementConfiguration['type']) && $flexElementConfiguration['type'] === 'array'
+                            && isset($flexElementConfiguration['section']) && $flexElementConfiguration['section'] == 1
+                            && isset($flexElementConfiguration['children']) && is_array($flexElementConfiguration['children'])
+                        ) {
+                            // Conditions on flex container section elements
+                            foreach ($flexElementConfiguration['children'] as $containerIdentifier => $containerElements) {
+                                if (isset($containerElements['el']) && is_array($containerElements['el'])) {
+                                    foreach ($containerElements['el'] as $containerElementName => $containerElementConfiguration) {
+                                        if (isset($containerElementConfiguration['displayCond'])) {
+                                            $flexContext = [
+                                                'context' => 'flexContainerElement',
+                                                'sheetNameFieldNames' => $sheetNameFieldNames,
+                                                'currentSheetName' => $sheetName,
+                                                'currentFieldName' => $flexElementName,
+                                                'currentContainerIdentifier' => $containerIdentifier,
+                                                'currentContainerElementName' => $containerElementName,
+                                                'flexFormDataStructure' => $result['processedTca']['columns'][$columnName]['config']['ds'],
+                                                'flexFormRowData' => $result['databaseRow'][$columnName],
+                                            ];
+                                            $parsedDisplayCondition = $this->parseConditionRecursive(
+                                                $containerElementConfiguration['displayCond'],
+                                                $result['databaseRow'],
+                                                $flexContext
+                                            );
+                                            $result['processedTca']['columns'][$columnName]['config']['ds']
+                                                ['sheets'][$sheetName]['ROOT']
+                                                ['el'][$flexElementName]
+                                                ['children'][$containerIdentifier]
+                                                ['el'][$containerElementName]['displayCond']
+                                                = $parsedDisplayCondition;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            if (!empty($conditionEvaluations['OR']) && in_array(true, $conditionEvaluations['OR'], true)) {
-                // There are OR conditions and at least one of them is TRUE
-                $result = true;
-            } elseif (!empty($conditionEvaluations['AND']) && !in_array(false, $conditionEvaluations['AND'], true)) {
-                // There are AND conditions and none of them is FALSE
-                $result = true;
-            } elseif (!empty($conditionEvaluations['OR']) || !empty($conditionEvaluations['AND'])) {
-                // There are some conditions. But no OR was TRUE and at least one AND was FALSE
-                $result = false;
-            } else {
-                // There are no proper conditions - misconfiguration. Return TRUE.
-                $result = true;
-            }
         }
         return $result;
     }
 
     /**
-     * Evaluates the provided condition and returns TRUE if the form
-     * element should be displayed.
+     * Parse a condition into an array representation and validate syntax. Handles nested conditions combined with AND and OR.
+     * Calls itself recursive for nesting and logically combined conditions.
      *
-     * The condition string is separated by colons and the first part
-     * indicates what type of evaluation should be performed.
-     *
-     * @param string $displayCondition
-     * @param array $record
-     * @param bool $flexformContext
-     * @return bool
-     * @see evaluateDisplayCondition()
+     * @param mixed $condition Either an array with multiple conditions combined with AND or OR, or a single condition string
+     * @param array $databaseRow Incoming full database row
+     * @param array $flexContext Detailed flex context if display condition is within a flex field, needed to determine field value for "FIELD" conditions
+     * @throws \RuntimeException
+     * @return array Array representation of that condition, see unit tests for details on syntax
      */
-    protected function evaluateSingleDisplayCondition($displayCondition, array $record = [], $flexformContext = false)
+    protected function parseConditionRecursive($condition, array $databaseRow, array $flexContext = []): array
     {
-        $result = false;
-        list($matchType, $condition) = explode(':', $displayCondition, 2);
-        switch ($matchType) {
+        $conditionArray = [];
+        if (is_string($condition)) {
+            $conditionArray = $this->parseSingleConditionString($condition, $databaseRow, $flexContext);
+        } elseif (is_array($condition)) {
+            foreach ($condition as $logicalOperator => $groupedDisplayConditions) {
+                $logicalOperator = strtoupper($logicalOperator);
+                if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
+                    throw new \RuntimeException(
+                        'Multiple conditions must have boolean operator "OR" or "AND", "' . $logicalOperator . '" given.',
+                        1481380393
+                    );
+                }
+                if (count($groupedDisplayConditions) < 2) {
+                    throw new \RuntimeException(
+                        'With multiple conditions combined by "' . $logicalOperator . '", there must be at least two sub conditions',
+                        1481464101
+                    );
+                }
+                $conditionArray = [
+                    'type' => $logicalOperator,
+                    'subConditions' => [],
+                ];
+                foreach ($groupedDisplayConditions as $key => $singleDisplayCondition) {
+                    $key = strtoupper((string)$key);
+                    if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
+                        // Recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
+                        $conditionArray['subConditions'][] = $this->parseConditionRecursive(
+                            [$key => $singleDisplayCondition],
+                            $databaseRow,
+                            $flexContext
+                        );
+                    } else {
+                        $conditionArray['subConditions'][] = $this->parseConditionRecursive(
+                            $singleDisplayCondition,
+                            $databaseRow,
+                            $flexContext
+                        );
+                    }
+                }
+            }
+        } else {
+            throw new \RuntimeException(
+                'Condition must be either an array with sub conditions or a single condition string, type ' . gettype($condition) . ' given.',
+                1481381058
+            );
+        }
+        return $conditionArray;
+    }
+
+    /**
+     * Parse a single condition string into pieces, validate them and return
+     * an array representation.
+     *
+     * @param string $conditionString Given condition string like "VERSION:IS:true"
+     * @param array $databaseRow Incoming full database row
+     * @param array $flexContext Detailed flex context if display condition is within a flex field, needed to determine field value for "FIELD" conditions
+     * @return array Validated name array, example: [ type="VERSION", isVersion="true" ]
+     * @throws \RuntimeException
+     */
+    protected function parseSingleConditionString(string $conditionString, array $databaseRow, array $flexContext = []): array
+    {
+        $conditionArray = GeneralUtility::trimExplode(':', $conditionString);
+        $namedConditionArray = [
+            'type' => $conditionArray[0],
+        ];
+        switch ($namedConditionArray['type']) {
             case 'FIELD':
-                $result = $this->matchFieldCondition($condition, $record, $flexformContext);
+                if (empty($conditionArray[1])) {
+                    throw new \RuntimeException(
+                        'Field condition "' . $conditionString . '" must have a field name as second part, none given.'
+                        . 'Example: "FIELD:myField:=:myValue"',
+                        1481385695
+                    );
+                }
+                $fieldName = $conditionArray[1];
+                $allowedOperators = [ 'REQ', '>', '<', '>=', '<=', '-', '!-', '=', '!=', 'IN', '!IN', 'BIT', '!BIT' ];
+                if (empty($conditionArray[2]) || !in_array($conditionArray[2], $allowedOperators)) {
+                    throw new \RuntimeException(
+                        'Field condition "' . $conditionString . '" must have a valid operator as third part, non or invalid one given.'
+                        . ' Valid operators are: "' . implode('", "', $allowedOperators) . '".'
+                        . ' Example: "FIELD:myField:=:4"',
+                        1481386239
+                    );
+                }
+                $namedConditionArray['operator'] = $conditionArray[2];
+                if (!isset($conditionArray[3])) {
+                    throw new \RuntimeException(
+                        'Field condition "' . $conditionString . '" must have an operand as fourth part, none given.'
+                        . ' Example: "FIELD:myField:=:4"',
+                        1481401543
+                    );
+                }
+                $operand = $conditionArray[3];
+                if ($namedConditionArray['operator'] === 'REQ') {
+                    $operand = strtolower($operand);
+                    if ($operand === 'true') {
+                        $namedConditionArray['operand'] = true;
+                    } elseif ($operand === 'false') {
+                        $namedConditionArray['operand'] = false;
+                    } else {
+                        throw new \RuntimeException(
+                            'Field condition "' . $conditionString . '" must have "true" or "false" as fourth part.'
+                            . ' Example: "FIELD:myField:REQ:true',
+                            1481401892
+                        );
+                    }
+                } elseif (in_array($namedConditionArray['operator'], [ '>', '<', '>=', '<=', 'BIT', '!BIT' ])) {
+                    if (!MathUtility::canBeInterpretedAsInteger($operand)) {
+                        throw new \RuntimeException(
+                            'Field condition "' . $conditionString . '" with comparison operator ' . $namedConditionArray['operator']
+                            . ' must have a number as fourth part, ' . $operand . ' given. Example: "FIELD:myField:>:42"',
+                            1481456806
+                        );
+                    }
+                    $namedConditionArray['operand'] = (int)$operand;
+                } elseif ($namedConditionArray['operator'] === '-' || $namedConditionArray['operator'] === '!-') {
+                    list($minimum, $maximum) = GeneralUtility::trimExplode('-', $operand);
+                    if (!MathUtility::canBeInterpretedAsInteger($minimum) || !MathUtility::canBeInterpretedAsInteger($maximum)) {
+                        throw new \RuntimeException(
+                            'Field condition "' . $conditionString . '" with comparison operator ' . $namedConditionArray['operator']
+                            . ' must have two numbers as fourth part, separated by dash, ' . $operand . ' given. Example: "FIELD:myField:-:1-3"',
+                            1481457277
+                        );
+                    }
+                    $namedConditionArray['operand'] = '';
+                    $namedConditionArray['min'] = (int)$minimum;
+                    $namedConditionArray['max'] = (int)$maximum;
+                } elseif ($namedConditionArray['operator'] === 'IN' || $namedConditionArray['operator'] === '!IN'
+                    || $namedConditionArray['operator'] === '=' || $namedConditionArray['operator'] === '!='
+                ) {
+                    $namedConditionArray['operand'] = $operand;
+                }
+                $namedConditionArray['fieldValue'] = $this->findFieldValue($fieldName, $databaseRow, $flexContext);
                 break;
             case 'HIDE_FOR_NON_ADMINS':
-                $result = $this->matchHideForNonAdminsCondition();
                 break;
             case 'REC':
-                $result = $this->matchRecordCondition($condition, $record);
+                if (empty($conditionArray[1]) || $conditionArray[1] !== 'NEW') {
+                    throw new \RuntimeException(
+                        'Record condition "' . $conditionString . '" must contain "NEW" keyword: either "REC:NEW:true" or "REC:NEW:false"',
+                        1481384784
+                    );
+                }
+                if (empty($conditionArray[2])) {
+                    throw new \RuntimeException(
+                        'Record condition "' . $conditionString . '" must have an operand "true" or "false", none given. Example: "REC:NEW:true"',
+                        1481384947
+                    );
+                }
+                $operand = strtolower($conditionArray[2]);
+                if ($operand === 'true') {
+                    $namedConditionArray['isNew'] = true;
+                } elseif ($operand === 'false') {
+                    $namedConditionArray['isNew'] = false;
+                } else {
+                    throw new \RuntimeException(
+                        'Record condition "' . $conditionString . '" must have an operand "true" or "false, example "REC:NEW:true", given: ' . $operand,
+                        1481385173
+                    );
+                }
+                // Programming error: There must be a uid available, other data providers should have taken care of that already
+                if (!array_key_exists('uid', $databaseRow)) {
+                    throw new \RuntimeException(
+                        'Required [\'databaseRow\'][\'uid\'] not found in data array',
+                        1481467208
+                    );
+                }
+                // May contain "NEW123..."
+                $namedConditionArray['uid'] = $databaseRow['uid'];
                 break;
             case 'VERSION':
-                $result = $this->matchVersionCondition($condition, $record);
+                if (empty($conditionArray[1]) || $conditionArray[1] !== 'IS') {
+                    throw new \RuntimeException(
+                        'Version condition "' . $conditionString . '" must contain "IS" keyword: either "VERSION:IS:false" or "VERSION:IS:true"',
+                        1481383660
+                    );
+                }
+                if (empty($conditionArray[2])) {
+                    throw new \RuntimeException(
+                        'Version condition "' . $conditionString . '" must have an operand "true" or "false", none given. Example: "VERSION:IS:true',
+                        1481383888
+                    );
+                }
+                $operand = strtolower($conditionArray[2]);
+                if ($operand === 'true') {
+                    $namedConditionArray['isVersion'] = true;
+                } elseif ($operand === 'false') {
+                    $namedConditionArray['isVersion'] = false;
+                } else {
+                    throw new \RuntimeException(
+                        'Version condition "' . $conditionString . '" must have a "true" or "false" operand, example "VERSION:IS:true", given: ' . $operand,
+                        1481384123
+                    );
+                }
+                // Programming error: There must be a uid available, other data providers should have taken care of that already
+                if (!array_key_exists('uid', $databaseRow)) {
+                    throw new \RuntimeException(
+                        'Required [\'databaseRow\'][\'uid\'] not found in data array',
+                        1481469854
+                    );
+                }
+                $namedConditionArray['uid'] = $databaseRow['uid'];
+                if (array_key_exists('pid', $databaseRow)) {
+                    $namedConditionArray['pid'] = $databaseRow['pid'];
+                }
+                if (array_key_exists('_ORIG_pid', $databaseRow)) {
+                    $namedConditionArray['_ORIG_pid'] = $databaseRow['_ORIG_pid'];
+                }
                 break;
             case 'USER':
-                $result = $this->matchUserCondition($condition, $record);
+                if (empty($conditionArray[1])) {
+                    throw new \RuntimeException(
+                        'User function condition "' . $conditionString . '" must have a user function defined a second part, none given.'
+                        . ' Correct format is USER:\My\User\Func->match:more:arguments,'
+                        . ' given: ' . $conditionString,
+                        1481382954
+                    );
+                }
+                $namedConditionArray['function'] = $namedConditionArray[1];
+                array_shift($namedConditionArray);
+                array_shift($namedConditionArray);
+                $namedConditionArray['parameters'] = $namedConditionArray;
+                $namedConditionArray['record'] = $databaseRow;
                 break;
+            default:
+                throw new \RuntimeException(
+                    'Unknown condition rule type "' . $namedConditionArray['type'] . '" with display condition "' . $conditionString . '"".',
+                    1481381950
+                );
         }
+        return $namedConditionArray;
+    }
+
+    /**
+     * Find field value the condition refers to for "FIELD:" conditions.  For "normal" TCA fields this is the value of
+     * a "neighbor" field, but in flex form context it can be prepended with a sheet name. The method sorts out the
+     * details and returns the current field value.
+     *
+     * @param string $givenFieldName The full name used in displayCond. Can have sheet names included in flex context
+     * @param array $databaseRow Incoming database row values
+     * @param array $flexContext Detailed flex context if display condition is within a flex field, needed to determine field value for "FIELD" conditions
+     * @throws \RuntimeException
+     * @return mixed The current field value from database row or a deeper flex form structure field.
+     */
+    protected function findFieldValue(string $givenFieldName, array $databaseRow, array $flexContext = [])
+    {
+        $fieldValue = null;
+
+        // Early return for "normal" tca fields
+        if (empty($flexContext)) {
+            if (array_key_exists($givenFieldName, $databaseRow)) {
+                $fieldValue = $databaseRow[$givenFieldName];
+            }
+            return $fieldValue;
+        }
+        if ($flexContext['context'] === 'flexSheet') {
+            // A display condition on a flex form sheet. Relatively simple: fieldName is either
+            // "parentRec.fieldName" pointing to a databaseRow field name, or "sheetName.fieldName" pointing
+            // to a field value from a neighbor field.
+            if (strpos($givenFieldName, 'parentRec.') === 0) {
+                $fieldName = substr($givenFieldName, 10);
+                if (array_key_exists($fieldName, $databaseRow)) {
+                    $fieldValue = $databaseRow[$fieldName];
+                }
+            } else {
+                if (array_key_exists($givenFieldName, $flexContext['sheetNameFieldNames'])) {
+                    if ($flexContext['currentSheetName'] === $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName']) {
+                        throw new \RuntimeException(
+                            'Configuring displayCond to "' . $givenFieldName . '" on flex form sheet "'
+                            . $flexContext['currentSheetName'] . '" referencing a value from the same sheet does not make sense.',
+                            1481485705
+                        );
+                    }
+                }
+                $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
+                $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+                if (!isset($flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'])) {
+                    throw new \RuntimeException(
+                        'Flex form displayCond on sheet "' . $flexContext['currentSheetName'] . '" references field "' . $fieldName
+                        . '" of sheet "' . $sheetName . '", but that field does not exist in current data structure',
+                        1481488492
+                    );
+                }
+                $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
+            }
+        } elseif ($flexContext['context'] === 'flexField') {
+            // A display condition on a flex field. Handle "parentRec." similar to sheet conditions,
+            // get a list of "local" field names and see if they are used as reference, else see if a
+            // "sheetName.fieldName" field reference is given
+            if (strpos($givenFieldName, 'parentRec.') === 0) {
+                $fieldName = substr($givenFieldName, 10);
+                if (array_key_exists($fieldName, $databaseRow)) {
+                    $fieldValue = $databaseRow[$fieldName];
+                }
+            } else {
+                $listOfLocalFlexFieldNames = array_keys(
+                    $flexContext['flexFormDataStructure']['sheets'][$flexContext['currentSheetName']]['ROOT']['el']
+                );
+                if (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
+                    // Condition references field name of the same sheet
+                    $sheetName = $flexContext['currentSheetName'];
+                    if (!isset($flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$givenFieldName]['vDEF'])) {
+                        throw new \RuntimeException(
+                            'Flex form displayCond on field "' . $flexContext['currentFieldName'] . '" on flex form sheet "'
+                            . $flexContext['currentSheetName'] . '" references field "' . $givenFieldName . '", but a field value'
+                            . ' does not exist in this sheet',
+                            1481492953
+                        );
+                    }
+                    $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$givenFieldName]['vDEF'];
+                } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
+                    // Condition references field name including a sheet name
+                    $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
+                    $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+                    $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
+                } else {
+                    throw new \RuntimeException(
+                        'Flex form displayCond on field "' . $flexContext['currentFieldName'] . '" on flex form sheet "'
+                        . $flexContext['currentSheetName'] . '" references a field or field / sheet combination "'
+                        . $givenFieldName . '" that might be defined in given data structure but is not found in data values.',
+                        1481496170
+                    );
+                }
+            }
+        } elseif ($flexContext['context'] === 'flexContainerElement') {
+            // A display condition on a flex form section container element. Handle "parentRec.", compare to a
+            // list of local field names, compare to a list of field names from same sheet, compare to a list
+            // of sheet fields from other sheets.
+            if (strpos($givenFieldName, 'parentRec.') === 0) {
+                $fieldName = substr($givenFieldName, 10);
+                if (array_key_exists($fieldName, $databaseRow)) {
+                    $fieldValue = $databaseRow[$fieldName];
+                }
+            } else {
+                $currentSheetName = $flexContext['currentSheetName'];
+                $currentFieldName = $flexContext['currentFieldName'];
+                $currentContainerIdentifier = $flexContext['currentContainerIdentifier'];
+                $currentContainerElementName = $flexContext['currentContainerElementName'];
+                $listOfLocalContainerElementNames = array_keys(
+                    $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']
+                        ['el'][$currentFieldName]
+                        ['children'][$currentContainerIdentifier]
+                        ['el']
+                );
+                $listOfLocalContainerElementNamesWithSheetName = [];
+                foreach ($listOfLocalContainerElementNames as $aContainerElementName) {
+                    $listOfLocalContainerElementNamesWithSheetName[$currentSheetName . '.' . $aContainerElementName] = [
+                        'containerElementName' => $aContainerElementName,
+                    ];
+                }
+                $listOfLocalFlexFieldNames = array_keys(
+                    $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']['el']
+                );
+                if (in_array($givenFieldName, $listOfLocalContainerElementNames, true)) {
+                    // Condition references field of same container instance
+                    $containerType = array_shift(array_keys(
+                        $flexContext['flexFormRowData']['data'][$currentSheetName]
+                            ['lDEF'][$currentFieldName]
+                            ['el'][$currentContainerIdentifier]
+                    ));
+                    $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
+                        ['lDEF'][$currentFieldName]
+                        ['el'][$currentContainerIdentifier]
+                        [$containerType]
+                        ['el'][$givenFieldName]['vDEF'];
+                } elseif (in_array($givenFieldName, array_keys($listOfLocalContainerElementNamesWithSheetName, true))) {
+                    // Condition references field name of same container instance and has sheet name included
+                    $containerType = array_shift(array_keys(
+                        $flexContext['flexFormRowData']['data'][$currentSheetName]
+                        ['lDEF'][$currentFieldName]
+                        ['el'][$currentContainerIdentifier]
+                    ));
+                    $fieldName = $listOfLocalContainerElementNamesWithSheetName[$givenFieldName]['containerElementName'];
+                    $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
+                        ['lDEF'][$currentFieldName]
+                        ['el'][$currentContainerIdentifier]
+                        [$containerType]
+                        ['el'][$fieldName]['vDEF'];
+                } elseif (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
+                    // Condition reference field name of sheet this section container is in
+                    $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
+                        ['lDEF'][$givenFieldName]['vDEF'];
+                } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
+                    $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
+                    $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+                    $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
+                } else {
+                    $containerType = array_shift(array_keys(
+                        $flexContext['flexFormRowData']['data'][$currentSheetName]
+                        ['lDEF'][$currentFieldName]
+                        ['el'][$currentContainerIdentifier]
+                    ));
+                    throw new \RuntimeException(
+                        'Flex form displayCond on section container field "' . $currentContainerElementName . '" of container type "'
+                        . $containerType . '" on flex form sheet "'
+                        . $flexContext['currentSheetName'] . '" references a field or field / sheet combination "'
+                        . $givenFieldName . '" that might be defined in given data structure but is not found in data values.',
+                        1481634649
+                    );
+                }
+            }
+        }
+
+        return $fieldValue;
+    }
+
+    /**
+     * Loop through TCA, find prepared conditions and evaluate them. Delete either the
+     * field itself if the condition did not match, or the 'displayCond' in TCA.
+     *
+     * @param array $result
+     * @return array
+     */
+    protected function evaluateConditions(array $result): array
+    {
+        // Evaluate normal tca fields first
+        $listOfFlexFieldNames = [];
+        foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
+            $conditionResult = true;
+            if (isset($columnConfiguration['displayCond'])) {
+                $conditionResult = $this->evaluateConditionRecursive($columnConfiguration['displayCond']);
+                if (!$conditionResult) {
+                    unset($result['processedTca']['columns'][$columnName]);
+                } else {
+                    // Always unset the whole parsed display condition to save some memory, we're done with them
+                    unset($result['processedTca']['columns'][$columnName]['displayCond']);
+                }
+            }
+            // If field was not removed and if it is a flex field, add to list of flex fields to scan
+            if ($conditionResult && $columnConfiguration['config']['type'] === 'flex') {
+                $listOfFlexFieldNames[] = $columnName;
+            }
+        }
+
+        // Search for flex fields and evaluate sheet conditions throwing them away if needed
+        foreach ($listOfFlexFieldNames as $columnName) {
+            $columnConfiguration = $result['processedTca']['columns'][$columnName];
+            foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+                if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
+                    if (!$this->evaluateConditionRecursive($sheetConfiguration['ROOT']['displayCond'])) {
+                        unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]);
+                    } else {
+                        unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]['ROOT']['displayCond']);
+                    }
+                }
+            }
+        }
+
+        // With full sheets gone we loop over display conditions of single fields in flex to throw fields away if needed
+        $listOfFlexSectionContainers = [];
+        foreach ($listOfFlexFieldNames as $columnName) {
+            $columnConfiguration = $result['processedTca']['columns'][$columnName];
+            if (is_array($columnConfiguration['config']['ds']['sheets'])) {
+                foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+                    if (is_array($sheetConfiguration['ROOT']['el'])) {
+                        foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
+                            $conditionResult = true;
+                            if (is_array($flexConfiguration['displayCond'])) {
+                                $conditionResult = $this->evaluateConditionRecursive($flexConfiguration['displayCond']);
+                                if (!$conditionResult) {
+                                    unset(
+                                        $result['processedTca']['columns'][$columnName]['config']['ds']
+                                            ['sheets'][$sheetName]['ROOT']
+                                            ['el'][$flexField]
+                                    );
+                                } else {
+                                    unset(
+                                        $result['processedTca']['columns'][$columnName]['config']['ds']
+                                            ['sheets'][$sheetName]['ROOT']
+                                            ['el'][$flexField]['displayCond']
+                                    );
+                                }
+                            }
+                            // If it was not removed and if the field is a section container, add it to the section container list
+                            if ($conditionResult
+                                && isset($flexConfiguration['type']) && $flexConfiguration['type'] === 'array'
+                                && isset($flexConfiguration['section']) && $flexConfiguration['section'] == 1
+                                && isset($flexConfiguration['children']) && is_array($flexConfiguration['children'])
+                            ) {
+                                $listOfFlexSectionContainers[] = [
+                                    'columnName' => $columnName,
+                                    'sheetName' => $sheetName,
+                                    'flexField' => $flexField,
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Loop over found section container elements and evaluate their conditions
+        foreach ($listOfFlexSectionContainers as $flexSectionContainerPosition) {
+            $columnName = $flexSectionContainerPosition['columnName'];
+            $sheetName = $flexSectionContainerPosition['sheetName'];
+            $flexField = $flexSectionContainerPosition['flexField'];
+            $sectionElement = $result['processedTca']['columns'][$columnName]['config']['ds']
+                ['sheets'][$sheetName]['ROOT']
+                ['el'][$flexField];
+            foreach ($sectionElement['children'] as $containerInstanceName => $containerDataStructure) {
+                if (isset($containerDataStructure['el']) && is_array($containerDataStructure['el'])) {
+                    foreach ($containerDataStructure['el'] as $containerElementName => $containerElementConfiguration) {
+                        if (is_array($containerElementConfiguration['displayCond'])) {
+                            if (!$this->evaluateConditionRecursive($containerElementConfiguration['displayCond'])) {
+                                unset(
+                                    $result['processedTca']['columns'][$columnName]['config']['ds']
+                                        ['sheets'][$sheetName]['ROOT']
+                                        ['el'][$flexField]
+                                        ['children'][$containerInstanceName]
+                                        ['el'][$containerElementName]
+                                );
+                            } else {
+                                unset(
+                                    $result['processedTca']['columns'][$columnName]['config']['ds']
+                                        ['sheets'][$sheetName]['ROOT']
+                                        ['el'][$flexField]
+                                        ['children'][$containerInstanceName]
+                                        ['el'][$containerElementName]['displayCond']
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return $result;
+    }
+
+    /**
+     * Evaluate a condition recursive by evaluating the single condition type
+     *
+     * @param array $conditionArray The condition to evaluate, possibly with subConditions for AND and OR types
+     * @return bool true if the condition matched
+     */
+    protected function evaluateConditionRecursive(array $conditionArray): bool
+    {
+        switch ($conditionArray['type']) {
+            case 'AND':
+                $result = true;
+                foreach ($conditionArray['subConditions'] as $subCondition) {
+                    $result = $result && $this->evaluateConditionRecursive($subCondition);
+                }
+                return $result;
+            case 'OR':
+                $result = false;
+                foreach ($conditionArray['subConditions'] as $subCondition) {
+                    $result = $result || $this->evaluateConditionRecursive($subCondition);
+                }
+                return $result;
+            case 'FIELD':
+                return $this->matchFieldCondition($conditionArray);
+            case 'HIDE_FOR_NON_ADMINS':
+                return (bool)$this->getBackendUser()->isAdmin();
+            case 'REC':
+                return $this->matchRecordCondition($conditionArray);
+            case 'VERSION':
+                return $this->matchVersionCondition($conditionArray);
+            case 'USER':
+                return $this->matchUserCondition($conditionArray);
+        }
+        return false;
     }
 
     /**
      * Evaluates conditions concerning a field of the current record.
-     * Requires a record set via ->setRecord()
      *
      * Example:
      * "FIELD:sys_language_uid:>:0" => TRUE, if the field 'sys_language_uid' is greater than 0
      *
-     * @param string $condition
-     * @param array $record
-     * @param bool $flexformContext
+     * @param array $condition Condition array
      * @return bool
      */
-    protected function matchFieldCondition($condition, $record, $flexformContext = false)
+    protected function matchFieldCondition(array $condition): bool
     {
-        list($fieldName, $operator, $operand) = explode(':', $condition, 3);
-        if ($flexformContext) {
-            if (strpos($fieldName, 'parentRec.') !== false) {
-                $fieldNameParts = explode('.', $fieldName, 2);
-                $fieldValue = $record['parentRec'][$fieldNameParts[1]];
-            } else {
-                $fieldValue = $record[$fieldName]['vDEF'];
-            }
-        } else {
-            $fieldValue = $record[$fieldName];
-        }
+        $operator = $condition['operator'];
+        $operand = $condition['operand'];
+        $fieldValue = $condition['fieldValue'];
         $result = false;
         switch ($operator) {
             case 'REQ':
                 if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
-                if (strtoupper($operand) === 'TRUE') {
+                if ($operand) {
                     $result = (bool)$fieldValue;
                 } else {
                     $result = !$fieldValue;
@@ -337,7 +803,13 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
-                $result = $fieldValue >= $operand;
+                if ($fieldValue === null) {
+                    // If field value is null, this is NOT greater than or equal 0
+                    // See test set "Field is not greater than or equal to zero if empty array given"
+                    $result = false;
+                } else {
+                    $result = $fieldValue >= $operand;
+                }
                 break;
             case '<=':
                 if (is_array($fieldValue) && count($fieldValue) <= 1) {
@@ -350,8 +822,9 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
-                list($minimum, $maximum) = explode('-', $operand);
-                $result = $fieldValue >= $minimum && $fieldValue <= $maximum;
+                $min = $condition['min'];
+                $max = $condition['max'];
+                $result = $fieldValue >= $min && $fieldValue <= $max;
                 if ($operator[0] === '!') {
                     $result = !$result;
                 }
@@ -369,7 +842,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             case 'IN':
             case '!IN':
                 if (is_array($fieldValue)) {
-                    $result = count(array_intersect($fieldValue, explode(',', $operand))) > 0;
+                    $result = count(array_intersect($fieldValue, GeneralUtility::trimExplode(',', $operand))) > 0;
                 } else {
                     $result = GeneralUtility::inList($operand, $fieldValue);
                 }
@@ -389,71 +862,48 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     }
 
     /**
-     * Evaluates TRUE if current backend user is an admin.
-     *
-     * @return bool
-     */
-    protected function matchHideForNonAdminsCondition()
-    {
-        return (bool)$this->getBackendUser()->isAdmin();
-    }
-
-    /**
      * Evaluates conditions concerning the status of the current record.
-     * Requires a record set via ->setRecord()
      *
      * Example:
      * "REC:NEW:FALSE" => TRUE, if the record is already persisted (has a uid > 0)
      *
-     * @param string $condition
-     * @param array $record
+     * @param array $condition Condition array
      * @return bool
      */
-    protected function matchRecordCondition($condition, $record)
+    protected function matchRecordCondition(array $condition): bool
     {
-        $result = false;
-        list($operator, $operand) = explode(':', $condition, 2);
-        if ($operator === 'NEW') {
-            if (strtoupper($operand) === 'TRUE') {
-                $result = !((int)$record['uid'] > 0);
-            } elseif (strtoupper($operand) === 'FALSE') {
-                $result = ((int)$record['uid'] > 0);
-            }
+        if ($condition['isNew']) {
+            return !((int)$condition['uid'] > 0);
+        } else {
+            return (int)$condition['uid'] > 0;
         }
-        return $result;
     }
 
     /**
      * Evaluates whether the current record is versioned.
-     * Requires a record set via ->setRecord()
      *
-     * @param string $condition
-     * @param array $record
+     * @param array $condition Condition array
      * @return bool
      */
-    protected function matchVersionCondition($condition, $record)
+    protected function matchVersionCondition(array $condition): bool
     {
-        $result = false;
-        list($operator, $operand) = explode(':', $condition, 2);
-        if ($operator === 'IS') {
-            $isNewRecord = !((int)$record['uid'] > 0);
-            // Detection of version can be done be detecting the workspace of the user
-            $isUserInWorkspace = $this->getBackendUser()->workspace > 0;
-            if ((int)$record['pid'] === -1 || (int)$record['_ORIG_pid'] === -1) {
-                $isRecordDetectedAsVersion = true;
-            } else {
-                $isRecordDetectedAsVersion = false;
-            }
-            // New records in a workspace are not handled as a version record
-            // if it's no new version, we detect versions like this:
-            // -- if user is in workspace: always TRUE
-            // -- if editor is in live ws: only TRUE if pid == -1
-            $isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
-            if (strtoupper($operand) === 'TRUE') {
-                $result = $isVersion;
-            } elseif (strtoupper($operand) === 'FALSE') {
-                $result = !$isVersion;
-            }
+        $isNewRecord = !((int)$condition['uid'] > 0);
+        // Detection of version can be done by detecting the workspace of the user
+        $isUserInWorkspace = $this->getBackendUser()->workspace > 0;
+        if ((array_key_exists('pid', $condition) && (int)$condition['pid'] === -1)
+            || (array_key_exists('_ORIG_pid', $condition) && (int)$condition['_ORIG_pid'] === -1)
+        ) {
+            $isRecordDetectedAsVersion = true;
+        } else {
+            $isRecordDetectedAsVersion = false;
+        }
+        // New records in a workspace are not handled as a version record
+        // if it's no new version, we detect versions like this:
+        // * if user is in workspace: always TRUE
+        // * if editor is in live ws: only TRUE if pid == -1
+        $result = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
+        if (!$condition['isVersion']) {
+            $result = !$result;
         }
         return $result;
     }
@@ -461,22 +911,17 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     /**
      * Evaluates via the referenced user-defined method
      *
-     * @param string $condition
-     * @param array $record
+     * @param array $condition Condition array
      * @return bool
      */
-    protected function matchUserCondition($condition, $record)
+    protected function matchUserCondition(array $condition): bool
     {
-        $conditionParameters = explode(':', $condition);
-        $userFunction = array_shift($conditionParameters);
-
         $parameter = [
-            'record' => $record,
+            'record' => $condition['record'],
             'flexformValueKey' => 'vDEF',
-            'conditionParameters' => $conditionParameters
+            'conditionParameters' => $condition['parameters'],
         ];
-
-        return (bool)GeneralUtility::callUserFunction($userFunction, $parameter, $this);
+        return (bool)GeneralUtility::callUserFunction($condition['function'], $parameter, $this);
     }
 
     /**

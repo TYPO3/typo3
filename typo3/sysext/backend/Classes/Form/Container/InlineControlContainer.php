@@ -123,9 +123,9 @@ class InlineControlContainer extends AbstractContainer
 
         // Transport the flexform DS identifier fields to the FormAjaxInlineController
         if (!empty($newStructureItem['flexform'])
-            && isset($this->data['processedTca']['columns'][$field]['config']['ds']['meta']['dataStructurePointers'])
+            && isset($this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'])
         ) {
-            $config['flexDataStructurePointers'] = $this->data['processedTca']['columns'][$field]['config']['ds']['meta']['dataStructurePointers'];
+            $config['flexDataStructureIdentifier'] = $this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'];
         }
 
         // e.g. data[<table>][<uid>][<field>]
@@ -134,10 +134,6 @@ class InlineControlContainer extends AbstractContainer
         $nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
         $config['inline']['first'] = false;
-        // @todo: This initialization shouldn't be required data provider should take care this is set?
-        if (!is_array($this->data['parameterArray']['fieldConf']['children'])) {
-            $this->data['parameterArray']['fieldConf']['children'] = [];
-        }
         $firstChild = reset($this->data['parameterArray']['fieldConf']['children']);
         if (isset($firstChild['databaseRow']['uid'])) {
             $config['inline']['first'] = $firstChild['databaseRow']['uid'];

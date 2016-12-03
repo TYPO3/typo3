@@ -48,18 +48,31 @@ class DatabaseUniqueUidNewRowTest extends \TYPO3\CMS\Components\TestingFramework
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfUidIsAlreadySet()
+    public function addDataKeepsGivenUidIfAlreadySet()
     {
         $input = [
             'command' => 'new',
             'databaseRow' => [
-                'uid' => 42,
+                'uid' => 'NEW1234',
             ],
         ];
+        $expected = $input;
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfUidIsAlreadySetButDoesNotStartWithNewKeyword()
+    {
+        $input = [
+            'command' => 'new',
+            'databaseRow' => [
+                'uid' => 'FOO',
+            ],
+        ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437991120);
-
         $this->subject->addData($input);
     }
 

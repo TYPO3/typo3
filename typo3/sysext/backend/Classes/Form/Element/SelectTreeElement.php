@@ -14,10 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Render data as a tree.
  *
@@ -77,22 +73,54 @@ class SelectTreeElement extends AbstractFormElement
         $treeWrapperId = 'tree_' . $formElementId;
 
         $fieldName = $this->data['fieldName'];
-        $flexDataStructureIdentifier = '';
+
+        $dataStructureIdentifier = '';
+        $flexFormSheetName = '';
+        $flexFormFieldName = '';
+        $flexFormContainerName = '';
+        $flexFormContainerIdentifier = '';
+        $flexFormContainerFieldName = '';
+        $flexFormSectionContainerIsNew = false;
         if ($this->data['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
-            $flexDataStructureIdentifier = $this->data['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'];
+            $dataStructureIdentifier = $this->data['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'];
+            if (isset($this->data['flexFormSheetName'])) {
+                $flexFormSheetName = $this->data['flexFormSheetName'];
+            }
+            if (isset($this->data['flexFormFieldName'])) {
+                $flexFormFieldName = $this->data['flexFormFieldName'];
+            }
+            if (isset($this->data['flexFormContainerName'])) {
+                $flexFormContainerName = $this->data['flexFormContainerName'];
+            }
+            if (isset($this->data['flexFormContainerFieldName'])) {
+                $flexFormContainerFieldName = $this->data['flexFormContainerFieldName'];
+            }
+            if (isset($this->data['flexFormContainerIdentifier'])) {
+                $flexFormContainerIdentifier = $this->data['flexFormContainerIdentifier'];
+            }
+            // Add a flag this is a tree in a new flex section container element. This is needed to initialize
+            // the databaseRow with this container again so the tree data provider is able to calculate tree items.
+            if (!empty($this->data['flexSectionContainerPreparation'])) {
+                $flexFormSectionContainerIsNew = true;
+            }
         }
 
         $html = [];
         $html[] = '<div class="typo3-tceforms-tree">';
         $html[] = '    <input class="treeRecord" type="hidden"';
         $html[] = '           ' . $this->getValidationDataAsDataAttribute($config);
-        $html[] = '           data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] = '           data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
-        $html[] = '           data-table="' . htmlspecialchars($this->data['tableName']) . '"';
-        $html[] = '           data-field="' . htmlspecialchars($this->data['fieldName']) . '"';
-        $html[] = '           data-flex-form-datastructure-identifier="' . htmlspecialchars($flexDataStructureIdentifier) . '"';
+        $html[] = '           data-tablename="' . htmlspecialchars($this->data['tableName']) . '"';
+        $html[] = '           data-fieldname="' . htmlspecialchars($this->data['fieldName']) . '"';
         $html[] = '           data-uid="' . (int)$this->data['vanillaUid'] . '"';
-        $html[] = '           data-recordtypevalue="' . $this->data['recordTypeValue'] . '"';
+        $html[] = '           data-recordtypevalue="' . htmlspecialchars($this->data['recordTypeValue']) . '"';
+        $html[] = '           data-datastructureidentifier="' . htmlspecialchars($dataStructureIdentifier) . '"';
+        $html[] = '           data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
+        $html[] = '           data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
+        $html[] = '           data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
+        $html[] = '           data-flexformcontaineridentifier="' . htmlspecialchars($flexFormContainerIdentifier) . '"';
+        $html[] = '           data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
+        $html[] = '           data-flexformsectioncontainerisnew="' . htmlspecialchars($flexFormSectionContainerIsNew) . '"';
         $html[] = '           data-command="' . htmlspecialchars($this->data['command']) . '"';
         $html[] = '           data-read-only="' . $readOnly . '"';
         $html[] = '           data-tree-exclusive-keys="' . htmlspecialchars($exclusiveKeys) . '"';
@@ -126,34 +154,9 @@ class SelectTreeElement extends AbstractFormElement
      */
     protected function getTreeOnChangeJs()
     {
-        $table = $this->data['tableName'];
-        $field = $this->data['fieldName'];
         $parameterArray = $this->data['parameterArray'];
         $onChange = !empty($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']) ? $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] : '';
         $onChange .= !empty($parameterArray['fieldChangeFunc']['alert']) ? $parameterArray['fieldChangeFunc']['alert'] : '';
-
-        // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
-        // This is used for eg. "type" fields and others configured with "requestUpdate"
-        if (
-            !empty($GLOBALS['TCA'][$table]['ctrl']['type'])
-            && $field === $GLOBALS['TCA'][$table]['ctrl']['type']
-            || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
-            && GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
-        ) {
-            if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                $onChange = 'top.TYPO3.Modal.confirm(TYPO3.lang["FormEngine.refreshRequiredTitle"], TYPO3.lang["FormEngine.refreshRequiredContent"]).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
-            } else {
-                $onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
-            }
-        }
         return 'function () {' . $onChange . '}';
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

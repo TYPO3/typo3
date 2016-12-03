@@ -71,7 +71,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         }
         $result['processedTca']['columns'][$fieldName]['config']['minitems'] = $minItems;
 
-        $maxItems = 100000;
+        $maxItems = 99999;
         if (isset($config['maxitems'])) {
             $maxItems = MathUtility::forceIntegerInRange($config['maxitems'], 1);
         }

@@ -332,7 +332,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
                 $columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
             } elseif (isset($propertyMetaData['type']) && strpbrk($propertyMetaData['type'], '_\\') !== false) {
                 $columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
-            } elseif (isset($columnConfiguration['type']) && $columnConfiguration['type'] === 'select' && isset($columnConfiguration['maxitems']) && $columnConfiguration['maxitems'] > 1) {
+            } elseif (isset($columnConfiguration['type']) && $columnConfiguration['type'] === 'select') {
                 $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
             } else {
                 $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);

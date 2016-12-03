@@ -45,10 +45,13 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $result = $this->addInlineFirstPid($result);
 
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
-            if (!$this->isInlineField($fieldConfig) || !$this->isUserAllowedToModify($fieldConfig)) {
+            if (!$this->isInlineField($fieldConfig)) {
                 continue;
             }
             $result['processedTca']['columns'][$fieldName]['children'] = [];
+            if (!$this->isUserAllowedToModify($fieldConfig)) {
+                continue;
+            }
             if ($result['inlineResolveExistingChildren']) {
                 $result = $this->resolveRelatedRecords($result, $fieldName);
                 $result = $this->addForeignSelectorAndUniquePossibleRecords($result, $fieldName);

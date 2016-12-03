@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Receives ajax request from FormEngine suggest wizard and creates suggest answer as json result
@@ -41,74 +40,62 @@ class SuggestWizardController
     {
         $parsedBody = $request->getParsedBody();
 
-        if (!isset($parsedBody['value'])
-            || !isset($parsedBody['table'])
-            || !isset($parsedBody['field'])
-            || !isset($parsedBody['uid'])
-            || !isset($parsedBody['dataStructureIdentifier'])
-            || !isset($parsedBody['hmac'])
-        ) {
-            throw new \RuntimeException(
-                'Missing at least one of the required arguments "value", "table", "field", "uid"'
-                . ', "dataStructureIdentifier" or "hmac"',
-                1478607036
-            );
-        }
-
         $search = $parsedBody['value'];
-        $table = $parsedBody['table'];
-        $field = $parsedBody['field'];
+        $tableName = $parsedBody['tableName'];
+        $fieldName = $parsedBody['fieldName'];
         $uid = $parsedBody['uid'];
         $pid = (int)$parsedBody['pid'];
-
-        // flex form section container identifiers are created on js side dynamically "onClick". Those are
-        // not within the generated hmac ... the js side adds "idx{dateInMilliseconds}-", so this is removed here again.
-        // example outgoing in renderSuggestSelector():
-        // flex_1|data|sSuggestCheckCombination|lDEF|settings.subelements|el|ID-356586b0d3-form|item|el|content|vDEF
-        // incoming here:
-        // flex_1|data|sSuggestCheckCombination|lDEF|settings.subelements|el|ID-356586b0d3-idx1478611729574-form|item|el|content|vDEF
-        // Note: For existing containers, these parts are numeric, so "ID-356586b0d3-idx1478611729574-form" becomes 1 or 2, etc.
-        // @todo: This could be kicked is the flex form section containers are moved to an ajax call on creation
-        $fieldForHmac = preg_replace('/idx\d{13}-/', '', $field);
-
-        $dataStructureIdentifierString = '';
+        $dataStructureIdentifier = '';
         if (!empty($parsedBody['dataStructureIdentifier'])) {
-            $dataStructureIdentifierString = json_encode($parsedBody['dataStructureIdentifier']);
+            $dataStructureIdentifier = json_encode($parsedBody['dataStructureIdentifier']);
         }
-
-        $incomingHmac = $parsedBody['hmac'];
-        $calculatedHmac = GeneralUtility::hmac(
-            $table . $fieldForHmac . $uid . $pid . $dataStructureIdentifierString,
-            'formEngineSuggest'
-        );
-        if ($incomingHmac !== $calculatedHmac) {
-            throw new \RuntimeException(
-                'Incoming and calculated hmac do not match',
-                1478608245
-            );
-        }
-
-        // If the $uid is numeric (existing page) and a suggest wizard in pages is handled, the effective
-        // pid is the uid of that page - important for page ts config configuration.
-        if (MathUtility::canBeInterpretedAsInteger($uid) && $table === 'pages') {
-            $pid = $uid;
-        }
-        $TSconfig = BackendUtility::getPagesTSconfig($pid);
+        $flexFormSheetName = $parsedBody['flexFormSheetName'];
+        $flexFormFieldName = $parsedBody['flexFormFieldName'];
+        $flexFormContainerName = $parsedBody['flexFormContainerName'];
+        $flexFormContainerFieldName = $parsedBody['flexFormContainerFieldName'];
 
         // Determine TCA config of field
-        if (empty($dataStructureIdentifierString)) {
+        if (empty($dataStructureIdentifier)) {
             // Normal columns field
-            $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+            $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+            $fieldNameInPageTsConfig = $fieldName;
         } else {
             // A flex flex form field
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifierString);
-            $parts = explode('|', $field);
-            $fieldConfig = $this->getFlexFieldConfiguration($parts, $dataStructureArray);
-            // Flexform field name levels are separated with | instead of encapsulation in [];
-            // reverse this here to be compatible with regular field names.
-            $field = str_replace('|', '][', $field);
+            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            if (empty($flexFormContainerFieldName)) {
+                // @todo: See if a path in pageTsConfig like "TCEForm.tableName.theContainerFieldName =" is useful and works with other pageTs, too.
+                $fieldNameInPageTsConfig = $flexFormFieldName;
+                if (!isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                    ['el'][$flexFormFieldName]['TCEforms']['config'])
+                ) {
+                    throw new \RuntimeException(
+                        'Specified path ' . $flexFormFieldName . ' not found in flex form data structure',
+                        1480609491
+                    );
+                }
+                $fieldConfig = $dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                    ['el'][$flexFormFieldName]['TCEforms']['config'];
+            } else {
+                $fieldNameInPageTsConfig = $flexFormContainerFieldName;
+                if (!isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                        ['el'][$flexFormFieldName]
+                        ['el'][$flexFormContainerName]
+                        ['el'][$flexFormContainerFieldName]['TCEforms']['config'])
+                ) {
+                    throw new \RuntimeException(
+                        'Specified path ' . $flexFormContainerName . ' not found in flex form section container data structure',
+                        1480611208
+                    );
+                }
+                $fieldConfig = $dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                    ['el'][$flexFormFieldName]
+                    ['el'][$flexFormContainerName]
+                    ['el'][$flexFormContainerFieldName]['TCEforms']['config'];
+            }
         }
+
+        $pageTsConfig = BackendUtility::getPagesTSconfig($pid);
 
         $wizardConfig = $fieldConfig['wizards']['suggest'];
 
@@ -125,7 +112,7 @@ class SuggestWizardController
                 continue;
             }
 
-            $config = $this->getConfigurationForTable($queryTable, $wizardConfig, $TSconfig, $table, $field);
+            $config = $this->getConfigurationForTable($queryTable, $wizardConfig, $pageTsConfig, $tableName, $fieldNameInPageTsConfig);
 
             // process addWhere
             if (!isset($config['addWhere']) && $whereClause) {
@@ -136,8 +123,8 @@ class SuggestWizardController
                     '###THIS_UID###' => (int)$uid,
                     '###CURRENT_PID###' => (int)$pid
                 ];
-                if (isset($TSconfig['TCEFORM.'][$table . '.'][$field . '.'])) {
-                    $fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'];
+                if (isset($pageTsConfig['TCEFORM.'][$tableName . '.'][$fieldNameInPageTsConfig . '.'])) {
+                    $fieldTSconfig = $pageTsConfig['TCEFORM.'][$tableName . '.'][$fieldNameInPageTsConfig . '.'];
                     if (isset($fieldTSconfig['PAGE_TSCONFIG_ID'])) {
                         $replacement['###PAGE_TSCONFIG_ID###'] = (int)$fieldTSconfig['PAGE_TSCONFIG_ID'];
                     }
@@ -210,44 +197,6 @@ class SuggestWizardController
 
         // allow access to root level pages if security restrictions should be bypassed
         return !$tableConfig['ctrl']['rootLevel'] || $tableConfig['ctrl']['security']['ignoreRootLevelRestriction'];
-    }
-
-    /**
-     * Get 'config' section of field from resolved data structure specified by flex form path in $parts
-     *
-     * @param array $parts
-     * @param array $dataStructure
-     * @return array
-     */
-    protected function getFlexFieldConfiguration(array $parts, array $dataStructure)
-    {
-        if (count($parts) === 6) {
-            // Search a flex field, example:
-            // flex_1|data|sDb|lDEF|group_db_1|vDEF
-            if (!isset($dataStructure['sheets'][$parts[2]]['ROOT']['el'][$parts[4]]['TCEforms']['config'])) {
-                throw new \RuntimeException(
-                    'Specified path ' . implode('|', $parts) . ' not found in flex form data structure',
-                    1480609491
-                );
-            }
-            $fieldConfig = $dataStructure['sheets'][$parts[2]]['ROOT']['el'][$parts[4]]['TCEforms']['config'];
-        } elseif (count($parts) === 11) {
-            // Search a flex field in a section container, example:
-            // flex_1|data|sSuggestCheckCombination|lDEF|settings.subelements|el|1|item|el|content|vDEF
-            if (!isset($dataStructure['sheets'][$parts[2]]['ROOT']['el'][$parts[4]]['el'][$parts[7]]['el'][$parts[9]]['TCEforms']['config'])) {
-                throw new \RuntimeException(
-                    'Specified path ' . implode('|', $parts) . ' not found in flex form section container data structure',
-                    1480611208
-                );
-            }
-            $fieldConfig = $dataStructure['sheets'][$parts[2]]['ROOT']['el'][$parts[4]]['el'][$parts[7]]['el'][$parts[9]]['TCEforms']['config'];
-        } else {
-            throw new \RuntimeException(
-                'Invalid flex form path ' . implode('|', $parts),
-                1480611252
-            );
-        }
-        return $fieldConfig;
     }
 
     /**

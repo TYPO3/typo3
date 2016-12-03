@@ -187,13 +187,6 @@ define(['jquery', 'd3'], function ($, d3) {
             var me = this;
             d3.json(this.settings.dataUrl, function (error, json) {
                 if (error) throw error;
-                if (json === null) {
-                    var $container = $(me.wrapper).closest('.t3js-formengine-field-item');
-                    $container.hide();
-                    $container.parent().append('<p class="text-danger">' + TYPO3.lang['tcatree.msg_save_first'] + '</p>');
-                    return;
-                }
-
                 var nodes = Array.isArray(json) ? json : [];
                 nodes = nodes.map(function (node, index) {
                     node.open = (me.settings.expandUpToLevel !== null) ? node.depth < me.settings.expandUpToLevel : Boolean(node.expanded);

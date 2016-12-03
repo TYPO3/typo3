@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -75,18 +76,27 @@ class FormInlineAjaxController
             $databaseRow = [];
             $vanillaUid = (int)$inlineFirstPid;
         }
-        $databaseRow = $this->addFlexFormDataStructurePointersFromAjaxContext($ajaxArguments, $databaseRow);
+
+        $flexDataStructureIdentifier = $this->getFlexFormDataStructureIdentifierFromAjaxContext($ajaxArguments);
+        $processedTca = [];
+        if ($flexDataStructureIdentifier) {
+            $processedTca = $GLOBALS['TCA'][$parent['table']];
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexDataStructureIdentifier);
+            $processedTca['columns'][$parentFieldName]['config']['dataStructureIdentifier'] = $flexDataStructureIdentifier;
+            $processedTca['columns'][$parentFieldName]['config']['ds'] = $dataStructure;
+        }
 
         $formDataCompilerInputForParent = [
             'vanillaUid' => $vanillaUid,
             'command' => $command,
             'tableName' => $parent['table'],
             'databaseRow' => $databaseRow,
+            'processedTca' => $processedTca,
             'inlineFirstPid' => $inlineFirstPid,
-            'columnsToProcess' => array_merge(
-                [$parentFieldName],
-                array_keys($databaseRow)
-            ),
+            'columnsToProcess' => [
+                $parentFieldName,
+            ],
             // Do not resolve existing children, we don't need them now
             'inlineResolveExistingChildren' => false,
         ];
@@ -248,18 +258,26 @@ class FormInlineAjaxController
             'uid' => (int)$parent['uid'],
         ];
 
-        $databaseRow = $this->addFlexFormDataStructurePointersFromAjaxContext($ajaxArguments, $databaseRow);
+        $flexDataStructureIdentifier = $this->getFlexFormDataStructureIdentifierFromAjaxContext($ajaxArguments);
+        $processedTca = [];
+        if ($flexDataStructureIdentifier) {
+            $processedTca = $GLOBALS['TCA'][$parent['table']];
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexDataStructureIdentifier);
+            $processedTca['columns'][$parentFieldName]['config']['dataStructureIdentifier'] = $flexDataStructureIdentifier;
+            $processedTca['columns'][$parentFieldName]['config']['ds'] = $dataStructure;
+        }
 
         $formDataCompilerInputForParent = [
             'vanillaUid' => (int)$parent['uid'],
             'command' => 'edit',
             'tableName' => $parent['table'],
             'databaseRow' => $databaseRow,
+            'processedTca' => $processedTca,
             'inlineFirstPid' => $inlineFirstPid,
-            'columnsToProcess' => array_merge(
-                [$parentFieldName],
-                array_keys($databaseRow)
-            ),
+            'columnsToProcess' => [
+                $parentFieldName
+            ],
             // @todo: still needed?
             'inlineStructure' => $inlineStackProcessor->getStructure(),
             // Do not resolve existing children, we don't need them now
@@ -639,7 +657,6 @@ class FormInlineAjaxController
         foreach ($childResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }
-        $jsonResult['scriptCall'][] = $childResult['extJSCODE'];
         if (!empty($childResult['additionalInlineLanguageLabelFiles'])) {
             $labels = [];
             foreach ($childResult['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {
@@ -927,33 +944,25 @@ class FormInlineAjaxController
     }
 
     /**
-     * Flexforms require additional database columns to be processed to determine the correct
-     * data structure to be used from a flexform. The required columns and their values are
-     * transmitted in the AJAX context of the request and need to be added to the fake database
-     * row for the inline parent.
+     * Inline fields within a flex form need the data structure identifier that
+     * specifies the specific flex form this inline element is in. Retrieve it from
+     * the context array.
      *
      * @param array $ajaxArguments The AJAX request arguments
-     * @param array $databaseRow The fake database row
-     * @return array The database row with the flexform data structure pointer columns added
+     * @return string Data structure identifier as json string
      */
-    protected function addFlexFormDataStructurePointersFromAjaxContext(array $ajaxArguments, array $databaseRow)
+    protected function getFlexFormDataStructureIdentifierFromAjaxContext(array $ajaxArguments)
     {
         if (!isset($ajaxArguments['context'])) {
-            return $databaseRow;
+            return '';
         }
 
         $context = json_decode($ajaxArguments['context'], true);
         if (GeneralUtility::hmac(serialize($context['config'])) !== $context['hmac']) {
-            return $databaseRow;
+            return '';
         }
 
-        if (isset($context['config']['flexDataStructurePointers'])
-            && is_array($context['config']['flexDataStructurePointers'])
-        ) {
-            $databaseRow = array_merge($context['config']['flexDataStructurePointers'], $databaseRow);
-        }
-
-        return $databaseRow;
+        return $context['config']['flexDataStructureIdentifier'] ?? '';
     }
 
     /**

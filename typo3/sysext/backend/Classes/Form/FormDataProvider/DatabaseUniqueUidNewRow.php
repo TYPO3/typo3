@@ -34,14 +34,22 @@ class DatabaseUniqueUidNewRow implements FormDataProviderInterface
         if ($result['command'] !== 'new') {
             return $result;
         }
-        // Throw exception if uid is already set
-        if (isset($result['databaseRow']['uid'])) {
+        // Throw exception if uid is already set and does not start with NEW.
+        // In some situations a new record needs to be created again so the initialization of default
+        // values is triggered, but the "ID" of the new record is already known: This is the case if a
+        // new section container element is added by FormFlexAjaxController to a not yet persisted record.
+        // In this case, command "new" is given to the data compiler, but the "NEW1234" id has been calculated
+        // by the former compiler when opening the record already. The ajax controller then hands in the
+        // "new" command together with the id calculated by the first call.
+        if (isset($result['databaseRow']['uid']) && strpos($result['databaseRow']['uid'], 'NEW') !== 0) {
             throw new \InvalidArgumentException(
-                'uid is already set to ' . $result['databaseRow']['uid'],
+                'uid is already set to ' . $result['databaseRow']['uid'] . ' and does not start with NEW for a "new" command',
                 1437991120
             );
         }
-        $result['databaseRow']['uid'] = StringUtility::getUniqueId('NEW');
+        if (!isset($result['databaseRow']['uid'])) {
+            $result['databaseRow']['uid'] = StringUtility::getUniqueId('NEW');
+        }
 
         return $result;
     }

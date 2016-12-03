@@ -38,7 +38,6 @@ define(['jquery',
 
 		// initialization function; private
 		me.initialize = function() {
-
 			// store DOM element and jQuery object for later use
 			me.el = el;
 			me.$el = $(el);
@@ -85,7 +84,6 @@ define(['jquery',
 			});
 
 			if (opts.allowRestructure) {
-
 				// create a sortable when dragging on the header of a section
 				me.createSortable();
 
@@ -184,13 +182,11 @@ define(['jquery',
 		$contentEl.toggle();
 
 		if ($contentEl.is(':visible')) {
-
 			// show the open icon, and set the hidden field for toggling to "hidden"
 			$sectionEl.find(this.options.sectionToggleIconOpenSelector).show();
 			$sectionEl.find(this.options.sectionToggleIconCloseSelector).hide();
 			$sectionEl.find(this.options.sectionToggleInputFieldSelector).val(0);
 		} else {
-
 			// show the close icon, and set the hidden field for toggling to "1"
 			$sectionEl.find(this.options.sectionToggleIconOpenSelector).hide();
 			$sectionEl.find(this.options.sectionToggleIconCloseSelector).show();
@@ -220,7 +216,8 @@ define(['jquery',
 
 		// create a preview container span element
 		if ($sectionEl.find(this.options.sectionHeaderPreviewSelector).length === 0) {
-			$sectionEl.find(this.options.sectionHeaderSelector).find('.t3js-record-title').parent().append('<span class="' + this.options.sectionHeaderPreviewSelector.replace(/\./, '') + '"></span>');
+			$sectionEl.find(this.options.sectionHeaderSelector).find('.t3js-record-title').parent()
+				.append('<span class="' + this.options.sectionHeaderPreviewSelector.replace(/\./, '') + '"></span>');
 		}
 
 		$sectionEl.find(this.options.sectionHeaderPreviewSelector).text(previewContent);
@@ -238,5 +235,41 @@ define(['jquery',
 	$(function() {
 		// run the flexform functions on all containers (which contains one or more sections)
 		$('.t3-flex-container').t3FormEngineFlexFormElement();
+
+		// Add handler to fetch container data on click on "add container" buttons
+		$('.t3js-flex-container-add').on('click', function(e) {
+			var me = $(this);
+			e.preventDefault();
+			$.ajax({
+				url: TYPO3.settings.ajaxUrls['record_flex_container_add'],
+				type: 'POST',
+				cache: false,
+				data: {
+					vanillaUid: me.data('vanillauid'),
+					databaseRowUid: me.data('databaserowuid'),
+					command: me.data('command'),
+					tableName: me.data('tablename'),
+					fieldName: me.data('fieldname'),
+					recordTypeValue: me.data('recordtypevalue'),
+					dataStructureIdentifier: me.data('datastructureidentifier'),
+					flexFormSheetName: me.data('flexformsheetname'),
+					flexFormFieldName: me.data('flexformfieldname'),
+					flexFormContainerName: me.data('flexformcontainername')
+				},
+				success: function(response) {
+					me.closest('.t3-form-field-container').find('.t3-flex-container').append(response.html);
+					$('.t3-flex-container').t3FormEngineFlexFormElement();
+					if (response.scriptCall && response.scriptCall.length > 0) {
+						TYPO3.jQuery.each(response.scriptCall, function (index, value) {
+							eval(value);
+						});
+					}
+					TYPO3.FormEngine.reinitialize();
+					TYPO3.FormEngine.Validation.initializeInputFields();
+					TYPO3.FormEngine.Validation.validate();
+				}
+			});
+		});
+
 	});
 });

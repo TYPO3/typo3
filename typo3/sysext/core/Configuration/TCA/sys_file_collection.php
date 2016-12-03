@@ -20,7 +20,6 @@ return [
             'static' => 'apps-clipboard-images',
             'folder' => 'apps-filetree-folder-media'
         ],
-        'requestUpdate' => 'storage',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -135,6 +134,7 @@ return [
         ],
         'storage' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.storage',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

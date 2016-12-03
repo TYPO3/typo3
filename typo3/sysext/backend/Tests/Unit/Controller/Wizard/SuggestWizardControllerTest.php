@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
-use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -28,52 +28,23 @@ class SuggestWizardControllerTest extends \TYPO3\CMS\Components\TestingFramework
     /**
      * @test
      */
-    public function searchActionThrowsExceptionWithMissingArgument()
-    {
-        $viewProphecy = $this->prophesize(StandaloneView::class);
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getParsedBody()->willReturn([
-            'value' => 'theSearchValue',
-            'table' => 'aTable',
-            'field' => 'aField',
-            'uid' => 'aUid',
-            'dataStructureIdentifier' => 'anIdentifier',
-            // hmac missing
-        ]);
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1478607036);
-        (new SuggestWizardController($viewProphecy->reveal()))
-            ->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
-    }
-
-    /**
-     * @test
-     */
-    public function searchActionThrowsExceptionWithWrongHmac()
-    {
-        $viewProphecy = $this->prophesize(StandaloneView::class);
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getParsedBody()->willReturn([
-            'value' => 'theSearchValue',
-            'table' => 'aTable',
-            'field' => 'aField',
-            'uid' => 'aUid',
-            'dataStructureIdentifier' => 'anIdentifier',
-            'hmac' => 'wrongHmac'
-        ]);
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1478608245);
-        (new SuggestWizardController($viewProphecy->reveal()))
-            ->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
-    }
-
-    /**
-     * @test
-     */
     public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound()
     {
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $serverRequestProphecy->getParsedBody()->willReturn([
+            'value' => 'theSearchValue',
+            'table' => 'aTable',
+            'field' => 'aField',
+            'uid' => 'aUid',
+            'pid' => 'aPid',
+            'dataStructureIdentifier' => ['anIdentifier'],
+            'flexFormSheetName' => 'sDb',
+            'flexFormFieldName' => 'aField',
+            'flexFormContainerName' => '',
+            'flexFormContainerFieldName' => '',
+        ]);
+
         $dataStructure = [
             'sheets' => [
                 'sDb' => [
@@ -91,21 +62,13 @@ class SuggestWizardControllerTest extends \TYPO3\CMS\Components\TestingFramework
                 ],
             ],
         ];
+        $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
+        $flexFormToolsProphecy->parseDataStructureByIdentifier(json_encode(['anIdentifier']))->willReturn($dataStructure);
 
-        $parts = [
-            0 => 'flex_1',
-            1 => 'data',
-            2 => 'sDb',
-            3 => 'lDEF',
-            4 => 'group_db_1',
-            5 => 'vDEF',
-        ];
-
-        /** @var SuggestWizardController|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        $subject->_call('getFlexFieldConfiguration', $parts, $dataStructure);
+        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
@@ -113,6 +76,21 @@ class SuggestWizardControllerTest extends \TYPO3\CMS\Components\TestingFramework
      */
     public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound()
     {
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $serverRequestProphecy->getParsedBody()->willReturn([
+            'value' => 'theSearchValue',
+            'table' => 'aTable',
+            'field' => 'aField',
+            'uid' => 'aUid',
+            'pid' => 'aPid',
+            'dataStructureIdentifier' => ['anIdentifier'],
+            'flexFormSheetName' => 'sDb',
+            'flexFormFieldName' => 'aField',
+            'flexFormContainerName' => 'aContainer',
+            'flexFormContainerFieldName' => 'aContainerFieldName',
+        ]);
+
         $dataStructure = [
             'sheets' => [
                 'sDb' => [
@@ -130,150 +108,13 @@ class SuggestWizardControllerTest extends \TYPO3\CMS\Components\TestingFramework
                 ],
             ],
         ];
+        $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
+        $flexFormToolsProphecy->parseDataStructureByIdentifier(json_encode(['anIdentifier']))->willReturn($dataStructure);
 
-        $parts = [
-            0 => 'flex_1',
-            1 => 'data',
-            2 => 'sSuggestCheckCombination',
-            3 => 'lDEF',
-            4 => 'settings.subelements',
-            5 => 'el',
-            6 => '1',
-            7 => 'item',
-            8 => 'el',
-            9 => 'content',
-            10 => 'vDEF',
-        ];
-
-        /** @var SuggestWizardController|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        $subject->_call('getFlexFieldConfiguration', $parts, $dataStructure);
-    }
-
-    /**
-     * @test
-     */
-    public function getFlexFieldConfigurationThrowsExceptionPartsIsOfUnexpectedLength()
-    {
-        /** @var SuggestWizardController|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1480611252);
-        $subject->_call('getFlexFieldConfiguration', [], []);
-    }
-
-    /**
-     * @test
-     */
-    public function getFlexFieldConfigurationFindsConfigurationOfSimpleFlexField()
-    {
-        $dataStructure = [
-            'sheets' => [
-                'sDb' => [
-                    'ROOT' => [
-                        'el' => [
-                            'group_db_1' => [
-                                'TCEforms' => [
-                                    'config' => [
-                                        'Sublevel field configuration',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $parts = [
-            0 => 'flex_1',
-            1 => 'data',
-            2 => 'sDb',
-            3 => 'lDEF',
-            4 => 'group_db_1',
-            5 => 'vDEF',
-        ];
-
-        $expected = $dataStructure['sheets']['sDb']['ROOT']['el']['group_db_1']['TCEforms']['config'];
-
-        /** @var SuggestWizardController|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
-        $result = $subject->_call('getFlexFieldConfiguration', $parts, $dataStructure);
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function getFlexFieldConfigurationFindsConfigurationOfSectionContainerField()
-    {
-        $dataStructure = [
-            'sheets' => [
-                'sSuggestCheckCombination' => [
-                    'ROOT' => [
-                        'type' => 'array',
-                        'el' => [
-                            'settings.subelements' => [
-                                'title' => 'Subelements',
-                                'section' => 1,
-                                'type' => 'array',
-                                'el' => [
-                                    'item' => [
-                                        'type' => 'array',
-                                        'title' => 'Subelement',
-                                        'el' => [
-                                            'content' => [
-                                                'TCEforms' => [
-                                                    'label' => 'Content',
-                                                    'config' => [
-                                                        'type' => 'group',
-                                                        'internal_type' => 'db',
-                                                        'allowed' => 'pages',
-                                                        'size' => 5,
-                                                        'maxitems' => 10,
-                                                        'minitems' => 1,
-                                                        'show_thumbs' => 1,
-                                                        'wizards' => [
-                                                            'suggest' => [
-                                                                'type' => 'suggest',
-                                                            ],
-                                                        ],
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $parts = [
-            0 => 'flex_1',
-            1 => 'data',
-            2 => 'sSuggestCheckCombination',
-            3 => 'lDEF',
-            4 => 'settings.subelements',
-            5 => 'el',
-            6 => '1',
-            7 => 'item',
-            8 => 'el',
-            9 => 'content',
-            10 => 'vDEF',
-        ];
-
-        $expected = $dataStructure['sheets']['sSuggestCheckCombination']['ROOT']['el']['settings.subelements']
-            ['el']['item']['el']['content']['TCEforms']['config'];
-
-        /** @var SuggestWizardController|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
-        $result = $subject->_call('getFlexFieldConfiguration', $parts, $dataStructure);
-        $this->assertEquals($expected, $result);
+        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**

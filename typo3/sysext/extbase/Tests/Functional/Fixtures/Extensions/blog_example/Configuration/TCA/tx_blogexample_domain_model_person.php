@@ -64,7 +64,6 @@ return [
                 'foreign_match_fields' => [
                     'fieldname' => 'tags'
                 ],
-                'maxitems' => 9999,
                 'appearance' => [
                     'useCombination' => 1,
                     'useSortable' => 1,
@@ -84,7 +83,6 @@ return [
                 'foreign_match_fields' => [
                     'fieldname' => 'tags_special'
                 ],
-                'maxitems' => 9999,
                 'appearance' => [
                     'useCombination' => 1,
                     'useSortable' => 1,

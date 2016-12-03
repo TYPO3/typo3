@@ -12,7 +12,6 @@ return [
         'rootLevel' => true,
         'versioningWS_alwaysAllowLiveEdit' => true, // Only have LIVE records of file storages
         'enablecolumns' => [],
-        'requestUpdate' => 'driver',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_file_storage'
         ],
@@ -95,6 +94,7 @@ return [
         ],
         'driver' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.driver',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

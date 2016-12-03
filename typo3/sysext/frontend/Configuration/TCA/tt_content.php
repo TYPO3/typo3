@@ -44,7 +44,6 @@ return [
             'default' => 'mimetypes-x-content-text'
         ],
         'thumbnail' => 'image',
-        'requestUpdate' => 'list_type,menu_type',
         'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
     ],
     'interface' => [
@@ -741,6 +740,7 @@ return [
         ],
         'menu_type' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:menu_type',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -795,6 +795,7 @@ return [
         ],
         'list_type' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:list_type',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -829,7 +830,6 @@ return [
                 'localizeReferencesAtParentLocalization' => true,
                 'allowed' => 'sys_file_collection',
                 'foreign_table' => 'sys_file_collection',
-                'maxitems' => 999,
                 'minitems' => 0,
                 'size' => 5,
                 'wizards' => [
@@ -1016,7 +1016,6 @@ return [
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) ORDER BY sys_category.title ASC',
                 'size' => 20,
-                'maxitems' => 9999,
                 'treeConfig' => [
                     'parentField' => 'parent',
                     'appearance' => [

@@ -84,7 +84,9 @@ class TcaInlineTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTest
             ->shouldBeCalled()
             ->willReturn(false);
 
-        $this->assertEquals($this->defaultConfig, $this->subject->addData($input));
+        $expected = $this->defaultConfig;
+        $expected['processedTca']['columns']['aField']['children'] = [];
+        $this->assertEquals($expected, $this->subject->addData($input));
     }
 
     /**

@@ -6,17 +6,19 @@
             <core:icon identifier="actions-search" size="small" />
         </span>
         <input type="search" class="t3-form-suggest form-control"
-               placeholder="{f:translate(key: placeholder, htmlEscape: 'TRUE')}"
-               data-fieldname="{fieldname -> f:format.htmlspecialchars()}"
-               data-table="{table -> f:format.htmlspecialchars()}"
-               data-field="{field -> f:format.htmlspecialchars()}"
-               data-uid="{uid}"
-               data-pid="{pid}"
-               data-datastructureidentifier="{dataStructureIdentifier}"
-               data-hmac="{hmac}"
-               data-fieldtype="{fieldtype -> f:format.htmlspecialchars()}"
-               data-minchars="{minchars}"
+            placeholder="{f:translate(key: placeholder, htmlEscape: 'TRUE')}"
+            data-fieldname="{fieldName -> f:format.htmlspecialchars()}"
+            data-tablename="{tableName -> f:format.htmlspecialchars()}"
+            data-field="{field -> f:format.htmlspecialchars()}"
+            data-uid="{uid}"
+            data-pid="{pid}"
+            data-fieldtype="{fieldtype -> f:format.htmlspecialchars()}"
+            data-minchars="{minchars}"
+            data-datastructureidentifier="{dataStructureIdentifier -> f:format.htmlspecialchars()}"
+            data-flexformsheetname="{flexFormSheetName -> f:format.htmlspecialchars()}"
+            data-flexformfieldname="{flexFormFieldName -> f:format.htmlspecialchars()}"
+            data-flexformcontainername="{flexFormContainerName -> f:format.htmlspecialchars()}"
+            data-flexformcontainerfieldname="{flexFormContainerFieldName -> f:format.htmlspecialchars()}"
         />
     </div>
 </div>
-

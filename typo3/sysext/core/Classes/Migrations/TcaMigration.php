@@ -58,6 +58,7 @@ class TcaMigration
         $tca = $this->migrateShowIfRteOption($tca);
         $tca = $this->migrateWorkspacesOptions($tca);
         $tca = $this->migrateTranslationTable($tca);
+        $tca = $this->migrateRequestUpdate($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -878,7 +879,7 @@ class TcaMigration
      * Removes "transForeignTable" and "transOrigPointerTable" which has been
      * used for tables "pages" and "pages_languages_overlay" in the core only.
      *
-     * @param array $tca
+     * @param array $tca Incoming TCA
      * @return array Migrated TCA
      */
     protected function migrateTranslationTable(array $tca)
@@ -893,6 +894,33 @@ class TcaMigration
                 unset($tableDefinition['ctrl']['transOrigPointerTable']);
                 $this->messages[] = 'The TCA setting \'transOrigPointerTable\' was removed '
                     . 'in TCA ' . $table . '[\'ctrl\'][\'transOrigPointerTable\']';
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Move ['ctrl']['requestUpdate'] to 'onChange => "reload"' of single fields
+     *
+     * @param array $tca Incoming TCA
+     * @return array Migrated TCA
+     */
+    protected function migrateRequestUpdate(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!empty($tableDefinition['ctrl']['requestUpdate'])) {
+                $fields = GeneralUtility::trimExplode(',', $tableDefinition['ctrl']['requestUpdate']);
+                $migratedFields = [];
+                foreach ($fields as $field) {
+                    if (isset($tableDefinition['columns'][$field])) {
+                        $tableDefinition['columns'][$field]['onChange'] = 'reload';
+                        $migratedFields[] = $field;
+                    }
+                }
+                $this->messages[] = 'The TCA setting [\'ctrl\'][\'requestUpdate\'] was removed from '
+                    . ' table ' . $table . '. The column field(s) "' . implode('" and "', $fields) . '" were updated'
+                    . ' and contain option "\'onChange\' => \'reload\'" parallel to \'config\' and \'label\' section.';
+                unset($tableDefinition['ctrl']['requestUpdate']);
             }
         }
         return $tca;

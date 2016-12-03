@@ -52,6 +52,12 @@ return [
         'target' => Controller\FormInlineAjaxController::class . '::expandOrCollapseAction'
     ],
 
+    // Add a flex form section container
+    'record_flex_container_add' => [
+        'path' => '/record/flex/containeradd',
+        'target' => Controller\FormFlexAjaxController::class . '::containerAdd',
+    ],
+
     // FormEngine suggest wizard result generator
     'record_suggest' => [
         'path' => '/wizard/suggest/search',
@@ -61,7 +67,7 @@ return [
     // Fetch the tree-structured data from a record for the tree selection
     'record_tree_data' => [
         'path' => '/record/tree/fetchData',
-        'target' => Controller\SelectTreeController::class . '::fetchDataAction'
+        'target' => Controller\FormSelectTreeAjaxController::class . '::fetchDataAction'
     ],
 
     // Get shortcut edit form

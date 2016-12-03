@@ -310,9 +310,7 @@ class NodeFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTe
             'renderType' => 'selectSingle',
             'parameterArray' => [
                 'fieldConf' => [
-                    'config' => [
-                        'maxitems' => 1,
-                    ],
+                    'config' => [],
                 ],
             ],
         ];

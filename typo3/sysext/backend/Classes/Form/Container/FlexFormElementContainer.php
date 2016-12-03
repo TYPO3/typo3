@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -25,7 +24,7 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * This one is called by FlexFormTabsContainer, FlexFormNoTabsContainer or FlexFormContainerContainer.
  * For single fields, the code is similar to SingleFieldContainer, processing will end up in single
- * element classes depending on specific type of an element. Additionally, it determines if a
+ * element classes depending on specific renderType of an element. Additionally, it determines if a
  * section is handled and hands over to FlexFormSectionContainer in this case.
  */
 class FlexFormElementContainer extends AbstractContainer
@@ -62,16 +61,10 @@ class FlexFormElementContainer extends AbstractContainer
                     continue;
                 }
 
-                $sectionTitle = '';
-                if (!empty(trim($flexFormFieldArray['title']))) {
-                    $sectionTitle = $languageService->sL(trim($flexFormFieldArray['title']));
-                }
-
                 $options = $this->data;
-                $options['flexFormDataStructureArray'] = $flexFormFieldArray['el'];
+                $options['flexFormDataStructureArray'] = $flexFormFieldArray;
                 $options['flexFormRowData'] = isset($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : [];
-                $options['flexFormSectionType'] = $flexFormFieldName;
-                $options['flexFormSectionTitle'] = $sectionTitle;
+                $options['flexFormFieldName'] = $flexFormFieldName;
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
@@ -90,13 +83,16 @@ class FlexFormElementContainer extends AbstractContainer
                 ];
 
                 $alertMsgOnChange = '';
-                if (
-                    $fakeParameterArray['fieldConf']['onChange'] === 'reload'
-                    || !empty($GLOBALS['TCA'][$table]['ctrl']['type']) && $GLOBALS['TCA'][$table]['ctrl']['type'] === $flexFormFieldName
-                    || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $flexFormFieldName)
-                ) {
+                if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
                     if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                        $alertMsgOnChange = 'top.TYPO3.Modal.confirm(TYPO3.lang["FormEngine.refreshRequiredTitle"], TYPO3.lang["FormEngine.refreshRequiredContent"]).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
+                        $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
+                                . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
+                                . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
+                            . ')'
+                            . '.on('
+                                . '"button.clicked",'
+                                . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
+                            . ');';
                     } else {
                         $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm();}';
                     }
@@ -115,6 +111,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
                     }
                 }
+                // @todo: is that a bug? name and id should usually be of different form
                 $fakeParameterArray['itemFormElID'] = $fakeParameterArray['itemFormElName'];
                 if (isset($flexFormRowData[$flexFormFieldName]['vDEF'])) {
                     $fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName]['vDEF'];
@@ -123,6 +120,12 @@ class FlexFormElementContainer extends AbstractContainer
                 }
 
                 $options = $this->data;
+                // Set either flexFormFieldName or flexFormContainerFieldName, depending on if we are a "regular" field or a flex container section field
+                if (empty($options['flexFormFieldName'])) {
+                    $options['flexFormFieldName'] = $flexFormFieldName;
+                } else {
+                    $options['flexFormContainerFieldName'] = $flexFormFieldName;
+                }
                 $options['parameterArray'] = $fakeParameterArray;
                 $options['elementBaseName'] = $this->data['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][vDEF]';
 

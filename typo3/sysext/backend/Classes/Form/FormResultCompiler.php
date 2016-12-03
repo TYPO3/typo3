@@ -29,11 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FormResultCompiler
 {
     /**
-     * @var string
-     */
-    protected $extJSCODE = '';
-
-    /**
      * @var array HTML of additional hidden fields rendered by sub containers
      */
     protected $hiddenFieldAccum = [];
@@ -64,7 +59,7 @@ class FormResultCompiler
      *
      * @var array
      */
-    protected $additionalJS_post = [];
+    protected $additionalJavaScriptPost = [];
 
     /**
      * Additional JavaScript executed on submit; If you set "OK" variable it will raise an error
@@ -72,7 +67,7 @@ class FormResultCompiler
      *
      * @var array
      */
-    protected $additionalJS_submit = [];
+    protected $additionalJavaScriptSubmit = [];
 
     /**
      * Additional language label files to include.
@@ -105,10 +100,10 @@ class FormResultCompiler
     {
         $this->doSaveFieldName = $resultArray['doSaveFieldName'];
         foreach ($resultArray['additionalJavaScriptPost'] as $element) {
-            $this->additionalJS_post[] = $element;
+            $this->additionalJavaScriptPost[] = $element;
         }
         foreach ($resultArray['additionalJavaScriptSubmit'] as $element) {
-            $this->additionalJS_submit[] = $element;
+            $this->additionalJavaScriptSubmit[] = $element;
         }
         if (!empty($resultArray['requireJsModules'])) {
             foreach ($resultArray['requireJsModules'] as $module) {
@@ -140,7 +135,6 @@ class FormResultCompiler
                 }
             }
         }
-        $this->extJSCODE = $this->extJSCODE . LF . $resultArray['extJSCODE'];
         $this->inlineData = $resultArray['inlineData'];
         foreach ($resultArray['additionalHiddenFields'] as $element) {
             $this->hiddenFieldAccum[] = $element;
@@ -237,7 +231,6 @@ class FormResultCompiler
             }
         }
         $pageRenderer->loadJquery();
-        $pageRenderer->loadExtJS();
         $beUserAuth = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.
@@ -306,25 +299,19 @@ class FormResultCompiler
             'FormEngine.remainingCharacters'    => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
         ], true);
 
-        $out = '
-		TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
-		';
+        $out = LF . 'TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";';
 
         // Add JS required for inline fields
         if (!empty($this->inlineData)) {
-            $out .= '
-			inline.addToDataArray(' . json_encode($this->inlineData) . ');
-			';
+            $out .= LF . 'inline.addToDataArray(' . json_encode($this->inlineData) . ');';
         }
         // $this->additionalJS_submit:
-        if ($this->additionalJS_submit) {
-            $additionalJS_submit = implode('', $this->additionalJS_submit);
+        if ($this->additionalJavaScriptSubmit) {
+            $additionalJS_submit = implode('', $this->additionalJavaScriptSubmit);
             $additionalJS_submit = str_replace([CR, LF], '', $additionalJS_submit);
-            $out .= '
-			TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJS_submit) . '");
-			';
+            $out .= 'TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJS_submit) . '");';
         }
-        $out .= LF . implode(LF, $this->additionalJS_post) . LF . $this->extJSCODE;
+        $out .= LF . implode(LF, $this->additionalJavaScriptPost);
 
         return $html . LF . TAB . GeneralUtility::wrapJS($out);
     }

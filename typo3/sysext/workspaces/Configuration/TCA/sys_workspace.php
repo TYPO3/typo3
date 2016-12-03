@@ -116,7 +116,6 @@ return [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
                 ]
             ],
-            'displayCond' => 'FALSE'
         ],
         'freeze' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_workspace.freeze',
@@ -337,7 +336,7 @@ return [
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.tabs.mountpoints,
                 db_mountpoints,file_mountpoints,
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.tabs.publishing,
-                publish_time,unpublish_time,
+                publish_time,
             --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_filemounts.tabs.staging,
                 custom_stages,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,

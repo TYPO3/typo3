@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 /*
@@ -17,6 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Test case
@@ -24,302 +26,3443 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 class EvaluateDisplayConditionsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var EvaluateDisplayConditions
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new EvaluateDisplayConditions();
-    }
-
-    /**
      * @test
      */
-    public function addDataRemovesTcaColumnsHiddenByDisplayCondition()
-    {
-        $input = [
-            'databaseRow' => [
-                'aField' => 'aField',
-                'bField' => 'bField',
-                'cField' => 1,
-            ],
-            'recordTypeValue' => 'aType',
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => '--palette--;aPalette;2,bField,cField'
-                    ],
-                ],
-                'palettes' => [
-                    '2' => [
-                        'showitem' => 'aField',
-                    ],
-                ],
-                'columns' => [
-                    'aField' => [
-                        'displayCond' => 'FIELD:cField:=:0',
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                    'bField' => [
-                        'displayCond' => 'FIELD:cField:=:1',
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                    'cField' => [
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $expected = $input;
-        unset($expected['processedTca']['columns']['aField']);
-
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataRemovesFlexformSheetsHiddenByDisplayCondition()
-    {
-        $input = [
-            'databaseRow' => [
-                'aField' => [
-                    'data' => [
-                        'sGeneral' => [
-                            'lDEF' => [
-                                'mmType' => [
-                                    'vDEF' => [
-                                        0 => 'video',
-                                    ],
-                                ],
-                                'mmUseHTML5' => [
-                                    'vDEF' => '0',
-                                ],
-                            ],
-                        ],
-                        'sVideo' => [
-                            'lDEF' => [],
-                        ],
-                        'sAudio' => [
-                            'lDEF' => []
-                        ],
-                    ]
-                ]
-            ],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'flex',
-                            'ds' => [
-                                'meta' => [],
-                                'sheets' => [
-                                    'sGeneral' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [
-                                                'mmType' => [
-                                                    'config' => [
-                                                        'type' => 'select',
-                                                        'items' => [],
-                                                    ],
-                                                ],
-                                                'mmUseHTML5' => [
-                                                    'displayCond' => 'FIELD:mmType:!=:audio',
-                                                    'config' => [
-                                                        'type' => 'check',
-                                                        'default' => 0,
-                                                        'items' => [],
-                                                    ],
-                                                ],
-                                            ],
-                                            'sheetTitle' => 'sGeneral',
-                                        ],
-                                    ],
-                                    'sVideo' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [],
-                                            'sheetTitle' => 'sVideo',
-                                            'displayCond' => 'FIELD:sGeneral.mmType:!=:audio',
-                                        ],
-                                    ],
-                                    'sAudio' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [],
-                                            'sheetTitle' => 'sAudio',
-                                            'displayCond' => 'FIELD:sGeneral.mmType:=:audio',
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = $input;
-        unset($expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sAudio']);
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataRemovesFlexformFieldsHiddenByDisplayCondition()
-    {
-        $input = [
-            'databaseRow' => [
-                'aField' => [
-                    'data' => [
-                        'sGeneral' => [
-                            'lDEF' => [
-                                'mmType' => [
-                                    'vDEF' => [
-                                        0 => 'audio',
-                                    ],
-                                ],
-                                'mmUseHTML5' => [
-                                    'vDEF' => '0',
-                                ],
-                            ],
-                        ],
-                    ]
-                ]
-            ],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'flex',
-                            'ds_pointerField' => 'list_type,CType',
-                            'ds' => [
-                                'meta' => [],
-                                'sheets' => [
-                                    'sGeneral' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [
-                                                'mmType' => [
-                                                    'config' => [
-                                                        'type' => 'select',
-                                                        'items' => [],
-                                                    ],
-                                                ],
-                                                'mmUseHTML5' => [
-                                                    'displayCond' => 'FIELD:mmType:!=:audio',
-                                                    'config' => [
-                                                        'type' => 'check',
-                                                        'default' => 0,
-                                                        'items' => [],
-                                                    ],
-                                                ],
-                                                'mmUseCurl' => [
-                                                    'displayCond' => 'FIELD:mmType:=:audio',
-                                                    'config' => [
-                                                        'type' => 'check',
-                                                        'default' => 0,
-                                                        'items' => [],
-                                                    ],
-                                                ],
-                                            ],
-                                            'sheetTitle' => 'aTitle',
-                                        ],
-                                    ],
-                                    'secondSheet' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [
-                                                'foo' => [
-                                                    'config' => [
-                                                        'type' => 'select',
-                                                        'items' => [],
-                                                    ],
-                                                ],
-                                            ],
-                                            'sheetTitle' => 'bTitle',
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = $input;
-        unset($expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sGeneral']['ROOT']['el']['mmUseHTML5']);
-
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function matchHideForNonAdminsReturnsTrueIfBackendUserIsAdmin()
+    public function addDataThrowsExceptionIfMultipleConditionsAreNotCombinedWithAndOrOr()
     {
         $input = [
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
-                    'aField' => [
-                        'displayCond' => 'HIDE_FOR_NON_ADMINS',
-                        'config' => [
-                            'type' => 'input',
-                        ]
+                    'field_1' => [
+                        'displayCond' => [
+                            'FOO' => [
+                                'condition1',
+                                'condition2',
+                            ],
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
-
-        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-        $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(true);
-
-        $expected = $input;
-
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481380393);
+        (new EvaluateDisplayConditions())->addData($input);
     }
 
     /**
      * @test
      */
-    public function matchHideForNonAdminsReturnsFalseIfBackendUserIsNotAdmin()
+    public function addDataThrowsExceptionWithMultipleConditionsCombinedWithAndHavingOnlyOneSubCondition()
     {
         $input = [
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
-                    'aField' => [
-                        'displayCond' => 'HIDE_FOR_NON_ADMINS',
-                        'config' => [
-                            'type' => 'input',
-                        ]
+                    'field_1' => [
+                        'displayCond' => [
+                            'AND' => [
+                                'condition1',
+                            ],
+                        ],
                     ],
-                ]
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481464101);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfConditionIsNotStringOrArray()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => false,
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481381058);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfConditionTypeIsUnknown()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481381950);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionHasNoFieldName()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481385695);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionHasNoOperator()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481386239);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionHasInvalidOperator()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481386239);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionHasNoOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName:REQ',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481401543);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionReqHasInvalidOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName:REQ:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481401892);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionNumberComparisonHasInvalidOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName:>=:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481456806);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName:-:23-',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481457277);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidMaxOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'FIELD:fieldName:-:23-foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481457277);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRecordConditionHasNoNewKeyword()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'REC',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481384784);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRecordConditionHasInvalidNewKeyword()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'REC:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481384784);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRecordConditionHasNoOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'REC:NEW',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481384947);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRecordConditionHasInvalidOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'REC:NEW:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481385173);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRecordConditionHasNoUidInDatabaseRow()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'REC:NEW:false',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481467208);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfVersionConditionHasNoIsKeyword()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'VERSION',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481383660);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfVersionConditionHasInvalidIsKeyword()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'VERSION:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481383660);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfVersionConditionHasNoOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'VERSION:IS',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481383888);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfVersionConditionHasInvalidOperand()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'VERSION:IS:foo',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481384123);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfVersionConditionHasNoUidInDatabaseRow()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'VERSION:IS:false',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481469854);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfUserConditionHasNoUserfuncSpecified()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'USER',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481382954);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFlexSheetNameAndFieldNameCombinationsOverlap()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sheet' => [
+                                        'ROOT' => [
+                                            'el' => [
+                                                'name.field' => [],
+                                            ],
+                                        ],
+                                    ],
+                                    'sheet.name' => [
+                                        'ROOT' => [
+                                            'el' => [
+                                                'field' => [],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481483061);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFlexSheetConditionReferencesFieldFromSameSheet()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'aSheet' => [
+                                        'ROOT' => [
+                                            'displayCond' => 'FIELD:aSheet.aField:=:foo',
+                                            'el' => [
+                                                'aField' => [],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481485705);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataTrowsExceptionIfFlexFieldSheetConditionReferencesNotExistingFieldValue()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sheet_1' => [],
+                                    'sheet_2' => [
+                                        'ROOT' => [
+                                            'displayCond' => 'FIELD:sheet_1.flexField_1:!=:foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481488492);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFlexFieldFieldConditionReferencesNotExistingFieldValue()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sheet_1' => [
+                                        'ROOT' => [
+                                            'el' => [
+                                                'flexField_1' => [],
+                                                'flexField_2' => [
+                                                    'displayCond' => 'FIELD:flexField_1:!=:foo',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481492953);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFlexFieldReferencingFlexFieldIsNotFoundInFieldValue()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sheet_1' => [
+                                        'ROOT' => [
+                                            'el' => [
+                                                'flexField_1' => [
+                                                    'displayCond' => 'FIELD:foo.flexField_1:!=:foo',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481496170);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfFlexSectionContainerFoundNoReferencedFieldValue()
+    {
+        $input = [
+            'databaseRow' => [
+                'field_1' => [
+                    'data' => [
+                        'sheet_1' => [
+                            'lDEF' => [
+                                'section_1' => [
+                                    'el' => [
+                                        '1' => [
+                                            'container_1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sheet_1' => [
+                                        'ROOT' => [
+                                            'el' => [
+                                                'section_1' => [
+                                                    'type' => 'array',
+                                                    'section' => 1,
+                                                    'children' => [
+                                                        '1' => [
+                                                            'el' => [
+                                                                'containerField_1' => [
+                                                                    'displayCond' => 'FIELD:flexField_1:!=:foo',
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ]
         ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481634649);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
 
-        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-        $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);
+    /**
+     * Test scenarios for "a display condition references the value of another field"
+     *
+     * @return array
+     */
+    public function addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider()
+    {
+        return [
 
-        $expected = $input;
-        unset($expected['processedTca']['columns']['aField']);
-        $this->assertSame($expected, $this->subject->addData($input));
+            // tca field to tca field value tests
+            'remove tca field by tca field value' => [
+                // path that should be removed from 'processedTca' by condition
+                'columns/field_2',
+                // 'databaseRow'
+                [
+                    'field_1' => 'foo',
+                ],
+                // 'processedTca'
+                [
+                    'columns' => [
+                        'field_2' => [
+                            'displayCond' => 'FIELD:field_1:!=:foo',
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex field to tca field value tests
+            'remove flex form field by tca field value' => [
+                'columns/field_2/config/ds/sheets/sheet_1/ROOT/el/flexField_1',
+                [
+                    'field_1' => 'foo',
+                ],
+                [
+                    'columns' => [
+                        'field_2' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [
+                                                        'displayCond' => 'FIELD:parentRec.field_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex field to flex field value on same sheet tests
+            'remove flex form field by flex field value on same flex sheet' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:flexField_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:flexField_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:flexField.1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:flexField.1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with specified flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:sheet_1.flexField_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with specified flex sheet name with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:sheet.1.flexField_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with specified flex sheet name with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:sheet_1.flexField.1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on same flex sheet with specified flex sheet name with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/flexField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'flexField_2' => [
+                                                        'displayCond' => 'FIELD:sheet.1.flexField.1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex field to flex field value on other sheet tests
+            'remove flex form field by flex field value on other flex sheet' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/flexField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                ]
+                                            ]
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [
+                                                        'displayCond' => 'FIELD:sheet_1.flexField_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on other flex sheet with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/flexField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                ]
+                                            ]
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [
+                                                        'displayCond' => 'FIELD:sheet.1.flexField_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on other flex sheet with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/flexField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                ]
+                                            ]
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [
+                                                        'displayCond' => 'FIELD:sheet_1.flexField.1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form field by flex field value on other flex sheet with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/flexField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                ]
+                                            ]
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [
+                                                        'displayCond' => 'FIELD:sheet.1.flexField.1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex sheet to tca field value tests
+            'remove flex form sheet by tca field value' => [
+                'columns/field_2/config/ds/sheets/sheet_1',
+                [
+                    'field_1' => 'foo',
+                ],
+                [
+                    'columns' => [
+                        'field_2' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'displayCond' => 'FIELD:parentRec.field_1:!=:foo',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex sheet to flex field value tests
+            'remove flex form sheet by flex field value on different flex sheet' => [
+                'columns/field_1/config/ds/sheets/sheet_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'displayCond' => 'FIELD:sheet_1.flexField_1:!=:foo',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form sheet by flex field value on different flex sheet with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet.2' => [
+                                            'ROOT' => [
+                                                'displayCond' => 'FIELD:sheet.1.flexField_1:!=:foo',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form sheet by flex field value on different flex sheet with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'displayCond' => 'FIELD:sheet_1.flexField.1:!=:foo',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex form sheet by flex field value on different flex sheet with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet.2' => [
+                                            'ROOT' => [
+                                                'displayCond' => 'FIELD:sheet.1.flexField.1:!=:foo',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex section container field to tca value tests
+            'remove flex section container field by tca field value' => [
+                'columns/field_2/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => 'foo',
+                    'field_2' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_2' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:parentRec.field_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex section container field to flex field value of same sheet
+            'remove flex section container field by flex field value on same flex sheet' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:flexField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:flexField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:flexField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:flexField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with specified flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.flexField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with specified flex sheet name with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.flexField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with specified flex sheet name with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.flexField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on same flex sheet with specified flex sheet name with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.flexField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex section container field to flex field value of other sheet
+            'remove flex section container field by flex field value on other flex sheet' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'sheet_2' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.flexField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on other flex sheet with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'sheet_2' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField_1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.flexField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on other flex sheet with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'sheet_2' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.flexField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex field value on other flex sheet with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_2/ROOT/el/section_1/children/1/el/containerField_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'flexField.1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'sheet_2' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'flexField.1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.flexField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex section container field to flex field value of same container
+            'remove flex section container field by flex container field value of same container' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:containerField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:containerField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with dot in container flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField.1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:containerField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with dot in flex sheet name and dot in container flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField.1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:containerField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with specified flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.containerField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with specified flex sheet name with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField_1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.containerField_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with specified flex sheet name with dot in container flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField.1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.containerField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with specified flex sheet name with dot in flex sheet name and dot in container flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/containerField_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'containerField.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'containerField.1' => [],
+                                                                    'containerField_2' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.containerField.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex section container field to flex field value of same container with naming clash to flex field value of same sheet
+            'remove flex section container field by flex container field value of same container with naming clash' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field_1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:field_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field_1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:field_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'field.1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field.1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:field.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'field.1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field.1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:field.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with specified flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field_1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.field_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with specified flex sheet name with dot in flex sheet name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field_1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field_1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.field_1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with specified flex sheet name with dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'field.1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field.1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:sheet_1.field.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            'remove flex section container field by flex container field value of same container with naming clash with specified flex sheet name with dot in flex sheet name and dot in flex field name' => [
+                'columns/field_1/config/ds/sheets/sheet.1/ROOT/el/section_1/children/1/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet.1' => [
+                                'lDEF' => [
+                                    'field.1' => [
+                                        'vDEF' => [
+                                            0 => 'bar',
+                                        ],
+                                    ],
+                                    'section_1' => [
+                                        'el' => [
+                                            '1' => [
+                                                'container_1' => [
+                                                    'el' => [
+                                                        'field.1' => [
+                                                            'vDEF' => 'foo',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet.1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'children' => [
+                                                            '1' => [
+                                                                'el' => [
+                                                                    'field.1' => [],
+                                                                    'field_2' => [
+                                                                        'displayCond' => 'FIELD:sheet.1.field.1:!=:foo',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // Some special scenarios
+            'remove flex sheet by nested OR condition' => [
+                'columns/field_1/config/ds/sheets/sheet_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'type' => 'array',
+                                                'el' => [
+                                                    'field_1' => [],
+                                                ],
+                                            ],
+                                        ],
+                                        'sheet_2' => [
+                                            'ROOT' => [
+                                                'type' => 'array',
+                                                'el' => [],
+                                                'displayCond' => [
+                                                    'OR' => [
+                                                        'FIELD:sheet_1.field_1:=:LIST',
+                                                        'FIELD:sheet_1.field_1:!=:foo',
+                                                    ],
+                                                ] ,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // flex section container has a display condition
+            'remove flex section container' => [
+                'columns/field_1/config/ds/sheets/sheet_1/ROOT/el/section_1',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'sheet_1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'sheet_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'field_1' => [],
+                                                    'section_1' => [
+                                                        'type' => 'array',
+                                                        'section' => 1,
+                                                        'displayCond' => 'FIELD:field_1:!=:foo',
+                                                        'children' => [],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // field name to sheet name overlap
+            'remove flex field even if sheet name and field name overlap' => [
+                'columns/field_1/config/ds/sheets/field_1/ROOT/el/field_2',
+                [
+                    'field_1' => [
+                        'data' => [
+                            'field_1' => [
+                                'lDEF' => [
+                                    'field_1' => [
+                                        'vDEF' => [
+                                            0 => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'columns' => [
+                        'field_1' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => [
+                                    'sheets' => [
+                                        'field_1' => [
+                                            'ROOT' => [
+                                                'el' => [
+                                                    'field_1' => [],
+                                                    'field_2' => [
+                                                        'displayCond' => 'FIELD:field_1.field_1:!=:foo',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider
+     * @param $processedTcaFieldToBeRemovedPath
+     * @param array $databaseRow
+     * @param array $processedTca
+     */
+    public function addDataRemovesTcaReferencingOtherFieldsInDisplayCondition($processedTcaFieldToBeRemovedPath, array $databaseRow, array $processedTca)
+    {
+        $input = [
+            'databaseRow' => $databaseRow,
+            'processedTca' => $processedTca,
+        ];
+        $expected = ArrayUtility::removeByPath($input, 'processedTca/' . $processedTcaFieldToBeRemovedPath);
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -334,11 +3477,6 @@ class EvaluateDisplayConditionsTest extends \TYPO3\CMS\Components\TestingFramewo
     public function conditionStringDataProvider()
     {
         return [
-            'Invalid condition string' => [
-                'xINVALIDx:',
-                [],
-                false,
-            ],
             'Field is not greater zero if not given' => [
                 'FIELD:uid:>:0',
                 [],
@@ -347,11 +3485,6 @@ class EvaluateDisplayConditionsTest extends \TYPO3\CMS\Components\TestingFramewo
             'Field is not equal 0 if not given' => [
                 'FIELD:uid:=:0',
                 [],
-                false,
-            ],
-            'Field is not present if empty array given' => [
-                'REQ:foo:TRUE',
-                ['foo' => []],
                 false,
             ],
             'Field is not greater zero if empty array given' => [
@@ -521,18 +3654,6 @@ class EvaluateDisplayConditionsTest extends \TYPO3\CMS\Components\TestingFramewo
                 ],
                 false,
             ],
-            'Multiple conditions without operator due to misconfiguration compare to TRUE' => [
-                [
-                    '' => [
-                        'FIELD:testField:<:9',
-                        'FIELD:testField:>:11',
-                    ]
-                ],
-                [
-                    'testField' => 99
-                ],
-                true,
-            ],
             'Multiple nested conditions evaluate to TRUE' => [
                 [
                     'AND' => [
@@ -590,17 +3711,19 @@ class EvaluateDisplayConditionsTest extends \TYPO3\CMS\Components\TestingFramewo
         ];
 
         $expected = $input;
-        if (!$expectedResult) {
+        if ($expectedResult) {
+            // displayCond vanished from result array after this data provider is done
+            unset($expected['processedTca']['columns']['testField']['displayCond']);
+        } else {
             unset($expected['processedTca']['columns']['testField']);
         }
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
      * @param string $condition
      * @param array $record
      * @param string $expectedResult
-     *
      * @dataProvider conditionStringDataProvider
      * @test
      */
@@ -621,229 +3744,71 @@ class EvaluateDisplayConditionsTest extends \TYPO3\CMS\Components\TestingFramewo
         $input['databaseRow'] = $record ?: ['testField' => ['key' => $record['testField']]];
 
         $expected = $input;
-        if (!$expectedResult) {
+        if ($expectedResult) {
+            // displayCond vanished from result array after this data provider is done
+            unset($expected['processedTca']['columns']['testField']['displayCond']);
+        } else {
             unset($expected['processedTca']['columns']['testField']);
         }
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * Returns data sets for the test matchConditionStrings
-     * Each data set is an array with the following elements:
-     * - the condition string
-     * - the current record
-     * - the expected result
-     *
-     * @return array
-     */
-    public function flexformConditionStringDataProvider()
-    {
-        return [
-            'Flexform value invalid comparison' => [
-                'FIELD:foo:=:bar',
-                [
-                    'foo' => 'bar',
-                    'testField' => [
-                        'data' => [
-                            'sDEF' => [
-                                'lDEF' => [],
-                            ],
-                        ],
-                    ],
-                ],
-                false,
-            ],
-            'Flexform value valid comparison' => [
-                'FIELD:parentRec.foo:=:bar',
-                [
-                    'foo' => 'bar',
-                    'testField' => [
-                        'data' => [
-                            'sDEF' => [
-                                'lDEF' => [],
-                            ],
-                        ],
-                    ],
-                ],
-                true,
-            ],
-        ];
-    }
-
-    /**
-     * @param string $condition
-     * @param array $record
-     * @param string $expectedResult
-     * @dataProvider flexformConditionStringDataProvider
-     * @test
-     */
-    public function matchFlexformConditionStrings($condition, array $record, $expectedResult)
-    {
-        $input = [
-            'databaseRow' => $record,
-            'processedTca' => [
-                'columns' => [
-                    'testField' => [
-                        'config' => [
-                            'type' => 'flex',
-                            'ds' => [
-                                'meta' => [],
-                                'sheets' => [
-                                    'sDEF' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [
-                                                'flexTestField' => [
-                                                    'displayCond' => $condition,
-                                                    'config' => [
-                                                        'type' => 'input',
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ]
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = $input;
-        if (!$expectedResult) {
-            unset($expected['processedTca']['columns']['testField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['flexTestField']);
-        }
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
      * @test
      */
-    public function matchFlexformSheetConditionStringsForFieldsWithDotInName()
+    public function matchHideForNonAdminsReturnsTrueIfBackendUserIsAdmin()
     {
         $input = [
-            'databaseRow' => [
-                'foo' => 'bar',
-                'testField' => [
-                    'data' => [
-                        'sDEF' => [
-                            'lDEF' => [
-                                'flex.TestField' => [
-                                    'vDEF' => [
-                                        0 => 0,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
-                    'testField' => [
+                    'aField' => [
+                        'displayCond' => 'HIDE_FOR_NON_ADMINS',
                         'config' => [
-                            'type' => 'flex',
-                            'ds' => [
-                                'meta' => [],
-                                'sheets' => [
-                                    'sDEF' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [
-                                                'flex.TestField' => [
-                                                    'config' => [
-                                                        'type' => 'input',
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                    'sTest' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [],
-                                            'sheetTitle' => 'sVideo',
-                                            'displayCond' => 'FIELD:sDEF.flex.TestField:!=:0',
-                                        ],
-                                    ],
-                                ]
-                            ],
-                        ],
+                            'type' => 'input',
+                        ]
                     ],
-                ],
-            ],
+                ]
+            ]
         ];
 
+        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(true);
+
         $expected = $input;
-        unset($expected['processedTca']['columns']['testField']['config']['ds']['sheets']['sTest']);
-        $this->assertSame($expected, $this->subject->addData($input));
+        unset($expected['processedTca']['columns']['aField']['displayCond']);
+
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
      * @test
      */
-    public function matchFlexformSheetConditionStringsWithLogicalOperatorForFieldsWithDotInName()
+    public function matchHideForNonAdminsReturnsFalseIfBackendUserIsNotAdmin()
     {
         $input = [
-            'databaseRow' => [
-                'foo' => 'bar',
-                'testField' => [
-                    'data' => [
-                        'sDEF' => [
-                            'lDEF' => [
-                                'testField' => [
-                                    'vDEF' => [
-                                        0 => '',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
-                    'testField' => [
+                    'aField' => [
+                        'displayCond' => 'HIDE_FOR_NON_ADMINS',
                         'config' => [
-                            'type' => 'flex',
-                            'ds' => [
-                                'meta' => [],
-                                'sheets' => [
-                                    'sDEF' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [
-                                                'testField' => [
-                                                    'config' => [
-                                                        'type' => 'input',
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                    'sTest' => [
-                                        'ROOT' => [
-                                            'type' => 'array',
-                                            'el' => [],
-                                            'sheetTitle' => 'sVideo',
-                                            'displayCond' => [
-                                                'OR' => [
-                                                    'FIELD:sDEF.testField:=:LIST',
-                                                    'FIELD:sDEF.testField:REQ:false',
-                                                ],
-                                            ] ,
-                                        ],
-                                    ],
-                                ]
-                            ],
-                        ],
+                            'type' => 'input',
+                        ]
                     ],
-                ],
-            ],
+                ]
+            ]
         ];
 
+        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);
+
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        unset($expected['processedTca']['columns']['aField']);
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 }

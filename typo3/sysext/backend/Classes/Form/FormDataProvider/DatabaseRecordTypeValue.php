@@ -98,11 +98,9 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                             1438253614
                         );
                     }
-                    // Extract UID from value formed like {table_name}_{uid}|{default_value}
-                    // @todo: This needs adaption as soon as the group format is changed
-                    if (!MathUtility::canBeInterpretedAsInteger($foreignUid)) {
-                        list($foreignUid) = explode('|', $foreignUid);
-                        $foreignUid = str_replace($foreignTable . '_', '', $foreignUid);
+                    if (!MathUtility::canBeInterpretedAsInteger($foreignUid) && is_array($foreignUid[0])) {
+                        // A group relation - has been resolved to array by TcaGroup data provider already
+                        $foreignUid = $foreignUid[0]['uid'];
                     }
                     // Fetch field of this foreign row from db
                     $foreignRow = $this->getDatabaseRow($foreignTable, $foreignUid, $foreignTableTypeField);
@@ -152,6 +150,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
 
         return $row ?: [];
     }
+
     /**
      * If a localized row is handled, the field value of the default language record
      * is used instead if tca is configured as "exclude" or "mergeIfNotBlank" with

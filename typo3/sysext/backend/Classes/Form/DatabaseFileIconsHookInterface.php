@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Form;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Backend\Form\FormEngine
  * and do additional dbFileIcons processing
+ *
+ * @deprecated and no longer called since TYPO3 v8, will be removed in TYPO3 v9
  */
 interface DatabaseFileIconsHookInterface
 {

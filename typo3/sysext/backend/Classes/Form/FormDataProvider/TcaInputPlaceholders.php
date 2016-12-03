@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -175,15 +174,9 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             return $relatedUids;
         }
 
-        $values = GeneralUtility::trimExplode(',', $value, true);
-        foreach ($values as $groupValue) {
-            list($foreignIdentifier, $_) = GeneralUtility::trimExplode('|', $groupValue);
-            list($recordForeignTable, $foreignUid) = BackendUtility::splitTable_Uid($foreignIdentifier);
-            // skip records that do not match the allowed table
-            if (!empty($recordForeignTable) && ($recordForeignTable !== $allowedTable)) {
-                continue;
-            }
-            $relatedUids[] = $foreignUid;
+        // Related group values have been prepared by TcaGroup data provider, an array is expected here
+        foreach ($value as $singleValue) {
+            $relatedUids[] = $singleValue['uid'];
         }
 
         return $relatedUids;

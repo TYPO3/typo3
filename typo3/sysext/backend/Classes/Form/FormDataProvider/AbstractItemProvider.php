@@ -1170,7 +1170,10 @@ abstract class AbstractItemProvider
         $currentDatabaseValues = array_key_exists($fieldName, $row)
             ? $row[$fieldName]
             : '';
-        return GeneralUtility::trimExplode(',', $currentDatabaseValues, true);
+        if (!is_array($currentDatabaseValues)) {
+            $currentDatabaseValues = GeneralUtility::trimExplode(',', $currentDatabaseValues, true);
+        }
+        return $currentDatabaseValues;
     }
 
     /**
@@ -1309,15 +1312,17 @@ abstract class AbstractItemProvider
      *
      * @param mixed $maxItems
      * @return int
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function sanitizeMaxItems($maxItems)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!empty($maxItems)
-            && (int)$maxItems > 1
+            && (int)$maxItems >= 1
         ) {
             $maxItems = (int)$maxItems;
         } else {
-            $maxItems = 1;
+            $maxItems = 99999;
         }
 
         return $maxItems;

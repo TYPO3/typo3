@@ -503,7 +503,11 @@ class DatabaseRecordTypeValueTest extends \TYPO3\CMS\Components\TestingFramework
             ],
             'databaseRow' => [
                 // Processed group field
-                'uid_local' => 'sys_file_222|my_test.jpg',
+                'uid_local' => [
+                    [
+                        'uid' => 222,
+                    ],
+                ],
             ],
         ];
 

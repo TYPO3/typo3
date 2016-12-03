@@ -30,12 +30,17 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'], function (
              */
             var treeInput = $(element);
             var dataParams = {
-                table: treeInput.data('table'),
-                field: treeInput.data('field'),
+                tableName: treeInput.data('tablename'),
+                fieldName: treeInput.data('fieldname'),
                 uid: treeInput.data('uid'),
-                record_type_value: treeInput.data('recordtypevalue'),
-                flex_form_datastructure_identifier: treeInput.data('flex-form-datastructure-identifier'),
-                flex_form_path: treeInput.data('formengine-input-name'),
+                recordTypeValue: treeInput.data('recordtypevalue'),
+                dataStructureIdentifier: treeInput.data('datastructureidentifier'),
+                flexFormSheetName: treeInput.data('flexformsheetname'),
+                flexFormFieldName: treeInput.data('flexformfieldname'),
+                flexFormContainerName: treeInput.data('flexformcontainername'),
+                flexFormContainerIdentifier: treeInput.data('flexformcontaineridentifier'),
+                flexFormContainerFieldName: treeInput.data('flexformcontainerfieldname'),
+                flexFormSectionContainerIsNew: treeInput.data('flexformsectioncontainerisnew'),
                 command: treeInput.data('command')
             };
             var $wrapper = treeInput.parent().siblings('.svg-tree-wrapper');

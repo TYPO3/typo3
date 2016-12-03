@@ -72,6 +72,7 @@ class FlexFormTabsContainer extends AbstractContainer
             $options = $this->data;
             $options['flexFormDataStructureArray'] = $sheetDataStructure['ROOT']['el'];
             $options['flexFormRowData'] = $flexFormRowSheetDataSubPart;
+            $options['flexFormSheetName'] = $sheetName;
             $options['flexFormFormPrefix'] = '[data][' . $sheetName . '][lDEF]';
             $options['parameterArray'] = $parameterArray;
             // Merge elements of this tab into a single list again and hand over to

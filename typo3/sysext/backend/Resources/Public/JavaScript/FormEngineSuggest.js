@@ -18,21 +18,28 @@
 define(['jquery', 'jquery/autocomplete'], function ($) {
 	var initialize = function($searchField) {
 		var $containerElement = $searchField.closest('.t3-form-suggest-container');
-		var table = $searchField.data('table'),
-			field = $searchField.data('field'),
+		var tableName = $searchField.data('tablename'),
+			fieldName = $searchField.data('fieldname'),
+			formEl = $searchField.data('field'),
 			uid = $searchField.data('uid'),
 			pid = $searchField.data('pid'),
 			dataStructureIdentifier = $searchField.data('datastructureidentifier'),
-			hmac = $searchField.data('hmac'),
+			flexFormSheetName = $searchField.data('flexformsheetname'),
+			flexFormFieldName = $searchField.data('flexformfieldname'),
+			flexFormContainerName = $searchField.data('flexformcontainername'),
+			flexFormContainerFieldName = $searchField.data('flexformcontainerfieldname'),
 			minimumCharacters = $searchField.data('minchars'),
 			url = TYPO3.settings.ajaxUrls['record_suggest'],
 			params = {
-				'table': table,
-				'field': field,
+				'tableName': tableName,
+				'fieldName': fieldName,
 				'uid': uid,
 				'pid': pid,
 				'dataStructureIdentifier': dataStructureIdentifier,
-				'hmac': hmac
+				'flexFormSheetName': flexFormSheetName,
+				'flexFormFieldName': flexFormFieldName,
+				'flexFormContainerName': flexFormContainerName,
+				'flexFormContainerFieldName': flexFormContainerFieldName
 			},
 			insertValue = function(element) {
 				var insertData = '';
@@ -41,13 +48,11 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 				} else {
 					insertData = $(element).data('table') + '_' + $(element).data('uid');
 				}
-
-				var formEl = $searchField.data('fieldname');
 				var labelEl = $('<div>').html($(element).data('label'));
 				var label = labelEl.text();
 				var title = labelEl.find('span').attr('title') || label;
 				setFormValueFromBrowseWin(formEl, insertData, label, title);
-				TBE_EDITOR.fieldChanged(table, uid, field, formEl);
+				TBE_EDITOR.fieldChanged(tableName, uid, fieldName, formEl);
 			};
 
 		$searchField.autocomplete({

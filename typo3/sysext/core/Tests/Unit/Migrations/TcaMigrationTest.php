@@ -1913,4 +1913,77 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider()
+    {
+        return [
+            'move single field name' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'requestUpdate' => 'aField',
+                        ],
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [],
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [],
+                                'onChange' => 'reload',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'ignore missing field but migrate others' => [
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'requestUpdate' => 'aField, bField, cField, ',
+                        ],
+                        'columns' => [
+                            'aField' => [],
+                            'cField' => [],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'ctrl' => [],
+                        'columns' => [
+                            'aField' => [
+                                'onChange' => 'reload',
+                            ],
+                            'cField' => [
+                                'onChange' => 'reload',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider
+     */
+    public function migrateMovesRequestUpdateCtrlFieldToColumns(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
 }

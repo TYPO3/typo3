@@ -600,13 +600,6 @@ class DataHandler
      */
     public $callFromImpExp = false;
 
-    /**
-     * Array for new flexform index mapping
-     *
-     * @var array
-     */
-    public $newIndexMap = [];
-
     // Various
     /**
      * basicFileFunctions object
@@ -2438,10 +2431,8 @@ class DataHandler
                 asort($actionCMDs[$key]);
                 $newValueArray = [];
                 foreach ($actionCMDs[$key] as $idx => $order) {
-                    if (substr($idx, 0, 3) == 'ID-') {
-                        $idx = $this->newIndexMap[$idx];
-                    }
-                    // Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
+                    // Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost
+                    // files unless we act on this delete operation by traversing and deleting files that were referred to.
                     if ($order != 'DELETE') {
                         $newValueArray[$idx] = $valueArray[$idx];
                     }
@@ -2518,7 +2509,7 @@ class DataHandler
 
     /**
      * Checks if a fields has more items than defined via TCA in maxitems.
-     * If there are more items than allowd, the item list is truncated to the defined number.
+     * If there are more items than allowed, the item list is truncated to the defined number.
      *
      * @param array $tcaFieldConf Field configuration from TCA
      * @param array $valueArray Current value array of items
@@ -2526,24 +2517,13 @@ class DataHandler
      */
     public function checkValue_checkMax($tcaFieldConf, $valueArray)
     {
-        // BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
-        $valueArrayC = count($valueArray);
-        // NOTE to the comment: It's not really possible to check for too few items, because you must then determine first, if the field is actual used regarding the CType.
-        $maxI = isset($tcaFieldConf['maxitems']) ? (int)$tcaFieldConf['maxitems'] : 1;
-        if ($valueArrayC > $maxI) {
-            $valueArrayC = $maxI;
-        }
-        // Checking for not too many elements
-        // Dumping array to list
-        $newVal = [];
-        foreach ($valueArray as $nextVal) {
-            if ($valueArrayC == 0) {
-                break;
-            }
-            $valueArrayC--;
-            $newVal[] = $nextVal;
-        }
-        return $newVal;
+        // BTW, checking for min and max items here does NOT make any sense when MM is used because the above function
+        // calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check
+        // before? Probably because we could not evaluate the validity of record uids etc... Hmm...
+        // NOTE to the comment: It's not really possible to check for too few items, because you must then determine first,
+        // if the field is actual used regarding the CType.
+        $maxitems = isset($tcaFieldConf['maxitems']) ? (int)$tcaFieldConf['maxitems'] : 99999;
+        return array_slice($valueArray, 0, $maxitems);
     }
 
     /*********************************************
@@ -2998,17 +2978,6 @@ class DataHandler
                         }
 
                         $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : [], $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/', $workspaceOptions);
-                        // If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
-                        // The fact that the order changes is not important since order is controlled by a separately submitted index.
-                        if (substr($ik, 0, 3) == 'ID-') {
-                            $newIndexCounter++;
-                            // Set mapping index
-                            $this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && !empty($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
-                            // Transfer values
-                            $dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];
-                            // Unset original
-                            unset($dataValues[$key]['el'][$ik]);
-                        }
                     }
                 } else {
                     if (!isset($dataValues[$key]['el'])) {

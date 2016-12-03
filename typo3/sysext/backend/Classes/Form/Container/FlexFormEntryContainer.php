@@ -29,9 +29,11 @@ class FlexFormEntryContainer extends AbstractContainer
      */
     public function render()
     {
+        $flexFormDataStructureIdentifier = $this->data['parameterArray']['fieldConf']['config']['dataStructureIdentifier'];
         $flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
 
         $options = $this->data;
+        $options['flexFormDataStructureIdentifier'] = $flexFormDataStructureIdentifier;
         $options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
         $options['flexFormRowData'] = $this->data['parameterArray']['itemFormElValue'];
         $options['renderType'] = 'flexFormNoTabsContainer';

@@ -16,13 +16,15 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Render a widget with two boxes side by side.
  *
- * This is rendered for config type=select, maxitems > 1, renderType=selectMultipleSideBySide set
+ * This is rendered for config type=select, renderType=selectMultipleSideBySide set
  */
 class SelectMultipleSideBySideElement extends AbstractFormElement
 {
@@ -33,164 +35,312 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
      */
     public function render()
     {
-        $table = $this->data['tableName'];
-        $field = $this->data['fieldName'];
+        $languageService = $this->getLanguageService();
+
         $parameterArray = $this->data['parameterArray'];
-        // Field configuration from TCA:
         $config = $parameterArray['fieldConf']['config'];
+        $elementName = $parameterArray['itemFormElName'];
 
-        $selItems = $config['items'];
-        $html = '';
-        $disabled = '';
         if ($config['readOnly']) {
-            $disabled = ' disabled="disabled"';
+            // Early return for the relatively simple read only case
+            return $this->renderReadOnly();
         }
-        // Setting this hidden field (as a flag that JavaScript can read out)
-        if (!$disabled) {
-            $html .= '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . ($config['multiple'] ? 1 : 0) . '" />';
+
+        $possibleItems = $config['items'];
+        $selectedItems = $parameterArray['itemFormElValue'] ?: [];
+        $selectedItemsCount = count($selectedItems);
+
+        $maxItems = $config['maxitems'];
+        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
+        $size = 2;
+        if (isset($config['size'])) {
+            $size = (int)$config['size'];
         }
-        // Set max and min items:
-        $maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
-        if (!$maxitems) {
-            $maxitems = 100000;
+        if ($autoSizeMax >= 1) {
+            $size = MathUtility::forceIntegerInRange($selectedItemsCount + 1, MathUtility::forceIntegerInRange($size, 1), $autoSizeMax);
         }
-        // Get the array with selected items:
-        $itemsArray = $parameterArray['itemFormElValue'] ?: [];
+        $itemCanBeSelectedMoreThanOnce = !empty($config['multiple']);
 
-        // Perform modification of the selected items array:
-        foreach ($itemsArray as $itemNumber => $itemValue) {
-            $itemArray = [
-                0 => $itemValue,
-                1 => '',
-            ];
-
-            if (isset($parameterArray['fieldTSConfig']['altIcons.'][$itemValue])) {
-                $itemArray[2] = $parameterArray['fieldTSConfig']['altIcons.'][$itemValue];
-            }
-
-            foreach ($selItems as $selItem) {
-                if ($selItem[1] == $itemValue) {
-                    $itemArray[1] = $selItem[0];
+        $listOfSelectedValues = [];
+        $selectedItemsHtml = [];
+        foreach ($selectedItems as $itemValue) {
+            foreach ($possibleItems as $possibleItem) {
+                if ($possibleItem[1] == $itemValue) {
+                    $title = $possibleItem[0];
+                    $listOfSelectedValues[] = $itemValue;
+                    $selectedItemsHtml[] = '<option value="' . htmlspecialchars($itemValue) . '" title="' . htmlspecialchars($title) . '">' . htmlspecialchars($title) . '</option>';
                     break;
                 }
             }
-            $itemsArray[$itemNumber] = implode('|', $itemArray);
         }
 
-        // size must be at least two, as there are always maxitems > 1 (see parent function)
-        if (isset($config['size'])) {
-            $size = (int)$config['size'];
-        } else {
-            $size = 2;
+        $selectableItemsHtml = [];
+        foreach ($possibleItems as $possibleItem) {
+            $disabledAttr = '';
+            $classAttr = '';
+            if (!$itemCanBeSelectedMoreThanOnce && in_array((string)$possibleItem[1], $selectedItems, true)) {
+                $disabledAttr = ' disabled="disabled"';
+                $classAttr = ' class="hidden"';
+            }
+            $selectableItemsHtml[] =
+                '<option value="'
+                    . htmlspecialchars($possibleItem[1])
+                    . '" title="' . htmlspecialchars($possibleItem[0]) . '"'
+                    . $classAttr . $disabledAttr
+                . '>'
+                    . htmlspecialchars($possibleItem[0]) .
+                '</option>';
         }
-        $size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemsArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
-        $allowMultiple = !empty($config['multiple']);
 
-        $itemsToSelect = [];
+        // Html stuff for filter and select filter on top of right side of multi select boxes
         $filterTextfield = [];
-        $filterSelectbox = '';
-        if (!$disabled) {
-            // Create option tags:
-            $opt = [];
-            foreach ($selItems as $p) {
-                $disabledAttr = '';
-                $classAttr = '';
-                if (!$allowMultiple && in_array((string)$p[1], $parameterArray['itemFormElValue'], true)) {
-                    $disabledAttr = ' disabled="disabled"';
-                    $classAttr = ' class="hidden"';
+        if ($config['enableMultiSelectFilterTextfield']) {
+            $filterTextfield[] = '<span class="input-group input-group-sm">';
+            $filterTextfield[] =    '<span class="input-group-addon">';
+            $filterTextfield[] =        '<span class="fa fa-filter"></span>';
+            $filterTextfield[] =    '</span>';
+            $filterTextfield[] =    '<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
+            $filterTextfield[] = '</span>';
+        }
+        $filterDropDownOptions = [];
+        if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
+            foreach ($config['multiSelectFilterItems'] as $optionElement) {
+                $value = $languageService->sL($optionElement[0]);
+                $label = $value;
+                if (isset($optionElement[1]) && trim($optionElement[1]) !== '') {
+                    $label = $languageService->sL($optionElement[1]);
                 }
-                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '" title="' . htmlspecialchars($p[0]) . '"' . $classAttr . $disabledAttr . '>' . htmlspecialchars($p[0]) . '</option>';
-            }
-            // Put together the selector box:
-            $selector_itemListStyle = isset($config['itemListStyle'])
-                ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"'
-                : '';
-            $sOnChange = implode('', $parameterArray['fieldChangeFunc']);
-
-            $multiSelectId = StringUtility::getUniqueId('tceforms-multiselect-');
-            $itemsToSelect[] = '<select data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
-                . 'data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '" '
-                . 'id="' . $multiSelectId . '" '
-                . 'data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
-                . 'class="form-control t3js-formengine-select-itemstoselect" '
-                . ($size > 1 ? ' size="' . $size . '" ' : '')
-                . 'onchange="' . htmlspecialchars($sOnChange) . '" '
-                . $this->getValidationDataAsDataAttribute($config)
-                . $selector_itemListStyle
-                . '>';
-            $itemsToSelect[] = implode(LF, $opt);
-            $itemsToSelect[] = '</select>';
-
-            // enable filter functionality via a text field
-            if ($config['enableMultiSelectFilterTextfield']) {
-                $filterTextfield[] = '<span class="input-group input-group-sm">';
-                $filterTextfield[] =    '<span class="input-group-addon">';
-                $filterTextfield[] =        '<span class="fa fa-filter"></span>';
-                $filterTextfield[] =    '</span>';
-                $filterTextfield[] =    '<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
-                $filterTextfield[] = '</span>';
-            }
-
-            // enable filter functionality via a select
-            if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
-                $filterDropDownOptions = [];
-                foreach ($config['multiSelectFilterItems'] as $optionElement) {
-                    $optionValue = $this->getLanguageService()->sL(isset($optionElement[1]) && trim($optionElement[1]) !== '' ? trim($optionElement[1])
-                        : trim($optionElement[0]));
-                    $filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->getLanguageService()->sL(trim($optionElement[0]))) . '">'
-                        . htmlspecialchars($optionValue) . '</option>';
-                }
-                $filterSelectbox = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">'
-                    . implode(LF, $filterDropDownOptions) . '</select>';
+                $filterDropDownOptions[] = '<option value="' . htmlspecialchars($value) . '">' . htmlspecialchars($label) . '</option>';
             }
         }
-
-        if (!empty(trim($filterSelectbox)) && !empty($filterTextfield)) {
-            $filterSelectbox = '<div class="form-multigroup-item form-multigroup-element">' . $filterSelectbox . '</div>';
-            $filterTextfield = '<div class="form-multigroup-item form-multigroup-element">' . implode(LF, $filterTextfield) . '</div>';
-            $selectBoxFilterContents = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">' . $filterSelectbox . $filterTextfield . '</div>';
-        } else {
-            $selectBoxFilterContents = trim($filterSelectbox . ' ' . implode(LF, $filterTextfield));
+        $filterHtml = [];
+        if (!empty($filterTextfield) || !empty($filterDropDownOptions)) {
+            $filterHtml[] = '<div class="form-multigroup-item-wizard">';
+            if (!empty($filterTextfield) && !empty($filterDropDownOptions)) {
+                $filterHtml[] = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">';
+                $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
+                $filterHtml[] =         '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">';
+                $filterHtml[] =             implode(LF, $filterDropDownOptions);
+                $filterHtml[] =         '</select>';
+                $filterHtml[] =     '</div>';
+                $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
+                $filterHtml[] =         implode(LF, $filterTextfield);
+                $filterHtml[] =     '</div>';
+                $filterHtml[] = '</div>';
+            } elseif (!empty($filterTextfield)) {
+                $filterHtml[] = implode(LF, $filterTextfield);
+            } else {
+                $filterHtml[] = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">';
+                $filterHtml[] =     implode(LF, $filterDropDownOptions);
+                $filterHtml[] = '</select>';
+            }
+            $filterHtml[] = '</div>';
         }
 
-        // Pass to "dbFileIcons" function:
-        $params = [
-            'size' => $size,
-            'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-            'style' => isset($config['selectedListStyle'])
-                ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-                : '',
-            'dontShowMoveIcons' => $maxitems <= 1,
-            'maxitems' => $maxitems,
-            'info' => '',
-            'headers' => [
-                'selector' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'),
-                'items' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.items'),
-                'selectorbox' => $selectBoxFilterContents,
-            ],
-            'noBrowser' => 1,
-            'rightbox' => implode(LF, $itemsToSelect),
-            'readOnly' => $disabled
-        ];
-        $html .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemsArray, '', $params);
-
-        // Wizards:
-        if (!$disabled) {
-            $html = $this->renderWizards(
-                [$html],
-                $config['wizards'],
-                $table,
-                $this->data['databaseRow'],
-                $field,
-                $parameterArray,
-                $parameterArray['itemFormElName'],
-                BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
-            );
+        $classes = [];
+        $classes[] = 'form-control';
+        $classes[] = 'tceforms-multiselect';
+        if ($maxItems === 1) {
+            $classes[] = 'form-select-no-siblings';
         }
+        $multipleAttribute = '';
+        if ($maxItems !== 1 && $size !== 1) {
+            $multipleAttribute = ' multiple="multiple"';
+        }
+        $selectedListStyle = '';
+        if (isset($config['selectedListStyle'])) {
+            $selectedListStyle = ' style="' . htmlspecialchars($config['selectedListStyle']) . '"';
+        }
+        $selectableListStyle = '';
+        if (isset($config['itemListStyle'])) {
+            $selectableListStyle = ' style="' . htmlspecialchars($config['itemListStyle']) . '"';
+        }
+
+        $html = [];
+        $html[] = '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($elementName) . '" value="' . (int)$itemCanBeSelectedMoreThanOnce . '" />';
+        $html[] = '<div class="form-multigroup-wrap t3js-formengine-field-group">';
+        $html[] =   '<div class="form-multigroup-item form-multigroup-element">';
+        $html[] =       '<label>';
+        $html[] =           htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
+        $html[] =       '</label>';
+        $html[] =       '<div class="form-wizards-wrap form-wizards-aside">';
+        $html[] =           '<div class="form-wizards-element">';
+        $html[] =               '<select';
+        $html[] =                   ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                   ' size="' . $size . '"';
+        $html[] =                   ' class="' . implode(' ', $classes) . '"';
+        $html[] =                   $multipleAttribute;
+        $html[] =                   ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
+        $html[] =                   $selectedListStyle;
+        $html[] =               '>';
+        $html[] =                   implode(LF, $selectedItemsHtml);
+        $html[] =               '</select>';
+        $html[] =           '</div>';
+        $html[] =           '<div class="form-wizards-items">';
+        $html[] =               '<div class="btn-group-vertical">';
+        if ($maxItems > 1 && $size >= 5) {
+            $html[] =               '<a href="#"';
+            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-top"';
+            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
+            $html[] =               '>';
+            $html[] =                   $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
+            $html[] =               '</a>';
+        }
+        if ($maxItems > 1) {
+            $html[] =               '<a href="#"';
+            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-up"';
+            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
+            $html[] =               '>';
+            $html[] =                   $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
+            $html[] =               '</a>';
+            $html[] =               '<a href="#"';
+            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-down"';
+            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
+            $html[] =               '>';
+            $html[] =                   $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
+            $html[] =               '</a>';
+        }
+        if ($maxItems > 1 && $size >= 5) {
+            $html[] =               '<a href="#"';
+            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-bottom"';
+            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
+            $html[] =               '>';
+            $html[] =                   $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
+            $html[] =               '</a>';
+        }
+        $html[] =                   '<a href="#"';
+        $html[] =                       ' class="btn btn-default t3js-btn-removeoption"';
+        $html[] =                       ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+        $html[] =                       ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
+        $html[] =                   '>';
+        $html[] =                       $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
+        $html[] =                   '</a>';
+        $html[] =               '</div>';
+        $html[] =           '</div>';
+        $html[] =       '</div>';
+        $html[] =   '</div>';
+        $html[] =   '<div class="form-multigroup-item form-multigroup-element">';
+        $html[] =       '<label>';
+        $html[] =           htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.items'));
+        $html[] =       '</label>';
+        $html[] =       implode(LF, $filterHtml);
+        $html[] =       '<select';
+        $html[] =           ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
+        $html[] =           ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
+        $html[] =           ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =           ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
+        $html[] =           ' class="form-control t3js-formengine-select-itemstoselect"';
+        $html[] =           ' size="' . $size . '"';
+        $html[] =           ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
+        $html[] =           $this->getValidationDataAsDataAttribute($config);
+        $html[] =           $selectableListStyle;
+        $html[] =       '>';
+        $html[] =           implode(LF, $selectableItemsHtml);
+        $html[] =       '</select>';
+        $html[] =   '</div>';
+        $html[] = '</div>';
+        $html[] = '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
+
+        $html = $this->renderWizards(
+            [ implode(LF, $html) ],
+            $config['wizards'],
+            $this->data['tableName'],
+            $this->data['databaseRow'],
+            $this->data['fieldName'],
+            $parameterArray,
+            $elementName,
+            BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
+        );
 
         $resultArray = $this->initializeResultArray();
         $resultArray['html'] = $html;
         return $resultArray;
+    }
+
+    /**
+     * Create HTML of a read only multi select. Right side is not
+     * rendered, but just the left side with the selected items.
+     *
+     * @return array
+     */
+    protected function renderReadOnly()
+    {
+        $languageService = $this->getLanguageService();
+
+        $parameterArray = $this->data['parameterArray'];
+        $config = $parameterArray['fieldConf']['config'];
+        $fieldName = $parameterArray['itemFormElName'];
+
+        $possibleItems = $config['items'];
+        $selectedItems = $parameterArray['itemFormElValue'] ?: [];
+        $selectedItemsCount = count($selectedItems);
+
+        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
+        $size = 2;
+        if (isset($config['size'])) {
+            $size = (int)$config['size'];
+        }
+        if ($autoSizeMax >= 1) {
+            $size = MathUtility::forceIntegerInRange($selectedItemsCount + 1, MathUtility::forceIntegerInRange($size, 1), $autoSizeMax);
+        }
+        $multiple = '';
+        if ($size !== 1) {
+            $multiple = ' multiple="multiple"';
+        }
+        $style = '';
+        if (isset($config['selectedListStyle'])) {
+            $style = ' style="' . htmlspecialchars($config['selectedListStyle']) . '"';
+        }
+
+        $listOfSelectedValues = [];
+        $optionsHtml = [];
+        foreach ($selectedItems as $itemValue) {
+            foreach ($possibleItems as $possibleItem) {
+                if ($possibleItem[1] == $itemValue) {
+                    $title = $possibleItem[0];
+                    $listOfSelectedValues[] = $itemValue;
+                    $optionsHtml[] = '<option value="' . htmlspecialchars($itemValue) . '" title="' . htmlspecialchars($title) . '">' . htmlspecialchars($title) . '</option>';
+                    break;
+                }
+            }
+        }
+
+        $html = [];
+        $html[] = '<label>';
+        $html[] =   htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
+        $html[] = '</label>';
+        $html[] = '<div class="form-wizards-wrap form-wizards-aside">';
+        $html[] =   '<div class="form-wizards-element">';
+        $html[] =       '<select';
+        $html[] =           ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =           ' size="' . $size . '"';
+        $html[] =           ' class="form-control tceforms-multiselect"';
+        $html[] =           $multiple;
+        $html[] =           ' data-formengine-input-name="' . htmlspecialchars($fieldName) . '"';
+        $html[] =           $style;
+        $html[] =           ' disabled="disabled">';
+        $html[] =       '/>';
+        $html[] =           implode(LF, $optionsHtml);
+        $html[] =       '</select>';
+        $html[] =   '</div>';
+        $html[] = '</div>';
+        $html[] = '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
+
+        $resultArray = $this->initializeResultArray();
+        $resultArray['html'] = implode(LF, $html);
+        return $resultArray;
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 
     /**

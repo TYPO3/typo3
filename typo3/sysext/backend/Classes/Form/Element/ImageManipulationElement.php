@@ -23,7 +23,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of image manipulation TCEform element
+ * Generation of image manipulation FormEngine element.
+ * This is typically used in FAL relations to cut images.
  */
 class ImageManipulationElement extends AbstractFormElement
 {
@@ -168,14 +169,8 @@ class ImageManipulationElement extends AbstractFormElement
     {
         $file = null;
         $fileUid = !empty($row[$fieldName]) ? $row[$fieldName] : null;
-        if (strpos($fileUid, 'sys_file_') === 0) {
-            if (strpos($fileUid, '|')) {
-                // @todo: uid_local is a group field that was resolved to table_uid|target - split here again
-                // @todo: this will vanish if group fields are moved to array
-                $fileUid = explode('|', $fileUid);
-                $fileUid = $fileUid[0];
-            }
-            $fileUid = substr($fileUid, 9);
+        if (is_array($fileUid) && isset($fileUid[0]['uid'])) {
+            $fileUid = $fileUid[0]['uid'];
         }
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
             try {

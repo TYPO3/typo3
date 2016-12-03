@@ -203,9 +203,14 @@ class FormDataCompiler
             // of the record this flex form is embedded in is transferred in case features like single fields
             // itemsProcFunc need to have this data at hand to do their job.
             'flexParentDatabaseRow' => [],
+            // If not empty, it tells the TcaFlexProcess data provider to not calculate existing flex fields and
+            // existing flex container sections, but to instead prepare field values and the data structure TCA
+            // for a new container section. This is used by FormFlexAjaxController, the array contains details
+            // which container of which flex field should be created.
+            'flexSectionContainerPreparation' => [],
 
             // If true, TcaSelectTreeItems data provider will compile tree items. This is false by default since
-            // on opening a record items are not calculated but are fetch in an ajax request, see SelectTreeController.
+            // on opening a record items are not calculated but are fetch in an ajax request, see FormSelectTreeAjaxController.
             'selectTreeCompileItems' => false,
 
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
@@ -270,7 +275,6 @@ class FormDataCompiler
 
             // @todo: keys below must be handled / further defined
             'elementBaseName' => '',
-            'flexFormFieldIdentifierPrefix' => 'ID',
             'tabAndInlineStack' => [],
             'inlineData' => [],
             'inlineStructure' => [],

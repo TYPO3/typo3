@@ -42,23 +42,21 @@ class SuggestWizard
     /**
      * Renders an ajax-enabled text field. Also adds required JS
      *
-     * @param string $fieldName The field name in the form
-     * @param string $table The table we render this selector for
-     * @param string $field The field we render this selector for
-     * @param array $row The row which is currently edited
-     * @param array $config The TSconfig of the field
-     * @param array $flexFormConfig If field is within flex form, this is the TCA config of the flex field
+     * @param array $data Main data array from FormEngine
      * @throws \RuntimeException for incomplete incoming arguments
      * @return string The HTML code for the selector
      */
-    public function renderSuggestSelector($fieldName, $table, $field, array $row, array $config, array $flexFormConfig = [])
+    public function renderSuggestSelector(array $data)
     {
+        $fieldName = $data['fieldName'];
         $dataStructureIdentifier = '';
-        if (!empty($flexFormConfig) && $flexFormConfig['config']['type'] === 'flex') {
-            $fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
-            $flexformField = str_replace($fieldPattern, '', $fieldName);
-            $flexformField = substr($flexformField, 0, -1);
-            $field = str_replace([']['], '|', $flexformField);
+        $flexFormSheetName = '';
+        $flexFormFieldName = '';
+        $flexFormContainerName = '';
+        $flexFormContainerFieldName = '';
+        if ($data['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
+            $flexFormConfig = $data['processedTca']['columns'][$fieldName];
+            $dataStructureIdentifier = $flexFormConfig['config']['dataStructureIdentifier'];
             if (!isset($flexFormConfig['config']['dataStructureIdentifier'])) {
                 throw new \RuntimeException(
                     'A data structure identifier must be set in [\'config\'] part of a flex form.'
@@ -66,45 +64,48 @@ class SuggestWizard
                     1478604742
                 );
             }
-            $dataStructureIdentifier = $flexFormConfig['config']['dataStructureIdentifier'];
+            if (isset($data['flexFormSheetName'])) {
+                $flexFormSheetName = $data['flexFormSheetName'];
+            }
+            if (isset($data['flexFormFieldName'])) {
+                $flexFormFieldName = $data['flexFormFieldName'];
+            }
+            if (isset($data['flexFormContainerName'])) {
+                $flexFormContainerName = $data['flexFormContainerName'];
+            }
+            if (isset($data['flexFormContainerFieldName'])) {
+                $flexFormContainerFieldName = $data['flexFormContainerFieldName'];
+            }
         }
 
         // Get minimumCharacters from TCA
         $minChars = 0;
-        if (isset($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'])) {
-            $minChars = (int)$config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'];
+        $fieldTca = $data['parameterArray']['fieldConf'];
+        if (isset($fieldTca['config']['wizards']['suggest']['default']['minimumCharacters'])) {
+            $minChars = (int)$fieldTca['config']['wizards']['suggest']['default']['minimumCharacters'];
         }
         // Overwrite it with minimumCharacters from TSConfig if given
-        if (isset($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters'])) {
-            $minChars = (int)$config['fieldTSConfig']['suggest.']['default.']['minimumCharacters'];
+        $fieldTsConfig = $data['parameterArray']['fieldTSConfig'];
+        if (isset($fieldTsConfig['suggest.']['default.']['minimumCharacters'])) {
+            $minChars = (int)$fieldTsConfig['suggest.']['default.']['minimumCharacters'];
         }
         $minChars = $minChars > 0 ? $minChars : 2;
 
-        // fetch the TCA field type to hand it over to the JS class
-        $type = '';
-        if (isset($config['fieldConf']['config']['type'])) {
-            $type = $config['fieldConf']['config']['type'];
-        }
-
-        // Sign those parameters that come back in an ajax request to configure the search in searchAction()
-        $hmac = GeneralUtility::hmac(
-            (string)$table . (string)$field . (string)$row['uid'] . (string)$row['pid'] . (string)$dataStructureIdentifier,
-            'formEngineSuggest'
-        );
-
         $this->view->assignMultiple([
-                'placeholder' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.findRecord',
-                'fieldname' => $fieldName,
-                'table' => $table,
-                'field' => $field,
-                'uid' => $row['uid'],
-                'pid' => (int)$row['pid'],
-                'dataStructureIdentifier' => $dataStructureIdentifier,
-                'fieldtype' => $type,
-                'minchars' => (int)$minChars,
-                'hmac' => $hmac,
-            ]
-        );
+            'placeholder' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.findRecord',
+            'fieldName' => $data['fieldName'],
+            'tableName' => $data['tableName'],
+            'field' => $data['parameterArray']['itemFormElName'],
+            'uid' => $data['databaseRow']['uid'],
+            'pid' => (int)$data['effectivePid'],
+            'dataStructureIdentifier' => $dataStructureIdentifier,
+            'flexFormSheetName' => $flexFormSheetName,
+            'flexFormFieldName' => $flexFormFieldName,
+            'flexFormContainerName' => $flexFormContainerName,
+            'flexFormContainerFieldName' => $flexFormContainerFieldName,
+            'fieldtype' => $fieldTca['config']['type'],
+            'minchars' => (int)$minChars,
+        ]);
 
         return $this->view->render();
     }
@@ -116,7 +117,7 @@ class SuggestWizard
      *
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename = null):StandaloneView
+    protected function getFluidTemplateObject(string $filename = null): StandaloneView
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);

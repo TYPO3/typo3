@@ -38,7 +38,7 @@ class TcaInlineConfigurationTest extends \TYPO3\CMS\Components\TestingFramework\
         'type' => 'inline',
         'foreign_table' => 'aForeignTableName',
         'minitems' => 0,
-        'maxitems' => 100000,
+        'maxitems' => 99999,
         'behaviour' => [
             'localizationMode' => 'none',
         ],

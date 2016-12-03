@@ -140,7 +140,6 @@ return [
                 'foreign_table' => 'tx_blogexample_domain_model_post',
                 'foreign_field' => 'blog',
                 'foreign_sortby' => 'sorting',
-                'maxitems' => 999999,
                 'appearance' => [
                     'collapseAll' => 1,
                     'expandSingle' => 1,

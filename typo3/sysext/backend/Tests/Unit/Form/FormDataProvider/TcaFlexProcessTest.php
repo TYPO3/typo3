@@ -28,11 +28,6 @@ use TYPO3\CMS\Lang\LanguageService;
 class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var TcaFlexProcess
-     */
-    protected $subject;
-
-    /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
     protected $backendUserProphecy;
@@ -48,8 +43,31 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         // This is ok for the time being, but this settings takes care only parts of the compiler are called
         // to have less dependencies.
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [];
+    }
 
-        $this->subject = new TcaFlexProcess();
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionWithMissingDataStructureIdentifier()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1480765571);
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -71,6 +89,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'aSheet' => [
@@ -110,14 +129,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'sheets' => [],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -139,6 +153,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'aSheet' => [
@@ -193,14 +208,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -222,6 +232,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'aSheet' => [
@@ -276,14 +287,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -305,6 +311,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'aSheet' => [
@@ -359,14 +366,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -388,6 +390,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -442,14 +445,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -471,6 +469,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -509,14 +508,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -538,6 +532,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -584,14 +579,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -613,6 +603,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -659,14 +650,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -688,6 +674,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -736,14 +723,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -765,6 +747,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -846,14 +829,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     ],
                 ],
             ],
-            'meta' => [
-                'dataStructurePointers' => [
-                    'pointerField' => 'aFlex',
-                ],
-            ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -875,6 +853,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -913,14 +892,9 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(true);
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-            'dataStructurePointers' => [
-                'pointerField' => 'aFlex'
-            ],
-        ];
         $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -941,6 +915,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -968,7 +943,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440685208);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -989,6 +964,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1016,7 +992,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440685208);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -1053,17 +1029,6 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                                     ],
                                 ],
                             ],
-                            'lEN' => [
-                                'section_1' => [
-                                    'el' => [
-                                        '1' => [
-                                            'container_1' => [
-                                                // It should add the default value for aFlexField here
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
                         ],
                     ],
                     'meta' => [],
@@ -1074,6 +1039,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1127,10 +1093,13 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         // A default value for existing container field aFlexField should have been set
         $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
 
-        // Dummy row values for container_1 on lDEF sheet
-        $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['templateRows']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
+        // Data structure of given containers is copied over to "children" referencing the existing container name
+        $expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['section_1']['children']['1']
+            =  $expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['section_1']['el']['container_1'];
+        $expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['section_1']['children']['2']
+            =  $expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['section_1']['el']['container_1'];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -1151,6 +1120,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1189,7 +1159,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1458745468);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -1210,6 +1180,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1248,7 +1219,127 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1458745712);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForSelectElementsInSectionContainers()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'section_1' => [
+                                                    'section' => '1',
+                                                    'type' => 'array',
+                                                    'el' => [
+                                                        'container_1' => [
+                                                            'type' => 'array',
+                                                            'el' => [
+                                                                'section_nested' => [
+                                                                    'config' => [
+                                                                        'type' => 'select',
+                                                                        'MM' => '',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [],
+        ];
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1481647089);
+
+        (new TcaFlexProcess())->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForGroupElementsInSectionContainers()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'section_1' => [
+                                                    'section' => '1',
+                                                    'type' => 'array',
+                                                    'el' => [
+                                                        'container_1' => [
+                                                            'type' => 'array',
+                                                            'el' => [
+                                                                'section_nested' => [
+                                                                    'config' => [
+                                                                        'type' => 'group',
+                                                                        'MM' => '',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [],
+        ];
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1481647089);
+
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -1270,6 +1361,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1306,7 +1398,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
             return false;
         }))->shouldBeCalled()->willReturnArgument(0);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -1328,6 +1420,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1363,7 +1456,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
             return false;
         }))->shouldBeCalled()->willReturnArgument(0);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
     }
 
     /**
@@ -1389,6 +1482,7 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'config' => [
                             'type' => 'flex',
                             'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
                             'ds' => [
                                 'sheets' => [
                                     'sDEF' => [
@@ -1434,6 +1528,6 @@ class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
             return false;
         }))->shouldBeCalled()->willReturnArgument(0);
 
-        $this->subject->addData($input);
+        (new TcaFlexProcess())->addData($input);
     }
 }

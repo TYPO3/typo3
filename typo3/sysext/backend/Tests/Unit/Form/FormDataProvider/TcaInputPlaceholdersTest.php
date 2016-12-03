@@ -223,7 +223,16 @@ class TcaInputPlaceholdersTest extends \TYPO3\CMS\Components\TestingFramework\Co
             'tableName' => 'aTable',
             'databaseRow' => [
                 'aField' => '',
-                'uid_local' => 'sys_file_3|aLabel,sys_file_5|anotherLabel',
+                'uid_local' => [
+                    [
+                        'uid' => 3,
+                        'table' => 'sys_file',
+                    ],
+                    [
+                        'uid' => 5,
+                        'table' => 'sys_file',
+                    ],
+                ],
             ],
             'processedTca' => [
                 'columns' => [
@@ -354,7 +363,16 @@ class TcaInputPlaceholdersTest extends \TYPO3\CMS\Components\TestingFramework\Co
             'tableName' => 'aTable',
             'databaseRow' => [
                 'aField' => '',
-                'uid_local' => 'sys_file_3|aLabel,sys_file_5|anotherLabel',
+                'uid_local' => [
+                    [
+                        'uid' => 3,
+                        'table' => 'sys_file',
+                    ],
+                    [
+                        'uid' => 5,
+                        'table' => 'sys_file',
+                    ],
+                ],
             ],
             'processedTca' => [
                 'columns' => [

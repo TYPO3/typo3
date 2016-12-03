@@ -179,7 +179,7 @@ class InputTextElement extends AbstractFormElement
                 if (class_exists($evalData)) {
                     $evalObj = GeneralUtility::makeInstance($evalData);
                     if (method_exists($evalObj, 'returnFieldJS')) {
-                        $resultArray['extJSCODE'] .= LF . 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($evalData) . '] = function(value) {' . $evalObj->returnFieldJS() . '}';
+                        $resultArray['additionalJavaScriptPost'][] = 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($evalData) . '] = function(value) {' . $evalObj->returnFieldJS() . '};';
                     }
                 }
             }

@@ -323,8 +323,7 @@ class InlineRecordContainer extends AbstractContainer
         // Renders a thumbnail for the header
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && !empty($inlineConfig['appearance']['headerThumbnail']['field'])) {
             $fieldValue = $rec[$inlineConfig['appearance']['headerThumbnail']['field']];
-            $firstElement = array_shift(GeneralUtility::trimExplode('|', array_shift(GeneralUtility::trimExplode(',', $fieldValue))));
-            $fileUid = array_pop(BackendUtility::splitTable_Uid($firstElement));
+            $fileUid = $fieldValue[0]['uid'];
 
             if (!empty($fileUid)) {
                 try {
@@ -419,14 +418,15 @@ class InlineRecordContainer extends AbstractContainer
                 . '</span>';
         }
         // "Info": (All records)
+        // @todo: hardcoded sys_file!
+        if ($rec['table_local'] === 'sys_file') {
+            $uid = $rec['uid_local'][0]['uid'];
+            $table = '_FILE';
+        } else {
+            $uid = $rec['uid'];
+            $table = $foreignTable;
+        }
         if ($enabledControls['info'] && !$isNewItem) {
-            if ($rec['table_local'] === 'sys_file') {
-                $uid = (int)substr($rec['uid_local'], 9);
-                $table = '_FILE';
-            } else {
-                $uid = $rec['uid'];
-                $table = $foreignTable;
-            }
             $cells['info'] = '
 				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;')) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
 					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
@@ -479,7 +479,7 @@ class InlineRecordContainer extends AbstractContainer
                     ->where(
                         $queryBuilder->expr()->eq(
                             'file',
-                            $queryBuilder->createNamedParameter(substr($rec['uid_local'], 9), \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',

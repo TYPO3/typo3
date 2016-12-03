@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * Creates a widget where only one item can be selected.
  * This is either a select drop-down if no size config is given or set to 1, or a select box.
  *
- * This is rendered for type=select, maxitems=1
+ * This is rendered for type=select, renderType=selectSingle
  */
 class SelectSingleElement extends AbstractFormElement
 {

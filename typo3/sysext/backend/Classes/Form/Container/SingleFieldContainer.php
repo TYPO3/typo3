@@ -40,6 +40,7 @@ class SingleFieldContainer extends AbstractContainer
     /**
      * Entry method
      *
+     * @throws \InvalidArgumentException
      * @return array As defined in initializeResultArray() of AbstractNode
      */
     public function render()
@@ -71,19 +72,14 @@ class SingleFieldContainer extends AbstractContainer
             if (MathUtility::canBeInterpretedAsInteger($parentValue)) {
                 $isOverlay = (bool)$parentValue;
             } elseif (is_array($parentValue)) {
-                // This case may apply if the value has been converted to an array by the select data provider
+                // This case may apply if the value has been converted to an array by the select or group data provider
                 $isOverlay = !empty($parentValue) ? (bool)$parentValue[0] : false;
-            } elseif (is_string($parentValue) && $parentValue !== '') {
-                // This case may apply if a group definition is used in TCA and the group provider builds a weird string
-                $recordsReferencedInField = GeneralUtility::trimExplode(',', $parentValue);
-                // Pick the first record because if you set multiple records you're in trouble anyways
-                $recordIdentifierParts = GeneralUtility::trimExplode('|', $recordsReferencedInField[0]);
-                list(, $refUid) = BackendUtility::splitTable_Uid($recordIdentifierParts[0]);
-                $isOverlay = MathUtility::canBeInterpretedAsInteger($refUid) ? (bool)$refUid : false;
             } else {
-                throw new \InvalidArgumentException('The given value for the original language field '
-                                                    . $this->data['processedTca']['ctrl']['transOrigPointerField']
-                                                    . ' of table ' . $table . ' contains an invalid value.', 1470742770);
+                throw new \InvalidArgumentException(
+                    'The given value for the original language field ' . $this->data['processedTca']['ctrl']['transOrigPointerField']
+                    . ' of table ' . $table . ' contains an invalid value.',
+                    1470742770
+                );
             }
         }
 
@@ -134,14 +130,19 @@ class SingleFieldContainer extends AbstractContainer
             $typeField = substr($this->data['processedTca']['ctrl']['type'], 0, strpos($this->data['processedTca']['ctrl']['type'], ':'));
         }
         // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
-        // This is used for eg. "type" fields and others configured with "requestUpdate"
-        if (!empty($this->data['processedTca']['ctrl']['type'])
-            && $fieldName === $typeField
-            || !empty($this->data['processedTca']['ctrl']['requestUpdate'])
-            && GeneralUtility::inList(str_replace(' ', '', $this->data['processedTca']['ctrl']['requestUpdate']), $fieldName)
+        // This is used for eg. "type" fields and others configured with "onChange"
+        if (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField
+            || isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload'
         ) {
             if ($backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                $alertMsgOnChange = 'top.TYPO3.Modal.confirm(TYPO3.lang["FormEngine.refreshRequiredTitle"], TYPO3.lang["FormEngine.refreshRequiredContent"]).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
+                $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
+                        . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
+                        . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
+                    . ')'
+                    . '.on('
+                        . '"button.clicked",'
+                        . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
+                    . ');';
             } else {
                 $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
             }

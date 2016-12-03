@@ -28,20 +28,21 @@ class SuggestWizardTest extends \TYPO3\CMS\Components\TestingFramework\Core\Unit
     public function renderSuggestSelectorThrowsExceptionIfFlexFieldDoesNotContainDataStructureIdentifier()
     {
         $viewProphecy = $this->prophesize(StandaloneView::class);
+        $input = [
+            'fieldName' => 'aFieldName',
+            'processedTca' => [
+                'columns' => [
+                    'aFieldName' => [
+                        'config' => [
+                            'type' => 'flex',
+                            // there should be a 'dataStructureIdentifier' here
+                        ],
+                    ],
+                ],
+            ],
+        ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478604742);
-        (new SuggestWizard($viewProphecy->reveal()))->renderSuggestSelector(
-            'aFieldName',
-            'aTable',
-            'aField',
-            ['uid' => 42],
-            [],
-            [
-                'config' => [
-                        'type' => 'flex',
-                        // there should be a 'dataStructureIdentifier' here
-                ],
-            ]
-        );
+        (new SuggestWizard($viewProphecy->reveal()))->renderSuggestSelector($input);
     }
 }

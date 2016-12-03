@@ -16,12 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Controller\SelectTreeController;
+use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 
 /**
  * Test case
  */
-class SelectTreeControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FormSelectTreeAjaxControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -32,7 +32,7 @@ class SelectTreeControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
         $responseProphecy = $this->prophesize(ResponseInterface::class);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386729);
-        (new SelectTreeController())->fetchDataAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormSelectTreeAjaxController())->fetchDataAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
@@ -43,12 +43,12 @@ class SelectTreeControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
         $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getQueryParams()->shouldBeCalled()->willReturn([
-            'table' => 'aTable',
-            'field' => 'aField',
+            'tableName' => 'aTable',
+            'fieldName' => 'aField',
         ]);
         $GLOBALS['TCA']['aTable']['columns'] = [];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386990);
-        (new SelectTreeController())->fetchDataAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormSelectTreeAjaxController())->fetchDataAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 }
