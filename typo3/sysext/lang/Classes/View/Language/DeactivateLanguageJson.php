@@ -24,7 +24,7 @@ class DeactivateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView
      *
      * @return array The response data
      */
-    protected function getReponseData()
+    protected function getResponseData()
     {
         return $this->variables['response'];
     }

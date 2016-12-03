@@ -24,7 +24,7 @@ class GetTranslationsJson extends \TYPO3\CMS\Lang\View\AbstractJsonView
      *
      * @return array The response data
      */
-    protected function getReponseData()
+    protected function getResponseData()
     {
         $data = [];
         $languages = $this->variables['languages'];

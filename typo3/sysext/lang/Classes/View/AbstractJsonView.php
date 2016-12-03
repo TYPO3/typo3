@@ -43,7 +43,7 @@ abstract class AbstractJsonView extends AbstractView
      */
     public function render()
     {
-        $result = $this->getReponseData();
+        $result = $this->getResponseData();
         $this->sendResponse($result);
     }
 
@@ -52,7 +52,7 @@ abstract class AbstractJsonView extends AbstractView
      *
      * @return array The response data
      */
-    abstract protected function getReponseData();
+    abstract protected function getResponseData();
 
     /**
      * Send response to browser
