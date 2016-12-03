@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
 	/**
 	 * Grunt stylefmt task
@@ -46,23 +46,23 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		paths: {
-			resources : 'Resources/',
-			sass      : '<%= paths.resources %>Public/Sass/',
-			root      : '../',
-			sysext    : '<%= paths.root %>typo3/sysext/',
-			form      : '<%= paths.sysext %>form/Resources/',
-			frontend  : '<%= paths.sysext %>frontend/Resources/',
-			install   : '<%= paths.sysext %>install/Resources/',
-			linkvalidator : '<%= paths.sysext %>linkvalidator/Resources/',
-			backend   : '<%= paths.sysext %>backend/Resources/',
-			t3editor  : '<%= paths.sysext %>t3editor/Resources/',
+			resources: 'Resources/',
+			sass: '<%= paths.resources %>Public/Sass/',
+			root: '../',
+			sysext: '<%= paths.root %>typo3/sysext/',
+			form: '<%= paths.sysext %>form/Resources/',
+			frontend: '<%= paths.sysext %>frontend/Resources/',
+			install: '<%= paths.sysext %>install/Resources/',
+			linkvalidator: '<%= paths.sysext %>linkvalidator/Resources/',
+			backend: '<%= paths.sysext %>backend/Resources/',
+			t3editor: '<%= paths.sysext %>t3editor/Resources/',
 			workspaces: '<%= paths.sysext %>workspaces/Resources/',
-			ckeditor  : '<%= paths.sysext %>rte_ckeditor/Resources/',
-			core      : '<%= paths.sysext %>core/Resources/',
-			bower     : 'bower_components/',
-			flags     : '<%= paths.bower %>region-flags/svg/',
-			t3icons   : '<%= paths.bower %>typo3-icons/dist/',
-			npm       : 'node_modules/'
+			ckeditor: '<%= paths.sysext %>rte_ckeditor/Resources/',
+			core: '<%= paths.sysext %>core/Resources/',
+			bower: 'bower_components/',
+			flags: '<%= paths.bower %>region-flags/svg/',
+			t3icons: '<%= paths.bower %>typo3-icons/dist/',
+			npm: 'node_modules/'
 		},
 		stylelint: {
 			options: {
@@ -155,15 +155,15 @@ module.exports = function(grunt) {
 					}),
 					require('postcss-banner')({
 						banner: 'This file is part of the TYPO3 CMS project.\n' +
-							'\n' +
-							'It is free software; you can redistribute it and/or modify it under\n' +
-							'the terms of the GNU General Public License, either version 2\n' +
-							'of the License, or any later version.\n' +
-							'\n' +
-							'For the full copyright and license information, please read the\n' +
-							'LICENSE.txt file that was distributed with this source code.\n' +
-							'\n' +
-							'The TYPO3 project - inspiring people to share!',
+						'\n' +
+						'It is free software; you can redistribute it and/or modify it under\n' +
+						'the terms of the GNU General Public License, either version 2\n' +
+						'of the License, or any later version.\n' +
+						'\n' +
+						'For the full copyright and license information, please read the\n' +
+						'LICENSE.txt file that was distributed with this source code.\n' +
+						'\n' +
+						'The TYPO3 project - inspiring people to share!',
 						important: true,
 						inline: false
 					})
@@ -195,10 +195,11 @@ module.exports = function(grunt) {
 			}
 		},
 		ts: {
-			default : {
+			default: {
 				tsconfig: true,
 				options: {
-					verbose: false
+					verbose: false,
+					additionalFlags: '--typeRoots "node_modules/@types,types"'
 				}
 			}
 		},
@@ -236,7 +237,7 @@ module.exports = function(grunt) {
 					cwd: '<%= paths.root %>Build/JavaScript/typo3/sysext/',
 					src: ['**/*.js', '**/*.js.map'],
 					dest: '<%= paths.sysext %>',
-					rename: function(dest, src) {
+					rename: function (dest, src) {
 						return dest + src.replace('Resources/Private/TypeScript', 'Resources/Public/JavaScript');
 					}
 				}]
@@ -252,47 +253,146 @@ module.exports = function(grunt) {
 			},
 			module_icons: {
 				files: [
-					{ dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg', src: '<%= paths.t3icons %>module/module-about.svg' },
-					{ dest: '<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg', src: '<%= paths.t3icons %>module/module-belog.svg' },
-					{ dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-beuser.svg', src: '<%= paths.t3icons %>module/module-beuser.svg' },
-					{ dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg', src: '<%= paths.t3icons %>module/module-config.svg' },
-					{ dest: '<%= paths.sysext %>cshmanual/Resources/Public/Icons/module-cshmanual.svg', src: '<%= paths.t3icons %>module/module-cshmanual.svg' },
-					{ dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg', src: '<%= paths.t3icons %>module/module-dbint.svg' },
-					{ dest: '<%= paths.sysext %>documentation/Resources/Public/Icons/module-documentation.svg', src: '<%= paths.t3icons %>module/module-documentation.svg' },
-					{ dest: '<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg', src: '<%= paths.t3icons %>module/module-extensionmanager.svg' },
-					{ dest: '<%= paths.sysext %>filelist/Resources/Public/Icons/module-filelist.svg', src: '<%= paths.t3icons %>module/module-filelist.svg' },
-					{ dest: '<%= paths.sysext %>form/Resources/Public/Icons/module-form.svg', src: '<%= paths.t3icons %>module/module-form.svg' },
-					{ dest: '<%= paths.sysext %>func/Resources/Public/Icons/module-func.svg', src: '<%= paths.t3icons %>module/module-func.svg' },
-					{ dest: '<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg', src: '<%= paths.t3icons %>module/module-indexed_search.svg' },
-					{ dest: '<%= paths.sysext %>info/Resources/Public/Icons/module-info.svg', src: '<%= paths.t3icons %>module/module-info.svg' },
-					{ dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install.svg', src: '<%= paths.t3icons %>module/module-install.svg' },
-					{ dest: '<%= paths.sysext %>lang/Resources/Public/Icons/module-lang.svg', src: '<%= paths.t3icons %>module/module-lang.svg' },
-					{ dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg', src: '<%= paths.t3icons %>module/module-list.svg' },
-					{ dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg', src: '<%= paths.t3icons %>module/module-page.svg' },
-					{ dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-permission.svg', src: '<%= paths.t3icons %>module/module-permission.svg' },
-					{ dest: '<%= paths.sysext %>recycler/Resources/Public/Icons/module-recycler.svg', src: '<%= paths.t3icons %>module/module-recycler.svg' },
-					{ dest: '<%= paths.sysext %>reports/Resources/Public/Icons/module-reports.svg', src: '<%= paths.t3icons %>module/module-reports.svg' },
-					{ dest: '<%= paths.sysext %>scheduler/Resources/Public/Icons/module-scheduler.svg', src: '<%= paths.t3icons %>module/module-scheduler.svg' },
-					{ dest: '<%= paths.sysext %>setup/Resources/Public/Icons/module-setup.svg', src: '<%= paths.t3icons %>module/module-setup.svg' },
-					{ dest: '<%= paths.sysext %>taskcenter/Resources/Public/Icons/module-taskcenter.svg', src: '<%= paths.t3icons %>module/module-taskcenter.svg' },
-					{ dest: '<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg', src: '<%= paths.t3icons %>module/module-tstemplate.svg' },
-					{ dest: '<%= paths.sysext %>version/Resources/Public/Icons/module-version.svg', src: '<%= paths.t3icons %>module/module-version.svg' },
-					{ dest: '<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg', src: '<%= paths.t3icons %>module/module-viewpage.svg' },
-					{ dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg', src: '<%= paths.t3icons %>module/module-workspaces.svg' }
+					{
+						dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg',
+						src: '<%= paths.t3icons %>module/module-about.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg',
+						src: '<%= paths.t3icons %>module/module-belog.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-beuser.svg',
+						src: '<%= paths.t3icons %>module/module-beuser.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg',
+						src: '<%= paths.t3icons %>module/module-config.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>cshmanual/Resources/Public/Icons/module-cshmanual.svg',
+						src: '<%= paths.t3icons %>module/module-cshmanual.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg',
+						src: '<%= paths.t3icons %>module/module-dbint.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>documentation/Resources/Public/Icons/module-documentation.svg',
+						src: '<%= paths.t3icons %>module/module-documentation.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg',
+						src: '<%= paths.t3icons %>module/module-extensionmanager.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>filelist/Resources/Public/Icons/module-filelist.svg',
+						src: '<%= paths.t3icons %>module/module-filelist.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>form/Resources/Public/Icons/module-form.svg',
+						src: '<%= paths.t3icons %>module/module-form.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>func/Resources/Public/Icons/module-func.svg',
+						src: '<%= paths.t3icons %>module/module-func.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg',
+						src: '<%= paths.t3icons %>module/module-indexed_search.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>info/Resources/Public/Icons/module-info.svg',
+						src: '<%= paths.t3icons %>module/module-info.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install.svg',
+						src: '<%= paths.t3icons %>module/module-install.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>lang/Resources/Public/Icons/module-lang.svg',
+						src: '<%= paths.t3icons %>module/module-lang.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg',
+						src: '<%= paths.t3icons %>module/module-list.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg',
+						src: '<%= paths.t3icons %>module/module-page.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-permission.svg',
+						src: '<%= paths.t3icons %>module/module-permission.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>recycler/Resources/Public/Icons/module-recycler.svg',
+						src: '<%= paths.t3icons %>module/module-recycler.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>reports/Resources/Public/Icons/module-reports.svg',
+						src: '<%= paths.t3icons %>module/module-reports.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>scheduler/Resources/Public/Icons/module-scheduler.svg',
+						src: '<%= paths.t3icons %>module/module-scheduler.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>setup/Resources/Public/Icons/module-setup.svg',
+						src: '<%= paths.t3icons %>module/module-setup.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>taskcenter/Resources/Public/Icons/module-taskcenter.svg',
+						src: '<%= paths.t3icons %>module/module-taskcenter.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg',
+						src: '<%= paths.t3icons %>module/module-tstemplate.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>version/Resources/Public/Icons/module-version.svg',
+						src: '<%= paths.t3icons %>module/module-version.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg',
+						src: '<%= paths.t3icons %>module/module-viewpage.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg',
+						src: '<%= paths.t3icons %>module/module-workspaces.svg'
+					}
 				]
 			},
 			extension_icons: {
 				files: [
-					{ dest: '<%= paths.sysext %>form/Resources/Public/Icons/Extension.svg', src: '<%= paths.t3icons %>module/module-form.svg' }
+					{
+						dest: '<%= paths.sysext %>form/Resources/Public/Icons/Extension.svg',
+						src: '<%= paths.t3icons %>module/module-form.svg'
+					}
 				]
 			},
 			fonts: {
 				files: [
-					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.eot' },
-					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.svg' },
-					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.ttf' },
-					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff' },
-					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff2' }
+					{
+						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot',
+						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.eot'
+					},
+					{
+						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg',
+						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.svg'
+					},
+					{
+						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf',
+						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.ttf'
+					},
+					{
+						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff',
+						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff'
+					},
+					{
+						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2',
+						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff2'
+					}
 				]
 			}
 		},
@@ -343,9 +443,9 @@ module.exports = function(grunt) {
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
 					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
 					/* disabled until events are not bound to document only
-						see https://github.com/claviska/jquery-minicolors/issues/192
-						see https://github.com/claviska/jquery-minicolors/issues/206
-					'jquery.minicolors.js': 'jquery-minicolors/jquery.minicolors.min.js',
+					 see https://github.com/claviska/jquery-minicolors/issues/192
+					 see https://github.com/claviska/jquery-minicolors/issues/206
+					 'jquery.minicolors.js': 'jquery-minicolors/jquery.minicolors.min.js',
 					 */
 					/* disabled until autocomplete formatGroup is fixed to pass on the index too
 					 'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
@@ -393,7 +493,7 @@ module.exports = function(grunt) {
 		svgmin: {
 			options: {
 				plugins: [
-					{ removeViewBox: false }
+					{removeViewBox: false}
 				]
 			},
 			// Flags
@@ -479,7 +579,7 @@ module.exports = function(grunt) {
 	 */
 	grunt.registerTask('scripts', ['tslint', 'tsclean', 'ts', 'copy:ts_files']);
 
-	grunt.task.registerTask('tsclean', function() {
+	grunt.task.registerTask('tsclean', function () {
 		grunt.option('force');
 		grunt.file.delete("JavaScript");
 	});
