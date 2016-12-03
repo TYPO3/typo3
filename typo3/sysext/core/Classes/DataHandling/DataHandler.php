@@ -305,6 +305,13 @@ class DataHandler
     public $copyMappingArray_merged = [];
 
     /**
+     * Per-table array with UIDs that have been deleted.
+     *
+     * @var array
+     */
+    protected $deletedRecords = [];
+
+    /**
      * A map between input file name and final destination for files being attached to records.
      *
      * @var array
@@ -5021,6 +5028,7 @@ class DataHandler
             $this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
             // Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
             if (!$undeleteRecord) {
+                $this->deletedRecords[$table][] = (int)$uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
             }
         } else {
@@ -5052,6 +5060,7 @@ class DataHandler
             }
             // Delete the hard way...:
             $this->databaseConnection->exec_DELETEquery($table, 'uid=' . (int)$uid);
+            $this->deletedRecords[$table][] = (int)$uid;
             $this->deleteL10nOverlayRecords($table, $uid);
         }
         if ($this->enableLogging) {
@@ -8212,6 +8221,22 @@ class DataHandler
             }
         }
         return $result;
+    }
+
+    /**
+     * Determines whether a particular record has been deleted
+     * using DataHandler::deleteRecord() in this instance.
+     *
+     * @param string $tableName
+     * @param string $uid
+     * @return bool
+     */
+    public function hasDeletedRecord($tableName, $uid)
+    {
+        return
+            !empty($this->deletedRecords[$tableName])
+            && in_array($uid, $this->deletedRecords[$tableName])
+        ;
     }
 
     /**

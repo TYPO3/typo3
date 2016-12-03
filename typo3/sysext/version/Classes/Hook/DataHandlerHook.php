@@ -788,6 +788,11 @@ class DataHandlerHook
 
         // Check prerequisites before start swapping
 
+        // Skip records that have been deleted during the current execution
+        if ($tcemainObj->hasDeletedRecord($table, $id)) {
+            return;
+        }
+
         // First, check if we may actually edit the online record
         if (!$tcemainObj->checkRecordUpdateAccess($table, $id)) {
             $tcemainObj->newlog('Error: You cannot swap versions for a record you do not have access to edit!', 1);
