@@ -21,33 +21,33 @@ TYPO3.Workspaces.Actions = {
 
 	checkIntegrity: function(parameters, callbackFunction, callbackArguments) {
 		TYPO3.Workspaces.ExtDirect.checkIntegrity(
-				parameters,
-				function (response) {
-					switch (response.result) {
-						case 'error':
-							top.TYPO3.Dialog.ErrorDialog({
-								minWidth: 400,
-								title: 'Error',
-								msg: '<div class="scope">' + TYPO3.l10n.localize('integrity.hasIssuesDescription') + '</div>'
-							});
-							break;
-						case 'warning':
-							top.TYPO3.Dialog.QuestionDialog({
-								minWidth: 400,
-								title: 'Warning',
-								msg: '<div class="scope">' + TYPO3.l10n.localize('integrity.hasIssuesDescription') + '</div>' +
-									'<div class="question">' + TYPO3.l10n.localize('integrity.hasIssuesQuestion') + '</div>',
-								fn: function(result) {
-									if (result == 'yes') {
-										callbackFunction.call(this, callbackArguments)
-									}
+			parameters,
+			function (response) {
+				switch (response.result) {
+					case 'error':
+						top.TYPO3.Dialog.ErrorDialog({
+							minWidth: 400,
+							title: 'Error',
+							msg: '<div class="scope">' + TYPO3.l10n.localize('integrity.hasIssuesDescription') + '</div>'
+						});
+						break;
+					case 'warning':
+						top.TYPO3.Dialog.QuestionDialog({
+							minWidth: 400,
+							title: 'Warning',
+							msg: '<div class="scope">' + TYPO3.l10n.localize('integrity.hasIssuesDescription') + '</div>' +
+							'<div class="question">' + TYPO3.l10n.localize('integrity.hasIssuesQuestion') + '</div>',
+							fn: function(result) {
+								if (result == 'yes') {
+									callbackFunction.call(this, callbackArguments)
 								}
-							});
-							break;
-						default:
-							callbackFunction.call(this, callbackArguments);
-					}
+							}
+						});
+						break;
+					default:
+						callbackFunction.call(this, callbackArguments);
 				}
+			}
 		)
 	},
 
@@ -187,13 +187,13 @@ TYPO3.Workspaces.Actions = {
 		switch (TYPO3.Workspaces.Actions.currentSendToMode) {
 			case 'next':
 				TYPO3.Workspaces.ExtDirectActions.sendToNextStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
-			break;
+				break;
 			case 'prev':
 				TYPO3.Workspaces.ExtDirectActions.sendToPrevStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
-			break;
+				break;
 			case 'specific':
 				TYPO3.Workspaces.ExtDirectActions.sendToSpecificStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
-			break;
+				break;
 		}
 
 	},
@@ -324,7 +324,7 @@ TYPO3.Workspaces.Actions = {
 	updateStageChangeButtons: function (response) {
 
 		if (Ext.isObject(response.error)) {
-				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+			TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
 		} else {
 			for (componentId in response) {
 				if (response[componentId].visible) {
@@ -339,7 +339,7 @@ TYPO3.Workspaces.Actions = {
 					}
 				}
 			}
-				// force doLayout on each plugin containing the preview panel
+			// force doLayout on each plugin containing the preview panel
 			Ext.getCmp('preview').plugins.each(function (item, index) {
 				if (Ext.isFunction(item.doLayout)) {
 					item.doLayout();
@@ -387,17 +387,25 @@ TYPO3.Workspaces.Actions = {
 
 			for (language in response) {
 				var url = response[language];
-
-				msg += String.format('<li style="margin: 0 0 8px;"><strong>{1}</strong><br /><a href="{0}" target="_blank">{0}</a></li>', url, language);
+				msg += String.format('<li><strong>{1}</strong><br /><a href="{0}" target="_blank">{0}</a></li>', url, language);
 			}
-
 			msg += '</ul>';
 
-			top.TYPO3.Dialog.InformationDialog({
-				title: TYPO3.l10n.localize('previewLink'),
-				minWidth: '400',
-				msg: msg
-			});
+			top.TYPO3.Modal.show(
+				TYPO3.l10n.localize('previewLink'),
+				msg,
+				Severity.info,
+				[{
+					text: TYPO3.lang['ok'],
+					active: true,
+					btnClass: 'btn-info',
+					name: 'ok',
+					trigger: function() {
+						top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					}
+				}],
+				['modal-inner-scroll']
+			);
 		});
 	}
 };
