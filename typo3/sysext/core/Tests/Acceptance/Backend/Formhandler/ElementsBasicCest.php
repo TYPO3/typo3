@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Formhandler;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FormHandlerElementTestDataObject;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Page\PageTree;
 
 /**
@@ -25,6 +26,7 @@ class ElementsBasicCest
 {
     /**
      * Selector of the record container in the listview
+     *
      * @var string
      */
     protected static $listViewRecordSelector = '#recordlist-tx_styleguide_elements_basic';
@@ -48,301 +50,205 @@ class ElementsBasicCest
      */
     public function checkThatBrowserSideValidationsWorkAndSaveRecord(Admin $I, Formhandler $formhandler)
     {
-        $editRecordLinkCssPath = self::$listViewRecordSelector . ' a[data-original-title="Edit record"]';
-        $I->waitForElement($editRecordLinkCssPath, 30);
-        $I->click($editRecordLinkCssPath);
-        $I->waitForText('Edit Form', 3, 'h1');
+        $this->waitForFormReady($I);
 
         $fieldTests = [
             'input_1' => [
-                'tests' => [
-                    [
-                        'This is a demo text with 2 numbers #!',
-                        'This is a demo text with 2 numbers #!',
-                    ],
-                ],
-                'cleared' => [
-                    ''
-                ]
+                new FormHandlerElementTestDataObject(
+                    'This is a demo text with 2 numbers #!',
+                    'This is a demo text with 2 numbers #!'
+                )
             ],
             'input_2, size=10' => [
-                'tests' => [
-                    [
-                        'This is a demo text with 2 numbers #!',
-                        'This is a demo text with 2 numbers #!',
-                    ],
-                ],
-                'cleared' => [
-                    ''
-                ]
+                new FormHandlerElementTestDataObject(
+                    'This is a demo text with 2 numbers #!',
+                    'This is a demo text with 2 numbers #!'
+                )
             ],
             'input_3 max=4' => [
-                'tests' => [
-                    [
-                        'Kasper',
-                        'Kasp',
-                    ],
-                ],
-                'cleared' => [
-                    ''
-                ]
+                new FormHandlerElementTestDataObject(
+                    'Kasper',
+                    'Kasp'
+                )
             ],
             'input_4 eval=alpha' => [
-                'tests' => [
-                    [
-                        'Kasper = TYPO3',
-                        'KasperTYPO',
-                    ],
-                    [
-                        'Non-latin characters: ŠĐŽĆČ',
-                        'Nonlatincharacters',
-                    ],
-                ],
-                'cleared' => [
-                    ''
-                ]
+                new FormHandlerElementTestDataObject(
+                    'Kasper = TYPO3',
+                    'KasperTYPO'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'Non-latin characters: ŠĐŽĆČ',
+                    'Nonlatincharacters'
+                ),
             ],
             'input_5 eval=alphanum' => [
-                'tests' => [
-                    [
-                        'Kasper = TYPO3',
-                        'KasperTYPO3',
-                    ],
-                ],
-                'cleared' => [
-                    ''
-                ]
-            ],
-            'input_8 eval=double2' => [
-                'tests' => [
-                    [
-                        '12.335',
-                        '12.34',
-                        '12.34',
-                    ],
-                    [
-                        '12,335',
-                        '12.34',
-                        '12.34',
-                    ],
-                    [
-                        '1.1',
-                        '1.10',
-                        '1.10',
-                    ],
-                    [
-                        'TYPO3',
-                        '3.00',
-                        '3.00',
-                    ],
-                    [
-                        '3TYPO',
-                        '3.00',
-                        '3.00',
-                    ],
-                ],
-                // @todo: add support for null values to the core
-                'cleared' => [
-                    '0.00',
-                    '0.00',
-                ]
-            ],
-            'input_9 eval=int' => [
-                'tests' => [
-                    [
-                        '12.335',
-                        '12',
-                        '12',
-                    ],
-                    [
-                        '12,9',
-                        '12',
-                        '12',
-                    ],
-                    [
-                        'TYPO3',
-                        '0',
-                        '0',
-                    ],
-                    [
-                        '3TYPO',
-                        '3',
-                        '3',
-                    ],
-                ],
-                // @todo: add support for null values to the core
-                'cleared' => [
-                    '0',
-                    '0',
-                ]
-            ],
-            'input_10 eval=is_in, is_in=abc123' => [
-                'tests' => [
-                    [
-                        'abcd1234',
-                        'abc123',
-                    ],
-                    [
-                        'Kasper TYPO3',
-                        'a3',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-            'input_11 eval=lower' => [
-                'tests' => [
-                    [
-                        'Kasper TYPO3!',
-                        'kasper typo3!',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-            'input_12 eval=md5' => [
-                'tests' => [
-                    [
-                        'Kasper TYPO3!',
-                        '748469dd64911af8df8f9a3dcb2c9378',
-                        '748469dd64911af8df8f9a3dcb2c9378',
-                    ],
-                    [
-                        ' Kasper TYPO3! ',
-                        '792a085606250c47d6ebb8c98804d5b0',
-                        '792a085606250c47d6ebb8c98804d5b0',
-                        false,
-                        'Check that whitespaces are not trimmed.'
-                    ],
-                ],
-                'cleared' => [
-                    // @todo: add support for null values to the core
-                    // cleared value currently keeps the previous value on save
-                    '792a085606250c47d6ebb8c98804d5b0',
-                    '792a085606250c47d6ebb8c98804d5b0'
-                ]
+                new FormHandlerElementTestDataObject(
+                    'Kasper = TYPO3',
+                    'KasperTYPO3'
+                ),
 
             ],
-            'input_13 eval=nospace' => [
-                'tests' => [
-                    [
-                        ' Kasper TYPO3! ',
-                        'KasperTYPO3!',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
+            'input_8 eval=double2' => [
+                new FormHandlerElementTestDataObject(
+                    '12.335',
+                    '12.34',
+                    '12.34'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12,335',
+                    '12.34',
+                    '12.34'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '1.1',
+                    '1.10',
+                    '1.10'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'TYPO3',
+                    '3.00',
+                    '3.00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '3TYPO',
+                    '3.00',
+                    '3.00'
+                )
             ],
-            // @todo define test
-            //'input_14 eval=null' => [
-            //],
-            'input_15 eval=num' => [
-                'tests' => [
-                    [
-                        '12.335',
-                        '12335',
-                    ],
-                    [
-                        '12,9',
-                        '129',
-                    ],
-                    [
-                        'TYPO3',
-                        '3',
-                    ],
-                    [
-                        '3TYPO',
-                        '3',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-            'input_16 eval=password' => [
-                'tests' => [
-                    [
-                        'Kasper',
-                        '********',
-                        'Kasper',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-           'input_19 eval=trim' => [
-                'tests' => [
-                    [
-                        ' Kasper ',
-                        'Kasper',
-                    ],
-                    [
-                        ' Kasper TYPO3 ',
-                        'Kasper TYPO3',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-            // @todo Check why this test is currently broken
-            //'input_20 eval with user function' => [
-            //    [
-            //        'Kasper',
-            //        'KasperJSfoo',
-            //    ]
-            //],
-            'input_23 eval=upper' => [
-                'tests' => [
-                    [
-                        'Kasper TYPO3!',
-                        'KASPER TYPO3!',
-                    ],
-                ],
-                'cleared' => [
-                    '',
-                ]
-            ],
-            'input_25 eval=int, default=0, range lower=-2, range upper=2' => [
-                'tests' => [
-                    [
-                        'Kasper TYPO3',
-                        '0',
-                        '0',
-                    ],
-                    [
-                        '2',
-                        '2',
-                        '2'
-                    ],
-                    [
-                        '-1',
-                        '-1',
-                        '-1',
-                    ],
-                    [
-                        '-3',
-                        '-3',
-                        '-3',
-                        true,
-                        'Expecting a modal with error on trying to save.'
-                    ],
-                    [
-                        '3',
-                        '-3',
-                        '-3',
-                        true,
-                        'Expecting a modal with error on trying to save.'
-                    ],
-                ],
-                'cleared' => [
+            'input_9 eval=int' => [
+                new FormHandlerElementTestDataObject(
+                    '12.335',
+                    '12',
+                    '12'
+
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12,9',
+                    '12',
+                    '12'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'TYPO3',
                     '0',
                     '0'
-                ]
+                ),
+                new FormHandlerElementTestDataObject(
+                    '3TYPO',
+                    '3',
+                    '3'
+                )
+            ],
+            'input_10 eval=is_in, is_in=abc123' => [
+                new FormHandlerElementTestDataObject(
+                    'abcd1234',
+                    'abc123'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3',
+                    'a3'
+                )
+            ],
+            'input_11 eval=lower' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3!',
+                    'kasper typo3!'
+                )
+            ],
+            'input_12 eval=md5' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3!',
+                    '748469dd64911af8df8f9a3dcb2c9378',
+                    '748469dd64911af8df8f9a3dcb2c9378'
+                ),
+                new FormHandlerElementTestDataObject(
+                    ' Kasper TYPO3! ',
+                    '792a085606250c47d6ebb8c98804d5b0',
+                    '792a085606250c47d6ebb8c98804d5b0',
+                    '792a085606250c47d6ebb8c98804d5b0',
+                    false,
+                    'Check that whitespaces are not trimmed.'
+                )
+            ],
+            'input_13 eval=nospace' => [
+                new FormHandlerElementTestDataObject(
+                    ' Kasper TYPO3! ',
+                    'KasperTYPO3!'
+                )
+            ],
+            'input_15 eval=num' => [
+                new FormHandlerElementTestDataObject(
+                    '12.335',
+                    '12335'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12,9',
+                    '129'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'TYPO3',
+                    '3'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '3TYPO',
+                    '3'
+                ),
+            ],
+            'input_16 eval=password' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper',
+                    '********',
+                    'Kasper'
+                ),
+            ],
+            'input_19 eval=trim' => [
+                new FormHandlerElementTestDataObject(
+                    ' Kasper ',
+                    'Kasper'
+                ),
+                new FormHandlerElementTestDataObject(
+                    ' Kasper TYPO3 ',
+                    'Kasper TYPO3'
+                ),
+            ],
+            'input_23 eval=upper' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3!',
+                    'KASPER TYPO3!'
+                )
+            ],
+            'input_25 eval=int, default=0, range lower=-2, range upper=2' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3',
+                    '0',
+                    '0'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '2',
+                    '2',
+                    '2'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '-1',
+                    '-1',
+                    '-1'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '-3',
+                    '-3',
+                    '-3',
+                    '-3',
+                    true,
+                    'Expecting a modal with error on trying to save.'
+
+                ),
+                new FormHandlerElementTestDataObject(
+                    '3',
+                    '-3',
+                    '-3',
+                    '-3',
+                    true,
+                    'Expecting a modal with error on trying to save.'
+                )
             ],
         ];
 
@@ -358,228 +264,282 @@ class ElementsBasicCest
      * @param Admin $I
      * @param Formhandler $formhandler
      */
-    public function checkThatBrowserSideValidationsWorkAndSaveRecordForDateFields(Admin $I, Formhandler $formhandler)
+    public function checkThatValidationWorks_evalYear(Admin $I, Formhandler $formhandler)
     {
-        $editRecordLinkCssPath = self::$listViewRecordSelector . ' a[data-original-title="Edit record"]';
-        $I->waitForElement($editRecordLinkCssPath, 30);
-        $I->click($editRecordLinkCssPath);
-        $I->waitForText('Edit Form', 3, 'h1');
+        $this->waitForFormReady($I);
 
-        $fieldTests = [
-            'input_6 eval=date' => [
-                'tests' => [
-                    [
-                        '29-01-2016',
-                        '29-01-2016',
-                        '1454025600',
-                    ],
-                    [
-                        '13-13-2016',
-                        '13-01-2017',
-                        '1484265600',
-                    ],
-                    [
-                        '29-02-2016',
-                        '29-02-2016',
-                        '1456704000',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '29-02-2015',
-                        '01-03-2015',
-                        '1425168000',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_36 dbType=date eval=date' => [
-                'tests' => [
-                    [
-                        '29-01-2016',
-                        '29-01-2016',
-                        '1454025600',
-                    ],
-                    [
-                        '13-13-2016',
-                        '13-01-2017',
-                        '1484265600',
-                    ],
-                    [
-                        '29-02-2016',
-                        '29-02-2016',
-                        '1456704000',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '29-02-2015',
-                        '01-03-2015',
-                        '1425168000',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_7 eval=datetime' => [
-                'tests' => [
-                    [
-                        '05:23 29-01-2016',
-                        '05:23 29-01-2016',
-                        '1454044980',
-                    ],
-                    [
-                        '05:23 13-13-2016',
-                        '05:23 13-01-2017',
-                        '1484284980',
-                    ],
-                    [
-                        '05:23 29-02-2016',
-                        '05:23 29-02-2016',
-                        '1456723380',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '05:23 29-02-2015',
-                        '05:23 01-03-2015',
-                        '1425187380',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_37 dbType=datetime eval=datetime' => [
-                'tests' => [
-                    [
-                        '05:23 29-01-2016',
-                        '05:23 29-01-2016',
-                        '1454044980',
-                    ],
-                    [
-                        '05:23 13-13-2016',
-                        '05:23 13-01-2017',
-                        '1484284980',
-                    ],
-                    [
-                        '05:23 29-02-2016',
-                        '05:23 29-02-2016',
-                        '1456723380',
-                        false,
-                        'Check valid leap year input'
-                    ],
-                    [
-                        '05:23 29-02-2015',
-                        '05:23 01-03-2015',
-                        '1425187380',
-                        false,
-                        'Check invalid leap year transformation'
-                    ],
-                ],
-                'cleared' => [
-                    '0'
-                ]
-            ],
-            'input_17 eval=time' => [
-                'tests' => [
-                    [
-                        '13:30',
-                        '13:30',
-                        '48600',
-                    ],
-                    [
-                        '123',
-                        '12:03',
-                        '43380',
-                    ],
-                    [
-                        '12345',
-                        '12:34',
-                        '45240',
-                    ],
-                    [
-                        '12:04+5',
-                        '12:09',
-                        '43740',
-                    ],
-                    [
-                        '12:09-3',
-                        '12:06',
-                        '43560',
-                    ]
-                ],
-                'cleared' => [
-                    '0',
-                    '00:00',
-                ]
-            ],
-            'input_18 eval=timesec' => [
-                'tests' => [
-                    [
-                        '13:30:00',
-                        '13:30:00',
-                        '48600',
-                    ],
-                    [
-                        '12345',
-                        '12:34:05',
-                        '45245',
-                    ],
-                    [
-                        // @todo is that the expected behavior?
-                        '12:04:04+5',
-                        '12:09:04',
-                        '43744',
-                    ],
-                ],
-                'cleared' => [
-                    '0',
-                    '00:00:00',
-                ]
-            ],
+        $testData = [
             'input_24 eval=year' => [
-                'tests' => [
-
-                    [
-                        '2016',
-                        '2016',
-                        '2016',
-                    ],
-                    [
-                        '12',
-                        '2012',
-                        '2012',
-                    ],
-                    [
-                        'Kasper',
-                        date('Y'),
-                        date('Y'),
-                        false,
-                        'Invalid character is converted to current year'
-                    ],
-                ],
-                'cleared' => [
-                    '0',
-                    '0',
-                ]
-            ],
+                new FormHandlerElementTestDataObject(
+                    '2016',
+                    '2016',
+                    '2016'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12',
+                    '2012',
+                    '2012'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'Kasper',
+                    date('Y'),
+                    date('Y'),
+                    date('Y'),
+                    false,
+                    'Invalid character is converted to current year'
+                )
+            ]
         ];
 
-        foreach ($fieldTests as $fieldLabel => $testData) {
+        $this->runTests($formhandler, $testData);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin $I
+     * @param \TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Formhandler $formhandler
+     */
+    public function checkThatBrowserSideValidationWorks_EvalDate(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+        $fieldData = [
+            'input_6 eval=date' => [
+                new FormHandlerElementTestDataObject(
+                    '29-01-2016',
+                    '29-01-2016',
+                    '2016-01-29T00:00:00Z',
+                    '2016-01-29T00:00:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '13-13-2016',
+                    '13-01-2017',
+                    '2017-01-13T00:00:00Z',
+                    '2017-01-13T00:00:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '29-02-2016',
+                    '29-02-2016',
+                    '2016-02-29T00:00:00Z',
+                    '2016-02-29T00:00:00+00:00',
+                    false,
+                    'Check valid leap year input'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '29-02-2015',
+                    '01-03-2015',
+                    '2015-03-01T00:00:00Z',
+                    '2015-03-01T00:00:00+00:00',
+                    false,
+                    'Check invalid leap year transformation'
+                )
+            ]
+        ];
+        $this->runTests($formhandler, $fieldData);
+    }
+
+    public function checkThatValidationWorks_EvalDate_TypeDate(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+        $testData = [
+            'input_36 dbType=date eval=date' => [
+                new FormHandlerElementTestDataObject(
+                    '29-01-2016',
+                    '29-01-2016',
+                    '2016-01-29T00:00:00Z',
+                    '2016-01-29T00:00:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '13-13-2016',
+                    '13-01-2017',
+                    '2017-01-13T00:00:00Z',
+                    '2017-01-13T00:00:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '29-02-2016',
+                    '29-02-2016',
+                    '2016-02-29T00:00:00Z',
+                    '2016-02-29T00:00:00+00:00',
+                    false,
+                    'Check valid leap year input'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '29-02-2015',
+                    '01-03-2015',
+                    '2015-03-01T00:00:00Z',
+                    '2015-03-01T00:00:00+00:00',
+                    false,
+                    'Check invalid leap year transformation'
+                ),
+            ]
+        ];
+        $this->runTests($formhandler, $testData);
+    }
+
+    public function checkThatValidationWorks_EvalDateTime(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+        $testData = [
+            'input_7 eval=datetime' => [
+                new FormHandlerElementTestDataObject(
+                    '05:23 29-01-2016',
+                    '05:23 29-01-2016',
+                    '2016-01-29T05:23:00Z',
+                    '2016-01-29T05:23:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '05:23 13-13-2016',
+                    '05:23 13-01-2017',
+                    '2017-01-13T05:23:00Z',
+                    '2017-01-13T05:23:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '05:23 29-02-2016',
+                    '05:23 29-02-2016',
+                    '2016-02-29T05:23:00Z',
+                    '2016-02-29T05:23:00+00:00',
+                    false,
+                    'Check valid leap year input'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '05:23 29-02-2015',
+                    '05:23 01-03-2015',
+                    '2015-03-01T05:23:00Z',
+                    '2015-03-01T05:23:00+00:00',
+                    false,
+                    'Check invalid leap year transformation'
+                )
+            ]
+        ];
+        $this->runTests($formhandler, $testData);
+    }
+
+    public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+        $testData = [
+            'input_37 dbType=datetime eval=datetime' => [
+                new FormHandlerElementTestDataObject(
+                    '05:23 29-01-2016',
+                    '05:23 29-01-2016',
+                    '2016-01-29T05:23:00Z',
+                    '2016-01-29T05:23:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '05:23 13-13-2016',
+                    '05:23 13-01-2017',
+                    '2017-01-13T05:23:00Z',
+                    '2017-01-13T05:23:00+00:00'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '05:23 29-02-2016',
+                    '05:23 29-02-2016',
+                    '2016-02-29T05:23:00Z',
+                    '2016-02-29T05:23:00+00:00',
+                    false,
+                    'Check valid leap year input'
+                ),
+                new FormHandlerElementTestDataObject(
+                    '05:23 29-02-2015',
+                    '05:23 01-03-2015',
+                    '2015-03-01T05:23:00Z',
+                    '2015-03-01T05:23:00+00:00',
+                    false,
+                    'Check invalid leap year transformation'
+                ),
+            ],
+        ];
+        $this->runTests($formhandler, $testData);
+    }
+
+    public function checkThatValidationWorks_evalTime(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+        $testData = [
+            'input_17 eval=time' => [
+                new FormHandlerElementTestDataObject(
+                    '13:30',
+                    '13:30',
+                    '13:30',
+                    (new \DateTime('13:30'))->getTimestamp()
+                ),
+                new FormHandlerElementTestDataObject(
+                    '123',
+                    '12:03',
+                    '12:03',
+                    (new \DateTime('12:03'))->getTimestamp()
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12345',
+                    '12:34',
+                    '12:34',
+                    (new \DateTime('12:34'))->getTimestamp()
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12:04+5',
+                    '12:09',
+                    '12:09',
+                    (new \DateTime('12:09'))->getTimestamp()
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12:09-3',
+                    '12:06',
+                    '12:06',
+                    (new \DateTime('12:06'))->getTimestamp()
+                )
+            ],
+        ];
+        $this->runTests($formhandler, $testData);
+    }
+
+    public function checkThatValidationWorks_evalTimesec(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+        $testData = [
+            'input_18 eval=timesec' => [
+                new FormHandlerElementTestDataObject(
+                    '13:30:00',
+                    '13:30:00',
+                    '13:30:00',
+                    (new \DateTime('13:30:00'))->getTimestamp()
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12345',
+                    '12:34:05',
+                    '12:34:05',
+                    (new \DateTime('12:34:05'))->getTimestamp()
+                ),
+                new FormHandlerElementTestDataObject(
+                    '12:04:04+5',
+                    '12:09:04',
+                    '12:09:04',
+                    (new \DateTime('12:09:04'))->getTimestamp()
+                )
+            ],
+        ];
+        $this->runTests($formhandler, $testData);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Formhandler $formhandler
+     * @param $fieldData
+     */
+    protected function runTests(Formhandler $formhandler, $fieldData)
+    {
+        foreach ($fieldData as $fieldLabel => $testData) {
             $formhandler->fillSeeSaveAndClearInputField(
                 $fieldLabel,
                 $testData
             );
         }
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin $I
+     */
+    protected function waitForFormReady(Admin $I)
+    {
+        $editRecordLinkCssPath = self::$listViewRecordSelector . ' a[data-original-title="Edit record"]';
+        $I->waitForElement($editRecordLinkCssPath, 30);
+        $I->click($editRecordLinkCssPath);
+        $I->waitForText('Edit Form', 3, 'h1');
     }
 }

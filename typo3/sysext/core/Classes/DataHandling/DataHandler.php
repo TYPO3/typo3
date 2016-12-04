@@ -2699,14 +2699,14 @@ class DataHandler
             switch ($func) {
                 case 'int':
                 case 'year':
-                case 'time':
-                case 'timesec':
                     $value = (int)$value;
                     break;
+                case 'time':
+                case 'timesec':
                 case 'date':
                 case 'datetime':
                     // a hyphen as first character indicates a negative timestamp
-                    if (strpos($value, '-') === false || strpos($value, '-') === 0) {
+                    if ((strpos($value, '-') === false && strpos($value, ':') === false) || strpos($value, '-') === 0) {
                         $value = (int)$value;
                     } else {
                         // ISO 8601 dates
