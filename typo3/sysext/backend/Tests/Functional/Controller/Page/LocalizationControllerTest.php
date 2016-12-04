@@ -18,6 +18,10 @@ use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 
 /**
  * Test case for TYPO3\CMS\Backend\Controller\Page\LocalizationController
@@ -30,16 +34,34 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
     protected $subject;
 
     /**
+     * @var \TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService
+     */
+    protected $actionService;
+
+    /**
+     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected $backendUser;
+
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = ['workspaces'];
+
+    /**
      * Sets up this test case.
      */
     protected function setUp()
     {
         parent::setUp();
 
-        $this->setUpBackendUserFromFixture(1);
-        Bootstrap::getInstance()->initializeLanguageObject();
+        $this->backendUser = $this->setUpBackendUserFromFixture(1);
+        $this->backendUser->workspace = 0;
 
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/pages.xml');
+        Bootstrap::getInstance()->initializeLanguageObject();
+        $this->actionService = GeneralUtility::makeInstance(ActionService::class);
+
+        $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
 
@@ -365,5 +387,67 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
             ->execute()
             ->fetchAll();
         $this->assertEquals($expectedResults, $results);
+    }
+
+    /**
+     * @test
+     */
+    public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForDeletedRecords()
+    {
+        // Delete record 2 within workspace 1
+        $this->backendUser->workspace = 1;
+        $this->actionService->deleteRecord('tt_content', 2);
+
+        $expectedRecordUidList = [
+            ['uid' => 1],
+            ['uid' => 3]
+        ];
+
+        $this->assertEquals($expectedRecordUidList, $this->getReducedRecordLocalizeSummary());
+    }
+
+    /**
+     * @test
+     */
+    public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForMovedRecords()
+    {
+        // Move record 2 to page 2 within workspace 1
+        $this->backendUser->workspace = 1;
+        $this->actionService->moveRecord('tt_content', 2, 2);
+
+        $expectedRecordUidList = [
+            ['uid' => 1],
+            ['uid' => 3]
+        ];
+
+        $this->assertEquals($expectedRecordUidList, $this->getReducedRecordLocalizeSummary());
+    }
+
+    /**
+     * Get record localized summary list reduced to list of uids
+     *
+     * @return array
+     */
+    protected function getReducedRecordLocalizeSummary()
+    {
+        $request = (new ServerRequest())->withQueryParams([
+            'pageId'         => 1, // page uid, the records are stored on
+            'colPos'         => 0, // column position, the records are to be taken from
+            'destLanguageId' => 1, // destination language uid
+            'languageId'     => 0  // source language uid
+        ]);
+
+        $recordLocalizeSummaryResponse = $this->subject->getRecordLocalizeSummary($request, new Response());
+
+        // Reduce the fetched record summary to list of uids
+        if ($recordLocalizeSummary = json_decode((string) $recordLocalizeSummaryResponse->getBody(), true)) {
+            foreach ($recordLocalizeSummary as &$record) {
+                if (is_array($record)) {
+                    $record = array_intersect_key($record, ['uid' => '']);
+                }
+            }
+        }
+
+        return $recordLocalizeSummary;
     }
 }
