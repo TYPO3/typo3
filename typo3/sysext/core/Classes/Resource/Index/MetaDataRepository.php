@@ -139,7 +139,8 @@ class MetaDataRepository implements SingletonInterface
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
         $connection->insert(
             $this->tableName,
-            $emptyRecord
+            $emptyRecord,
+            ['l10n_diffsource' => Connection::PARAM_LOB]
         );
 
         $record = $emptyRecord;

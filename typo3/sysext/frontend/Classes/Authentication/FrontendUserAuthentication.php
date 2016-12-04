@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -453,7 +454,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                     'tstamp' => $GLOBALS['EXEC_TIME']
                 ];
                 $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $databaseConnection->insert('fe_session_data', $insertFields);
+                $databaseConnection->insert(
+                    'fe_session_data',
+                    $insertFields,
+                    ['content' => Connection::PARAM_LOB]
+                );
                 // Now set the cookie (= fix the session)
                 $this->setSessionCookie();
             } else {
@@ -476,7 +481,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function removeSessionData()
     {
         $this->sessionDataTimestamp = null;
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')->delete(
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')
+            ->delete(
                 'fe_session_data',
                 ['hash' => $this->id]
             );

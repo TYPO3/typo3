@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -88,13 +89,15 @@ class Registry implements SingletonInterface
         if ((int)$rowCount < 1) {
             $connection->insert(
                 'sys_registry',
-                ['entry_namespace' => $namespace, 'entry_key' => $key, 'entry_value' => $serializedValue]
+                ['entry_namespace' => $namespace, 'entry_key' => $key, 'entry_value' => $serializedValue],
+                ['entry_value' => Connection::PARAM_LOB]
             );
         } else {
             $connection->update(
                 'sys_registry',
                 ['entry_value' => $serializedValue],
-                ['entry_namespace' => $namespace, 'entry_key' => $key]
+                ['entry_namespace' => $namespace, 'entry_key' => $key],
+                ['entry_value' => Connection::PARAM_LOB]
             );
         }
         $this->entries[$namespace][$key] = $value;

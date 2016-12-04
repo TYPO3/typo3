@@ -6861,11 +6861,21 @@ class DataHandler
                     $fieldArray['uid'] = $suggestedUid;
                 }
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
+                $typeArray = [];
+                if (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'])
+                    && array_key_exists($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'], $fieldArray)
+                ) {
+                    $typeArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = Connection::PARAM_LOB;
+                }
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
                 $insertErrorMessage = '';
                 try {
                     // Execute the INSERT query:
-                    $connection->insert($table, $fieldArray);
+                    $connection->insert(
+                        $table,
+                        $fieldArray,
+                        $typeArray
+                    );
                 } catch (DBALException $e) {
                     $insertErrorMessage = $e->getPrevious()->getMessage();
                 }

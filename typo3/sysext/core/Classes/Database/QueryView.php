@@ -235,8 +235,10 @@ class QueryView
                 $queryGenerator->enablePrefix = 1;
                 $queryString = $queryGenerator->getQuery($queryGenerator->queryConfig);
 
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($queryGenerator->table);
-                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($queryGenerator->table);
+                $queryBuilder->getRestrictions()->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $rowCount = $queryBuilder->count('*')
                     ->from($queryGenerator->table)
                     ->where(QueryHelper::stripLogicalOperatorPrefix($queryString))
@@ -248,14 +250,13 @@ class QueryView
                     'qSelect' => $queryGenerator->getSelectQuery($queryString),
                     'qString' => $queryString
                 ];
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
-                $queryBuilder->update('sys_action')
-                    ->where($queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ))
-                    ->set('t2_data', serialize($t2DataValue))
-                    ->execute();
+                GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_action')
+                    ->update(
+                        'sys_action',
+                        ['t2_data' => serialize($t2DataValue)],
+                        ['uid' => (int)$uid],
+                        ['t2_data' => Connection::PARAM_LOB]
+                    );
             }
             return 1;
         }

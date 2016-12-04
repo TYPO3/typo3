@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Impexp\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -126,7 +127,8 @@ class PresetRepository
                             'item_uid' => $inData['pagetree']['id'],
                             'preset_data' => serialize($inData)
                         ],
-                        ['uid' => (int)$preset['uid']]
+                        ['uid' => (int)$preset['uid']],
+                        ['preset_data' => Connection::PARAM_LOB]
                     );
 
                     $msg = 'Preset #' . $preset['uid'] . ' saved!';
@@ -144,7 +146,9 @@ class PresetRepository
                         'title' => $inData['preset']['title'],
                         'item_uid' => (int)$inData['pagetree']['id'],
                         'preset_data' => serialize($inData)
-                    ]
+                    ],
+                    ['preset_data' => Connection::PARAM_LOB]
+
                 );
 
                 $msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';

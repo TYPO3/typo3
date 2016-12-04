@@ -862,7 +862,11 @@ abstract class AbstractUserAuthentication
 
         // Re-create session entry
         $insertFields = $this->getNewSessionRecord($tempuser);
-        $inserted = (bool)$connection->insert($this->session_table, $insertFields);
+        $inserted = (bool)$connection->insert(
+            $this->session_table,
+            $insertFields,
+            ['ses_data' => Connection::PARAM_LOB]
+        );
         if (!$inserted) {
             $message = 'Session data could not be written to DB. Error: ' . $connection->errorInfo();
             GeneralUtility::sysLog($message, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
@@ -1280,7 +1284,8 @@ abstract class AbstractUserAuthentication
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
                 $this->user_table,
                 ['uc' => serialize($variable)],
-                [$this->userid_column => (int)$this->user[$this->userid_column]]
+                [$this->userid_column => (int)$this->user[$this->userid_column]],
+                ['uc' => Connection::PARAM_LOB]
             );
         }
     }
@@ -1368,7 +1373,8 @@ abstract class AbstractUserAuthentication
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
             $this->session_table,
             ['ses_data' => $this->user['ses_data']],
-            ['ses_id' => $this->user['ses_id']]
+            ['ses_id' => $this->user['ses_id']],
+            ['ses_data' => Connection::PARAM_LOB]
         );
     }
 

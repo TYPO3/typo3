@@ -111,6 +111,9 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                     'identifier' => $entryIdentifier,
                     'expires' => $expires,
                     'content' => $data,
+                ],
+                [
+                    'content' => Connection::PARAM_LOB,
                 ]
             );
         if (!empty($tags)) {

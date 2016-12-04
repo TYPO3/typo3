@@ -1480,7 +1480,11 @@ class Indexer
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_phash');
-            $connection->insert('index_phash', $fields);
+            $connection->insert(
+                'index_phash',
+                $fields,
+                ['cHashParams' => Connection::PARAM_LOB]
+            );
         }
         // PROCESSING index_section
         $this->submit_section($this->hash['phash'], $this->hash['phash']);
@@ -1648,7 +1652,11 @@ class Indexer
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_phash');
-            $connection->insert('index_phash', $fields);
+            $connection->insert(
+                'index_phash',
+                $fields,
+                ['cHashParams' => Connection::PARAM_LOB]
+            );
         }
         // PROCESSING index_fulltext
         $fields = [

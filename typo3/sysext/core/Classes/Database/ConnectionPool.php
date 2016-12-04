@@ -146,6 +146,12 @@ class ConnectionPool
             $connectionParams['charset'] = 'utf-8';
         }
 
+        // Force consistent handling of binary objects across datbase platforms
+        // MySQL returns strings by default, PostgreSQL streams.
+        if (strpos($connectionParams['driver'], 'pdo_') === 0) {
+            $connectionParams['driverOptions'][\PDO::ATTR_STRINGIFY_FETCHES] = true;
+        }
+
         /** @var Connection $conn */
         $conn = DriverManager::getConnection($connectionParams);
         $conn->setFetchMode(\PDO::FETCH_ASSOC);

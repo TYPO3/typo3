@@ -132,6 +132,23 @@ class Connection extends \Doctrine\DBAL\Connection
     }
 
     /**
+     * Detect if the column types are specified by column name or using
+     * positional information. In the first case quote the field names
+     * accordingly.
+     *
+     * @param array $input
+     * @return array
+     */
+    protected function quoteColumnTypes(array $input): array
+    {
+        if (!is_string(key($input))) {
+            return $input;
+        }
+
+        return $this->quoteColumnValuePairs($input);
+    }
+
+    /**
      * Inserts a table row with specified data.
      *
      * All SQL identifiers are expected to be unquoted and will be quoted when building the query.
@@ -148,7 +165,7 @@ class Connection extends \Doctrine\DBAL\Connection
         return parent::insert(
             $this->quoteIdentifier($tableName),
             $this->quoteColumnValuePairs($data),
-            $types
+            $this->quoteColumnTypes($types)
         );
     }
 
@@ -243,7 +260,7 @@ class Connection extends \Doctrine\DBAL\Connection
             $this->quoteIdentifier($tableName),
             $this->quoteColumnValuePairs($data),
             $this->quoteColumnValuePairs($identifier),
-            $types
+            $this->quoteColumnTypes($types)
         );
     }
 
@@ -264,7 +281,7 @@ class Connection extends \Doctrine\DBAL\Connection
         return parent::delete(
             $this->quoteIdentifier($tableName),
             $this->quoteColumnValuePairs($identifier),
-            $types
+            $this->quoteColumnTypes($types)
         );
     }
 

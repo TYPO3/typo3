@@ -817,7 +817,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'tstamp' => $GLOBALS['EXEC_TIME']
         ];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_search_stat');
-        $connection->insert('index_stat_search', $insertFields);
+        $connection->insert(
+            'index_stat_search',
+            $insertFields,
+            ['searchoptions' => Connection::PARAM_LOB]
+        );
         $newId = $connection->lastInsertId('index_stat_search');
         if ($newId) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');

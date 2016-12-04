@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -430,6 +431,9 @@ abstract class AbstractTask
                 ],
                 [
                     'uid' => $this->taskUid
+                ],
+                [
+                    'serialized_executions' => Connection::PARAM_LOB,
                 ]
             );
         return $numExecutions;
@@ -493,6 +497,9 @@ abstract class AbstractTask
                     ],
                     [
                         'uid' => $this->taskUid
+                    ],
+                    [
+                        'serialized_executions' => Connection::PARAM_LOB,
                     ]
                 );
         }
@@ -515,6 +522,9 @@ abstract class AbstractTask
                 ],
                 [
                     'uid' => $this->taskUid
+                ],
+                [
+                    'serialized_executions' => Connection::PARAM_LOB,
                 ]
             );
         return (bool)$result;
