@@ -1463,7 +1463,7 @@ tt_content.' . $key . $suffix . ' {
 
     /**
      * Call this method to add an entry in the pageTSconfig list found in pages
-     * FOR USE in files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
+     * FOR USE in Configuration/TCA/Overrides/pages.php Use the latter to benefit from TCA caching!
      *
      * @param string $extKey The extension key
      * @param string $filePath The path where the TSconfig file is located
