@@ -790,6 +790,50 @@ return [
                                     </ROOT>
                                 </sMultiplesidebyside>
 
+                                <sSection>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>section</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <section_1>
+                                                <title>section_1</title>
+                                                <type>array</type>
+                                                <section>1</section>
+                                                <el>
+                                                    <container_1>
+                                                        <type>array</type>
+                                                        <title>container_1</title>
+                                                        <el>
+                                                            <select_tree_1>
+                                                                <TCEforms>
+                                                                    <label>select_tree_1 pages</label>
+                                                                    <config>
+                                                                        <type>select</type>
+                                                                        <renderType>selectTree</renderType>
+                                                                        <foreign_table>pages</foreign_table>
+                                                                        <foreign_table_where>ORDER BY pages.sorting</foreign_table_where>
+                                                                        <maxitems>999</maxitems>
+                                                                        <size>20</size>
+                                                                        <treeConfig>
+                                                                            <parentField>pid</parentField>
+                                                                            <appearance>
+                                                                                <expandAll>true</expandAll>
+                                                                                <showHeader>true</showHeader>
+                                                                            </appearance>
+                                                                        </treeConfig>
+                                                                    </config>
+                                                                </TCEforms>
+                                                            </select_tree_1>
+                                                        </el>
+                                                    </container_1>
+                                                </el>
+                                            </section_1>
+                                        </el>
+                                    </ROOT>
+                                </sSection>
+
                             </sheets>
                         </T3DataStructure>
                     ',
