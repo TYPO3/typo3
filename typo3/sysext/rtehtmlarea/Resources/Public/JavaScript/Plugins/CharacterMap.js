@@ -428,7 +428,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					title: this.localize(id),
 					itemId: id,
 					tpl: new Ext.XTemplate(
-						'<tpl for="."><a href="#" class="character" hidefocus="on" ext:qtitle="<span>&</span>{1};" ext:qtip="{2}">{0}</a></tpl>'
+						'<tpl for="."><a href="#" class="character" hidefocus="on" title="{2} ({1})">{0}</a></tpl>'
 					),
 					listeners: {
 						render: {
@@ -492,14 +492,14 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 
 		/**
 		 * Remove listeners before closing the window
-		 */		
+		 */
 		removeListeners: function () {
 			var components = this.dialog.findByType('box');
 			for (var i = components.length; --i > 0;) {
 				if (components[i].el) {
 					Event.off(components[i].el.dom);
 				}
-			}			
+			}
 		}
 	});
 
