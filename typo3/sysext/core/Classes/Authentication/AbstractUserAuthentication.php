@@ -892,10 +892,15 @@ abstract class AbstractUserAuthentication
      */
     public function getNewSessionRecord($tempuser)
     {
+        $sessionIpLock = '[DISABLED]';
+        if ($this->lockIP && empty($tempuser['disableIPlock'])) {
+            $sessionIpLock = $this->ipLockClause_remoteIPNumber($this->lockIP);
+        }
+
         return [
             'ses_id' => $this->id,
             'ses_name' => $this->name,
-            'ses_iplock' => $tempuser['disableIPlock'] ? '[DISABLED]' : $this->ipLockClause_remoteIPNumber($this->lockIP),
+            'ses_iplock' => $sessionIpLock,
             'ses_hashlock' => $this->hashLockClause_getHashInt(),
             'ses_userid' => $tempuser[$this->userid_column],
             'ses_tstamp' => $GLOBALS['EXEC_TIME'],
@@ -1193,7 +1198,6 @@ abstract class AbstractUserAuthentication
      *
      * @param int $parts 1-4: Indicates how many parts of the IP address to return. 4 means all, 1 means only first number.
      * @return string (Partial) IP address for REMOTE_ADDR
-     * @access private
      */
     protected function ipLockClause_remoteIPNumber($parts)
     {
