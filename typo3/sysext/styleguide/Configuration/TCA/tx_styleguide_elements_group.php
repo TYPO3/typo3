@@ -356,26 +356,26 @@ return [
                                         </el>
                                     </ROOT>
                                 </sFile>
-                                <sSuggestCheckCombination>
+
+                                <sSection>
                                     <ROOT>
                                         <type>array</type>
                                         <TCEforms>
-                                            <sheetTitle>internal_type=db+checkbox</sheetTitle>
+                                            <sheetTitle>section</sheetTitle>
                                         </TCEforms>
                                         <el>
-                                            <settings.subelements>
-                                                <TCEforms/>
-                                                <title>Subelements</title>
-                                                <section>1</section>
+                                            <section_1>
+                                                <title>section_1</title>
                                                 <type>array</type>
+                                                <section>1</section>
                                                 <el>
-                                                    <item>
+                                                    <container_1>
                                                         <type>array</type>
-                                                        <title>Subelement</title>
+                                                        <title>container_1</title>
                                                         <el>
-                                                            <content>
+                                                            <group_db_1>
                                                                 <TCEforms>
-                                                                    <label>Content</label>
+                                                                    <label>group_db_1 wizard suggest</label>
                                                                     <config>
                                                                         <type>group</type>
                                                                         <internal_type>db</internal_type>
@@ -391,22 +391,15 @@ return [
                                                                         </wizards>
                                                                     </config>
                                                                 </TCEforms>
-                                                            </content>
+                                                            </group_db_1>
                                                         </el>
-                                                    </item>
+                                                    </container_1>
                                                 </el>
-                                            </settings.subelements>
-                                            <settings.check>
-                                                <TCEforms>
-                                                    <label>Check it out</label>
-                                                    <config>
-                                                        <type>check</type>
-                                                    </config>
-                                                </TCEforms>
-                                            </settings.check>
+                                            </section_1>
                                         </el>
                                     </ROOT>
-                                </sSuggestCheckCombination>
+                                </sSection>
+
                             </sheets>
                         </T3DataStructure>
                     ',
