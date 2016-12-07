@@ -494,6 +494,7 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_tree_3 text,
 	select_tree_4 text,
 	select_tree_5 text,
+	select_tree_6 text,
 
 	flex_1 text,
 

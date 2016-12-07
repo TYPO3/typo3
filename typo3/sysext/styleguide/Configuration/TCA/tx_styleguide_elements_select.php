@@ -473,14 +473,14 @@ return [
 
         'select_tree_1' => [
             'exclude' => 1,
-            'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, maxitems=4, order by sorting, static items',
+            'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, order by sorting, static items',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'foreign_table_where' => 'ORDER BY pages.sorting',
+                'maxitems' => 999,
                 'size' => 20,
-                'maxitems' => 4,
                 'items' => [
                     [ 'static from tca 4711', 4711 ],
                     [ 'static from tca 4712', 4712 ],
@@ -571,6 +571,27 @@ return [
                 ],
             ],
         ],
+        'select_tree_6' => [
+            'exclude' => 1,
+            'label' => 'select_tree_6 categories',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'sys_category',
+                'foreign_table_where' => 'AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
+                'size' => 20,
+                'maxitems' => 999,
+                'treeConfig' => [
+                    'parentField' => 'parent',
+                    'appearance' => [
+                        'expandAll' => true,
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+
         'select_requestUpdate_1' => [
             'exclude' => 1,
             'label' => 'select_requestUpdate_1',
@@ -795,7 +816,7 @@ return [
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
                 --div--;renderType=selectTree,
-                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5,
+                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,
