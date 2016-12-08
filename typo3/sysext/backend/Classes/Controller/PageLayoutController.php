@@ -915,24 +915,32 @@ class PageLayoutController
         $this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($tableName !== 'pages' && $this->EDIT_CONTENT || $tableName === 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
         // If undo-button should be rendered (depends on available items in sys_history)
         $this->undoButton = false;
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
-        $queryBuilder->getRestrictions()->removeAll();
-        $this->undoButtonR = $queryBuilder->select('tstamp')
-            ->from('sys_history')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'recuid',
-                    $queryBuilder->createNamedParameter($this->eRParts[1], \PDO::PARAM_INT)
+
+        // if there is no content on a page
+        // the parameter $this->eRParts[1] will be set to e.g. /new/1
+        // which is not an integer value and it will throw an exception here on certain dbms
+        // thus let's check that before as there cannot be a history for a new record
+        $this->undoButtonR = false;
+        if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+            $queryBuilder->getRestrictions()->removeAll();
+            $this->undoButtonR = $queryBuilder->select('tstamp')
+                ->from('sys_history')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'tablename',
+                        $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'recuid',
+                        $queryBuilder->createNamedParameter($this->eRParts[1], \PDO::PARAM_INT)
+                    )
                 )
-            )
-            ->orderBy('tstamp', 'DESC')
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
+                ->orderBy('tstamp', 'DESC')
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+        }
         if ($this->undoButtonR) {
             $this->undoButton = true;
         }
