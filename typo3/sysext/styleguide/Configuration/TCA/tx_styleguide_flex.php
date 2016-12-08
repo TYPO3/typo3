@@ -185,9 +185,10 @@ return [
                                                         <el>
                                                             <text_1>
                                                                 <TCEforms>
-                                                                    <label>text_1</label>
+                                                                    <label>text_1 default "foo"</label>
                                                                     <config>
                                                                         <type>text</type>
+                                                                        <default>foo</default>
                                                                     </config>
                                                                 </TCEforms>
                                                             </text_1>
