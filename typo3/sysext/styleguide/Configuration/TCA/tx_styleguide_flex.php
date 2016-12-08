@@ -20,6 +20,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'requestUpdate' => 'flex_4_select_1'
     ],
 
 
@@ -144,6 +145,7 @@ return [
                 ],
             ],
         ],
+
         'flex_2' => [
             'exclude' => 1,
             'label' => 'flex_2 section container',
@@ -205,6 +207,7 @@ return [
                 ],
             ],
         ],
+
         'flex_3' => [
             'exclude' => 1,
             'label' => 'flex_3 inline',
@@ -242,9 +245,10 @@ return [
                 ],
             ],
         ],
+
         'flex_4' => [
             'exclude' => 1,
-            'label' => 'flex_4 condition',
+            'label' => 'flex_4',
             'config' => [
                 'type' => 'flex',
                 'ds' => [
@@ -258,7 +262,7 @@ return [
                                         </TCEforms>
                                         <type>array</type>
                                         <el>
-                                            <switchableControllerActions>
+                                            <select_1>
                                                 <TCEforms>
                                                     <label>select view</label>
                                                     <onChange>reload</onChange>
@@ -268,18 +272,18 @@ return [
                                                         <items type="array">
                                                             <numIndex index="0" type="array">
                                                                 <numIndex index="0">sheet 2 not shown</numIndex>
-                                                                <numIndex index="1"></numIndex>
+                                                                <numIndex index="1">0</numIndex>
                                                             </numIndex>
                                                             <numIndex index="1" type="array">
                                                                 <numIndex index="0">sheet 2 shown</numIndex>
-                                                                <numIndex index="1">ControllerName->actionname;</numIndex>
+                                                                <numIndex index="1">1</numIndex>
                                                             </numIndex>
                                                         </items>
                                                         <maxitems>1</maxitems>
                                                         <size>1</size>
                                                     </config>
                                                 </TCEforms>
-                                            </switchableControllerActions>
+                                            </select_1>
                                         </el>
                                     </ROOT>
                                 </sheet1>
@@ -287,7 +291,7 @@ return [
                                     <ROOT>
                                         <TCEforms>
                                             <sheetTitle>sheet 2</sheetTitle>
-                                            <displayCond><![CDATA[FIELD:sheet1.switchableControllerActions:=:ControllerName->actionname;]]></displayCond>
+                                            <displayCond><![CDATA[FIELD:sheet1.select_1:=:1]]></displayCond>
                                         </TCEforms>
                                         <type>array</type>
                                         <el>
@@ -302,12 +306,51 @@ return [
                                         </el>
                                     </ROOT>
                                 </sheet2>
+                                <sheet3>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>sheet 3</sheetTitle>
+                                            <displayCond><![CDATA[FIELD:parentRec.flex_4_select_1:=:1]]></displayCond>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <settings.foo>
+                                                <TCEforms>
+                                                    <label>foo</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </settings.foo>
+                                        </el>
+                                    </ROOT>
+                                </sheet3>
                             </sheets>
                         </T3DataStructure>
                     ',
                 ],
             ],
         ],
+        'flex_4_select_1' => [
+            'exclude' => 1,
+            'label' => 'flex_4_select_1',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'default' => 1,
+                'items' => [
+                    0 => [
+                        'sheet 3 not shown',
+                        0,
+                    ],
+                    1 => [
+                        'sheet 3 shown',
+                        1,
+                    ],
+                ],
+            ]
+        ],
+
         'flex_5' => [
             'exclude' => 1,
             'label' => 'flex_5 no sheets',
@@ -350,8 +393,8 @@ return [
                     flex_2,
                 --div--;inline,
                     flex_3,
-                --div--;condition,
-                    flex_4,
+                --div--;sheet display condition,
+                    flex_4_select_1, flex_4,
             ',
         ],
     ],
