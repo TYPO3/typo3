@@ -728,8 +728,17 @@ class PageLayoutController
         $this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($tableName !== 'pages' && $this->EDIT_CONTENT || $tableName === 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
         // If undo-button should be rendered (depends on available items in sys_history)
         $this->undoButton = false;
-        $undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
-        if ($this->undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
+
+        // if there is no content on a page
+        // the parameter $this->eRParts[1] will be set to e.g. /new/1
+        // which is not an integer value and it will throw an exception here on certain dbms
+        // thus let's check that before as there cannot be a history for a new record
+        $this->undoButtonR = false;
+        if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
+            $undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
+            $this->undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes);
+        }
+        if ($this->undoButtonR) {
             $this->undoButton = true;
         }
         // Setting up the Return URL for coming back to THIS script (if links take the user to another script)
