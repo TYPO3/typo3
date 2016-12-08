@@ -77,7 +77,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      *
      * @var int
      */
-    protected $priority = 2;
+    protected $priority = 12;
 
     /**
      * @var \TYPO3\CMS\Core\Resource\FileInterface[]
