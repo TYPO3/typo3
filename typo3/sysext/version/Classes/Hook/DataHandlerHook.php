@@ -807,7 +807,7 @@ class DataHandlerHook
             return;
         }
         // Lock file name:
-        $lockFileName = PATH_site . 'typo3temp/var/swap_locking/' . $table . ':' . $id . '.ser';
+        $lockFileName = PATH_site . 'typo3temp/var/swap_locking/' . $table . '_' . $id . '.ser';
         if (@is_file($lockFileName)) {
             $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', 2);
             return;
