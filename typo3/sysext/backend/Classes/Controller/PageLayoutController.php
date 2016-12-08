@@ -714,8 +714,16 @@ class PageLayoutController {
 		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($this->eRParts[0] != 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] == 'pages' && $this->CALC_PERMS & 4);
 		// If undo-button should be rendered (depends on available items in sys_history)
 		$this->undoButton = 0;
-		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
-		if ($this->undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
+		// if there is no content on a page
+		// the parameter $this->eRParts[1] will be set to e.g. /new/1
+		// which is not an integer value and it will throw an exception here on certain dbms
+		// thus let's check that before as there cannot be a history for a new record
+		$this->undoButtonR = false;
+		if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
+			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
+			$this->undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes);
+		}
+		if ($this->undoButtonR) {
 			$this->undoButton = 1;
 		}
 		// Setting up the Return URL for coming back to THIS script (if links take the user to another script)
