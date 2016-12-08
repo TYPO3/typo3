@@ -20,7 +20,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'requestUpdate' => 'flex_4_select_1'
+        'requestUpdate' => 'flex_4_select_1,flex_6_select_1'
     ],
 
 
@@ -68,6 +68,33 @@ return [
             'l10n_display' => 'defaultAsReadonly'
         ],
 
+
+        'flex_5' => [
+            'exclude' => 1,
+            'label' => 'flex_5 no sheets',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <ROOT>
+                                <type>array</type>
+                                <el>
+                                    <input_1>
+                                        <TCEforms>
+                                            <label>input_1</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </TCEforms>
+                                    </input_1>
+                                </el>
+                            </ROOT>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
 
         'flex_1' => [
             'exclude' => 1,
@@ -246,6 +273,137 @@ return [
             ],
         ],
 
+        'flex_6' => [
+            'exclude' => 1,
+            'label' => 'flex_6',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <sheets>
+                                <sheet_1>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>sheet_1</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <select_1>
+                                                <TCEforms>
+                                                    <label>select_1</label>
+                                                    <onChange>reload</onChange>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectSingle</renderType>
+                                                        <items type="array">
+                                                            <numIndex index="0" type="array">
+                                                                <numIndex index="0">input_2 not shown</numIndex>
+                                                                <numIndex index="1">0</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1" type="array">
+                                                                <numIndex index="0">input_2 shown</numIndex>
+                                                                <numIndex index="1">1</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                        <maxitems>1</maxitems>
+                                                        <size>1</size>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_1>
+                                            <!-- DOES NOT WORK
+                                            <select_2>
+                                                <TCEforms>
+                                                    <label>select_2</label>
+                                                    <onChange>reload</onChange>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectSingle</renderType>
+                                                        <items type="array">
+                                                            <numIndex index="0" type="array">
+                                                                <numIndex index="0">input_1 of sheet_2 not shown</numIndex>
+                                                                <numIndex index="1">0</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1" type="array">
+                                                                <numIndex index="0">input_1 of sheet_2 shown</numIndex>
+                                                                <numIndex index="1">1</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                        <maxitems>1</maxitems>
+                                                        <size>1</size>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_2>
+                                            -->
+                                            <input_1>
+                                                <TCEforms>
+                                                    <label>input_1</label>
+                                                    <displayCond>FIELD:parentRec.flex_6_select_1:=:0</displayCond>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_1>
+                                            <input_2>
+                                                <TCEforms>
+                                                    <label>input_2</label>
+                                                    <displayCond>FIELD:select_1:=:1</displayCond>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_2>
+                                        </el>
+                                    </ROOT>
+                                </sheet_1>
+                                <!-- DOES NOT WORK
+                                <sheet_2>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>sheet_2</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <input_3>
+                                                <TCEforms>
+                                                    <label>input_1</label>
+                                                    <displayCond>FIELD:sheet_1.select_2:=:0</displayCond>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_3>
+                                        </el>
+                                    </ROOT>
+                                </sheet_2>
+                                -->
+                            </sheets>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
+        'flex_6_select_1' => [
+            'exclude' => 1,
+            'label' => 'flex_6_select_1',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    0 => [
+                        'input_1 shown',
+                        0,
+                    ],
+                    1 => [
+                        'input_1 not shown',
+                        1,
+                    ],
+                ],
+            ]
+        ],
+
+
+
         'flex_4' => [
             'exclude' => 1,
             'label' => 'flex_4',
@@ -255,27 +413,27 @@ return [
                     'default' => '
                         <T3DataStructure>
                             <sheets>
-                                <sheet1>
+                                <sheet_1>
                                     <ROOT>
                                         <TCEforms>
-                                            <sheetTitle>selector</sheetTitle>
+                                            <sheetTitle>sheet_1</sheetTitle>
                                         </TCEforms>
                                         <type>array</type>
                                         <el>
                                             <select_1>
                                                 <TCEforms>
-                                                    <label>select view</label>
+                                                    <label>select_1</label>
                                                     <onChange>reload</onChange>
                                                     <config>
                                                         <type>select</type>
                                                         <renderType>selectSingle</renderType>
                                                         <items type="array">
                                                             <numIndex index="0" type="array">
-                                                                <numIndex index="0">sheet 2 not shown</numIndex>
+                                                                <numIndex index="0">sheet_2 not shown</numIndex>
                                                                 <numIndex index="1">0</numIndex>
                                                             </numIndex>
                                                             <numIndex index="1" type="array">
-                                                                <numIndex index="0">sheet 2 shown</numIndex>
+                                                                <numIndex index="0">sheet_2 shown</numIndex>
                                                                 <numIndex index="1">1</numIndex>
                                                             </numIndex>
                                                         </items>
@@ -286,45 +444,45 @@ return [
                                             </select_1>
                                         </el>
                                     </ROOT>
-                                </sheet1>
-                                <sheet2>
+                                </sheet_1>
+                                <sheet_2>
                                     <ROOT>
                                         <TCEforms>
-                                            <sheetTitle>sheet 2</sheetTitle>
-                                            <displayCond><![CDATA[FIELD:sheet1.select_1:=:1]]></displayCond>
+                                            <sheetTitle>sheet_2</sheetTitle>
+                                            <displayCond>FIELD:sheet_1.select_1:=:1</displayCond>
                                         </TCEforms>
                                         <type>array</type>
                                         <el>
-                                            <settings.foo>
+                                            <input_1>
                                                 <TCEforms>
-                                                    <label>foo</label>
+                                                    <label>input_1</label>
                                                     <config>
                                                         <type>input</type>
                                                     </config>
                                                 </TCEforms>
-                                            </settings.foo>
+                                            </input_1>
                                         </el>
                                     </ROOT>
-                                </sheet2>
-                                <sheet3>
+                                </sheet_2>
+                                <sheet_3>
                                     <ROOT>
                                         <TCEforms>
-                                            <sheetTitle>sheet 3</sheetTitle>
-                                            <displayCond><![CDATA[FIELD:parentRec.flex_4_select_1:=:1]]></displayCond>
+                                            <sheetTitle>sheet_3</sheetTitle>
+                                            <displayCond>FIELD:parentRec.flex_4_select_1:=:1</displayCond>
                                         </TCEforms>
                                         <type>array</type>
                                         <el>
-                                            <settings.foo>
+                                            <input_2>
                                                 <TCEforms>
-                                                    <label>foo</label>
+                                                    <label>input_2</label>
                                                     <config>
                                                         <type>input</type>
                                                     </config>
                                                 </TCEforms>
-                                            </settings.foo>
+                                            </input_2>
                                         </el>
                                     </ROOT>
-                                </sheet3>
+                                </sheet_3>
                             </sheets>
                         </T3DataStructure>
                     ',
@@ -340,42 +498,15 @@ return [
                 'default' => 1,
                 'items' => [
                     0 => [
-                        'sheet 3 not shown',
+                        'sheet_3 not shown',
                         0,
                     ],
                     1 => [
-                        'sheet 3 shown',
+                        'sheet_3 shown',
                         1,
                     ],
                 ],
             ]
-        ],
-
-        'flex_5' => [
-            'exclude' => 1,
-            'label' => 'flex_5 no sheets',
-            'config' => [
-                'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <ROOT>
-                                <type>array</type>
-                                <el>
-                                    <input_1>
-                                        <TCEforms>
-                                            <label>input_1</label>
-                                            <config>
-                                                <type>input</type>
-                                            </config>
-                                        </TCEforms>
-                                    </input_1>
-                                </el>
-                            </ROOT>
-                        </T3DataStructure>
-                    ',
-                ],
-            ],
         ],
 
 
@@ -393,7 +524,9 @@ return [
                     flex_2,
                 --div--;inline,
                     flex_3,
-                --div--;sheet display condition,
+                --div--;field displayCond,
+                    flex_6_select_1, flex_6,
+                --div--;sheet displayCond,
                     flex_4_select_1, flex_4,
             ',
         ],
