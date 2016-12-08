@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -29,13 +30,36 @@ class RichTextElement extends AbstractFormElement
 {
 
     /**
+     * pid of fixed versioned record.
+     * This is the pid of the record in normal cases, but is changed to the pid
+     * of the "mother" record in case the handled record is a versioned overlay
+     * and "mother" is located at a different pid.
+     *
+     * @var int
+     */
+    protected $pidOfVersionedMotherRecord;
+
+    /**
+     * RTE configuration
+     * This property contains "processed" configuration
+     * where table and type specific RTE setup is merged into 'default.' array.
+     *
+     * @var array
+     */
+    protected $rteConfiguration = [];
+
+    /**
      * Renders the ckeditor element
      *
      * @return array
+     * @throws \InvalidArgumentException
      */
     public function render() : array
     {
         $resultArray = $this->initializeResultArray();
+        $row = $this->data['databaseRow'];
+        BackendUtility::fixVersioningPid($this->data['tableName'], $row);
+        $this->pidOfVersionedMotherRecord = (int)$row['pid'];
 
         $resourcesPath = PathUtility::getAbsoluteWebPath(
             ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/')
@@ -58,6 +82,15 @@ class RichTextElement extends AbstractFormElement
             $defaultExtras,
             true
         );
+
+        $vanillaRteTsConfig = $this->getBackendUserAuthentication()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->data['effectivePid']));
+        $this->rteConfiguration = BackendUtility::RTEsetup(
+            $vanillaRteTsConfig['properties'],
+            $table,
+            $this->data['fieldName'],
+            $this->data['recordTypeValue']
+        );
+
         $resultArray['requireJsModules'] = [];
         $resultArray['requireJsModules'][] =[
             'ckeditor' => $this->getCkEditorRequireJsModuleCode($resourcesPath, $fieldId)
@@ -75,17 +108,33 @@ class RichTextElement extends AbstractFormElement
      */
     protected function getCkEditorRequireJsModuleCode(string $resourcesPath, string $fieldId) : string
     {
+        // todo: find new name for this option (do we still need this?)
+        // Initializing additional attributes
+        $additionalAttributes = [];
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
+            $additionalAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], true);
+        }
+
+        $customConfig = [
+            'contentsCss' => $resourcesPath . 'Css/contents.css',
+            'customConfig' => $resourcesPath . 'JavaScript/defaultconfig.js',
+            'toolbar' => 'Basic',
+            'uiColor' => '#F8F8F8',
+            'stylesSet' => 'default',
+            'RTEtsConfigParams' => $this->getRTEtsConfigParams(),
+            'elementbrowser' => [
+                'link' => [
+                    'moduleUrl' => BackendUtility::getModuleUrl('rteckeditor_wizard_browse_links'),
+                    'additionalAttributes' => $additionalAttributes
+                ]
+            ]
+        ];
+
         return 'function(CKEDITOR) {
                 CKEDITOR.config.height = 400;
                 CKEDITOR.contentsCss = "' . $resourcesPath . 'Css/contents.css";
                 CKEDITOR.config.width = "auto";
-                CKEDITOR.replace("' . $fieldId . '", {
-                    contentsCss: "' . $resourcesPath . 'Css/contents.css",
-                    customConfig: "' . $resourcesPath . 'JavaScript/defaultconfig.js",
-                    toolbar : "Basic",
-                    uiColor : "#F8F8F8",
-                    stylesSet: "default"
-                });
+                CKEDITOR.replace("' . $fieldId . '", ' . json_encode($customConfig) . ');
         }';
     }
 
@@ -101,6 +150,24 @@ class RichTextElement extends AbstractFormElement
         $value = $this->data['parameterArray']['itemFormElValue'] ?? '';
 
         return '<textarea ' . $this->getValidationDataAsDataAttribute($this->data['parameterArray']['fieldConf']['config']) . ' id="' . $fieldId . '" name="' . htmlspecialchars($itemFormElementName) . '">' . htmlspecialchars($value) . '</textarea>';
+    }
+
+    /**
+     * A list of parameters that is mostly given as GET/POST to other RTE controllers.
+     *
+     * @return string
+     */
+    protected function getRTEtsConfigParams() : string
+    {
+        $result = [
+            $this->data['tableName'],
+            $this->data['databaseRow']['uid'],
+            $this->data['fieldName'],
+            $this->pidOfVersionedMotherRecord,
+            $this->data['recordTypeValue'],
+            $this->data['effectivePid'],
+        ];
+        return implode(':', $result);
     }
 
     /**

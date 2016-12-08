@@ -45,6 +45,9 @@
 			<trans-unit id="target">
 				<source>Target</source>
 			</trans-unit>
+			<trans-unit id="linkRelationship">
+				<source>Relationship</source>
+			</trans-unit>
 			<trans-unit id="class">
 				<source>CSS-Class</source>
 			</trans-unit>
