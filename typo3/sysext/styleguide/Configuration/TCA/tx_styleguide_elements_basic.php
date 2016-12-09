@@ -292,11 +292,12 @@ return [
         ],
         'input_28' => [
             'exclude' => 1,
-            'label' => 'input_28 placeholder=__row|input_26, mode=useOrOverridePlaceholder, eval=null',
+            'label' => 'input_28 placeholder=__row|input_26, mode=useOrOverridePlaceholder, eval=null, default=null',
             'config' => [
                 'type' => 'input',
                 'placeholder' => '__row|input_26',
                 'eval' => 'null',
+                'default' => null,
                 'mode' => 'useOrOverridePlaceholder',
             ],
         ],
