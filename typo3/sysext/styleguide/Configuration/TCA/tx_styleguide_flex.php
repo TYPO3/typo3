@@ -298,11 +298,11 @@ return [
                                                         <renderType>selectSingle</renderType>
                                                         <items type="array">
                                                             <numIndex index="0" type="array">
-                                                                <numIndex index="0">input_2 not shown</numIndex>
+                                                                <numIndex index="0">input_2 and input_3 not shown</numIndex>
                                                                 <numIndex index="1">0</numIndex>
                                                             </numIndex>
                                                             <numIndex index="1" type="array">
-                                                                <numIndex index="0">input_2 shown</numIndex>
+                                                                <numIndex index="0">input_2 and input_3 shown</numIndex>
                                                                 <numIndex index="1">1</numIndex>
                                                             </numIndex>
                                                         </items>
@@ -311,7 +311,6 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </select_1>
-                                            <!-- DOES NOT WORK
                                             <select_2>
                                                 <TCEforms>
                                                     <label>select_2</label>
@@ -334,7 +333,6 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </select_2>
-                                            -->
                                             <input_1>
                                                 <TCEforms>
                                                     <label>input_1</label>
@@ -353,21 +351,10 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </input_2>
-                                        </el>
-                                    </ROOT>
-                                </sheet_1>
-                                <!-- DOES NOT WORK
-                                <sheet_2>
-                                    <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>sheet_2</sheetTitle>
-                                        </TCEforms>
-                                        <type>array</type>
-                                        <el>
                                             <input_3>
                                                 <TCEforms>
-                                                    <label>input_1</label>
-                                                    <displayCond>FIELD:sheet_1.select_2:=:0</displayCond>
+                                                    <label>input_3</label>
+                                                    <displayCond>FIELD:sheet_1.select_1:=:1</displayCond>
                                                     <config>
                                                         <type>input</type>
                                                     </config>
@@ -375,8 +362,26 @@ return [
                                             </input_3>
                                         </el>
                                     </ROOT>
+                                </sheet_1>
+                                <sheet_2>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>sheet_2</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <input_1>
+                                                <TCEforms>
+                                                    <label>input_1</label>
+                                                    <displayCond>FIELD:sheet_1.select_2:=:1</displayCond>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_1>
+                                        </el>
+                                    </ROOT>
                                 </sheet_2>
-                                -->
                             </sheets>
                         </T3DataStructure>
                     ',
@@ -534,11 +539,11 @@ return [
                                                         <renderType>selectSingle</renderType>
                                                         <items type="array">
                                                             <numIndex index="0" type="array">
-                                                                <numIndex index="0">input_3 not shown</numIndex>
+                                                                <numIndex index="0">input_3 and input_4 not shown</numIndex>
                                                                 <numIndex index="1">0</numIndex>
                                                             </numIndex>
                                                             <numIndex index="1" type="array">
-                                                                <numIndex index="0">input_3 shown</numIndex>
+                                                                <numIndex index="0">input_3 and input_4 shown</numIndex>
                                                                 <numIndex index="1">1</numIndex>
                                                             </numIndex>
                                                         </items>
@@ -565,11 +570,11 @@ return [
                                                                         <renderType>selectSingle</renderType>
                                                                         <items type="array">
                                                                             <numIndex index="0" type="array">
-                                                                                <numIndex index="0">input_4 not shown</numIndex>
+                                                                                <numIndex index="0">input_5 not shown</numIndex>
                                                                                 <numIndex index="1">0</numIndex>
                                                                             </numIndex>
                                                                             <numIndex index="1" type="array">
-                                                                                <numIndex index="0">input_4 shown</numIndex>
+                                                                                <numIndex index="0">input_5 shown</numIndex>
                                                                                 <numIndex index="1">1</numIndex>
                                                                             </numIndex>
                                                                         </items>
@@ -607,12 +612,30 @@ return [
                                                             <input_4>
                                                                 <TCEforms>
                                                                     <label>input_4</label>
-                                                                    <displayCond>FIELD:select_2:=:1</displayCond>
+                                                                    <displayCond>FIELD:sheet_1.select_1:=:1</displayCond>
                                                                     <config>
                                                                         <type>input</type>
                                                                     </config>
                                                                 </TCEforms>
                                                             </input_4>
+                                                            <input_5>
+                                                                <TCEforms>
+                                                                    <label>input_5</label>
+                                                                    <displayCond>FIELD:select_2:=:1</displayCond>
+                                                                    <config>
+                                                                        <type>input</type>
+                                                                    </config>
+                                                                </TCEforms>
+                                                            </input_5>
+                                                            <input_6>
+                                                                <TCEforms>
+                                                                    <label>input_6</label>
+                                                                    <displayCond>FIELD:sheet_2.select_1:=:1</displayCond>
+                                                                    <config>
+                                                                        <type>input</type>
+                                                                    </config>
+                                                                </TCEforms>
+                                                            </input_6>
                                                         </el>
                                                     </container_1>
                                                 </el>
@@ -620,6 +643,38 @@ return [
                                         </el>
                                     </ROOT>
                                 </sheet_1>
+                                <sheet_2>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>sheet_2</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <select_1>
+                                                <TCEforms>
+                                                    <label>select_1</label>
+                                                    <onChange>reload</onChange>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectSingle</renderType>
+                                                        <items type="array">
+                                                            <numIndex index="0" type="array">
+                                                                <numIndex index="0">input_6 on sheet_1 containers not shown</numIndex>
+                                                                <numIndex index="1">0</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1" type="array">
+                                                                <numIndex index="0">input_6 on sheet_1 containers shown</numIndex>
+                                                                <numIndex index="1">1</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                        <maxitems>1</maxitems>
+                                                        <size>1</size>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_1>
+                                        </el>
+                                    </ROOT>
+                                </sheet_2>
                             </sheets>
                         </T3DataStructure>
                     ',
