@@ -163,11 +163,6 @@ Toolbar options
 
    showButtons = *
 
-More toolbar options
-
-::
-
-   keepButtonGroupTogether = 1
 
 Enable status bar
 

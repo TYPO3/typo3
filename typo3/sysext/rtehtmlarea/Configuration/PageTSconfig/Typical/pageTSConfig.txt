@@ -112,9 +112,6 @@ RTE.default {
 	showButtons := addToList(columninsertbefore, columninsertafter, columndelete, columnsplit)
 	showButtons := addToList(cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge)
 
-		## More toolbar options
-	keepButtonGroupTogether = 1
-
 		## Enable status bar
 	showStatusBar =  1
 

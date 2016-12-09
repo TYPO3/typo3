@@ -192,32 +192,6 @@ toolbarOrder
 
 
 
-.. _keepbuttongrouptogether:
-
-keepButtonGroupTogether
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         keepButtonGroupTogether
-
-   Data type
-         boolean
-
-   Description
-         Specifies that all buttons of a button group are displayed on the same
-         line of the tool bar. A button group is delimited by a linebreak or by
-         a bar.
-
-         Default: 0
-
-         Note: If enabled, the setting is honored only by Mozilla/Firefox and
-         Safari. It is ignored when the browser is Internet Explorer, Opera or
-         Mozilla 1.3.
-
-
-
 .. _defaultcontentlanguage:
 
 defaultContentLanguage

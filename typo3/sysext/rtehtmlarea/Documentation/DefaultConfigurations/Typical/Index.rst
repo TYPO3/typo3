@@ -148,12 +148,6 @@ The TCA configuration may add buttons to the toolbar
       showButtons := addToList(columninsertbefore, columninsertafter, columndelete, columnsplit)
       showButtons := addToList(cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge)
 
-More toolbar options
-
-::
-
-      keepButtonGroupTogether = 1
-
 Enable status bar
 
 ::

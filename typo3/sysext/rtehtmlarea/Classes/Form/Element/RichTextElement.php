@@ -412,9 +412,6 @@ class RichTextElement extends AbstractFormElement
     {
         $backendUser = $this->getBackendUserAuthentication();
 
-        if ($this->client['browser'] === 'msie' || $this->client['browser'] === 'opera') {
-            $this->processedRteConfiguration['keepButtonGroupTogether'] = 0;
-        }
         $this->defaultToolbarOrder = 'bar, blockstylelabel, blockstyle, textstylelabel, textstyle, linebreak,
 			bar, formattext, bold,  strong, italic, emphasis, big, small, insertedtext, deletedtext, citation, code,'
                 . 'definition, keyboard, monospaced, quotation, sample, variable, bidioverride, strikethrough, subscript, superscript, underline, span,
@@ -683,7 +680,6 @@ class RichTextElement extends AbstractFormElement
         $jsArray[] = 'RTEarea[editornumber].disableObjectResizing = ' . (trim($this->processedRteConfiguration['disableObjectResizing']) ? 'true;' : 'false;');
         $jsArray[] = 'RTEarea[editornumber].removeTrailingBR = ' . (trim($this->processedRteConfiguration['removeTrailingBR']) ? 'true;' : 'false;');
         $jsArray[] = 'RTEarea[editornumber].useCSS = ' . (trim($this->processedRteConfiguration['useCSS']) ? 'true' : 'false') . ';';
-        $jsArray[] = 'RTEarea[editornumber].keepButtonGroupTogether = ' . (trim($this->processedRteConfiguration['keepButtonGroupTogether']) ? 'true;' : 'false;');
         $jsArray[] = 'RTEarea[editornumber].disablePCexamples = ' . (trim($this->processedRteConfiguration['disablePCexamples']) ? 'true;' : 'false;');
         $jsArray[] = 'RTEarea[editornumber].showTagFreeClasses = ' . (trim($this->processedRteConfiguration['showTagFreeClasses']) ? 'true;' : 'false;');
         $jsArray[] = 'RTEarea[editornumber].tceformsNested = ' . (!empty($this->data) ? json_encode($this->data['tabAndInlineStack']) : '[]') . ';';
