@@ -21,8 +21,8 @@
 			var allowed = 'a[!href,title,class,target,rel]',
 				required = 'a[href]';
 
-			if (editor.config.elementbrowser.link.additionalAttributes && editor.config.elementbrowser.link.additionalAttributes.length) {
-				allowed = allowed.replace( ']', ',' + editor.config.elementbrowser.link.additionalAttributes.join(',') + ']');
+			if (editor.config.typo3link.additionalAttributes && editor.config.typo3link.additionalAttributes.length) {
+				allowed = allowed.replace( ']', ',' + editor.config.typo3link.additionalAttributes.join(',') + ']');
 			}
 
 			// Override link command
@@ -67,7 +67,7 @@
 				}
 			}
 
-			var additionalAttributes = editor.config.elementbrowser.link.additionalAttributes;
+			var additionalAttributes = editor.config.typo3link.additionalAttributes;
 			for (i = additionalAttributes.length; --i >= 0;) {
 				if (element.hasAttribute(additionalAttributes[i])) {
 					additionalParameters += '&curUrl[' + additionalAttributes[i] + ']=';
@@ -82,26 +82,26 @@
 			TYPO3.settings.Textarea.RTEPopupWindow.height - 20,
 			makeUrlFromModulePath(
 				editor,
-				editor.config.elementbrowser.link.moduleUrl,
+				editor.config.typo3link.routeUrl,
 				additionalParameters
 			));
 	}
 
 	/**
-	 * Make url from module path
+	 * Make url from url
 	 *
 	 * @param {Object} editor CKEditor object
-	 * @param {String} modulePath Module path
+	 * @param {String} routeUrl URL
 	 * @param {String} parameters Additional parameters
 	 *
 	 * @return {String} The url
 	 */
-	function makeUrlFromModulePath(editor, modulePath, parameters) {
+	function makeUrlFromModulePath(editor, routeUrl, parameters) {
 
-		// todo: check if we need `+ '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage `
-		return modulePath
-			+ (modulePath.indexOf("?") === -1 ? "?" : "&")
+		return routeUrl
+			+ (routeUrl.indexOf('?') === -1 ? '?' : '&')
 			+ 'RTEtsConfigParams=' + editor.config.RTEtsConfigParams
+			+ '&contentsLanguage=' + editor.config.contentsLanguage
 			+ '&editorId=' + editor.id
 			+ (parameters ? parameters : '');
 	}

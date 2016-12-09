@@ -38,7 +38,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      *
      * @var int
      */
-    protected $contentTypo3Language;
+    protected $contentsLanguage;
 
     /**
      * Language service object for localization to the content language
@@ -136,10 +136,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $currentLinkParts = isset($queryParameters['curUrl']) ? $queryParameters['curUrl'] : [];
         $this->currentLinkParts = $currentLinkParts;
         $this->editorId = GeneralUtility::_GP('editorId');
-        $this->contentTypo3Language = GeneralUtility::_GP('contentTypo3Language');
+        $this->contentsLanguage = GeneralUtility::_GP('contentsLanguage');
         $this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
 
-        $this->contentLanguageService->init($this->contentTypo3Language);
+        $this->contentLanguageService->init($this->contentsLanguage);
 
         $RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
         $RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
@@ -276,8 +276,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         // todo: find new name for this option
         // Initializing additional attributes
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
-            $addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], true);
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes']) {
+            $addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes'], true);
             foreach ($addAttributes as $attribute) {
                 $this->additionalAttributes[$attribute] = $this->linkAttributeValues[$attribute] ?? '';
             }
@@ -565,7 +565,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return [
             'act' => isset($overrides['act']) ? $overrides['act'] : $this->displayedLinkHandlerId,
             'editorId' => $this->editorId,
-            'contentTypo3Language' => $this->contentTypo3Language,
+            'contentsLanguage' => $this->contentsLanguage,
             'RTEtsConfigParams' => $this->RTEtsConfigParams,
         ];
     }

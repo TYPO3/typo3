@@ -16,8 +16,11 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element;
  */
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -100,7 +103,63 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
-     * Gets the JavaScript code for ckeditor module
+     * Determine the contents language iso code
+     *
+     * @return string
+     */
+    protected function getContentsLanguage()
+    {
+        $language = $this->getLanguageService()->lang;
+        if ($language === 'default' || !$language) {
+            $language = 'en';
+        }
+        $currentLanguageUid = $this->data['databaseRow']['sys_language_uid'];
+        if (is_array($currentLanguageUid)) {
+            $currentLanguageUid = $currentLanguageUid[0];
+        }
+        $contentLanguageUid = (int)max($currentLanguageUid, 0);
+        if ($contentLanguageUid) {
+            $contentISOLanguage = $language;
+            if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
+                $tableA = 'sys_language';
+                $tableB = 'static_languages';
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tableA);
+
+                $result = $queryBuilder
+                    ->select('a.uid', 'b.lg_iso_2', 'b.lg_country_iso_2')
+                    ->from($tableA, 'a')
+                    ->where('a.uid', (int)$contentLanguageUid)
+                    ->leftJoin(
+                        'a',
+                        $tableB,
+                        'b',
+                        $queryBuilder->expr()->eq('a.static_lang_isocode', $queryBuilder->quoteIdentifier('b.uid'))
+                    )
+                    ->execute();
+
+                while ($languageRow = $result->fetch()) {
+                    $contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
+                }
+            }
+        } else {
+            $contentISOLanguage = trim($this->rteConfiguration['defaultContentLanguage'] ?? '') ?: 'en';
+            $languageCodeParts = explode('_', $contentISOLanguage);
+            $contentISOLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
+            // Find the configured language in the list of localization locales
+            /** @var $locales Locales */
+            $locales = GeneralUtility::makeInstance(Locales::class);
+            // If not found, default to 'en'
+            if (!in_array($contentISOLanguage, $locales->getLocales(), true)) {
+                $contentISOLanguage = 'en';
+            }
+        }
+        return $contentISOLanguage;
+    }
+
+    /**
+     * Gets the JavaScript code for CKEditor module
      *
      * @param string $resourcesPath
      * @param string $fieldId
@@ -108,32 +167,33 @@ class RichTextElement extends AbstractFormElement
      */
     protected function getCkEditorRequireJsModuleCode(string $resourcesPath, string $fieldId) : string
     {
-        // todo: find new name for this option (do we still need this?)
-        // Initializing additional attributes
-        $additionalAttributes = [];
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
-            $additionalAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], true);
-        }
-
         $customConfig = [
             'contentsCss' => $resourcesPath . 'Css/contents.css',
             'customConfig' => $resourcesPath . 'JavaScript/defaultconfig.js',
             'toolbar' => 'Basic',
             'uiColor' => '#F8F8F8',
             'stylesSet' => 'default',
+            'extraPlugins' => '',
             'RTEtsConfigParams' => $this->getRTEtsConfigParams(),
-            'elementbrowser' => [
-                'link' => [
-                    'moduleUrl' => BackendUtility::getModuleUrl('rteckeditor_wizard_browse_links'),
-                    'additionalAttributes' => $additionalAttributes
-                ]
-            ]
+            'contentsLanguage' => $this->getContentsLanguage(),
         ];
+
+        $externalPlugins = '';
+        foreach ($this->getExternalPlugins() as $pluginName => $config) {
+            $customConfig[$pluginName] = $config['config'];
+            $customConfig['extraPlugins'] .= ',' . $pluginName;
+
+            $externalPlugins .= 'CKEDITOR.plugins.addExternal(';
+            $externalPlugins .= GeneralUtility::quoteJSvalue($pluginName) . ',';
+            $externalPlugins .= GeneralUtility::quoteJSvalue($config['path']) . ',';
+            $externalPlugins .= '\'\');';
+        }
 
         return 'function(CKEDITOR) {
                 CKEDITOR.config.height = 400;
                 CKEDITOR.contentsCss = "' . $resourcesPath . 'Css/contents.css";
                 CKEDITOR.config.width = "auto";
+                ' . $externalPlugins . '
                 CKEDITOR.replace("' . $fieldId . '", ' . json_encode($customConfig) . ');
         }';
     }
@@ -149,7 +209,7 @@ class RichTextElement extends AbstractFormElement
         $itemFormElementName = $this->data['parameterArray']['itemFormElName'];
         $value = $this->data['parameterArray']['itemFormElValue'] ?? '';
 
-        return '<textarea ' . $this->getValidationDataAsDataAttribute($this->data['parameterArray']['fieldConf']['config']) . ' id="' . $fieldId . '" name="' . htmlspecialchars($itemFormElementName) . '">' . htmlspecialchars($value) . '</textarea>';
+        return '<textarea style="display:none" ' . $this->getValidationDataAsDataAttribute($this->data['parameterArray']['fieldConf']['config']) . ' id="' . $fieldId . '" name="' . htmlspecialchars($itemFormElementName) . '">' . htmlspecialchars($value) . '</textarea>';
     }
 
     /**
@@ -168,6 +228,38 @@ class RichTextElement extends AbstractFormElement
             $this->data['effectivePid'],
         ];
         return implode(':', $result);
+    }
+
+    /**
+     * Get configuration of external/additional plugins
+     *
+     * @return array
+     */
+    protected function getExternalPlugins() : array
+    {
+        // todo: find new name for this option (do we still need this?)
+        // Initializing additional attributes
+        $additionalAttributes = [];
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes']) {
+            $additionalAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes'], true);
+        }
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        // todo: add api for this https://forge.typo3.org/issues/78929
+        $pluginPath = PathUtility::getAbsoluteWebPath(
+            ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Plugins/typo3link.js')
+        );
+        $externalPlugins = [
+            'typo3link' => [
+                'path' => $pluginPath,
+                'config' => [
+                    'routeUrl' => (string)$uriBuilder->buildUriFromRoute('rteckeditor_wizard_browse_links'),
+                    'additionalAttributes' => $additionalAttributes
+                ]
+            ]
+        ];
+
+        return $externalPlugins;
     }
 
     /**
