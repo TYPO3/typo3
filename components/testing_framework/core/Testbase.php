@@ -317,6 +317,7 @@ class Testbase
         $databasePasswordTrimmed = trim($databasePassword);
         $databasePort = trim(getenv('typo3DatabasePort'));
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
+        $databaseDriver = trim(getenv('typo3DatabaseDriver'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
             $originalConfigurationArray = [
@@ -345,6 +346,9 @@ class Testbase
             }
             if ($databaseSocket) {
                 $originalConfigurationArray['DB']['Connections']['Default']['unix_socket'] = $databaseSocket;
+            }
+            if ($databaseDriver) {
+                $originalConfigurationArray['DB']['Connections']['Default']['driver'] = $databaseDriver;
             }
         } elseif (file_exists(ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php')) {
             // See if a LocalConfiguration file exists in "parent" instance to get db credentials from
