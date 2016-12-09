@@ -28,7 +28,7 @@ RTE.classes {
 		value = background-color: #F5FFAA; border: 1px solid #333333;
 	}
 	important {
-		name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf.xlf:important
+		name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:important
 		value = color: #8A0020;
 	}
 	name-of-person {
