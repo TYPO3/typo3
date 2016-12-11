@@ -1362,16 +1362,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "60e1ff26e3d04bafefff5ab4441642e044b3e46c"
+                "reference": "617595f736ca1e880817cea852572b9b0b329f39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/60e1ff26e3d04bafefff5ab4441642e044b3e46c",
-                "reference": "60e1ff26e3d04bafefff5ab4441642e044b3e46c",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/617595f736ca1e880817cea852572b9b0b329f39",
+                "reference": "617595f736ca1e880817cea852572b9b0b329f39",
                 "shasum": ""
             },
             "require": {
@@ -1397,7 +1397,7 @@
                 "LGPL-3.0"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2016-11-10 22:50:04"
+            "time": "2016-12-11 12:09:36"
         }
     ],
     "packages-dev": [
