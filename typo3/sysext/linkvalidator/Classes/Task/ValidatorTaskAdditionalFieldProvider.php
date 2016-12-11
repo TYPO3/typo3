@@ -101,7 +101,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
             }
         }
         $fieldId = 'task_page';
-        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[linkvalidator][page]" id="'
+        $fieldCode = '<input type="number" min="0" class="form-control" name="tx_scheduler[linkvalidator][page]" id="'
             . $fieldId
             . '" value="'
             . htmlspecialchars($taskInfo['page'])
@@ -109,7 +109,13 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         $lang = $this->getLanguageService();
         $label = $lang->sL($this->languageFile . ':tasks.validate.page');
         $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+        $pageTitle = '';
+        if (!empty($taskInfo['page'])) {
+            $pageTitle = $this->getPageTitle((int)$taskInfo['page']);
+        }
         $additionalFields[$fieldId] = [
+            'browser' => 'page',
+            'pageTitle' => $pageTitle,
             'code' => $fieldCode,
             'label' => $label
         ];
@@ -270,6 +276,22 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         }
         $task->setConfiguration($submittedData['linkvalidator']['configuration']);
         $task->setEmailTemplateFile($submittedData['linkvalidator']['emailTemplateFile']);
+    }
+
+    /**
+     * Get the title of the selected page
+     *
+     * @param int $pageId
+     * @return string Page title or empty string
+     */
+    private function getPageTitle($pageId)
+    {
+        $page = BackendUtility::getRecord('pages', $pageId, 'title', '', false);
+        if ($page === null) {
+            return '';
+        } else {
+            return $page['title'];
+        }
     }
 
     /**

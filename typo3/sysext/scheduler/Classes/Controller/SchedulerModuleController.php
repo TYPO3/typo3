@@ -89,6 +89,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     protected $moduleTemplate;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * @return \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController
      */
     public function __construct()
@@ -104,6 +109,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->view->getRequest()->setControllerExtensionName('scheduler');
         $this->view->setPartialRootPaths([ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Partials/Backend/SchedulerModule/']);
         $this->moduleUri = BackendUtility::getModuleUrl($this->moduleName);
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
@@ -635,6 +641,14 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/PageBrowser');
+        $this->getPageRenderer()->addJsInlineCode('browse-button', '
+            function setFormValueFromBrowseWin(fieldReference, elValue, elName) {
+                var res = elValue.split("_");
+                var element = document.getElementById(fieldReference);
+                element.value = res[1];
+            }
+        ');
 
         // Start rendering the add/edit form
         $this->view->assign('uid', htmlspecialchars($this->submittedData['uid']));
@@ -797,11 +811,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 foreach ($fields as $fieldID => $fieldInfo) {
                     $label = '<label>' . $this->getLanguageService()->sL($fieldInfo['label']) . '</label>';
                     $htmlClassName = strtolower(str_replace('\\', '-', $class));
-
                     $table[] =
                         '<div class="form-section extraFields extra_fields_' . $htmlClassName . '" ' . $additionalFieldsStyle . ' id="' . $fieldID . '_row"><div class="form-group">'
                             . BackendUtility::wrapInHelp($fieldInfo['cshKey'], $fieldInfo['cshLabel'], $label)
                             . '<div class="form-control-wrap">' . $fieldInfo['code'] . '</div>'
+                            . $this->getBrowseButton($fieldID, $fieldInfo)
                         . '</div></div>';
                 }
             }
@@ -811,6 +825,29 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
+    }
+
+    /**
+     * @param string $fieldID The id of the field witch contains the page id
+     * @param array $fieldInfo The array with the field info, contains the page title shown beside the button
+     * @return string HTML code for the browse button
+     */
+    protected function getBrowseButton($fieldID, array $fieldInfo)
+    {
+        if (isset($fieldInfo['browser']) && ($fieldInfo['browser'] === 'page')) {
+            $url = BackendUtility::getModuleUrl('wizard_element_browser',
+                ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_db'));
+            return '
+                <div><a href="#" data-url=' . htmlspecialchars($url) . ' class="btn btn-default t3js-pageBrowser" title="' . $title . '">
+                    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
+                        <span class="icon-markup">' . $this->iconFactory->getIcon('actions-insert-record',
+                    Icon::SIZE_SMALL)->render() . '</span>
+                    </span>
+                </a><span id="page_' . $fieldID . '">&nbsp;' . htmlspecialchars($fieldInfo['pageTitle']) . '</span></div>';
+        } else {
+            return '';
+        }
     }
 
     /**
