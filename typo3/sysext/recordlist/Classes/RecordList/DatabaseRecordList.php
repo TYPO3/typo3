@@ -2164,7 +2164,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
     protected function addToCSV(array $row = [])
     {
         $rowReducedByControlFields = self::removeControlFieldsFromFieldRow($row);
-        $rowReducedToSelectedColumns = array_intersect_key($rowReducedByControlFields, array_flip($this->fieldArray));
+        // Get an field array without control fields but in the expected order
+        $fieldArray = array_intersect_key(array_flip($this->fieldArray), $rowReducedByControlFields);
+        // Overwrite fieldArray to keep the order with an array of needed fields
+        $rowReducedToSelectedColumns = array_replace($fieldArray, array_intersect_key($rowReducedByControlFields, $fieldArray));
         $this->setCsvRow($rowReducedToSelectedColumns);
     }
 
