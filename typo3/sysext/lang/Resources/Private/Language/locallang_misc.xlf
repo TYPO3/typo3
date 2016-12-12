@@ -90,7 +90,7 @@
 			<trans-unit id="shortcut_workspace">
 				<source>Go to Workspace Module</source>
 			</trans-unit>
-			<trans-unit id="bookmarkDescription">
+			<trans-unit id="bookmark_description">
 				<source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %s, which you can find on each page in the backend.</source>
 			</trans-unit>
 			<trans-unit id="bookmark_edit">
