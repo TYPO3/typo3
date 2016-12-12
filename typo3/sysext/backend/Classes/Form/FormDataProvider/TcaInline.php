@@ -255,6 +255,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 // do extra handling of pageTsConfig merged here. Just provide "parent" pageTS as is
                 'pageTsConfig' => $result['pageTsConfig'],
                 'userTsConfig' => $result['userTsConfig'],
+                'databaseRow' => $result['databaseRow'],
                 'processedTca' => [
                     'ctrl' => [],
                     'columns' => [

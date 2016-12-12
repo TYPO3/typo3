@@ -1048,11 +1048,14 @@ abstract class AbstractItemProvider
                 }
                 $foreignTableClause = implode('', $whereClauseParts);
             }
-            // Use pid from parent page clause if in flex flom context
-            if (strpos($foreignTableClause, '###CURRENT_PID###') !== false
-                && !empty($result['flexParentDatabaseRow']['pid'])
-            ) {
-                $effectivePid = $result['flexParentDatabaseRow']['pid'];
+            if (strpos($foreignTableClause, '###CURRENT_PID###') !== false) {
+                // Use pid from parent page clause if in flex form context
+                if (!empty($result['flexParentDatabaseRow']['pid'])) {
+                    $effectivePid = $result['flexParentDatabaseRow']['pid'];
+                // Use pid from database row if in inline context
+                } elseif (!$effectivePid && !empty($result['databaseRow']['pid'])) {
+                    $effectivePid = $result['databaseRow']['pid'];
+                }
             }
 
             $siteRootUid = 0;
