@@ -147,6 +147,32 @@ class BackendUtility
     }
 
     /**
+     * Like getRecord(), but overlays workspace version if any.
+     *
+     * @param array $row databaserow
+     * @param string $table Table name present in $GLOBALS['TCA']
+     * @param string $fields List of fields to select
+     * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
+     * @return array Returns modified row
+     */
+    public static function getArrayWSOL($row, $table, $fields = '*', $unsetMovePointers = false)
+    {
+        if (is_array($row)) {
+            if ($fields !== '*') {
+                self::workspaceOL($table, $row, -99, $unsetMovePointers);
+                foreach ($row as $key => $_) {
+                    if (!GeneralUtility::inList($fields, $key) && $key[0] !== '_') {
+                        unset($row[$key]);
+                    }
+                }
+            } else {
+                self::workspaceOL($table, $row, -99, $unsetMovePointers);
+            }
+        }
+        return $row;
+    }
+
+    /**
      * Returns the first record found from $table with $where as WHERE clause
      * This function does NOT check if a record has the deleted flag set.
      * $table does NOT need to be configured in $GLOBALS['TCA']

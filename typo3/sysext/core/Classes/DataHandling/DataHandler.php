@@ -3435,7 +3435,8 @@ class DataHandler
         }
 
         // This checks if the record can be selected which is all that a copy action requires.
-        if (!$this->doesRecordExist($table, $uid, 'show')) {
+        list($recordExists, $recordRow) = $this->doesRecordExistInternal($table, $uid, 'show');
+        if (!$recordExists) {
             if ($this->enableLogging) {
                 $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record "%s:%s" without permission', -1, [$table, $uid]);
             }
@@ -3462,7 +3463,8 @@ class DataHandler
         $data = [];
         $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
         // So it copies (and localized) content from workspace...
-        $row = BackendUtility::getRecordWSOL($table, $uid);
+        $row = BackendUtility::getArrayWSOL($recordRow, $table);
+
         if (!is_array($row)) {
             if ($this->enableLogging) {
                 $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record that did not exist!');
@@ -6370,9 +6372,31 @@ class DataHandler
      */
     public function doesRecordExist($table, $id, $perms)
     {
+        list($exists, $row) = $this->doesRecordExistInternal($table, $id, $perms);
+
+        return $exists;
+    }
+
+    /**
+     * Checks if record can be selected based on given permission criteria
+     *
+     * @param string $table Record table name
+     * @param int $id Record UID
+     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
+     * @return array (bool, row)
+     *
+     * @throws \RuntimeException
+     */
+    private function doesRecordExistInternal($table, $id, $perms)
+    {
         $id = (int)$id;
         if ($this->bypassAccessCheckForRecords) {
-            return is_array(BackendUtility::getRecordRaw($table, 'uid=' . $id, 'uid'));
+            $row = BackendUtility::getRecordRaw($table, 'uid=' . $id, 'uid');
+            if (is_array($row)) {
+                return array(true, $row);
+            } else {
+                return array(false, array());
+            }
         }
         // Processing the incoming $perms (from possible string to integer that can be AND'ed)
         if (!MathUtility::canBeInterpretedAsInteger($perms)) {
@@ -6384,11 +6408,11 @@ class DataHandler
 
                     case 'new':
                         // This holds it all in case the record is not page!!
-                    if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
-                        $perms = 'edit';
-                    } else {
-                        $perms = 'editcontent';
-                    }
+                        if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
+                            $perms = 'edit';
+                        } else {
+                            $perms = 'editcontent';
+                        }
                         break;
                 }
             }
@@ -6404,7 +6428,7 @@ class DataHandler
         if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id) || $this->admin)) {
             if ($table != 'pages') {
                 // Find record without checking page:
-                $mres = $this->databaseConnection->exec_SELECTquery('uid,pid', $table, 'uid=' . (int)$id . $this->deleteClause($table));
+                $mres = $this->databaseConnection->exec_SELECTquery('*', $table, 'uid=' . (int)$id . $this->deleteClause($table));
                 // THIS SHOULD CHECK FOR editlock I think!
                 $output = $this->databaseConnection->sql_fetch_assoc($mres);
                 BackendUtility::fixVersioningPid($table, $output, true);
@@ -6416,30 +6440,37 @@ class DataHandler
                     // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
                     $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
                     if (is_array($pageRec) || !$output['pid'] && ($isRootLevelRestrictionIgnored || $this->admin)) {
-                        return true;
+                        return array(true, $output);
                     }
                 }
                 return false;
             } else {
-                $mres = $this->doesRecordExist_pageLookUp($id, $perms);
-                return $this->databaseConnection->sql_num_rows($mres);
+                $mres = $this->doesRecordExist_pageLookUp($id, $perms, '*');
+                $output = $this->databaseConnection->sql_fetch_assoc($mres);
+                if (is_array($output)) {
+                    return array(true, $output);
+                } else {
+                    return array(false, array());
+                }
             }
         }
-        return false;
+        return array(false, array());
     }
+
 
     /**
      * Looks up a page based on permissions.
      *
      * @param int $id Page id
      * @param int $perms Permission integer
+     * @param string $fields $fields is a list of fields to select, default is '*'
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object (from exec_SELECTquery())
      * @access private
      * @see doesRecordExist()
      */
-    public function doesRecordExist_pageLookUp($id, $perms)
+    public function doesRecordExist_pageLookUp($id, $perms, $fields='uid')
     {
-        return $this->databaseConnection->exec_SELECTquery('uid', 'pages', 'uid=' . (int)$id . $this->deleteClause('pages') . ($perms && !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($perms) : '') . (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] && $perms & Permission::PAGE_EDIT + Permission::PAGE_DELETE + Permission::CONTENT_EDIT ? ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['editlock'] . '=0' : ''));
+        return $this->databaseConnection->exec_SELECTquery($fields, 'pages', 'uid=' . (int)$id . $this->deleteClause('pages') . ($perms && !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($perms) : '') . (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] && $perms & Permission::PAGE_EDIT + Permission::PAGE_DELETE + Permission::CONTENT_EDIT ? ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['editlock'] . '=0' : ''));
     }
 
     /**
