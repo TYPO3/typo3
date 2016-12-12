@@ -25,9 +25,9 @@
 					<div>
 						<a href="{file.publicUrl}"{f:if(condition:data.target,then:' target="{data.target}"')}>
 							<span class="ce-uploads-fileName">
-								<f:if condition="{file.title}">
+								<f:if condition="{file.properties.title}">
 									<f:then>
-										{file.title}
+										{file.properties.title}
 									</f:then>
 									<f:else>
 										{file.name}
