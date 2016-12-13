@@ -20,7 +20,6 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'requestUdate' => 'group_requestUpdate_1'
     ],
 
 
@@ -271,6 +270,7 @@ return [
         'group_requestUpdate_1' => [
             'exclude' => 1,
             'label' => 'group_requestUpdate_1',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',

@@ -20,7 +20,6 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'requestUpdate' => 't3editor_reload_1',
     ],
 
 
@@ -82,6 +81,7 @@ return [
         't3editor_reload_1' => [
             'exclude' => 1,
             'label' => 't3editor_reload_1',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

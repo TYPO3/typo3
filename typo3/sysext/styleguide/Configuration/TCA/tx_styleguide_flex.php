@@ -20,7 +20,6 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'requestUpdate' => 'flex_4_select_1,flex_6_select_1,flex_7_select_1'
     ],
 
 
@@ -391,6 +390,7 @@ return [
         'flex_6_select_1' => [
             'exclude' => 1,
             'label' => 'flex_6_select_1',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -497,6 +497,7 @@ return [
         'flex_4_select_1' => [
             'exclude' => 1,
             'label' => 'flex_4_select_1',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -684,6 +685,7 @@ return [
         'flex_7_select_1' => [
             'exclude' => 1,
             'label' => 'flex_7_select_1',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

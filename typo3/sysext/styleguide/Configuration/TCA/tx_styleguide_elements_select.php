@@ -20,7 +20,6 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'requestUpdate' => 'select_requestUpdate_1,select_tree_4',
     ],
 
 
@@ -536,6 +535,7 @@ return [
         'select_tree_4' => [
             'exclude' => 1,
             'label' => 'select_tree_4 pages, maxLevels=2, requestUpdate, expandAll=false',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
@@ -595,6 +595,7 @@ return [
         'select_requestUpdate_1' => [
             'exclude' => 1,
             'label' => 'select_requestUpdate_1',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
