@@ -641,7 +641,7 @@ class RichTextElement extends AbstractFormElement
         $backendUser = $this->getBackendUserAuthentication();
 
         $jsArray = [];
-        $jsArray[] = 'var HTMLArea = HTMLArea || {};';
+        $jsArray[] = 'window.HTMLArea = window.HTMLArea || {};';
         $jsArray[] = 'if (typeof configureEditorInstance === "undefined") {';
         $jsArray[] = '	configureEditorInstance = new Object();';
         $jsArray[] = '}';
