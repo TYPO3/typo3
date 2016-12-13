@@ -136,17 +136,21 @@ class PlainDataResolver
             return $this->resolvedIds;
         }
 
-        $ids = $this->reindex(
-            $this->processVersionOverlays($this->liveIds)
-        );
-        $ids = $this->reindex(
-            $this->processSorting($ids)
-        );
-        $ids = $this->reindex(
-            $this->applyLiveIds($ids)
-        );
+        $this->resolvedIds = $this->processVersionOverlays($this->liveIds);
+        if ($this->resolvedIds !== $this->liveIds) {
+            $this->resolvedIds = $this->reindex($this->resolvedIds);
+        }
 
-        $this->resolvedIds = $ids;
+        $tempIds = $this->processSorting($this->resolvedIds);
+        if ($tempIds !== $this->resolvedIds) {
+            $this->resolvedIds = $this->reindex($tempIds);
+        }
+
+        $tempIds = $this->applyLiveIds($this->resolvedIds);
+        if ($tempIds !== $this->resolvedIds) {
+            $this->resolvedIds = $this->reindex($tempIds);
+        }
+
         return $this->resolvedIds;
     }
 
