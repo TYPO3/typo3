@@ -94,6 +94,13 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $classPropertyNames = array();
 
 	/**
+	 * Array of class names and names of their methods.
+	 *
+	 * @var array
+	 */
+	protected $classMethodNames = array();
+
+	/**
 	 * Array of class names, property names and their tags and values.
 	 *
 	 * @var array
@@ -138,6 +145,8 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $cacheIdentifier;
 
 	/**
+	 * Internal runtime cache of method reflection objects
+	 *
 	 * @var array
 	 */
 	protected $methodReflections = array();
@@ -229,15 +238,15 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function hasMethod($className, $methodName) {
 		try {
-			if (!array_key_exists($className, $this->methodReflections) || !array_key_exists($methodName, $this->methodReflections[$className])) {
-				$this->methodReflections[$className][$methodName] = new \TYPO3\CMS\Extbase\Reflection\MethodReflection($className, $methodName);
-				$this->dataCacheNeedsUpdate = TRUE;
+			if (!array_key_exists($className, $this->classMethodNames) || !array_key_exists($methodName, $this->classMethodNames[$className])) {
+				$this->getMethodReflection($className, $methodName);
+				$this->classMethodNames[$className][$methodName] = TRUE;
 			}
 		} catch (\ReflectionException $e) {
 			// Method does not exist. Store this information in cache.
-			$this->methodReflections[$className][$methodName] = NULL;
+			$this->classMethodNames[$className][$methodName] = NULL;
 		}
-		return isset($this->methodReflections[$className][$methodName]);
+		return isset($this->classMethodNames[$className][$methodName]);
 	}
 
 	/**
@@ -249,8 +258,8 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getMethodTagsValues($className, $methodName) {
 		if (!isset($this->methodTagsValues[$className][$methodName])) {
-			$this->methodTagsValues[$className][$methodName] = array();
 			$method = $this->getMethodReflection($className, $methodName);
+			$this->methodTagsValues[$className][$methodName] = array();
 			foreach ($method->getTagsValues() as $tag => $values) {
 				if (array_search($tag, $this->ignoredTags) === FALSE) {
 					$this->methodTagsValues[$className][$methodName][$tag] = $values;
@@ -493,9 +502,9 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection the method Reflection object
 	 */
 	protected function getMethodReflection($className, $methodName) {
+		$this->dataCacheNeedsUpdate = TRUE;
 		if (!isset($this->methodReflections[$className][$methodName])) {
 			$this->methodReflections[$className][$methodName] = new \TYPO3\CMS\Extbase\Reflection\MethodReflection($className, $methodName);
-			$this->dataCacheNeedsUpdate = TRUE;
 		}
 		return $this->methodReflections[$className][$methodName];
 	}
@@ -528,6 +537,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 		$propertyNames = array(
 			'reflectedClassNames',
 			'classPropertyNames',
+			'classMethodNames',
 			'classTagsValues',
 			'methodTagsValues',
 			'methodParameters',
@@ -539,5 +549,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 			$data[$propertyName] = $this->{$propertyName};
 		}
 		$this->dataCache->set($this->cacheIdentifier, $data);
+		$this->dataCacheNeedsUpdate = FALSE;
 	}
 }
