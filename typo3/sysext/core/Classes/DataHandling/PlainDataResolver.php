@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -371,7 +372,10 @@ class PlainDataResolver
      */
     protected function isWorkspaceEnabled()
     {
-        return BackendUtility::isTableWorkspaceEnabled($this->tableName);
+        if (ExtensionManagementUtility::isLoaded('version')) {
+            return BackendUtility::isTableWorkspaceEnabled($this->tableName);
+        }
+        return false;
     }
 
     /**
