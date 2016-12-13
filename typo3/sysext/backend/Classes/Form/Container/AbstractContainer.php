@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -80,9 +81,12 @@ abstract class AbstractContainer extends AbstractNode
      */
     protected function renderTabMenu(array $menuItems, $domId, $defaultTabIndex = 1)
     {
-        $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/Tabs.html';
+        $templatePath = ExtensionManagementUtility::extPath('backend')
+            . 'Resources/Private/Templates/DocumentTemplate/';
+
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
+        $view->setTemplatePathAndFilename($templatePath . 'Tabs.html');
+        $view->setPartialRootPaths([$templatePath . 'Partials']);
         $view->assignMultiple([
             'id' => $domId,
             'items' => $menuItems,

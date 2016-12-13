@@ -446,9 +446,11 @@ class ModuleTemplate
     public function getDynamicTabMenu(array $menuItems, $domId, $defaultTabIndex = 1, $collapsible = false, $wrapContent = true, $storeLastActiveTab = true)
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
-        $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapsible ? 'Collapse.html' : 'Tabs.html');
+        $templatePath = ExtensionManagementUtility::extPath('backend')
+            . 'Resources/Private/Templates/DocumentTemplate/';
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
+        $view->setTemplatePathAndFilename($templatePath . ($collapsible ? 'Collapse.html' : 'Tabs.html'));
+        $view->setPartialRootPaths([$templatePath . 'Partials']);
         $view->assignMultiple([
             'id' => 'DTM-' . GeneralUtility::shortMD5($domId),
             'items' => $menuItems,
