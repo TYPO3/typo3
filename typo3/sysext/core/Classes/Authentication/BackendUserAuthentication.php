@@ -255,10 +255,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
     public $writeAttemptLog = true;
 
     /**
-     * if > 0 : session-timeout in seconds.
-     * if FALSE/<0 : no timeout.
+     * if > 0: session-timeout in seconds.
+     * If <=0: Instant logout after login.
      * if string: The string is field name from the user table where the timeout can be found.
-     * @var string|int
+     * @var int|string
      */
     public $auth_timeout_field = 6000;
 
