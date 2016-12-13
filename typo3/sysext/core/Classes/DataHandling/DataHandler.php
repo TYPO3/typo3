@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -9065,8 +9066,11 @@ class DataHandler
      */
     protected function createRelationHandlerInstance()
     {
+        $isVersionLoaded = ExtensionManagementUtility::isLoaded('version');
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->setWorkspaceId($this->BE_USER->workspace);
+        $relationHandler->setUseLiveReferenceIds($isVersionLoaded);
+        $relationHandler->setUseLiveParentIds($isVersionLoaded);
         return $relationHandler;
     }
 
