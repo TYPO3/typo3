@@ -227,7 +227,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
-                'allowed' => 'jpg',
+                'allowed' => 'jpg, jpeg, png, gif',
                 'size' => 3,
                 'uploadfolder' => 'uploads/tx_styleguide/',
                 'disable_controls' => 'delete',
@@ -239,7 +239,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
-                'allowed' => 'jpg',
+                'allowed' => 'jpg, jpeg, png, gif',
                 'size' => 1,
                 'uploadfolder' => 'uploads/tx_styleguide/',
             ],
@@ -250,7 +250,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
-                'allowed' => 'jpg',
+                'allowed' => 'jpg, jpeg, png, gif',
                 'uploadfolder' => 'uploads/tx_styleguide/',
                 'selectedListStyle' => 'width:400px;background-color:#ccffcc;',
             ],
@@ -347,7 +347,7 @@ return [
                                                     <config>
                                                         <type>group</type>
                                                         <internal_type>file</internal_type>
-                                                        <allowed>jpg</allowed>
+                                                        <allowed>jpg, jpeg, png, gif</allowed>
                                                         <size>3</size>
                                                         <uploadfolder>uploads/tx_styleguide/</uploadfolder>
                                                     </config>
