@@ -270,6 +270,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      */
     public function getExternalTables($id, $table)
     {
+        $this->pageinfo = BackendUtility::readPageAccess($id, '');
         $type = $this->getPageLayoutController()->MOD_SETTINGS[$table];
         if (!isset($type)) {
             $type = 0;
