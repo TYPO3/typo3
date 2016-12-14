@@ -167,7 +167,7 @@ class SchedulerModuleController
             // Prepare main content
             $content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
             $content .= $this->getModuleContent();
-            $content .= '</form><div id="extraFieldsHidden"></div>';
+            $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
         } else {
             // If no access, only display the module's title
             $content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
@@ -628,154 +628,69 @@ class SchedulerModuleController
         // Start rendering the add/edit form
         $this->view->assign('uid', htmlspecialchars($this->submittedData['uid']));
         $this->view->assign('cmd', htmlspecialchars($this->CMD));
+        $this->view->assign('csh', $this->cshKey);
+        $this->view->assign('lang', 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:');
 
         $table = [];
 
         // Disable checkbox
-        $label = '<label>' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable') . '</label>';
-        $table[] =
-            '<div class="form-section" id="task_disable_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_disable', $label)
-                . '<div class="form-control-wrap">'
-                    . '<input type="hidden" name="tx_scheduler[disable]" value="0">'
-                    . '<input class="checkbox" type="checkbox" name="tx_scheduler[disable]" value="1" id="task_disable" ' . ($taskInfo['disable'] ? ' checked="checked"' : '') . '>'
-                . '</div>'
-            . '</div></div>';
+        $this->view->assign('task_disable', ($taskInfo['disable'] ? ' checked="checked"' : ''));
+        $this->view->assign('task_disable_label', 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable');
 
         // Task class selector
-        $label = '<label>' . $this->getLanguageService()->getLL('label.class') . '</label>';
-
         // On editing, don't allow changing of the task class, unless it was not valid
         if ($this->submittedData['uid'] > 0 && !empty($taskInfo['class'])) {
-            $cell = '<div>' . $registeredClasses[$taskInfo['class']]['title'] . ' (' . $registeredClasses[$taskInfo['class']]['extension'] . ')</div>';
-            $cell .= '<input type="hidden" name="tx_scheduler[class]" id="task_class" value="' . htmlspecialchars($taskInfo['class']) . '">';
+            $this->view->assign('task_class', $taskInfo['class']);
+            $this->view->assign('task_class_title', $registeredClasses[$taskInfo['class']]['title']);
+            $this->view->assign('task_class_extension', $registeredClasses[$taskInfo['class']]['extension']);
         } else {
-            $cell = '<select name="tx_scheduler[class]" id="task_class" class="form-control">';
             // Group registered classes by classname
             $groupedClasses = [];
             foreach ($registeredClasses as $class => $classInfo) {
                 $groupedClasses[$classInfo['extension']][$class] = $classInfo;
             }
             ksort($groupedClasses);
-            // Loop on all grouped classes to display a selector
             foreach ($groupedClasses as $extension => $class) {
-                $cell .= '<optgroup label="' . htmlspecialchars($extension) . '">';
                 foreach ($groupedClasses[$extension] as $class => $classInfo) {
                     $selected = $class == $taskInfo['class'] ? ' selected="selected"' : '';
-                    $cell .= '<option value="' . htmlspecialchars($class) . '"' . ' title="' . htmlspecialchars($classInfo['description']) . '" ' . $selected . '>' . htmlspecialchars($classInfo['title']) . '</option>';
+                    $groupedClasses[$extension][$class]['selected'] = $selected;
                 }
-                $cell .= '</optgroup>';
             }
-            $cell .= '</select>';
+            $this->view->assign('groupedClasses', $groupedClasses);
         }
-        $table[] =
-            '<div class="form-section" id="task_class_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_class', $label)
-                . '<div class="form-control-wrap">'
-                    . $cell
-                . '</div>'
-            . '</div></div>';
 
         // Task type selector
-        $label = '<label>' . $this->getLanguageService()->getLL('label.type') . '</label>';
-        $table[] =
-            '<div class="form-section" id="task_type_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_type', $label)
-                . '<div class="form-control-wrap">'
-                    . '<select name="tx_scheduler[type]" id="task_type" class="form-control">'
-                        . '<option value="1" ' . ((int)$taskInfo['type'] === AbstractTask::TYPE_SINGLE ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('label.type.single') . '</option>'
-                        . '<option value="2" ' . ((int)$taskInfo['type'] === AbstractTask::TYPE_RECURRING ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('label.type.recurring') . '</option>'
-                    . '</select>'
-                . '</div>'
-            . '</div></div>';
+        $this->view->assign('task_type_selected_1', ((int)$taskInfo['type'] === AbstractTask::TYPE_SINGLE ? ' selected="selected"' : ''));
+        $this->view->assign('task_type_selected_2', ((int)$taskInfo['type'] === AbstractTask::TYPE_RECURRING ? ' selected="selected"' : ''));
 
         // Task group selector
-        $label = '<label>' . $this->getLanguageService()->getLL('label.group') . '</label>';
-        $cell = '<select name="tx_scheduler[task_group]" id="task_class" class="form-control">';
-
-        // Loop on all groups to display a selector
-        $cell .= '<option value="0" title=""></option>';
-        foreach ($registeredTaskGroups as $taskGroup) {
+        foreach ($registeredTaskGroups as $key => $taskGroup) {
             $selected = $taskGroup['uid'] == $taskInfo['task_group'] ? ' selected="selected"' : '';
-            $cell .= '<option value="' . $taskGroup['uid'] . '"' . 'title="';
-            $cell .= htmlspecialchars($taskGroup['groupName']) . '"' . $selected . '>';
-            $cell .= htmlspecialchars($taskGroup['groupName']) . '</option>';
+            $registeredTaskGroups[$key]['selected'] = $selected;
         }
-        $cell .= '</select>';
+        $this->view->assign('registeredTaskGroups', $registeredTaskGroups);
 
-        $table[] =
-            '<div class="form-section" id="task_group_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_group', $label)
-                . '<div class="form-control-wrap">'
-                    . $cell
-                . '</div>'
-            . '</div></div>';
-
+        // Start date/time field
         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
-
-        $label = '<label>' . BackendUtility::wrapInHelp($this->cshKey, 'task_start', $this->getLanguageService()->getLL('label.start')) . '</label>';
-        $value = ($taskInfo['start'] > 0 ? strftime($dateFormat, $taskInfo['start']) : '');
-        $table[] =
-            '<div class="form-section"><div class="row"><div class="form-group col-sm-6" id="task_start_col">'
-                . $label
-                . '<div class="form-control-wrap">'
-                    . '<div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">'
-                        . '<input name="tx_scheduler[start]_hr" value="' . htmlspecialchars($value) . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="datetime" type="text" id="tceforms-datetimefield-task_start_row">'
-                        . '<input name="tx_scheduler[start]" value="' . htmlspecialchars($taskInfo['start']) . '" type="hidden">'
-                        . '<span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_start_row"><span class="fa fa-calendar"></span></label></span>'
-                    . '</div>'
-                . '</div>'
-            . '</div>';
+        $this->view->assign('start_value_hr', ($taskInfo['start'] > 0 ? strftime($dateFormat, $taskInfo['start']) : ''));
+        $this->view->assign('start_value', $taskInfo['start']);
 
         // End date/time field
         // NOTE: datetime fields need a special id naming scheme
-        $value = ($taskInfo['end'] > 0 ? strftime($dateFormat, $taskInfo['end']) : '');
-        $label = '<label>' . $this->getLanguageService()->getLL('label.end') . '</label>';
-        $table[] =
-            '<div class="form-group col-sm-6" id="task_end_col">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_end', $label)
-                . '<div class="form-control-wrap">'
-                    . '<div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">'
-                        . '<input name="tx_scheduler[end]_hr" value="' . htmlspecialchars($value) . '" class="form-control  t3js-datetimepicker t3js-clearable" data-date-type="datetime" type="text" id="tceforms-datetimefield-task_end_row">'
-                        . '<input name="tx_scheduler[end]" value="' . htmlspecialchars($taskInfo['end']) . '" type="hidden">'
-                        . '<span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_end_row"><span class="fa fa-calendar"></span></label></span>'
-                    . '</div>'
-                . '</div>'
-            . '</div></div></div>';
+        $this->view->assign('end_value_hr', ($taskInfo['end'] > 0 ? strftime($dateFormat, $taskInfo['end']) : ''));
+        $this->view->assign('end_value', $taskInfo['end']);
 
         // Frequency input field
-        $label = '<label>' . $this->getLanguageService()->getLL('label.frequency.long') . '</label>';
-        $table[] =
-            '<div class="form-section" id="task_frequency_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_frequency', $label)
-                . '<div class="form-control-wrap">'
-                    . '<input type="text" name="tx_scheduler[frequency]" class="form-control" id="task_frequency" value="' . htmlspecialchars($taskInfo['frequency']) . '">'
-                . '</div>'
-            . '</div></div>';
+        $this->view->assign('frequency', $taskInfo['frequency']);
 
         // Multiple execution selector
-        $label = '<label>' . $this->getLanguageService()->getLL('label.parallel.long') . '</label>';
-        $table[] =
-            '<div class="form-section" id="task_multiple_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_multiple', $label)
-                . '<div class="form-control-wrap">'
-                    . '<input type="hidden"   name="tx_scheduler[multiple]" value="0">'
-                    . '<input class="checkbox" type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple" ' . ($taskInfo['multiple'] ? 'checked="checked"' : '') . '>'
-                . '</div>'
-            . '</div></div>';
+        $this->view->assign('multiple', ($taskInfo['multiple'] ? 'checked="checked"' : ''));
 
         // Description
-        $label = '<label>' . $this->getLanguageService()->getLL('label.description') . '</label>';
-        $table[] =
-            '<div class="form-section" id="task_description_row"><div class="form-group">'
-                . BackendUtility::wrapInHelp($this->cshKey, 'task_description', $label)
-                . '<div class="form-control-wrap">'
-                    . '<textarea class="form-control" name="tx_scheduler[description]">' . htmlspecialchars($taskInfo['description']) . '</textarea>'
-                . '</div>'
-            . '</div></div>';
+        $this->view->assign('description', $taskInfo['description']);
 
         // Display additional fields
-        $table[] = '<div id="extraFieldsSection">';
+        $additionalFieldList = [];
         foreach ($allAdditionalFields as $class => $fields) {
             if ($class == $taskInfo['class']) {
                 $additionalFieldsStyle = '';
@@ -785,18 +700,21 @@ class SchedulerModuleController
             // Add each field to the display, if there are indeed any
             if (isset($fields) && is_array($fields)) {
                 foreach ($fields as $fieldID => $fieldInfo) {
-                    $label = '<label>' . $this->getLanguageService()->sL($fieldInfo['label']) . '</label>';
                     $htmlClassName = strtolower(str_replace('\\', '-', $class));
-                    $table[] =
-                        '<div class="form-section extraFields extra_fields_' . $htmlClassName . '" ' . $additionalFieldsStyle . ' id="' . $fieldID . '_row"><div class="form-group">'
-                            . BackendUtility::wrapInHelp($fieldInfo['cshKey'], $fieldInfo['cshLabel'], $label)
-                            . '<div class="form-control-wrap">' . $fieldInfo['code'] . '</div>'
-                            . $this->getBrowseButton($fieldID, $fieldInfo)
-                        . '</div></div>';
+                    $field = [];
+                    $field['htmlClassName'] = $htmlClassName;
+                    $field['code'] = $fieldInfo['code'];
+                    $field['cshKey'] = $fieldInfo['cshKey'];
+                    $field['cshLabel'] = $fieldInfo['cshLabel'];
+                    $field['langLabel'] = $fieldInfo['label'];
+                    $field['fieldID'] = $fieldID;
+                    $field['additionalFieldsStyle'] = $additionalFieldsStyle;
+                    $field['browseButton'] = $this->getBrowseButton($fieldID, $fieldInfo);
+                    $additionalFieldList[] = $field;
                 }
             }
         }
-        $table[] = '</div>';
+        $this->view->assign('additionalFields', $additionalFieldList);
 
         $this->view->assign('table', implode(LF, $table));
         $this->view->assign('now', $this->getServerTime());

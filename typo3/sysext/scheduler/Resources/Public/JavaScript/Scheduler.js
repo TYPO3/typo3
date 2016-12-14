@@ -165,6 +165,8 @@ define(['jquery',
 		if ($taskType.length) {
 			Scheduler.toggleFieldsByTaskType($taskType.val());
 		}
+		var $taskClass = $('#task_class');
+		Scheduler.actOnChangedTaskClass($taskClass);
 	};
 
 	$(Scheduler.initializeEvents);
