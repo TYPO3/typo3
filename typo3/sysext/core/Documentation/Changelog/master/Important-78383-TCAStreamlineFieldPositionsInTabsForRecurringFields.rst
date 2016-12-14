@@ -10,7 +10,7 @@ Description
 ===========
 
 In TYPO3 there are some recurring field definitions shared by a lot of records.
-These fields are mostly defined in :php:`$GLOBALS['TCA']['<mytable>']['crtl']`.
+These fields are mostly defined in :php:`$GLOBALS['TCA']['<mytable>']['ctrl']`.
 Furthermore the generic categories are taken into account.
 
 These fields are used by core records and third party extensions.
@@ -23,17 +23,17 @@ There should be no records not using tabs to group fields.
 
 See the documentation for the definition of the recurring fields:
 
-    * crtl_
+    * ctrl_
     * categories_
 
-.. _crtl: https://docs.typo3.org/typo3cms/TCAReference/Reference/Ctrl/Index.html
+.. _ctrl: https://docs.typo3.org/typo3cms/TCAReference/Reference/Ctrl/Index.html
 .. _categories: https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Categories/Index.html
 
 
 **Legend**
 
 For the fields name in "Generic fields" the actual value of
-:php:`$GLOBALS['TCA']['<mytable>']['crtl']['<generic field>']` should be set in
+:php:`$GLOBALS['TCA']['<mytable>']['ctrl']['<generic field>']` should be set in
 :php:`$GLOBALS['TCA']['<mytable>']['types'][<mytype>]['showitem']`.
 
 
@@ -43,7 +43,7 @@ General (first tab)
 Label:
     `LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general`
 Generic fields:
-    * `type` (if theres is a field that is not set as type in crtl, but have a similar meaning, set it to the first
+    * `type` (if theres is a field that is not set as type in ctrl, but have a similar meaning, set it to the first
       position)
     * `label`
     * `label_alt` (if the fields are directly related to the label; especially if `label_alt_force` is set `true`)

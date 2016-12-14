@@ -1,4 +1,3 @@
-
 <?php
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
     'core',

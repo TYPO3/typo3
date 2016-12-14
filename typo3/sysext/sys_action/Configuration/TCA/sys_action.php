@@ -180,7 +180,7 @@ return [
         '],
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                type,title,	t1_userprefix,t1_copy_of_user,t1_allowed_groups,t1_create_user_dir,
+                type,title,t1_userprefix,t1_copy_of_user,t1_allowed_groups,t1_create_user_dir,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 hidden,assign_to_groups,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
