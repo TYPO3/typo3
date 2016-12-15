@@ -1,4 +1,5 @@
-<f:format.raw>{table}</f:format.raw>
+<f:render partial="TaskList" arguments="{tasks: tasks, moduleUri: moduleUri}" />
+
 <button class="btn btn-default" name="go_cron" id="scheduler_executeselected">
 	<core:icon identifier="extensions-scheduler-run-task-cron" />
 	<f:translate key="label.cronjobSelected" />

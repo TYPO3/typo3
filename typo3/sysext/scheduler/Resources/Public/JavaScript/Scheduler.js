@@ -15,6 +15,7 @@
  * Module: TYPO3/CMS/Scheduler/Scheduler
  */
 define(['jquery',
+		'datatables',
 		'TYPO3/CMS/Backend/SplitButtons'
 		], function($, SplitButtons) {
 
@@ -23,7 +24,8 @@ define(['jquery',
 	 * @type {{}}
 	 * @exports TYPO3/CMS/Scheduler/Scheduler
 	 */
-	var Scheduler = {};
+	var Scheduler = {
+	};
 
 	var allCheckedStatus = false;
 
@@ -102,7 +104,7 @@ define(['jquery',
 	 * @returns {Boolean}
 	 */
 	Scheduler.checkOrUncheckAllCheckboxes = function(theSelector) {
-		theSelector.parents('.tx_scheduler_mod1').find(':checkbox').prop('checked', !allCheckedStatus);
+		theSelector.parents('.tx_scheduler_mod1_table').find(':checkbox').prop('checked', !allCheckedStatus);
 		allCheckedStatus = !allCheckedStatus;
 		return false;
 	};
@@ -125,7 +127,7 @@ define(['jquery',
 	 * @param {Object} theSelector
 	 */
 	Scheduler.toggleTaskGroups = function(theSelector) {
-		taskGroup = theSelector.data('task-group-id');
+		var taskGroup = theSelector.data('task-group-id');
 		var taskGroupClass= '.taskGroup_' + taskGroup;
 		$(taskGroupClass).toggleClass('taskGroup--close');
 	};
@@ -134,7 +136,7 @@ define(['jquery',
 	 * Registers listeners
 	 */
 	Scheduler.initializeEvents = function() {
-		$('#checkall').on('click', function() {
+		$('.checkall').on('click', function() {
 			Scheduler.checkOrUncheckAllCheckboxes($(this));
 		});
 
@@ -155,6 +157,11 @@ define(['jquery',
 		$('.taskGroup').on('click', function() {
 			Scheduler.toggleTaskGroups($(this));
 		});
+
+		$('table.display').DataTable( {
+			"paging":   false,
+			"searching": false
+		} );
 	};
 
 	/**
@@ -166,7 +173,9 @@ define(['jquery',
 			Scheduler.toggleFieldsByTaskType($taskType.val());
 		}
 		var $taskClass = $('#task_class');
-		Scheduler.actOnChangedTaskClass($taskClass);
+        if ($taskClass.length) {
+			Scheduler.actOnChangedTaskClass($taskClass);
+        }
 	};
 
 	$(Scheduler.initializeEvents);

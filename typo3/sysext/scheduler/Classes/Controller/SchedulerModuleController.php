@@ -400,20 +400,6 @@ class SchedulerModuleController
     }
 
     /**
-     * Renders the task progress bar.
-     *
-     * @param float $progress Task progress
-     * @return string Progress bar markup
-     */
-    protected function renderTaskProgressBar($progress)
-    {
-        $progressText = $this->getLanguageService()->getLL('status.progress') . ':&nbsp;' . $progress . '%';
-        return '<div class="progress">'
-        . '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progress . '%;">' . $progressText . '</div>'
-        . '</div>';
-    }
-
-    /**
      * Delete a task from the execution queue
      */
     protected function deleteTask()
@@ -865,80 +851,23 @@ class SchedulerModuleController
         $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $table = [];
-        // Header row
-        $table[] =
-            '<thead><tr>'
-                . '<th><a class="btn btn-default" href="#" id="checkall" title="' . htmlspecialchars($this->getLanguageService()->getLL('label.checkAll')) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a></th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.id')) . '</th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('task')) . '</th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.type')) . '</th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.frequency')) . '</th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.parallel')) . '</th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.lastExecution')) . '</th>'
-                . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.nextExecution')) . '</th>'
-                . '<th></th>'
-            . '</tr></thead>';
+
+        $tasks = $temporaryResult;
 
         $registeredClasses = $this->getRegisteredClasses();
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $collapseIcon = $iconFactory->getIcon('actions-view-list-collapse', Icon::SIZE_SMALL)->render();
-        $expandIcon = $iconFactory->getIcon('actions-view-list-expand', Icon::SIZE_SMALL)->render();
         foreach ($temporaryResult as $taskIndex => $taskGroup) {
-            $collapseExpandIcons = '<span class="taskGroup_' . $taskIndex . '">' . $collapseIcon . '</span>'
-                . '<span class="taskGroup_' . $taskIndex . '" style="display: none;">' . $expandIcon . '</span>';
-            if (!empty($taskGroup['groupName'])) {
-                $groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
-                if (!empty($taskGroup['groupDescription'])) {
-                    $groupText .= '<br>' . nl2br(htmlspecialchars($taskGroup['groupDescription']));
-                }
-                $table[] = '<tr class="taskGroup" data-task-group-id="' . $taskIndex . '"><td colspan="8">' . $groupText . '</td><td style="text-align:right;">' . $collapseExpandIcons . '</td></tr>';
-            } else {
-                if (count($temporaryResult) > 1) {
-                    $table[] = '<tr class="taskGroup" data-task-group-id="0"><td colspan="8"><strong>' . htmlspecialchars($this->getLanguageService()->getLL('label.noGroup')) . '</strong></td><td style="text-align:right;">' . $collapseExpandIcons . '</td></tr>';
-                }
-            }
-
-            foreach ($taskGroup['tasks'] as $schedulerRecord) {
-                // Define action icons
-                $link = htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']);
-                $editAction = '<a data-toggle="tooltip" data-container="body" class="btn btn-default" href="' . $link . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:edit')) . '">' .
-                    $this->moduleTemplate->getIconFactory()->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+            foreach ($taskGroup['tasks'] as $recordIndex => $schedulerRecord) {
                 if ((int)$schedulerRecord['disable'] === 1) {
                     $translationKey = 'enable';
-                    $icon = $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-unhide', Icon::SIZE_SMALL);
                 } else {
                     $translationKey = 'disable';
-                    $icon = $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-hide', Icon::SIZE_SMALL);
                 }
-                $toggleHiddenAction = '<a data-toggle="tooltip" data-container="body" class="btn btn-default" href="' . htmlspecialchars($this->moduleUri
-                    . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="'
-                    . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:' . $translationKey))
-                    . '">' . $icon->render() . '</a>';
-                $deleteAction = '<a data-toggle="tooltip" data-container="body" class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
-                    . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete')) . '"'
-                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
-                    . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('msg.delete')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete')) . '">' .
-                    $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-                $stopAction = '<a data-toggle="tooltip" data-container="body" class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
-                    . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop')) . '"'
-                    . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
-                    . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('msg.stop')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop')) . '">' .
-                    $this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL)->render() . '</a>';
-                $runAction = '<a class="btn btn-default" data-toggle="tooltip" data-container="body" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task')) . '">' .
-                    $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task', Icon::SIZE_SMALL)->render() . '</a>';
-                $runCronAction = '<a class="btn btn-default" data-toggle="tooltip" data-container="body" href="' . htmlspecialchars($this->moduleUri . '&CMD=setNextExecutionTime&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task_cron')) . '">' .
-                    $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task-cron', Icon::SIZE_SMALL)->render() . '</a>';
+                $tasks[$taskIndex]['tasks'][$recordIndex]['translationKey'] = $translationKey;
 
                 // Define some default values
                 $lastExecution = '-';
                 $isRunning = false;
                 $showAsDisabled = false;
-                $startExecutionElement = '<span class="btn btn-default disabled">' . $this->moduleTemplate->getIconFactory()->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
                 // Restore the serialized task and pass it a reference to the scheduler object
                 /** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask|ProgressProviderInterface */
                 $task = unserialize($schedulerRecord['serialized_task_object']);
@@ -946,6 +875,7 @@ class SchedulerModuleController
                 if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
                     $class = $matches['classname'];
                 }
+                $tasks[$taskIndex]['tasks'][$recordIndex]['class'] = $class;
                 // Assemble information about last execution
                 if (!empty($schedulerRecord['lastexecution_time'])) {
                     $lastExecution = date($dateFormat, $schedulerRecord['lastexecution_time']);
@@ -956,19 +886,20 @@ class SchedulerModuleController
                     }
                     $lastExecution .= ' (' . $context . ')';
                 }
+                $tasks[$taskIndex]['tasks'][$recordIndex]['lastExecution'] = $lastExecution;
 
                 if (isset($registeredClasses[get_class($task)]) && $this->scheduler->isValidTaskObject($task)) {
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['validClass'] = true;
                     // The task object is valid
                     $labels = [];
-                    $name = htmlspecialchars($registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')');
                     $additionalInformation = $task->getAdditionalInformation();
                     if ($task instanceof ProgressProviderInterface) {
                         $progress = round((float)$task->getProgress(), 2);
-                        $name .= $this->renderTaskProgressBar($progress);
+                        $tasks[$taskIndex]['tasks'][$recordIndex]['progress'] = $progress;
                     }
-                    if (!empty($additionalInformation)) {
-                        $name .= '<div class="additional-information">' . nl2br(htmlspecialchars($additionalInformation)) . '</div>';
-                    }
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['classTitle'] = $registeredClasses[$class]['title'];
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['classExtension'] = $registeredClasses[$class]['extension'];
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['additionalInformation'] = $additionalInformation;
                     // Check if task currently has a running execution
                     if (!empty($schedulerRecord['serialized_executions'])) {
                         $labels[] = [
@@ -977,6 +908,7 @@ class SchedulerModuleController
                         ];
                         $isRunning = true;
                     }
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['isRunning'] = $isRunning;
 
                     // Prepare display of next execution date
                     // If task is currently running, date is not displayed (as next hasn't been calculated yet)
@@ -995,6 +927,7 @@ class SchedulerModuleController
                             ];
                         }
                     }
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['nextDate'] = $nextDate;
                     // Get execution type
                     if ($task->getType() === AbstractTask::TYPE_SINGLE) {
                         $execType = $this->getLanguageService()->getLL('label.type.single');
@@ -1007,17 +940,6 @@ class SchedulerModuleController
                             $frequency = $task->getExecution()->getCronCmd();
                         }
                     }
-                    // Get multiple executions setting
-                    if ($task->getExecution()->getMultiple()) {
-                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes');
-                    } else {
-                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no');
-                    }
-                    // Define checkbox
-                    $startExecutionElement = '<label class="btn btn-default btn-checkbox"><input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '"><span class="t3-icon fa"></span></label>';
-
-                    $actions = '<div class="btn-group" role="group">' . $editAction . $toggleHiddenAction . $deleteAction . '</div>';
-
                     // Check the disable status
                     // Row is shown dimmed if task is disabled, unless it is still running
                     if ($schedulerRecord['disable'] && !$isRunning) {
@@ -1027,13 +949,15 @@ class SchedulerModuleController
                         ];
                         $showAsDisabled = true;
                     }
-
-                    // Show no action links (edit, delete) if task is running
-                    if ($isRunning) {
-                        $actions = '<div class="btn-group" role="group">' . $stopAction . '</div>';
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['execType'] = $execType;
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['frequency'] = $frequency;
+                    // Get multiple executions setting
+                    if ($task->getExecution()->getMultiple()) {
+                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes');
                     } else {
-                        $actions .= '&nbsp;<div class="btn-group" role="group">' . $runCronAction . $runAction . '</div>';
+                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no');
                     }
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['multiple'] = $multiple;
 
                     // Check if the last run failed
                     if (!empty($schedulerRecord['lastexecution_failure'])) {
@@ -1052,52 +976,16 @@ class SchedulerModuleController
                             'description' => $labelDescription
                         ];
                     }
-                    // Format the execution status,
-                    // including failure feedback, if any
-                    $taskDesc = '';
-                    if ($schedulerRecord['description'] !== '') {
-                        $taskDesc = '<span class="description">' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '</span>';
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['labels'] = $labels;
+                    if ($showAsDisabled) {
+                        $tasks[$taskIndex]['tasks'][$recordIndex]['showAsDisabled'] = 'disabled';
                     }
-                    $taskName = '<span class="name"><a href="' . $link . '">' . $name . '</a></span>';
-
-                    $table[] =
-                        '<tr class="' . ($showAsDisabled ? 'disabled' : '') . ' taskGroup_' . $taskIndex . '">'
-                            . '<td><span class="t-span">' . $startExecutionElement . '</span></td>'
-                            . '<td class="right"><span class="t-span">' . $schedulerRecord['uid'] . '</span></td>'
-                            . '<td><span class="t-span">' . $this->makeStatusLabel($labels) . $taskName . $taskDesc . '</span></td>'
-                            . '<td><span class="t-span">' . $execType . '</span></td>'
-                            . '<td><span class="t-span">' . $frequency . '</span></td>'
-                            . '<td><span class="t-span">' . $multiple . '</span></td>'
-                            . '<td><span class="t-span">' . $lastExecution . '</span></td>'
-                            . '<td><span class="t-span">' . $nextDate . '</span></td>'
-                            . '<td class="nowrap"><span class="t-span">' . $actions . '</span></td>'
-                        . '</tr>';
-                } else {
-                    // The task object is not valid
-                    // Prepare to issue an error
-                    $executionStatusOutput = '<span class="label label-danger">'
-                        . htmlspecialchars(sprintf(
-                            $this->getLanguageService()->getLL('msg.invalidTaskClass'),
-                            $class
-                        ))
-                        . '</span>';
-                    $table[] =
-                        '<tr>'
-                            . '<td>' . $startExecutionElement . '</td>'
-                            . '<td class="right">' . $schedulerRecord['uid'] . '</td>'
-                            . '<td colspan="6">' . $executionStatusOutput . '</td>'
-                            . '<td class="nowrap"><div class="btn-group" role="group">'
-                                . '<span class="btn btn-default disabled">' . $this->moduleTemplate->getIconFactory()->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '<span class="btn btn-default disabled">' . $this->moduleTemplate->getIconFactory()->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
-                                . $deleteAction
-                                . '<span class="btn btn-default disabled">' . $this->moduleTemplate->getIconFactory()->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
-                            . '</div></td>'
-                        . '</tr>';
                 }
             }
         }
 
-        $this->view->assign('table', '<table class="table table-striped table-hover">' . implode(LF, $table) . '</table>');
+        $this->view->assign('tasks', $tasks);
+        $this->view->assign('moduleUri', $this->moduleUri);
         $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
