@@ -603,7 +603,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
             'classTagsValues',
             'methodTagsValues',
             'methodParameters',
-            'methodReflections',
             'propertyTagsValues',
             'taggedClasses',
             'classSchemata'
