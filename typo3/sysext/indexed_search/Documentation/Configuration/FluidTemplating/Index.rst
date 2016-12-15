@@ -19,12 +19,14 @@ The plugin "Indexed Search (Extbase & Fluid based)" can be extended with custom 
    plugin.tx_indexedsearch.view {
        templateRootPaths {
            0 = EXT:indexed_search/Resources/Private/Templates/
-           1 = EXT:myextension/Resources/Private/Templates/
+           10 = {$plugin.tx_indexedsearch.view.templateRootPath}
+           20 = EXT:myextension/Resources/Private/Templates/
        }
 
        partialRootPaths {
            0 = EXT:indexed_search/Resources/Private/Partials/
-           1 = EXT:myextension/Resources/Private/Partials/
+           10 = {$plugin.tx_indexedsearch.view.partialRootPath}
+           20 = EXT:myextension/Resources/Private/Partials/
        }
    }
 
