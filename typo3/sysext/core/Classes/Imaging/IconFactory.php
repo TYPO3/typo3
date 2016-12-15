@@ -201,7 +201,9 @@ class IconFactory
                     }
                 }
             }
-            if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+            if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])
+                && is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])
+            ) {
                 foreach ($recordType as $key => $type) {
                     if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type])) {
                         $recordType[$key] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type];
@@ -232,7 +234,9 @@ class IconFactory
                 unset($type);
                 $recordType[0] = 'tcarecords-' . $table . '-default';
             }
-        } elseif (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+        } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])
+            && is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])
+        ) {
             $recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
         } else {
             $recordType[0] = 'tcarecords-' . $table . '-default';
@@ -269,10 +273,10 @@ class IconFactory
             'fe_group' => false,
             'deleted' => false,
             'protectedSection' => false,
-            'nav_hide' => (bool)$row['nav_hide']
+            'nav_hide' => !empty($row['nav_hide']),
         ];
         // Icon state based on "enableFields":
-        if (is_array($tcaCtrl['enablecolumns'])) {
+        if (isset($tcaCtrl['enablecolumns']) && is_array($tcaCtrl['enablecolumns'])) {
             $enableColumns = $tcaCtrl['enablecolumns'];
             // If "hidden" is enabled:
             if (isset($enableColumns['disabled']) && !empty($row[$enableColumns['disabled']])) {
