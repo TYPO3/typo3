@@ -74,6 +74,13 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     protected $connected = false;
 
     /**
+     * Persistent connection
+     *
+     * @var bool
+     */
+    protected $persistentConnection = false;
+
+    /**
      * Hostname / IP of the Redis server, defaults to 127.0.0.1.
      *
      * @var string
@@ -140,7 +147,11 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     {
         $this->redis = new \Redis();
         try {
-            $this->connected = $this->redis->connect($this->hostname, $this->port);
+            if ($this->persistentConnection) {
+                $this->connected = $this->redis->pconnect($this->hostname, $this->port);
+            } else {
+                $this->connected = $this->redis->connect($this->hostname, $this->port);
+            }
         } catch (\Exception $e) {
             \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to redis server.', 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
         }
@@ -158,6 +169,18 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
                 }
             }
         }
+    }
+
+    /**
+     * Setter for persistent connection
+     *
+     * @param bool $persistentConnection
+     * @return void
+     * @api
+     */
+    public function setPersistentConnection($persistentConnection)
+    {
+        $this->persistentConnection = $persistentConnection;
     }
 
     /**
