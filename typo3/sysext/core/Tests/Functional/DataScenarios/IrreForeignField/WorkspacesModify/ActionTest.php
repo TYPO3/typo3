@@ -88,6 +88,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function deleteParentContentWithoutSoftDelete(): void
+    {
+        parent::deleteParentContentWithoutSoftDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithoutSoftDelete.csv');
+    }
+
+    #[Test]
     public function deleteParentContentWithoutCascadingDelete(): void
     {
         // @todo: TCA 'enableCascadingDelete' = false is *not* honored in workspaces. There

@@ -241,6 +241,15 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentIdLast, true, true);
     }
 
+    public function deleteContentOfRelationWithoutSoftDelete(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Content]['ctrl']['delete']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+        // Usually this is the record ID itself, but when in a workspace, the ID is the one from the versioned record
+        $this->recordIds['deletedRecordId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast] ?? self::VALUE_ContentIdLast;
+    }
+
     public function copyContentOfRelation(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageId);

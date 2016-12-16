@@ -152,6 +152,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function deleteContentOfRelationWithoutSoftDelete(): void
+    {
+        parent::deleteContentOfRelationWithoutSoftDelete();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['deletedRecordId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelationWithoutSoftDelete.csv');
+    }
+
+    #[Test]
     public function deleteSurfOfRelation(): void
     {
         parent::deleteSurfOfRelation();

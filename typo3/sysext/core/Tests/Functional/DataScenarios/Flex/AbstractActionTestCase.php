@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Flex;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
@@ -88,5 +90,25 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $newTableIds = $this->actionService->deleteRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
         // Usually this is the record ID itself, but when in a workspace, the ID is the one from the versioned record
         $this->recordIds['deletedRecordId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst] ?? self::VALUE_ElementIdFirst;
+    }
+
+    public function deleteRecordWithoutSoftDelete(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Element]['ctrl']['delete']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->deleteRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
+        // Usually this is the record ID itself, but when in a workspace, the ID is the one from the versioned record
+        $this->recordIds['deletedRecordId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst] ?? self::VALUE_ElementIdFirst;
+    }
+
+    public function deleteRecordThenHardDeleteRecord(): void
+    {
+        // Soft-delete a default language record
+        $this->actionService->deleteRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
+        // Now hard delete that default language record. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Element, self::VALUE_ElementIdFirst, true, true);
     }
 }

@@ -5417,7 +5417,10 @@ class DataHandler
             $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $uid]);
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
         } else {
-            $this->deleteRecord_procFields($table, $recordToDelete, $forceHardDelete);
+            // Delete child records. If the parent table is NOT soft-delete aware, it will get
+            // hard deleted. Attached children have to be hard-deleted aware as well, they'd be
+            // "orphaned" otherwise. We thus $forceHardDelete=true to deleteRecord_procFields().
+            $this->deleteRecord_procFields($table, $recordToDelete, true);
             $this->hardDeleteSingleRecord($table, $uid);
             $this->deleteL10nOverlayRecords($table, $uid);
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted unrecoverable from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
@@ -5675,13 +5678,18 @@ class DataHandler
             if ($configuration['type'] === 'inline' || $configuration['type'] === 'file') {
                 if (in_array($this->getRelationFieldType($configuration), ['list', 'field'], true)) {
                     $dbAnalysis = $this->createRelationHandlerInstance();
+                    if ($forceHardDelete) {
+                        // @todo: This should be called "disableDeleteClause" or similar. Also, PlainDataResolver
+                        //        still applies deleteClause in processSorting() which can not be disabled.
+                        $dbAnalysis->undeleteRecord = true;
+                    }
                     $dbAnalysis->start($value, $configuration['foreign_table'], '', $uid, $table, $configuration);
-                    $dbAnalysis->undeleteRecord = true;
                     // Non type save comparison is intended!
                     if (!isset($configuration['behaviour']['enableCascadingDelete']) || $configuration['behaviour']['enableCascadingDelete'] != false) {
                         // Walk through the items and remove them
                         foreach ($dbAnalysis->itemArray as $v) {
-                            $this->deleteAction($v['table'], (int)$v['id']);
+                            // @todo: It would be so much better when RelationHandler could return full rows ...
+                            $this->deleteAction($v['table'], (int)$v['id'], false, $forceHardDelete);
                         }
                     }
                 }
@@ -5730,13 +5738,17 @@ class DataHandler
                             if ($flexFieldConfig['type'] === 'inline' || $flexFieldConfig['type'] === 'file') {
                                 if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
                                     $dbAnalysis = $this->createRelationHandlerInstance();
+                                    if ($forceHardDelete) {
+                                        // @todo: This should be called "disableDeleteClause" or similar. Also, PlainDataResolver
+                                        //        still applies deleteClause in processSorting() which can not be disabled.
+                                        $dbAnalysis->undeleteRecord = true;
+                                    }
                                     $dbAnalysis->start($flexFormValue, $flexFieldConfig['foreign_table'], '', $uid, $table, $flexFieldConfig);
-                                    $dbAnalysis->undeleteRecord = true;
                                     // Non type save comparison is intended!
                                     if (!isset($flexFieldConfig['behaviour']['enableCascadingDelete']) || $flexFieldConfig['behaviour']['enableCascadingDelete'] != false) {
                                         // Walk through the items and remove them
                                         foreach ($dbAnalysis->itemArray as $v) {
-                                            $this->deleteAction($v['table'], (int)$v['id']);
+                                            $this->deleteAction($v['table'], (int)$v['id'], false, $forceHardDelete);
                                         }
                                     }
                                 }

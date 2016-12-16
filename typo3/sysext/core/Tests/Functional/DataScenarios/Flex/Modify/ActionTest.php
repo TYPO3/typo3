@@ -66,4 +66,19 @@ final class ActionTest extends AbstractActionTestCase
         parent::deleteRecord();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecord.csv');
     }
+
+    #[Test]
+    public function deleteRecordWithoutSoftDelete(): void
+    {
+        parent::deleteRecordWithoutSoftDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecordWithoutSoftDelete.csv');
+    }
+
+    #[Test]
+    public function deleteRecordThenHardDeleteRecord(): void
+    {
+        // This test is only done in live since this is a "recycler" scenario and "recycler" is disabled in workspaces.
+        parent::deleteRecordThenHardDeleteRecord();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecordThenHardDeleteRecord.csv');
+    }
 }

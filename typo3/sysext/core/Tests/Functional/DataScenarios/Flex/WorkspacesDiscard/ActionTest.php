@@ -71,4 +71,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['deletedRecordId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecord.csv');
     }
+
+    #[Test]
+    public function deleteRecordWithoutSoftDelete(): void
+    {
+        parent::deleteRecordWithoutSoftDelete();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['deletedRecordId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecordWithoutSoftDelete.csv');
+    }
 }

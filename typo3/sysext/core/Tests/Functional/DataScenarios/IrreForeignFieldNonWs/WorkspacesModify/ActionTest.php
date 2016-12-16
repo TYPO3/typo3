@@ -69,6 +69,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContent.csv');
     }
 
+    #[Test]
+    public function deleteParentContentWithoutSoftDelete(): void
+    {
+        parent::deleteParentContentWithoutSoftDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithoutSoftDelete.csv');
+    }
+
     /**
      * @todo: Not run, [Test] attribute missing.
      *        Leads to issues with sys_refindex which does not adapt sorting field for live changes.
