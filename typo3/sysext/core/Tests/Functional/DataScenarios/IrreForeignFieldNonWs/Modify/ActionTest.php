@@ -54,6 +54,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function deleteParentContentWithoutSoftDelete(): void
+    {
+        parent::deleteParentContentWithoutSoftDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithoutSoftDelete.csv');
+    }
+
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();

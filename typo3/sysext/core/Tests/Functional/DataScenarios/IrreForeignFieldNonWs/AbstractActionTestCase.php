@@ -93,6 +93,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
+    public function deleteParentContentWithoutSoftDelete(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Content]['ctrl']['delete']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+    }
+
     public function copyParentContent(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);

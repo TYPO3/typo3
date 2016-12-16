@@ -71,4 +71,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecord.csv');
     }
+
+    #[Test]
+    public function deleteRecordWithoutSoftDelete(): void
+    {
+        parent::deleteRecordWithoutSoftDelete();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecordWithoutSoftDelete.csv');
+    }
 }

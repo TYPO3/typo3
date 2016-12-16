@@ -1,0 +1,33 @@
+"pages",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,,,,,,
+,1,0,256,0,0,0,0,0,"FunctionalTest",,,,,,,,
+,88,1,256,0,0,0,0,0,"DataHandlerTest",,,,,,,,
+,89,88,256,0,0,0,0,0,"Relations",,,,,,,,
+,90,88,512,0,0,0,0,0,"Target",,,,,,,,
+"sys_workspace",,,,,,,,,,,,,,,,,
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage",,,,,,,,,,,,,,,,,
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings",,,,,
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0,,,,,
+"tt_content",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testdatahandler_group",,,,,
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1","1,2",,,,,
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2","2,3",,,,,
+,299,89,512,0,0,0,1,2,0,298,"Regular Element #2","2,3",,,,,
+"tx_testdatahandler_element",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,,,,
+,1,89,256,0,0,0,0,0,0,0,"Element #1",,,,,,
+,2,89,512,0,0,0,0,0,0,0,"Element #2",,,,,,
+,3,89,768,0,0,0,0,0,0,0,"Element #3",,,,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0,
+,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0,
+,"80049ddf812b303493f4ab87f14f2a1f","tt_content",297,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"47dd3ade32d0a07932f8897d83e514d0","tt_content",297,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"f6e90b07d64ab4b5497500ec9389e032","tt_content",298,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"3a2c17e653ab4a1f5fe0f516a5425838","tt_content",298,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"a73b11c9f6b1f44935c9f6bf543bfd7c","tt_content",299,"tx_testdatahandler_group",0,0,2147483647,2,,,,0,1,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"99c74da667a529725a882155459b5819","tt_content",299,"tx_testdatahandler_group",0,0,2147483647,2,,,,1,1,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,

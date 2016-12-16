@@ -82,6 +82,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function deleteParentContentWithoutSoftDelete(): void
+    {
+        parent::deleteParentContentWithoutSoftDelete();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithoutSoftDelete.csv');
+    }
+
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();

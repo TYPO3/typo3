@@ -176,6 +176,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function deleteContentOfRelationWithoutSoftDelete(): void
+    {
+        parent::deleteContentOfRelationWithoutSoftDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelationWithoutSoftDelete.csv');
+    }
+
+    #[Test]
     public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
