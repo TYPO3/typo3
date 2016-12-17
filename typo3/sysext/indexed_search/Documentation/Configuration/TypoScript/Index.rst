@@ -109,6 +109,28 @@ show.advancedSearchLink
          1
 
 
+.. _blind-numberOfResults:
+
+blind.numberOfResults
+"""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         blind.numberOfResults
+
+   Data type
+         string (list of integers, separated by comma)
+
+   Description
+         List of amount of results to be displayed per page.
+         Sending a different amount via GET or POST will result in the default value
+         being used to prevent DOS attacks.
+
+   Default
+         10,25,50,100
+
+
 
 .. _search-rootpidlist:
 
