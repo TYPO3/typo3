@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Unit test for marker utility
  */
-class MarkerBasedTemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class MarkerBasedTemplateServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var MarkerBasedTemplateService

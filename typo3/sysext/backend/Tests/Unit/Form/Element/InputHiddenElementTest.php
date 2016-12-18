@@ -14,12 +14,11 @@ namespace typo3\sysext\backend\Tests\Unit\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Form\Element\InputHiddenElement;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Tests for InputHiddenElement Form
  */
-class InputHiddenElementTest extends UnitTestCase
+class InputHiddenElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

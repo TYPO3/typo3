@@ -18,12 +18,11 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class FormDataCompilerTest extends UnitTestCase
+class FormDataCompilerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var FormDataCompiler

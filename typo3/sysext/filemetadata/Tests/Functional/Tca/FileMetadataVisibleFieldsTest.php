@@ -16,11 +16,10 @@ namespace TYPO3\CMS\Filemetadata\Tests\Unit\Tca;
 
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
-class FileMetadataVisibleFieldsTest extends FunctionalTestCase
+class FileMetadataVisibleFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['filemetadata'];
 

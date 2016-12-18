@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 /**
  * Test case
  */
-class CacheHashEnforcerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class CacheHashEnforcerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\CacheHashEnforcer

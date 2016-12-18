@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
  * Testcase
  *
  */
-class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ExtensionManagementServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

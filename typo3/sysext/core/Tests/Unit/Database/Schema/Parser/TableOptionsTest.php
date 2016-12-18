@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Tests for CreateTableStatement table options
  */
-class TableOptionsTest extends UnitTestCase
+class TableOptionsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

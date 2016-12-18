@@ -16,15 +16,14 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Class LoginControllerTest
  */
-class LoginControllerTest extends UnitTestCase
+class LoginControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var LoginController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var LoginController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $loginControllerMock;
 

@@ -16,12 +16,11 @@ namespace typo3\sysext\backend\Tests\Unit\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\InputTextElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class InputTextElementTest extends UnitTestCase
+class InputTextElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var string Selected timezone backup

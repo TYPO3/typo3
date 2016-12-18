@@ -20,14 +20,13 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class TcaRadioItemsTest extends UnitTestCase
+class TcaRadioItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaRadioItems

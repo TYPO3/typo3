@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class LocalesTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class LocalesTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var Locales

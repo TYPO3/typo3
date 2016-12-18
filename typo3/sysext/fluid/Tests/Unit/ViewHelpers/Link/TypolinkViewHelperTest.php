@@ -25,7 +25,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class TypolinkViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

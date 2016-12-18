@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -38,7 +37,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class TcaSelectItemsTest extends UnitTestCase
+class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaSelectItems|\PHPUnit_Framework_MockObject_MockObject

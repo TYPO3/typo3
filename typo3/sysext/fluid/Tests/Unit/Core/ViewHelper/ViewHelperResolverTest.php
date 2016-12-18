@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper;
 /**
  * Test case
  */
-class ViewHelperResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ViewHelperResolverTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

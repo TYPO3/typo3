@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Adapted from https://github.com/phly/http/
  */
-class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class UploadedFileTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     protected $tmpFile;
 

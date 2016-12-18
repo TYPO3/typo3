@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DatabaseWriterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

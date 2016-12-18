@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaColumnsOverridesTest extends UnitTestCase
+class TcaColumnsOverridesTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaColumnsOverrides

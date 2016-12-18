@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Persistence;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
@@ -25,7 +24,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 /**
  * Test case
  */
-class FormPersistenceManagerTest extends UnitTestCase
+class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

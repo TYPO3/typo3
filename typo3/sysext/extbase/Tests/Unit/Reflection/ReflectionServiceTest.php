@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
@@ -23,7 +22,7 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  * @anothertest second test for reflection
  * @anothertest second test for reflection with second value
  */
-class ReflectionServiceTest extends UnitTestCase
+class ReflectionServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @param array $foo The foo parameter

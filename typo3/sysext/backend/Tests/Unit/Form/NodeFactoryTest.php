@@ -18,12 +18,11 @@ use TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Backend\Form\NodeResolverInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class NodeFactoryTest extends UnitTestCase
+class NodeFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

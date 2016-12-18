@@ -19,7 +19,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 /**
  * Test case
  */
-class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class FluidTemplateContentObjectTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['fluid'];
 

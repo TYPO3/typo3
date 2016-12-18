@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
  * Class PageLayoutControllerTest
  */
-class PageLayoutControllerTest extends UnitTestCase
+class PageLayoutControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

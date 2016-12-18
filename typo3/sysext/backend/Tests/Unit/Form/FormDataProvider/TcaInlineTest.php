@@ -17,12 +17,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaInlineTest extends UnitTestCase
+class TcaInlineTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaInline

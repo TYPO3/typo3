@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Install\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Install\Status\Exception;
 
 /**
  * Tests for the custom json view class
  */
-class JsonViewTest extends UnitTestCase
+class JsonViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

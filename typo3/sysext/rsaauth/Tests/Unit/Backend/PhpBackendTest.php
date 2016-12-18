@@ -19,7 +19,7 @@ use TYPO3\CMS\Rsaauth\Backend\PhpBackend;
 /**
  * Test case.
  */
-class PhpBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PhpBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var PhpBackend

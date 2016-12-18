@@ -13,8 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
@@ -22,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class AbstractTemplateViewTest extends UnitTestCase
+class AbstractTemplateViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var AbstractTemplateView|AccessibleObjectInterface

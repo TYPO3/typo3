@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * List utility test
  *
  */
-class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ListUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility

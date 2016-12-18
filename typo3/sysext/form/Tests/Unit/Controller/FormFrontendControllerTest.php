@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Controller;
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -24,7 +23,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 /**
  * Test case
  */
-class FormFrontendControllerTest extends UnitTestCase
+class FormFrontendControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

@@ -198,6 +198,7 @@
 	"autoload-dev": {
 		"psr-4": {
 			"TYPO3\\CMS\\Backend\\Tests\\": "typo3/sysext/backend/Tests/",
+			"TYPO3\\CMS\\Components\\TestingFramework\\": "components/testing_framework/",
 			"TYPO3\\CMS\\Belog\\Tests\\": "typo3/sysext/belog/Tests/",
 			"TYPO3\\CMS\\Beuser\\Tests\\": "typo3/sysext/beuser/Tests/",
 			"TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",

@@ -21,10 +21,10 @@ use TYPO3\CMS\Core\Registry;
 /**
  * Testcase
  */
-class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class BackendFormProtectionTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

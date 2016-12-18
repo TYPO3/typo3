@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaColumnsRemoveUnusedTest extends UnitTestCase
+class TcaColumnsRemoveUnusedTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaColumnsRemoveUnused

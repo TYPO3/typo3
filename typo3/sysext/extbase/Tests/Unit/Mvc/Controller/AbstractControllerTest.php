@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 /**
  * Test case
  */
-class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class AbstractControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

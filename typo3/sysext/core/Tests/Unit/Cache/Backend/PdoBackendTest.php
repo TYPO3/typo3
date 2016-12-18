@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 /**
  * Testcase for the PDO cache backend
  */
-class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PdoBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Sets up this testcase

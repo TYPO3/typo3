@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\FilesContentObject
  */
-class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FilesContentObjectTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\FilesContentObject|\PHPUnit_Framework_MockObject_MockObject

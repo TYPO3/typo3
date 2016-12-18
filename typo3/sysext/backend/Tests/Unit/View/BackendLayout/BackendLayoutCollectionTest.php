@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 /**
  * Testing collection of backend layouts.
  */
-class BackendLayoutCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class BackendLayoutCollectionTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

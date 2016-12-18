@@ -18,13 +18,12 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class YouTubeRendererTest
  */
-class YouTubeRendererTest extends UnitTestCase
+class YouTubeRendererTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var YouTubeRenderer|\PHPUnit_Framework_MockObject_MockObject

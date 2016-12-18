@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 /**
  * Test case
  */
-class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ImageScriptServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ImageService

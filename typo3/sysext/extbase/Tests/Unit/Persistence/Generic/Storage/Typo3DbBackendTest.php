@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Service\EnvironmentService;
 /**
  * Test case
  */
-class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class Typo3DbBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DataMapper

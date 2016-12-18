@@ -21,7 +21,7 @@ use TYPO3\CMS\Rsaauth\Storage\SplitStorage;
 /**
  * Test case.
  */
-class SplitStorageTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class SplitStorageTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * XML database fixtures to be loaded into database.

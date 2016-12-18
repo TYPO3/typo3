@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 
 /**
  * Test case
  */
-class ConfigurationServiceTest extends UnitTestCase
+class ConfigurationServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

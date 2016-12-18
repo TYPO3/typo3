@@ -20,7 +20,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * Test for DependencyUtility
  *
  */
-class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DependencyUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 
 /**
  * Testcase
  */
-class MenuContentObjectFactoryTest extends UnitTestCase
+class MenuContentObjectFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

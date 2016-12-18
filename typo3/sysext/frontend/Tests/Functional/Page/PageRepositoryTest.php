@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface;
@@ -24,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface;
 /**
  * Test case
  */
-class PageRepositoryTest extends FunctionalTestCase
+class PageRepositoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['frontend'];
 

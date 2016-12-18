@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 /**
  * Test case
  */
-class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -76,7 +76,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockBackend = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
         $mockBackend->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $manager */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $manager */
         $manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, ['dummy']);
         $manager->_set('backend', $mockBackend);
 

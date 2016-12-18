@@ -20,13 +20,12 @@ use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tests for ConnectionMigrator
  */
-class ConnectionMigratorTest extends UnitTestCase
+class ConnectionMigratorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
@@ -22,7 +21,7 @@ use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
 /**
  * Tests for  GalleryProcessor
  */
-class GalleryProcessorTest extends UnitTestCase
+class GalleryProcessorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject

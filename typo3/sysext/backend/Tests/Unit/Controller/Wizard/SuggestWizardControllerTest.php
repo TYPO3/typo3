@@ -17,14 +17,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
-use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Test case
  */
-class SuggestWizardControllerTest extends UnitTestCase
+class SuggestWizardControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

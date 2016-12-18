@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit;
  */
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
-use TYPO3\CMS\Core\Tests\FileStreamWrapper;
+use TYPO3\CMS\Components\TestingFramework\Core\FileStreamWrapper;
 
 /**
  * Test case for \TYPO3\CMS\Core\Tests\Unit\FileStreamWrapper
  */
-class FileStreamWrapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FileStreamWrapperTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

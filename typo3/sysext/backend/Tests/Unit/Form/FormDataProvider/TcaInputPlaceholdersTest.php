@@ -18,14 +18,13 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class TcaInputPlaceholdersTest extends UnitTestCase
+class TcaInputPlaceholdersTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaInputPlaceholders

@@ -25,13 +25,12 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
  */
-class SchemaColumnDefinitionListenerTest extends UnitTestCase
+class SchemaColumnDefinitionListenerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var SchemaColumnDefinitionListener

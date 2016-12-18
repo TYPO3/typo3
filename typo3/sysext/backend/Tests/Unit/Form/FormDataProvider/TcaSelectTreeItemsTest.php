@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @see TcaSelecItemsTest
  */
-class TcaSelectTreeItemsTest extends UnitTestCase
+class TcaSelectTreeItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaSelectTreeItems

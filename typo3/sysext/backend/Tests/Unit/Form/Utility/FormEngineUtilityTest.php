@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class FormEngineUtilityTest extends UnitTestCase
+class FormEngineUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

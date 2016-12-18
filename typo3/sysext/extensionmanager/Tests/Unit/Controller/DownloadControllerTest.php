@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * Download from TER controller test
  *
  */
-class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DownloadControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

@@ -20,15 +20,14 @@ use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Tests\Unit\Locking\Fixtures\DummyLock;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\LockFactory
  */
-class LockFactoryTest extends UnitTestCase
+class LockFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var LockFactory|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var LockFactory|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockFactory;
 

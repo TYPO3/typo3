@@ -14,12 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
-
 /**
  * Class ExtractorRegistryTest
  */
-class ExtractorRegistryTest extends UnitTestCase
+class ExtractorRegistryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

@@ -17,7 +17,6 @@ namespace TYPO3\sv\Tests\Unit\Report;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
@@ -27,7 +26,7 @@ use TYPO3\CMS\Sv\Report\ServicesListReport;
 /**
  * Test case for class ServicesListReport
  */
-class ServicesListReportTest extends UnitTestCase
+class ServicesListReportTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ServicesListReport

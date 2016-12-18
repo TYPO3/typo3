@@ -14,16 +14,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
-use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 
 /**
  * Test case
  */
-class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DataMapFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array

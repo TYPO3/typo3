@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 
 /**
  * Test case
  */
-class TreeDataProviderFactoryTest extends UnitTestCase
+class TreeDataProviderFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TreeDataProviderFactory

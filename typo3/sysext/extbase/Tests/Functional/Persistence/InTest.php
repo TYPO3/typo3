@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class InTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
@@ -50,7 +50,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');

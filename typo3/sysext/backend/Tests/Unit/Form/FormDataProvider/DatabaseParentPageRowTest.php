@@ -17,12 +17,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseParentPageRowTest extends UnitTestCase
+class DatabaseParentPageRowTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabaseParentPageRow|\PHPUnit_Framework_MockObject_MockObject

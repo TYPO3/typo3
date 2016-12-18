@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  */
 
 use TYPO3\CMS\Core\Log\LogRecord;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class LogRecordTest extends UnitTestCase
+class LogRecordTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Returns a \TYPO3\CMS\Core\Log\LogRecord

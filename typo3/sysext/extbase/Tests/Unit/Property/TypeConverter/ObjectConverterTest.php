@@ -20,14 +20,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 
 /**
  * Test case
  */
-class ObjectConverterTest extends UnitTestCase
+class ObjectConverterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ObjectConverter

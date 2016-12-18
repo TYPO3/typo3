@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Http\Uri;
  *
  * Adapted from https://github.com/phly/http/
  */
-class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class UriTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

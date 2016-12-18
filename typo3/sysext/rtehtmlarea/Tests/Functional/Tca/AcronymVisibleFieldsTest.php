@@ -15,11 +15,10 @@ namespace TYPO3\CMS\Rtehtmlarea\Tests\Functional\Tca;
  */
 
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
-class AcronymVisibleFieldsTest extends FunctionalTestCase
+class AcronymVisibleFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['rtehtmlarea'];
 

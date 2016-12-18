@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper

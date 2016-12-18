@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class PageTsConfigMergedTest extends UnitTestCase
+class PageTsConfigMergedTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var PageTsConfigMerged

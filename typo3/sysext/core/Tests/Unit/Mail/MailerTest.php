@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
 /**
  * Testcase for the TYPO3\CMS\Core\Mail\Mailer class.
  */
-class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class MailerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Mail\Mailer

@@ -20,12 +20,11 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Tests for CreateIndexDefinitionItem
  */
-class IndexDefinitionTest extends UnitTestCase
+class IndexDefinitionTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

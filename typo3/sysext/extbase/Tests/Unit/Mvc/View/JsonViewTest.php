@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
  * Testcase for the JSON view
  *
  */
-class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class JsonViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\View\JsonView

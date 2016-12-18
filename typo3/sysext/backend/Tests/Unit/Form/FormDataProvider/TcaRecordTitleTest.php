@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class TcaRecordTitleTest extends UnitTestCase
+class TcaRecordTitleTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaRecordTitle

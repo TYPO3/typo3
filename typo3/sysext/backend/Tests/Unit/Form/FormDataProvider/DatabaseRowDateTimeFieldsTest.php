@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseRowDateTimeFieldsTest extends UnitTestCase
+class DatabaseRowDateTimeFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

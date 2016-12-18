@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 
-class FolderLinkHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FolderLinkHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**
@@ -86,7 +86,7 @@ class FolderLinkHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->willReturn($folderObject);
         $expected['folder'] = $folderObject;
 
-        /** @var FolderLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        /** @var FolderLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(FolderLinkHandler::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
         $this->assertEquals($expected, $subject->resolveHandlerData($input));

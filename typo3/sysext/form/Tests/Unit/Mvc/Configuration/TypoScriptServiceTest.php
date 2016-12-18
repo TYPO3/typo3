@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Test case
  */
-class TypoScriptServiceTest extends UnitTestCase
+class TypoScriptServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

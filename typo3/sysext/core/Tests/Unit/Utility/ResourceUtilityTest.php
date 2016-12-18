@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\ResourceUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\ResourceUtility
  */
-class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ResourceUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array

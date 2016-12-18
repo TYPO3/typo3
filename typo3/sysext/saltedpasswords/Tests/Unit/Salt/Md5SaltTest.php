@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 /**
  * Testcases for Md5Salt
  */
-class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class Md5SaltTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Keeps instance of object to test.

@@ -25,13 +25,12 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedRootNodeException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
  * Test case
  */
-class DatabaseUserPermissionCheckTest extends UnitTestCase
+class DatabaseUserPermissionCheckTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabaseUserPermissionCheck

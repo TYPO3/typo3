@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class FormInlineAjaxControllerTest extends UnitTestCase
+class FormInlineAjaxControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Checks if the given file type may be uploaded without *ANY* limit to file types being given

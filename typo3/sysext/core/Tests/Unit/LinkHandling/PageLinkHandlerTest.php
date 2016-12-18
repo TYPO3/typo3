@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 use TYPO3\CMS\Core\LinkHandling\PageLinkHandler;
 
-class PageLinkHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PageLinkHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

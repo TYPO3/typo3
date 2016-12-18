@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
  */
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
 /**
  * Test case for \TYPO3\CMS\Core\Database\PreparedStatement
  */
-class PreparedStatementTest extends FunctionalTestCase
+class PreparedStatementTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var DatabaseConnection

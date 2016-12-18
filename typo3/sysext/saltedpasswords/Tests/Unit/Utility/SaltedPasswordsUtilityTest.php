@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
 /**
  * Testcase for SaltedPasswordsUtility
  */
-class SaltedPasswordsUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class SaltedPasswordsUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

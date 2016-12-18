@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -26,7 +25,7 @@ use TYPO3\CMS\Form\Tests\Unit\Mvc\Validation\Fixtures\TestValidator;
 /**
  * Test case
  */
-class ProcessingRuleTest extends UnitTestCase
+class ProcessingRuleTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

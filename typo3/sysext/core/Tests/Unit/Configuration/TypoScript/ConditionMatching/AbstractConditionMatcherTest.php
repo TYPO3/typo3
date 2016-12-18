@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
 
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test cases
  */
-class AbstractConditionMatcherTest extends UnitTestCase
+class AbstractConditionMatcherTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Core\ApplicationContext

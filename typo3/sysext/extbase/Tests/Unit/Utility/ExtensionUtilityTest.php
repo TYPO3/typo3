@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 /**
  * Testcase for class \TYPO3\CMS\Extbase\Utility\ExtensionUtility
  */
-class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ExtensionUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     protected function setUp()
     {

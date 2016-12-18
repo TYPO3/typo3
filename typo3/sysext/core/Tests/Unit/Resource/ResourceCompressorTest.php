@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceCompressor;
 class ResourceCompressorTest extends BaseTestCase
 {
     /**
-     * @var ResourceCompressor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var ResourceCompressor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

@@ -18,12 +18,11 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseEditRowTest extends UnitTestCase
+class DatabaseEditRowTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabaseEditRow|\PHPUnit_Framework_MockObject_MockObject

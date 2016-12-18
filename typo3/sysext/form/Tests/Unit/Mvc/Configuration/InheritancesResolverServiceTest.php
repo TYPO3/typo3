@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
 
 /**
  * Test case
  */
-class InheritancesResolverServiceTest extends UnitTestCase
+class InheritancesResolverServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var InheritancesResolverService

@@ -15,13 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Wizard;
  */
 
 use TYPO3\CMS\Backend\Form\Wizard\SuggestWizard;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Test case
  */
-class SuggestWizardTest extends UnitTestCase
+class SuggestWizardTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

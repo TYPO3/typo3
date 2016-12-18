@@ -18,13 +18,12 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tests related to DataHandler::getUnique()
  */
-class GetUniqueTest extends FunctionalTestCase
+class GetUniqueTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected function setUp()
     {

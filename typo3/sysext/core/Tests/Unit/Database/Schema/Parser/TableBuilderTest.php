@@ -24,13 +24,12 @@ use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tests for TableBuilder
  */
-class TableBuilderTest extends UnitTestCase
+class TableBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var Table

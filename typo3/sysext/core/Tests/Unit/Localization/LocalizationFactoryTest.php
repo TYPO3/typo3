@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class LocalizationFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

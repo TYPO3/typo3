@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 /**
  * Test case
  */
-class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ResultTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Error\Result

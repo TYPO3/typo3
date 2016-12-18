@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Tests for CreateColumnDefinitionItem attributes
  */
-class ColumnDefinitionAttributesTest extends UnitTestCase
+class ColumnDefinitionAttributesTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

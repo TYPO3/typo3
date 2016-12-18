@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Encoder;
 /**
  * Test cases for TYPO3\CMS\Core\Encoder\JavaScriptEncoder.
  */
-class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class JavaScriptEncoderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder

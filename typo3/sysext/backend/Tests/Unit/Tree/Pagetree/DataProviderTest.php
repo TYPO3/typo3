@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
  * Test case
  * @TODO: Refactor the subject class and make it better testable, especially getNodes()
  */
-class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DataProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider|\PHPUnit_Framework_MockObject_MockObject

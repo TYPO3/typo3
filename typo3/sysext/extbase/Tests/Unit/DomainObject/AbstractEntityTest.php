@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\DomainObject;
 /**
  * Test case
  */
-class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class AbstractEntityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

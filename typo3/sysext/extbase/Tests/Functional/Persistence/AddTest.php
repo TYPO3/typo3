@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class AddTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager

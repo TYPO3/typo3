@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
@@ -23,7 +22,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 /**
  * Test case
  */
-class YamlSourceTest extends UnitTestCase
+class YamlSourceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

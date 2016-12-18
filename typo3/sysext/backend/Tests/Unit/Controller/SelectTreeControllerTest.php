@@ -17,12 +17,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\SelectTreeController;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class SelectTreeControllerTest extends UnitTestCase
+class SelectTreeControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

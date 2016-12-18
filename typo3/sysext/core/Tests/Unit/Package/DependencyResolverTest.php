@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
 use TYPO3\CMS\Core\Package\DependencyResolver;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class DependencyResolverTest extends UnitTestCase
+class DependencyResolverTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -32,7 +31,7 @@ class DependencyResolverTest extends UnitTestCase
      */
     public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph)
     {
-        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
+        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $dependencyResolver */
         $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, ['findFrameworkPackages']);
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
         $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
@@ -50,7 +49,7 @@ class DependencyResolverTest extends UnitTestCase
      */
     public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys)
     {
-        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
+        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $dependencyResolver */
         $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, ['findFrameworkPackages']);
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
         $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
@@ -76,7 +75,7 @@ class DependencyResolverTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381960494);
 
-        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
+        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $dependencyResolver */
         $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, ['findFrameworkPackages']);
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
         $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn([]);

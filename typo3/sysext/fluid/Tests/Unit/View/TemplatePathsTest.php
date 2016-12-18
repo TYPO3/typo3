@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
 /**
  * Test case
  */
-class TemplatePathsTest extends UnitTestCase
+class TemplatePathsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array

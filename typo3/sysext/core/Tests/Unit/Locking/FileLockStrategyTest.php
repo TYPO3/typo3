@@ -15,13 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  */
 
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\FileLockStrategy
  */
-class FileLockStrategyTest extends UnitTestCase
+class FileLockStrategyTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

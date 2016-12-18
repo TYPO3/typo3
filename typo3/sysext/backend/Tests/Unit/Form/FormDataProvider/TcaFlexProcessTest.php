@@ -19,14 +19,13 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class TcaFlexProcessTest extends UnitTestCase
+class TcaFlexProcessTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaFlexProcess

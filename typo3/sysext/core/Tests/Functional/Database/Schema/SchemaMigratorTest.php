@@ -23,13 +23,12 @@ use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case for \TYPO3\CMS\Core\Database\Schema\SchemaMigratorTest
  */
-class SchemaMigratorTest extends FunctionalTestCase
+class SchemaMigratorTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var SqlReader

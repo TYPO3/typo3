@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Cli\Command;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandManager;
 use TYPO3\CMS\Extbase\Scheduler\FieldProvider;
@@ -26,7 +25,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 /**
  * Test case
  */
-class FieldProviderTest extends UnitTestCase
+class FieldProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -34,7 +33,7 @@ class FieldProviderTest extends UnitTestCase
     public function getCommandControllerActionFieldFetchesCorrectClassNames()
     {
 
-        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command1 */
+        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $command1 */
         $command1 = $this->getAccessibleMock(Command::class, [], [], '', false);
         $command1->expects($this->once())->method('isInternal')->will($this->returnValue(false));
         $command1->expects($this->once())->method('isCliOnly')->will($this->returnValue(false));
@@ -42,7 +41,7 @@ class FieldProviderTest extends UnitTestCase
         $command1->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncA'));
         $command1->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extbase:mocka:funca'));
 
-        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command2 */
+        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $command2 */
         $command2 = $this->getAccessibleMock(Command::class, [], [], '', false);
         $command2->expects($this->once())->method('isInternal')->will($this->returnValue(false));
         $command2->expects($this->once())->method('isCliOnly')->will($this->returnValue(false));
@@ -50,7 +49,7 @@ class FieldProviderTest extends UnitTestCase
         $command2->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncB'));
         $command2->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('mypkg:mockb:funcb'));
 
-        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command3 */
+        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $command3 */
         $command3 = $this->getAccessibleMock(Command::class, [], [], '', false);
         $command3->expects($this->once())->method('isInternal')->will($this->returnValue(false));
         $command3->expects($this->once())->method('isCliOnly')->will($this->returnValue(false));
@@ -64,7 +63,7 @@ class FieldProviderTest extends UnitTestCase
             ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue([$command1, $command2, $command3]));
 
-        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $fieldProvider */
         $fieldProvider = $this->getAccessibleMock(
             FieldProvider::class,
             ['getActionLabel'],
@@ -85,7 +84,7 @@ class FieldProviderTest extends UnitTestCase
      */
     public function getCommandControllerActionFieldSkipsInternalCommands()
     {
-        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command1 */
+        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $command1 */
         $command = $this->getAccessibleMock(Command::class, [], [], '', false);
         $command->method('isInternal')->will($this->returnValue(true));
         $command->method('isCliOnly')->will($this->returnValue(false));
@@ -99,7 +98,7 @@ class FieldProviderTest extends UnitTestCase
             ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue([$command]));
 
-        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $fieldProvider */
         $fieldProvider = $this->getAccessibleMock(
             FieldProvider::class,
             ['getActionLabel'],
@@ -118,7 +117,7 @@ class FieldProviderTest extends UnitTestCase
      */
     public function getCommandControllerActionFieldSkipsCliOnlyCommands()
     {
-        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command1 */
+        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $command1 */
         $command = $this->getAccessibleMock(Command::class, [], [], '', false);
         $command->method('isInternal')->will($this->returnValue(false));
         $command->method('isCliOnly')->will($this->returnValue(true));
@@ -132,7 +131,7 @@ class FieldProviderTest extends UnitTestCase
             ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue([$command]));
 
-        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $fieldProvider */
         $fieldProvider = $this->getAccessibleMock(
             FieldProvider::class,
             ['getActionLabel'],
@@ -162,7 +161,7 @@ class FieldProviderTest extends UnitTestCase
      */
     public function validateAdditionalFieldsReturnsTrue()
     {
-        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $fieldProvider */
         $fieldProvider = $this->getAccessibleMock(
             FieldProvider::class,
             ['dummy'],
@@ -211,7 +210,7 @@ class FieldProviderTest extends UnitTestCase
             ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue([$command1, $command2, $command3]));
 
-        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+        /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $fieldProvider */
         $fieldProvider = $this->getAccessibleMock(
             FieldProvider::class,
             ['getActionLabel', 'getArgumentLabel', 'getCommandControllerActionArgumentFields'],

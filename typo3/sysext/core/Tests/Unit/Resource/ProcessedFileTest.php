@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 /**
  * Testcase for the ProcessedFile class of the TYPO3 FAL
  */
-class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ProcessedFileTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Folder

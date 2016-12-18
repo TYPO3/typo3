@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Template\Components\Buttons;
  */
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case for FullyRenderedButton
  */
-class FullyRenderedButtonTest extends UnitTestCase
+class FullyRenderedButtonTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Try to valide an empty button

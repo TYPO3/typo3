@@ -18,14 +18,14 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * Configuration utility test
  *
  */
-class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ConfigurationUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
      */
     public function getCurrentConfigurationReturnsExtensionConfigurationAsValuedConfiguration()
     {
-        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $configurationUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)
             ->setMethods(['getDefaultConfigurationFromExtConfTemplateAsValuedArray'])
             ->getMock();
@@ -61,7 +61,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDefaultConfigurationFromExtConfTemplateAsValuedArrayReturnsExpectedExampleArray()
     {
-        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $configurationUtility = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class,
             ['getDefaultConfigurationRawString']
@@ -245,7 +245,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertValuedToNestedConfiguration(array $configuration, array $expected)
     {
-        /** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+        /** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, ['dummy'], [], '', false);
         $this->assertEquals($expected, $subject->convertValuedToNestedConfiguration($configuration));
     }
@@ -313,7 +313,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertNestedToValuedConfiguration(array $configuration, array $expected)
     {
-        /** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+        /** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, ['dummy'], [], '', false);
         $this->assertEquals($expected, $subject->convertNestedToValuedConfiguration($configuration));
     }

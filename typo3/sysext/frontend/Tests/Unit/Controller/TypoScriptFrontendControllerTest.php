@@ -21,10 +21,10 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Testcase for TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
  */
-class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|TypoScriptFrontendController
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|TypoScriptFrontendController
      */
     protected $subject;
 

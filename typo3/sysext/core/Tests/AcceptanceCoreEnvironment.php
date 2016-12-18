@@ -132,12 +132,12 @@ class AcceptanceCoreEnvironment extends Extension
      * @var array
      */
     protected $xmlDatabaseFixtures = [
-        'typo3/sysext/core/Tests/Acceptance/Fixtures/be_users.xml',
-        'typo3/sysext/core/Tests/Acceptance/Fixtures/be_sessions.xml',
-        'typo3/sysext/core/Tests/Acceptance/Fixtures/be_groups.xml',
-        'typo3/sysext/core/Tests/Acceptance/Fixtures/sys_category.xml',
-        'typo3/sysext/core/Tests/Acceptance/Fixtures/tx_extensionmanager_domain_model_extension.xml',
-        'typo3/sysext/core/Tests/Acceptance/Fixtures/tx_extensionmanager_domain_model_repository.xml',
+        'components/testing_framework/core/Acceptance/Fixtures/be_users.xml',
+        'components/testing_framework/core/Acceptance/Fixtures/be_sessions.xml',
+        'components/testing_framework/core/Acceptance/Fixtures/be_groups.xml',
+        'components/testing_framework/core/Acceptance/Fixtures/sys_category.xml',
+        'components/testing_framework/core/Acceptance/Fixtures/tx_extensionmanager_domain_model_extension.xml',
+        'components/testing_framework/core/Acceptance/Fixtures/tx_extensionmanager_domain_model_repository.xml',
     ];
 
     /**

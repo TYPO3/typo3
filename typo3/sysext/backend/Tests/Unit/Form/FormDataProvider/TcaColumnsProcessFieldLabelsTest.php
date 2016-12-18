@@ -15,13 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
+class TcaColumnsProcessFieldLabelsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaColumnsProcessFieldLabels

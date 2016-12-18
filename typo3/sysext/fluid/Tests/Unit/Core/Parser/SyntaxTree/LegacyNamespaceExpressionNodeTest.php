@@ -13,14 +13,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionNode;
 use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
 
 /**
  * Class LegacyNamespaceExpressionNodeTest
  */
-class LegacyNamespaceExpressionNodeTest extends UnitTestCase
+class LegacyNamespaceExpressionNodeTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

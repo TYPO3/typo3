@@ -19,10 +19,10 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
  */
-class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class RootlineUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var RootlineUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RootlineUtility|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 

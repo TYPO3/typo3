@@ -10,7 +10,7 @@ page {
 			pluginName = Irre
 			vendorName = OliverHader
 		}
-		stdWrap.postUserFunc = TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Renderer->parseValues
+		stdWrap.postUserFunc = TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer->parseValues
 		stdWrap.postUserFunc.as = Extbase
 	}
 }

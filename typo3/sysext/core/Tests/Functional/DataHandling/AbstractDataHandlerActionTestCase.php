@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for the DataHandler
  */
-abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     const VALUE_BackendUserId = 1;
 
@@ -364,34 +364,34 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\HasRecordConstraint
+     * @return \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint
      */
     protected function getRequestSectionHasRecordConstraint()
     {
-        return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\HasRecordConstraint();
+        return new \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint();
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint
+     * @return \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint
      */
     protected function getRequestSectionDoesNotHaveRecordConstraint()
     {
-        return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint();
+        return new \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint();
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint
+     * @return \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint
      */
     protected function getRequestSectionStructureHasRecordConstraint()
     {
-        return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint();
+        return new \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint();
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint
+     * @return \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint
      */
     protected function getRequestSectionStructureDoesNotHaveRecordConstraint()
     {
-        return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint();
+        return new \TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint();
     }
 }

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This file is a backport from FLOW3
  */
-class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FileBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Sets up this testcase

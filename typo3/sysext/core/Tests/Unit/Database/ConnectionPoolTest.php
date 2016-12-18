@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class ConnectionPoolTest extends UnitTestCase
+class ConnectionPoolTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

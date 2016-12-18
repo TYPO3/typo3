@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider
  */
-class FontawesomeIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FontawesomeIconProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider

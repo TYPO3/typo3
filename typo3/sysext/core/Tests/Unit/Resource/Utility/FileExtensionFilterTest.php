@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 /**
  * Test suite for filtering files by their extensions.
  */
-class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FileExtensionFilterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

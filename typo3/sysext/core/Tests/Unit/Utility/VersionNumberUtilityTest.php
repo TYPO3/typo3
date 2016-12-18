@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\VersionNumberUtility
  */
-class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class VersionNumberUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers

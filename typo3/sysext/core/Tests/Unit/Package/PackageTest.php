@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * Testcase for the package class
  *
  */
-class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PackageTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      */

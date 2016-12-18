@@ -20,13 +20,12 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
  */
-class TcaFlexPrepareTest extends UnitTestCase
+class TcaFlexPrepareTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaFlexPrepare

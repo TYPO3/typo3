@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 /**
  * Test case
  */
-class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class CacheServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Service\CacheService

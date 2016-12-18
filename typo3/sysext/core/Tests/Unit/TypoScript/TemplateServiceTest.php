@@ -18,14 +18,13 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
  */
-class TemplateServiceTest extends UnitTestCase
+class TemplateServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\TypoScript\TemplateService
@@ -33,7 +32,7 @@ class TemplateServiceTest extends UnitTestCase
     protected $templateService;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Core\TypoScript\TemplateService
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\TypoScript\TemplateService
      */
     protected $templateServiceMock;
 

@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
+class DatabasePageLanguageOverlayRowsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabasePageLanguageOverlayRows|\PHPUnit_Framework_MockObject_MockObject

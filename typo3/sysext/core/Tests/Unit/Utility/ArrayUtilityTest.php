@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Test case
  */
-class ArrayUtilityTest extends UnitTestCase
+class ArrayUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     ///////////////////////
     // Tests concerning filterByValueRecursive

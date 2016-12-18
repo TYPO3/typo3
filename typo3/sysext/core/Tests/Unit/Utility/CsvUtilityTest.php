@@ -13,13 +13,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 
 /**
  * Test cases of CsvUtility
  */
-class CsvUtilityTest extends UnitTestCase
+class CsvUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array

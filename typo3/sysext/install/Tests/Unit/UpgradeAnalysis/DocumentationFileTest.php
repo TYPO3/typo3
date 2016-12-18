@@ -17,10 +17,9 @@ namespace TYPO3\CMS\Install\Tests\Unit\UpgradeAnalysis;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 
-class DocumentationFileTest extends UnitTestCase
+class DocumentationFileTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

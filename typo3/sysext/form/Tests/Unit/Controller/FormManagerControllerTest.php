@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -29,7 +28,7 @@ use TYPO3\CMS\Form\Service\TranslationService;
 /**
  * Test case
  */
-class FormManagerControllerTest extends UnitTestCase
+class FormManagerControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

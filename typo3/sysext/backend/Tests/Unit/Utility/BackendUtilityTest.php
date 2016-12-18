@@ -29,14 +29,13 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class BackendUtilityTest extends UnitTestCase
+class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     ///////////////////////////////////////
     // Tests concerning calcAge
@@ -1017,7 +1016,7 @@ class BackendUtilityTest extends UnitTestCase
 
         $GLOBALS['TCA'] = $tca;
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|BackendUtility $subject */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|BackendUtility $subject */
         $subject = $this->getAccessibleMock(BackendUtility::class, ['dummy']);
         $this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
     }

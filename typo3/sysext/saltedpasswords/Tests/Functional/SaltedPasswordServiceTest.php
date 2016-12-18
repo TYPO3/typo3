@@ -21,7 +21,7 @@ use TYPO3\CMS\Saltedpasswords\SaltedPasswordService;
 /**
  * Test case for \TYPO3\CMS\Saltedpasswords\SaltedPasswordService
  */
-class SaltedPasswordServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class SaltedPasswordServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
 
     /**

@@ -16,14 +16,13 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case
  */
-class TypoScriptFrontendControllerTest extends FunctionalTestCase
+class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var TypoScriptFrontendController

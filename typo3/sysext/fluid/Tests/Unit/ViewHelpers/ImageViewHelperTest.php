@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 /**
  * Test case
  */
-class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ImageViewHelperTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

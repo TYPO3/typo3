@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Core\Tests\Functional;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
 /**
  * Test case
  */
-class RegistryTest extends FunctionalTestCase
+class RegistryTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
 
     /**

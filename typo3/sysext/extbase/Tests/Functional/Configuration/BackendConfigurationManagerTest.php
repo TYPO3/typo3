@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
@@ -23,7 +22,7 @@ use TYPO3\CMS\Extbase\Service\TypoScriptService;
 /**
  * Test case
  */
-class BackendConfigurationManagerTest extends FunctionalTestCase
+class BackendConfigurationManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * Warning: white box test

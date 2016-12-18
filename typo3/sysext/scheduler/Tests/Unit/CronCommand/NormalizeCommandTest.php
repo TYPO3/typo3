@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeCommandAccessibleProxy;
 
 /**
  * Test case
  */
-class NormalizeCommandTest extends UnitTestCase
+class NormalizeCommandTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  */
 
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException;
@@ -23,7 +22,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fix
 /**
  * Test case
  */
-class ConditionMatcherTest extends UnitTestCase
+class ConditionMatcherTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var string Name of a key in $GLOBALS for this test

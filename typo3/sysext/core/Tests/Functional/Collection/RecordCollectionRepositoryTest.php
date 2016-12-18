@@ -17,14 +17,13 @@ namespace TYPO3\CMS\Core\Tests\Functional\Collection;
 use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 use TYPO3\CMS\Core\Collection\StaticRecordCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
  */
-class RecordCollectionRepositoryTest extends FunctionalTestCase
+class RecordCollectionRepositoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var RecordCollectionRepository|\PHPUnit_Framework_MockObject_MockObject

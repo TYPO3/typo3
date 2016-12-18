@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class AdminPanelViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Set up

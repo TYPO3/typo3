@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\PreProcessor;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
@@ -22,7 +21,7 @@ use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
 /**
  * Class XmlnsNamespaceTemplatePreProcessorTest
  */
-class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
+class XmlnsNamespaceTemplatePreProcessorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @param string $source

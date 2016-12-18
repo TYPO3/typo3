@@ -18,13 +18,12 @@ use Prophecy\Argument;
 use TYPO3\CMS\Backend\Form\Element\GroupElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class GroupElementTest extends UnitTestCase
+class GroupElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

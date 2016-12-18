@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook;
@@ -24,7 +23,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 /**
  * Test case
  */
-class DataStructureIdentifierHookTest extends UnitTestCase
+class DataStructureIdentifierHookTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

@@ -20,12 +20,11 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Tests for SetType
  */
-class SetTypeTest extends UnitTestCase
+class SetTypeTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Set up the test subject

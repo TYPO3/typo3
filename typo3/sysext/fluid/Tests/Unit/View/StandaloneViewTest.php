@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
@@ -32,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class StandaloneViewTest extends UnitTestCase
+class StandaloneViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances
@@ -40,7 +39,7 @@ class StandaloneViewTest extends UnitTestCase
     protected $singletonInstances = [];
 
     /**
-     * @var StandaloneView|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var StandaloneView|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $view;
 

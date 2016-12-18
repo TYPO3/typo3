@@ -1,10 +1,9 @@
 <?php
 namespace TYPO3\Fluid\Tests\Functional;
 
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
+class EscapeChildrenRenderingStandaloneTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected $testExtensionsToLoad = ['typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test'];
 

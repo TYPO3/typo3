@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Backend\Tests\Template\Components;
 
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\MenuRegistry;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case for Menu
  */
-class MenuTest extends UnitTestCase
+class MenuTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Try setting an empty menu

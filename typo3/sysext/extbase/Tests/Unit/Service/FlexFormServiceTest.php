@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class FlexFormServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FlexFormServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array Backup of singletons

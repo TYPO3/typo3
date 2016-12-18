@@ -45,13 +45,12 @@ use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParse
 use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParsePreProcessHookReturnObject;
 use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParsePreProcessHookReturnString;
 use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParsePreProcessHookThrowException;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
  */
-class FlexFormToolsTest extends UnitTestCase
+class FlexFormToolsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

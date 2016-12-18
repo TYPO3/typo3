@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
  *
  * This file is a backport from FLOW3
  */
-class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class MemcachedBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Sets up this testcase
@@ -293,7 +293,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @param array $backendOptions Options for the memcache backend
      * @param bool $accessible TRUE if backend should be encapsulated in accessible proxy otherwise FALSE.
-     * @return \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|MemcachedBackend
+     * @return \TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|MemcachedBackend
      */
     protected function setUpBackend(array $backendOptions = [], $accessible = false)
     {

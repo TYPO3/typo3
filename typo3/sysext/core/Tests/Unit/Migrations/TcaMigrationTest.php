@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Migrations;
  */
 
 use TYPO3\CMS\Core\Migrations\TcaMigration;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaMigrationTest extends UnitTestCase
+class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

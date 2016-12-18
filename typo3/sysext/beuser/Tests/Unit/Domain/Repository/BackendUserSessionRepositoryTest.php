@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
 /**
  * Test case
  */
-class BackendUserSessionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class BackendUserSessionRepositoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

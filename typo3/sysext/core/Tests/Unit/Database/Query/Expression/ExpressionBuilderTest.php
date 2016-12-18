@@ -21,9 +21,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
-class ExpressionBuilderTest extends UnitTestCase
+class ExpressionBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var Connection

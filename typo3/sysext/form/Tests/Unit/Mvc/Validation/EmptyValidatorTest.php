@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 
 /**
  * Test case
  */
-class EmptyValidatorTest extends UnitTestCase
+class EmptyValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

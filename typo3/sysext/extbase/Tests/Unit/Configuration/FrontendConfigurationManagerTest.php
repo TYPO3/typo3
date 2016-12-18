@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
 /**
  * Test case
  */
-class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class FrontendConfigurationManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
@@ -26,12 +26,12 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     protected $mockContentObject;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $frontendConfigurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -330,7 +330,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
                 'framework' => 'configuration'
             ]
         ];
-        /** @var \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+        /** @var \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
         $frontendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, ['overrideStoragePidIfStartingPointIsSet', 'overrideConfigurationFromPlugin', 'overrideConfigurationFromFlexForm']);
         $frontendConfigurationManager->expects($this->at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will($this->returnValue(['overridden' => 'storagePid']));
         $frontendConfigurationManager->expects($this->at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->will($this->returnValue(['overridden' => 'pluginConfiguration']));

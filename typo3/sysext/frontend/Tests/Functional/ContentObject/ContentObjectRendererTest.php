@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  */
-class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class ContentObjectRendererTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var ContentObjectRenderer

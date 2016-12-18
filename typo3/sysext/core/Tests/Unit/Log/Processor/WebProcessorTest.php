@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 /**
  * Test case
  */
-class WebProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class WebProcessorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

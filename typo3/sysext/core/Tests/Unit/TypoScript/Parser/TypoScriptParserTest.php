@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
 /**
  * Test case for \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
  */
-class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class TypoScriptParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $typoScriptParser = null;
 

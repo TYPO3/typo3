@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 /**
  * Test case
  */
-class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class HashServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService

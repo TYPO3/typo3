@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 /**
  * Testcase
  */
-class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject = null;
 

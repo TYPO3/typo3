@@ -23,7 +23,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper;
 class DateViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

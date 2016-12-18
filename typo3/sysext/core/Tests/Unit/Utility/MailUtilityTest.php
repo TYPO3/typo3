@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 /**
  * Testcase for the \TYPO3\CMS\Core\Utility\MailUtility class.
  */
-class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class MailUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

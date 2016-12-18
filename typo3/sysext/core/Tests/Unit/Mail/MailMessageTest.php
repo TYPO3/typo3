@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 /**
  * Testcase for the TYPO3\CMS\Core\Mail\MailMessage class.
  */
-class MailMessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class MailMessageTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Mail\MailMessage

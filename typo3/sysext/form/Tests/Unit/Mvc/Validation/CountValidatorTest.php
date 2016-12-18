@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Mvc\Validation\CountValidator;
 
 /**
  * Test case
  */
-class CountValidatorTest extends UnitTestCase
+class CountValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

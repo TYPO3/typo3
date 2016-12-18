@@ -13,12 +13,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class FileInfoTest extends UnitTestCase
+class FileInfoTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

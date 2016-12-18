@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 /**
  * Testcase for class \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser.
  */
-class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class LocallangXmlParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser

@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 /**
  * Test case
  */
-class StringLengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class StringLengthValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator::class;
 

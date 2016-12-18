@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Cache;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 
 /**
  * Test case
  */
-class FluidTemplateCacheTest extends UnitTestCase
+class FluidTemplateCacheTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

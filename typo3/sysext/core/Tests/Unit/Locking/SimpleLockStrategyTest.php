@@ -15,13 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  */
 
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\SimpleLockStrategy
  */
-class SimpleLockStrategyTest extends UnitTestCase
+class SimpleLockStrategyTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -51,7 +50,7 @@ class SimpleLockStrategyTest extends UnitTestCase
             $this->markTestSkipped('Test not available on Windows.');
         }
         // Use a very high id to be unique
-        /** @var SimpleLockStrategy|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $lock */
+        /** @var SimpleLockStrategy|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
 
         $pathOfLockFile = $lock->_get('filePath');
@@ -71,7 +70,7 @@ class SimpleLockStrategyTest extends UnitTestCase
      */
     public function releaseRemovesLockfileInTypo3TempLocks()
     {
-        /** @var SimpleLockStrategy|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $lock */
+        /** @var SimpleLockStrategy|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
 
         $pathOfLockFile = $lock->_get('filePath');
@@ -109,7 +108,7 @@ class SimpleLockStrategyTest extends UnitTestCase
             $this->markTestIncomplete('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
         }
         // Create instance, set lock file to invalid path
-        /** @var SimpleLockStrategy|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $lock */
+        /** @var SimpleLockStrategy|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
         $lock->_set('filePath', $file);
         $lock->_set('isAcquired', true);

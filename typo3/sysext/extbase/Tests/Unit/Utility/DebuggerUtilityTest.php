@@ -13,13 +13,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Test case
  */
-class DebuggerUtilityTest extends UnitTestCase
+class DebuggerUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

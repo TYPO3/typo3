@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
  */
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Query helper test
  */
-class QueryHelperTest extends UnitTestCase
+class QueryHelperTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Test cases for stripping of leading logical operators in where constraints.

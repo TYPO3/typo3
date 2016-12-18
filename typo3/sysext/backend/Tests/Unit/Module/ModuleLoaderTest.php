@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Module;
  */
 
 use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class ModuleLoaderTest extends UnitTestCase
+class ModuleLoaderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     protected function setUp()
     {

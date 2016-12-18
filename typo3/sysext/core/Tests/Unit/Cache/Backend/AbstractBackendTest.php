@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  */
 
 use TYPO3\CMS\Core\Tests\Unit\Cache\Backend\Fixtures\ConcreteBackendFixture;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractBackendTest extends UnitTestCase
+class AbstractBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

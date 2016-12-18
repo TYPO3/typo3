@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * Test case
  */
-class TypoLinkCodecServiceTest extends UnitTestCase
+class TypoLinkCodecServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TypoLinkCodecService

@@ -23,17 +23,16 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
  */
-class DatabaseTreeDataProviderTest extends UnitTestCase
+class DatabaseTreeDataProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseTreeDataProvider|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseTreeDataProvider|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 
@@ -43,7 +42,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     protected $treeData;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseConnection|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseConnection|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $database;
 

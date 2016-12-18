@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 /**
  * Testcase for the abstract file class of the TYPO3 FAL
  */
-class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class AbstractFileTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

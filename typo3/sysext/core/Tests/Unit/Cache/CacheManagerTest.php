@@ -28,14 +28,13 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendDefaultFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendIdentifierFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Testcase for the TYPO3\CMS\Core\Cache\CacheManager
  *
  * This file is a backport from FLOW3
  */
-class CacheManagerTest extends UnitTestCase
+class CacheManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -316,7 +315,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|CacheManager $manager */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = $this->getUniqueId('Test');
         $configuration = [
@@ -342,7 +341,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|CacheManager $manager */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = $this->getUniqueId('Test');
         $configuration = [

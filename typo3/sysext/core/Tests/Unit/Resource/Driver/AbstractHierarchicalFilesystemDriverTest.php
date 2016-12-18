@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
 {
     /**
-     * @var AbstractHierarchicalFilesystemDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var AbstractHierarchicalFilesystemDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject = null;
 

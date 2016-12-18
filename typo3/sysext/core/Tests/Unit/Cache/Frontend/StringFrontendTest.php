@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
  *
  * This file is a backport from FLOW3
  */
-class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class StringFrontendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

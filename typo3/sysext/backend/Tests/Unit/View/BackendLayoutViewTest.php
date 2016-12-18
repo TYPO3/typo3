@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View;
 /**
  * Testing behaviour of \TYPO3\CMS\Backend\View\BackendLayoutView
  */
-class BackendLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class BackendLayoutViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Backend\View\BackendLayoutView|\PHPUnit_Framework_MockObject_MockObject

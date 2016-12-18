@@ -19,12 +19,11 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
 /**
  * Test case
  */
-class DatabaseWriterTest extends FunctionalTestCase
+class DatabaseWriterTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @test

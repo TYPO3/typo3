@@ -14,14 +14,13 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 
 /**
  * This class contains unit tests for the LikeQueryUtility
  */
-class LikeWildcardTest extends FunctionalTestCase
+class LikeWildcardTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @test

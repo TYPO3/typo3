@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Controller\AbstractBackendController;
 
 /**
  * Test case
  */
-class AbstractBackendControllerTest extends UnitTestCase
+class AbstractBackendControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

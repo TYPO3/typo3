@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 /**
  * Test case
  */
-class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ObjectAccessTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     protected $dummyObject;
 

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormEditorController;
@@ -24,7 +23,7 @@ use TYPO3\CMS\Form\Service\TranslationService;
 /**
  * Test case
  */
-class FormEditorControllerTest extends UnitTestCase
+class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

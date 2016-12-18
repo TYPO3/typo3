@@ -16,14 +16,13 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 
 /**
  * Test case
  */
-class MimeTypeValidatorTest extends UnitTestCase
+class MimeTypeValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

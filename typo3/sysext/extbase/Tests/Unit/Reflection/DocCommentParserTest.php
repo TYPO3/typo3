@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Reflection\DocCommentParser;
 /**
  * Test case
  */
-class DocCommentParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DocCommentParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

@@ -19,13 +19,12 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
  */
-class TcaGroupTest extends UnitTestCase
+class TcaGroupTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaGroup
