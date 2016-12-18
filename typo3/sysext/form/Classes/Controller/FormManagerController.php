@@ -274,26 +274,26 @@ class FormManagerController extends AbstractBackendController
 
         $referenceRows = $this->getReferences($persistenceIdentifier);
         foreach ($referenceRows as &$referenceRow) {
-            $record = $this->getBackendUtility()::getRecord($referenceRow['tablename'], $referenceRow['recuid']);
+            $record = $this->getRecord($referenceRow['tablename'], $referenceRow['recuid']);
             if (!$record) {
                 continue;
             }
-            $pageRecord = $this->getBackendUtility()::getRecord('pages', $record['pid']);
+            $pageRecord = $this->getRecord('pages', $record['pid']);
             $urlParameters = [
                 'edit' => [
                     $referenceRow['tablename'] => [
                         $referenceRow['recuid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => $this->getBackendUtility()::getModuleUrl('web_FormFormbuilder')
+                'returnUrl' => $this->getModuleUrl('web_FormFormbuilder')
             ];
 
             $references[] = [
-                'recordPageTitle' => is_array($pageRecord) ? $this->getBackendUtility()::getRecordTitle('pages', $pageRecord) : '',
-                'recordTitle' => $this->getBackendUtility()::getRecordTitle($referenceRow['tablename'], $record, true),
+                'recordPageTitle' => is_array($pageRecord) ? $this->getRecordTitle('pages', $pageRecord) : '',
+                'recordTitle' => $this->getRecordTitle($referenceRow['tablename'], $record, true),
                 'recordIcon' => $iconFactory->getIconForRecord($referenceRow['tablename'], $record, Icon::SIZE_SMALL)->render(),
                 'recordUid' => $referenceRow['recuid'],
-                'recordEditUrl' => $this->getBackendUtility()::getModuleUrl('record_edit', $urlParameters),
+                'recordEditUrl' => $this->getModuleUrl('record_edit', $urlParameters),
             ];
         }
         return $references;
@@ -395,7 +395,7 @@ class FormManagerController extends AbstractBackendController
             $backButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
-                ->setHref($this->getBackendUtility()::getModuleUrl($moduleName));
+                ->setHref($this->getModuleUrl($moduleName));
             $buttonBar->addButton($backButton);
         } else {
             $addFormButton = $buttonBar->makeLinkButton()
@@ -421,14 +421,40 @@ class FormManagerController extends AbstractBackendController
     }
 
     /**
-     * Returns the BackendUtility
-     * This wrapper is needed for unit tests.
+     * Wrapper used for unit testing.
      *
+     * @param string $table
+     * @param int $uid
+     * @return array|NULL
+     */
+    protected function getRecord(string $table, int $uid)
+    {
+        return BackendUtility::getRecord($table, $uid);
+    }
+
+    /**
+     * Wrapper used for unit testing.
+     *
+     * @param string $table
+     * @param array $row
+     * @param bool $prep
      * @return string
      */
-    protected function getBackendUtility(): string
+    protected function getRecordTitle(string $table, array $row, bool $prep = false): string
     {
-        return BackendUtility::class;
+        return BackendUtility::getRecordTitle($table, $row, $prep);
+    }
+
+    /**
+     * Wrapper used for unit testing.
+     *
+     * @param string $moduleName
+     * @param array $urlParameters
+     * @return string
+     */
+    protected function getModuleUrl(string $moduleName, array $urlParameters = []): string
+    {
+        return BackendUtility::getModuleUrl($moduleName, $urlParameters);
     }
 
     /**

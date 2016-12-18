@@ -25,7 +25,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\CMS\Form\Tests\Unit\Controller\Fixtures\BackendUtilityFixture;
 
 /**
  * Test case
@@ -233,14 +232,26 @@ class FormManagerControllerTest extends UnitTestCase
     public function getProcessedReferencesRowsReturnsProcessedArray()
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
+            'getModuleUrl',
+            'getRecord',
+            'getRecordTitle',
             'getReferences',
-            'getBackendUtility',
         ], [], '', false);
 
         $mockController
             ->expects($this->any())
-            ->method('getBackendUtility')
-            ->willReturn(BackendUtilityFixture::class);
+            ->method('getModuleUrl')
+            ->willReturn('/typo3/index.php?some=param');
+
+        $mockController
+            ->expects($this->any())
+            ->method('getRecord')
+            ->willReturn([ 'uid' => 1, 'pid' => 0 ]);
+
+        $mockController
+            ->expects($this->any())
+            ->method('getRecordTitle')
+            ->willReturn('record title');
 
         $mockController
             ->expects($this->any())
