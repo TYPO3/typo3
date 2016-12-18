@@ -105,7 +105,7 @@ class YamlSource
             }
         }
 
-        $configuration = FormArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
+        $configuration = ArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
         return $configuration;
     }
 

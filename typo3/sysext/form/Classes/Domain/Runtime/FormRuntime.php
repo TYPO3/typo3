@@ -236,7 +236,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             return;
         }
 
-        FormArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse']);
+        ArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse']);
 
         if (!$this->isFirstRequest()) {
             $elementsCount = count($this->lastDisplayedPage->getElements());
@@ -263,7 +263,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             return;
         }
 
-        FormArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse']);
+        ArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse']);
 
         if (!$this->isAfterLastPage()) {
             $elementsCount = count($this->currentPage->getElements());
