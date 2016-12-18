@@ -86,7 +86,12 @@ class FormState
      */
     public function setFormValue(string $propertyPath, $value)
     {
-        $this->formValues = ArrayUtility::setValueByPath($this->formValues, $propertyPath, $value);
+        $this->formValues = ArrayUtility::setValueByPath(
+            $this->formValues,
+            $propertyPath,
+            $value,
+            '.'
+        );
     }
 
     /**
@@ -95,6 +100,10 @@ class FormState
      */
     public function getFormValue(string $propertyPath)
     {
-        return ArrayUtility::getValueByPath($this->formValues, $propertyPath);
+        try {
+            return ArrayUtility::getValueByPath($this->formValues, $propertyPath, '.');
+        } catch (\RuntimeException $exception) {
+            return null;
+        }
     }
 }

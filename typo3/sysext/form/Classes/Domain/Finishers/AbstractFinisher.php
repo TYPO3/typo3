@@ -135,8 +135,16 @@ abstract class AbstractFinisher implements FinisherInterface
             return null;
         }
 
-        $optionValue = ArrayUtility::getValueByPath($this->options, $optionName);
-        $defaultValue = ArrayUtility::getValueByPath($this->defaultOptions, $optionName);
+        try {
+            $optionValue = ArrayUtility::getValueByPath($this->options, $optionName, '.');
+        } catch (\RuntimeException $exception) {
+            $optionValue = null;
+        }
+        try {
+            $defaultValue = ArrayUtility::getValueByPath($this->defaultOptions, $optionName, '.');
+        } catch (\RuntimeException $exception) {
+            $defaultValue = null;
+        }
 
         if ($optionValue === null && $defaultValue !== null) {
             $optionValue = $defaultValue;

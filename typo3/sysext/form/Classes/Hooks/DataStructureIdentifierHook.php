@@ -168,8 +168,20 @@ class DataStructureIdentifierHook
             foreach ($finisherValue['options'] as $optionKey => $optionValue) {
                 if (is_array($optionValue)) {
                     $optionKey = $optionKey . '.' . $this->extractDottedPathToLastElement($finisherValue['options'][$optionKey]);
-                    $elementConfiguration = ArrayUtility::getValueByPath($finishersDefinition[$finisherIdentifier]['FormEngine']['elements'], $optionKey);
-                    $optionValue = ArrayUtility::getValueByPath($finisherValue['options'], $optionKey);
+                    try {
+                        $elementConfiguration = ArrayUtility::getValueByPath(
+                            $finishersDefinition[$finisherIdentifier]['FormEngine']['elements'],
+                            $optionKey,
+                            '.'
+                        );
+                    } catch (\RuntimeException $exception) {
+                        $elementConfiguration = null;
+                    }
+                    try {
+                        $optionValue = ArrayUtility::getValueByPath($finisherValue['options'], $optionKey, '.');
+                    } catch (\RuntimeException $exception) {
+                        $optionValue = null;
+                    }
                 } else {
                     $elementConfiguration = $finishersDefinition[$finisherIdentifier]['FormEngine']['elements'][$optionKey];
                 }

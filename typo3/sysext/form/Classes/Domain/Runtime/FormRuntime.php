@@ -23,7 +23,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Reflection\PropertyReflection;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -404,7 +403,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
         };
         foreach ($page->getElementsRecursively() as $element) {
-            $value = ArrayUtility::getValueByPath($requestArguments, $element->getIdentifier());
+            try {
+                $value = ArrayUtility::getValueByPath($requestArguments, $element->getIdentifier(), '.');
+            } catch (\RuntimeException $exception) {
+                $value = null;
+            }
             $element->onSubmit($this, $value, $requestArguments);
 
             $this->formState->setFormValue($element->getIdentifier(), $value);

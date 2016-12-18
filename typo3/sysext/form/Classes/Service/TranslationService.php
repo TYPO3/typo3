@@ -265,10 +265,18 @@ class TranslationService implements SingletonInterface
             $defaultValue = $element->getLabel();
         } else {
             if ($element instanceof FormElementInterface) {
-                $defaultValue = ArrayUtility::getValueByPath($element->getProperties(), $property);
+                try {
+                    $defaultValue = ArrayUtility::getValueByPath($element->getProperties(), $property, '.');
+                } catch (\RuntimeException $exception) {
+                    $defaultValue = null;
+                }
             } else {
                 $propertyType = 'renderingOptions';
-                $defaultValue = ArrayUtility::getValueByPath($renderingOptions, $property);
+                try {
+                    $defaultValue = ArrayUtility::getValueByPath($renderingOptions, $property, '.');
+                } catch (\RuntimeException $exception) {
+                    $defaultValue = null;
+                }
             }
         }
 

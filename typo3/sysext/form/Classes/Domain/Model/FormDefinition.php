@@ -575,7 +575,12 @@ class FormDefinition extends AbstractCompositeRenderable
      */
     public function addElementDefaultValue(string $elementIdentifier, $defaultValue)
     {
-        $this->elementDefaultValues = ArrayUtility::setValueByPath($this->elementDefaultValues, $elementIdentifier, $defaultValue);
+        $this->elementDefaultValues = ArrayUtility::setValueByPath(
+            $this->elementDefaultValues,
+            $elementIdentifier,
+            $defaultValue,
+            '.'
+        );
     }
 
     /**

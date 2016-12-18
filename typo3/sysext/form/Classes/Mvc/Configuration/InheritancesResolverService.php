@@ -143,10 +143,15 @@ class InheritancesResolverService
 
             if (is_array($configuration[$key])) {
                 if (isset($configuration[$key][self::INHERITANCE_OPERATOR])) {
-                    $inheritances = static::getValueByPathHelper(
-                        $this->referenceConfiguration,
-                        $path . '.' . self::INHERITANCE_OPERATOR
-                    );
+                    try {
+                        $inheritances = ArrayUtility::getValueByPath(
+                            $this->referenceConfiguration,
+                            $path . '.' . self::INHERITANCE_OPERATOR,
+                            '.'
+                        );
+                    } catch (\RuntimeException $exception) {
+                        $inheritances = null;
+                    }
 
                     if (is_array($inheritances)) {
                         $inheritedConfigurations = $this->resolveInheritancesRecursive($inheritances);
@@ -187,10 +192,15 @@ class InheritancesResolverService
         $inheritedConfigurations = [];
         foreach ($inheritances as $inheritancePath) {
             $this->throwExceptionIfCycleInheritances($inheritancePath, $inheritancePath);
-            $inheritedConfiguration = static::getValueByPathHelper(
-                $this->referenceConfiguration,
-                $inheritancePath
-            );
+            try {
+                $inheritedConfiguration = ArrayUtility::getValueByPath(
+                    $this->referenceConfiguration,
+                    $inheritancePath,
+                    '.'
+                );
+            } catch (\RuntimeException $exception) {
+                $inheritedConfiguration = null;
+            }
 
             if (
                 isset($inheritedConfiguration[self::INHERITANCE_OPERATOR])
@@ -240,27 +250,50 @@ class InheritancesResolverService
      */
     protected function throwExceptionIfCycleInheritances(string $path, string $pathToCheck)
     {
-        $configuration = static::getValueByPathHelper(
-            $this->referenceConfiguration,
-            $path
-        );
+        try {
+            $configuration = ArrayUtility::getValueByPath(
+                $this->referenceConfiguration,
+                $path,
+                '.'
+            );
+        } catch (\RuntimeException $exception) {
+            $configuration = null;
+        }
 
         if (isset($configuration[self::INHERITANCE_OPERATOR])) {
-            $inheritances = static::getValueByPathHelper(
-                $this->referenceConfiguration,
-                $path . '.' . self::INHERITANCE_OPERATOR
-            );
+            try {
+                $inheritances = ArrayUtility::getValueByPath(
+                    $this->referenceConfiguration,
+                    $path . '.' . self::INHERITANCE_OPERATOR,
+                    '.'
+                );
+            } catch (\RuntimeException $exception) {
+                $inheritances = null;
+            }
+
             if (is_array($inheritances)) {
                 foreach ($inheritances as $inheritancePath) {
-                    $configuration = static::getValueByPathHelper(
-                        $this->referenceConfiguration,
-                        $inheritancePath
-                    );
-                    if (isset($configuration[self::INHERITANCE_OPERATOR])) {
-                        $_inheritances = static::getValueByPathHelper(
+                    try {
+                        $configuration = ArrayUtility::getValueByPath(
                             $this->referenceConfiguration,
-                            $inheritancePath . '.' . self::INHERITANCE_OPERATOR
+                            $inheritancePath,
+                            '.'
                         );
+                    } catch (\RuntimeException $exception) {
+                        $configuration = null;
+                    }
+
+                    if (isset($configuration[self::INHERITANCE_OPERATOR])) {
+                        try {
+                            $_inheritances = ArrayUtility::getValueByPath(
+                                $this->referenceConfiguration,
+                                $inheritancePath . '.' . self::INHERITANCE_OPERATOR,
+                                '.'
+                            );
+                        } catch (\RuntimeException $exception) {
+                            $_inheritances = null;
+                        }
+
                         foreach ($_inheritances as $_inheritancePath) {
                             if (strpos($pathToCheck, $_inheritancePath) === 0) {
                                 throw new CycleInheritancesException(
@@ -371,21 +404,5 @@ class InheritancesResolverService
         }
         reset($firstArray);
         return $firstArray;
-    }
-
-    /**
-     * Helper to return a specified path.
-     *
-     * @param array &$array The array to traverse as a reference
-     * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
-     * @return mixed The value found, NULL if the path didn't exist
-     */
-    protected static function getValueByPathHelper(array $array, $path)
-    {
-        try {
-            return ArrayUtility::getValueByPath($array, $path, '.');
-        } catch (\RuntimeException $e) {
-            return null;
-        }
     }
 }
