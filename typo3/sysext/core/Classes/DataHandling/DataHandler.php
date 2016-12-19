@@ -6500,19 +6500,19 @@ class DataHandler implements LoggerAwareInterface
         $res = false;
 
         if ($GLOBALS['TCA'][$table] && (int)$id > 0) {
+            $cacheId = 'checkRecordUpdateAccess' . '_' . $table . '_' . $id;
+
             // If information is cached, return it
-            if (isset($this->recUpdateAccessCache[$table][$id])) {
-                return $this->recUpdateAccessCache[$table][$id];
+            $cachedValue = $this->runtimeCache->get($cacheId);
+            if (!empty($cachedValue)) {
+                return $cachedValue;
             }
-            // permissions check for page translations need to be done on the parent page
-            if ($table === 'pages') {
-                $defaultLanguagePageId = $this->getDefaultLanguagePageId($id);
-                $res = $this->doesRecordExist($table, $defaultLanguagePageId, 'edit');
-            } else {
-                $res = $this->doesRecordExist($table, $id, 'edit');
+
+            if ($this->doesRecordExist($table, $id, 'edit')) {
+                $res = 1;
             }
             // Cache the result
-            $this->recUpdateAccessCache[$table][$id] = $res;
+            $this->runtimeCache->set($cacheId, $res);
         }
         return $res;
     }
