@@ -17,7 +17,7 @@
 	"extra": {
 		"typo3/cms": {
 			"Package": {
-				"partOfFactoryDefault": false
+				"partOfFactoryDefault": true
 			}
 		}
 	},
