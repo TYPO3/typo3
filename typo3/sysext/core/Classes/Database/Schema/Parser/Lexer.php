@@ -197,73 +197,76 @@ class Lexer extends \Doctrine\Common\Lexer
     {
         $type = self::T_NONE;
 
-        switch (true) {
-            // Recognize numeric values
-            case is_numeric($value):
-                if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
-                    return self::T_FLOAT;
+        // Recognize numeric values
+        if (is_numeric($value)) {
+            if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
+                return self::T_FLOAT;
+            }
+
+            return self::T_INTEGER;
+        }
+
+        // Recognize quoted strings
+        if ($value[0] === "'") {
+            $value = str_replace("''", "'", substr($value, 1, -1));
+
+            return self::T_STRING;
+        }
+
+        // Recognize quoted strings
+        if ($value[0] === '`') {
+            $value = str_replace('``', '`', substr($value, 1, -1));
+
+            return self::T_IDENTIFIER;
+        }
+
+        // Recognize identifiers, aliased or qualified names
+        if (ctype_alpha($value[0])) {
+            $name = 'TYPO3\\CMS\\Core\\Database\\Schema\\Parser\\Lexer::T_' . strtoupper($value);
+
+            if (defined($name)) {
+                $type = constant($name);
+
+                if ($type > 100) {
+                    return $type;
                 }
+            }
 
-                return self::T_INTEGER;
+            return self::T_STRING;
+        }
 
-            // Recognize quoted strings
-            case $value[0] === "'":
-                $value = str_replace("''", "'", substr($value, 1, -1));
-
-                return self::T_STRING;
-
-            // Recognize quoted strings
-            case $value[0] === '`':
-                $value = str_replace('``', '`', substr($value, 1, -1));
-
-                return self::T_IDENTIFIER;
-
-            // Recognize identifiers, aliased or qualified names
-            case ctype_alpha($value[0]):
-                $name = 'TYPO3\\CMS\\Core\\Database\\Schema\\Parser\\Lexer::T_' . strtoupper($value);
-
-                if (defined($name)) {
-                    $type = constant($name);
-
-                    if ($type > 100) {
-                        return $type;
-                    }
-                }
-
-                return self::T_STRING;
-
+        switch ($value) {
             // Recognize symbols
-            case $value === '.':
+            case '.':
                 return self::T_DOT;
-            case $value === ';':
+            case ';':
                 return self::T_SEMICOLON;
-            case $value === ',':
+            case ',':
                 return self::T_COMMA;
-            case $value === '(':
+            case '(':
                 return self::T_OPEN_PARENTHESIS;
-            case $value === ')':
+            case ')':
                 return self::T_CLOSE_PARENTHESIS;
-            case $value === '=':
+            case '=':
                 return self::T_EQUALS;
-            case $value === '>':
+            case '>':
                 return self::T_GREATER_THAN;
-            case $value === '<':
+            case '<':
                 return self::T_LOWER_THAN;
-            case $value === '+':
+            case '+':
                 return self::T_PLUS;
-            case $value === '-':
+            case '-':
                 return self::T_MINUS;
-            case $value === '*':
+            case '*':
                 return self::T_MULTIPLY;
-            case $value === '/':
+            case '/':
                 return self::T_DIVIDE;
-            case $value === '!':
+            case '!':
                 return self::T_NEGATE;
-            case $value === '{':
+            case '{':
                 return self::T_OPEN_CURLY_BRACE;
-            case $value === '}':
+            case '}':
                 return self::T_CLOSE_CURLY_BRACE;
-
             // Default
             default:
                 // Do nothing
