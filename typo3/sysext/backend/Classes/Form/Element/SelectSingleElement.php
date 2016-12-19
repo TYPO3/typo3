@@ -106,7 +106,7 @@ class SelectSingleElement extends AbstractFormElement
                 ];
             } else {
                 // IS ITEM
-                $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $title, $title) : '';
+                $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $item[0], $item[0]) : '';
                 $selected = $selectedValue === (string)$item[1];
 
                 if ($selected) {
