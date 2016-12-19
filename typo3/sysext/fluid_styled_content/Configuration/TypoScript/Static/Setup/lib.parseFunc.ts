@@ -20,6 +20,18 @@ lib.parseFunc {
 			}
 			parseFunc.constants = 1
 		}
+		a = TEXT
+		a {
+			current = 1
+			typolink {
+				parameter.data = parameters:href
+				title.data = parameters:title
+				aTagParams.data = parameters:allParams
+				target.data = parameters:target
+				extTarget = {$styles.content.links.extTarget}
+				extTarget.override.data = parameters:target
+			}
+		}
 	}
 	allowTags = {$styles.content.allowTags}
 	denyTags = *
