@@ -3371,14 +3371,11 @@ class GeneralUtility
      * @param string $funcName Function/Method reference or Closure.
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
      * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
-     * @param string $_ Not used anymore since 6.0
-     * @param int $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
-     * @return mixed Content from method/function call or FALSE if the class/method/function was not found
-     * @see makeInstance()
+     * @return mixed Content from method/function call
+     * @throws \InvalidArgumentException
      */
-    public static function callUserFunction($funcName, &$params, &$ref, $_ = '', $errorMode = 0)
+    public static function callUserFunction($funcName, &$params, &$ref)
     {
-        $content = false;
         // Check if we're using a closure and invoke it directly.
         if (is_object($funcName) && is_a($funcName, 'Closure')) {
             return call_user_func_array($funcName, [&$params, &$ref]);
@@ -3387,7 +3384,7 @@ class GeneralUtility
         $parts = explode('->', $funcName);
         // Call function or method
         if (count($parts) === 2) {
-            // Class
+            // It's a class/method
             // Check if class/method exists:
             if (class_exists($parts[0])) {
                 // Create object
@@ -3397,32 +3394,18 @@ class GeneralUtility
                     $content = call_user_func_array([&$classObj, $parts[1]], [&$params, &$ref]);
                 } else {
                     $errorMsg = 'No method name \'' . $parts[1] . '\' in class ' . $parts[0];
-                    if ($errorMode == 2) {
-                        throw new \InvalidArgumentException($errorMsg, 1294585865);
-                    } elseif (!$errorMode) {
-                        debug($errorMsg, \TYPO3\CMS\Core\Utility\GeneralUtility::class . '::callUserFunction');
-                    }
+                    throw new \InvalidArgumentException($errorMsg, 1294585865);
                 }
             } else {
                 $errorMsg = 'No class named ' . $parts[0];
-                if ($errorMode == 2) {
-                    throw new \InvalidArgumentException($errorMsg, 1294585866);
-                } elseif (!$errorMode) {
-                    debug($errorMsg, \TYPO3\CMS\Core\Utility\GeneralUtility::class . '::callUserFunction');
-                }
+                throw new \InvalidArgumentException($errorMsg, 1294585866);
             }
+        } elseif (function_exists($funcName)) {
+            // It's a function
+            $content = call_user_func_array($funcName, [&$params, &$ref]);
         } else {
-            // Function
-            if (function_exists($funcName)) {
-                $content = call_user_func_array($funcName, [&$params, &$ref]);
-            } else {
-                $errorMsg = 'No function named: ' . $funcName;
-                if ($errorMode == 2) {
-                    throw new \InvalidArgumentException($errorMsg, 1294585867);
-                } elseif (!$errorMode) {
-                    debug($errorMsg, \TYPO3\CMS\Core\Utility\GeneralUtility::class . '::callUserFunction');
-                }
-            }
+            $errorMsg = 'No function named: ' . $funcName;
+            throw new \InvalidArgumentException($errorMsg, 1294585867);
         }
         return $content;
     }

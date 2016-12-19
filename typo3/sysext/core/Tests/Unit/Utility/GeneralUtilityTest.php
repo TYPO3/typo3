@@ -4262,20 +4262,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      * @dataProvider callUserFunctionInvalidParameterDataprovider
-     */
-    public function callUserFunctionWillReturnFalseForInvalidParameters($functionName)
-    {
-        $inputData = ['foo' => 'bar'];
-        // omit the debug() output
-        ob_start();
-        $result = GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_', 1);
-        ob_end_clean();
-        $this->assertFalse($result);
-    }
-
-    /**
-     * @test
-     * @dataProvider callUserFunctionInvalidParameterDataprovider
      * @param string $functionName
      * @param int $expectedException
      */
@@ -4285,7 +4271,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectExceptionCode($expectedException);
 
         $inputData = ['foo' => 'bar'];
-        GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_', 2);
+        GeneralUtility::callUserFunction($functionName, $inputData, $this);
     }
 
     /**
@@ -4297,9 +4283,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function callUserFunctionInvalidParameterDataprovider()
     {
         return [
-            'Function is not prefixed' => ['t3lib_divTest->calledUserFunction', 1294585866],
+            'Function is not prefixed' => [self::class . '->calledUserFunction', 1294585865],
             'Class doesn\'t exists' => ['t3lib_divTest21345->user_calledUserFunction', 1294585866],
-            'No method name' => ['t3lib_divTest', 1294585867],
+            'No method name' => [self::class, 1294585867],
             'No class name' => ['->user_calledUserFunction', 1294585866],
             'No function name' => ['', 1294585867]
         ];
