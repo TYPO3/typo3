@@ -320,15 +320,16 @@ class Bootstrap
     {
         if ($this->response instanceof \Psr\Http\Message\ResponseInterface) {
             if (!headers_sent()) {
-                foreach ($this->response->getHeaders() as $name => $values) {
-                    header($name . ': ' . implode(', ', $values));
-                }
                 // If the response code was not changed by legacy code (still is 200)
                 // then allow the PSR-7 response object to explicitly set it.
                 // Otherwise let legacy code take precedence.
                 // This code path can be deprecated once we expose the response object to third party code
                 if (http_response_code() === 200) {
                     header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() . ' ' . $this->response->getReasonPhrase());
+                }
+
+                foreach ($this->response->getHeaders() as $name => $values) {
+                    header($name . ': ' . implode(', ', $values));
                 }
             }
             echo $this->response->getBody()->__toString();
