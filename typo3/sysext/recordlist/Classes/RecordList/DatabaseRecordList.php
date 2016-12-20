@@ -515,7 +515,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
         $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
                      && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-                     && $tableName !== 'pages_language_overlay';
+                     && $table !== 'pages_language_overlay';
         $tableCollapsed = (bool)$this->tablesCollapsed[$table];
         // prepare space icon
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
