@@ -48,7 +48,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         $additionalFields = [];
         if (empty($taskInfo['configuration'])) {
             if ($schedulerModule->CMD === 'add') {
-                $taskInfo['configuration'] = '';
+                $taskInfo['configuration'] = $taskInfo['linkvalidator']['configuration'];
             } elseif ($schedulerModule->CMD === 'edit') {
                 $taskInfo['configuration'] = $task->getConfiguration();
             } else {
@@ -57,7 +57,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         }
         if (empty($taskInfo['depth'])) {
             if ($schedulerModule->CMD === 'add') {
-                $taskInfo['depth'] = [];
+                $taskInfo['depth'] = $taskInfo['linkvalidator']['depth'];
             } elseif ($schedulerModule->CMD === 'edit') {
                 $taskInfo['depth'] = $task->getDepth();
             } else {
@@ -66,7 +66,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         }
         if (empty($taskInfo['page'])) {
             if ($schedulerModule->CMD === 'add') {
-                $taskInfo['page'] = '';
+                $taskInfo['page'] = $taskInfo['linkvalidator']['page'];
             } elseif ($schedulerModule->CMD === 'edit') {
                 $taskInfo['page'] = $task->getPage();
             } else {
@@ -75,7 +75,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         }
         if (empty($taskInfo['email'])) {
             if ($schedulerModule->CMD === 'add') {
-                $taskInfo['email'] = '';
+                $taskInfo['email'] = $taskInfo['linkvalidator']['email'];
             } elseif ($schedulerModule->CMD === 'edit') {
                 $taskInfo['email'] = $task->getEmail();
             } else {
@@ -84,7 +84,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         }
         if (empty($taskInfo['emailOnBrokenLinkOnly'])) {
             if ($schedulerModule->CMD === 'add') {
-                $taskInfo['emailOnBrokenLinkOnly'] = 1;
+                $taskInfo['emailOnBrokenLinkOnly'] = $taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] ? $taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] : 1;
             } elseif ($schedulerModule->CMD === 'edit') {
                 $taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
             } else {
@@ -93,7 +93,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         }
         if (empty($taskInfo['emailTemplateFile'])) {
             if ($schedulerModule->CMD === 'add') {
-                $taskInfo['emailTemplateFile'] = 'EXT:linkvalidator/Resources/Private/Templates/mailtemplate.html';
+                $taskInfo['emailTemplateFile'] = $taskInfo['linkvalidator']['emailTemplateFile'] ? $taskInfo['linkvalidator']['emailTemplateFile'] : 'EXT:linkvalidator/Resources/Private/Templates/mailtemplate.html';
             } elseif ($schedulerModule->CMD === 'edit') {
                 $taskInfo['emailTemplateFile'] = $task->getEmailTemplateFile();
             } else {
