@@ -50,7 +50,7 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
         if (!$context) {
             $context = GeneralUtility::makeInstance(ObjectManager::class)->get(RenderingContext::class, $this);
         }
-        $this->setRenderingContext($context);
+        parent::__construct($context);
     }
 
     /**
@@ -80,6 +80,8 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
         $this->controllerContext = $controllerContext;
         $this->baseRenderingContext->getTemplatePaths()->fillDefaultsByPackageName($request->getControllerExtensionKey());
         $this->baseRenderingContext->getTemplatePaths()->setFormat($request->getFormat());
-        $this->baseRenderingContext->setControllerContext($controllerContext);
+        if ($this->baseRenderingContext instanceof RenderingContext) {
+            $this->baseRenderingContext->setControllerContext($controllerContext);
+        }
     }
 }

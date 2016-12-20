@@ -33,6 +33,11 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class StandaloneView extends AbstractTemplateView
 {
     /**
+     * @var ObjectManager|null
+     */
+    protected $objectManager = null;
+
+    /**
      * Constructor
      *
      * @param ContentObjectRenderer $contentObject The current cObject. If NULL a new instance will be created
@@ -64,7 +69,7 @@ class StandaloneView extends AbstractTemplateView
         $controllerContext->setUriBuilder($uriBuilder);
         $renderingContext = $this->objectManager->get(RenderingContext::class, $this);
         $renderingContext->setControllerContext($controllerContext);
-        $this->setRenderingContext($renderingContext);
+        parent::__construct($renderingContext);
     }
 
     /**
@@ -80,32 +85,45 @@ class StandaloneView extends AbstractTemplateView
      *
      * @param string $format
      * @return void
+     * @throws \RuntimeException
      * @api
      */
     public function setFormat($format)
     {
-        $this->baseRenderingContext->getControllerContext()->getRequest()->setFormat($format);
+        if ($this->baseRenderingContext instanceof RenderingContext) {
+            $this->baseRenderingContext->getControllerContext()->getRequest()->setFormat($format);
+        } else {
+            throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251886);
+        }
     }
 
     /**
      * Returns the format of the current request (defaults is "html")
      *
      * @return string $format
+     * @throws \RuntimeException
      * @api
      */
     public function getFormat()
     {
-        return $this->baseRenderingContext->getControllerContext()->getRequest()->getFormat();
+        if ($this->baseRenderingContext instanceof RenderingContext) {
+            return $this->baseRenderingContext->getControllerContext()->getRequest()->getFormat();
+        }
+        throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251887);
     }
 
     /**
      * Returns the current request object
      *
      * @return WebRequest
+     * @throws \RuntimeException
      */
     public function getRequest()
     {
-        return $this->baseRenderingContext->getControllerContext()->getRequest();
+        if ($this->baseRenderingContext instanceof RenderingContext) {
+            return $this->baseRenderingContext->getControllerContext()->getRequest();
+        }
+        throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251888);
     }
 
     /**
@@ -124,11 +142,16 @@ class StandaloneView extends AbstractTemplateView
      * Returns the absolute path to a Fluid template file if it was specified with setTemplatePathAndFilename() before
      *
      * @return string Fluid template path
+     * @throws \RuntimeException
      * @api
      */
     public function getTemplatePathAndFilename()
     {
-        return $this->baseRenderingContext->getTemplatePaths()->getTemplatePathAndFilename();
+        $templatePaths = $this->baseRenderingContext->getTemplatePaths();
+        if ($templatePaths instanceof TemplatePaths) {
+            return $templatePaths->getTemplatePathAndFilename();
+        }
+        throw new \RuntimeException('The template paths storage must be of type ' . TemplatePaths::class, 1482251889);
     }
 
     /**
