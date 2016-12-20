@@ -665,7 +665,7 @@ class ActionHandler extends AbstractHandler
 
         $result = [];
         if ($nextStage->isDialogEnabled()) {
-            $result['sendMailTo'] = $this->getRecipientsOfStage($nextStage->getUid());
+            $result['sendMailTo'] = $this->getRecipientsOfStage($nextStage);
             $result['additional'] = [
                 'type' => 'textarea',
                 'value' => ''

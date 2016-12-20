@@ -93,13 +93,9 @@ class WorkspaceService implements SingletonInterface
         // Avoid invalid workspace settings
         if ($activeId !== null && $activeId !== self::SELECT_ALL_WORKSPACES) {
             $availableWorkspaces = $this->getAvailableWorkspaces();
-            if (!isset($availableWorkspaces[$activeId])) {
-                $activeId = null;
+            if (isset($availableWorkspaces[$activeId])) {
+                $workspaceId = $activeId;
             }
-        }
-
-        if ($activeId !== null) {
-            $workspaceId = $activeId;
         }
 
         return $workspaceId;
