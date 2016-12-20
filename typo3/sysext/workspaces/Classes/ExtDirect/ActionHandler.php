@@ -677,7 +677,7 @@ class ActionHandler extends AbstractHandler
                 'style' => 'max-height: 200px',
                 'autoScroll' => true,
                 'items' => [
-                    $this->getReceipientsOfStage($nextStage->getUid())
+                    $this->getReceipientsOfStage($nextStage)
                 ]
             ];
             $result['items'][] = [
