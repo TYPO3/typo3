@@ -132,10 +132,6 @@ return [
                 'size' => 4,
                 'max' => 4,
                 'eval' => 'int',
-                'range' => [
-                    'upper' => '1000',
-                    'lower' => '10'
-                ],
                 'default' => 0
             ]
         ],
