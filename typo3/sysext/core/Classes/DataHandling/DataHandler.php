@@ -2504,7 +2504,7 @@ class DataHandler
         // Example for received data:
         // $value = 45,NEW4555fdf59d154,12,123
         // We need to decide whether we use the stack or can save the relation directly.
-        if (strpos($value, 'NEW') !== false || !MathUtility::canBeInterpretedAsInteger($id)) {
+        if (!empty($value) && (strpos($value, 'NEW') !== false || !MathUtility::canBeInterpretedAsInteger($id))) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
             $this->addNewValuesToRemapStackChildIds($valueArray);
             $this->remapStack[] = [
