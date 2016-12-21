@@ -2,10 +2,10 @@
 .. include:: ../../Includes.txt
 
 =============================================================
-Breaking: #62416 - Removal of deprecated code in sysext fluid
+Breaking: #53542 - Removal of deprecated code in sysext fluid
 =============================================================
 
-See :issue:`62416`
+See :issue:`53542`
 
 Description
 ===========
