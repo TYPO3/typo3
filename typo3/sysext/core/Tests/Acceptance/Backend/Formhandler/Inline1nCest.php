@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use Facebook\WebDriver\WebDriverKeys;
-use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Formhandler;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Support\Helper\Formhandler;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
 /**
  * Tests for inline 1n

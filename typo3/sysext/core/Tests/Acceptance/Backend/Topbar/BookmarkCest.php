@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  */
 
 use Codeception\Scenario;
-use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
 
 /**
  * Test for the "Bookmark" functionality

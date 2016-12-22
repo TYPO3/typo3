@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Login;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
 
 /**
  * Various backend login related tests

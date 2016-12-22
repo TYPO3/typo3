@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 
 /**
  * Acceptance test for the TYPO3 logo in the topbar
