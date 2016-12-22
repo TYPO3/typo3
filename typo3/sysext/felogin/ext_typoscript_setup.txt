@@ -151,10 +151,4 @@ plugin.tx_felogin_pi1 {
 
 	# Expose the information on whether or not the account for which a new password was requested exists. By default, that information is not disclosed for privacy reasons.
 	exposeNonexistentUserInForgotPasswordDialog = 0
-
-	_CSS_DEFAULT_STYLE (
-		.tx-felogin-pi1 label {
-			display: block;
-		}
-	)
 }
