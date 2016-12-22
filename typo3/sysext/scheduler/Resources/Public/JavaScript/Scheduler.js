@@ -14,7 +14,9 @@
 /**
  * Module: TYPO3/CMS/Scheduler/Scheduler
  */
-define(['jquery'], function($) {
+define(['jquery',
+		'TYPO3/CMS/Backend/SplitButtons'
+		], function($, SplitButtons) {
 
 	/**
 	 *
@@ -167,6 +169,14 @@ define(['jquery'], function($) {
 
 	$(Scheduler.initializeEvents);
 	$(Scheduler.initializeDefaultStates);
+
+	SplitButtons.addPreSubmitCallback(function() {
+		var taskClass = $('#task_class').val();
+		taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
+
+		$('.extraFields').appendTo($('#extraFieldsHidden'));
+		$('.extra_fields_' + taskClass).appendTo($('#extraFieldsSection'));
+	});
 
 	return Scheduler;
 });

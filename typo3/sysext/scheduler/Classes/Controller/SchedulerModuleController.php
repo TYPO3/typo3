@@ -162,7 +162,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Prepare main content
             $this->content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
             $this->content .= $this->getModuleContent();
-            $this->content .= '</form>';
+            $this->content .= '</form><div id="extraFieldsHidden"></div>';
         } else {
             // If no access, only display the module's title
             $this->content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
@@ -800,6 +800,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</div></div>';
 
         // Display additional fields
+        $table[] = '<div id="extraFieldsSection">';
         foreach ($allAdditionalFields as $class => $fields) {
             if ($class == $taskInfo['class']) {
                 $additionalFieldsStyle = '';
@@ -820,6 +821,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 }
             }
         }
+        $table[] = '</div>';
 
         $this->view->assign('table', implode(LF, $table));
         $this->view->assign('now', $this->getServerTime());
