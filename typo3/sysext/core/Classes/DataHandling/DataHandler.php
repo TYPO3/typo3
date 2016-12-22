@@ -8193,7 +8193,7 @@ class DataHandler
                             ->from('pages')
                             ->where($siblingChildrenQuery->expr()->eq(
                                 'pid',
-                                $queryBuilder->createNamedParameter($row_tmp['uid'], \PDO::PARAM_INT)
+                                $siblingChildrenQuery->createNamedParameter($row_tmp['uid'], \PDO::PARAM_INT)
                             ))
                             ->execute();
                         while ($row_tmp2 = $siblingChildren->fetch()) {
@@ -8216,7 +8216,7 @@ class DataHandler
                         ->from('pages')
                         ->where($parentQuery->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($pid_tmp, \PDO::PARAM_INT)
+                            $parentQuery->createNamedParameter($pid_tmp, \PDO::PARAM_INT)
                         ))
                         ->execute()
                         ->fetch();
