@@ -31,7 +31,12 @@ class TcaMigration
     protected $messages = [];
 
     /**
-     * Migrate old TCA to new TCA.
+     * Run some general TCA validations, then migrate old TCA to new TCA.
+     *
+     * This class is typically called within bootstrap with empty caches after all TCA
+     * files from extensions have been loaded. The migration is then applied and
+     * the migrated result is cached.
+     * For flex form TCA, this class is called dynamically if opening a record in the backend.
      *
      * See unit tests for details.
      *
@@ -40,6 +45,8 @@ class TcaMigration
      */
     public function migrate(array $tca)
     {
+        $this->validateTcaType($tca);
+
         $tca = $this->migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig($tca);
         $tca = $this->migrateSpecialConfigurationAndRemoveShowItemStylePointerConfig($tca);
         $tca = $this->migrateT3editorWizardWithEnabledByTypeConfigToColumnsOverrides($tca);
@@ -71,6 +78,28 @@ class TcaMigration
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Check for required TCA configuration
+     *
+     * @param array $tca Incoming TCA
+     */
+    protected function validateTcaType(array $tca)
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (isset($fieldConfig['config']) && is_array($fieldConfig['config']) && empty($fieldConfig['config']['type'])) {
+                    throw new \UnexpectedValueException(
+                        'Missing "type" in TCA of field "[\'' . $table . '\'][\'' . $fieldName . '\'][\'config\']".',
+                        1482394401
+                    );
+                }
+            }
+        }
     }
 
     /**

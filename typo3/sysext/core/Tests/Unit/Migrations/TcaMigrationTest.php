@@ -24,6 +24,36 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     /**
      * @test
      */
+    public function missingTypeThrowsException()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'field_a' => [
+                        'label' => 'aLabel',
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                    'field_b' => [
+                        'label' => 'bLabel',
+                        'config' => [
+                            'rows' => 42,
+                            'wizards' => []
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1482394401);
+        $subject = new TcaMigration();
+        $subject->migrate($input);
+    }
+
+    /**
+     * @test
+     */
     public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded()
     {
         $input = $expected = [
@@ -427,6 +457,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 'columns' => [
                     'bodytext' => [
                         'config' => [
+                            'type' => 'text',
                             'wizards' => [
                                 't3editorHtml' => [
                                     'icon' => 'wizard_table.gif',
@@ -443,6 +474,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 'columns' => [
                     'bodytext' => [
                         'config' => [
+                            'type' => 'text',
                             'wizards' => [
                                 't3editorHtml' => [
                                     'icon' => 'content-table',
@@ -989,6 +1021,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 'columns' => [
                     'aCol' => [
                         'config' => [
+                            'type' => 'input',
                             'wizards' => [
                                 'link' => [
                                     'module' => [
@@ -1009,6 +1042,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 'columns' => [
                     'aCol' => [
                         'config' => [
+                            'type' => 'input',
                             'wizards' => [
                                 'link' => [
                                     'module' => [
@@ -1395,6 +1429,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 'columns' => [
                     'aCol' => [
                         'config' => [
+                            'type' => 'input',
                             'wizards' => [
                                 'colorpicker' => [
                                     'type' => 'colorbox',
@@ -1415,6 +1450,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 'columns' => [
                     'aCol' => [
                         'config' => [
+                            'type' => 'input',
                             'renderType' => 'colorpicker',
                         ],
                     ],
@@ -1439,6 +1475,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'selectTree',
                                     'treeConfig' => [
                                         'appearance' => [
@@ -1456,6 +1493,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'selectTree',
                                     'treeConfig' => [
                                         'appearance' => [
@@ -1474,6 +1512,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'selectTree',
                                     'treeConfig' => [
                                         'appearance' => [
@@ -1492,6 +1531,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'selectTree',
                                     'treeConfig' => [
                                         'appearance' => [
@@ -1511,6 +1551,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'selectTree',
                                     'autoSizeMax' => 20,
                                     'size' => 10
@@ -1525,6 +1566,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'selectTree',
                                     'size' => 20
                                 ]
@@ -1540,6 +1582,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'not a select tree',
                                     'autoSizeMax' => 20,
                                     'size' => 10,
@@ -1561,6 +1604,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'config' => [
+                                    'type' => 'select',
                                     'renderType' => 'not a select tree',
                                     'autoSizeMax' => 20,
                                     'size' => 10,
@@ -1601,6 +1645,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aCol' => [
                                 'config' => [
+                                    'type' => 'input',
                                     'softref' => 'email,somethingelse'
                                 ],
                             ],
@@ -1612,6 +1657,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aCol' => [
                                 'config' => [
+                                    'type' => 'input',
                                     'softref' => 'email,somethingelse',
                                 ],
                             ],
@@ -1625,6 +1671,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aCol' => [
                                 'config' => [
+                                    'type' => 'input',
                                     'softref' => 'TStemplate,somethingelse'
                                 ],
                             ],
@@ -1636,6 +1683,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aCol' => [
                                 'config' => [
+                                    'type' => 'input',
                                     'softref' => 'somethingelse',
                                 ],
                             ],
@@ -1649,6 +1697,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aCol' => [
                                 'config' => [
+                                    'type' => 'input',
                                     'softref' => 'TStemplate,somethingelse,TSconfig'
                                 ],
                             ],
@@ -1660,6 +1709,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aCol' => [
                                 'config' => [
+                                    'type' => 'input',
                                     'softref' => 'somethingelse',
                                 ],
                             ],
@@ -1929,7 +1979,9 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'label' => 'foo',
-                                'config' => [],
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                             ],
                         ],
                     ],
@@ -1940,7 +1992,9 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'columns' => [
                             'aField' => [
                                 'label' => 'foo',
-                                'config' => [],
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                                 'onChange' => 'reload',
                             ],
                         ],
