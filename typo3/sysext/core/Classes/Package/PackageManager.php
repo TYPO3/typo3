@@ -74,6 +74,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected $packages = [];
 
     /**
+     * @var bool
+     */
+    protected $availablePackagesScanned = false;
+
+    /**
      * A map between ComposerName and PackageKey, only available when scanAvailablePackages is run
      * @var array
      */
@@ -322,6 +327,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
 
+        $this->availablePackagesScanned = true;
         $registerOnlyNewPackages = !empty($this->packages);
         $this->registerPackagesFromConfiguration($packages, $registerOnlyNewPackages);
     }
@@ -796,6 +802,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getAvailablePackages()
     {
+        if ($this->availablePackagesScanned === false) {
+            $this->scanAvailablePackages();
+        }
+
         return $this->packages;
     }
 
