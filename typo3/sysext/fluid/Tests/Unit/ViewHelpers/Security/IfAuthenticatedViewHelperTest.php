@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
 /**
  * Testcase for security.ifAuthenticated view helper
  */
-class IfAuthenticatedViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Security\IfAuthenticatedViewHelper

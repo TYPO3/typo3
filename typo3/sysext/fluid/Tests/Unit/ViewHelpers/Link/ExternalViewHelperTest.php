@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for \TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper
  */
-class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+class ExternalViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper

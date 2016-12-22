@@ -45,8 +45,8 @@ services:
 
 test_script:
   - cd C:\projects\typotest
-  - bin\phpunit.bat -c typo3/sysext/core/Build/UnitTests.xml
-  - bin\phpunit.bat -c typo3/sysext/core/Build/FunctionalTests.xml
+  - bin\phpunit.bat -c components/testing_framework/core/Build/UnitTests.xml
+  - bin\phpunit.bat -c components/testing_framework/core/Build/FunctionalTests.xml
 
 notifications:
   - provider: Slack

@@ -186,7 +186,11 @@
 			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
 			"TYPO3\\CMS\\WizardCrpages\\": "typo3/sysext/wizard_crpages/Classes/",
 			"TYPO3\\CMS\\WizardSortpages\\": "typo3/sysext/wizard_sortpages/Classes/",
-			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
+			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/",
+			"TYPO3\\CMS\\Components\\TestingFramework\\Core\\": "components/testing_framework/core/",
+			"TYPO3\\CMS\\Components\\TestingFramework\\Fluid\\": "components/testing_framework/fluid/",
+			"TYPO3\\CMS\\Core\\Tests\\": "components/testing_framework/compat/core/",
+			"TYPO3\\CMS\\Fluid\\Tests\\": "components/testing_framework/compat/fluid/"
 		},
 		"classmap": [
 			"typo3/sysext/core/Resources/PHP/"
@@ -198,7 +202,6 @@
 	"autoload-dev": {
 		"psr-4": {
 			"TYPO3\\CMS\\Backend\\Tests\\": "typo3/sysext/backend/Tests/",
-			"TYPO3\\CMS\\Components\\TestingFramework\\": "components/testing_framework/",
 			"TYPO3\\CMS\\Belog\\Tests\\": "typo3/sysext/belog/Tests/",
 			"TYPO3\\CMS\\Beuser\\Tests\\": "typo3/sysext/beuser/Tests/",
 			"TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",

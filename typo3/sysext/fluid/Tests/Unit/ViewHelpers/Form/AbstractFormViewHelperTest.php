@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
 /**
  * Test for the Abstract Form view helper
  */
-class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @test

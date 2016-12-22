@@ -13,9 +13,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 

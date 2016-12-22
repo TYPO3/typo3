@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+namespace TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.

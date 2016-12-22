@@ -13,9 +13,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use PHPUnit_Framework_MockObject_MockObject;
+
+use TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -30,7 +30,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
     protected $viewHelper;
 
     /**
-     * @var ContentObjectRenderer|PHPUnit_Framework_MockObject_MockObject
+     * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockContentObject;
 

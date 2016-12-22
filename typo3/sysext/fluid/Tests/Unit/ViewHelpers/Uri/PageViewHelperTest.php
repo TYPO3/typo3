@@ -13,7 +13,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
+use TYPO3\CMS\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\PageViewHelper;
 
 /**
