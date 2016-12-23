@@ -14,13 +14,13 @@
     <f:if condition="{pages}">
         <f:if condition="{pages.goUpUrl}">
             <f:then>
-                <a href="{pages.goUpUrl}"><core:icon identifier="actions-view-go-up" />{pages.pidRecordTitle}</a><br />
+                <a href="{pages.goUpUrl}"><core:icon identifier="actions-view-go-up" />{pages.pidRecordTitle -> f:format.raw()}</a><br />
             </f:then>
             <f:else>
                 <f:if condition="{pages.pidPageInfo}">
                     <core:iconForRecord table="pages" row="{pages.pidPageInfo}" />
                 </f:if>
-                {pages.pidRecordTitle}<br />
+                {pages.pidRecordTitle -> f:format.raw()}<br />
             </f:else>
         </f:if>
         {pages.positionTree -> f:format.raw()}
@@ -32,11 +32,11 @@
         <f:if condition="{ttContent.pageInfo.pid}">
             <f:if condition="{ttContent.goUpUrl}">
                 <f:then>
-                    <a href="{ttContent.goUpUrl}"><core:icon identifier="actions-view-go-up" />{ttContent.pidRecordTitle}</a><br />
+                    <a href="{ttContent.goUpUrl}"><core:icon identifier="actions-view-go-up" />{ttContent.pidRecordTitle -> f:format.raw()}</a><br />
                 </f:then>
                 <f:else>
                     <core:iconForRecord table="pages" row="{ttContent.pidPageInfo}" />
-                    {ttContent.pidRecordTitle}<br />
+                    {ttContent.pidRecordTitle -> f:format.raw()}<br />
                 </f:else>
             </f:if>
         </f:if>
