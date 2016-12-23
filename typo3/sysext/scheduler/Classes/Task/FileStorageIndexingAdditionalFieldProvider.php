@@ -33,7 +33,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
         if ($task !== null && !$task instanceof FileStorageIndexingTask) {
             throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275696);
         }
-        $additionalFields['scheduler_fileStorageIndexing_storage'] = $this->getAllStoragesField($task);
+        $additionalFields['scheduler_fileStorageIndexing_storage'] = $this->getAllStoragesField($task, $taskInfo);
         return $additionalFields;
     }
 
@@ -41,19 +41,22 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
      * Add a select field of available storages.
      *
      * @param FileStorageIndexingTask $task When editing, reference to the current task object. NULL when adding.
+     * @param array $taskInfo
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getAllStoragesField(FileStorageIndexingTask $task = null)
+    protected function getAllStoragesField(FileStorageIndexingTask $task = null, $taskInfo)
     {
         /** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
         $storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class)->findAll();
         $options = [];
         foreach ($storages as $storage) {
-            if ($task != null && $task->storageUid === $storage->getUid()) {
-                $options[] = '<option value="' . $storage->getUid() . '" selected="selected">' . $storage->getName() . '</option>';
-            } else {
-                $options[] = '<option value="' . $storage->getUid() . '">' . $storage->getName() . '</option>';
+            $selected = '';
+            if ($task !== null && $task->storageUid === $storage->getUid()) {
+                $selected =' selected="selected"';
+            } elseif ((int)$taskInfo['scheduler_fileStorageIndexing_storage'] === $storage->getUid()) {
+                $selected =' selected="selected"';
             }
+            $options[] = '<option value="' . $storage->getUid() . '" ' . $selected . ' >' . $storage->getName() . '</option>';
         }
 
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_storage]';
