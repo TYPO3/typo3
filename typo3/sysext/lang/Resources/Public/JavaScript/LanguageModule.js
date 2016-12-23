@@ -334,6 +334,7 @@ define(['jquery',
 			paging: false,
 			info: false,
 			ordering: true,
+			columnDefs: [{targets: 4, orderable: false}],
 			language: LanguageModule.labels,
 			order: [[1, 'asc']]
 		});
