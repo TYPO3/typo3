@@ -212,7 +212,7 @@ class NormalizeCommand
      *
      * @throws \InvalidArgumentException If range can not be converted to list
      * @param string $range Integer-integer
-     * @return array
+     * @return string
      */
     protected static function convertRangeToListOfValues($range)
     {
