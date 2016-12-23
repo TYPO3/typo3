@@ -11,8 +11,8 @@
 	<form class="form-inline">
 		<div class="form-group">
 			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}"
-							  id="typo3-language-searchfield" value="{search}"
-							  class="form-control t3js-language-searchfield"/>
+												id="typo3-language-searchfield" value="{search}"
+												class="form-control t3js-language-searchfield"/>
 		</div>
 	</form>
 	<br />
@@ -39,17 +39,19 @@
 		<tbody>
 		<f:for each="{languages}" as="language" iteration="iterator">
 			<tr id="language-{language.locale}" data-locale="{language.locale}"
-				class="{f:if(condition: language.selected, then: 'enabled', else: 'disabled')} {f:if(condition: iterator.isEven, then: 'even', else: 'odd')}"
-				role="row">
-				<td>
+					class="{f:if(condition: language.selected, then: 'enabled', else: 'disabled')} {f:if(condition: iterator.isEven, then: 'even', else: 'odd')}"
+					role="row">
+				<td data-order="{f:if(condition: language.selected, then: 'true', else: 'false')}">
 					<a class="btn btn-default deactivateLanguageLink" data-action="deactivateLanguage"
-					   data-locale="{language.locale}" data-language="{language.label}"
-					   data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span
-						title="Deactivate" class="t3-icon fa fa-minus-square"> </span></a>
+						 data-locale="{language.locale}" data-language="{language.label}"
+						 data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}">
+						<span title="{f:translate(key:'button.deactivate')}" class="t3-icon fa fa-minus-square"> </span>
+					</a>
 					<a class="btn btn-default activateLanguageLink" data-action="activateLanguage"
-					   data-locale="{language.locale}" data-language="{language.label}"
-					   data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span
-						title="Activate" class="t3-icon fa fa-plus-circle"> </span></a>
+						 data-locale="{language.locale}" data-language="{language.label}"
+						 data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}">
+						<span title="{f:translate(key:'button.activate')}" class="t3-icon fa fa-plus-circle"> </span>
+					</a>
 				</td>
 				<td class="sorting_1">{language.label}</td>
 				<td>{language.locale}</td>
@@ -64,8 +66,7 @@
 					<div class="progressBar">
 						<div class="progress">
 							<div class="progress-text"></div>
-							<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-								 aria-valuemax="100" style="width: 0;"></div>
+							<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
 						</div>
 					</div>
 				</td>
