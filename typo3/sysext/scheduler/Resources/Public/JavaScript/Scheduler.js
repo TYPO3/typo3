@@ -118,6 +118,17 @@ define(['jquery'], function($) {
 	};
 
 	/**
+	 * Toggle the visibility of task groups
+	 *
+	 * @param {Object} theSelector
+	 */
+	Scheduler.toggleTaskGroups = function(theSelector) {
+		taskGroup = theSelector.data('task-group-id');
+		var taskGroupClass= '.taskGroup_' + taskGroup;
+		$(taskGroupClass).toggleClass('taskGroup--close');
+	};
+
+    /**
 	 * Registers listeners
 	 */
 	Scheduler.initializeEvents = function() {
@@ -137,6 +148,10 @@ define(['jquery'], function($) {
 
 		$('#task_tableGarbageCollection_table').change(function() {
 			Scheduler.actOnChangeSchedulerTableGarbageCollectionTable($(this));
+		});
+
+		$('.taskGroup').on('click', function() {
+			Scheduler.toggleTaskGroups($(this));
 		});
 	};
 

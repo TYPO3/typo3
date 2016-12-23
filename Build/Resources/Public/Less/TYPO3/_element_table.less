@@ -307,3 +307,25 @@ table {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+
+.taskGroup {
+	cursor: pointer;
+}
+
+.taskGroup--close {
+	.icon-actions-view-list-collapse {
+		transform: rotate(180deg);
+	}
+
+	td {
+		padding: 0 !important;
+		border: 0 !important;
+	}
+	.t-span {
+		height: 0;
+		overflow: hidden;
+		padding: 0;
+		line-height: 0;
+		display: block;
+	}
+}

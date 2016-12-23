@@ -159,6 +159,9 @@
 			<trans-unit id="label.group">
 				<source>Task group</source>
 			</trans-unit>
+			<trans-unit id="label.noGroup">
+				<source>(no task group defined)</source>
+			</trans-unit>
 			<trans-unit id="msg.addError">
 				<source>The task could not be added.</source>
 			</trans-unit>

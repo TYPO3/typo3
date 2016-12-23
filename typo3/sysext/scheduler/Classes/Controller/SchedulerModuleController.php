@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -942,13 +943,22 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             . '</tr></thead>';
 
         $registeredClasses = $this->getRegisteredClasses();
-        foreach ($temporaryResult as $taskGroup) {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $collapseIcon = $iconFactory->getIcon('actions-view-list-collapse', Icon::SIZE_SMALL)->render();
+        $expandIcon = $iconFactory->getIcon('actions-view-list-expand', Icon::SIZE_SMALL)->render();
+        foreach ($temporaryResult as $taskIndex => $taskGroup) {
+            $collapseExpandIcons = '<span class="taskGroup_' . $taskIndex . '">' . $collapseIcon . '</span>'
+                . '<span class="taskGroup_' . $taskIndex . '" style="display: none;">' . $expandIcon . '</span>';
             if (!empty($taskGroup['groupName'])) {
                 $groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
                 if (!empty($taskGroup['groupDescription'])) {
                     $groupText .= '<br>' . nl2br(htmlspecialchars($taskGroup['groupDescription']));
                 }
-                $table[] = '<tr><td colspan="9">' . $groupText . '</td></tr>';
+                $table[] = '<tr class="taskGroup" data-task-group-id="' . $taskIndex . '"><td colspan="8">' . $groupText . '</td><td style="text-align:right;">' . $collapseExpandIcons . '</td></tr>';
+            } else {
+                if (sizeof($temporaryResult) > 1) {
+                    $table[] = '<tr class="taskGroup" data-task-group-id="0"><td colspan="8"><strong>' . htmlspecialchars($this->getLanguageService()->getLL('label.noGroup')) . '</strong></td><td style="text-align:right;">' . $collapseExpandIcons . '</td></tr>';
+                }
             }
 
             foreach ($taskGroup['tasks'] as $schedulerRecord) {
@@ -1113,16 +1123,16 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $taskName = '<span class="name"><a href="' . $link . '">' . $name . '</a></span>';
 
                     $table[] =
-                        '<tr class="' . ($showAsDisabled ? 'disabled' : '') . '">'
-                            . '<td>' . $startExecutionElement . '</td>'
-                            . '<td class="right">' . $schedulerRecord['uid'] . '</td>'
-                            . '<td>' . $this->makeStatusLabel($labels) . $taskName . $taskDesc . '</td>'
-                            . '<td>' . $execType . '</td>'
-                            . '<td>' . $frequency . '</td>'
-                            . '<td>' . $multiple . '</td>'
-                            . '<td>' . $lastExecution . '</td>'
-                            . '<td>' . $nextDate . '</td>'
-                            . '<td nowrap="nowrap">' . $actions . '</td>'
+                        '<tr class="' . ($showAsDisabled ? 'disabled' : '') . ' taskGroup_' . $taskIndex . '">'
+                            . '<td><span class="t-span">' . $startExecutionElement . '</span></td>'
+                            . '<td class="right"><span class="t-span">' . $schedulerRecord['uid'] . '</span></td>'
+                            . '<td><span class="t-span">' . $this->makeStatusLabel($labels) . $taskName . $taskDesc . '</span></td>'
+                            . '<td><span class="t-span">' . $execType . '</span></td>'
+                            . '<td><span class="t-span">' . $frequency . '</span></td>'
+                            . '<td><span class="t-span">' . $multiple . '</span></td>'
+                            . '<td><span class="t-span">' . $lastExecution . '</span></td>'
+                            . '<td><span class="t-span">' . $nextDate . '</span></td>'
+                            . '<td nowrap="nowrap"><span class="t-span">' . $actions . '</span></td>'
                         . '</tr>';
                 } else {
                     // The task object is not valid
