@@ -49,7 +49,6 @@ class CronCommand
      * @api
      * @param string $cronCommand The cron command can hold any combination documented as valid
      * @param bool|int $timestamp Optional start time, used in unit tests
-     * @return \TYPO3\CMS\Scheduler\CronCommand\CronCommand
      */
     public function __construct($cronCommand, $timestamp = false)
     {
