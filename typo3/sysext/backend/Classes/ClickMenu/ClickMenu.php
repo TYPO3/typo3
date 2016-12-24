@@ -925,7 +925,7 @@ class ClickMenu
                 '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $this->backendUser->veriCode()
             ) . ';};';
         if ($table === 'pages') {
-            $editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
+            $editOnClick .= 'top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);';
         }
         return $this->linkItem(
             $title,
