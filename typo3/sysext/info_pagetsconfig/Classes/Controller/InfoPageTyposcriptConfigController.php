@@ -95,7 +95,10 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 
         if ($pageId === 0) {
             $this->view->assign('pageZero', 1);
-            $this->view->assign('overviewOfPagesUsingTSConfig', $this->getOverviewOfPagesUsingTSConfig());
+            $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig();
+            if (count($pagesUsingTSConfig) > 0) {
+                $this->view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
+            }
         } else {
             if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
                 $TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, null, true);
@@ -328,7 +331,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 continue;
             }
             $line = [];
-            $line['padding'] = ($pageDepth * 20);
+            $line['padding'] = ($pageDepth * 20) + 10;
             if (isset($pageArray[$identifier . '_'])) {
                 $line['link'] = GeneralUtility::linkThisScript(['id' => $identifier]);
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();

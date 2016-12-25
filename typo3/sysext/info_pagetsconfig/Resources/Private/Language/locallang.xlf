@@ -63,6 +63,9 @@
 			<trans-unit id="written_tsconfig_lines">
 				<source>Lines:</source>
 			</trans-unit>
+			<trans-unit id="tsconf_noPageTSconfig">
+				<source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
