@@ -175,8 +175,6 @@ return [
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 8,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
-                'maxitems' => 99,
                 'treeConfig' => [
                     'expandAll' => true,
                     'parentField' => 'pid',

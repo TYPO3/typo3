@@ -76,7 +76,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'custom',
-                'maxitems' => 1000,
             ],
         ],
         'special_exclude_1' => [
@@ -87,7 +86,6 @@ return [
                 'renderType' => 'selectCheckBox',
                 'special' => 'exclude',
                 'size' => '25',
-                'maxitems' => 1000,
                 'autoSizeMax' => 50,
             ],
         ],
@@ -98,7 +96,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'explicitValues',
-                'maxitems' => 1000,
             ],
         ],
         'special_languages_1' => [
@@ -108,7 +105,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'languages',
-                'maxitems' => 1000,
             ],
         ],
         'special_modlistgroup_1' => [
@@ -120,7 +116,6 @@ return [
                 'special' => 'modListGroup',
                 'size' => '5',
                 'autoSizeMax' => 50,
-                'maxitems' => 100,
             ],
         ],
         'special_pagetypes_1' => [
@@ -132,7 +127,6 @@ return [
                 'special' => 'pagetypes',
                 'size' => '5',
                 'autoSizeMax' => 50,
-                'maxitems' => 20,
             ],
         ],
         'special_tables_1' => [
@@ -144,7 +138,6 @@ return [
                 'special' => 'tables',
                 'size' => '5',
                 'autoSizeMax' => 50,
-                'maxitems' => 100,
             ],
         ],
         'special_tables_2' => [
@@ -157,9 +150,6 @@ return [
                     ['dummy entry', '0']
                 ],
                 'special' => 'tables',
-                // @todo size & maxitems probably obsolete, see example below
-                'size' => 1,
-                'maxitems' => 1,
             ],
         ],
         'special_tables_3' => [
@@ -180,7 +170,6 @@ return [
                 'special' => 'modListUser',
                 'size' => '5',
                 'autoSizeMax' => 50,
-                'maxitems' => '100',
             ],
         ],
 

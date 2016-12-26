@@ -180,11 +180,10 @@ return [
         ],
         'select_2' => [
             'exclude' => 1,
-            'label' => 'select_2 default=1,3 renderType=selectCheckBox, maxitems=999',
+            'label' => 'select_2 default=1,3 renderType=selectCheckBox',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'maxitems' => 999,
                 'items' => [
                     ['foo 1', 1],
                     ['foo 2', 2],

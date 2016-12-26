@@ -274,7 +274,7 @@ return [
 
         'select_checkbox_1' => [
             'exclude' => 1,
-            'label' => 'select_checkbox_1, implicit maxitems=1',
+            'label' => 'select_checkbox_1',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -287,11 +287,11 @@ return [
         ],
         'select_checkbox_2' => [
             'exclude' => 1,
-            'label' => 'select_checkbox_2, maxitems=999',
+            'label' => 'select_checkbox_2, maxitems=1',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'maxitems' => 999,
+                'maxitems' => 1,
                 'items' => [
                     ['foo 1', 1],
                     ['foo 2', 2],
@@ -324,19 +324,14 @@ return [
                 'items' => [
                     ['foo 1', 1],
                     ['foo 2', 2],
-                    // @todo: divider needs better styling?
                     ['a divider', '--div--'],
                     ['foo 3', 3],
                     ['foo 4', 4],
                     ['foo 5', 5],
                     ['foo 6', 6],
                 ],
-                // @todo: inconsistent: maxitems must be set to allow multi selection, similar with type=group
-                'maxitems' => 999,
-                // @todo: size and autoSizeMax behave weird, at least lower bounds should be documented?
                 'size' => 3,
                 'autoSizeMax' => 5,
-                // @todo: multiple does not seem to have any effect at all? Can be commented without change.
                 'multiple' => true,
             ],
         ],
@@ -356,9 +351,6 @@ return [
                     ['foo 5', 5],
                     ['foo 6', 6],
                 ],
-                // @todo: exclusiveKeys without maxitems > 1 doesn't make sense
-                'maxitems' => 999,
-                // @todo: multiple does not seem to have any effect at all? Can be commented without change.
                 'multiple' => true,
                 'exclusiveKeys' => '1,2',
             ],
@@ -374,7 +366,6 @@ return [
                     ['foo 2', 2],
                     ['foo 3', 3],
                 ],
-                'maxitems' => 999,
                 'itemListStyle' => 'width:250px;background-color:#ffcccc;',
                 'selectedListStyle' => 'width:250px;background-color:#ccffcc;',
                 'size' => 2,
@@ -392,7 +383,6 @@ return [
                     ['foo 3', 3],
                     ['bar', 4],
                 ],
-                'maxitems' => 999,
                 'enableMultiSelectFilterTextfield' => true,
             ],
         ],
@@ -408,7 +398,6 @@ return [
                     ['foo 3', 3],
                     ['bar', 4],
                 ],
-                'maxitems' => 999,
                 'enableMultiSelectFilterTextfield' => true,
                 'multiSelectFilterItems' => [
                     ['', ''],
@@ -427,7 +416,6 @@ return [
                 'rootLevel' => 1,
                 'size' => 5,
                 'autoSizeMax' => 20,
-                'maxitems' => 999,
                 'wizards' => [
                     '_VERTICAL' => 1,
                     'edit' => [
@@ -478,7 +466,6 @@ return [
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'foreign_table_where' => 'ORDER BY pages.sorting',
-                'maxitems' => 999,
                 'size' => 20,
                 'items' => [
                     [ 'static from tca 4711', 4711 ],
@@ -580,7 +567,6 @@ return [
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => 'AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
                 'size' => 20,
-                'maxitems' => 999,
                 'treeConfig' => [
                     'parentField' => 'parent',
                     'appearance' => [
@@ -674,7 +660,6 @@ return [
                                                                 <numIndex index="1">2</numIndex>
                                                             </numIndex>
                                                         </items>
-                                                        <maxitems>1</maxitems>
                                                     </config>
                                                 </TCEforms>
                                             </select_checkxox_1>
@@ -730,7 +715,6 @@ return [
                                                         <size>5</size>
                                                         <autoSizeMax>5</autoSizeMax>
                                                         <minitems>0</minitems>
-                                                        <maxitems>999</maxitems>
                                                         <enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
                                                         <multiSelectFilterItems>
                                                             <numIndex index="0">
@@ -815,7 +799,6 @@ return [
                                                                         <renderType>selectTree</renderType>
                                                                         <foreign_table>pages</foreign_table>
                                                                         <foreign_table_where>ORDER BY pages.sorting</foreign_table_where>
-                                                                        <maxitems>999</maxitems>
                                                                         <size>20</size>
                                                                         <treeConfig>
                                                                             <parentField>pid</parentField>

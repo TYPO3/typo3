@@ -75,7 +75,6 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'maxitems' => 999,
             ],
         ],
         'group_db_2' => [
@@ -86,7 +85,6 @@ return [
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'show_thumbs' => true,
-                'maxitems' => 999,
             ],
         ],
         'group_db_9' => [
@@ -98,7 +96,6 @@ return [
                 'allowed' => 'be_users,be_groups',
                 'disable_controls' => 'allowedTables',
                 'show_thumbs' => true,
-                'maxitems' => 999,
             ],
         ],
         'group_db_3' => [
@@ -115,7 +112,6 @@ return [
                         'type' => 'suggest',
                     ],
                 ],
-                'maxitems' => 999,
             ],
         ],
         'group_db_8' => [
@@ -133,7 +129,6 @@ return [
                         'type' => 'suggest',
                     ],
                 ],
-                'maxitems' => 999,
             ],
         ],
         'group_db_4' => [
@@ -186,7 +181,6 @@ return [
                 'max_size' => 2000,
                 'show_thumbs' => true,
                 'size' => '3',
-                'maxitems' => 200,
                 'autoSizeMax' => 40,
             ],
         ],
@@ -197,7 +191,6 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users',
-                'maxitems' => 999,
                 'show_thumbs' => true,
             ],
         ],
@@ -214,11 +207,8 @@ return [
                 'show_thumbs' => true,
                 'size' => 3,
                 'uploadfolder' => 'uploads/tx_styleguide/',
-                // @todo: Documented feature has no effect since upload field in form is not shown anymore (since fal?)
                 'disable_controls' => 'upload',
                 'max_size' => 2000,
-                // @todo: does maxitems = 1 default hit here? YES!
-                'maxitems' => 999,
             ],
         ],
         'group_file_2' => [
@@ -263,7 +253,6 @@ return [
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'folder',
-                'maxitems' => 999,
             ],
         ],
 
@@ -275,7 +264,6 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'maxitems' => 999,
             ],
         ],
 
@@ -381,8 +369,6 @@ return [
                                                                         <internal_type>db</internal_type>
                                                                         <allowed>pages</allowed>
                                                                         <size>5</size>
-                                                                        <maxitems>10</maxitems>
-                                                                        <minitems>1</minitems>
                                                                         <show_thumbs>1</show_thumbs>
                                                                         <wizards>
                                                                             <suggest>
