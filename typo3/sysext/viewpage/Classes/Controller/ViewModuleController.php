@@ -108,6 +108,7 @@ class ViewModuleController extends ActionController
         $this->view->assign('widths', $this->getPreviewFrameWidths());
         $this->view->assign('url', $this->getTargetUrl());
         $this->view->assign('languages', $this->getPreviewLanguages());
+        $this->view->assign('pageTitle', $this->getPageTitle());
     }
 
     /**
@@ -301,6 +302,22 @@ class ViewModuleController extends ActionController
             }
         }
         return $languages;
+    }
+
+    /**
+     * Returns the page title
+     *
+     * @return string
+     */
+    protected function getPageTitle()
+    {
+        $pageIdToShow = (int)GeneralUtility::_GP('id');
+        $pageRecord = BackendUtility::getRecord('pages', $pageIdToShow);
+        $pageRecordTitle = is_array($pageRecord)
+            ? BackendUtility::getRecordTitle('pages', $pageRecord)
+            : '';
+
+        return $pageRecordTitle;
     }
 
     /**
