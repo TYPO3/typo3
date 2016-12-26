@@ -221,6 +221,12 @@ class CreateFolderController extends AbstractModule
         }
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        // CSH button
+        $helpButton = $buttonBar->makeHelpButton()
+            ->setFieldName('file_new')
+            ->setModuleName('xMOD_csh_corebe');
+        $buttonBar->addButton($helpButton);
+
         // Back
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()

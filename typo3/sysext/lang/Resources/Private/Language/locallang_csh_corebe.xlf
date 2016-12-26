@@ -695,6 +695,12 @@ xMOD_csh_corebe:filelist_clipboard</source>
 			<trans-unit id="file_edit.image_descr">
 				<source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
 			</trans-unit>
+			<trans-unit id="file_new.alttitle">
+				<source>Creating a new file or folder</source>
+			</trans-unit>
+			<trans-unit id="file_new.description">
+				<source>Create new files and folder inside the folder you have selected.</source>
+			</trans-unit>
 			<trans-unit id="file_newfolder.alttitle">
 				<source>Creating a new folder</source>
 			</trans-unit>
