@@ -596,7 +596,7 @@ page.10.value = HELLO WORLD!
             array_shift($rlArr);
         }
         $cEl = current($rlArr);
-        $pArray[$cEl['uid']] = htmlspecialchars($cEl['title']);
+        $pArray[$cEl['uid']] = $cEl['title'];
         array_shift($rlArr);
         if (!empty($rlArr)) {
             $key = $cEl['uid'] . '.';
