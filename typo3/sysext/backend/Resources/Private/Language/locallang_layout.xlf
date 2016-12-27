@@ -282,6 +282,9 @@
 			<trans-unit id="content_from_pid_title">
 				<source>Page uses content from this page: %s</source>
 			</trans-unit>
+			<trans-unit id="content_on_pid_title">
+				<source>This content is also shown on: %s</source>
+			</trans-unit>
 			<trans-unit id="pageIsExternalLinkMessage">
 				<source>Page is a link to the following external URL: %s</source>
 			</trans-unit>

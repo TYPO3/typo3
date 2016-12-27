@@ -644,8 +644,48 @@ class PageLayoutController
                 'state' => InfoboxViewHelper::STATE_INFO
             ]);
             $content .= $view->render();
+        } else {
+            $links = $this->getPageLinksWhereContentIsAlsoShownOn($this->pageinfo['uid']);
+            if (!empty($links)) {
+                $message = sprintf($lang->getLL('content_on_pid_title'), $links);
+                $view->assignMultiple([
+                    'title' => '',
+                    'message' => $message,
+                    'state' => InfoboxViewHelper::STATE_INFO
+                ]);
+                $content .= $view->render();
+            }
         }
         return $content;
+    }
+
+    /**
+     * Get all pages with links where the content of a page $pageId is also shown on
+     *
+     * @param int $pageId
+     * @return string
+     */
+    protected function getPageLinksWhereContentIsAlsoShownOn($pageId)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
+
+        $links = [];
+        $rows = $queryBuilder->execute()->fetchAll();
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $linkToPid = $this->local_linkThisScript(['id' => $row['uid']]);
+                $title = BackendUtility::getRecordTitle('pages', $row);
+                $link = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$row['uid'] . ')</a>';
+                $links[] = $link;
+            }
+        }
+        return implode(', ', $links);
     }
 
     /**
