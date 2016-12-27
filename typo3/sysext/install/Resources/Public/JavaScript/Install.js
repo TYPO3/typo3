@@ -895,17 +895,90 @@ $(function() {
 	});
 
 	TYPO3.Install.upgradeAnalysis.initialize();
+
+	TYPO3.Install.upgradeAnalysis.showFilterManager();
+
+	TYPO3.Install.upgradeAnalysis.hideDoumentationFile();
+	TYPO3.Install.upgradeAnalysis.restoreDocumentationFile();
 });
 
-
 TYPO3.Install.upgradeAnalysis = {
-	provideTags: function() {
+	provideTags: function () {
 		$('#tagsort_tags_container').tagSort({
 			selector: '.upgrade_analysis_item_to_filter'
 		});
 	},
 
-	initialize: function() {
+	initialize: function () {
 		TYPO3.Install.upgradeAnalysis.provideTags();
+	},
+
+	showFilterManager: function () {
+		$(document).on('click', '#t3js-showFilterManager', function () {
+			console.log('click!');
+			var classOpen = 'display_open';
+			if ($('#t3js-showFilterManager').hasClass(classOpen)) {
+				$('#t3js-showFilterManager').removeClass(classOpen);
+				$('.t3js-filterManager').html('');
+			} else {
+				$.ajax({
+					url: location.href + '&install[controller]=ajax&install[action]=filterManager',
+					cache: false,
+					success: function (res) {
+						var result = $(res).html();
+						$('.t3js-filterManager').html(result);
+						$('#t3js-showFilterManager').addClass(classOpen);
+					}
+				});
+			}
+		});
+	},
+
+	hideDoumentationFile: function () {
+		$(document).on('change', '.t3js-upgradeanalysis-ignore', function () {
+			var filepath = $(this).data('filepath');
+			if (this.checked) {
+				var token = $('#saveIgnoredItemsToken').html();
+				$(this).closest('.panel').fadeOut();
+				var postData = {
+					'install': {
+						'ignoreFile': filepath,
+						'token': token,
+						'action': 'saveIgnoredItems'
+					}
+				};
+				$.ajax({
+					method: 'POST',
+					data: postData,
+					url: location.href + '&install[controller]=ajax'
+				});
+			}
+		});
+	},
+
+	restoreDocumentationFile: function () {
+		$(document).on('change', '.t3js-upgradeanalysis-restore', function () {
+			var filepath = $(this).data('filepath');
+			if (this.checked) {
+				var token = $('#removeIgnoredItemsToken').html();
+				$(this).closest('.panel').fadeOut();
+				var postData = {
+					'install': {
+						'ignoreFile': filepath,
+						'token': token,
+						'action': 'removeIgnoredItems'
+					}
+				};
+				$.ajax({
+					method: 'POST',
+					data: postData,
+					url: location.href + '&install[controller]=ajax',
+					success: function (res) {
+						// append to restored panel
+						$('#upgrade_analysis_restored_files').append(res);
+					}
+				});
+			}
+		});
 	}
 };

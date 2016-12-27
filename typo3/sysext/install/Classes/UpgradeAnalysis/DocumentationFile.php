@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace TYPO3\CMS\Install\UpgradeAnalysis;
 
 /*
@@ -15,6 +16,8 @@ namespace TYPO3\CMS\Install\UpgradeAnalysis;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -22,6 +25,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DocumentationFile
 {
+    /**
+     * @var Registry
+     */
+    protected $registry;
 
     /**
      * @var array Unified array of used tags
@@ -29,13 +36,39 @@ class DocumentationFile
     protected $tagsTotal = [];
 
     /**
+     * all files handled in this Class need to reside inside the changelog dir
+     * this is a security measure to protect system files
+     *
+     * @var string
+     */
+    protected $changelogPath = '';
+
+    /**
+     * DocumentationFile constructor.
+     * @param Registry|null $registry
+     */
+    public function __construct(Registry $registry = null, $changelogDir = '')
+    {
+        $this->registry = $registry;
+        if ($this->registry === null) {
+            $this->registry = new Registry();
+        }
+        $this->changelogPath = $changelogDir !== '' ? $changelogDir : realpath(PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog');
+    }
+
+    /**
      * Traverse given directory, select files
      *
      * @param string $path
      * @return array file details of affected documentation files
+     * @throws \InvalidArgumentException
      */
     public function findDocumentationFiles(string $path): array
     {
+        if (strcasecmp($path, $this->changelogPath) < 0 || strpos($path, $this->changelogPath) === false) {
+            throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1485425530);
+        }
+
         $documentationFiles = [];
         $versionDirectories = scandir($path);
 
@@ -51,6 +84,29 @@ class DocumentationFile
     }
 
     /**
+     * Get main information from a .rst file
+     *
+     * @param string $file
+     * @return array
+     */
+    public function getListEntry(string $file): array
+    {
+        if (strcasecmp($file, $this->changelogPath) < 0 || strpos($file, $this->changelogPath) === false) {
+            throw new \InvalidArgumentException('the given file does not belong to the changelog dir. Aborting', 1485425531);
+        }
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $headline = $this->extractHeadline($lines);
+        $entry['headline'] = $headline;
+        $entry['filepath'] = $file;
+        $entry['tags'] = $this->extractTags($lines);
+        $entry['tagList'] = implode(',', $entry['tags']);
+        $entry['content'] = file_get_contents($file);
+        $issueNumber = $this->extractIssueNumber($headline);
+
+        return [$issueNumber => $entry];
+    }
+
+    /**
      * True if file should be considered
      *
      * @param array $fileInfo
@@ -58,7 +114,13 @@ class DocumentationFile
      */
     protected function isRelevantFile(array $fileInfo): bool
     {
-        return $fileInfo['extension'] === 'rst' && $fileInfo['filename'] !== 'Index';
+        $isRelevantFile = $fileInfo['extension'] === 'rst' && $fileInfo['filename'] !== 'Index';
+        // file might be ignored by users choice
+        if ($isRelevantFile && $this->isFileIgnoredByUsersChoice($fileInfo['basename'])) {
+            $isRelevantFile = false;
+        }
+
+        return $isRelevantFile;
     }
 
     /**
@@ -114,8 +176,7 @@ class DocumentationFile
     }
 
     /**
-     * First line is headline mark, skip it
-     * second line is headline
+     * Skip include line and markers, use the first line actually containing text
      *
      * @param array $lines
      * @return string
@@ -141,27 +202,7 @@ class DocumentationFile
     }
 
     /**
-     * Get main information from a .rst file
-     *
-     * @param string $file
-     * @return array
-     */
-    protected function getListEntry(string $file): array
-    {
-        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $headline = $this->extractHeadline($lines);
-        $entry['headline'] = $headline;
-        $entry['filepath'] = $file;
-        $entry['tags'] = $this->extractTags($lines);
-        $entry['tagList'] = implode(',', $entry['tags']);
-        $entry['content'] = file_get_contents($file);
-        $issueNumber = $this->extractIssueNumber($headline);
-
-        return [$issueNumber => $entry];
-    }
-
-    /**
-     * True if files within directory should be considered
+     * True for real directories and a valid version
      *
      * @param string $versionDirectory
      * @param string $version
@@ -226,5 +267,29 @@ class DocumentationFile
     public function getTagsTotal(): array
     {
         return $this->tagsTotal;
+    }
+
+    /**
+     * whether that file has been removed from users view
+     *
+     * @param string $filename
+     * @return bool
+     */
+    protected function isFileIgnoredByUsersChoice(string $filename): bool
+    {
+        $isFileIgnoredByUsersChoice = false;
+
+        $ignoredFiles = $this->registry->get('upgradeAnalysisIgnoreFilter', 'ignoredDocumentationFiles');
+        if (is_array($ignoredFiles)) {
+            foreach ($ignoredFiles as $filePath) {
+                if ($filePath !== null && strlen($filePath) > 0) {
+                    if (strpos($filePath, $filename) !== false) {
+                        $isFileIgnoredByUsersChoice = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return $isFileIgnoredByUsersChoice;
     }
 }

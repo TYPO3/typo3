@@ -46,6 +46,9 @@ class AjaxController extends AbstractController
         'environmentStatus',
         'tcaExtTablesCheck',
         'tcaMigrationsCheck',
+        'filterManager',
+        'saveIgnoredItems',
+        'removeIgnoredItems',
     ];
 
     /**

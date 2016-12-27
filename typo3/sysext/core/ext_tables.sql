@@ -174,7 +174,7 @@ CREATE TABLE sys_registry (
 	uid int(11) unsigned NOT NULL auto_increment,
 	entry_namespace varchar(128) DEFAULT '' NOT NULL,
 	entry_key varchar(128) DEFAULT '' NOT NULL,
-	entry_value blob,
+	entry_value mediumblob,
 	PRIMARY KEY (uid),
 	UNIQUE KEY entry_identifier (entry_namespace,entry_key)
 );

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace TYPO3\CMS\Install\Tests\Unit\UpgradeAnalysis;
 
 /*
@@ -17,11 +18,12 @@ namespace TYPO3\CMS\Install\Tests\Unit\UpgradeAnalysis;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 
 class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
-
     /**
      * @var DocumentationFile
      */
@@ -31,6 +33,11 @@ class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\Unit
      * @var  vfsStreamDirectory
      */
     protected $docRoot;
+
+    /**
+     * @var Registry
+     */
+    protected $registry;
 
     /**
      * set up test environment
@@ -87,7 +94,41 @@ class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\Unit
         ];
 
         $this->docRoot = vfsStream::setup('root', null, $structure);
-        $this->documentationFileService = new DocumentationFile();
+
+        $this->registry = $this->prophesize(Registry::class);
+        $this->documentationFileService = new DocumentationFile($this->registry->reveal(),
+            vfsStream::url('root/Changelog'));
+    }
+
+    /**
+     * dataprovider with invalid dir path. They should raise an exception and don't process.
+     * @return array
+     */
+    public function invalidDirProvider()
+    {
+        return [
+            [
+                'root' => '/'
+            ],
+            [
+                'etc' => '/etc'
+            ],
+            [
+                'etc/passwd' => '/etc/passwd'
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidDirProvider
+     * @test
+     */
+    public function findDocumentationFilesThrowsExceptionIfPathIsNotInGivenChangelogDir(string $path)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1485425530);
+        $documentationFileService = new DocumentationFile($this->registry->reveal());
+        $documentationFileService->findDocumentationFiles($path);
     }
 
     /**
@@ -116,5 +157,41 @@ class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\Unit
         ];
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
         self::assertEquals($expected, $result['2.0'][98574]['tags']);
+    }
+
+    /**
+     * @test
+     */
+    public function filesAreFilteredByUsersChoice()
+    {
+        $ignoredFiles = ['vfs://root/Changelog/1.2/Breaking-12345-Issue.rst'];
+        $this->registry->get('upgradeAnalysisIgnoreFilter', 'ignoredDocumentationFiles',
+            Argument::any())->willReturn($ignoredFiles);
+
+        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
+        self::assertArrayNotHasKey(12345, $result['1.2']);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidFilesProvider(): array
+    {
+        return [
+            ['/etc/passwd' => '/etc/passwd'],
+            ['root' => '/'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidFilesProvider
+     * @param string $path
+     * @test
+     */
+    public function getListEntryThrowsExceptionForFilesNotBelongToChangelogDir(string $path)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1485425531);
+        $this->documentationFileService->getListEntry($path);
     }
 }

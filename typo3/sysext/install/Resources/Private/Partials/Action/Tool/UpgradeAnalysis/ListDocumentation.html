@@ -1,0 +1,15 @@
+<f:section name="Main">
+    <f:for each="{files}" as="versionArray" key="version">
+        <f:if condition="{versionArray -> f:count()} > 0">
+            <h2>{version}</h2>
+            <div class="panel-group" role="tablist" aria-multiselectable="false">
+                <f:for each="{versionArray}" as="fileArray" key="issueNumber">
+
+                    <f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
+                              arguments="{issueNumber:issueNumber, fileArray:fileArray}"/>
+
+                </f:for>
+            </div>
+        </f:if>
+    </f:for>
+</f:section>
