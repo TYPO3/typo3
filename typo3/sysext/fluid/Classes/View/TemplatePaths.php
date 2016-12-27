@@ -104,7 +104,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         } else {
             if (empty($this->typoScript)) {
                 $this->typoScript = GeneralUtility::removeDotsFromTS(
-                    $this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)
+                    (array)$this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)
                 );
             }
             $signature = str_replace('_', '', $extensionKey);
