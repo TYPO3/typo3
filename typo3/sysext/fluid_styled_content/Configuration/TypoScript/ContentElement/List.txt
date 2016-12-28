@@ -1,0 +1,15 @@
+# General Plugin:
+# This is the default rendering definition for plugins.
+#
+# CType: list
+
+tt_content.list =< lib.fluidContent
+tt_content.list {
+    templateName = List
+    stdWrap {
+        editIcons = tt_content: header [header_layout], list_type, layout, select_key, pages [recursive]
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.list
+        }
+    }
+}

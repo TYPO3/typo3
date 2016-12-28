@@ -1,0 +1,9 @@
+# Divider:
+# This element inserts a visual divider, which is by default a horizontal line.
+#
+# CType: div
+
+tt_content.div =< lib.fluidContent
+tt_content.div {
+    templateName = Div
+}

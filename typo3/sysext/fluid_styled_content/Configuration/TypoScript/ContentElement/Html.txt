@@ -1,0 +1,16 @@
+# Plain HTML:
+# With this element you can output raw HTML code on the page.
+#
+# CType: html
+
+tt_content.html =< lib.fluidContent
+tt_content.html {
+    templateName = Html
+    stdWrap {
+        editIcons = tt_content: bodytext
+        editIcons {
+            beforeLastTag = 1
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.html
+        }
+    }
+}

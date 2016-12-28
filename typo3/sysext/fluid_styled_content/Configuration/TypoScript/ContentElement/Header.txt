@@ -1,0 +1,16 @@
+# Header Only:
+# Adds a header only.
+#
+# CType: header
+
+tt_content.header =< lib.fluidContent
+tt_content.header {
+    templateName = Header
+    stdWrap {
+        editIcons = tt_content: header [header_layout|header_link], subheader, date
+        editIcons {
+            beforeLastTag = 1
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.header
+        }
+    }
+}

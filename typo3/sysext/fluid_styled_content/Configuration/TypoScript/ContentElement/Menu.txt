@@ -1,0 +1,33 @@
+# Special Menus:
+# Creates a menu of pages, sitemap or other special menus.
+#
+# CType: menu
+
+tt_content.menu =< lib.fluidContent
+tt_content.menu {
+    templateName = Menu
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\SplitProcessor
+        10 {
+            if.isTrue.field = pages
+            fieldName = pages
+            delimiter = ,
+            removeEmptyEntries = 1
+            filterIntegers = 1
+            filterUnique = 1
+            as = pageUids
+        }
+        20 < .10
+        20 {
+            if.isTrue.field = selected_categories
+            fieldName = selected_categories
+            as = categoryUids
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], menu_type, pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

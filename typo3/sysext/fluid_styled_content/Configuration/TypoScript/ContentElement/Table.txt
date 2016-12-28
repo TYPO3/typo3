@@ -1,0 +1,32 @@
+# Table:
+# A simple table.
+#
+# CType: table
+
+tt_content.table =< lib.fluidContent
+tt_content.table {
+    templateName = Table
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor
+        10 {
+            fieldName = bodytext
+            fieldDelimiter.char.cObject = TEXT
+            fieldDelimiter.char.cObject {
+                field = table_delimiter
+            }
+            fieldEnclosure.char.cObject = TEXT
+            fieldEnclosure.char.cObject {
+                field = table_enclosure
+            }
+            maximumColumns.field = cols
+            as = table
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], bodytext, [table_caption|cols|table_header_position|table_tfoot]
+        editIcons {
+            beforeLastTag = 1
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.table
+        }
+    }
+}

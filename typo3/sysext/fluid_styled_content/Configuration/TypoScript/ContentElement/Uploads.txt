@@ -1,0 +1,23 @@
+# File Links:
+# Makes a list of files for download.
+#
+# CType: uploads
+
+tt_content.uploads =< lib.fluidContent
+tt_content.uploads {
+    templateName = Uploads
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+        10 {
+            references.fieldName = media
+            collections.field = file_collections
+            sorting.field = filelink_sorting
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], media, file_collections, filelink_sorting, [filelink_size|uploads_description|uploads_type]
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.uploads
+        }
+    }
+}
