@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -327,6 +328,10 @@ class ElementInformationController
             if ($this->type === 'file') {
                 $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
                 $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
+                if ($this->fileObject->getType() === AbstractFile::FILETYPE_IMAGE) {
+                    $extraFields['width'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.width'));
+                    $extraFields['height'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.height'));
+                }
             }
             $extraFields['storage'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'));
             $extraFields['folder'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder'));
@@ -354,8 +359,12 @@ class ElementInformationController
                     $rowValue = $resourceObject->getStorage()->getName();
                 } elseif ($name === 'folder') {
                     $rowValue = $resourceObject->getParentFolder()->getReadablePath();
+                } elseif ($name === 'width') {
+                    $rowValue = $this->fileObject->getProperty('width') . 'px';
+                } elseif ($name === 'height') {
+                    $rowValue = $this->fileObject->getProperty('height') . 'px';
                 }
-            } elseif (in_array($name, ['creation_date', 'modification_date'], true)) {
+            } elseif ($name === 'creation_date' || $name === 'modification_date') {
                 $rowValue = BackendUtility::datetime($this->row[$name]);
             } else {
                 $rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
