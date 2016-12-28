@@ -57,6 +57,12 @@
 			<trans-unit id="LGL.image">
 				<source>Image:</source>
 			</trans-unit>
+			<trans-unit id="LGL.width">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="LGL.height">
+				<source>Height</source>
+			</trans-unit>
 			<trans-unit id="LGL.caption">
 				<source>Caption:</source>
 			</trans-unit>
