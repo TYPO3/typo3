@@ -10,5 +10,4 @@ if (TYPO3_MODE === 'BE') {
         },
         '_CLI_lowlevel'
     ];
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['versions'] = [\TYPO3\CMS\Lowlevel\VersionsCommand::class];
 }

@@ -46,5 +46,9 @@ return [
     'cleanup:flexforms' => [
         'class' => \TYPO3\CMS\Lowlevel\Command\CleanFlexFormsCommand::class,
         'user' => '_cli_lowlevel'
+    ],
+    'cleanup:versions' => [
+        'class' => \TYPO3\CMS\Lowlevel\Command\WorkspaceVersionRecordsCommand::class,
+        'user' => '_cli_lowlevel'
     ]
 ];
