@@ -138,7 +138,7 @@ class ListController extends AbstractModuleController
                     'composerMode.title',
                     'extensionmanager'
                 ),
-                FlashMessage::WARNING
+                FlashMessage::INFO
             );
         }
     }
