@@ -34,22 +34,42 @@ class LocalesTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @test
+     * @return array
      */
-    public function browserLanguageDetectionWorks()
+    public function browserLanguageDetectionWorksDataProvider(): array
     {
-        $browserPreferredLanguageHeader = 'de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4';
-        $detectedLanguage = $this->subject->getPreferredClientLanguage($browserPreferredLanguageHeader);
-        $this->assertSame('de', $detectedLanguage);
+        return [
+            'german' => [
+                'de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4',
+                'de',
+            ],
+            'english as default' => [
+                'en-US;q=0.8,en;q=0.6;de-DE,de;q=0.4',
+                'default',
+            ],
+            'chinese simplified' => [
+                'zh-CN,en-US;q=0.5,en;q=0.3',
+                'ch'
+            ],
+            'chinese simplified han' => [
+                'zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3',
+                'ch'
+            ],
+        ];
     }
 
     /**
+     * @param string $acceptLanguageHeader
+     * @param string $expected
+     *
      * @test
+     * @dataProvider browserLanguageDetectionWorksDataProvider
      */
-    public function englishMayBeDefaultLanguage()
+    public function browserLanguageDetectionWorks(string $acceptLanguageHeader, string $expected)
     {
-        $browserPreferredLanguageHeader = 'en-US;q=0.8,en;q=0.6;de-DE,de;q=0.4';
-        $detectedLanguage = $this->subject->getPreferredClientLanguage($browserPreferredLanguageHeader);
-        $this->assertSame('default', $detectedLanguage);
+        $detectedLanguage = $this->subject->getPreferredClientLanguage(
+            $acceptLanguageHeader
+        );
+        $this->assertSame($expected, $detectedLanguage);
     }
 }

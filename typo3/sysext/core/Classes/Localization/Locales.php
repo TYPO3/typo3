@@ -111,7 +111,8 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         'vi' => 'vn', // Vietnamese
         'zh' => 'hk', // Chinese (China)
         'zh_CN' => 'ch', // Chinese (Simplified)
-        'zh_HK' => 'hk'
+        'zh_HK' => 'hk', // Chinese (Simplified Hong Kong)
+        'zh_Hans_CN' => 'ch' // Chinese (Simplified Han)
     ];
 
     /**
@@ -215,7 +216,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
     public function getPreferredClientLanguage($languageCodesList)
     {
         $allLanguageCodesFromLocales = ['en' => 'default'];
-        foreach ($this->getIsoMapping() as $typo3Lang => $isoLang) {
+        foreach ($this->isoReverseMapping as $isoLang => $typo3Lang) {
             $isoLang = str_replace('_', '-', $isoLang);
             $allLanguageCodesFromLocales[$isoLang] = $typo3Lang;
         }
