@@ -3,6 +3,54 @@
 	<file t3:id="1427832976" source-language="en" datatype="plaintext" original="messages" date="2014-02-07T20:22:32Z" product-name="frontend">
 		<header/>
 		<body>
+			<trans-unit id="tt_content.asset_references">
+				<source>Media elements</source>
+			</trans-unit>
+			<trans-unit id="tt_content.asset_references.addFileReference">
+				<source>Add media file</source>
+			</trans-unit>
+			<trans-unit id="tt_content.palette.gallerySettings">
+				<source>Gallery Settings</source>
+			</trans-unit>
+			<trans-unit id="tt_content.palette.mediaAdjustments">
+				<source>Media Adjustments</source>
+			</trans-unit>
+			<trans-unit id="tt_content.palette.mediaAdjustments.imagewidth">
+				<source>Width of each element (px)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.palette.mediaAdjustments.imageheight">
+				<source>Height of each element (px)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.palette.mediaAdjustments.imageborder">
+				<source>Border around each element</source>
+			</trans-unit>
+			<trans-unit id="tt_content.uploads_description">
+				<source>Display description</source>
+			</trans-unit>
+			<trans-unit id="tt_content.uploads_type">
+				<source>Display file/icon/thumbnail</source>
+			</trans-unit>
+			<trans-unit id="tt_content.uploads_type.0">
+				<source>Only file name</source>
+			</trans-unit>
+			<trans-unit id="tt_content.uploads_type.1">
+				<source>File name and file extension icon</source>
+			</trans-unit>
+			<trans-unit id="tt_content.uploads_type.2">
+				<source>File name and thumbnail (if possible)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_class">
+				<source>Table style</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_class.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_class.striped">
+				<source>Striped</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_class.bordered">
+				<source>Bordered</source>
+			</trans-unit>
 			<trans-unit id="tt_content.table_caption">
 				<source>Table caption</source>
 			</trans-unit>

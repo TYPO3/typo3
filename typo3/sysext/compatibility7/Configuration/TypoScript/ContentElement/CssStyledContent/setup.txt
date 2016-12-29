@@ -1,0 +1,272 @@
+#
+# Menu configuration for css_styled_content
+#
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu = TEXT
+    10.cObject.menu.value = <nav id="c{field:uid}"
+    30.cObject.menu = TEXT
+    30.cObject.menu.value = >|</nav>
+}
+
+
+#
+# cType: menu
+#
+tt_content.menu = COA
+tt_content.menu {
+    10 = < lib.stdheader
+    20 = CASE
+    20 {
+        key.field = menu_type
+        # "Menu of these pages"
+        default = HMENU
+        default {
+            special = list
+            special.value.field = pages
+            stdWrap {
+                prepend = COA
+                prepend {
+                    stdWrap {
+                        if.isTrue.field = accessibility_bypass
+                    }
+                    10 = LOAD_REGISTER
+                    10 {
+                        accessibility_bypass_text = TEXT
+                        accessibility_bypass_text {
+                            field = accessibility_bypass_text
+                        }
+                    }
+                    20 = CONTENT
+                    20 {
+                        table = tt_content
+                        select {
+                            pidInList = this
+                            orderBy = sorting
+                            where {
+                                dataWrap = sorting>{field:sorting}
+                            }
+                            languageField = sys_language_uid
+                            max = 1
+                        }
+                        renderObj = TEXT
+                        renderObj {
+                            required = 1
+                            data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:menu.bypassNavigation
+                            override.data = register:accessibility_bypass_text
+                            trim = 1
+                            htmlSpecialChars = 1
+                            typolink {
+                                parameter {
+                                    field = pid
+                                }
+                                section {
+                                    field = uid
+                                }
+                            }
+                            wrap = <li class="csc-nav-bypass">|</li>
+                        }
+                    }
+                    30 = RESTORE_REGISTER
+                }
+                outerWrap = <ul class="csc-menu csc-menu-def">|</ul>
+                required = 1
+            }
+            1 = TMENU
+            1 {
+                target < lib.parseTarget
+                target =
+                target.override = {$PAGE_TARGET}
+                NO {
+                    stdWrap.htmlSpecialChars = 1
+                    wrapItemAndSub = <li>|</li>
+                    ATagTitle.field = description // title
+                }
+            }
+        }
+        # "Menu of subpages to these pages"
+        1 < .default
+        1 {
+            special = directory
+            stdWrap {
+                outerWrap = <ul class="csc-menu csc-menu-1">|</ul>
+            }
+        }
+        # "Sitemap - liststyle"
+        2 = HMENU
+        2 {
+            stdWrap < tt_content.menu.20.default.stdWrap
+            stdWrap {
+                outerWrap = <div class="csc-sitemap">|</div>
+            }
+            1 = TMENU
+            1 {
+                target < lib.parseTarget
+                target =
+                target.override = {$PAGE_TARGET}
+                expAll = 1
+                wrap = <ul>|</ul>
+                NO {
+                    stdWrap.htmlSpecialChars = 1
+                    wrapItemAndSub = <li>|</li>
+                    ATagTitle.field = description // title
+                }
+            }
+            2 < .1
+            3 < .1
+            4 < .1
+            5 < .1
+            6 < .1
+            7 < .1
+        }
+        # "Section index (pagecontent w/Index checked - liststyle)"
+        3 < .default
+        3 {
+            special {
+                value {
+                    override {
+                        data = page:uid
+                        if {
+                            isFalse.field = pages
+                        }
+                    }
+                }
+            }
+            stdWrap {
+                outerWrap = <ul class="csc-menu csc-menu-3">|</ul>
+            }
+            1 = TMENU
+            1 {
+                sectionIndex = 1
+                sectionIndex.type = header
+                NO.wrapItemAndSub = <li class="csc-section">|</li>
+            }
+        }
+        # "Menu of subpages to these pages (with abstract)"
+        4 < .1
+        4 {
+            stdWrap {
+                prepend.20.renderObj.wrap = <dt class="csc-nav-bypass">|</dt><dd>&nbsp;</dd>
+                outerWrap = <dl class="csc-menu csc-menu-4">|</dl>
+            }
+            1.NO {
+                wrapItemAndSub >
+                linkWrap = <dt>|</dt>
+                after {
+                    cObject = TEXT
+                    cObject {
+                        data = field : abstract // field : description // field : subtitle
+                        htmlSpecialChars = 1
+                        required = 1
+                    }
+                    ifBlank = &nbsp;
+                    wrap = <dd>|</dd>
+                }
+                ATagTitle.field = description // title
+            }
+        }
+        # "Recently updated pages"
+        5 < .default
+        5 {
+            stdWrap {
+                outerWrap = <ul class="csc-menu csc-menu-5">|</ul>
+            }
+            special = updated
+            special {
+                maxAge = 3600*24*7
+                excludeNoSearchPages = 1
+            }
+        }
+        # "Related pages (based on keywords)"
+        6 < .default
+        6 {
+            stdWrap {
+                outerWrap = <ul class="csc-menu csc-menu-6">|</ul>
+            }
+            special = keywords
+            special {
+                excludeNoSearchPages = 1
+            }
+        }
+        # "Menu of subpages to these pages + sections - liststyle"
+        7 < .1
+        7 {
+            stdWrap {
+                outerWrap = <ul class="csc-menu csc-menu-7">|</ul>
+            }
+            1.expAll = 1
+            2 < .1
+            2 {
+                sectionIndex = 1
+                sectionIndex.type = header
+                wrap = <ul>|</ul>
+                NO.wrapItemAndSub = <li class="csc-section">|</li>
+            }
+        }
+        # "Sitemaps of selected pages - liststyle"
+        8 < .2
+        8 {
+            special = directory
+            special.value.field = pages
+        }
+        # Menu of categorized pages
+        categorized_pages < .default
+        categorized_pages {
+            special = categories
+            special.value.field = selected_categories
+            special.relation.field = category_field
+            special.sorting = title
+            special.order = asc
+            stdWrap {
+                outerWrap = <ul class="csc-menu csc-menu-categorized-pages">|</ul>
+            }
+        }
+        # Menu of categorized content elements
+        categorized_content = RECORDS
+        categorized_content {
+            categories.field = selected_categories
+            categories.relation.field = category_field
+            tables = tt_content
+            conf.tt_content = TEXT
+            conf.tt_content {
+                field = header
+                typolink.parameter = {field:pid}#{field:uid}
+                typolink.parameter.insertData = 1
+                wrap = <li>|</li>
+            }
+            wrap = <ul>|</ul>
+        }
+    }
+    20.stdWrap {
+        wrap {
+            cObject = COA
+            cObject {
+                10 = TEXT
+                10 {
+                    field = accessibility_title
+                    htmlSpecialChars = 1
+                    dataWrap = <map id="map{field:uid}" title="|">
+                    dataWrap {
+                        override = <map name="map{field:uid}" title="|">
+                        override {
+                            if {
+                                isFalse.data = TSFE:xhtmlDoctype
+                            }
+                        }
+                    }
+                }
+                20 = TEXT
+                20 {
+                    value = |</map>
+                }
+            }
+            if {
+                isTrue {
+                    field = accessibility_title
+                }
+            }
+        }
+        editIcons = tt_content: menu_type, pages
+        editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.menuSitemap
+        prefixComment = 2 | Menu/Sitemap element:
+    }
+}

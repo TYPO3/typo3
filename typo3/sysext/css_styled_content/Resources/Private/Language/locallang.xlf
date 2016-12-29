@@ -66,11 +66,11 @@
 			<trans-unit id="eIcon.images">
 				<source>Edit images</source>
 			</trans-unit>
+			<trans-unit id="eIcon.textMedia">
+				<source>Edit textmedia</source>
+			</trans-unit>
 			<trans-unit id="eIcon.caption">
 				<source>Edit image caption</source>
-			</trans-unit>
-			<trans-unit id="eIcon.caption_position">
-				<source>Edit image caption alignment</source>
 			</trans-unit>
 			<trans-unit id="eIcon.bullets">
 				<source>Edit bullet list</source>

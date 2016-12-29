@@ -1,0 +1,13 @@
+# Plain HTML:
+# With this element you can output raw HTML code on the page.
+#
+# CType: html
+
+tt_content.html = TEXT
+tt_content.html {
+    field = bodytext
+    editIcons = tt_content:bodytext
+    editIcons.beforeLastTag = 1
+    editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.html
+    prefixComment = 2 | Raw HTML content:
+}

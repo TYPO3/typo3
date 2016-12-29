@@ -1,43 +1,16 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// Disable image positions that make no sense on CType=image (it leaves just "above left", "center" and "right")
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-	TCEFORM.tt_content.imageorient.types.image.removeItems = 8,9,10,17,18,25,26
-');
-
 // Mark the delivered TypoScript templates as "content rendering template"
-$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/';
-$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/Configuration/TypoScript/v7/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/Configuration/TypoScript/';
 
-// Register for hook to show preview of tt_content element of CType="image" in page module
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['image'] =
-    \TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\ImagePreviewRenderer::class;
-
-// Register for hook to show preview of tt_content element of CType="textpic" in page module
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['textpic'] =
-    \TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\TextpicPreviewRenderer::class;
-
-// Register for hook to show preview of tt_content element of CType="text" in page module
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['text'] =
-    \TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\TextPreviewRenderer::class;
-
-if (TYPO3_MODE === 'BE') {
-    call_user_func(function () {
-        // Get the extension configuration
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['css_styled_content'], ['allowed_classes' => false]);
-
-        if (!isset($extConf['loadContentElementWizardTsConfig']) || (int)$extConf['loadContentElementWizardTsConfig'] === 1) {
-            // Include new content elements to modWizards
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/PageTSconfig/NewContentElementWizard.ts">');
-        }
-
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)
-            ->connect(
-                \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
-                'afterExtensionConfigurationWrite',
-                \TYPO3\CMS\CssStyledContent\Hooks\TcaCacheClearing::class,
-                'clearTcaCache'
-            );
-    });
-}
+// TYPO3 CMS 8 is the last version that supports CSS styled content.
+// This extension will only receive security updates in the future,
+// and will finally be removed from the TYPO3 Core in CMS 9.
+//
+// Fluid styled content and CSS styled content are now sharing the same featureset
+// so you can now benefit from more flexible templates and adjustments without
+// leaving any nessesary features behind.
+\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+    'The core extension CSS styled content has been deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9.'
+);

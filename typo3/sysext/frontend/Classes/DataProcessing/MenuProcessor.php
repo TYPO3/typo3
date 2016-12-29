@@ -93,6 +93,8 @@ class MenuProcessor implements DataProcessorInterface
         'maxItems.',
         'begin',
         'begin.',
+        'alternativeSortingField',
+        'alternativeSortingField.',
         'excludeUidList',
         'excludeUidList.',
         'excludeDoktypes',
@@ -221,6 +223,11 @@ class MenuProcessor implements DataProcessorInterface
     /**
      * @var string
      */
+    protected $menuAlternativeSortingField;
+
+    /**
+     * @var string
+     */
     protected $menuTargetVariableName;
 
     /**
@@ -342,6 +349,7 @@ class MenuProcessor implements DataProcessorInterface
                 $this->menuConfig[$i . '.']['stdWrap.']['wrap'] = ',"children": [|]';
             }
             $this->menuConfig[$i . '.']['expAll'] = $this->menuExpandAll;
+            $this->menuConfig[$i . '.']['alternativeSortingField'] = $this->menuAlternativeSortingField;
             $this->menuConfig[$i . '.']['NO'] = '1';
             $this->menuConfig[$i . '.']['NO.'] = $this->menuLevelConfig;
             if ($this->menuIncludeSpacer) {
@@ -390,6 +398,7 @@ class MenuProcessor implements DataProcessorInterface
         $this->menuIncludeSpacer = (int)$this->getConfigurationValue('includeSpacer');
         $this->menuTargetVariableName = $this->getConfigurationValue('as');
         $this->menuTitleField = $this->getConfigurationValue('titleField');
+        $this->menuAlternativeSortingField = $this->getConfigurationValue('alternativeSortingField');
 
         // Validate Configuration
         $this->validateConfiguration();

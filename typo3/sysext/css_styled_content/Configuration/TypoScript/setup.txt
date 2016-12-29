@@ -1,0 +1,156 @@
+# Include setup
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/Helper/ParseFunc.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/Helper/StandardHeader.txt">
+
+# default link target for external URLs
+config.extTarget = {$styles.content.links.extTarget}
+
+# Content element rendering
+tt_content.stdWrap {
+    innerWrap.cObject = CASE
+    innerWrap.cObject {
+        key.field = frame_class
+        default = COA
+        default {
+            10 = TEXT
+            10 {
+                cObject = CASE
+                cObject {
+                    key.field = CType
+                    default = TEXT
+                    default {
+                        value = <div id="c{field:uid}"
+                    }
+                    div = TEXT
+                    div {
+                        value = <div
+                    }
+                }
+                insertData = 1
+            }
+            20 = COA
+            20 {
+                # Create default class for content
+                10 = TEXT
+                10 {
+                    value = csc-frame csc-frame-default
+                    required = 1
+                    noTrimWrap = || |
+                }
+                # Create class for space before content
+                20 = TEXT
+                20 {
+                    field = space_before_class
+                    required = 1
+                    noTrimWrap = |csc-space-before-| |
+                }
+                # Create class for space after content
+                30 = TEXT
+                30 {
+                    field = space_after_class
+                    required = 1
+                    noTrimWrap = |csc-space-after-| |
+                }
+                stdWrap {
+                    trim = 1
+                    noTrimWrap = | class="|"|
+                    required = 1
+                }
+            }
+            30 = TEXT
+            30 {
+                cObject = CASE
+                cObject {
+                    key.field = CType
+
+                    default = TEXT
+                    default {
+                        value = >|</div>
+                    }
+                }
+            }
+        }
+        ruler-before =< tt_content.stdWrap.innerWrap.cObject.default
+        ruler-before.20.10.value = csc-frame csc-frame-ruler-before
+        ruler-after =< tt_content.stdWrap.innerWrap.cObject.default
+        ruler-after.20.10.value = csc-frame csc-frame-ruler-after
+        indent =< tt_content.stdWrap.innerWrap.cObject.default
+        indent.20.10.value = csc-frame csc-frame-indent
+        indent-left =< tt_content.stdWrap.innerWrap.cObject.default
+        indent-left.20.10.value = csc-frame csc-frame-indent-left
+        indent-right =< tt_content.stdWrap.innerWrap.cObject.default
+        indent-right.20.10.value = csc-frame csc-frame-indent-right
+        none = COA
+        none {
+            10 = TEXT
+            10 {
+                value = <a id="c{field:uid}"></a>
+                insertData = 1
+            }
+            # Create div with class for space before content
+            20 = TEXT
+            20 {
+                field = space_before_class
+                required = 1
+                wrap = <div class="csc-space-before-|"></div>
+            }
+            30 = TEXT
+            30 {
+                value = |
+            }
+            # Create div with class for space after content
+            40 = TEXT
+            40 {
+                field = space_after_class
+                required = 1
+                wrap = <div class="csc-space-after-|"></div>
+            }
+        }
+    }
+    innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:label.toTop}</a></p>
+    innerWrap2.insertData = 1
+    innerWrap2.fieldRequired = linkToTop
+    prepend = TEXT
+    prepend.dataWrap = <a id="c{field:_LOCALIZED_UID}"></a>
+    prepend.if.isTrue.field = _LOCALIZED_UID
+    editPanel = 1
+    editPanel {
+        allow = move,new,edit,hide,delete
+        line = 5
+        label = %s
+        onlyCurrentPid = 1
+        previewBorder = 4
+        edit.displayRecord = 1
+    }
+    prefixComment = 1 | CONTENT ELEMENT, uid:{field:uid}/{field:CType}
+}
+
+
+# Typical content elements
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Bullets.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Div.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Header.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Html.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Image.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/List.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Shortcut.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Table.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Text.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Textpic.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Textmedia.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/Uploads.txt">
+
+
+# Menu content elements
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElementPartials/Menu.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuAbstract.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuCategorizedContent.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuCategorizedPages.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuPages.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuSubpages.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuSection.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuSectionPages.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuRecentlyUpdated.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuRelatedPages.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuSitemap.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/ContentElement/MenuSitemapPages.txt">

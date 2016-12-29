@@ -1,0 +1,16 @@
+# Regular Text Element:
+# A regular text element with header and bodytext fields.
+#
+# CType: text
+
+tt_content.text =< lib.fluidContent
+tt_content.text {
+    templateName = Text
+    stdWrap {
+        editIcons = tt_content: bodytext
+        editIcons {
+            beforeLastTag = 1
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.html
+        }
+    }
+}

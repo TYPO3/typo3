@@ -459,7 +459,7 @@ class PagePositionMap
                     } elseif ($columnConfig['colPos']) {
                         $table .= '<em>' . $this->wrapColumnHeader($this->getLanguageService()->getLL('noAccess'), '', '') . '</em>';
                     } else {
-                        $table .= '<em>' . $this->wrapColumnHeader(($columnConfig['name']?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '') . '</em>';
+                        $table .= '<em>' . $this->wrapColumnHeader(($this->getLanguageService()->sL($columnConfig['name']) ?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '') . '</em>';
                     }
                     $table .= '</p>';
                     // Render lines

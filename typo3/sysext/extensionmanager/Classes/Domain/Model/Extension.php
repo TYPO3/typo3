@@ -55,6 +55,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         4 => 'test',
         5 => 'obsolete',
         6 => 'excludeFromUpdates',
+        7 => 'deprecated',
         999 => 'n/a'
     ];
 

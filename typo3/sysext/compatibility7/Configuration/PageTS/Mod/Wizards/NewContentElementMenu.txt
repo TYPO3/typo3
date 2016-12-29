@@ -1,0 +1,17 @@
+#
+# Define content elements in "New Content Element Wizard"
+#
+mod.wizards.newContentElement.wizardItems {
+    menu.elements {
+        menu {
+            iconIdentifier = content-special-menu
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_menus_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_menus_description
+            tt_content_defValues {
+                CType = menu
+                menu_type = 0
+            }
+        }
+    }
+    menu.show := addToList(menu)
+}

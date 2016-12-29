@@ -1,0 +1,26 @@
+# get content, left
+styles.content.getLeft < styles.content.get
+styles.content.getLeft.select.where = colPos=1
+
+# get content, right
+styles.content.getRight < styles.content.get
+styles.content.getRight.select.where = colPos=2
+
+# get content, margin
+styles.content.getBorder < styles.content.get
+styles.content.getBorder.select.where = colPos=3
+
+# get news
+styles.content.getNews < styles.content.get
+styles.content.getNews.select.pidInList = {$styles.content.getNews.newsPid}
+
+# Edit page object:
+styles.content.editPanelPage = COA
+styles.content.editPanelPage {
+    10 = EDITPANEL
+    10 {
+        allow = toolbar,move,hide
+        label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.page
+        label.wrap = |&nbsp;<b>%s</b>
+    }
+}

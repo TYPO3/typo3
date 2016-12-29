@@ -1677,6 +1677,54 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-menu.svg'
             ]
         ],
+        'content-menu-abstract' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-abstract.svg'
+            ]
+        ],
+        'content-menu-categorized' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-categorized.svg'
+            ]
+        ],
+        'content-menu-pages' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-pages.svg'
+            ]
+        ],
+        'content-menu-section' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-section.svg'
+            ]
+        ],
+        'content-menu-sitemap' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-sitemap.svg'
+            ]
+        ],
+        'content-menu-sitemap-pages' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-sitemap-pages.svg'
+            ]
+        ],
+        'content-menu-recently-updated' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-recently-updated.svg'
+            ]
+        ],
+        'content-menu-related' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-related.svg'
+            ]
+        ],
         'content-special-shortcut' => [
             'provider' => SvgIconProvider::class,
             'options' => [

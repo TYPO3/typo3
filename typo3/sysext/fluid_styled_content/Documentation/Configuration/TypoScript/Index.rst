@@ -36,14 +36,14 @@ In this folder there are two files:
     need to activate the extension "Frontend Editing (feedit)" in the Extension Manager to
     see this in action.
 
-In the folder :file:`Setup` there are files which are included by the file
+In the folder :file:`Helper` there are files which are included by the file
 :file:`setup.txt` as mentioned above. These are:
 
-- :file:`lib.parseFunc.ts` - Creates persistent ParseFunc setup for non-HTML content
+- :file:`ParseFunc.txt` - Creates persistent ParseFunc setup for non-HTML content
 
-- :file:`lib.stdheader.ts` - Copies the "Header only" content element into the `lib.stdheader`.
+- :file:`StandardHeader.txt` - Copies the "Header only" content element into the `lib.stdheader`.
 
-- :file:`styles.content.get.ts` - Defines `styles.content.get` as a `CONTENT` object for `colPos = 0`.
+- :file:`StylesContentGet.txt` - Defines `styles.content.get` as a `CONTENT` object for `colPos = 0`.
 
-- :file:`lib.fluidContent.ts` - Default configuration for content elements using
+- :file:`FluidContent.txt` - Default configuration for content elements using
   FLUIDTEMPLATE

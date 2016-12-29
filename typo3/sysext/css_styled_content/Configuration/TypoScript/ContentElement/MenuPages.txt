@@ -1,0 +1,23 @@
+# Menu of selected pages:
+# ...
+#
+# CType: menu_pages
+
+tt_content.menu_pages = COA
+tt_content.menu_pages {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        special = list
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-def">|</ul>
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_pages = TEXT
+    10.cObject.menu_pages.value = <nav id="c{field:uid}"
+    30.cObject.menu_pages = TEXT
+    30.cObject.menu_pages.value = >|</nav>
+}

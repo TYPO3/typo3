@@ -474,7 +474,8 @@
   z-index: 1;
   margin-left: 1em;
   transition: margin 0.3s;
-  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+          filter: grayscale(100%);
 }
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list {
   position: absolute;
@@ -541,7 +542,8 @@
 }
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-info .t3-form-icon {
   margin-right: 75px;
-  filter: none;
+  -webkit-filter: none;
+          filter: none;
 }
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container {
   position: absolute;

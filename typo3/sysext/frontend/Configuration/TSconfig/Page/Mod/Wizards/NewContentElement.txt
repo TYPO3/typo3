@@ -1,0 +1,208 @@
+mod.wizards.newContentElement.wizardItems {
+    common.elements {
+        header {
+            iconIdentifier = content-header
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_description
+            tt_content_defValues {
+                CType = header
+            }
+        }
+        text {
+            iconIdentifier = content-text
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_regularText_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_regularText_description
+            tt_content_defValues {
+                CType = text
+            }
+        }
+        textpic {
+            iconIdentifier = content-textpic
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textImage_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textImage_description
+            tt_content_defValues {
+                CType = textpic
+            }
+        }
+        image {
+            iconIdentifier = content-image
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_imagesOnly_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_imagesOnly_description
+            tt_content_defValues {
+                CType = image
+            }
+        }
+        textmedia {
+            iconIdentifier = content-textmedia
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_description
+            tt_content_defValues {
+                CType = textmedia
+            }
+        }
+        bullets {
+            iconIdentifier = content-bullets
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_bulletList_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_bulletList_description
+            tt_content_defValues {
+                CType = bullets
+            }
+        }
+        table {
+            iconIdentifier = content-table
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_table_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_table_description
+            tt_content_defValues {
+                CType = table
+            }
+        }
+        uploads {
+            iconIdentifier = content-special-uploads
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_filelinks_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_filelinks_description
+            tt_content_defValues {
+                CType = uploads
+            }
+        }
+    }
+    common.show := addToList(header)
+    common.show := addToList(text)
+    common.show := addToList(textpic)
+    common.show := addToList(image)
+    common.show := addToList(textmedia)
+    common.show := addToList(bullets)
+    common.show := addToList(table)
+    common.show := addToList(uploads)
+
+    menu.elements {
+        menu_abstract {
+            iconIdentifier = content-menu-abstract
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_abstract.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_abstract.description
+            tt_content_defValues {
+                CType = menu_abstract
+            }
+        }
+        menu_categorized_content {
+            iconIdentifier = content-menu-categorized
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_categorized_content.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_categorized_content.description
+            tt_content_defValues {
+                CType = menu_categorized_content
+            }
+        }
+        menu_categorized_pages {
+            iconIdentifier = content-menu-categorized
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_categorized_pages.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_categorized_pages.description
+            tt_content_defValues {
+                CType = menu_categorized_pages
+            }
+        }
+        menu_pages {
+            iconIdentifier = content-menu-pages
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_pages.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_pages.description
+            tt_content_defValues {
+                CType = menu_pages
+            }
+        }
+        menu_subpages {
+            iconIdentifier = content-menu-pages
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_subpages.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_subpages.description
+            tt_content_defValues {
+                CType = menu_subpages
+            }
+        }
+        menu_recently_updated {
+            iconIdentifier = content-menu-recently-updated
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_recently_updated.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_recently_updated.description
+            tt_content_defValues {
+                CType = menu_recently_updated
+            }
+        }
+        menu_related_pages {
+            iconIdentifier = content-menu-related
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_related_pages.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_related_pages.description
+            tt_content_defValues {
+                CType = menu_related_pages
+            }
+        }
+        menu_section {
+            iconIdentifier = content-menu-section
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_section.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_section.description
+            tt_content_defValues {
+                CType = menu_section
+            }
+        }
+        menu_section_pages {
+            iconIdentifier = content-menu-section
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_section_pages.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_section_pages.description
+            tt_content_defValues {
+                CType = menu_section_pages
+            }
+        }
+        menu_sitemap {
+            iconIdentifier = content-menu-sitemap
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_sitemap.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_sitemap.description
+            tt_content_defValues {
+                CType = menu_sitemap
+            }
+        }
+        menu_sitemap_pages {
+            iconIdentifier = content-menu-sitemap-pages
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_sitemap_pages.title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:menu_sitemap_pages.description
+            tt_content_defValues {
+                CType = menu_sitemap_pages
+            }
+        }
+    }
+    menu.show := addToList(menu_abstract)
+    menu.show := addToList(menu_categorized_content)
+    menu.show := addToList(menu_categorized_pages)
+    menu.show := addToList(menu_pages)
+    menu.show := addToList(menu_subpages)
+    menu.show := addToList(menu_recently_updated)
+    menu.show := addToList(menu_related_pages)
+    menu.show := addToList(menu_section)
+    menu.show := addToList(menu_section_pages)
+    menu.show := addToList(menu_sitemap)
+    menu.show := addToList(menu_sitemap_pages)
+
+    special.elements {
+        html {
+            iconIdentifier = content-special-html
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_plainHTML_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_plainHTML_description
+            tt_content_defValues {
+                CType = html
+            }
+        }
+        div {
+            iconIdentifier = content-special-div
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_divider_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_divider_description
+            tt_content_defValues {
+                CType = div
+            }
+        }
+        shortcut {
+            iconIdentifier = content-special-shortcut
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_shortcut_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_shortcut_description
+            tt_content_defValues {
+                CType = shortcut
+            }
+        }
+    }
+    special.show := addToList(html)
+    special.show := addToList(div)
+    special.show := addToList(shortcut)
+}

@@ -1,0 +1,19 @@
+# Regular Text Element:
+# A regular text element with header and bodytext fields.
+#
+# CType: text
+
+tt_content.text = COA
+tt_content.text {
+    10 = < lib.stdheader
+    20 = TEXT
+    20 {
+        field = bodytext
+        required = 1
+        parseFunc = < lib.parseFunc_RTE
+        editIcons = tt_content:bodytext
+        editIcons.beforeLastTag = 1
+        editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.bodytext
+        prefixComment = 2 | Text:
+    }
+}

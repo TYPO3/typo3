@@ -265,11 +265,8 @@ class TableController extends AbstractWizardController
     public function getConfigCode($row)
     {
         // Get delimiter settings
-        $flexForm = GeneralUtility::xml2array($row['pi_flexform']);
-        if (is_array($flexForm)) {
-            $this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'] ? chr((int)$flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']) : '';
-            $this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'] ? chr((int)$flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']) : '|';
-        }
+        $this->tableParsing_quote = $row['table_enclosure'] ? chr((int)$row['table_enclosure']) : '';
+        $this->tableParsing_delimiter = $row['table_delimiter'] ? chr((int)$row['table_delimiter']) : '|';
         // If some data has been submitted, then construct
         if (isset($this->TABLECFG['c'])) {
             // Process incoming:

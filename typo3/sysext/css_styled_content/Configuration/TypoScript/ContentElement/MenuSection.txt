@@ -1,0 +1,39 @@
+# Section index (page content marked for section menus):
+# ...
+#
+# CType: menu_section
+
+tt_content.menu_section = COA
+tt_content.menu_section {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        special = list
+        special {
+            value {
+                override {
+                    data = page:uid
+                    if {
+                        isFalse.field = pages
+                    }
+                }
+            }
+        }
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-3">|</ul>
+        }
+        1 = TMENU
+        1 {
+            sectionIndex = 1
+            sectionIndex.type = header
+            NO.wrapItemAndSub = <li class="csc-section">|</li>
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_section = TEXT
+    10.cObject.menu_section.value = <nav id="c{field:uid}"
+    30.cObject.menu_section = TEXT
+    30.cObject.menu_section.value = >|</nav>
+}

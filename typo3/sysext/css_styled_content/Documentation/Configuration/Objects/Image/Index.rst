@@ -275,27 +275,6 @@ caption
 
 
 
-.. _objects-image-reference-captionalign:
-
-captionAlign
-''''''''''''
-
-.. container:: table-row
-
-   Property
-         captionAlign
-
-   Data type
-         align / :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         Caption alignment
-
-   Default
-         field = imagecaption\_position
-
-
-
 .. _objects-image-reference-imagetextsplit:
 
 imageTextSplit
@@ -426,51 +405,6 @@ rows
 
 
 
-.. _objects-image-reference-norows:
-
-noRows
-''''''
-
-.. container:: table-row
-
-   Property
-         noRows
-
-   Data type
-         boolean / :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         If set, the rows are not divided by table-rows. Thus images are more
-         nicely shown if the height differs a lot (normally the width is the
-         same!)
-
-   Default
-         field = image\_noRows
-
-
-
-.. _objects-image-reference-nocols:
-
-noCols
-''''''
-
-.. container:: table-row
-
-   Property
-         noCols
-
-   Data type
-         boolean / :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         If set, the columns are not made in the table. The images are all put
-         in one row separated by a clearer to space them apart.
-
-         If noRows is set, noCols will be unset. They cannot be set
-         simultaneously.
-
-
-
 .. _objects-image-reference-colspace:
 
 colSpace
@@ -560,8 +494,7 @@ equalH
 
          Please note that this value will override the properties "width",
          "maxH", "maxW", "minW", "minH" of the IMAGE-objects generating the
-         images. Furthermore it will override the "noRows"-property and
-         generate a table with no columns instead!
+         images. It will generate a table with no columns.
 
 
 
@@ -877,7 +810,6 @@ rendering
               dl {
                   imageRowStdWrap.wrap = <div class="csi-imagerow" style="width:{register:rowwidth}px;"> | </div>
                   imageRowStdWrap.insertData = 1
-                  noRowsStdWrap.wrap =
                   oneImageStdWrap.wrap = <dl class="csi-image" style="width:{register:imagewidth}px;"> | </dl>
                   oneImageStdWrap.insertData = 1
                   imgTagStdWrap.wrap = <dt> | </dt>
@@ -1039,25 +971,6 @@ imageLastRowStdWrap
 
    Description
          Wrapping around the last row of images
-
-
-
-.. _objects-image-reference-norowsstdwrap:
-
-noRowsStdWrap
-'''''''''''''
-
-.. container:: table-row
-
-   Property
-         noRowsStdWrap
-
-   Data type
-         string / :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         Wrapping around all images if there are no separate rows (either by
-         **separateRows** setting, of if we just have one row).
 
 
 

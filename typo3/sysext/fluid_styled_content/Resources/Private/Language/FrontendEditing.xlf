@@ -24,8 +24,14 @@
 			<trans-unit id="editIcon.table">
 				<source>Edit table</source>
 			</trans-unit>
+			<trans-unit id="editIcon.image">
+				<source>Edit image</source>
+			</trans-unit>
 			<trans-unit id="editIcon.textmedia">
 				<source>Edit text &amp; media</source>
+			</trans-unit>
+			<trans-unit id="editIcon.textpic">
+				<source>Edit text &amp; images</source>
 			</trans-unit>
 			<trans-unit id="editIcon.uploads">
 				<source>Edit file list</source>

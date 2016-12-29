@@ -1,0 +1,28 @@
+# Menu of subpages of selected pages including abstracts:
+# ...
+#
+# CType: menu_abstract
+
+tt_content.menu_abstract =< lib.fluidContent
+tt_content.menu_abstract {
+    templateName = MenuAbstract
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = directory
+            special.value.field = pages
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

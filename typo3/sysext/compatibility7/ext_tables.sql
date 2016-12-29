@@ -1,4 +1,11 @@
 #
+# Table structure for table 'tt_content'
+#
+CREATE TABLE tt_content (
+	menu_type varchar(30) DEFAULT '0' NOT NULL
+);
+
+#
 # Additional fields for table 'pages'
 #
 CREATE TABLE pages (

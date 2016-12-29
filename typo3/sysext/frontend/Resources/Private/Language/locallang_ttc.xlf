@@ -57,11 +57,50 @@
 			<trans-unit id="CType.I.17">
 				<source>HTML</source>
 			</trans-unit>
+			<trans-unit id="CType.textmedia">
+				<source>Text &amp; Media</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_abstract">
+				<source>Abstracts</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_categorized_pages">
+				<source>Categorized pages</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_categorized_content">
+				<source>Categorized content</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_pages">
+				<source>Pages</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_subpages">
+				<source>Subpages</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_recently_updated">
+				<source>Recently updated pages</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_related_pages">
+				<source>Related pages</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_section">
+				<source>Section index</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_section_pages">
+				<source>Section index of subpages from selected pages</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_sitemap">
+				<source>Sitemap</source>
+			</trans-unit>
+			<trans-unit id="CType.menu_sitemap_pages">
+				<source>Sitemaps of selected pages</source>
+			</trans-unit>
 			<trans-unit id="CType.div.standard">
 				<source>Standard</source>
 			</trans-unit>
 			<trans-unit id="CType.div.lists">
 				<source>Lists</source>
+			</trans-unit>
+			<trans-unit id="CType.div.menu">
+				<source>Menu</source>
 			</trans-unit>
 			<trans-unit id="CType.div.forms">
 				<source>Forms</source>
@@ -162,6 +201,18 @@
 			<trans-unit id="header_layout.I.6">
 				<source>Hidden</source>
 			</trans-unit>
+			<trans-unit id="bullets_type">
+				<source>Type of bullets</source>
+			</trans-unit>
+			<trans-unit id="bullets_type.0">
+				<source>Unordered list (bullets)</source>
+			</trans-unit>
+			<trans-unit id="bullets_type.1">
+				<source>Ordered list (numbers)</source>
+			</trans-unit>
+			<trans-unit id="bullets_type.2">
+				<source>Definition list</source>
+			</trans-unit>
 			<trans-unit id="bodytext.W.forms">
 				<source>Forms wizard</source>
 			</trans-unit>
@@ -222,15 +273,6 @@
 			<trans-unit id="imageborder_formlabel">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="image_noRows">
-				<source>No Rows:</source>
-			</trans-unit>
-			<trans-unit id="image_noRows.I.0">
-				<source>Deactivate</source>
-			</trans-unit>
-			<trans-unit id="image_noRows_formlabel">
-				<source>Display as Rows</source>
-			</trans-unit>
 			<trans-unit id="image_link">
 				<source>Link:</source>
 			</trans-unit>
@@ -242,42 +284,6 @@
 			</trans-unit>
 			<trans-unit id="image_zoom_formlabel">
 				<source>Enlarge on Click</source>
-			</trans-unit>
-			<trans-unit id="image_effects">
-				<source>Effects:</source>
-			</trans-unit>
-			<trans-unit id="image_effects_formlabel">
-				<source>Effect</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.0">
-				<source>None</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.1">
-				<source>Rotate 90 CW</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.2">
-				<source>Rotate -90 CCW</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.3">
-				<source>Rotate 180</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.4">
-				<source>Grayscale</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.5">
-				<source>Sharpen</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.6">
-				<source>Normalize</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.7">
-				<source>Contrast</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.8">
-				<source>Brighter</source>
-			</trans-unit>
-			<trans-unit id="image_effects.I.9">
-				<source>Darker</source>
 			</trans-unit>
 			<trans-unit id="image_frames">
 				<source>Frames:</source>
@@ -312,50 +318,11 @@
 			<trans-unit id="image_frames.I.8">
 				<source>Frame 8</source>
 			</trans-unit>
-			<trans-unit id="image_compression">
-				<source>Image Quality/Processing:</source>
-			</trans-unit>
-			<trans-unit id="image_compression_formlabel">
-				<source>Quality and Type</source>
-			</trans-unit>
-			<trans-unit id="image_compression.I.1">
-				<source>None (ignores all other options)</source>
-			</trans-unit>
-			<trans-unit id="image_compression.I.15">
-				<source>JPG/Very High</source>
-			</trans-unit>
-			<trans-unit id="image_compression.I.16">
-				<source>JPG/High</source>
-			</trans-unit>
-			<trans-unit id="image_compression.I.17">
-				<source>JPG/Medium</source>
-			</trans-unit>
-			<trans-unit id="image_compression.I.18">
-				<source>JPG/Low</source>
-			</trans-unit>
-			<trans-unit id="image_compression.I.19">
-				<source>JPG/Very Low</source>
-			</trans-unit>
 			<trans-unit id="imagecols">
 				<source>Columns:</source>
 			</trans-unit>
 			<trans-unit id="imagecols_formlabel">
 				<source>Number of Columns</source>
-			</trans-unit>
-			<trans-unit id="imagecaption_position">
-				<source>Align:</source>
-			</trans-unit>
-			<trans-unit id="imagecaption_position_formlabel">
-				<source>Caption Alignment</source>
-			</trans-unit>
-			<trans-unit id="imagecaption_position.I.1">
-				<source>Center</source>
-			</trans-unit>
-			<trans-unit id="imagecaption_position.I.2">
-				<source>Right</source>
-			</trans-unit>
-			<trans-unit id="imagecaption_position.I.3">
-				<source>Left</source>
 			</trans-unit>
 			<trans-unit id="image_altText">
 				<source>Alternative Text:</source>
@@ -447,54 +414,6 @@
 			<trans-unit id="list_type_formlabel">
 				<source>Selected Plugin</source>
 			</trans-unit>
-			<trans-unit id="table_bgColor">
-				<source>Backgr. Color:</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor_formlabel">
-				<source>Background color</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.1">
-				<source>Color 1</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.2">
-				<source>Color 2</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.3">
-				<source>None</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.5">
-				<source>Black</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.6">
-				<source>White</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.7">
-				<source>Dark Gray</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.8">
-				<source>Gray</source>
-			</trans-unit>
-			<trans-unit id="table_bgColor.I.9">
-				<source>Silver</source>
-			</trans-unit>
-			<trans-unit id="table_border">
-				<source>Border:</source>
-			</trans-unit>
-			<trans-unit id="table_border_formlabel">
-				<source>Border Size (px)</source>
-			</trans-unit>
-			<trans-unit id="table_cellspacing">
-				<source>Cellspacing:</source>
-			</trans-unit>
-			<trans-unit id="table_cellspacing_formlabel">
-				<source>Cellspacing (px)</source>
-			</trans-unit>
-			<trans-unit id="table_cellpadding">
-				<source>Cellpadding:</source>
-			</trans-unit>
-			<trans-unit id="table_cellpadding_formlabel">
-				<source>Cellpadding (px)</source>
-			</trans-unit>
 			<trans-unit id="media">
 				<source>Files</source>
 			</trans-unit>
@@ -573,35 +492,62 @@
 			<trans-unit id="spaceAfter_formlabel">
 				<source>Bottom Margin</source>
 			</trans-unit>
-			<trans-unit id="section_frame">
-				<source>Frame:</source>
+			<trans-unit id="space_before_class">
+				<source>Space Before Alass</source>
 			</trans-unit>
-			<trans-unit id="section_frame_formlabel">
-				<source>Indentation and Frames</source>
+			<trans-unit id="space_before_class_formlabel">
+				<source>Space Before</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.1">
-				<source>Invisible</source>
+			<trans-unit id="space_after_class">
+				<source>Space After</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.2">
+			<trans-unit id="space_after_class_formlabel">
+				<source>Space After</source>
+			</trans-unit>
+			<trans-unit id="space_class_none">
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="space_class_extra_small">
+				<source>Extra Small</source>
+			</trans-unit>
+			<trans-unit id="space_class_small">
+				<source>Small</source>
+			</trans-unit>
+			<trans-unit id="space_class_medium">
+				<source>Medium</source>
+			</trans-unit>
+			<trans-unit id="space_class_large">
+				<source>Large</source>
+			</trans-unit>
+			<trans-unit id="space_class_extra_large">
+				<source>Extra Large</source>
+			</trans-unit>
+			<trans-unit id="frame_class">
+				<source>Frame</source>
+			</trans-unit>
+			<trans-unit id="frame_class_formlabel">
+				<source>Frame</source>
+			</trans-unit>
+			<trans-unit id="frame_class.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="frame_class.ruler_before">
 				<source>Ruler Before</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.3">
+			<trans-unit id="frame_class.ruler_after">
 				<source>Ruler After</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.4">
+			<trans-unit id="frame_class.indent">
 				<source>Indent</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.5">
+			<trans-unit id="frame_class.indent_left">
 				<source>Indent, 33/66%</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.6">
+			<trans-unit id="frame_class.indent_right">
 				<source>Indent, 66/33%</source>
 			</trans-unit>
-			<trans-unit id="section_frame.I.7">
-				<source>Frame 1</source>
-			</trans-unit>
-			<trans-unit id="section_frame.I.8">
-				<source>Frame 2</source>
+			<trans-unit id="frame_class.none">
+				<source>No Frame</source>
 			</trans-unit>
 			<trans-unit id="splash_layout">
 				<source>Textbox Type:</source>

@@ -1,0 +1,28 @@
+# Menu of selected pages:
+# ...
+#
+# CType: menu_pages
+
+tt_content.menu_pages =< lib.fluidContent
+tt_content.menu_pages {
+    templateName = MenuPages
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = list
+            special.value.field = pages
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

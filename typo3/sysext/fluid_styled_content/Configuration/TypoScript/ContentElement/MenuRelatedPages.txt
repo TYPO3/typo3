@@ -1,0 +1,32 @@
+# Related pages (based on keywords):
+# ...
+#
+# CType: menu_related_pages
+
+tt_content.menu_related_pages =< lib.fluidContent
+tt_content.menu_related_pages {
+    templateName = MenuRelatedPages
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = keywords
+            special {
+                value.field = pages
+                excludeNoSearchPages = 1
+            }
+            alternativeSortingField = title
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

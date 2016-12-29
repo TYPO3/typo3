@@ -1,0 +1,29 @@
+# Sitemap:
+# ...
+#
+# CType: menu_sitemap
+
+tt_content.menu_sitemap =< lib.fluidContent
+tt_content.menu_sitemap {
+    templateName = MenuSitemap
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = list
+            special.value.field = pages
+            levels = 7
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

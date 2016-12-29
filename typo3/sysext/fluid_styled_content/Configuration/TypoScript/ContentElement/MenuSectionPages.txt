@@ -1,0 +1,40 @@
+# Menu of subpages of selected pages including sections:
+# ...
+#
+# CType: menu_section_pages
+
+tt_content.menu_section_pages =< lib.fluidContent
+tt_content.menu_section_pages {
+    templateName = MenuSectionPages
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = directory
+            special.value.field = pages
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+                20 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+                20 {
+                    table = tt_content
+                    pidInList.field = uid
+                    as = content
+                    dataProcessing {
+                        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                        10 {
+                            references.fieldName = image
+                        }
+                    }
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

@@ -1,0 +1,172 @@
+# Default configuration for content elements which still use a default header (e.g. all Extbase CTypes, or EXT:felogin)
+lib.stdheader = COA
+lib.stdheader {
+    # Create class attribute for <Hx> tags
+    3 = LOAD_REGISTER
+    3 {
+        headerClass {
+            cObject = COA
+            cObject {
+                # Create alignment class for <Hx> tags
+                10 = TEXT
+                10 {
+                    field = header_position
+                    required = 1
+                    noTrimWrap = |csc-header-alignment-| |
+                }
+                # Create "csc-firstHeader" class for <Hx> tags
+                20 = TEXT
+                20 {
+                    value = csc-firstHeader
+                    if {
+                        value = 1
+                        equals.data = cObj:parentRecordNumber
+                    }
+                }
+                stdWrap {
+                    trim = 1
+                    noTrimWrap = | class="|"|
+                    required = 1
+                }
+            }
+        }
+    }
+    # Date format (not HTML5)
+    5 = TEXT
+    5 {
+        field = date
+        if {
+            isTrue {
+                field = date
+            }
+            isFalse = 1
+            isFalse {
+                if {
+                    value = html5
+                    equals.data = TSFE:config|config|doctype
+                }
+            }
+        }
+        strftime = %x
+        wrap = <p class="csc-header-date">|</p>
+        prefixComment = 2 | Header date:
+    }
+    # This CASE cObject renders the header content:
+    # currentValue is set to the header data, possibly wrapped in link-tags.
+    10 = CASE
+    10.setCurrent {
+        field = header
+        htmlSpecialChars = 1
+        typolink.parameter.field = header_link
+    }
+    10.key.field = header_layout
+    10.key.ifEmpty = {$content.defaultHeaderType}
+    10.key.ifEmpty.override.data = register: defaultHeaderType
+    10.1 = TEXT
+    10.1.current = 1
+    10.1.dataWrap = <h1{register:headerClass}>|</h1>
+    10.2 < .10.1
+    10.2.dataWrap = <h2{register:headerClass}>|</h2>
+    10.3 < .10.1
+    10.3.dataWrap = <h3{register:headerClass}>|</h3>
+    10.4 < .10.1
+    10.4.dataWrap = <h4{register:headerClass}>|</h4>
+    10.5 < .10.1
+    10.5.dataWrap = <h5{register:headerClass}>|</h5>
+    # HTML5 subheader
+    20 = CASE
+    20 {
+        key.field = header_layout
+        key.ifEmpty = {$content.defaultHeaderType}
+        key.ifEmpty.override.data = register: defaultHeaderType
+        default = TEXT
+        default {
+            wrap = <h2>|</h2>
+            htmlSpecialChars = 1
+            field = subheader
+        }
+        1 < .default
+        2 < .default
+        2.wrap = <h3>|</h3>
+        3 < .default
+        3.wrap = <h4>|</h4>
+        4 < .default
+        4.wrap = <h5>|</h5>
+        5 < .default
+        5.wrap = <h6>|</h6>
+        if {
+            isTrue {
+                field = subheader
+            }
+            value = html5
+            equals.data = TSFE:config|config|doctype
+        }
+    }
+    # HTML5 Date
+    40 = COA
+    40 {
+        stdWrap {
+            wrap = <p class="csc-header-date">|</p>
+            innerWrap {
+                cObject = COA
+                cObject {
+                    10 = TEXT
+                    10 {
+                        value = <time
+                    }
+                    20 = TEXT
+                    20 {
+                        noTrimWrap = | datetime="|"|
+                        field = date
+                        strftime = %Y-%m-%d
+                    }
+                    30 = TEXT
+                    30 {
+                        value = >|</time>
+                    }
+                }
+            }
+            required = 1
+        }
+        10 = TEXT
+        10 {
+            field = date
+            strftime = %B %e, %Y
+        }
+        if {
+            isTrue {
+                field = date
+            }
+            value = html5
+            equals.data = TSFE:config|config|doctype
+        }
+    }
+    # Pops the used registers off the stack:
+    98 = RESTORE_REGISTER
+    # Post-processing:
+    stdWrap.fieldRequired = header
+    stdWrap.if {
+        equals.field = header_layout
+        value = 100
+        negate = 1
+    }
+    stdWrap.editIcons = tt_content : header, [header_layout | header_position], [header_link|date]
+    stdWrap.editIcons.beforeLastTag = 1
+    stdWrap.editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.header
+    stdWrap {
+        dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
+        dataWrap {
+            override = <header class="csc-header csc-header-n{cObj:parentRecordNumber}">|</header>
+            override {
+                if {
+                    isTrue {
+                        field = date
+                    }
+                    value = html5
+                    equals.data = TSFE:config|config|doctype
+                }
+            }
+        }
+    }
+    stdWrap.prefixComment = 2 | Header:
+}

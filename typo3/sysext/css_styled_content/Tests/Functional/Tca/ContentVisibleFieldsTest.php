@@ -27,9 +27,6 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
         'colPos',
         'sys_language_uid',
         'layout',
-        'spaceBefore',
-        'spaceAfter',
-        'section_frame',
         'hidden',
         'sectionIndex',
         'linkToTop',
@@ -55,11 +52,8 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
         'imagewidth',
         'imageheight',
         'imageborder',
-        'image_compression',
-        'image_effects',
         'imageorient',
         'imagecols',
-        'image_noRows',
     ];
 
     protected static $contentFieldsByType = [
@@ -82,7 +76,6 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
             'additionalFields' => [
                 'cols',
                 'bodytext',
-                'pi_flexform',
             ],
         ],
         'uploads' => [
@@ -91,15 +84,6 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
                 'file_collections',
                 'filelink_sorting',
                 'target',
-            ],
-        ],
-        'menu' => [
-            'additionalFields' => [
-                'menu_type',
-                'pages',
-                'accessibility_title',
-                'accessibility_bypass',
-                'accessibility_bypass_text',
             ],
         ],
         'shortcut' => [

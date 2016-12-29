@@ -37,7 +37,7 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        if ($this->isWizardDone() || ExtensionManagementUtility::isLoaded('css_styled_content')) {
+        if ($this->isWizardDone()) {
             return false;
         }
 
@@ -146,6 +146,12 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
             'table_tfoot' => [
                 'sheet' => 'sDEF',
                 'fieldName' => 'acctables_tfoot',
+                'default' => 0,
+                'values' => 'passthrough'
+            ],
+            'table_class' => [
+                'sheet' => 'sDEF',
+                'fieldName' => 'acctables_tableclass',
                 'default' => 0,
                 'values' => 'passthrough'
             ]

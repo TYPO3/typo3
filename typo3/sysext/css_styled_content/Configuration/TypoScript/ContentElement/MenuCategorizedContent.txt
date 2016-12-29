@@ -1,0 +1,23 @@
+# Content elements for selected categories:
+# ...
+#
+# CType: menu_categorized_content
+
+tt_content.menu_categorized_content = COA
+tt_content.menu_categorized_content {
+    10 = < lib.stdheader
+    20 = RECORDS
+    20 {
+        categories.field = selected_categories
+        categories.relation.field = category_field
+        tables = tt_content
+        conf.tt_content = TEXT
+        conf.tt_content {
+            field = header
+            typolink.parameter = {field:pid}#{field:uid}
+            typolink.parameter.insertData = 1
+            wrap = <li>|</li>
+        }
+        wrap = <ul>|</ul>
+    }
+}

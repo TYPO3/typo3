@@ -1,0 +1,51 @@
+# Section index (page content marked for section menus):
+# ...
+#
+# CType: menu_section
+
+tt_content.menu_section =< lib.fluidContent
+tt_content.menu_section {
+    templateName = MenuSection
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = list
+            special {
+                value {
+                    field = pages
+                    override {
+                        data = page:uid
+                        if {
+                            isFalse.field = pages
+                        }
+                    }
+                }
+            }
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+                20 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+                20 {
+                    table = tt_content
+                    pidInList.field = uid
+                    as = content
+                    where = sectionIndex = 1
+                    dataProcessing {
+                        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                        10 {
+                            references.fieldName = image
+                        }
+                    }
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], pages
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}

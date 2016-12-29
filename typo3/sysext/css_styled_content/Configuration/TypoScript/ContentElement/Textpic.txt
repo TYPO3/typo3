@@ -1,0 +1,24 @@
+# Text and Images:
+# Text with images.
+#
+# CType: textpic
+
+tt_content.textpic = COA
+tt_content.textpic {
+    10 = COA
+    10.if.value = 25
+    10.if.isLessThan.field = imageorient
+    10.10 = < lib.stdheader
+    20  = < tt_content.image.20
+    20 {
+        text.10 = COA
+        text.10 {
+            if.value = 24
+            if.isGreaterThan.field = imageorient
+            10 = < lib.stdheader
+            10.stdWrap.dataWrap = <div class="csc-textpicHeader csc-textpicHeader-{field:imageorient}">|</div>
+        }
+        text.20 = < tt_content.text.20
+        text.wrap = <div class="csc-textpic-text"> | </div>
+    }
+}

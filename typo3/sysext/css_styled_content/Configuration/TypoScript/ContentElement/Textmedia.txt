@@ -1,0 +1,180 @@
+# Text & Media:
+# Any number of media wrapped right around a regular text element.
+#
+# CType: textmedia
+
+tt_content.textmedia = CASE
+tt_content.textmedia {
+
+    key.field = imageorient
+
+    default = COA
+    default {
+        10 = < lib.stdheader
+        20 = FLUIDTEMPLATE
+        20 {
+            templateName = Textmedia
+            templateRootPaths {
+                0 = EXT:css_styled_content/Resources/Private/Templates/
+            }
+            partialRootPaths {
+                0 = EXT:css_styled_content/Resources/Private/Partials/
+            }
+            layoutRootPaths {
+                0 = EXT:css_styled_content/Resources/Private/Layouts/
+            }
+            settings {
+                media {
+                    popup {
+                        bodyTag = <body style="margin:0; background:#fff;">
+                        wrap = <a href="javascript:close();"> | </a>
+                        width = {$styles.content.textmedia.linkWrap.width}
+                        height = {$styles.content.textmedia.linkWrap.height}
+                        crop.data = file:current:crop
+                        JSwindow = 1
+                        JSwindow {
+                            newWindow = {$styles.content.textmedia.linkWrap.newWindow}
+                            if.isFalse = {$styles.content.textmedia.linkWrap.lightboxEnabled}
+                        }
+                        directImageLink = {$styles.content.textmedia.linkWrap.lightboxEnabled}
+                        linkParams.ATagParams.dataWrap =  class="{$styles.content.textmedia.linkWrap.lightboxCssClass}" rel="{$styles.content.textmedia.linkWrap.lightboxRelAttribute}"
+                    }
+                }
+            }
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = assets
+                }
+                20 = TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor
+                20 {
+                    maxGalleryWidth = {$styles.content.textmedia.maxW}
+                    maxGalleryWidthInText = {$styles.content.textmedia.maxWInText}
+                    columnSpacing = {$styles.content.textmedia.columnSpacing}
+                    borderWidth = {$styles.content.textmedia.borderWidth}
+                    borderPadding = {$styles.content.textmedia.borderPadding}
+                }
+            }
+        }
+        30 = < tt_content.text.20
+    }
+
+    # Text And Media - Above center
+    0 = COA
+    0 {
+        10 = < tt_content.textmedia.default.10
+        20 = < tt_content.textmedia.default.20
+        30 = < tt_content.textmedia.default.30
+        30.wrap = <div class="csc-textmedia-text"> | </div>
+        wrap = <div class="csc-textmedia csc-textmedia-above csc-textmedia-above-center">|</div>
+    }
+
+    # Text And Media - Above right
+    1 = COA
+    1 {
+        10 = < tt_content.textmedia.default.10
+        20 = < tt_content.textmedia.default.20
+        30 = < tt_content.textmedia.default.30
+        30.wrap = <div class="csc-textmedia-text"> | </div>
+        wrap = <div class="csc-textmedia csc-textmedia-above csc-textmedia-above-right">|</div>
+    }
+
+    # Text And Media - Above left
+    2 = COA
+    2 {
+        10 = < tt_content.textmedia.default.10
+        20 = < tt_content.textmedia.default.20
+        30 = < tt_content.textmedia.default.30
+        30.wrap = <div class="csc-textmedia-text"> | </div>
+        wrap = <div class="csc-textmedia csc-textmedia-above csc-textmedia-above-left">|</div>
+    }
+
+    # Text And Media - Below center
+    8 = COA
+    8 {
+        10 = < tt_content.textmedia.default.10
+        20 = < tt_content.textmedia.default.30
+        20.wrap = <div class="csc-textmedia-text"> | </div>
+        30 = < tt_content.textmedia.default.20
+        wrap = <div class="csc-textmedia csc-textmedia-below csc-textmedia-below-center">|</div>
+    }
+
+    # Text And Media - Below right
+    9 = COA
+    9 {
+        10 = < tt_content.textmedia.default.10
+        20 = < tt_content.textmedia.default.30
+        20.wrap = <div class="csc-textmedia-text"> | </div>
+        30 = < tt_content.textmedia.default.20
+        wrap = <div class="csc-textmedia csc-textmedia-below csc-textmedia-below-right">|</div>
+    }
+
+    # Text And Media - Below left
+    10 = COA
+    10 {
+        10 = < tt_content.textmedia.default.10
+        20 = < tt_content.textmedia.default.30
+        20.wrap = <div class="csc-textmedia-text"> | </div>
+        30 = < tt_content.textmedia.default.20
+        wrap = <div class="csc-textmedia csc-textmedia-below csc-textmedia-below-left">|</div>
+    }
+
+    # Text And Media - In text, right
+    17 = COA
+    17 {
+        10 = < tt_content.textmedia.default.10
+        20 = COA
+        20 {
+            10 = < tt_content.textmedia.default.20
+            20 = < tt_content.textmedia.default.30
+            20.wrap = <div class="csc-textmedia-text"> | </div>
+            wrap = <div class="csc-textmedia csc-textmedia-inside csc-textmedia-inside-right">|</div>
+        }
+    }
+
+    # Text And Media - In text, left
+    18 = COA
+    18 {
+        10 = < tt_content.textmedia.default.10
+        20 = COA
+        20 {
+            10 = < tt_content.textmedia.default.20
+            20 = < tt_content.textmedia.default.30
+            20.wrap = <div class="csc-textmedia-text"> | </div>
+            wrap = <div class="csc-textmedia csc-textmedia-inside csc-textmedia-inside-left">|</div>
+        }
+    }
+
+    # Text And Media - Beside text, right
+    25 = COA
+    25 {
+        10 = < tt_content.textmedia.default.20
+        20 = COA
+        20 {
+            10 = < tt_content.textmedia.default.10
+            20 = < tt_content.textmedia.default.30
+            wrap = <div class="csc-textmedia-text"> | </div>
+        }
+        wrap = <div class="csc-textmedia csc-textmedia-beside csc-textmedia-beside-right">|</div>
+    }
+
+    # Text And Media - Beside text, left
+    26 = COA
+    26 {
+        10 = < tt_content.textmedia.default.20
+        20 = COA
+        20 {
+            10 = < tt_content.textmedia.default.10
+            20 = < tt_content.textmedia.default.30
+            wrap = <div class="csc-textmedia-text"> | </div>
+        }
+        wrap = <div class="csc-textmedia csc-textmedia-beside csc-textmedia-beside-left">|</div>
+    }
+
+    stdWrap {
+        editIcons = tt_content: header [header_layout], bodytext, assets [imageorient|imagewidth|imageheight], [imagecols|imageborder], image_zoom
+        editIcons {
+            iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.textMedia
+        }
+    }
+}

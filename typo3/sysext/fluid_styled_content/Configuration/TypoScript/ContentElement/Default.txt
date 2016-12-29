@@ -1,7 +1,0 @@
-# Default:
-# The "default" content element, which will be called when no rendering definition can be found
-
-tt_content.default =< lib.fluidContent
-tt_content.default {
-    templateName = Default
-}

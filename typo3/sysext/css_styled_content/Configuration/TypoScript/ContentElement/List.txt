@@ -1,0 +1,16 @@
+# General Plugin:
+# This is the default rendering definition for plugins.
+#
+# CType: list
+
+tt_content.list = COA
+tt_content.list {
+    10 = < lib.stdheader
+    20 = CASE
+    20.key.field = list_type
+    20.stdWrap {
+        editIcons = tt_content: list_type, layout, select_key, pages [recursive]
+        editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.plugin
+        prefixComment = 2 | Plugin inserted:
+    }
+}

@@ -1,0 +1,22 @@
+# Menu of subpages of selected pages:
+# ...
+#
+# CType: menu_subpages
+
+tt_content.menu_subpages = COA
+tt_content.menu_subpages {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-1">|</ul>
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_subpages = TEXT
+    10.cObject.menu_subpages.value = <nav id="c{field:uid}"
+    30.cObject.menu_subpages = TEXT
+    30.cObject.menu_subpages.value = >|</nav>
+}

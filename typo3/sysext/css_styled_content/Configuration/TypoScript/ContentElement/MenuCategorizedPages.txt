@@ -1,0 +1,22 @@
+# Pages for selected categories:
+# ...
+#
+# CType: menu_categorized_pages
+
+tt_content.menu_categorized_pages = COA
+tt_content.menu_categorized_pages {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        special = categories
+        special {
+            value.field = selected_categories
+            relation.field = category_field
+            sorting = title
+            order = asc
+        }
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-categorized-pages">|</ul>
+        }
+    }
+}

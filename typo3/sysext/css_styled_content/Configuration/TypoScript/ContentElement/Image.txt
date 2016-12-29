@@ -1,0 +1,475 @@
+# Image:
+# also used for rendering 'textpic' type
+#
+# CType: image
+
+tt_content.image = COA
+tt_content.image.10 = < lib.stdheader
+tt_content.image.20 = USER
+tt_content.image.20 {
+    userFunc = TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_textpic
+    preRenderRegisters {
+        // To optimize performance we load all image captions into a register
+        // because we need to know if at least one image has a caption at
+        // multiple places to determine the render method.
+        allImageCaptions.cObject = FILES
+        allImageCaptions.cObject {
+            references {
+                table = tt_content
+                fieldName = image
+            }
+            renderObj = TEXT
+            renderObj.data = file:current:description
+        }
+    }
+    # Image source
+    imgList.cObject = FILES
+    imgList.cObject {
+        references < tt_content.image.20.preRenderRegisters.allImageCaptions.cObject.references
+        renderObj = TEXT
+        renderObj.data = file:current:uid
+        renderObj.wrap = |,
+    }
+    imgPath = uploads/pics/
+    // This needs to be set because the UID list generated in the imgList
+    // setting contains UIDs of file references (not files).
+    imgListContainsReferenceUids = 1
+    # Single image rendering
+    imgObjNum = 1
+    1 {
+        file.import.data = file:current:uid
+        file.treatIdAsReference = 1
+        file.width.field = imagewidth
+        layoutKey = {$styles.content.imgtext.layoutKey}
+        layout {
+            default {
+                element = <img src="###SRC###" width="###WIDTH###" height="###HEIGHT###"###PARAMS######ALTPARAMS######BORDER######SELFCLOSINGTAGSLASH###>
+            }
+            srcset {
+                element = <img src="###SRC###" srcset="###SOURCECOLLECTION###"###PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###>
+                source = |*|###SRC### ###SRCSETCANDIDATE###,|*|###SRC### ###SRCSETCANDIDATE###
+            }
+            picture {
+                element = <picture>###SOURCECOLLECTION###<img src="###SRC###"###PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>
+                source = <source srcset="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>
+            }
+            data {
+                element = <img src="###SRC###"###SOURCECOLLECTION######PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###>
+                source = data-###DATAKEY###="###SRC###"
+                source.noTrimWrap = ; ;;
+                source.noTrimWrap.splitChar = ;
+            }
+        }
+        # Default sourceCollection as an example
+        # Please write your own sourceCollection (highly recommended)
+        sourceCollection {
+            small {
+                width = 200
+                srcsetCandidate = 600w
+                mediaQuery = (max-device-width: 600px)
+                dataKey = small
+            }
+            smallRetina {
+                if {
+                    value = {$styles.content.imgtext.layoutKey}
+                    equals = default
+                    negate = 1
+                }
+                width = 200
+                pixelDensity = 2
+                srcsetCandidate = 600w 2x
+                mediaQuery = (max-device-width: 600px) AND (min-resolution: 192dpi)
+                dataKey = smallRetina
+            }
+        }
+        imageLinkWrap = 1
+        imageLinkWrap {
+            bodyTag = <body style="margin:0; background:#fff;">
+            wrap = <a href="javascript:close();"> | </a>
+            width = {$styles.content.imgtext.linkWrap.width}
+            height = {$styles.content.imgtext.linkWrap.height}
+            effects = {$styles.content.imgtext.linkWrap.effects}
+            crop.data = file:current:crop
+            JSwindow = 1
+            JSwindow.newWindow = {$styles.content.imgtext.linkWrap.newWindow}
+            JSwindow.if.isFalse = {$styles.content.imgtext.linkWrap.lightboxEnabled}
+            directImageLink = {$styles.content.imgtext.linkWrap.lightboxEnabled}
+            enable.field = image_zoom
+            enable.ifEmpty.typolink.parameter.data = file:current:link
+            enable.ifEmpty.typolink.returnLast = url
+            typolink.parameter.data = file:current:link
+            typolink.target < lib.parseTarget
+            typolink.target =
+            typolink.target.override = {$styles.content.links.target}
+            typolink.extTarget < lib.parseTarget
+            typolink.extTarget =
+            typolink.extTarget.override = {$styles.content.links.extTarget}
+            linkParams.ATagParams.dataWrap =  class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"
+        }
+        altText = TEXT
+        altText {
+            data = file:current:alternative
+            stripHtml = 1
+        }
+        titleText < .altText
+        titleText.data = file:current:title
+        longdescURL {
+            parameter {
+                field = longdescURL
+                split {
+                    token {
+                        char = 10
+                    }
+                    returnKey.data = register : IMAGE_NUM_CURRENT
+                }
+            }
+        }
+        emptyTitleHandling = {$styles.content.imgtext.emptyTitleHandling}
+        titleInLink = {$styles.content.imgtext.titleInLink}
+        titleInLinkAndImg = {$styles.content.imgtext.titleInLinkAndImg}
+    }
+    textPos.field = imageorient
+    maxW = {$styles.content.imgtext.maxW}
+    maxW.override.data = register:maxImageWidth
+    maxWInText = {$styles.content.imgtext.maxWInText}
+    maxWInText.override.data = register:maxImageWidthInText
+    equalH.field = imageheight
+    cols.field = imagecols
+    border.field = imageborder
+    caption {
+        1 = COA
+        1 {
+            1 = TEXT
+            1 {
+                data = file:current:description
+                required = 1
+                htmlSpecialChars = 1
+                br = 1
+            }
+        }
+    }
+    // This needs to be set to TRUE because otherwise render_textpic will
+    // render a global caption which we do not have.
+    imageTextSplit = 1
+    borderThick = {$styles.content.imgtext.borderThick}
+    borderClass = {$styles.content.imgtext.borderClass}
+    colSpace = {$styles.content.imgtext.colSpace}
+    textMargin = {$styles.content.imgtext.textMargin}
+    borderSpace = {$styles.content.imgtext.borderSpace}
+    separateRows = {$styles.content.imgtext.separateRows}
+    addClasses =
+    addClassesCol =
+    addClassesCol.ifEmpty = csc-textpic-firstcol csc-textpic-lastcol
+    addClassesCol.override = csc-textpic-firstcol |*| |*| csc-textpic-lastcol
+    addClassesCol.override.if {
+        isGreaterThan.field = imagecols
+        value = 1
+    }
+    addClassesImage = csc-textpic-first |*| |*| csc-textpic-last
+    #
+    imageStdWrap.dataWrap = <div class="csc-textpic-imagewrap" style="width:{register:totalwidth}px;"> | </div>
+    imageStdWrapNoWidth.wrap = <div class="csc-textpic-imagewrap"> | </div>
+
+    layout = CASE
+    layout {
+        key.field = imageorient
+        # above-center
+        default = TEXT
+        default {
+            value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # above-right
+        1 = TEXT
+        1 {
+            value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # above-left
+        2 = TEXT
+        2 {
+            value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # below-center
+        8 = TEXT
+        8 {
+            value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # below-right
+        9 = TEXT
+        9 {
+            value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # below-left
+        10 = TEXT
+        10 {
+            value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # intext-right
+        17 = TEXT
+        17 {
+            value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # intext-left
+        18 = TEXT
+        18 {
+            value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # intext-right-nowrap
+        25 = TEXT
+        25 {
+            value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+        # intext-left-nowrap
+        26 = TEXT
+        26 {
+            value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+            override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+            override {
+                if {
+                    value = default
+                    equals = {$styles.content.imgtext.layoutKey}
+                    negate = 1
+                }
+            }
+        }
+    }
+    rendering {
+        # Single image - No caption
+        singleNoCaption {
+            # Choose another rendering for special edge cases
+            fallbackRendering = COA
+            fallbackRendering {
+                # Single image - Caption
+                10 = TEXT
+                10 {
+                    if {
+                        isTrue.data = file:current:description
+                        value = 1
+                        equals.data = register:imageCount
+                    }
+                    value = singleCaption
+                }
+                # Multiple images and split caption
+                20 = TEXT
+                20 {
+                    if {
+                        value = 1
+                        isGreaterThan.data = register:imageCount
+                        isTrue.if.isFalse.data = register:renderGlobalCaption
+                        isTrue.data = register:allImageCaptions
+                    }
+                    value = splitCaption
+                }
+                # Multiple images and no caption at all
+                40 = TEXT
+                40 {
+                    if {
+                        value = 1
+                        isGreaterThan.data = register:imageCount
+                        isFalse.data = register:allImageCaptions
+                    }
+                    value = noCaption
+                }
+            }
+            allStdWrap {
+                dataWrap = <div class="csc-textpic-imagewrap"> | </div>
+                dataWrap {
+                    override = <div class="csc-textpic-imagewrap" data-csc-images="{register:imageCount}" data-csc-cols="{field:imagecols}"> | </div>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+                innerWrap.cObject = CASE
+                innerWrap.cObject {
+                    key.field = imageorient
+                    # above-center
+                    0 = TEXT
+                    0.value = <div class="csc-textpic-center-outer"><div class="csc-textpic-center-inner"> | </div></div>
+                    # below-center
+                    8 < .0
+                }
+            }
+            singleStdWrap {
+                wrap = <div class="csc-textpic-image###CLASSES###"> | </div>
+                wrap {
+                    override = <figure class="csc-textpic-image###CLASSES###"> | </figure>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+            }
+            rowStdWrap.wrap = |
+            lastRowStdWrap.wrap = |
+            columnStdWrap.wrap = |
+            imgTagStdWrap.wrap = |
+            editIconsStdWrap.wrap = <div> | </div>
+            caption.wrap = |
+        }
+        noCaption {
+            # Multiple images and no caption at all
+            fallbackRendering < tt_content.image.20.rendering.singleNoCaption.fallbackRendering.10
+            allStdWrap {
+                dataWrap = <div class="csc-textpic-imagewrap"> | </div>
+                dataWrap {
+                    override = <div class="csc-textpic-imagewrap" data-csc-images="{register:imageCount}" data-csc-cols="{field:imagecols}"> | </div>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+            }
+            singleStdWrap {
+                wrap = <div class="csc-textpic-image###CLASSES###"> | </div>
+                wrap {
+                    override = <figure class="csc-textpic-image###CLASSES###"> | </figure>
+                }
+            }
+            rowStdWrap.wrap = <div class="csc-textpic-imagerow"> | </div>
+            lastRowStdWrap.wrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last"> | </div>
+            columnStdWrap.wrap = <div class="csc-textpic-imagecolumn###CLASSES###"> | </div>
+        }
+        singleCaption {
+            # Just one image with a caption
+            fallbackRendering < tt_content.image.20.rendering.singleNoCaption.fallbackRendering.10
+            singleStdWrap {
+                wrap = <div class="csc-textpic-image###CLASSES###"><table>###CAPTION###<tbody><tr><td> | </td></tr></tbody></table></div>
+                wrap {
+                    override = <figure class="csc-textpic-image###CLASSES###">|###CAPTION###</figure>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+            }
+            caption {
+                required = 1
+                wrap = <caption class="csc-textpic-caption###CLASSES###"> | </caption>
+                wrap {
+                    override = <figcaption class="csc-textpic-caption###CLASSES###"> | </figcaption>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+            }
+        }
+        splitCaption {
+            fallbackRendering < tt_content.image.20.rendering.singleNoCaption.fallbackRendering.10
+            singleStdWrap {
+                wrap = <div class="csc-textpic-image###CLASSES###"><table>###CAPTION###<tbody><tr><td> | </td></tr></tbody></table></div>
+                wrap {
+                    override = <figure class="csc-textpic-image###CLASSES###">|###CAPTION###</figure>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+            }
+            rowStdWrap.wrap = <div class="csc-textpic-imagerow"> | </div>
+            lastRowStdWrap.wrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last"> | </div>
+            columnStdWrap.wrap = <div class="csc-textpic-imagecolumn###CLASSES###"> | </div>
+            caption {
+                required = 1
+                wrap = <caption class="csc-textpic-caption###CLASSES###"> | </caption>
+                wrap {
+                    override = <figcaption class="csc-textpic-caption###CLASSES###"> | </figcaption>
+                    override {
+                        if {
+                            value = html5
+                            equals.data = TSFE:config|config|doctype
+                        }
+                    }
+                }
+            }
+        }
+    }
+    renderMethod = singleNoCaption
+    editIcons = tt_content : image [imageorient|imagewidth|imageheight],[imagecols|imageborder],[image_zoom],[image_frames]
+    editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.images
+    stdWrap.prefixComment = 2 | Image block:
+}

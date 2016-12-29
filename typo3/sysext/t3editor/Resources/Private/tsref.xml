@@ -4453,10 +4453,6 @@ If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="captionAlign" type="stdWrap">
-			<description><![CDATA[Caption alignment]]></description>
-			<default><![CDATA[default = ".textPos"]]></default>
-		</property>
 		<property name="captionSplit" type="boolean">
 			<description><![CDATA[If this is set, the caption text is split by the character (or string) from ".token" , and every item is displayed under an image each in the image block.
 .token = (string /stdWrap) Character to split the caption elements (default is chr(10))
@@ -4499,52 +4495,7 @@ If 6 images are placed in three columns and their width's are high enough to be 
 		<property name="equalH" type="stdWrap">
 			<description><![CDATA[If this value is greater than zero, it will secure that images in a row has the same height. The width will be calculated.
 If the total width of the images raise above the "maxW"-value of the table the height for each image will be scaled down equally so that the images still have the same height but is within the limits of the totalWidth.
-Please note that this value will override the properties "width", "maxH", "maxW", "minW", "minH" of the IMAGE-objects generating the images. Furthermore it will override the "noRows"-property and generate a table with no columns instead!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="image_compression" type="stdWrap">
-			<description><![CDATA[Image Compression:
-0= Default
-1= Dont change! (removes all parameters for the image_object!!)
-(adds gif-extension and color-reduction command)
-10= GIF/256
-11= GIF/128
-12= GIF/64
-13= GIF/32
-14= GIF/16
-15= GIF/8
-(adds jpg-extension and quality command)
-20= IM: -quality 100
-21= IM: -quality 90 <=> Photoshop 60     (JPG/Very High)
-22= IM: -quality 80    (JPG/High)
-23= IM: -quality 70
-24= IM: -quality 60 <=> Photoshop 30   (JPG/Medium)
-25= IM: -quality 50
-26= IM: -quality 40  (JPG/Low)
-27= IM: -quality 30 <=> Photoshop 10
-28= IM: -quality 20   (JPG/Very Low)
-
-The default ImageMagick quality seems to be 75. This equals Photoshop quality 45. Images compressed with ImageMagick with the same visual quality as a Photoshop-compressed image seems to be largely 50% greater in size!!
-
-NOTE: Works ONLY if IMAGE-obj is NOT GIFBUILDER]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="image_effects" type="stdWrap">
-			<description><![CDATA[Adds these commands to the parameteres for the scaling. This function has no effect if "image_compression" above is set to 1!!
-
-1 => "-rotate 90",
-2 => "-rotate 270",
-3 => "-rotate 180",
-10 => "-colorspace GRAY",
-11 => "-sharpen 70",
-20 => "-normalize",
-23 => "-contrast",
-25 => "-gamma 1.3",
-26 => "-gamma 0.8"
-
-NOTE: Works ONLY if IMAGE-obj is NOT GIFBUILDER]]></description>
+Please note that this value will override the properties "width", "maxH", "maxW", "minW", "minH" of the IMAGE-objects generating the images. It will generate a table with no columns!]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4634,17 +4585,6 @@ This will scale images not in the right size! Takes the number of columns into a
 
 NOTE: Works ONLY if IMAGE-obj is NOT GIFBUILDER]]></description>
 			<default><![CDATA[50% of maxW]]></default>
-		</property>
-		<property name="noCols" type="stdWrap">
-			<description><![CDATA[If set, the columns are not made in the table. The images are all put in one row separated by a clear giffile to space them apart.
-If noRows is set, noCols will be unset. They cannot be set simultaneously.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="noRows" type="stdWrap">
-			<description><![CDATA[If set, the rows are not divided by a table-rows. Thus images are more nicely shown if the height differs a lot (normally the width is the same!)]]></description>
-			<default><![CDATA[
-]]></default>
 		</property>
 		<property name="rowSpace" type="stdWrap">
 			<description><![CDATA[space between rows]]></description>

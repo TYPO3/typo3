@@ -19,7 +19,10 @@ $fields = [
 
 // Register "old" FE plugin and hide layout, select_key and pages fields in BE
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:mod_indexed_search', 'indexed_search'],
+    [
+        'LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:mod_indexed_search',
+        'indexed_search'
+    ],
     'list_type',
     'indexed_search'
 );

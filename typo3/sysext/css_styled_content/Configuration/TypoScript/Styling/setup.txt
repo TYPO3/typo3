@@ -1,0 +1,146 @@
+plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
+    /* Headers */
+    .csc-header-alignment-center { text-align: center; }
+    .csc-header-alignment-right { text-align: right; }
+    .csc-header-alignment-left { text-align: left; }
+
+    div.csc-textpic-responsive, div.csc-textpic-responsive * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;  }
+
+    /* Clear floats after csc-textpic and after csc-textpic-imagerow */
+    div.csc-textpic, div.csc-textpic div.csc-textpic-imagerow, ul.csc-uploads li { overflow: hidden; }
+
+    /* Set padding for tables */
+    div.csc-textpic .csc-textpic-imagewrap table { border-collapse: collapse; border-spacing: 0; }
+    div.csc-textpic .csc-textpic-imagewrap table tr td { padding: 0; vertical-align: top; }
+
+    /* Settings for figure and figcaption (HTML5) */
+    div.csc-textpic .csc-textpic-imagewrap figure, div.csc-textpic figure.csc-textpic-imagewrap { margin: 0; display: table; }
+
+    /* Captions */
+    figcaption.csc-textpic-caption { display: table-caption; }
+    .csc-textpic-caption { text-align: left; caption-side: bottom; }
+    div.csc-textpic-caption-c .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-c { text-align: center; }
+    div.csc-textpic-caption-r .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-r { text-align: right; }
+    div.csc-textpic-caption-l .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-l { text-align: left; }
+
+    /* Float the columns */
+    div.csc-textpic div.csc-textpic-imagecolumn { float: left; }
+
+    /* Border just around the image */
+    {$styles.content.imgtext.borderSelector} {
+        border: {$styles.content.imgtext.borderThick}px solid {$styles.content.imgtext.borderColor};
+        padding: {$styles.content.imgtext.borderSpace}px {$styles.content.imgtext.borderSpace}px;
+    }
+
+    div.csc-textpic .csc-textpic-imagewrap img { border: none; display: block; }
+
+    /* Space below each image (also in-between rows) */
+    div.csc-textpic .csc-textpic-imagewrap .csc-textpic-image { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
+    div.csc-textpic .csc-textpic-imagewrap .csc-textpic-imagerow-last .csc-textpic-image { margin-bottom: 0; }
+
+    /* colSpace around image columns, except for last column */
+    div.csc-textpic-imagecolumn, td.csc-textpic-imagecolumn .csc-textpic-image { margin-right: {$styles.content.imgtext.colSpace}px; }
+    div.csc-textpic-imagecolumn.csc-textpic-lastcol, td.csc-textpic-imagecolumn.csc-textpic-lastcol .csc-textpic-image { margin-right: 0; }
+
+    /* Add margin from image-block to text (in case of "Text & Images") */
+    div.csc-textpic-intext-left .csc-textpic-imagewrap,
+    div.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap {
+        margin-right: {$styles.content.imgtext.textMargin}px;
+    }
+    div.csc-textpic-intext-right .csc-textpic-imagewrap,
+    div.csc-textpic-intext-right-nowrap .csc-textpic-imagewrap {
+        margin-left: {$styles.content.imgtext.textMargin}px;
+    }
+
+    /* Positioning of images: */
+
+    /* Center (above or below) */
+    div.csc-textpic-center .csc-textpic-imagewrap, div.csc-textpic-center figure.csc-textpic-imagewrap { overflow: hidden; }
+    div.csc-textpic-center .csc-textpic-center-outer { position: relative; float: right; right: 50%; }
+    div.csc-textpic-center .csc-textpic-center-inner { position: relative; float: right; right: -50%; }
+
+    /* Right (above or below) */
+    div.csc-textpic-right .csc-textpic-imagewrap { float: right; }
+    div.csc-textpic-right div.csc-textpic-text { clear: right; }
+
+    /* Left (above or below) */
+    div.csc-textpic-left .csc-textpic-imagewrap { float: left; }
+    div.csc-textpic-left div.csc-textpic-text { clear: left; }
+
+    /* Left (in text) */
+    div.csc-textpic-intext-left .csc-textpic-imagewrap { float: left; }
+
+    /* Right (in text) */
+    div.csc-textpic-intext-right .csc-textpic-imagewrap { float: right; }
+
+    /* Right (in text, no wrap around) */
+    div.csc-textpic-intext-right-nowrap .csc-textpic-imagewrap { float: right; }
+
+    /* Left (in text, no wrap around) */
+    div.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap { float: left; }
+
+    div.csc-textpic div.csc-textpic-imagerow-last, div.csc-textpic div.csc-textpic-imagerow-none div.csc-textpic-last { margin-bottom: 0; }
+
+    /* Browser fixes: */
+    /* Fix for unordered and ordered list with image "In text, left" */
+    .csc-textpic-intext-left ol, .csc-textpic-intext-left ul { padding-left: 40px; overflow: auto; }
+
+    /* Textmedia */
+    .csc-textmedia,
+    .csc-textmedia-gallery { overflow: hidden; }
+    .csc-textmedia-gallery-column { float: left; }
+    .csc-textmedia-gallery-column { margin-right: {$styles.content.textmedia.columnSpacing}px; }
+    .csc-textmedia-gallery-column:last-child { margin-right: 0; }
+    .csc-textmedia-gallery-row { overflow: hidden; margin-bottom: {$styles.content.textmedia.rowSpacing}px; }
+    .csc-textmedia-gallery-row:last-child { margin-bottom: 0; }
+    .csc-textmedia-above .csc-textmedia-gallery { margin-bottom: {$styles.content.textmedia.textMargin}px; }
+    .csc-textmedia-above-right .csc-textmedia-gallery { float: right; }
+    .csc-textmedia-above-left .csc-textmedia-gallery { float: left; }
+    .csc-textmedia-above .csc-textmedia-text { clear: both; }
+    .csc-textmedia-above-center .csc-textmedia-gallery-outer,
+    .csc-textmedia-below-center .csc-textmedia-gallery-outer { position: relative; float: right; right: 50%; }
+    .csc-textmedia-above-center .csc-textmedia-gallery-inner,
+    .csc-textmedia-below-center .csc-textmedia-gallery-inner { position: relative; float: right; right: -50%; }
+    .csc-textmedia-below .csc-textmedia-gallery { margin-top: {$styles.content.textmedia.textMargin}px; }
+    .csc-textmedia-below-right .csc-textmedia-gallery { float: right; }
+    .csc-textmedia-below-left .csc-textmedia-gallery { float: left; }
+    .csc-textmedia-inside-right .csc-textmedia-gallery { float: right; margin-left: {$styles.content.textmedia.textMargin}px; }
+    .csc-textmedia-inside-left .csc-textmedia-gallery { float: left; margin-right: {$styles.content.textmedia.textMargin}px; }
+    .csc-textmedia-beside-right .csc-textmedia-gallery { float: right; margin-left: {$styles.content.textmedia.textMargin}px; }
+    .csc-textmedia-beside-right .csc-textmedia-text { overflow: hidden; }
+    .csc-textmedia-beside-left .csc-textmedia-gallery { float: left; margin-right: {$styles.content.textmedia.textMargin}px; }
+    .csc-textmedia-beside-left .csc-textmedia-text { overflow: hidden; }
+
+    /* Uploads */
+    .ce-uploads { margin: 0; padding: 0; }
+    .ce-uploads li { list-style: none outside none; margin: 1em 0; }
+    .ce-uploads img { float: left; margin-right: 1em; vertical-align: top; }
+    .ce-uploads span { display: block; }
+
+    /* Table */
+    .contenttable { width: 100%; max-width: 100%; }
+    .contenttable th, .contenttable td { padding: 0.5em 0.75em; vertical-align: top; }
+    .contenttable thead th { font-weight: bold; border-bottom: 2px solid #dadada; }
+    .contenttable th, .contenttable td { border-top: 1px solid #dadada; }
+    .contenttable-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,.05); }
+    .contenttable-bordered th, .contenttable-bordered td { border: 1px solid #dadada; }
+
+    /* Space */
+    .csc-space-before-extra-small { margin-top: 1em; }
+    .csc-space-before-small { margin-top: 2em; }
+    .csc-space-before-medium { margin-top: 3em; }
+    .csc-space-before-large { margin-top: 4em; }
+    .csc-space-before-extra-large { margin-top: 5em; }
+    .csc-space-after-extra-small { margin-bottom: 1em; }
+    .csc-space-after-small { margin-bottom: 2em; }
+    .csc-space-after-medium { margin-bottom: 3em; }
+    .csc-space-after-large { margin-bottom: 4em; }
+    .csc-space-after-extra-large { margin-bottom: 5em; }
+
+    /* Frame */
+    .csc-frame-ruler-before:before { content: ''; display: block; border-top: 1px solid rgba(0,0,0,0.25); margin-bottom: 2em; }
+    .csc-frame-ruler-after:after { content: ''; display: block; border-bottom: 1px solid rgba(0,0,0,0.25); margin-top: 2em; }
+    .csc-frame-indent { margin-left: 15%; margin-right: 15%; }
+    .csc-frame-indent-left { margin-left: 33%; }
+    .csc-frame-indent-right { margin-right: 33%; }
+)

@@ -1,0 +1,23 @@
+# Table:
+# A simple table.
+#
+# CType: table
+
+tt_content.table = COA
+tt_content.table {
+    10 = < lib.stdheader
+    20 = USER
+    20 {
+        userFunc = TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_table
+        field = bodytext
+        innerStdWrap.wrap = |
+        innerStdWrap.htmlSpecialChars = 1
+        innerStdWrap.br = 1
+        stdWrap {
+            editIcons = tt_content: cols, bodytext
+            editIcons.beforeLastTag = 1
+            editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.table
+            prefixComment = 2 | Table:
+        }
+    }
+}

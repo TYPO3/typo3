@@ -1,0 +1,15 @@
+# Divider:
+# This element inserts a visual divider, which is by default a horizontal line.
+#
+# CType: div
+
+tt_content.div = TEXT
+tt_content.div {
+    value = <hr>
+    override = <hr />
+    override.if {
+        isTrue.data = TSFE:xhtmlDoctype
+    }
+    wrap = <div class="divider">|</div>
+    prefixComment = 2 | Div element
+}

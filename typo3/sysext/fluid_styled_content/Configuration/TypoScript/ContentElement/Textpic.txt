@@ -1,0 +1,29 @@
+# Text and Images:
+# Text with images.
+#
+# CType: textpic
+
+tt_content.textpic =< lib.fluidContent
+tt_content.textpic {
+    templateName = Textpic
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+        10 {
+            references.fieldName = image
+        }
+        20 = TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor
+        20 {
+            maxGalleryWidth = {$styles.content.textmedia.maxW}
+            maxGalleryWidthInText = {$styles.content.textmedia.maxWInText}
+            columnSpacing = {$styles.content.textmedia.columnSpacing}
+            borderWidth = {$styles.content.textmedia.borderWidth}
+            borderPadding = {$styles.content.textmedia.borderPadding}
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], bodytext, image [imageorient|imagewidth|imageheight], [imagecols|imageborder], image_zoom
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.textpic
+        }
+    }
+}

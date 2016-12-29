@@ -1,0 +1,27 @@
+# Recently updated pages:
+# ...
+#
+# CType: menu_recently_updated
+
+tt_content.menu_recently_updated = COA
+tt_content.menu_recently_updated {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        special = updated
+        special {
+            maxAge = 3600*24*7
+            excludeNoSearchPages = 1
+        }
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-5">|</ul>
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_recently_updated = TEXT
+    10.cObject.menu_recently_updated.value = <nav id="c{field:uid}"
+    30.cObject.menu_recently_updated = TEXT
+    30.cObject.menu_recently_updated.value = >|</nav>
+}

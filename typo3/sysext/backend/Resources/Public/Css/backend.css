@@ -320,7 +320,8 @@ th {
 :root .fa-rotate-270,
 :root .fa-flip-horizontal,
 :root .fa-flip-vertical {
-  filter: none;
+  -webkit-filter: none;
+          filter: none;
 }
 .fa-stack {
   position: relative;
@@ -5726,7 +5727,6 @@ a.label:focus {
 }
 .label-default,
 .label-obsolete,
-.label-experimental,
 .label-test,
 .label-excludeFromUpdates {
   background-color: #d7d7d7;
@@ -5750,7 +5750,8 @@ a.label:focus {
 .label-success[href]:focus {
   background-color: #5f8139;
 }
-.label-info {
+.label-info,
+.label-experimental {
   background-color: #6daae0;
 }
 .label-info[href]:hover,
@@ -5766,7 +5767,8 @@ a.label:focus {
   background-color: #d88b1a;
 }
 .label-danger,
-.label-alpha {
+.label-alpha,
+.label-deprecated {
   background-color: #c83c3c;
 }
 .label-danger[href]:hover,
@@ -8901,7 +8903,7 @@ div.dropdown-menu {
 }
 /*!
  * Datetimepicker for Bootstrap 3
- * version : 4.17.44
+ * version : 4.17.42
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 .bootstrap-datetimepicker-widget {

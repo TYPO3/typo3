@@ -1,0 +1,31 @@
+# Menu of subpages of selected pages including sections:
+# ...
+#
+# CType: menu_section_pages
+
+tt_content.menu_section_pages = COA
+tt_content.menu_section_pages {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        special = directory
+        1.expAll = 1
+        2 < .1
+        2 {
+            sectionIndex = 1
+            sectionIndex.type = header
+            wrap = <ul>|</ul>
+            NO.wrapItemAndSub = <li class="csc-section">|</li>
+        }
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-7">|</ul>
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_section_pages = TEXT
+    10.cObject.menu_section_pages.value = <nav id="c{field:uid}"
+    30.cObject.menu_section_pages = TEXT
+    30.cObject.menu_section_pages.value = >|</nav>
+}

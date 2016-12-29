@@ -1,0 +1,25 @@
+# Header Only:
+# Adds a header only.
+#
+# CType: header
+
+tt_content.header = COA
+tt_content.header {
+    10 = < lib.stdheader
+    20 = TEXT
+    20 {
+        field = subheader
+        required = 1
+        dataWrap = <p class="csc-subheader csc-subheader-{field:layout}">|</p>
+        htmlSpecialChars = 1
+        if {
+            value = html5
+            equals.data = TSFE:config|config|doctype
+            negate = 1
+        }
+        editIcons = tt_content:subheader,layout
+        editIcons.beforeLastTag = 1
+        editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.subheader
+        prefixComment = 2 | Subheader:
+    }
+}

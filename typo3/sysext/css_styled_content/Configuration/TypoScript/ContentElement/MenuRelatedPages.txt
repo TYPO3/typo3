@@ -1,0 +1,26 @@
+# Related pages (based on keywords):
+# ...
+#
+# CType: menu_related_pages
+
+tt_content.menu_related_pages = COA
+tt_content.menu_related_pages {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        special = keywords
+        special {
+            excludeNoSearchPages = 1
+        }
+        stdWrap {
+            outerWrap = <ul class="csc-menu csc-menu-6">|</ul>
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_related_pages = TEXT
+    10.cObject.menu_related_pages.value = <nav id="c{field:uid}"
+    30.cObject.menu_related_pages = TEXT
+    30.cObject.menu_related_pages.value = >|</nav>
+}

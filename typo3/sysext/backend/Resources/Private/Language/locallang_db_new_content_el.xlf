@@ -54,6 +54,75 @@
 			<trans-unit id="common_table_description">
 				<source>A simple table.</source>
 			</trans-unit>
+			<trans-unit id="menu">
+				<source>Menu</source>
+			</trans-unit>
+			<trans-unit id="menu_abstract.title">
+				<source>Abstracts</source>
+			</trans-unit>
+			<trans-unit id="menu_abstract.description">
+				<source>Menu of subpages of selected pages including abstracts</source>
+			</trans-unit>
+			<trans-unit id="menu_categorized_content.title">
+				<source>Categorized content</source>
+			</trans-unit>
+			<trans-unit id="menu_categorized_content.description">
+				<source>Content elements for selected categories</source>
+			</trans-unit>
+			<trans-unit id="menu_categorized_pages.title">
+				<source>Categorized pages</source>
+			</trans-unit>
+			<trans-unit id="menu_pages.title">
+				<source>Pages</source>
+			</trans-unit>
+			<trans-unit id="menu_pages.description">
+				<source>Menu of selected pages</source>
+			</trans-unit>
+			<trans-unit id="menu_subpages.title">
+				<source>Subpages</source>
+			</trans-unit>
+			<trans-unit id="menu_subpages.description">
+				<source>Menu of subpages of selected pages</source>
+			</trans-unit>
+			<trans-unit id="menu_categorized_pages.description">
+				<source>Pages for selected categories</source>
+			</trans-unit>
+			<trans-unit id="menu_recently_updated.title">
+				<source>Recently updated pages</source>
+			</trans-unit>
+			<trans-unit id="menu_recently_updated.description">
+				<source>Menu of recenlty updated pages</source>
+			</trans-unit>
+			<trans-unit id="menu_related_pages.title">
+				<source>Related pages</source>
+			</trans-unit>
+			<trans-unit id="menu_related_pages.description">
+				<source>Menu of related pages based on keywords</source>
+			</trans-unit>
+			<trans-unit id="menu_section.title">
+				<source>Section index</source>
+			</trans-unit>
+			<trans-unit id="menu_section.description">
+				<source>Page content marked for section menus</source>
+			</trans-unit>
+			<trans-unit id="menu_section_pages.title">
+				<source>Section index of subpages from selected pages</source>
+			</trans-unit>
+			<trans-unit id="menu_section_pages.description">
+				<source>Menu of subpages of selected pages including sections</source>
+			</trans-unit>
+			<trans-unit id="menu_sitemap.title">
+				<source>Sitemap</source>
+			</trans-unit>
+			<trans-unit id="menu_sitemap.description">
+				<source>Expanded menu of all pages and subpages for selected pages</source>
+			</trans-unit>
+			<trans-unit id="menu_sitemap_pages.title">
+				<source>Sitemaps of selected pages</source>
+			</trans-unit>
+			<trans-unit id="menu_sitemap_pages.description">
+				<source>Expanded menu of all subpages for selected pages</source>
+			</trans-unit>
 			<trans-unit id="special">
 				<source>Special elements</source>
 			</trans-unit>

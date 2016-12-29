@@ -1,6 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="HeaderContentFooter" />
-<f:section name="content">
+<f:layout name="Default" />
+<f:section name="Main">
+
 	<f:if condition="{files}">
 		<ul class="ce-uploads">
 			<f:for each="{files}" as="file" iteration="fileIterator">
@@ -8,11 +9,10 @@
 					<f:if condition="{data.uploads_type} == 1">
 						<img src="{f:uri.resource(path: 'Icons/FileIcons/{file.extension}.gif', extensionName: 'frontend')}" alt="">
 					</f:if>
-
 					<f:if condition="{data.uploads_type} == 2">
 						<f:if condition="{f:uri.image(src: 'file:{f:if(condition: file.originalFile, then: \'file:{file.originalFile.uid}\', else: \'file:{file.uid}\')}')} != '/'">
 							<f:then>
-								<a href="{file.publicUrl}"{f:if(condition:data.target,then:' target="{data.target}"')}>
+								<a href="{file.publicUrl}" {f:if(condition:data.target,then: ' target="{data.target}"')}>
 									<f:media file="{file}" width="150" alt="{file.properties.alternative}" />
 								</a>
 							</f:then>
@@ -21,38 +21,23 @@
 							</f:else>
 						</f:if>
 					</f:if>
-
 					<div>
-						<a href="{file.publicUrl}"{f:if(condition:data.target,then:' target="{data.target}"')}>
-							<span class="ce-uploads-fileName">
-								<f:if condition="{file.properties.title}">
-									<f:then>
-										{file.properties.title}
-									</f:then>
-									<f:else>
-										{file.name}
-									</f:else>
-								</f:if>
-							</span>
+						<a href="{file.publicUrl}" {f:if(condition:data.target,then: ' target="{data.target}"')}>
+							<span class="ce-uploads-fileName">{f:if(condition: file.properties.title, then: file.properties.title, else: file.name)}</span>
 						</a>
-
 						<f:if condition="{file.properties.description}">
 							<f:if condition="{data.uploads_description}">
-								<span class="ce-uploads-description">
-									{file.properties.description}
-								</span>
+								<span class="ce-uploads-description">{file.properties.description}</span>
 							</f:if>
 						</f:if>
-
 						<f:if condition="{data.filelink_size}">
-							<span class="ce-uploads-filesize">
-								<f:format.bytes value="{file.properties.size}" />
-							</span>
+							<span class="ce-uploads-filesize"><f:format.bytes value="{file.properties.size}" /></span>
 						</f:if>
 					</div>
 				</li>
 			</f:for>
 		</ul>
 	</f:if>
+
 </f:section>
 </html>

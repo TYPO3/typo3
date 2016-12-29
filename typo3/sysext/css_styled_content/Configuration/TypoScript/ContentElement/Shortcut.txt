@@ -1,0 +1,18 @@
+# Insert records:
+# This element embeds other content elements.
+#
+# CType: shortcut
+
+tt_content.shortcut = COA
+tt_content.shortcut {
+    20 = RECORDS
+    20 {
+        source.field = records
+        tables = {$content.shortcut.tables}
+    }
+    20.stdWrap {
+        editIcons = tt_content: records
+        editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.recordList
+        prefixComment = 2 | Inclusion of other records (by reference):
+    }
+}

@@ -1,0 +1,111 @@
+# Creates persistent ParseFunc setup for non-HTML content. This is recommended to use (as a reference!)
+lib.parseFunc {
+    makelinks = 1
+    makelinks.http.keep = {$styles.content.links.keep}
+    makelinks.http.extTarget < lib.parseTarget
+    makelinks.http.extTarget =
+    makelinks.http.extTarget.override = {$styles.content.links.extTarget}
+    makelinks.mailto.keep = path
+    tags {
+        link = TEXT
+        link {
+            current = 1
+            typolink.parameter.data = parameters : allParams
+            typolink.extTarget < lib.parseTarget
+            typolink.extTarget =
+            typolink.extTarget.override = {$styles.content.links.extTarget}
+            typolink.target < lib.parseTarget
+            typolink.target =
+            typolink.target.override = {$styles.content.links.target}
+            parseFunc.constants =1
+        }
+        a = TEXT
+        a {
+            current = 1
+            typolink {
+                parameter.data = parameters:href
+                title.data = parameters:title
+                aTagParams.data = parameters:allParams
+                target.data = parameters:target
+                extTarget = {$styles.content.links.extTarget}
+                extTarget.override.data = parameters:target
+            }
+        }
+    }
+    allowTags = {$styles.content.links.allowTags}
+    denyTags = *
+    sword = <span class="csc-sword">|</span>
+    constants = 1
+    nonTypoTagStdWrap.HTMLparser = 1
+    nonTypoTagStdWrap.HTMLparser {
+        keepNonMatchedTags = 1
+        htmlSpecialChars = 2
+    }
+}
+
+# good old parsefunc in "styles.content.parseFunc" is created for backwards compatibility. Don't use it, just ignore.
+styles.content.parseFunc < lib.parseFunc
+
+# Creates persistent ParseFunc setup for RTE content (which is mainly HTML) based on the "ts_css" transformation.
+lib.parseFunc_RTE < lib.parseFunc
+lib.parseFunc_RTE {
+    //  makelinks >
+    # Processing <table> and <blockquote> blocks separately
+    externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre
+    externalBlocks {
+        # The blockquote content is passed into parseFunc again...
+        blockquote.stripNL=1
+        blockquote.callRecursive=1
+        table.stripNL=1
+        table.stdWrap.HTMLparser = 1
+        table.stdWrap.HTMLparser.tags.table.fixAttrib.class {
+            default = contenttable
+            always = 1
+            list = contenttable
+        }
+        table.stdWrap.HTMLparser.keepNonMatchedTags = 1
+        table.HTMLtableCells=1
+        table.HTMLtableCells {
+            # Recursive call to self but without wrapping non-wrapped cell content
+            default.stdWrap {
+                parseFunc =< lib.parseFunc_RTE
+                parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
+            }
+            addChr10BetweenParagraphs=1
+        }
+        div.stripNL = 1
+        div.callRecursive = 1
+        article < .div
+        aside < .div
+        footer < .div
+        header < .div
+        nav < .div
+        section < .div
+        # List processing
+        dl < .div
+        dd < .div
+        ol < .div
+        ul < .div
+    }
+    nonTypoTagStdWrap.encapsLines {
+        encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li
+        remapTag.DIV = P
+        nonWrappedTag = P
+        innerStdWrap_all.ifBlank = &nbsp;
+        addAttributes.P.class = bodytext
+        addAttributes.P.class.setOnly=blank
+    }
+    nonTypoTagStdWrap.HTMLparser = 1
+    nonTypoTagStdWrap.HTMLparser {
+        keepNonMatchedTags = 1
+        htmlSpecialChars = 2
+    }
+}
+
+# Creates a condition for targets. Not allowed in XHTML except for xhtml frames DTD
+lib.parseTarget {
+    override =
+    override.if {
+        isTrue.data = TSFE:dtdAllowsFrames
+    }
+}

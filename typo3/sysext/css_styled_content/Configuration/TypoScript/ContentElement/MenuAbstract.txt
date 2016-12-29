@@ -1,0 +1,38 @@
+# Menu of subpages of selected pages including abstracts:
+# ...
+#
+# CType: menu_abstract
+
+tt_content.menu_abstract = COA
+tt_content.menu_abstract {
+    10 = < lib.stdheader
+    20 < lib.defaultMenu
+    20 {
+        stdWrap {
+            prepend.20.renderObj.wrap = <dt class="csc-nav-bypass">|</dt><dd>&nbsp;</dd>
+            outerWrap = <dl class="csc-menu csc-menu-4">|</dl>
+        }
+        1.NO {
+            wrapItemAndSub >
+            linkWrap = <dt>|</dt>
+            after {
+                cObject = TEXT
+                cObject {
+                    data = field : abstract // field : description // field : subtitle
+                    htmlSpecialChars = 1
+                    required = 1
+                }
+                ifBlank = &nbsp;
+                wrap = <dd>|</dd>
+            }
+            ATagTitle.field = description // title
+        }
+    }
+}
+
+tt_content.stdWrap.innerWrap.cObject.default {
+    10.cObject.menu_abstract = TEXT
+    10.cObject.menu_abstract.value = <nav id="c{field:uid}"
+    30.cObject.menu_abstract = TEXT
+    30.cObject.menu_abstract.value = >|</nav>
+}

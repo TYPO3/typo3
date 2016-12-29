@@ -298,14 +298,11 @@ You can also display images in multiple columns and even enable an option that o
 tt_content:imageheight,
 tt_content:imageorient,
 tt_content:imageborder,
-tt_content:image_noRows,
 tt_content:image_link,
 tt_content:image_zoom,
 tt_content:imagecols,
 tt_content:imagecaption,
-tt_content:image_effects,
 tt_content:image_frames,
-tt_content:image_compression,
 Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
@@ -352,18 +349,6 @@ Apart from the visual difference there is a technical aspect as well. If you cho
 tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_noRows.description">
-				<source>Disables tablerows in the image block.</source>
-			</trans-unit>
-			<trans-unit id="image_noRows.details" xml:space="preserve">
-				<source>To illustrate, imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is taller than the second this will generate empty space beneath the second image. This is due to the normal flow in which the images are placed in table cells.
-If you enable the No Rows option, the table will place the images in a column into a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative is unacceptable.</source>
-			</trans-unit>
-			<trans-unit id="_image_noRows.seeAlso" xml:space="preserve">
-				<source>tt_content:imagecols,
-tt_content:image</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="image_link.description">
 				<source>Enter a link for the image. For multiple images, separate the links with commas.</source>
 			</trans-unit>
@@ -389,39 +374,18 @@ tt_content:image</source>
 tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_effects.description">
-				<source>Select special image processing effects, such as rotation and color adjustments.</source>
-			</trans-unit>
-			<trans-unit id="_image_effects.seeAlso" xml:space="preserve">
-				<source>tt_content:image_compression,
-tt_content:image_frames,
-tt_content:image</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="image_frames.description">
 				<source>Select special image framing options.</source>
 			</trans-unit>
 			<trans-unit id="_image_frames.seeAlso" xml:space="preserve">
-				<source>tt_content:image_compression,
-tt_content:image_effects,
-tt_content:image</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="image_compression.description">
-				<source>Select image quality and image type options.</source>
-			</trans-unit>
-			<trans-unit id="_image_compression.seeAlso" xml:space="preserve">
-				<source>tt_content:image_frames,
-tt_content:image_effects,
-tt_content:image</source>
+				<source>tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imagecols.description">
 				<source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
 			</trans-unit>
 			<trans-unit id="_imagecols.seeAlso" xml:space="preserve">
-				<source>tt_content:image_noRows,
-tt_content:image</source>
+				<source>tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imagecaption.description">
@@ -432,19 +396,6 @@ tt_content:image</source>
 In this case, each line in this field will be the image caption of the corresponding image in the list.
 
 The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
-			</trans-unit>
-			<trans-unit id="_imagecaption.seeAlso" xml:space="preserve">
-				<source>tt_content:imagecaption_position,
-tt_content:image</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="imagecaption_position.description">
-				<source>Aligns the image captions to the left, center, or right.</source>
-			</trans-unit>
-			<trans-unit id="_imagecaption_position.seeAlso" xml:space="preserve">
-				<source>tt_content:imagecaption,
-tt_content:image</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="cols.description">
 				<source>Select a fixed number of table columns</source>
@@ -533,24 +484,6 @@ tt_content:sectionIndex</source>
 				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="table_bgColor.description">
-				<source>Select the table background color.</source>
-			</trans-unit>
-			<trans-unit id="table_border.description">
-				<source>Select the table border thickness.</source>
-			</trans-unit>
-			<trans-unit id="table_cellspacing.description">
-				<source>Select the table cell spacing.</source>
-			</trans-unit>
-			<trans-unit id="table_cellspacing.details">
-				<source>Cell spacing is the distance between table cells in rows and columns. The distance is equally applied in all directions, top, bottom, left, and right.</source>
-			</trans-unit>
-			<trans-unit id="table_cellpadding.description">
-				<source>Select the table cellpadding.</source>
-			</trans-unit>
-			<trans-unit id="table_cellpadding.details">
-				<source>Cell padding is the 'internal' margin of a table cell. The distance is equally applied in all directions, top, bottom, left, and right.</source>
-			</trans-unit>
 			<trans-unit id="media.description">
 				<source>Files can be added to the list here.</source>
 			</trans-unit>
@@ -567,24 +500,14 @@ tt_content:sectionIndex</source>
 				<source>Top Margin (in pixels) inserts whitespace &lt;em&gt;before&lt;/em&gt; this Content Element.</source>
 			</trans-unit>
 			<trans-unit id="_spaceBefore.seeAlso" xml:space="preserve">
-				<source>tt_content:spaceAfter,
-tt_content:section_frame</source>
+				<source>tt_content:spaceAfter</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="spaceAfter.description">
 				<source>Bottom Margin (in pixels) inserts whitespace &lt;em&gt;after&lt;/em&gt; this Content Element.</source>
 			</trans-unit>
 			<trans-unit id="_spaceAfter.seeAlso" xml:space="preserve">
-				<source>tt_content:spaceBefore,
-tt_content:section_frame</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="section_frame.description">
-				<source>Select indention or framing options for the Content Element.</source>
-			</trans-unit>
-			<trans-unit id="_section_frame.seeAlso" xml:space="preserve">
-				<source>tt_content:spaceAfter,
-tt_content:spaceBefore</source>
+				<source>tt_content:spaceBefore</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="sectionIndex.description">

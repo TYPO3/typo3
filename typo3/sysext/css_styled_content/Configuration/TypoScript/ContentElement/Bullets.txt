@@ -1,0 +1,59 @@
+# Bullet List:
+# A single bullet list.
+#
+# CType: bullets
+
+tt_content.bullets = COA
+tt_content.bullets {
+    10 = < lib.stdheader
+    20 = CASE
+    20 {
+        key.field = bullets_type
+        # Unordered List
+        default = TEXT
+        default {
+            field = bodytext
+            trim = 1
+            split {
+                token.char = 10
+                cObjNum = 1
+                1.current = 1
+                1.htmlSpecialChars = 1
+                1.wrap = <li>|</li>
+            }
+            dataWrap = <ul class="ce-bullets ce-bullets-{field:bullets_type}">|</ul>
+        }
+        # Ordered List
+        1 < .default
+        1 {
+            dataWrap = <ol class="ce-bullets ce-bullets-{field:bullets_type}">|</ol>
+        }
+        # Definition List
+        2 < .default
+        2 {
+            split {
+                1 >
+                1 {
+                    10 = TEXT
+                    10 {
+                        current = 1
+                        split {
+                            token = |
+                            cObjNum = |*|1|| 2|*|
+                            1.current = 1
+                            1.htmlSpecialChars = 1
+                            1.wrap = <dt>|</dt>
+                            2 < .1
+                            2.wrap = <dd>|</dd>
+                        }
+                    }
+                }
+            }
+            dataWrap = <dl class="ce-bullets ce-bullets-{field:bullets_type}">|</dl>
+        }
+        editIcons = tt_content: bodytext, [bullets_type]
+        editIcons.beforeLastTag = 1
+        editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xlf:eIcon.bullets
+        prefixComment = 2 | Bullet list:
+    }
+}

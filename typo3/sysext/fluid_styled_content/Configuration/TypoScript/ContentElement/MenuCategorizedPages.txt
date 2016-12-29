@@ -1,0 +1,33 @@
+# Pages for selected categories:
+# ...
+#
+# CType: menu_categorized_pages
+
+tt_content.menu_categorized_pages =< lib.fluidContent
+tt_content.menu_categorized_pages {
+    templateName = MenuCategorizedPages
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            special = categories
+            special {
+                value.field = selected_categories
+                relation.field = category_field
+                sorting = title
+                order = asc
+            }
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = media
+                }
+            }
+        }
+    }
+    stdWrap {
+        editIcons = tt_content: header [header_layout], selected_categories, category_field
+        editIcons {
+            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
+        }
+    }
+}
