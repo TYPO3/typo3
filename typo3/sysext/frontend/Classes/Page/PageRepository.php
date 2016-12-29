@@ -75,11 +75,6 @@ class PageRepository
     public $versioningPreview = false;
 
     /**
-     * @var string
-     */
-    public $versioningPreview_where_hid_del = '';
-
-    /**
      * Workspace ID for preview
      *
      * @var int
