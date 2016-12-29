@@ -28,11 +28,6 @@ class Package implements PackageInterface
     protected $extensionManagerConfiguration = [];
 
     /**
-     * @var array
-     */
-    protected $classAliases;
-
-    /**
      * If this package is part of factory default, it will be activated
      * during first installation.
      *
