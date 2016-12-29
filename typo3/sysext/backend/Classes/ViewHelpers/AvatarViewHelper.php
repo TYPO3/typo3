@@ -72,6 +72,10 @@ class AvatarViewHelper extends AbstractViewHelper
         } else {
             $backendUser = $GLOBALS['BE_USER']->user;
         }
+        if ($backendUser === false) {
+            // no BE user can be retrieved from DB, probably deleted
+            return '';
+        }
         /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
         return $avatar->render($backendUser, $arguments['size'], $arguments['showIcon']);
