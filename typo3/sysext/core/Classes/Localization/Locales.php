@@ -247,6 +247,11 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
                 $selectedLanguage = $allLanguageCodesFromLocales[$preferredLanguage];
                 break;
             }
+            //fix for IE11 & Edge, bescause, Microsoft had changed http Accept-Language zh-cn to zh-hans-cn!
+            if (!$preferredLanguage || $preferredLanguage === 'zh-Hans-CN') {
+            $selectedLanguage = 'ch';
+            break;
+            }
             // Strip the country code from the end
             list($preferredLanguage, ) = explode('-', $preferredLanguage);
             if (isset($allLanguageCodesFromLocales[$preferredLanguage])) {
