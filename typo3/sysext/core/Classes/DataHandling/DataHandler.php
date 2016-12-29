@@ -23,6 +23,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Database\Connection;
@@ -2419,15 +2424,30 @@ class DataHandler
             if ($status === 'new') {
                 $row['pid'] = $realPid;
             }
-            // Get current value array:
+
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                [ 'config' => $tcaFieldConf ],
-                $table,
-                $field,
-                $row
-            );
-            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+
+            // Get data structure. The methods may throw various exceptions, with some of them being
+            // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
+            // and substitute with a dummy DS.
+            $dataStructureArray = [ 'sheets' => [ 'sDEF' => [] ] ];
+            try {
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                    [ 'config' => $tcaFieldConf ],
+                    $table,
+                    $field,
+                    $row
+                );
+
+                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            } catch (InvalidParentRowException $e) {
+            } catch (InvalidParentRowLoopException $e) {
+            } catch (InvalidParentRowRootException $e) {
+            } catch (InvalidPointerFieldValueException $e) {
+            } catch (InvalidIdentifierException $e) {
+            }
+
+            // Get current value array:
             $currentValueArray = (string)$curValue !== '' ? GeneralUtility::xml2array($curValue) : [];
             if (!is_array($currentValueArray)) {
                 $currentValueArray = [];
