@@ -145,15 +145,12 @@ class CliRequestHandler implements RequestHandlerInterface
         list($commandLineScript, $commandLineName) = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey];
         if (!is_callable($commandLineScript)) {
             $commandLineScript = GeneralUtility::getFileAbsFileName($commandLineScript);
-            // Note: These constants are not in use anymore, and marked for deprecation and will be removed in TYPO3 CMS 8
-            define('TYPO3_cliKey', $cliKey);
-            define('TYPO3_cliInclude', $commandLineScript);
         }
-        // This is a compatibility layer: Some cli scripts rely on this, like ext:phpunit cli
-        // This layer will be removed in TYPO3 CMS 8
-        $GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
-        $GLOBALS['temp_cliKey'] = array_shift($_SERVER['argv']);
-        array_unshift($_SERVER['argv'], $GLOBALS['temp_cliScriptPath']);
+
+        // the CLI key (e.g. "extbase" or "lowlevel"), is removed from the argv, but the script path is kept
+        $cliScriptPath = array_shift($_SERVER['argv']);
+        array_shift($_SERVER['argv']);
+        array_unshift($_SERVER['argv'], $cliScriptPath);
         return [$commandLineScript, $commandLineName];
     }
 
