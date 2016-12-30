@@ -720,7 +720,10 @@ class PageRepository
             );
 
         if (!empty($sortField)) {
-            $res->orderBy($sortField);
+            $orderBy = QueryHelper::parseOrderBy($sortField);
+            foreach ($orderBy as $order) {
+                $res->orderBy(...$order);
+            }
         }
         $result = $res->execute();
 
