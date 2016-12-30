@@ -960,10 +960,6 @@ abstract class AbstractMenuContentObject
         }
         // Max number of items
         $limit = MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
-        $extraWhere = ' AND pages.uid<>' . $specialValue . ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
-        if ($this->conf['special.']['excludeNoSearchPages']) {
-            $extraWhere .= ' AND pages.no_search=0';
-        }
         // Start point
         $eLevel = $this->parent_cObj->getKey(isset($this->conf['special.']['entryLevel.'])
             ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.'])
@@ -991,15 +987,53 @@ abstract class AbstractMenuContentObject
                     )
                 );
             }
-            $where = empty($keyWordsWhereArr) ? '' : '(' . implode(' OR ', $keyWordsWhereArr) . ')';
-            $statement = $this->parent_cObj->exec_getQuery('pages', [
-                'pidInList' => '0',
-                'uidInList' => $id_list,
-                'where' => $where . $extraWhere,
-                'orderBy' => $sortingField ?: $sortField . ' desc',
-                'max' => $limit
-            ]);
-            while ($row = $statement->fetch()) {
+            $queryBuilder
+                ->select('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        GeneralUtility::intExplode(',', $id_list, true)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($specialValue, \PDO::PARAM_INT)
+                    )
+                );
+
+            if (count($keyWordsWhereArr) !== 0) {
+                $queryBuilder->andWhere($queryBuilder->expr()->orX(...$keyWordsWhereArr));
+            }
+
+            if ($this->doktypeExcludeList) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->notIn(
+                        'pages.doktype',
+                        GeneralUtility::intExplode(',', $this->doktypeExcludeList, true)
+                    )
+                );
+            }
+
+            if (!$this->conf['includeNotInMenu']) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('pages.nav_hide', 0));
+            }
+
+            if ($this->conf['special.']['excludeNoSearchPages']) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('pages.no_search', 0));
+            }
+
+            if ($limit > 0) {
+                $queryBuilder->setMaxResults($limit);
+            }
+
+            if ($sortingField) {
+                $queryBuilder->orderBy($sortingField);
+            } else {
+                $queryBuilder->orderBy($sortField, 'desc');
+            }
+
+            $result = $queryBuilder->execute();
+            while ($row = $result->fetch()) {
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (is_array($row)) {
                     $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
