@@ -20,8 +20,12 @@ use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -720,16 +724,35 @@ class BackendController
         $beUser = $this->getBackendUser();
         // EDIT page:
         $editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
-        $editRecord = '';
         if ($editId) {
             // Looking up the page to edit, checking permissions:
             $where = ' AND (' . $beUser->getPagePermsClause(2) . ' OR ' . $beUser->getPagePermsClause(16) . ')';
             if (MathUtility::canBeInterpretedAsInteger($editId)) {
                 $editRecord = BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
             } else {
-                $records = BackendUtility::getRecordsByField('pages', 'alias', $editId, $where);
-                if (is_array($records)) {
-                    $editRecord = reset($records);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+                $editRecord = $queryBuilder->select('*')
+                    ->from('pages')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'alias',
+                            $queryBuilder->createNamedParameter($editId, \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->orX(
+                            $beUser->getPagePermsClause(Permission::PAGE_EDIT),
+                            $beUser->getPagePermsClause(Permission::CONTENT_EDIT)
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
+
+                if ($editRecord !== false) {
                     BackendUtility::workspaceOL('pages', $editRecord);
                 }
             }

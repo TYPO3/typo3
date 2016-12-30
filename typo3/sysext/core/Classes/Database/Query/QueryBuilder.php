@@ -209,11 +209,11 @@ class QueryBuilder
      *
      * @param string|int $key The parameter position or name.
      * @param mixed $value The parameter value.
-     * @param string|null $type One of the Connection::PARAM_* constants.
+     * @param int|null $type One of the Connection::PARAM_* constants.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function setParameter($key, $value, string $type = null): QueryBuilder
+    public function setParameter($key, $value, int $type = null): QueryBuilder
     {
         $this->concreteQueryBuilder->setParameter($key, $value, $type);
 

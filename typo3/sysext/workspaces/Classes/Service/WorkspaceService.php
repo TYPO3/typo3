@@ -14,11 +14,13 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -64,7 +66,7 @@ class WorkspaceService implements SingletonInterface
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
         $queryBuilder->getRestrictions()
-            ->add(GeneralUtility::makeInstance(Restriction\RootLevelRestriction::class));
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
 
         $result = $queryBuilder
             ->select('uid', 'title', 'adminusers', 'members')
@@ -1102,24 +1104,36 @@ class WorkspaceService implements SingletonInterface
     {
         $languageOptions = [];
         /** @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider $translationConfigurationProvider */
-        $translationConfigurationProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
+        $translationConfigurationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $systemLanguages = $translationConfigurationProvider->getSystemLanguages($pageId);
 
         if ($GLOBALS['BE_USER']->checkLanguageAccess(0)) {
             // Use configured label for default language
             $languageOptions[0] = $systemLanguages[0]['title'];
         }
-        $pages = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $pageId);
 
-        if (!is_array($pages)) {
-            return $languageOptions;
-        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages_language_overlay');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
-        foreach ($pages as $page) {
-            $languageId = (int)$page['sys_language_uid'];
+        $result = $queryBuilder->select('sys_language_uid')
+            ->from('pages_language_overlay')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
+            )
+            ->execute();
+
+        while ($row = $result->fetch()) {
+            $languageId = (int)$row['sys_language_uid'];
             // Only add links to active languages the user has access to
             if (isset($systemLanguages[$languageId]) && $GLOBALS['BE_USER']->checkLanguageAccess($languageId)) {
-                $languageOptions[$page['sys_language_uid']] = $systemLanguages[$languageId]['title'];
+                $languageOptions[$languageId] = $systemLanguages[$languageId]['title'];
             }
         }
 

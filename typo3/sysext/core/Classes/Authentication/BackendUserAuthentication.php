@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
@@ -701,15 +702,30 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                 $pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
                 $pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
             }
-            $recordLocalizations = BackendUtility::getRecordsByField($l10nTable, $pointerField, $pointerValue, '', '', '', '1');
-            if (is_array($recordLocalizations)) {
-                foreach ($recordLocalizations as $localization) {
-                    $recordLocalizationAccess = $recordLocalizationAccess
-                        && $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]);
-                    if (!$recordLocalizationAccess) {
-                        break;
-                    }
-                }
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($l10nTable);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $recordLocalization = $queryBuilder->select('*')
+                ->from($l10nTable)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $pointerField,
+                        $queryBuilder->createNamedParameter($pointerValue, \PDO::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
+            if (is_array($recordLocalization)) {
+                $languageAccess = $this->checkLanguageAccess(
+                    $recordLocalization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]
+                );
+                $recordLocalizationAccess = $recordLocalizationAccess && $languageAccess;
             }
         }
         return $recordLocalizationAccess;

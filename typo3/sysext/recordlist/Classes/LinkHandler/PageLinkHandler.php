@@ -62,11 +62,29 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $data = $linkParts['url'];
         // Checking if the id-parameter is an alias.
         if (isset($data['pagealias'])) {
-            $records = BackendUtility::getRecordsByField('pages', 'alias', $data['pagealias']);
-            if (empty($records)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $pageUid = $queryBuilder->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'alias',
+                        $queryBuilder->createNamedParameter($data['pagealias'], \PDO::PARAM_STR)
+                    )
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetchColumn(0);
+
+            if ($pageUid === false) {
                 return false;
             }
-            $data['pageuid'] = (int)$records[0]['uid'];
+            $data['pageuid'] = (int)$pageUid;
         }
         // Check if the page still exists
         if ((int)$data['pageuid'] > 0) {

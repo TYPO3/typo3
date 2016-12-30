@@ -221,6 +221,7 @@ class BackendUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @param null|QueryBuilder $queryBuilder The queryBuilder must be provided, if the parameter $whereClause is given and the concept of prepared statement was used. Example within self::firstDomainRecord()
      * @return mixed Multidimensional array with selected records (if any is selected)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function getRecordsByField(
         $theTable,
@@ -233,6 +234,7 @@ class BackendUtility
         $useDeleteClause = true,
         $queryBuilder = null
     ) {
+        GeneralUtility::logDeprecatedFunction();
         if (is_array($GLOBALS['TCA'][$theTable])) {
             if (null === $queryBuilder) {
                 $queryBuilder = static::getQueryBuilderForTable($theTable);
@@ -394,27 +396,32 @@ class BackendUtility
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
-            $constraint = $queryBuilder->expr()->andX(
-                $queryBuilder->expr()->eq(
-                    $tcaCtrl['languageField'],
-                    $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
-                ),
-                QueryHelper::stripLogicalOperatorPrefix($andWhereClause)
-            );
+            $queryBuilder->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $tcaCtrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $tcaCtrl['languageField'],
+                        $queryBuilder->createNamedParameter((int)$language, \PDO::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1);
 
-            $recordLocalization = self::getRecordsByField(
-                $table,
-                $tcaCtrl['transOrigPointerField'],
-                $uid,
-                (string)$constraint,
-                '',
-                '',
-                1,
-                true,
-                $queryBuilder
-            );
+            if ($andWhereClause) {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($andWhereClause));
+            }
+
+            $recordLocalization = $queryBuilder->execute()->fetchAll();
         }
+
         return $recordLocalization;
     }
 
@@ -3970,31 +3977,37 @@ class BackendUtility
     public static function firstDomainRecord($rootLine)
     {
         $queryBuilder = static::getQueryBuilderForTable('sys_domain');
-        $constraint = $queryBuilder->expr()->andX(
-            $queryBuilder->expr()->eq(
-                'redirectTo',
-                $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-            ),
-            $queryBuilder->expr()->eq(
-                'hidden',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder->select('domainName')
+            ->from('sys_domain')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT, ':pid')
+                ),
+                $queryBuilder->expr()->eq(
+                    'redirectTo',
+                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'hidden',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
-        );
+            ->setMaxResults(1)
+            ->orderBy('sorting');
+
         foreach ($rootLine as $row) {
-            $dRec = self::getRecordsByField(
-                'sys_domain',
-                'pid',
-                $row['uid'],
-                (string)$constraint,
-                '',
-                'sorting',
-                '',
-                true,
-                $queryBuilder
-            );
-            if (is_array($dRec)) {
-                $dRecord = reset($dRec);
-                return rtrim($dRecord['domainName'], '/');
+            $domainName = $queryBuilder->setParameter('pid', $row['uid'], \PDO::PARAM_INT)
+                ->execute()
+                ->fetchColumn(0);
+
+            if ($domainName) {
+                return rtrim($domainName, '/');
             }
         }
         return null;

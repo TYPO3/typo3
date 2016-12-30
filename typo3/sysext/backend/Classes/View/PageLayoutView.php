@@ -453,28 +453,32 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $userCanEditPage = $this->getBackendUser()->check('tables_modify', 'pages_language_overlay');
         }
         if ($userCanEditPage) {
-            $languageOverlayId = 0;
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('pages_language_overlay')
-                ->createQueryBuilder();
-            $constraint = $queryBuilder->expr()->eq(
-                'sys_language_uid',
-                $queryBuilder->createNamedParameter($this->tt_contentConfig['sys_language_uid'], \PDO::PARAM_INT)
-            );
-            $pageOverlayRecord = BackendUtility::getRecordsByField(
-                'pages_language_overlay',
-                'pid',
-                (int)$this->id,
-                $constraint,
-                '',
-                '',
-                '',
-                true,
-                $queryBuilder
-            );
-            if (!empty($pageOverlayRecord[0]['uid'])) {
-                $languageOverlayId = $pageOverlayRecord[0]['uid'];
-            }
+                ->getQueryBuilderForTable('pages_language_overlay');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $queryBuilder->select('uid')
+                ->from('pages_language_overlay')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter((int)$this->id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'sys_language_uid',
+                        $queryBuilder->createNamedParameter(
+                            $this->tt_contentConfig['sys_language_uid'],
+                            \PDO::PARAM_INT
+                        )
+                    )
+                )
+                ->setMaxResults(1);
+
+            $languageOverlayId = (int)$queryBuilder->execute()->fetchColumn(0);
+
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
                 PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
@@ -853,7 +857,29 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 }
                 // Language overlay page header:
                 if ($lP) {
-                    list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . $lP);
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('pages_language_overlay');
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                        ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+                    $lpRecord = $queryBuilder->select('*')
+                        ->from('pages_language_overlay')
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'sys_language_uid',
+                                $queryBuilder->createNamedParameter($lP, \PDO::PARAM_INT)
+                            )
+                        )
+                        ->setMaxResults(1)
+                        ->execute()
+                        ->fetch();
+
                     BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
                     $recordIcon = BackendUtility::wrapClickMenuOnIcon(
                         $this->iconFactory->getIconForRecord('pages_language_overlay', $lpRecord, Icon::SIZE_SMALL)->render(),

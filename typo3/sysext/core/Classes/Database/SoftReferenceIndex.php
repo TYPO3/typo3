@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
@@ -616,13 +618,27 @@ class SoftReferenceIndex
     /**
      * Look up and return page uid for alias
      *
-     * @param int $link_param Page alias string value
+     * @param string $link_param Page alias string value
      * @return int Page uid corresponding to alias value.
      */
     public function getPageIdFromAlias($link_param)
     {
-        $pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'alias', $link_param);
-        return $pRec[0]['uid'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $pageUid = $queryBuilder->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('alias', $queryBuilder->createNamedParameter($link_param, \PDO::PARAM_STR))
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchColumn(0);
+
+        return (int)$pageUid;
     }
 
     /**

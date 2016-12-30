@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -89,22 +91,22 @@ class DeletedRecords
         // set the limit
         $this->limit = trim($limit);
         if ($table) {
-            if (in_array($table, RecyclerUtility::getModifyableTables())) {
+            if (in_array($table, RecyclerUtility::getModifyableTables(), true)) {
                 $this->table[] = $table;
-                $this->setData($id, $table, $depth, $GLOBALS['TCA'][$table]['ctrl'], $filter);
+                $this->setData($id, $table, $depth, $filter);
             }
         } else {
-            foreach ($GLOBALS['TCA'] as $tableKey => $tableValue) {
+            foreach (array_keys($GLOBALS['TCA']) as $tableKey) {
                 // only go into this table if the limit allows it
                 if ($this->limit !== '') {
-                    $parts = GeneralUtility::trimExplode(',', $this->limit);
+                    $parts = GeneralUtility::intExplode(',', $this->limit, true);
                     // abort loop if LIMIT 0,0
-                    if ((int)$parts[0] === 0 && (int)$parts[1] === 0) {
+                    if ($parts[0] === 0 && $parts[1] === 0) {
                         break;
                     }
                 }
                 $this->table[] = $tableKey;
-                $this->setData($id, $tableKey, $depth, $tableValue['ctrl'], $filter);
+                $this->setData($id, $tableKey, $depth, $filter);
             }
         }
         return $this;
@@ -135,67 +137,41 @@ class DeletedRecords
      * @param int $id UID from record
      * @param string $table Tablename from record
      * @param int $depth How many levels recursive
-     * @param array $tcaCtrl TCA CTRL array
      * @param string $filter Filter text
      * @return void
      */
-    protected function setData($id, $table, $depth, $tcaCtrl, $filter)
+    protected function setData($id, $table, $depth, $filter)
     {
-        $id = (int)$id;
-        if (!array_key_exists('delete', $tcaCtrl)) {
+        if (!array_key_exists('delete', $GLOBALS['TCA'][$table]['ctrl'])) {
             return;
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll();
 
-        // find the 'deleted' field for this table
+        $id = (int)$id;
+        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
         $deletedField = RecyclerUtility::getDeletedField($table);
-
-        // create the filter WHERE-clause
-        $filterConstraint = null;
-        if (trim($filter) !== '') {
-            $labelConstraint = $queryBuilder->expr()->like(
-                $tcaCtrl['label'],
-                $queryBuilder->createNamedParameter(
-                    $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($filter) . '%'),
-                    \PDO::PARAM_STR
-                )
-            );
-            if (MathUtility::canBeInterpretedAsInteger($filter)) {
-                $filterConstraint = $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
-                    ),
-                    $labelConstraint
-                );
-            } else {
-                $filterConstraint = $labelConstraint;
-            }
-        }
+        $firstResult = 0;
+        $maxResults = 0;
 
         // get the limit
         if (!empty($this->limit)) {
             // count the number of deleted records for this pid
-            $deletedCount = $queryBuilder
+            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $filter);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $deletedCount = (int)$queryBuilder
                 ->count('*')
                 ->from($table)
-                ->where(
-                    $queryBuilder->expr()->neq($deletedField, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $filterConstraint
+                ->andWhere(
+                    $queryBuilder->expr()->neq(
+                        $deletedField,
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 )
                 ->execute()
-                ->fetchColumn();
+                ->fetchColumn(0);
 
             // split the limit
-            $parts = GeneralUtility::trimExplode(',', $this->limit);
-            $offset = $parts[0];
-            $rowCount = $parts[1];
+            list($offset, $rowCount) = GeneralUtility::intExplode(',', $this->limit, true);
             // subtract the number of deleted records from the limit's offset
             $result = $offset - $deletedCount;
             // if the result is >= 0
@@ -206,14 +182,12 @@ class DeletedRecords
                 // do NOT query this depth; limit also does not need to be set, we set it anyways
                 $allowQuery = false;
                 $allowDepth = true;
-                $limit = '';
             } else {
                 // the offset for the temporary limit has to remain like the original offset
                 // in case the original offset was just crossed by the amount of deleted records
+                $tempOffset = 0;
                 if ($offset !== 0) {
                     $tempOffset = $offset;
-                } else {
-                    $tempOffset = 0;
                 }
                 // set the offset in the limit to 0
                 $newOffset = 0;
@@ -222,7 +196,8 @@ class DeletedRecords
                 // if the result now is > limit's row count
                 if ($absResult > $rowCount) {
                     // use the limit's row count as the temporary limit
-                    $limit = implode(',', [$tempOffset, $rowCount]);
+                    $firstResult = $tempOffset;
+                    $maxResults = $rowCount;
                     // set the limit's row count to 0
                     $this->limit = implode(',', [$newOffset, 0]);
                     // do not go into new depth
@@ -230,7 +205,8 @@ class DeletedRecords
                 } else {
                     // if the result now is <= limit's row count
                     // use the result as the temporary limit
-                    $limit = implode(',', [$tempOffset, $absResult]);
+                    $firstResult = $tempOffset;
+                    $maxResults = $absResult;
                     // subtract the result from the row count
                     $newCount = $rowCount - $absResult;
                     // store the new result in the limit's row count
@@ -249,31 +225,35 @@ class DeletedRecords
                 $allowQuery = true;
             }
         } else {
-            $limit = '';
             $allowDepth = true;
             $allowQuery = true;
         }
         // query for actual deleted records
         if ($allowQuery) {
-            $where = $queryBuilder->expr()->andX(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                ),
-                $filterConstraint
-            );
-            $recordsToCheck = BackendUtility::getRecordsByField(
-                $table,
-                $deletedField,
-                '1',
-                ' AND ' . $where,
-                '',
-                'uid',
-                $limit,
-                false,
-                $queryBuilder
-            );
-            if ($recordsToCheck) {
+            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $filter);
+            if ($firstResult) {
+                $queryBuilder->setFirstResult($firstResult);
+            }
+            if ($maxResults) {
+                $queryBuilder->setMaxResults($maxResults);
+            }
+            $recordsToCheck = $queryBuilder->select('*')
+                ->from($table)
+                ->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $deletedField,
+                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    )
+                )
+                ->orderBy('uid')
+                ->execute()
+                ->fetchAll();
+
+            if ($recordsToCheck !== false) {
                 $this->checkRecordAccess($table, $recordsToCheck);
             }
         }
@@ -290,12 +270,12 @@ class DeletedRecords
                 ->execute();
 
             while ($row = $resPages->fetch()) {
-                $this->setData($row['uid'], $table, $depth - 1, $tcaCtrl, $filter);
+                $this->setData($row['uid'], $table, $depth - 1, $filter);
                 // some records might have been added, check if we still have the limit for further queries
                 if (!empty($this->limit)) {
-                    $parts = GeneralUtility::trimExplode(',', $this->limit);
+                    $parts = GeneralUtility::intExplode(',', $this->limit, true);
                     // abort loop if LIMIT 0,0
-                    if ((int)$parts[0] === 0 && (int)$parts[1] === 0) {
+                    if ($parts[0] === 0 && $parts[1] === 0) {
                         $resPages->closeCursor();
                         break;
                     }
@@ -304,6 +284,55 @@ class DeletedRecords
         }
         $this->label[$table] = $tcaCtrl['label'];
         $this->title[$table] = $tcaCtrl['title'];
+    }
+
+    /**
+     * Helper method for setData() to create a QueryBuilder that filters the records by default.
+     *
+     * @param string $table
+     * @param int $pid
+     * @param string $filter
+     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
+     * @throws \InvalidArgumentException
+     */
+    protected function getFilteredQueryBuilder(string $table, int $pid, string $filter): QueryBuilder
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        // create the filter WHERE-clause
+        $filterConstraint = null;
+        if (trim($filter) !== '') {
+            $filterConstraint = $queryBuilder->expr()->like(
+                $GLOBALS['TCA'][$table]['ctrl']['label'],
+                $queryBuilder->createNamedParameter(
+                    $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($filter) . '%'),
+                    \PDO::PARAM_STR
+                )
+            );
+            if (MathUtility::canBeInterpretedAsInteger($filter)) {
+                $filterConstraint = $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
+                    ),
+                    $filterConstraint
+                );
+            }
+        }
+
+        $queryBuilder->where(
+            $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+            $filterConstraint
+        );
+
+        return $queryBuilder;
     }
 
     /**

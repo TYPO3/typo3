@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -2630,12 +2631,44 @@ class DataHandler
     public function getRecordsWithSameValue($tableName, $uid, $fieldName, $value, $pageId = 0)
     {
         $result = [];
-        if (!empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
-            $uid = (int)$uid;
-            $pageId = (int)$pageId;
-            $whereStatement = ' AND uid <> ' . $uid . ' AND ' . ($pageId ? 'pid = ' . $pageId : 'pid >= 0');
-            $result = BackendUtility::getRecordsByField($tableName, $fieldName, $value, $whereStatement);
+        if (empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+            return $result;
         }
+
+        $uid = (int)$uid;
+        $pageId = (int)$pageId;
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder->select('*')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $fieldName,
+                    $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->neq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            );
+
+        if ($pageId) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
+            );
+        } else {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
+        }
+
+        $result = $queryBuilder->execute()->fetchAll();
+
         return $result;
     }
 
@@ -4112,20 +4145,38 @@ class DataHandler
         if (!BackendUtility::isTableLocalizable($table) ||  $table === 'pages' || $table === 'pages_language_overlay') {
             return;
         }
-        $where = '';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
+                )
+            );
+
         if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-            $where = ' AND t3ver_oid=0';
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
         }
         // If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
         $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
         // Get the localized records to be copied
-        $l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
+        $l10nRecords = $queryBuilder->execute()->fetchAll();
         if (is_array($l10nRecords)) {
             $localizedDestPids = [];
             // If $destPid < 0, then it is the uid of the original language record we are inserting after
             if ($destPid < 0) {
                 // Get the localized records of the record we are inserting after
-                $destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($destPid), $where);
+                $queryBuilder->setParameter('pointer', abs($destPid), \PDO::PARAM_INT);
+                $destL10nRecords = $queryBuilder->execute()->fetchAll();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
@@ -4512,17 +4563,36 @@ class DataHandler
         if (!BackendUtility::isTableLocalizable($table) || $table === 'pages' || $table === 'pages_language_overlay') {
             return;
         }
-        $where = '';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
+                )
+            );
+
         if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-            $where = ' AND t3ver_oid=0';
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
         }
-        $l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
+
+        $l10nRecords = $queryBuilder->execute()->fetchAll();
         if (is_array($l10nRecords)) {
             $localizedDestPids = [];
             // If $$originalRecordDestinationPid < 0, then it is the uid of the original language record we are inserting after
             if ($originalRecordDestinationPid < 0) {
                 // Get the localized records of the record we are inserting after
-                $destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($originalRecordDestinationPid), $where);
+                $queryBuilder->setParameter('pointer', abs($originalRecordDestinationPid), \PDO::PARAM_INT);
+                $destL10nRecords = $queryBuilder->execute()->fetchAll();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
@@ -4620,10 +4690,32 @@ class DataHandler
         }
 
         if ($table === 'pages') {
-            $pass = !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . (int)$langRec['uid']));
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages_language_overlay');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $recordCount = $queryBuilder->count('*')
+                ->from('pages_language_overlay')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter((int)$langRec['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->execute()
+                ->fetchColumn(0);
+
+            $pass = !$recordCount;
             $Ttable = 'pages_language_overlay';
         } else {
-            $pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . (int)$row['pid']));
+            $pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], 'AND pid=' . (int)$row['pid']);
             $Ttable = $table;
         }
 
@@ -5472,23 +5564,39 @@ class DataHandler
         if (!BackendUtility::isTableLocalizable($table) || $table === 'pages' || $table === 'pages_language_overlay') {
             return;
         }
-        $where = '';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            );
+
         if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-            $where = ' AND t3ver_oid=0';
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
         }
-        $l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
-        if (is_array($l10nRecords)) {
-            foreach ($l10nRecords as $record) {
-                // Ignore workspace delete placeholders. Those records have been marked for
-                // deletion before - deleting them again in a workspace would revert that state.
-                if ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
-                    BackendUtility::workspaceOL($table, $record);
-                    if (VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                        continue;
-                    }
+
+        $result = $queryBuilder->execute();
+        while ($record = $result->fetch()) {
+            // Ignore workspace delete placeholders. Those records have been marked for
+            // deletion before - deleting them again in a workspace would revert that state.
+            if ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+                BackendUtility::workspaceOL($table, $record);
+                if (VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                    continue;
                 }
-                $this->deleteAction($table, (int)$record['t3ver_oid'] > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
             }
+            $this->deleteAction($table, (int)$record['t3ver_oid'] > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
         }
     }
 
