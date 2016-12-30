@@ -5875,29 +5875,12 @@ class ContentObjectRenderer
 
             // Link to a page
             case LinkService::TYPE_PAGE:
-                $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
-                if ($conf['no_cache.']) {
-                    $conf['no_cache'] = $this->stdWrap($conf['no_cache'], $conf['no_cache.']);
-                }
                 // Checking if the id-parameter is an alias.
                 if (!empty($linkDetails['pagealias'])) {
                     $linkDetails['pageuid'] = $tsfe->sys_page->getPageIdFromAlias($linkDetails['pagealias']);
                 } elseif (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
                     // If no id or alias is given
                     $linkDetails['pageuid'] = $tsfe->id;
-                }
-                $sectionMark = trim(isset($conf['section.']) ? $this->stdWrap($conf['section'], $conf['section.']) : $conf['section']);
-                if ($sectionMark === '' && isset($linkDetails['fragment'])) {
-                    $sectionMark = $linkDetails['fragment'];
-                }
-                if ($sectionMark !== '') {
-                    $sectionMark = '#' . (MathUtility::canBeInterpretedAsInteger($sectionMark) ? 'c' : '') . $sectionMark;
-                }
-                // Overruling 'type'
-                $pageType = $linkDetails['pagetype'] ?? 0;
-
-                if (isset($linkDetails['parameters'])) {
-                    $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
                 }
 
                 // Link to page even if access is missing?
@@ -5906,9 +5889,39 @@ class ContentObjectRenderer
                 } else {
                     $disableGroupAccessCheck = (bool)$tsfe->config['config']['typolinkLinkAccessRestrictedPages'];
                 }
+
                 // Looking up the page record to verify its existence:
                 $page = $tsfe->sys_page->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
+
                 if (!empty($page)) {
+                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'])) {
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] as $classData) {
+                            $hookObject = GeneralUtility::makeInstance($classData);
+                            if (!$hookObject instanceof TypolinkModifyLinkConfigForPageLinksHookInterface) {
+                                throw new \UnexpectedValueException('$hookObject must implement interface ' . TypolinkModifyLinkConfigForPageLinksHookInterface::class, 1483114905);
+                            }
+                            /** @var $hookObject TypolinkModifyLinkConfigForPageLinksHookInterface */
+                            $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
+                        }
+                    }
+                    $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
+                    if ($conf['no_cache.']) {
+                        $conf['no_cache'] = $this->stdWrap($conf['no_cache'], $conf['no_cache.']);
+                    }
+
+                    $sectionMark = trim(isset($conf['section.']) ? $this->stdWrap($conf['section'], $conf['section.']) : $conf['section']);
+                    if ($sectionMark === '' && isset($linkDetails['fragment'])) {
+                        $sectionMark = $linkDetails['fragment'];
+                    }
+                    if ($sectionMark !== '') {
+                        $sectionMark = '#' . (MathUtility::canBeInterpretedAsInteger($sectionMark) ? 'c' : '') . $sectionMark;
+                    }
+                    // Overruling 'type'
+                    $pageType = $linkDetails['pagetype'] ?? 0;
+
+                    if (isset($linkDetails['parameters'])) {
+                        $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
+                    }
                     // MointPoints, look for closest MPvar:
                     $MPvarAcc = [];
                     if (!$tsfe->config['config']['MP_disableTypolinkClosestMPvalue']) {
