@@ -307,6 +307,27 @@ class ActionService
     /**
      * @param string $tableName
      * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    public function copyRecordToLanguage($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'copyToLanguage' => $languageId,
+                ],
+            ],
+        ];
+        $this->createDataHandler();
+        $this->dataHandler->start([], $commandMap);
+        $this->dataHandler->process_cmdmap();
+        return $this->dataHandler->copyMappingArray;
+    }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
      * @param string $fieldName
      * @param array $referenceIds
      */

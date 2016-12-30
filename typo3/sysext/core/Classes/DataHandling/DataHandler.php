@@ -138,6 +138,15 @@ class DataHandler
     public $dontProcessTransformations = false;
 
     /**
+     * Will distinguish between translations (with parent) and localizations (without parent) while still using the same methods to copy the records
+     * TRUE: translation of a record connected to the default language
+     * FALSE: localization of a record without connection to the default language
+     *
+     * @var bool
+     */
+    protected $useTransOrigPointerField = true;
+
+    /**
      * TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value.
      * FALSE: Will not update anything.
      * "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
@@ -3214,6 +3223,11 @@ class DataHandler
                                 $procId = $this->copyMappingArray[$table][$id];
                                 break;
                             case 'localize':
+                                $this->useTransOrigPointerField = true;
+                                $this->localize($table, $id, $value);
+                                break;
+                            case 'copyToLanguage':
+                                $this->useTransOrigPointerField = false;
                                 $this->localize($table, $id, $value);
                                 break;
                             case 'inlineLocalizeSynchronize':
@@ -4487,7 +4501,10 @@ class DataHandler
         }
 
         $this->registerNestedElementCall($table, $uid, 'localize');
-        if ((!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] || $table === 'pages_language_overay') && $table !== 'pages') {
+        if ((!$GLOBALS['TCA'][$table]['ctrl']['languageField']
+                || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+                || $table === 'pages_language_overay')
+            && $table !== 'pages') {
             if ($this->enableLogging) {
                 $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
             }
@@ -4567,8 +4584,12 @@ class DataHandler
         // If the translated record is a default language record, set it's uid as localization parent of the new record.
         // If translating from any other language, no override is needed; we just can copy the localization parent of
         // the original record (which is pointing to the correspondent default language record) to the new record.
-        if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0 || $table === 'pages') {
+        // In copy / free mode the TransOrigPointer field is always set to 0, as no connection to the localization parent is wanted in that case.
+        if (($this->useTransOrigPointerField && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0)
+            || $table === 'pages') {
             $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+        } elseif (!$this->useTransOrigPointerField) {
+            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = 0;
         }
         // Copy the type (if defined in both tables) from the original record so that translation has same type as original record
         if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {

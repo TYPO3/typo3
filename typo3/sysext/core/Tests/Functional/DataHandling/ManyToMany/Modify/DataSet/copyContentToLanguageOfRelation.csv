@@ -1,0 +1,19 @@
+sys_category,,,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l10n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,parent,items
+,28,0,256,0,0,0,0,0,0,0,0,0,Category A,0,0
+,29,0,512,0,0,0,0,0,0,0,0,0,Category B,0,0
+,30,0,768,0,0,0,0,0,0,0,0,0,Category C,0,0
+,31,0,1024,0,0,0,0,0,0,0,0,0,Category A.A,28,0
+sys_category_record_mm,,,,,,,,,,,,,,,
+,uid_local,uid_foreign,tablenames,sorting,sorting_foreign,fieldname,,,,,,,,,
+,28,297,tt_content,0,1,categories,,,,,,,,,
+,29,297,tt_content,0,2,categories,,,,,,,,,
+,29,298,tt_content,0,1,categories,,,,,,,,,
+,30,298,tt_content,0,2,categories,,,,,,,,,
+,29,299,tt_content,0,1,categories,,,,,,,,,
+,30,299,tt_content,0,2,categories,,,,,,,,,
+tt_content,,,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,image,categories
+,297,89,256,0,0,0,0,0,0,0,0,0,Regular Element #1,0,2
+,298,89,512,0,0,0,0,0,0,0,0,0,Regular Element #2,0,2
+,299,89,768,0,1,0,298,0,0,0,0,0,[Translate to Dansk:] Regular Element #2,0,2

@@ -365,8 +365,9 @@ abstract class FunctionalTestCase extends BaseTestCase
         foreach ($typoScriptFiles as $typoScriptFile) {
             $templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
         }
-
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template')->insert(
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
+        $connection->delete('sys_template', ['pid' => $pageId]);
+        $connection->insert(
             'sys_template',
             $templateFields
         );

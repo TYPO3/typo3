@@ -226,22 +226,8 @@ class LocalizationController
                     'localize' => $destLanguageId
                 ];
             } else {
-                $previousUid = $this->localizationRepository->getPreviousLocalizedRecordUid(
-                    'tt_content',
-                    $currentUid,
-                    $pageId,
-                    $srcLanguageId,
-                    $destLanguageId
-                );
                 $cmd['tt_content'][$currentUid] = [
-                    'copy' => [
-                        'action' => 'paste',
-                        'target' => -$previousUid,
-                        'update' => [
-                            'sys_language_uid' => $destLanguageId,
-                            'l18n_parent' => 0
-                        ]
-                    ]
+                    'copyToLanguage' => $destLanguageId,
                 ];
             }
         }

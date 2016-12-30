@@ -181,19 +181,19 @@ class LocalizationControllerTest extends \TYPO3\CMS\Components\TestingFramework\
                 'pid' => 1,
                 'sys_language_uid' => 2,
                 'l18n_parent' => 0,
-                'header' => 'Test content 1 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test content 1',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 2,
                 'l18n_parent' => 0,
-                'header' => 'Test content 2 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test content 2',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 2,
                 'l18n_parent' => 0,
-                'header' => 'Test content 3 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test content 3',
             ],
         ];
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
@@ -239,19 +239,19 @@ class LocalizationControllerTest extends \TYPO3\CMS\Components\TestingFramework\
                 'pid' => 1,
                 'sys_language_uid' => 2,
                 'l18n_parent' => 0,
-                'header' => 'Test indhold 1 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test indhold 1',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 2,
                 'l18n_parent' => 0,
-                'header' => 'Test indhold 2 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test indhold 2',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 2,
                 'l18n_parent' => 0,
-                'header' => 'Test indhold 3 (copy 1)',
+                'header' => '[Translate to Deutsch:] Test indhold 3',
             ],
         ];
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
@@ -321,25 +321,25 @@ class LocalizationControllerTest extends \TYPO3\CMS\Components\TestingFramework\
                 'pid' => 1,
                 'sys_language_uid' => 1,
                 'l18n_parent' => 0,
-                'header' => 'Test content 1 (copy 1)',
+                'header' => '[Translate to Dansk:] Test content 1',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 1,
                 'l18n_parent' => 0,
-                'header' => 'Test content 2 (copy 1)',
+                'header' => '[Translate to Dansk:] Test content 2.5',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 1,
                 'l18n_parent' => 0,
-                'header' => 'Test content 2.5 (copy 1)',
+                'header' => '[Translate to Dansk:] Test content 2',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 1,
                 'l18n_parent' => 0,
-                'header' => 'Test content 3 (copy 1)',
+                'header' => '[Translate to Dansk:] Test content 3',
             ],
         ];
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');

@@ -189,6 +189,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     /**
      * @test
+     * @see DataSet/copyContentToLanguageOfRelation.csv
+     */
+    public function copyContentToLanguageOfRelation()
+    {
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyElementToLanguageOfRelation.csv
+     */
+    public function copyElementToLanguageOfRelation()
+    {
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Element, self::VALUE_ElementIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedElementId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst];
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeContentOfRelation.csv
      */
     public function localizeContentOfRelation()
