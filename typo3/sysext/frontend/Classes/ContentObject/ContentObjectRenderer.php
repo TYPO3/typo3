@@ -5576,7 +5576,6 @@ class ContentObjectRenderer
 
         $linkParameter = $resolvedLinkParameters['href'];
         $target = $resolvedLinkParameters['target'];
-        $linkClass = $resolvedLinkParameters['class'];
         $title = $resolvedLinkParameters['title'];
 
         if (!$linkParameter) {
@@ -5611,7 +5610,6 @@ class ContentObjectRenderer
                 $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
                 $this->lastTypoLinkTarget = $target;
                 $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                $finalTagParts['targetParams'] = $target ? ' target="' . htmlspecialchars($target) . '"' : '';
                 $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_URL);
             break;
 
@@ -5636,7 +5634,6 @@ class ContentObjectRenderer
                     }
                     $this->lastTypoLinkTarget = $target;
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['targetParams'] = $target ? ' target="' . htmlspecialchars($target) . '"' : '';
                     $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_FILE);
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $linkParameter . '" did not exist, so "' . $linkText . '" was not linked.', 1);
@@ -5885,7 +5882,6 @@ class ContentObjectRenderer
                     }
                     // Rendering the tag.
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['targetParams'] = (string)$LD['target'] !== '' ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('typolink(): Page id "' . $linkParameter . '" was not found, so "' . $linkText . '" was not linked.', 1);
                     return $linkText;
@@ -5942,7 +5938,6 @@ class ContentObjectRenderer
                     }
                     $this->lastTypoLinkTarget = $target;
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
                     $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_FILE);
                 } elseif ($linkDetails['url']) {
                     if (empty($target)) {
@@ -5960,7 +5955,6 @@ class ContentObjectRenderer
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
                     $this->lastTypoLinkTarget = $target;
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
                     $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_URL);
                 }
                 break;
@@ -5969,7 +5963,15 @@ class ContentObjectRenderer
         $finalTagParts['TYPE'] = $linkDetails['type'];
         $this->lastTypoLinkLD = $LD;
 
-        // Title tag
+        // Building the final <a href=".."> tag
+        $tagAttributes = [];
+        if (!$JSwindowParams && $linkDetails['type'] === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
+            $tagAttributes['href'] = $finalTagParts['url'];
+        } else {
+            $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
+        }
+
+        // Title attribute
         if (empty($title)) {
             $title = $conf['title'];
             if ($conf['title.']) {
@@ -5994,35 +5996,34 @@ class ContentObjectRenderer
             // Imploding into string:
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
         }
+        if (!empty($title)) {
+            $tagAttributes['title'] = htmlspecialchars($title);
+        }
+
+        // Target attribute
+        if (!empty($this->lastTypoLinkTarget)) {
+            $tagAttributes['target'] = htmlspecialchars($this->lastTypoLinkTarget);
+        // Create TARGET-attribute only if the right doctype is used
+        } elseif ($JSwindowParams && !in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
+            $tagAttributes['target'] = 'FEopenLink';
+        }
 
         if ($JSwindowParams) {
-            // Create TARGET-attribute only if the right doctype is used
-            $xhtmlDocType = $tsfe->xhtmlDoctype;
-            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11') {
-                $target = ' target="FEopenLink"';
-            } else {
-                $target = '';
-            }
             $onClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url'])) . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSwindowParams) . ');vHWin.focus();return false;';
-            $finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"'
-                . $target
-                . ' onclick="' . htmlspecialchars($onClick) . '"'
-                . ((string)$title !== '' ? ' title="' . htmlspecialchars($title) . '"' : '')
-                . ($linkClass !== '' ? ' class="' . htmlspecialchars($linkClass) . '"' : '')
-                . $finalTagParts['aTagParams']
-                . '>';
-        } else {
-            if ($tsfe->spamProtectEmailAddresses === 'ascii' && $linkDetails['type'] === LinkService::TYPE_EMAIL) {
-                $finalAnchorTag = '<a href="' . $finalTagParts['url'] . '"';
-            } else {
-                $finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"';
-            }
-            $finalAnchorTag .= ((string)$title !== '' ? ' title="' . htmlspecialchars($title) . '"' : '')
-                . $finalTagParts['targetParams']
-                . ($linkClass ? ' class="' . htmlspecialchars($linkClass) . '"' : '')
-                . $finalTagParts['aTagParams']
-                . '>';
+            $tagAttributes['onclick'] = htmlspecialchars($onClick);
         }
+
+        if (!empty($resolvedLinkParameters['class'])) {
+            $tagAttributes['class'] = htmlspecialchars($resolvedLinkParameters['class']);
+        }
+
+        $finalAnchorTag = '<a ' . GeneralUtility::implodeAttributes($tagAttributes) . $finalTagParts['aTagParams'] . '>';
+
+        if (!empty($finalTagParts['aTagParams'])) {
+            $tagAttributes = array_merge($tagAttributes, GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']));
+        }
+        // kept for backwards-compatibility in hooks
+        $finalTagParts['targetParams'] = !empty($tagAttributes['target']) ? ' target="' . $tagAttributes['target'] . '"' : '';
 
         // Call user function:
         if ($conf['userFunc']) {
@@ -6037,7 +6038,8 @@ class ContentObjectRenderer
                 'linktxt' => &$linkText,
                 'finalTag' => &$finalAnchorTag,
                 'finalTagParts' => &$finalTagParts,
-                'linkDetails' => &$linkDetails
+                'linkDetails' => &$linkDetails,
+                'tagAttributes' => &$tagAttributes
             ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
