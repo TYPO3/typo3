@@ -105,6 +105,70 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\CSV\
 
     /**
      * @test
+     * @see DataSet/copyParentContentToLanguageKeep.csv
+     */
+    public function copyParentContentToLanguageInKeepMode()
+    {
+        parent::copyParentContentToLanguageInKeepMode();
+        $this->assertAssertionDataSet('copyParentContentToLanguageKeep');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyParentContentToLanguageWAllChildrenKeep.csv
+     */
+    public function copyParentContentToLanguageWithAllChildrenInKeepMode()
+    {
+        parent::copyParentContentToLanguageWithAllChildrenInKeepMode();
+        $this->assertAssertionDataSet('copyParentContentToLanguageWAllChildrenKeep');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyParentContentToLanguageSelect.csv
+     */
+    public function copyParentContentToLanguageInSelectMode()
+    {
+        parent::copyParentContentToLanguageInSelectMode();
+        $this->assertAssertionDataSet('copyParentContentToLanguageSelect');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyParentContentToLanguageWAllChildrenSelect.csv
+     */
+    public function copyParentContentToLanguageWithAllChildrenInSelectMode()
+    {
+        parent::copyParentContentToLanguageWithAllChildrenInSelectMode();
+        $this->assertAssertionDataSet('copyParentContentToLanguageWAllChildrenSelect');
+
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.ts'
+        ]);
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeParentContentKeep.csv
      */
     public function localizeParentContentInKeepMode()

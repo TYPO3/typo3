@@ -236,6 +236,38 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Select\Ab
 
     /**
      * @test
+     * @see DataSet/copyContentToLanguageOfRelation.csv
+     */
+    public function copyContentToLanguageOfRelation()
+    {
+        parent::copyContentToLanguageOfRelation();
+        $this->assertAssertionDataSet('copyContentToLanguageOfRelation');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyElementToLanguageOfRelation.csv
+     */
+    public function copyElementToLanguageOfRelation()
+    {
+        parent::copyElementToLanguageOfRelation();
+        $this->assertAssertionDataSet('copyElementToLanguageOfRelation');
+
+        //in this case the translated element is orphaned (no CE with relation to it, and it has no l10n_parent)
+        //so on frontend there is no change.
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeContentOfRelation.csv
      */
     public function localizeContentOfRelation()

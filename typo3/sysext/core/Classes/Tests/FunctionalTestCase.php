@@ -351,6 +351,7 @@ abstract class FunctionalTestCase extends BaseTestCase
             $templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
         }
 
+        $this->getDatabaseConnection()->exec_DELETEquery('sys_template', 'pid = ' . $pageId);
         $this->getDatabaseConnection()->exec_INSERTquery('sys_template', $templateFields);
     }
 

@@ -101,6 +101,15 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     /**
      * @test
+     * @see DataSet/copyContentToLanguage.csv
+     */
+    public function copyContentToLanguage()
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+    }
+
+    /**
+     * @test
      * @see DataSet/copyPasteContent.csv
      */
     public function copyPasteContent()

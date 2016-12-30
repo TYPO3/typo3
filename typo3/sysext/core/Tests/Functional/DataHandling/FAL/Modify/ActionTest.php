@@ -80,6 +80,28 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
+     * @see DataSet/copyContentToLanguage.csv
+     */
+    public function copyContentToLanguage()
+    {
+        parent::copyContentToLanguage();
+        $this->assertAssertionDataSet('copyContentToLanguage');
+
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.ts'
+        ]);
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #2'));
+
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentImage)
+            ->setTable(self::TABLE_FileReference)->setField('title')->setValues('[Translate to Dansk:] This is Kasper', '[Translate to Dansk:] Taken at T3BOARD'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeContent.csv
      */
     public function localizeContent()

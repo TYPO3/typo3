@@ -1,0 +1,25 @@
+tt_content,,,,,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,tx_irretutorial_1nff_hotels,,,
+,297,89,256,0,0,0,0,0,0,0,0,0,Regular Element #1,2,,,
+,298,89,512,0,0,0,0,0,0,0,0,0,Regular Element #2,1,,,
+,299,89,768,0,1,0,298,0,0,0,0,0,[Translate to Dansk:] Regular Element #2,0,,,
+tx_irretutorial_1nff_hotel,,,,,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,parentid,parenttable,parentidentifier,offers
+,3,89,1,0,0,0,0,0,0,0,0,0,Hotel #1,297,tt_content,,2
+,4,89,2,0,0,0,0,0,0,0,0,0,Hotel #2,297,tt_content,,1
+,5,89,1,0,0,0,0,0,0,0,0,0,Hotel #1,298,tt_content,,1
+tx_irretutorial_1nff_offer,,,,,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,parentid,parenttable,parentidentifier,prices
+,5,89,1,0,0,0,0,0,0,0,0,0,Offer #1.1,3,tx_irretutorial_1nff_hotel,,3
+,6,89,2,0,0,0,0,0,0,0,0,0,Offer #1.2,3,tx_irretutorial_1nff_hotel,,2
+,7,89,1,0,0,0,0,0,0,0,0,0,Offer #2.1,4,tx_irretutorial_1nff_hotel,,1
+,8,89,1,0,0,0,0,0,0,0,0,0,Offer #1.1,5,tx_irretutorial_1nff_hotel,,1
+tx_irretutorial_1nff_price,,,,,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,parentid,parenttable,parentidentifier,
+,7,89,1,0,0,0,0,0,0,0,0,0,Price #1.1.1,5,tx_irretutorial_1nff_offer,,
+,8,89,2,0,0,0,0,0,0,0,0,0,Price #1.1.2,5,tx_irretutorial_1nff_offer,,
+,9,89,3,0,0,0,0,0,0,0,0,0,Price #1.1.3,5,tx_irretutorial_1nff_offer,,
+,10,89,1,0,0,0,0,0,0,0,0,0,Price #1.2.1,6,tx_irretutorial_1nff_offer,,
+,11,89,2,0,0,0,0,0,0,0,0,0,Price #1.2.2,6,tx_irretutorial_1nff_offer,,
+,12,89,1,0,0,0,0,0,0,0,0,0,Price #2.1.1,7,tx_irretutorial_1nff_offer,,
+,13,89,1,0,0,0,0,0,0,0,0,0,Price #1.1.1,8,tx_irretutorial_1nff_offer,,
