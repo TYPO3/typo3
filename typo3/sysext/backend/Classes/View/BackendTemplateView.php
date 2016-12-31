@@ -137,4 +137,40 @@ class BackendTemplateView implements ViewInterface
     {
         $this->templateView->initializeView();
     }
+
+    /**
+     * Set the root path(s) to the templates.
+     *
+     * @param array $templateRootPaths Root path(s) to the templates.
+     * @return void
+     * @api
+     */
+    public function setTemplateRootPaths(array $templateRootPaths)
+    {
+        $this->templateView->setTemplateRootPaths($templateRootPaths);
+    }
+
+    /**
+     * Set the root path(s) to the partials.
+     *
+     * @param array $partialRootPaths Root paths to the partials.
+     * @return void
+     * @api
+     */
+    public function setPartialRootPaths(array $partialRootPaths)
+    {
+        $this->templateView->setPartialRootPaths($partialRootPaths);
+    }
+
+    /**
+     * Set the root path(s) to the layouts.
+     *
+     * @param array $layoutRootPaths Root path to the layouts.
+     * @return void
+     * @api
+     */
+    public function setLayoutRootPaths(array $layoutRootPaths)
+    {
+        $this->templateView->setLayoutRootPaths($layoutRootPaths);
+    }
 }
