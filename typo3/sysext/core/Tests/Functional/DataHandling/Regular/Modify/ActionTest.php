@@ -252,7 +252,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
-     * @see DataSet/Assertion/copyPageRecord.csv
+     * @see DataSet/copyPage.csv
      */
     public function copyPage()
     {
@@ -262,6 +262,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
         $responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyPageFreeMode.csv
+     */
+    public function copyPageFreeMode()
+    {
+        $this->importScenarioDataSet('LivePageFreeModeElements');
+        parent::copyPageFreeMode();
+        $this->assertAssertionDataSet('copyPageFreeMode');
+
+        $responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
     }
 
     /**

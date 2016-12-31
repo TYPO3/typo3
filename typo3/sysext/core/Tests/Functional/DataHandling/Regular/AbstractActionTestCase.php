@@ -197,12 +197,22 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     /**
      * @test
-     * @see DataSet/Assertion/copyPageRecord.csv
+     * @see DataSet/copyPage.csv
      */
     public function copyPage()
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyPageFreeMode.csv
+     */
+    public function copyPageFreeMode()
+    {
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdTarget];
     }
 
     /**
