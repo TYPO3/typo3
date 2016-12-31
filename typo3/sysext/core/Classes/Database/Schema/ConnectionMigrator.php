@@ -42,7 +42,7 @@ class ConnectionMigrator
     protected $deletedPrefix = 'zzz_deleted_';
 
     /**
-     * @var int
+     * @var array
      */
     protected $tableAndFieldMaxNameLengthsPerDbPlatform = [
         'default' => [
@@ -249,6 +249,7 @@ class ConnectionMigrator
         // Build SchemaDiff and handle renames of tables and colums
         $comparator = GeneralUtility::makeInstance(Comparator::class);
         $schemaDiff = $comparator->compare($fromSchema, $toSchema);
+        $schemaDiff = $this->migrateColumnRenamesToDistinctActions($schemaDiff);
 
         if ($renameUnused) {
             $schemaDiff = $this->migrateUnprefixedRemovedTablesToRenames($schemaDiff);
@@ -592,7 +593,7 @@ class ConnectionMigrator
             // Treat renamed indexes as a field change as it's a simple rename operation
             if (count($changedTable->renamedIndexes) !== 0) {
                 // Create a base table diff without any changes, there's no constructor
-                // argument to pass in renamed columns.
+                // argument to pass in renamed indexes.
                 $tableDiff = GeneralUtility::makeInstance(
                     TableDiff::class,
                     $changedTable->getName($this->connection->getDatabasePlatform()),
@@ -917,7 +918,11 @@ class ConnectionMigrator
                 $fromTable = $removedTable
             );
 
-            $tableDiff->newName = substr($this->deletedPrefix . $removedTable->getName(), 0, $this->getMaxTableNameLength());
+            $tableDiff->newName = substr(
+                $this->deletedPrefix . $removedTable->getName(),
+                0,
+                $this->getMaxTableNameLength()
+            );
             $schemaDiff->changedTables[$index] = $tableDiff;
             unset($schemaDiff->removedTables[$index]);
         }
@@ -947,7 +952,11 @@ class ConnectionMigrator
                 }
 
                 // Build a new column object with the same properties as the removed column
-                $renamedColumnName = substr($this->deletedPrefix . $removedColumn->getName(), 0, $this->getMaxColumnNameLength());
+                $renamedColumnName = substr(
+                    $this->deletedPrefix . $removedColumn->getName(),
+                    0,
+                    $this->getMaxColumnNameLength()
+                );
                 $renamedColumn = new Column(
                     $this->connection->quoteIdentifier($renamedColumnName),
                     $removedColumn->getType(),
@@ -968,6 +977,47 @@ class ConnectionMigrator
 
                 // Remove the column from the list of columns to be dropped
                 unset($schemaDiff->changedTables[$tableIndex]->removedColumns[$columnIndex]);
+            }
+        }
+
+        return $schemaDiff;
+    }
+
+    /**
+     * Revert the automatic rename optimization that Doctrine performs when it detects
+     * a column being added and a column being dropped that only differ by name.
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @return SchemaDiff
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     */
+    protected function migrateColumnRenamesToDistinctActions(SchemaDiff $schemaDiff): SchemaDiff
+    {
+        foreach ($schemaDiff->changedTables as $index => $changedTable) {
+            if (count($changedTable->renamedColumns) === 0) {
+                continue;
+            }
+
+            // Treat each renamed column with a new diff to get a dedicated
+            // suggestion just for this single column.
+            foreach ($changedTable->renamedColumns as $originalColumnName => $renamedColumn) {
+                $columnOptions = array_diff_key($renamedColumn->toArray(), ['name', 'type']);
+
+                $changedTable->addedColumns[$renamedColumn->getName()] = GeneralUtility::makeInstance(
+                    Column::class,
+                    $renamedColumn->getName(),
+                    $renamedColumn->getType(),
+                    $columnOptions
+                );
+                $changedTable->removedColumns[$originalColumnName] = GeneralUtility::makeInstance(
+                    Column::class,
+                    $originalColumnName,
+                    $renamedColumn->getType(),
+                    $columnOptions
+                );
+
+                unset($changedTable->renamedColumns[$originalColumnName]);
             }
         }
 
