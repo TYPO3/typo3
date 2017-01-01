@@ -7,7 +7,6 @@ if (TYPO3_MODE === 'BE') {
         function () {
             $cleanerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\CleanerCommand::class);
             $cleanerObj->cli_main($_SERVER['argv']);
-        },
-        '_CLI_lowlevel'
+        }
     ];
 }

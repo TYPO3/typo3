@@ -18,6 +18,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,7 +75,7 @@ class CommandRequestHandler implements RequestHandlerInterface
                 continue;
             }
             if (isset($data['user'])) {
-                $this->initializeBackendUser($data['user']);
+                $this->initializeBackendUser();
             }
         }
 
@@ -98,22 +99,19 @@ class CommandRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
+     * Logs in the user _cli_ to the system
      *
-     * @param string $userName the name of the module registered inside $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys] as second parameter
      * @throws \RuntimeException if a non-admin Backend user could not be loaded
      */
-    protected function initializeBackendUser($userName)
+    protected function initializeBackendUser()
     {
-        $this->bootstrap->initializeBackendUser();
-
-        $GLOBALS['BE_USER']->setBeUserByName($userName);
-        if (!$GLOBALS['BE_USER']->user['uid']) {
-            throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 1476107260);
-        }
-
+        // create the BE_USER object
+        $this->bootstrap->initializeBackendUser(CommandLineUserAuthentication::class);
+        // log-in the _cli_ user, create the record if it does not exist
+        /** @var CommandLineUserAuthentication $backendUser */
+        $backendUser = $GLOBALS['BE_USER'];
+        $backendUser->authenticate();
         $this->bootstrap
-            ->initializeBackendAuthentication()
             ->initializeLanguageObject();
     }
 

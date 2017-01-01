@@ -306,9 +306,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
         $this->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
         $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
-            $this->dontSetCookie = true;
-        }
     }
 
     /**
@@ -2664,7 +2661,7 @@ This is a dump of the failures:
      * The conditions are:
      * + backend user is a regular user and adminOnly is not defined
      * + backend user is an admin user
-     * + backend user is used in CLI context and adminOnly is explicitly set to "2"
+     * + backend user is used in CLI context and adminOnly is explicitly set to "2" (see CommandLineUserAuthentication)
      * + backend user is being controlled by an admin user
      *
      * @return bool Whether a backend user is allowed to access the backend
@@ -2672,11 +2669,9 @@ This is a dump of the failures:
     protected function isUserAllowedToLogin()
     {
         $isUserAllowedToLogin = false;
-        $adminOnlyMode = $GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'];
+        $adminOnlyMode = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'];
         // Backend user is allowed if adminOnly is not set or user is an admin:
         if (!$adminOnlyMode || $this->isAdmin()) {
-            $isUserAllowedToLogin = true;
-        } elseif ($adminOnlyMode == 2 && TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $isUserAllowedToLogin = true;
         } elseif ($this->user['ses_backuserid']) {
             $backendUserId = (int)$this->user['ses_backuserid'];

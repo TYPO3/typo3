@@ -1012,13 +1012,14 @@ class Bootstrap
     /**
      * Initialize backend user object in globals
      *
+     * @param string $className usually \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class but can be used for CLI
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function initializeBackendUser()
+    public function initializeBackendUser($className = \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class)
     {
         /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-        $backendUser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $backendUser = GeneralUtility::makeInstance($className);
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = $backendUser;

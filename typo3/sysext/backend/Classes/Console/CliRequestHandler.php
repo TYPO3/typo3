@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Console\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,10 +60,9 @@ class CliRequestHandler implements RequestHandlerInterface
         try {
             $command = $this->validateCommandLineKeyFromInput($input);
 
-            // try and look up if the CLI command user exists, throws an exception if the CLI
-            // user cannot be found
-            list($commandLineScript, $commandLineName) = $this->getIncludeScriptByCommandLineKey($command);
-            $this->boot($commandLineName);
+            // try and look up if the CLI command exists
+            $commandLineScript = $this->getIncludeScriptByCommandLineKey($command);
+            $this->boot();
 
             if (is_callable($commandLineScript)) {
                 call_user_func($commandLineScript);
@@ -97,17 +97,16 @@ class CliRequestHandler implements RequestHandlerInterface
      *
      * @throws \RuntimeException when the _CLI_ user cannot be authenticated properly
      */
-    protected function boot($commandLineName)
+    protected function boot()
     {
         $this->bootstrap
             ->loadExtensionTables()
-            ->initializeBackendUser();
+            ->initializeBackendUser(CommandLineUserAuthentication::class);
 
-        // Checks for a user called starting with _CLI_ e.g. "_CLI_lowlevel"
-        $this->loadCommandLineBackendUser($commandLineName);
+        // Checks for a user _CLI_, if non exists, will create one
+        $this->loadCommandLineBackendUser();
 
         $this->bootstrap
-            ->initializeBackendAuthentication()
             ->initializeLanguageObject()
             // Make sure output is not buffered, so command-line output and interaction can take place
             ->endOutputBufferingAndCleanPreviousOutput();
@@ -134,15 +133,14 @@ class CliRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Define cli-related parameters and return the include script as well as the command line name. Used for
-     * authentication against the backend user in the "loadCommandLineBackendUser()" action.
+     * Define cli-related parameters and return the include script.
      *
      * @param string $cliKey the CLI key
-     * @return array the absolute path to the include script and the command line name
+     * @return string the absolute path to the include script
      */
     protected function getIncludeScriptByCommandLineKey($cliKey)
     {
-        list($commandLineScript, $commandLineName) = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey];
+        $commandLineScript = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey][0];
         if (!is_callable($commandLineScript)) {
             $commandLineScript = GeneralUtility::getFileAbsFileName($commandLineScript);
         }
@@ -151,31 +149,20 @@ class CliRequestHandler implements RequestHandlerInterface
         $cliScriptPath = array_shift($_SERVER['argv']);
         array_shift($_SERVER['argv']);
         array_unshift($_SERVER['argv'], $cliScriptPath);
-        return [$commandLineScript, $commandLineName];
+        return $commandLineScript;
     }
 
     /**
-     * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
+     * If the backend script is in CLI mode, it will try to load a backend user named _cli_
      *
-     * @param string $commandLineName the name of the module registered inside $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys] as second parameter
      * @throws \RuntimeException if a non-admin Backend user could not be loaded
      */
-    protected function loadCommandLineBackendUser($commandLineName)
+    protected function loadCommandLineBackendUser()
     {
         if ($GLOBALS['BE_USER']->user['uid']) {
             throw new \RuntimeException('Another user was already loaded which is impossible in CLI mode!', 1476107444);
         }
-        if (strpos($commandLineName, '_CLI_') !== 0) {
-            throw new \RuntimeException('Module name, "' . $commandLineName . '", was not prefixed with "_CLI_"', 1476107445);
-        }
-        $userName = strtolower($commandLineName);
-        $GLOBALS['BE_USER']->setBeUserByName($userName);
-        if (!$GLOBALS['BE_USER']->user['uid']) {
-            throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 1476107195);
-        }
-        if ($GLOBALS['BE_USER']->isAdmin()) {
-            throw new \RuntimeException('CLI backend user "' . $userName . '" was ADMIN which is not allowed!', 1476107446);
-        }
+        $GLOBALS['BE_USER']->authenticate();
     }
 
     /**
