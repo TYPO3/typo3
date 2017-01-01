@@ -54,7 +54,9 @@ class BackendLogModuleBootstrap
         // in extbase to force a specific controller in backend mode.
         // Overwriting $_GET was the most simple solution here until extbase
         // provides a clean way to solve this.
-        $_GET['tx_belog_system_beloglog']['controller'] = 'WebInfo';
+        $_GET['tx_belog_system_beloglog']['controller'] = 'BackendLog';
+        $_GET['tx_belog_system_beloglog']['pageId'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $_GET['tx_belog_system_beloglog']['layout'] = 'Plain';
         /** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
         $extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
         return $extbaseBootstrap->run('', $configuration);

@@ -1,5 +1,9 @@
-{namespace be=TYPO3\CMS\Backend\ViewHelpers}
-{namespace belog=TYPO3\CMS\Belog\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:belog="http://typo3.org/ns/TYPO3/CMS/Belog/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 
 <f:if condition="{constraint.groupByPage}">
 	<div>
@@ -9,8 +13,8 @@
 		<f:translate
 			key="timeInfo"
 			arguments="{
-				0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
-				1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
+				0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+				1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
 			}"
 		/>
 		<p>
@@ -42,8 +46,8 @@
 									key="logForNonPageRelatedActionsOrRootLevelOrPage"
 									arguments="{
 										0: '{f:translate(key:\'forNonPageRelatedActions\')}',
-										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
-										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
+										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
 									}"
 								/>
 							</f:if>
@@ -52,8 +56,8 @@
 									key="logForNonPageRelatedActionsOrRootLevelOrPage"
 									arguments="{
 										0: '{f:translate(key:\'forRootLevel\')}',
-										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
-										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
+										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
 									}"
 								/>
 							</f:if>
@@ -65,10 +69,9 @@
 								2. Use this as argument for 'forPage' translate
 								3. Use this as argument for 'logForNonPageRelatedActionsOrRootLevelOrPage' translate
 							</f:comment>
-							<f:format.raw>
-								<f:translate
-									key="logForNonPageRelatedActionsOrRootLevelOrPage"
-									arguments="{
+							<f:translate
+								key="logForNonPageRelatedActionsOrRootLevelOrPage"
+								arguments="{
 									0: '{f:translate(
 										key:\'forPage\',
 										arguments:\'{
@@ -76,11 +79,10 @@
 											1:\\\'{pid}\\\'
 										}\'
 									)}',
-									1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
-									2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
+									1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+									2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
 								}"
-								/>
-							</f:format.raw>
+							/>
 						</f:else>
 					</f:if>
 				</f:then>
@@ -89,8 +91,8 @@
 						key="logForNonPageRelatedActionsOrRootLevelOrPage"
 						arguments="{
 							0: '',
-							1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
-							2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
+							1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+							2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
 						}"
 					/>
 				</f:else>
@@ -115,7 +117,7 @@
 								<f:translate key="chLog_l_user"/>
 							</th>
 							<th>
-								<f:if condition="{constraint.isInPageContext}">
+								<f:if condition="{isSubmoduleLayout}">
 									<f:then>
 										<f:translate key="chLog_l_table"/>
 									</f:then>
@@ -177,7 +179,7 @@
 									</span>
 								</td>
 								<td>
-									<f:if condition="{constraint.isInPageContext}">
+									<f:if condition="{isSubmoduleLayout}">
 										<f:then>
 											{logItem.tableName}
 										</f:then>
@@ -216,14 +218,12 @@
 								</td>
 								<td>
 									<f:if condition="{logItem.error} == 1">
-										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}"
-													   class="btn btn-warning">
+										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-warning">
 											<f:translate key="actions.deleteWarnings"/>
 										</f:link.action>
 									</f:if>
 									<f:if condition="{logItem.error} == 2">
-										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}"
-													   class="btn btn-danger">
+										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-danger">
 											<f:translate key="actions.delete"/>
 										</f:link.action>
 									</f:if>
@@ -236,3 +236,5 @@
 		</f:for>
 	</div>
 </f:for>
+
+</html>

@@ -1,0 +1,26 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="{layout}"/>
+<f:section name="Content">
+	<h1>
+		<f:translate key="adminLog" />
+	</h1>
+
+	<div>
+		<f:render
+			partial="Content/Filter"
+			arguments="{_all}"
+		/>
+	</div>
+
+	<div class="divider"></div>
+
+	<f:render
+		partial="Content/LogEntries"
+		arguments="{_all}"
+	/>
+</f:section>
+
+</html>

@@ -15,64 +15,52 @@ namespace TYPO3\CMS\Belog\Controller;
  */
 
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Belog\Domain\Model\Constraint;
+use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Abstract class to show log entries from sys_log
  */
-abstract class AbstractController extends ActionController
+class BackendLogController extends ActionController
 {
     /**
      * @var int
      */
-    const TIMEFRAME_THISWEEK = 0;
+    private const TIMEFRAME_THISWEEK = 0;
 
     /**
      * @var int
      */
-    const TIMEFRAME_LASTWEEK = 1;
+    private const TIMEFRAME_LASTWEEK = 1;
 
     /**
      * @var int
      */
-    const TIMEFRAME_LASTSEVENDAYS = 2;
+    private const TIMEFRAME_LASTSEVENDAYS = 2;
 
     /**
      * @var int
      */
-    const TIMEFRAME_THISMONTH = 10;
+    private const TIMEFRAME_THISMONTH = 10;
 
     /**
      * @var int
      */
-    const TIMEFRAME_LASTMONTH = 11;
+    private const TIMEFRAME_LASTMONTH = 11;
 
     /**
      * @var int
      */
-    const TIMEFRAME_LAST31DAYS = 12;
+    private const TIMEFRAME_LAST31DAYS = 12;
 
     /**
      * @var int
      */
-    const TIMEFRAME_CUSTOM = 30;
-
-    /**
-     * Whether plugin is running in page context (sub module of Web > Info)
-     *
-     * @var bool
-     */
-    protected $isInPageContext = false;
-
-    /**
-     * Page ID in page context
-     *
-     * @var int
-     */
-    protected $pageId = 0;
+    private const TIMEFRAME_CUSTOM = 30;
 
     /**
      * @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository
@@ -93,46 +81,10 @@ abstract class AbstractController extends ActionController
     }
 
     /**
-     * Initialize the view
-     *
-     * @param ViewInterface $view The view
+     * Initialize list action
      */
-    protected function initializeView(ViewInterface $view)
+    public function initializeListAction()
     {
-        if ($view instanceof BackendTemplateView) {
-            parent::initializeView($view);
-            $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-        }
-    }
-
-    /**
-     * init all actions
-     */
-    public function initializeAction()
-    {
-        if ($this->isInPageContext === false) {
-            $this->defaultViewObjectName = BackendTemplateView::class;
-        }
-    }
-
-    /**
-     * Initialize index action
-     *
-     * @throws \RuntimeException
-     */
-    public function initializeIndexAction()
-    {
-        // @TODO: Extbase backend modules rely on frontend TypoScript for view, persistence
-        // and settings. Thus, we need a TypoScript root template, that then loads the
-        // ext_typoscript_setup.typoscript file of this module. This is nasty, but can not be
-        // circumvented until there is a better solution in extbase.
-        // For now we throw an exception if no settings are detected.
-        if (empty($this->settings)) {
-            throw new \RuntimeException(
-                'No settings detected. This usually happens if there is no frontend TypoScript template with root flag set. Please create one.',
-                1333650506
-            );
-        }
         if (!isset($this->settings['dateFormat'])) {
             $this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y';
         }
@@ -140,56 +92,81 @@ abstract class AbstractController extends ActionController
             $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
         }
         $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
-        $constraintConfiguration->allowProperties('action')->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+        $constraintConfiguration->allowAllProperties();
     }
 
     /**
      * Show general information and the installed modules
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
+     * @param Constraint $constraint
+     * @param int $pageId
+     * @param string $layout
      */
-    public function indexAction(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint = null)
+    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default')
     {
         // Constraint object handling:
         // If there is none from GET, try to get it from BE user data, else create new
         if ($constraint === null) {
             $constraint = $this->getConstraintFromBeUserData();
-            if ($constraint === null) {
-                $constraint = $this->objectManager->get(\TYPO3\CMS\Belog\Domain\Model\Constraint::class);
-            }
         } else {
             $this->persistConstraintInBeUserData($constraint);
         }
-        $constraint->setIsInPageContext($this->isInPageContext);
-        $constraint->setPageId($this->pageId);
+        $constraint->setPageId($pageId);
         $this->setStartAndEndTimeFromTimeSelector($constraint);
         $this->forceWorkspaceSelectionIfInWorkspace($constraint);
         $logEntries = $this->logEntryRepository->findByConstraint($constraint);
         $groupedLogEntries = $this->groupLogEntriesByPageAndDay($logEntries, $constraint->getGroupByPage());
-        $this->view->assign('workspacesExtensionLoaded', ExtensionManagementUtility::isLoaded('workspaces'));
-        $this->view->assign('groupedLogEntries', $groupedLogEntries)->assign('constraint', $constraint)->assign('userGroups', $this->createUserAndGroupListForSelectOptions())->assign('workspaces', $this->createWorkspaceListForSelectOptions())->assign('pageDepths', $this->createPageDepthOptions());
+        $this->view->assignMultiple([
+            'pageId' => $pageId,
+            'layout' => $layout,
+            'groupedLogEntries' => $groupedLogEntries,
+            'constraint' => $constraint,
+            'userGroups' => $this->createUserAndGroupListForSelectOptions(),
+            'workspaces' => $this->createWorkspaceListForSelectOptions(),
+            'pageDepths' => $this->createPageDepthOptions(),
+        ]);
+    }
+
+    /**
+     * Delete all log entries that share the same message with the log entry given
+     * in $errorUid
+     *
+     * @param int $errorUid
+     */
+    public function deleteMessageAction(int $errorUid)
+    {
+        /** @var \TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry */
+        $logEntry = $this->logEntryRepository->findByUid($errorUid);
+        if (!$logEntry) {
+            $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog'), '', AbstractMessage::WARNING);
+            $this->redirect('list');
+        }
+        $numberOfDeletedRows = $this->logEntryRepository->deleteByMessageDetails($logEntry);
+        $this->addFlashMessage(sprintf(LocalizationUtility::translate('actions.delete.message', 'belog'), $numberOfDeletedRows));
+        $this->redirect('list');
     }
 
     /**
      * Get module states (the constraint object) from user data
      *
-     * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|null
+     * @return Constraint
      */
     protected function getConstraintFromBeUserData()
     {
         $serializedConstraint = $GLOBALS['BE_USER']->getModuleData(static::class);
-        if (!is_string($serializedConstraint) || empty($serializedConstraint)) {
-            return null;
+        $constraint = null;
+        if (is_string($serializedConstraint) && !empty($serializedConstraint)) {
+            $constraint = @unserialize($serializedConstraint, ['allowed_classes' => [Constraint::class, \DateTime::class]]);
         }
-        return @unserialize($serializedConstraint);
+        return $constraint ?: $this->objectManager->get(Constraint::class);
     }
 
     /**
      * Save current constraint object in be user settings (uC)
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
+     * @param Constraint $constraint
      */
-    protected function persistConstraintInBeUserData(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
+    protected function persistConstraintInBeUserData(Constraint $constraint)
     {
         $GLOBALS['BE_USER']->pushModuleData(static::class, serialize($constraint));
     }
@@ -199,19 +176,19 @@ abstract class AbstractController extends ActionController
      * the query result of the sys log repository.
      *
      * If group by page is FALSE, pid is always -1 (will render a flat list),
-     * otherwise the output is splitted by pages.
+     * otherwise the output is split by pages.
      * '12345' is a sub array to split entries by day, number is first second of day
      *
      * [pid][dayTimestamp][items]
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<\TYPO3\CMS\Belog\Domain\Model\LogEntry> $logEntries
+     * @param QueryResultInterface $logEntries
      * @param bool $groupByPage Whether or not log entries should be grouped by page
      * @return array
      */
-    protected function groupLogEntriesByPageAndDay(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $logEntries, $groupByPage = false)
+    protected function groupLogEntriesByPageAndDay(QueryResultInterface $logEntries, $groupByPage = false)
     {
         $targetStructure = [];
-        /** @var $entry \TYPO3\CMS\Belog\Domain\Model\LogEntry */
+        /** @var $entry LogEntry */
         foreach ($logEntries as $entry) {
             // Create page split list or flat list
             if ($groupByPage) {
@@ -288,9 +265,9 @@ abstract class AbstractController extends ActionController
      * we force to show only log entries from the selected workspace,
      * and the workspace selector is not shown.
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
+     * @param Constraint $constraint
      */
-    protected function forceWorkspaceSelectionIfInWorkspace(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
+    protected function forceWorkspaceSelectionIfInWorkspace(Constraint $constraint)
     {
         if ($GLOBALS['BE_USER']->workspace !== 0) {
             $constraint->setWorkspaceUid($GLOBALS['BE_USER']->workspace);
@@ -322,9 +299,9 @@ abstract class AbstractController extends ActionController
     /**
      * Calculate the start- and end timestamp from the different time selector options
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
+     * @param Constraint $constraint
      */
-    protected function setStartAndEndTimeFromTimeSelector(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
+    protected function setStartAndEndTimeFromTimeSelector(Constraint $constraint)
     {
         $startTime = 0;
         $endTime = $GLOBALS['EXEC_TIME'];
@@ -359,33 +336,12 @@ abstract class AbstractController extends ActionController
                 $startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
                 break;
             case self::TIMEFRAME_CUSTOM:
-                $startDate = $constraint->getManualDateStart();
-                $endDate = $constraint->getManualDateStop();
-                $endTime = $GLOBALS['EXEC_TIME'];
-                if (!$startDate) {
-                    $startDate = \DateTime::createFromFormat(
-                        'U',
-                        0
-                    );
-                    $constraint->setManualDateStart(
-                        $startDate
-                    );
+                $startTime = $constraint->getStartTimestamp();
+                if ($constraint->getEndTimestamp() > $constraint->getStartTimestamp()) {
+                    $endTime = $constraint->getEndTimestamp();
+                } else {
+                    $endTime = $GLOBALS['EXEC_TIME'];
                 }
-
-                if (!$endDate) {
-                    $endDate = \DateTime::createFromFormat(
-                        'U',
-                        $endTime
-                    )->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-                    $constraint->setManualDateStop(
-                        $endDate
-                    );
-                }
-                $startTime = $startDate->getTimestamp();
-                if ($endDate->getTimestamp() > $startDate->getTimestamp()) {
-                    $endTime = $endDate->getTimestamp();
-                }
-
                 break;
             default:
         }

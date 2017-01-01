@@ -1,4 +1,7 @@
-{namespace belog=TYPO3\CMS\Belog\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:belog="http://typo3.org/ns/TYPO3/CMS/Belog/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 
 <f:comment>
 	This is an ugly workaround.
@@ -7,11 +10,11 @@
 	that is not extbase based to figure the permissions. Thus, we have to add
 	the page Id manually to hint the info module about that.
 </f:comment>
-<f:if condition="{constraint.isInPageContext}">
+<f:if condition="{isSubmoduleLayout}">
 	<input type="hidden" name="id" value="{constraint.pageId}" />
 </f:if>
 
-<f:form object="{constraint}" action="index" name="constraint" class="form-inline form-inline-spaced">
+<f:form object="{constraint}" action="list" name="constraint" class="form-inline form-inline-spaced">
 	<div class="form-group">
 		<label for="belog-users"><f:translate key="users" /></label>
 		<f:form.select
@@ -50,7 +53,7 @@
 		</f:if>
 	</f:if>
 
-	<f:if condition="{constraint.isInPageContext}">
+	<f:if condition="{isSubmoduleLayout}">
 		<div class="form-group">
 			<label for="belog-depth"><f:translate key="chLog_menuDepth" /></label>
 			<f:form.select
@@ -105,6 +108,7 @@
 
 
 	<f:if condition="{constraint.timeFrame} == 30">
+		<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/DateTimePicker'}" />
 		<div class="form-group">
 			<label for="manualDateStart"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
 			<div class="input-group input-group-sm">
@@ -153,3 +157,5 @@
 		</div>
 	</f:if>
 </f:form>
+
+</html>

@@ -101,9 +101,6 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function addPageTreeConstraintsToQuery(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint, \TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$queryConstraints)
     {
-        if (!$constraint->getIsInPageContext()) {
-            return;
-        }
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
@@ -115,8 +112,12 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $pageTree->getTree($constraint->getPageId(), $constraint->getDepth());
             $pageIds = $pageTree->ids;
         }
-        $pageIds[] = $constraint->getPageId();
-        $queryConstraints[] = $query->in('eventPid', $pageIds);
+        if (!empty($constraint->getPageId())) {
+            $pageIds[] = $constraint->getPageId();
+        }
+        if (!empty($pageIds)) {
+            $queryConstraints[] = $query->in('eventPid', $pageIds);
+        }
     }
 
     /**

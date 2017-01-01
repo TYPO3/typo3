@@ -16,8 +16,7 @@ defined('TYPO3_MODE') or die();
     'log',
     '',
     [
-        'Tools' => 'index,deleteMessage',
-        'WebInfo' => 'index',
+        'BackendLog' => 'list,deleteMessage',
     ],
     [
         'access' => 'admin',
