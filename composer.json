@@ -37,7 +37,7 @@
 		"ext-session": "*",
 		"ext-xml": "*",
 		"psr/log": "~1.0.0",
-		"swiftmailer/swiftmailer": "~5.4.3",
+		"swiftmailer/swiftmailer": "~5.4.5",
 		"symfony/console": "^2.7 || ^3.0",
 		"symfony/finder": "^2.7 || ^3.0",
 		"symfony/yaml": "^2.7 || ^3.0",
