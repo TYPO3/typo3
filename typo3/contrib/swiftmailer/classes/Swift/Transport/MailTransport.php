@@ -167,9 +167,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
             $body = str_replace("\r\n.", "\r\n..", $body);
         }
 
-        if ($this->_invoker->mail($to, $subject, $body, $headers,
-            sprintf($this->_extraParams, $reversePath)))
-        {
+        if ($this->_invoker->mail($to, $subject, $body, $headers, $this->_formatExtraParams($this->_extraParams, $reversePath))) {
             if ($evt) {
                 $evt->setResult(Swift_Events_SendEvent::RESULT_SUCCESS);
                 $evt->setFailedRecipients($failedRecipients);
@@ -228,4 +226,56 @@ class Swift_Transport_MailTransport implements Swift_Transport
 
         return $path;
     }
+
+    /**
+     * Fix CVE-2016-10074 by disallowing potentially unsafe shell characters.
+     *
+     * Note that escapeshellarg and escapeshellcmd are inadequate for our purposes, especially on Windows.
+     *
+     * @param string $string The string to be validated
+     *
+     * @return bool
+     */
+    private function _isShellSafe($string)
+    {
+        // Future-proof
+        if (escapeshellcmd($string) !== $string || !in_array(escapeshellarg($string), array("'$string'", "\"$string\""))) {
+            return false;
+        }
+
+        $length = strlen($string);
+        for ($i = 0; $i < $length; ++$i) {
+            $c = $string[$i];
+            // All other characters have a special meaning in at least one common shell, including = and +.
+            // Full stop (.) has a special meaning in cmd.exe, but its impact should be negligible here.
+            // Note that this does permit non-Latin alphanumeric characters based on the current locale.
+            if (!ctype_alnum($c) && strpos('@_-.', $c) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Return php mail extra params to use for invoker->mail.
+     *
+     * @param $extraParams
+     * @param $reversePath
+     *
+     * @return string|null
+     */
+    private function _formatExtraParams($extraParams, $reversePath)
+    {
+        if (false !== strpos($extraParams, '-f%s')) {
+            if (empty($reversePath) || false === $this->_isShellSafe($reversePath)) {
+                $extraParams = str_replace('-f%s', '', $extraParams);
+            } else {
+                $extraParams = sprintf($extraParams, $reversePath);
+            }
+        }
+
+        return !empty($extraParams) ? $extraParams : null;
+    }
 }
+
