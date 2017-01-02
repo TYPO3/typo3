@@ -15,16 +15,17 @@ namespace TYPO3\CMS\Beuser\Controller;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Backend module user administration controller
  */
-class BackendUserController extends BackendUserActionController
+class BackendUserController extends ActionController
 {
     /**
      * @var int
@@ -109,20 +110,15 @@ class BackendUserController extends BackendUserActionController
     }
 
     /**
-     * Initialize actions
-     *
-     * @throws \RuntimeException
+     * Assign default variables to view
      */
-    public function initializeAction()
+    public function initializeView(ViewInterface $view)
     {
-        // @TODO: Extbase backend modules relies on frontend TypoScript for view, persistence
-        // and settings. Thus, we need a TypoScript root template, that then loads the
-        // ext_typoscript_setup.typoscript file of this module. This is nasty, but can not be
-        // circumvented until there is a better solution in extbase.
-        // For now we throw an exception if no settings are detected.
-        if (empty($this->settings)) {
-            throw new \RuntimeException('No settings detected. This module can not work then. This usually happens if there is no frontend TypoScript template with root flag set. ' . 'Please create a frontend page with a TypoScript root template.', 1344375003);
-        }
+        $view->assignMultiple([
+            'shortcutLabel' => 'backendUsers',
+            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
+            'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
+        ]);
     }
 
     /**
@@ -153,21 +149,16 @@ class BackendUserController extends BackendUserActionController
                 $onlineBackendUsers[$onlineUser['ses_userid']] = true;
             }
         }
-        $this->view->assign('onlineBackendUsers', $onlineBackendUsers);
 
-        $this->view->assign('demand', $demand);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $this->view->assign('returnUrl', (string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
-        $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
-        $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
-        $this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));
-        $this->view->assign('backendUserGroups', array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()));
-        $this->view->assign('compareUserUidList', array_map(function () {
-            return true;
-        }, array_flip((array)$compareUserList)));
-        $this->view->assign('currentUserUid', $this->getBackendUserAuthentication()->user['uid']);
-        $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
+        $this->view->assignMultiple([
+            'onlineBackendUsers' => $onlineBackendUsers,
+            'demand' => $demand,
+            'backendUsers' => $this->backendUserRepository->findDemanded($demand),
+            'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
+            'compareUserUidList' => array_combine(array_keys($compareUserList), array_fill(0, count($compareUserList), true)),
+            'currentUserUid' => $this->getBackendUserAuthentication()->user['uid'],
+            'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
+        ]);
     }
 
     /**
@@ -183,10 +174,12 @@ class BackendUserController extends BackendUserActionController
                 'sessions' => $this->backendUserSessionRepository->findByBackendUser($onlineUser)
             ];
         }
-        $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
-        $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
-        $this->view->assign('onlineUsersAndSessions', $onlineUsersAndSessions);
-        $this->view->assign('currentSessionId', $this->getBackendUserAuthentication()->user['ses_id']);
+
+        $this->view->assignMultiple([
+            'shortcutLabel' => 'onlineUsers',
+            'onlineUsersAndSessions' => $onlineUsersAndSessions,
+            'currentSessionId' => $this->getBackendUserAuthentication()->user['ses_id'],
+        ]);
     }
 
     /**
@@ -195,19 +188,14 @@ class BackendUserController extends BackendUserActionController
     public function compareAction()
     {
         $compareUserList = $this->moduleData->getCompareUserList();
-        $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
-        $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $returnUrl = (string)$uriBuilder->buildUriFromRoute(
-            'system_BeuserTxBeuser',
-            [
-                'tx_beuser_system_beusertxbeuser[action]' => 'compare',
-                'tx_beuser_system_beusertxbeuser[controller]' => 'BackendUser'
-            ]
-        );
-        $this->view->assign('returnUrl', $returnUrl);
-        $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
+        if (empty($compareUserList)) {
+            $this->redirect('index');
+        }
+
+        $this->view->assignMultiple([
+            'shortcutLabel' => 'compareUsers',
+            'compareUserList' => $this->backendUserRepository->findByUidList($compareUserList),
+        ]);
     }
 
     /**
@@ -322,17 +310,9 @@ class BackendUserController extends BackendUserActionController
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 
     /**

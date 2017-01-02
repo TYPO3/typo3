@@ -11,7 +11,7 @@
 		</a>
 	</td>
 	<td class="col-title">
-		<be:link.editRecord table="be_users" uid="{backendUser.uid}" returnUrl="{returnUrl}" title="edit">
+		<be:link.editRecord table="be_users" uid="{backendUser.uid}" title="edit">
 			<b>{backendUser.userName}</b>
 		</be:link.editRecord>
 		<f:if condition="{bu:arrayElement(array: onlineBackendUsers, key: backendUser.uid)}">
@@ -19,7 +19,7 @@
 		</f:if>
 		<br />
 		<f:if condition="{backendUser.realName}">
-			<be:link.editRecord table="be_users" uid="{backendUser.uid}" returnUrl="{returnUrl}" title="edit">
+			<be:link.editRecord table="be_users" uid="{backendUser.uid}" title="edit">
 				{backendUser.realName}
 			</be:link.editRecord>
 		</f:if>
@@ -36,7 +36,7 @@
 	</td>
 	<td class="col-control">
 		<div class="btn-group" role="group">
-			<be:link.editRecord class="btn btn-default" table="be_users" uid="{backendUser.uid}" returnUrl="{returnUrl}" title="edit" >
+			<be:link.editRecord class="btn btn-default" table="be_users" uid="{backendUser.uid}" title="edit" >
 				<core:icon identifier="actions-open" />
 			</be:link.editRecord>
 			<f:if condition="{backendUser.currentlyLoggedIn} == 1">

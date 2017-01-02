@@ -30,13 +30,6 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     protected $icon;
 
     /**
-     * ButtonType
-     *
-     * @var string
-     */
-    protected $type;
-
-    /**
      * Defines whether to show the title as a label within the button
      *
      * @var bool

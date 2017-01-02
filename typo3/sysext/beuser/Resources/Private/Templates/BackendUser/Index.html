@@ -1,13 +1,21 @@
-{namespace be = TYPO3\CMS\Backend\ViewHelpers}
-{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 
 <f:layout name="Default" />
 
-<f:section name="headline">
-	<h1><f:translate key="backendUserListing" /></h1>
+<f:section name="Buttons">
+	<be:moduleLayout.button.linkButton
+		icon="actions-add"
+		title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
+		link="{be:uri.newRecord(table: 'be_users')}"
+	/>
 </f:section>
 
-<f:section name="content">
+<f:section name="Content">
+	<h1><f:translate key="backendUserListing" /></h1>
 	<f:comment>
 		Listing of users on compare list
 	</f:comment>
@@ -50,3 +58,5 @@
 	<f:render partial="BackendUser/PaginatedListWidget" arguments="{_all}" />
 
 </f:section>
+
+</html>

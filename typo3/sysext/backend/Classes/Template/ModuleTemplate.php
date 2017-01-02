@@ -522,7 +522,7 @@ class ModuleTemplate
      */
     public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '', $displayName = '', $classes = 'btn btn-default btn-sm')
     {
-        $gvList = 'route,' . $gvList;
+        $gvList = 'route,id,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
         $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
         // Fallback for alt_mod. We still pass in the old xMOD... stuff,

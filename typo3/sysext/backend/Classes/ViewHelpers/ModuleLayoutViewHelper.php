@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+namespace TYPO3\CMS\Backend\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -30,9 +30,9 @@ use TYPO3Fluid\Fluid\View\Exception;
  * must be rendered as children of this view helper.
  * = Examples =
  * <code>
- * <f:be.moduleLayout>
+ * <be:moduleLayout>
  *     <f:render section="content" />
- * </f:be.moduleLayout>
+ * </be:moduleLayout>
  * </code>
  * <output>
  * <!-- HTML of the backend module -->

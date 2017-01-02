@@ -11,14 +11,14 @@
 		</a>
 	</td>
 	<td class="col-title">
-		<be:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" returnUrl="{returnUrl}" title="edit">
+		<be:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="edit">
 			<b>{backendUserGroup.title}</b><br />
 			{backendUser.realName}
 		</be:link.editRecord>
 	</td>
 	<td>
 		<f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
-			<be:link.editRecord table="be_groups" uid="{subgroup.uid}" returnUrl="{returnUrl}" title="edit">
+			<be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">
 				{subgroup.title}
 			</be:link.editRecord>
 			<f:if condition="{subGroupIterator.isLast}"><f:else>, </f:else></f:if>
@@ -26,7 +26,7 @@
 	</td>
 	<td class="col-control">
 		<div class="btn-group" role="group">
-			<be:link.editRecord class="btn btn-default" table="be_groups" uid="{backendUserGroup.uid}" returnUrl="{returnUrl}" title="edit">
+			<be:link.editRecord class="btn btn-default" table="be_groups" uid="{backendUserGroup.uid}" title="edit">
 				<core:icon identifier="actions-open" />
 			</be:link.editRecord>
 			<f:if condition="{backendUserGroup.hidden}">

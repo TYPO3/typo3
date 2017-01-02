@@ -117,6 +117,9 @@
 			<trans-unit id="backendUsers">
 				<source>Backend users</source>
 			</trans-unit>
+			<trans-unit id="compareUsers">
+				<source>Compare backend users</source>
+			</trans-unit>
 			<trans-unit id="backendUserGroupsMenu">
 				<source>Backend user groups</source>
 			</trans-unit>
