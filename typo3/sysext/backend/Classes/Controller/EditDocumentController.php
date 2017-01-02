@@ -1623,7 +1623,7 @@ class EditDocumentController extends AbstractModule
                                     'returnUrl' => $this->retUrl
                                 ]);
 
-                                if ($currentLanguage === 0) {
+                                if (array_key_exists(0, $rowsByLang)) {
                                     $href = BackendUtility::getLinkToDataHandlerAction(
                                         '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'],
                                         $redirectUrl
