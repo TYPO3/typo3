@@ -1453,7 +1453,7 @@ class PageRepository
         // If the field is NULL, then OK
         $orChecks[] = $expressionBuilder->isNull($field);
         // If the field contains zero, then OK
-        $orChecks[] = $expressionBuilder->eq($field, 0);
+        $orChecks[] = $expressionBuilder->eq($field, $expressionBuilder->literal('0'));
         foreach ($memberGroups as $value) {
             $orChecks[] = $expressionBuilder->inSet($field, $expressionBuilder->literal($value));
         }
