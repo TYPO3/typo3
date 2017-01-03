@@ -155,10 +155,10 @@ abstract class AbstractUserAuthentication {
 
 	/**
 	 * Server session lifetime.
-	 * If > 0: session-timeout in seconds.
+	 * If <=0: Instant logout after login.
 	 * If FALSE or < 0: no timeout.
 	 * If string: The value is a field name from the user table where the timeout can be found.
-	 * @var int|string|FALSE
+	 * @var int|string
 	 * @todo Define visibility
 	 */
 	public $auth_timeout_field = 0;
