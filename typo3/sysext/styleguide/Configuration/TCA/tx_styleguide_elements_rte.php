@@ -76,6 +76,26 @@ return [
             ],
             'defaultExtras' => 'richtext:rte_transform',
         ],
+        'rte_2' => [
+            'exclude' => 1,
+            'label' => 'rte_2 default value',
+            'config' => [
+                'type' => 'text',
+                'default' => 'rte_2',
+            ],
+            'defaultExtras' => 'richtext:rte_transform',
+        ],
+        'rte_3' => [
+            'exclude' => 1,
+            'label' => 'rte_3 eval=null',
+            'config' => [
+                'type' => 'text',
+                'eval' => 'null',
+            ],
+            'defaultExtras' => 'richtext:rte_transform',
+        ],
+
+
         'rte_inline_1' => [
             'exclude' => 1,
             'label' => 'rte_inline_1',
@@ -86,6 +106,8 @@ return [
                 'foreign_table_field' => 'parenttable',
             ],
         ],
+
+
         'rte_flex_1' => [
             'exclude' => 1,
             'label' => 'rte_flex_1',
@@ -173,6 +195,8 @@ return [
                 ],
             ],
         ],
+
+
         'input_palette_1' => [
             'exclude' => 1,
             'label' => 'input_palette_1',
@@ -180,6 +204,8 @@ return [
                 'type' => 'input',
             ],
         ],
+
+
         'rte_palette_1' => [
             'exclude' => 1,
             'label' => 'rte_palette_1',
@@ -197,7 +223,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;rte,
-                    rte_1,
+                    rte_1, rte_2, rte_3,
                 --div--;in inline,
                     rte_inline_1,
                 --div--;in flex,

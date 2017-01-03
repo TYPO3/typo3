@@ -356,6 +356,8 @@ CREATE TABLE tx_styleguide_elements_rte (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	rte_1 text,
+	rte_2 text,
+	rte_3 text,
 	rte_inline_1 text,
 	rte_flex_1 text,
 	input_palette_1 text,
