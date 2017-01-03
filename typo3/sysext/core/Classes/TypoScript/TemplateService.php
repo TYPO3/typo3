@@ -660,6 +660,20 @@ class TemplateService
             $this->rootLine[] = $this->absoluteRootLine[$a];
         }
 
+        // Hook into the default TypoScript to add custom typoscript logic
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'])) {
+            $hookParameters = [
+                'extensionStaticsProcessed' => &$this->extensionStaticsProcessed,
+                'isDefaultTypoScriptAdded'  => &$this->isDefaultTypoScriptAdded,
+                'absoluteRootLine' => &$this->absoluteRootLine,
+                'rootLine'         => &$this->rootLine,
+                'startTemplateUid' => $start_template_uid,
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'] as $listener) {
+                GeneralUtility::callUserFunction($listener, $hookParameters, $this);
+            }
+        }
+
         // Process extension static files if not done yet, but explicitly requested
         if (!$this->extensionStaticsProcessed && $this->processExtensionStatics) {
             $this->addExtensionStatics('sys_0', 'sys_0', 0, []);
