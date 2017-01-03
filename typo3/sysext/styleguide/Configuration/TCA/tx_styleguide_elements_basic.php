@@ -177,7 +177,6 @@ return [
             'label' => 'input_14 eval=null',
             'config' => [
                 'type' => 'input',
-                // @todo: document eval=null is currently only useful with useOrOverridePlaceholder
                 'eval' => 'null',
             ],
         ],
@@ -552,6 +551,14 @@ return [
             'config' => [
                 'type' => 'text',
                 'placeholder' => '__row|text_12',
+            ],
+        ],
+        'text_18' => [
+            'exclude' => 1,
+            'label' => 'text_18, eval=null',
+            'config' => [
+                'type' => 'text',
+                'eval' => 'null',
             ],
         ],
         'text_14' => [
@@ -1193,12 +1200,12 @@ return [
             'showitem' => '
                 --div--;input,
                     input_1, input_2, input_3, input_4, input_5, input_6, input_36, input_7, input_37, input_8, input_9, input_10,
-                    input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
-                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
+                    input_11, input_12, input_13, input_15, input_16, input_17, input_18, input_19, input_20,
+                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29, input_30,
                     input_31, input_32, input_33, input_34,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
-                    text_11, text_12, text_13, text_14, text_15, text_16, text_17,
+                    text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17,
                 --div--;check,
                     checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
                     checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
