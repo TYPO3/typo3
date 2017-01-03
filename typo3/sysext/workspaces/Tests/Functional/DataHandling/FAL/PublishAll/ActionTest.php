@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/modifyContentRecord.csv
+     * @see DataSet/modifyContentRecord.csv
      */
     public function modifyContent()
     {
@@ -48,7 +48,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/deleteContentRecord.csv
+     * @see DataSet/deleteContentRecord.csv
      */
     public function deleteContent()
     {
@@ -65,7 +65,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/copyContentRecord.csv
+     * @see DataSet/copyContentRecord.csv
      */
     public function copyContent()
     {
@@ -83,7 +83,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/localizeContentRecord.csv
+     * @see DataSet/localizeContentRecord.csv
      */
     public function localizeContent()
     {
@@ -102,7 +102,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/changeContentRecordSorting.csv
+     * @see DataSet/changeContentRecordSorting.csv
      */
     public function changeContentSorting()
     {
@@ -123,7 +123,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/moveContentRecordToDifferentPage.csv
+     * @see DataSet/moveContentRecordToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -147,7 +147,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/Assertion/moveContentRecordToDifferentPageAndChangeSorting.csv
+     * @see DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {

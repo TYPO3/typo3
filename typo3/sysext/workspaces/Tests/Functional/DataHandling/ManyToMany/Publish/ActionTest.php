@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/addCategoryRelation.csv
+     * @see DataSet/addCategoryRelation.csv
      */
     public function addCategoryRelation()
     {
@@ -46,7 +46,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/deleteCategoryRelation.csv
+     * @see DataSet/deleteCategoryRelation.csv
      */
     public function deleteCategoryRelation()
     {
@@ -65,7 +65,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/changeCategoryRelationSorting.csv
+     * @see DataSet/changeCategoryRelationSorting.csv
      */
     public function changeCategoryRelationSorting()
     {
@@ -81,7 +81,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/createContentRecordAndAddCategoryRelation.csv
+     * @see DataSet/createContentRecordAndAddCategoryRelation.csv
      */
     public function createContentAndAddRelation()
     {
@@ -99,7 +99,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/createCategoryRecordAndAddCategoryRelation.csv
+     * @see DataSet/createCategoryRecordAndAddCategoryRelation.csv
      */
     public function createCategoryAndAddRelation()
     {
@@ -117,7 +117,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/createContentRecordAndCreateCategoryRelation.csv
+     * @see DataSet/createContentRecordAndCreateCategoryRelation.csv
      */
     public function createContentAndCreateRelation()
     {
@@ -140,7 +140,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/createCategoryRecordAndCreateCategoryRelation.csv
+     * @see DataSet/createCategoryRecordAndCreateCategoryRelation.csv
      */
     public function createCategoryAndCreateRelation()
     {
@@ -189,7 +189,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
+     * @see DataSet/modifyCategoryRecordOfCategoryRelation.csv
      */
     public function modifyCategoryOfRelation()
     {
@@ -205,7 +205,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/modifyContentRecordOfCategoryRelation.csv
+     * @see DataSet/modifyContentRecordOfCategoryRelation.csv
      */
     public function modifyContentOfRelation()
     {
@@ -220,7 +220,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/modifyBothRecordsOfCategoryRelation.csv
+     * @see DataSet/modifyBothRecordsOfCategoryRelation.csv
      */
     public function modifyBothsOfRelation()
     {
@@ -243,7 +243,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/deleteContentRecordOfCategoryRelation.csv
+     * @see DataSet/deleteContentRecordOfCategoryRelation.csv
      */
     public function deleteContentOfRelation()
     {
@@ -258,7 +258,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/deleteCategoryRecordOfCategoryRelation.csv
+     * @see DataSet/deleteCategoryRecordOfCategoryRelation.csv
      */
     public function deleteCategoryOfRelation()
     {
@@ -274,7 +274,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/copyContentRecordOfCategoryRelation.csv
+     * @see DataSet/copyContentRecordOfCategoryRelation.csv
      */
     public function copyContentOfRelation()
     {
@@ -290,7 +290,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
+     * @see DataSet/copyCategoryRecordOfCategoryRelation.csv
      */
     public function copyCategoryOfRelation()
     {
@@ -306,7 +306,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/localizeContentRecordOfCategoryRelation.csv
+     * @see DataSet/localizeContentRecordOfCategoryRelation.csv
      */
     public function localizeContentOfRelation()
     {
@@ -322,7 +322,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/localizeCategoryRecordOfCategoryRelation.csv
+     * @see DataSet/localizeCategoryRecordOfCategoryRelation.csv
      */
     public function localizeCategoryOfRelation()
     {
@@ -338,7 +338,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/moveContentRecordOfCategoryRelationToDifferentPage.csv
+     * @see DataSet/moveContentRecordOfCategoryRelationToDifferentPage.csv
      */
     public function moveContentOfRelationToDifferentPage()
     {
@@ -354,7 +354,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
-     * @see DataSet/Assertion/copyPage.csv
+     * @see DataSet/copyPage.csv
      */
     public function copyPage()
     {
