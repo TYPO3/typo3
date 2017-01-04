@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Handle FormEngine flex field ajax calls
  */
-class FormFlexAjaxController
+class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
     /**
      * Render a single flex form section container to add it to the DOM
@@ -126,35 +126,8 @@ class FormFlexAjaxController
         }
         // @todo: handle stylesheetFiles, additionalInlineLanguageLabelFiles
 
-        // @todo: copied from inline ajax handler - maybe extract to some abstract?
-        if (!empty($newContainerResult['requireJsModules'])) {
-            foreach ($newContainerResult['requireJsModules'] as $module) {
-                $moduleName = null;
-                $callback = null;
-                if (is_string($module)) {
-                    // if $module is a string, no callback
-                    $moduleName = $module;
-                    $callback = null;
-                } elseif (is_array($module)) {
-                    // if $module is an array, callback is possible
-                    foreach ($module as $key => $value) {
-                        $moduleName = $key;
-                        $callback = $value;
-                        break;
-                    }
-                }
-                if ($moduleName !== null) {
-                    $inlineCodeKey = $moduleName;
-                    $javaScriptCode = 'require(["' . $moduleName . '"]';
-                    if ($callback !== null) {
-                        $inlineCodeKey .= sha1($callback);
-                        $javaScriptCode .= ', ' . $callback;
-                    }
-                    $javaScriptCode .= ');';
-                    $jsonResult['scriptCall'][] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
-                }
-            }
-        }
+        $requireJsModule = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
+        $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
 
         $response->getBody()->write(json_encode($jsonResult));
 

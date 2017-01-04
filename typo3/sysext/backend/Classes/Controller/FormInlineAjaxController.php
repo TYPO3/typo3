@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Handle FormEngine inline ajax calls
  */
-class FormInlineAjaxController
+class FormInlineAjaxController extends AbstractFormEngineAjaxController
 {
     /**
      * Create a new inline child via AJAX.
@@ -678,34 +678,9 @@ class FormInlineAjaxController
 
             $jsonResult['scriptCall'][] = implode(LF, $javaScriptCode);
         }
-        if (!empty($childResult['requireJsModules'])) {
-            foreach ($childResult['requireJsModules'] as $module) {
-                $moduleName = null;
-                $callback = null;
-                if (is_string($module)) {
-                    // if $module is a string, no callback
-                    $moduleName = $module;
-                    $callback = null;
-                } elseif (is_array($module)) {
-                    // if $module is an array, callback is possible
-                    foreach ($module as $key => $value) {
-                        $moduleName = $key;
-                        $callback = $value;
-                        break;
-                    }
-                }
-                if ($moduleName !== null) {
-                    $inlineCodeKey = $moduleName;
-                    $javaScriptCode = 'require(["' . $moduleName . '"]';
-                    if ($callback !== null) {
-                        $inlineCodeKey .= sha1($callback);
-                        $javaScriptCode .= ', ' . $callback;
-                    }
-                    $javaScriptCode .= ');';
-                    $jsonResult['scriptCall'][] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
-                }
-            }
-        }
+        $requireJsModule = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($childResult);
+        $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
+
         return $jsonResult;
     }
 
