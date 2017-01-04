@@ -383,7 +383,7 @@ class GroupElement extends AbstractFormElement
 
         $html[] =   '<div class="form-wizards-items">';
         $html[] =       '<div class="btn-group-vertical">';
-        if ($maxItems > 1 && $size >=5 && $selectedItemsCount >=5 && !$isDisabled && $showMoveIcons) {
+        if ($maxItems > 1 && $size >=5 && !$isDisabled && $showMoveIcons) {
             $html[] =       '<a href="#"';
             $html[] =           ' class="btn btn-default t3js-btn-moveoption-top"';
             $html[] =           ' data-fieldname="' . htmlspecialchars($elementName) . '"';
@@ -408,7 +408,7 @@ class GroupElement extends AbstractFormElement
             $html[] =           $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
             $html[] =       '</a>';
         }
-        if ($maxItems > 1 && $size >=5 && $selectedItemsCount >=5 && !$isDisabled && $showMoveIcons) {
+        if ($maxItems > 1 && $size >=5 && !$isDisabled && $showMoveIcons) {
             $html[] =       '<a href="#"';
             $html[] =           ' class="btn btn-default t3js-btn-moveoption-bottom"';
             $html[] =           ' data-fieldname="' . htmlspecialchars($elementName) . '"';
