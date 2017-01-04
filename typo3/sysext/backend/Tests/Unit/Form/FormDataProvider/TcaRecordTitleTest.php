@@ -617,6 +617,42 @@ class TcaRecordTitleTest extends \TYPO3\Components\TestingFramework\Core\Unit\Un
     }
 
     /**
+     * @test
+     */
+    public function addDataReturnsRecordTitleForInlineType()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'uid' => '1',
+                'aField' => '2',
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'label' => 'aField'
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline'
+                        ],
+                        'children' => [
+                            [
+                                'recordTitle' => 'foo',
+                                'vanillaUid' => 2
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        ];
+
+        $expected = $input;
+        $expected['recordTitle'] = 'foo';
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
      * Data provider for addDataReturnsRecordTitleForGroupType
      * Each data set is an array with the following elements:
      *  - TCA field configuration (merged with base config)

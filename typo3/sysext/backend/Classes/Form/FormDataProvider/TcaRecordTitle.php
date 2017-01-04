@@ -158,7 +158,8 @@ class TcaRecordTitle implements FormDataProviderInterface
                 $recordTitle = $this->getRecordTitleForRadioType($rawValue, $fieldConfig);
                 break;
             case 'inline':
-                // intentional fall-through
+                $recordTitle = $this->getRecordTitleForInlineType($rawValue, $result['processedTca']['columns'][$fieldName]['children']);
+                break;
             case 'select':
                 $recordTitle = $this->getRecordTitleForSelectType($rawValue, $fieldConfig);
                 break;
@@ -200,6 +201,23 @@ class TcaRecordTitle implements FormDataProviderInterface
                 return $itemLabel;
             }
         }
+        return '';
+    }
+
+    /**
+     * @param int $value
+     * @param array $children
+     *
+     * @return string
+     */
+    protected function getRecordTitleForInlineType($value, array $children)
+    {
+        foreach ($children as $child) {
+            if ((int)$value === $child['vanillaUid']) {
+                return $child['recordTitle'];
+            }
+        }
+
         return '';
     }
 
