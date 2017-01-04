@@ -9,6 +9,9 @@
 			<trans-unit id="access">
 				<source>Access</source>
 			</trans-unit>
+			<trans-unit id="accesscapabilities">
+				<source>Access capabilities</source>
+			</trans-unit>
 			<trans-unit id="categories">
 				<source>Categories</source>
 			</trans-unit>

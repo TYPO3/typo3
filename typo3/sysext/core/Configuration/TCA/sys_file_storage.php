@@ -116,7 +116,7 @@ return [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     name, driver, configuration, is_default, auto_extract_metadata, processingfolder, 
-            --div--;Access capabilities,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:accesscapabilities,
                     --palette--;Capabilities;capabilities,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     is_online,
