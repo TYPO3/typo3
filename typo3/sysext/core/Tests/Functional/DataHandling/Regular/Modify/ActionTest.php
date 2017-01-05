@@ -120,6 +120,24 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * @see DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
+     */
+    public function copyContentToLanguageFromNonDefaultLanguage()
+    {
+        parent::copyContentToLanguageFromNonDefaultLanguage();
+        $this->assertAssertionDataSet('copyContentToLanguageFromNonDefaultLanguage');
+
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.ts'
+        ]);
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
+    }
+
+    /**
+     * @test
      * @see DataSet/copyContentRecord.csv
      */
     public function copyPasteContent()

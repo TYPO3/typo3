@@ -1,0 +1,5 @@
+tt_content,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header
+,310,90,256,0,0,0,0,0,0,0,0,0,Regular Element #10
+,311,90,512,0,1,0,310,0,0,0,0,0,[Translate to Dansk:] Regular Element #10
+,312,90,768,0,2,0,311,0,0,0,0,0,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10
