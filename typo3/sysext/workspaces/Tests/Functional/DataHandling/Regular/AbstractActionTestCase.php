@@ -28,6 +28,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_ContentIdSecond = 298;
     const VALUE_ContentIdThird = 299;
     const VALUE_ContentIdThirdLocalized = 300;
+
+    const VALUE_ContentIdTenth = 310;
+    const VALUE_ContentIdTenthLocalized = 311;
+    const VALUE_ContentIdTenthLocalized2 = 312;
+
     const VALUE_LanguageId = 1;
     const VALUE_LanguageIdSecond = 2;
     const VALUE_WorkspaceId = 1;
@@ -146,6 +151,18 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * Free mode "translation" of a record in non default language
+     *
+     * @test
+     * @see DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
+     */
+    public function copyContentToLanguageFromNonDefaultLanguage()
+    {
+        $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
+        $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
+    }
+
+    /**
      * @see DataSet/localizeContentRecord.csv
      */
     public function localizeContent()
@@ -257,6 +274,19 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
         $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyPageFreeMode.csv
+     */
+    public function copyPageFreeMode()
+    {
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdTarget];
+        $this->recordIds['newContentIdTenth'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdTenth];
+        $this->recordIds['newContentIdTenthLocalized'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdTenthLocalized];
+        $this->recordIds['newContentIdTenthLocalized2'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdTenthLocalized2];
     }
 
     /**

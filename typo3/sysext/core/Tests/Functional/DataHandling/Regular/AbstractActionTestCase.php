@@ -109,6 +109,17 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * Free mode "translation" of a record in non default language
+     *
+     * @test
+     * @see DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
+     */
+    public function copyContentToLanguageFromNonDefaultLanguage()
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
+    }
+
+    /**
      * @test
      * @see DataSet/copyPasteContent.csv
      */

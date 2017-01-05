@@ -1,0 +1,25 @@
+pages,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,,
+,1,0,256,0,0,0,0,0,0,0,FunctionalTest,,
+,88,1,256,0,0,0,0,0,0,0,DataHandlerTest,,
+,89,88,256,0,0,0,0,0,0,0,Relations,,
+,90,88,512,0,0,0,0,0,0,0,Target,,
+,91,90,256,0,90,1,1,0,0,0,Target,,
+,92,-1,256,0,90,1,-1,0,91,0,Target,,
+tt_content,,,,,,,,,,,,,
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header
+,296,88,256,0,0,0,0,0,0,0,0,0,Regular Element #0
+,297,89,256,0,0,0,0,0,0,0,0,0,Regular Element #1
+,298,89,512,0,0,0,0,0,0,0,0,0,Regular Element #2
+,299,89,768,0,0,0,0,0,0,0,0,0,Regular Element #3
+,300,89,1024,0,1,299,299,0,0,0,0,0,[Translate to Dansk:] Regular Element #3
+,301,-1,512,0,0,0,298,2,2,0,298,0,Regular Element #2
+,310,90,256,0,0,0,0,0,0,0,0,0,Regular Element #10
+,311,90,512,0,1,0,310,0,0,0,0,0,[Translate to Dansk:] Regular Element #10
+,312,90,768,0,2,0,311,0,0,0,0,0,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10
+,313,91,256,0,2,0,312,1,1,0,0,0,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10
+,314,-1,256,0,2,0,312,1,-1,0,313,0,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10
+,315,91,128,0,1,0,311,1,1,0,0,0,[Translate to Dansk:] Regular Element #10
+,316,-1,128,0,1,0,311,1,-1,0,315,0,[Translate to Dansk:] Regular Element #10
+,317,91,64,0,0,0,310,1,1,0,0,0,Regular Element #10
+,318,-1,64,0,0,0,310,1,-1,0,317,0,Regular Element #10
