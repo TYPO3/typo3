@@ -28,7 +28,7 @@ OpenID Authentication
       openid, authentication
 
 :Copyright:
-      2000-2013
+      2000-2017
 
 :Author:
       TYPO3 CMS Core Development Team
