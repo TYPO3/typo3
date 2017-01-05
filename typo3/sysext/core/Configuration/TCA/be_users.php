@@ -70,45 +70,28 @@ return [
                 'size' => 5,
                 'maxitems' => 20,
                 'enableMultiSelectFilterTextfield' => true,
-                'wizards' => [
-                    '_VERTICAL' => 1,
-                    'edit' => [
-                        'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_edit_title',
-                        'module' => [
-                            'name' => 'wizard_edit',
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_edit_title',
                         ],
-                        'popup_onlyOpenIfSelected' => true,
-                        'icon' => 'actions-open',
-                        'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ],
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_add_title',
-                        'icon' => 'actions-add',
-                        'params' => [
-                            'table' => 'be_groups',
-                            'pid' => 0,
-                            'setValue' => 'prepend'
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_add_title',
+                            'setValue' => 'prepend',
                         ],
-                        'module' => [
-                            'name' => 'wizard_add'
-                        ]
                     ],
-                    'list' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_list_title',
-                        'icon' => 'actions-system-list-open',
-                        'params' => [
-                            'table' => 'be_groups',
-                            'pid' => 0
+                    'listModule' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_list_title',
                         ],
-                        'module' => [
-                            'name' => 'wizard_list'
-                        ]
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'avatar' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
@@ -137,12 +120,6 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'file_mountpoints' => [
@@ -155,45 +132,28 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'wizards' => [
-                    '_VERTICAL' => 1,
-                    'edit' => [
-                        'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_edit_title',
-                        'module' => [
-                            'name' => 'wizard_edit',
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_edit_title',
                         ],
-                        'icon' => 'actions-open',
-                        'popup_onlyOpenIfSelected' => true,
-                        'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ],
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_add_title',
-                        'icon' => 'actions-add',
-                        'params' => [
-                            'table' => 'sys_filemounts',
-                            'pid' => 0,
-                            'setValue' => 'prepend'
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_add_title',
+                            'setValue' => 'prepend',
                         ],
-                        'module' => [
-                            'name' => 'wizard_add'
-                        ]
                     ],
-                    'list' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_list_title',
-                        'icon' => 'actions-system-list-open',
-                        'params' => [
-                            'table' => 'sys_filemounts',
-                            'pid' => 0
+                    'listModule' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_list_title',
                         ],
-                        'module' => [
-                            'name' => 'wizard_list'
-                        ]
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'email' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.email',
@@ -288,7 +248,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
-                'size' => 13,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0
             ]
@@ -297,7 +257,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
-                'size' => 13,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0,
                 'range' => [
@@ -339,9 +299,10 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 5
+                'rows' => 5,
+                'enableTablator' => true,
+                'fixedFont' => true,
             ],
-            'defaultExtras' => 'fixed-font : enable-tab'
         ],
         'createdByAction' => [
             'config' => [
@@ -352,8 +313,8 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.lastlogin',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'readOnly' => true,
-                'size' => 12,
                 'eval' => 'datetime',
                 'default' => 0
             ]

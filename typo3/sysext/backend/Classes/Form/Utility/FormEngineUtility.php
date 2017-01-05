@@ -47,7 +47,7 @@ class FormEngineUtility
         'text' => ['cols', 'rows', 'wrap', 'readOnly'],
         'check' => ['cols', 'readOnly'],
         'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig'],
-        'group' => ['size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls', 'readOnly'],
+        'group' => ['size', 'autoSizeMax', 'max_size', 'maxitems', 'minitems', 'readOnly'],
         'inline' => ['appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'],
         'imageManipulation' => ['ratios']
     ];

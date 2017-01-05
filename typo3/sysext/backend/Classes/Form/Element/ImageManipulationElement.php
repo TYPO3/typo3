@@ -29,6 +29,23 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class ImageManipulationElement extends AbstractFormElement
 {
     /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [
+                'otherLanguageContent',
+            ],
+        ],
+    ];
+
+    /**
      * Default element configuration
      *
      * @var array
@@ -70,15 +87,16 @@ class ImageManipulationElement extends AbstractFormElement
         }
 
         if ($config['readOnly']) {
-            $options = [];
-            $options['parameterArray'] = [
-                'fieldConf' => [
-                    'config' => $config,
-                ],
-                'itemFormElValue' => $parameterArray['itemFormElValue'],
-            ];
-            $options['renderType'] = 'none';
-            return $this->nodeFactory->create($options)->render();
+            $html = [];
+            $html[] = '<div class="t3js-formengine-field-item">';
+            $html[] =   '<div class="form-wizards-wrap">';
+            $html[] =       '<div class="form-wizards-element">';
+            $html[] =           htmlspecialchars($parameterArray['itemFormElValue']);
+            $html[] =       '</div>';
+            $html[] =   '</div>';
+            $html[] = '</div>';
+            $resultArray['html'] = implode(LF, $html);
+            return $resultArray;
         }
 
         $file = $this->getFile($row, $config['file_field']);
@@ -153,6 +171,36 @@ class ImageManipulationElement extends AbstractFormElement
         $item .= $preview;
         $item .= '<div class="media-body">' . $content . '</div>';
         $item .= '</div>';
+
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+        $fieldControlResult = $this->renderFieldControl();
+        $fieldControlHtml = $fieldControlResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
+
+        $fieldWizardResult = $this->renderFieldWizard();
+        $fieldWizardHtml = $fieldWizardResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
+        $html = [];
+        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] =   $fieldInformationHtml;
+        $html[] =   '<div class="form-wizards-wrap">';
+        $html[] =       '<div class="form-wizards-element">';
+        $html[] =           $item;
+        $html[] =       '</div>';
+        $html[] =      '<div class="form-wizards-items-aside">';
+        $html[] =          '<div class="btn-group">';
+        $html[] =              $fieldControlHtml;
+        $html[] =          '</div>';
+        $html[] =      '</div>';
+        $html[] =       '<div class="form-wizards-items-bottom">';
+        $html[] =           $fieldWizardHtml;
+        $html[] =       '</div>';
+        $html[] =   '</div>';
+        $html[] = '</div>';
 
         $resultArray['html'] = $item;
         return $resultArray;

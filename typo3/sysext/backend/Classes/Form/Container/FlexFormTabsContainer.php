@@ -91,8 +91,7 @@ class FlexFormTabsContainer extends AbstractContainer
                 'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
             ];
 
-            $childReturn['html'] = '';
-            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn);
+            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);
         }
 
         $resultArray['html'] = $this->renderTabMenu($tabElements, $domIdPrefix);

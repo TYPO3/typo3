@@ -17,7 +17,6 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -31,6 +30,22 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class RichTextElement extends AbstractFormElement
 {
+    /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [
+                'otherLanguageContent',
+            ],
+        ],
+    ];
 
     /**
      * pid of fixed versioned record.
@@ -60,8 +75,8 @@ class RichTextElement extends AbstractFormElement
     public function render() : array
     {
         $resultArray = $this->initializeResultArray();
+
         $row = $this->data['databaseRow'];
-        BackendUtility::fixVersioningPid($this->data['tableName'], $row);
         $this->pidOfVersionedMotherRecord = (int)$row['pid'];
 
         $resourcesPath = PathUtility::getAbsoluteWebPath(
@@ -70,21 +85,59 @@ class RichTextElement extends AbstractFormElement
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
-        $defaultExtras = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-        BackendUtility::fixVersioningPid($table, $row);
+        $config = $parameterArray['fieldConf']['config'];
 
         $fieldId = $this->sanitizeFieldId($parameterArray['itemFormElName']);
-        $resultArray['html'] = $this->renderWizards(
-            [$this->getHtml($fieldId)],
-            $parameterArray['fieldConf']['config']['wizards'],
-            $table,
-            $row,
-            $this->data['fieldName'],
-            $parameterArray,
-            $parameterArray['itemFormElName'],
-            $defaultExtras,
-            true
-        );
+        $itemFormElementName = $this->data['parameterArray']['itemFormElName'];
+
+        $value = $this->data['parameterArray']['itemFormElValue'] ?? '';
+
+        $legacyWizards = $this->renderWizards();
+        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
+        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
+
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+        $fieldControlResult = $this->renderFieldControl();
+        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
+
+        $fieldWizardResult = $this->renderFieldWizard();
+        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
+        $attributes = [
+            'style' => 'display:none',
+            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+            'id' => $fieldId,
+            'name' => htmlspecialchars($itemFormElementName),
+        ];
+
+        $html = [];
+        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] =   $fieldInformationHtml;
+        $html[] =   '<div class="form-control-wrap">';
+        $html[] =       '<div class="form-wizards-wrap">';
+        $html[] =           '<div class="form-wizards-element">';
+        $html[] =               '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
+        $html[] =                   htmlspecialchars($value);
+        $html[] =               '</textarea>';
+        $html[] =           '</div>';
+        $html[] =           '<div class="form-wizards-items-aside">';
+        $html[] =               '<div class="btn-group">';
+        $html[] =                   $fieldControlHtml;
+        $html[] =               '</div>';
+        $html[] =           '</div>';
+        $html[] =           '<div class="form-wizards-items-bottom">';
+        $html[] =               $fieldWizardHtml;
+        $html[] =           '</div>';
+        $html[] =       '</div>';
+        $html[] =   '</div>';
+        $html[] = '</div>';
+
+        $resultArray['html'] = implode(LF, $html);
 
         $this->rteConfiguration = $parameterArray['fieldConf']['config']['richtextConfiguration'];
 
@@ -190,20 +243,6 @@ class RichTextElement extends AbstractFormElement
                 ' . $externalPlugins . '
                 CKEDITOR.replace("' . $fieldId . '", ' . json_encode($customConfig) . ');
         }';
-    }
-
-    /**
-     * Create <textarea> element
-     *
-     * @param string $fieldId
-     * @return string Main HTML to render
-     */
-    protected function getHtml(string $fieldId) : string
-    {
-        $itemFormElementName = $this->data['parameterArray']['itemFormElName'];
-        $value = $this->data['parameterArray']['itemFormElValue'] ?? '';
-
-        return '<textarea style="display:none" ' . $this->getValidationDataAsDataAttribute($this->data['parameterArray']['fieldConf']['config']) . ' id="' . $fieldId . '" name="' . htmlspecialchars($itemFormElementName) . '">' . htmlspecialchars($value) . '</textarea>';
     }
 
     /**

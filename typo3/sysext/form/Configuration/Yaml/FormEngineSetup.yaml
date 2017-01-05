@@ -65,7 +65,9 @@ TYPO3:
                       size: 1
                       minitems: 1
                       maxitems: 1
-                      show_thumbs: 0
+                      fieldWizard:
+                        recordOverview:
+                          disabled: 1
                   additionalParameters:
                     label: 'tt_content.finishersDefinition.Redirect.additionalParameters.label'
                     config:

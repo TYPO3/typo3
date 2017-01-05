@@ -22,13 +22,32 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CheckboxElement extends AbstractFormElement
 {
     /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [
+                'otherLanguageContent',
+            ],
+        ],
+    ];
+
+    /**
      * This will render a checkbox or an array of checkboxes
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
     public function render()
     {
-        $html = '';
+        $resultArray = $this->initializeResultArray();
+
+        $elementHtml = '';
         $disabled = false;
         if ($this->data['parameterArray']['fieldConf']['config']['readOnly']) {
             $disabled = true;
@@ -71,12 +90,12 @@ class CheckboxElement extends AbstractFormElement
                     6 => 'visible-lg-block'
                 ];
             }
-            $html .= '<div class="checkbox-row row">';
+            $elementHtml .= '<div class="checkbox-row row">';
             $counter = 0;
             // @todo: figure out in which cases checkbox items to not begin at 0 and why and when this would be useful
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition[0];
-                $html .=
+                $elementHtml .=
                     '<div class="checkbox-column ' . $colClass . '">'
                         . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
                     '</div>';
@@ -84,25 +103,50 @@ class CheckboxElement extends AbstractFormElement
                 if ($counter < $numberOfItems && !empty($colClear)) {
                     foreach ($colClear as $rowBreakAfter => $clearClass) {
                         if ($counter % $rowBreakAfter === 0) {
-                            $html .= '<div class="clearfix ' . $clearClass . '"></div>';
+                            $elementHtml .= '<div class="clearfix ' . $clearClass . '"></div>';
                         }
                     }
                 }
             }
-            $html .= '</div>';
+            $elementHtml .= '</div>';
         } else {
             $counter = 0;
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition[0];
-                $html .=  $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
+                $elementHtml .=  $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
                 $counter = $counter + 1;
             }
         }
         if (!$disabled) {
-            $html .= '<input type="hidden" name="' . $this->data['parameterArray']['itemFormElName'] . '" value="' . htmlspecialchars($formElementValue) . '" />';
+            $elementHtml .= '<input type="hidden" name="' . $this->data['parameterArray']['itemFormElName'] . '" value="' . htmlspecialchars($formElementValue) . '" />';
         }
-        $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = $html;
+
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+        $fieldWizardResult = $this->renderFieldWizard();
+        $fieldWizardHtml = $fieldWizardResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
+        $html = [];
+        $html[] = '<div class="t3js-formengine-field-item">';
+        if (!$disabled) {
+            $html[] = $fieldInformationHtml;
+        }
+        $html[] =   '<div class="form-wizards-wrap">';
+        $html[] =       '<div class="form-wizards-element">';
+        $html[] =           $elementHtml;
+        $html[] =       '</div>';
+        if (!$disabled) {
+            $html[] =   '<div class="form-wizards-items-bottom">';
+            $html[] =       $fieldWizardHtml;
+            $html[] =   '</div>';
+        }
+        $html[] =   '</div>';
+        $html[] = '</div>';
+
+        $resultArray['html'] = implode(LF, $html);
         return $resultArray;
     }
 

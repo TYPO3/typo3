@@ -24,4 +24,9 @@ return [
         'path' => '/rte/wizard/parsehtml',
         'target' => \TYPO3\CMS\Rtehtmlarea\Controller\ParseHtmlController::class . '::mainAction'
     ],
+    // Register rte wizard
+    'wizard_rte' => [
+        'path' => '/wizard/rte',
+        'target' => \TYPO3\CMS\Rtehtmlarea\Controller\Wizard\RteController::class . '::mainAction'
+    ],
 ];

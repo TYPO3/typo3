@@ -44,12 +44,6 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'file_mountpoints' => [
@@ -62,45 +56,28 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'wizards' => [
-                    '_VERTICAL' => 1,
-                    'edit' => [
-                        'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_edit_title',
-                        'module' => [
-                            'name' => 'wizard_edit',
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_edit_title',
                         ],
-                        'popup_onlyOpenIfSelected' => true,
-                        'icon' => 'actions-open',
-                        'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ],
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_add_title',
-                        'icon' => 'actions-add',
-                        'params' => [
-                            'table' => 'sys_filemounts',
-                            'pid' => 0,
-                            'setValue' => 'prepend'
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_add_title',
+                            'setValue' => 'prepend',
                         ],
-                        'module' => [
-                            'name' => 'wizard_add'
-                        ]
                     ],
-                    'list' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_list_title',
-                        'icon' => 'actions-system-list-open',
-                        'params' => [
-                            'table' => 'sys_filemounts',
-                            'pid' => 0
+                    'listModule' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_list_title',
                         ],
-                        'module' => [
-                            'name' => 'wizard_list'
-                        ]
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'file_permissions' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms',
@@ -251,9 +228,10 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 5
+                'rows' => 5,
+                'enableTabulator' => true,
+                'fixedFont' => true,
             ],
-            'defaultExtras' => 'fixed-font : enable-tab'
         ],
         'hide_in_lists' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_groups.hide_in_lists',

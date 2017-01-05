@@ -146,7 +146,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
-                'size' => 13,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0
             ],
@@ -158,7 +158,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
-                'size' => 13,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0,
                 'range' => [
@@ -296,8 +296,7 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date',
             'config' => [
                 'type' => 'input',
-                'size' => 13,
-                'max' => 20,
+                'renderType' => 'inputDateTime',
                 'eval' => 'date',
                 'default' => 0
             ]
@@ -326,19 +325,16 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputLink',
                 'size' => 50,
                 'max' => 1024,
                 'eval' => 'trim',
-                'wizards' => [
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
+                'fieldControl' => [
+                    'linkPopup' => [
+                        'options' => [
+                            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
                         ],
-                        'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
-                    ]
+                    ],
                 ],
                 'softref' => 'typolink'
             ]
@@ -400,31 +396,6 @@ return [
                 'type' => 'text',
                 'cols' => '80',
                 'rows' => '15',
-                'wizards' => [
-                    'RTE' => [
-                        'notNewRecords' => true,
-                        'RTEonly' => true,
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
-                        'icon' => 'actions-wizard-rte',
-                        'module' => [
-                            'name' => 'wizard_rte'
-                        ]
-                    ],
-                    'table' => [
-                        'notNewRecords' => true,
-                        'enableByTypeConfig' => 1,
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.table',
-                        'icon' => 'content-table',
-                        'module' => [
-                            'name' => 'wizard_table'
-                        ],
-                        'params' => [
-                            'xmlOutput' => 0
-                        ]
-                    ]
-                ],
                 'softref' => 'typolink_tag,images,email[subst],url',
                 'search' => [
                     'andWhere' => 'CType=\'text\' OR CType=\'textpic\''
@@ -565,9 +536,12 @@ return [
                         'content-beside-text-img-left'
                     ]
                 ],
-                'selicon_cols' => 6,
                 'default' => 0,
-                'showIconTable' => true,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
             ]
         ],
         'imageborder' => [
@@ -697,12 +671,6 @@ return [
                 'size' => 3,
                 'maxitems' => 50,
                 'minitems' => 0,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'recursive' => [
@@ -834,11 +802,6 @@ return [
                 'foreign_table' => 'sys_file_collection',
                 'minitems' => 0,
                 'size' => 5,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'media' => [
@@ -880,15 +843,10 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'wizards' => [
-                    'target_picker' => [
-                        'type' => 'select',
-                        'renderType' => 'selectSingle',
-                        'mode' => '',
-                        'items' => [
-                            ['LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', '_blank']
-                        ]
-                    ]
+                'valuePicker' => [
+                    'items' => [
+                        [ 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', '_blank' ],
+                    ],
                 ],
                 'default' => ''
             ]
@@ -902,12 +860,6 @@ return [
                 'size' => 5,
                 'maxitems' => 200,
                 'minitems' => 0,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'sectionIndex' => [
@@ -1125,7 +1077,13 @@ return [
                     rowDescription,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
             ',
-            'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'nowrap']]
+            'columnsOverrides' => [
+                'bodytext' => [
+                    'config' => [
+                        'wrap' => 'off',
+                    ],
+                ],
+            ],
         ],
         'div' => [
             'showitem' => '

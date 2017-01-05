@@ -28,6 +28,8 @@ class UserElement extends AbstractFormElement
      */
     public function render()
     {
+        $resultArray = $this->initializeResultArray();
+
         $parameterArray = $this->data['parameterArray'];
         $parameterArray['table'] = $this->data['tableName'];
         $parameterArray['field'] = $this->data['fieldName'];
@@ -35,12 +37,17 @@ class UserElement extends AbstractFormElement
         $parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
             ? $parameterArray['fieldConf']['config']['parameters']
             : [];
-        $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = GeneralUtility::callUserFunction(
+        $html = GeneralUtility::callUserFunction(
             $parameterArray['fieldConf']['config']['userFunc'],
             $parameterArray,
             $this
         );
+        if (!isset($parameterArray['fieldCong']['config']['noTableWrapping'])
+            || (bool)$parameterArray['fieldCong']['config']['noTableWrapping'] === false
+        ) {
+            $html = '<div class="t3js-formengine-field-item">' . $html . '</div>';
+        }
+        $resultArray['html'] = $html;
         return $resultArray;
     }
 }

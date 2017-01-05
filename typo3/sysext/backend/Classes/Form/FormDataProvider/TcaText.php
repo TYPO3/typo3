@@ -39,7 +39,7 @@ class TcaText implements FormDataProviderInterface
                 continue;
             }
 
-            if (isset($fieldConfig['config']['enableRichtext']) && $fieldConfig['config']['enableRichtext'] === true) {
+            if (isset($fieldConfig['config']['enableRichtext']) && (bool)$fieldConfig['config']['enableRichtext'] === true) {
                 $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
                 $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
                     $result['tableName'],

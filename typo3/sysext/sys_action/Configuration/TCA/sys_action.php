@@ -113,12 +113,6 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 1,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         't3_listPid' => [
@@ -130,12 +124,6 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 1,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         't3_tables' => [
@@ -159,12 +147,6 @@ return [
                 'size' => 5,
                 'maxitems' => 50,
                 'minitems' => 1,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ]
     ],

@@ -88,6 +88,23 @@ class T3editorElement extends AbstractFormElement
     protected $codeCompletionComponents = ['TsRef', 'CompletionResult', 'TsParser', 'TsCodeCompletion'];
 
     /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [
+                'otherLanguageContent',
+            ],
+        ],
+    ];
+
+    /**
      * Render t3editor element
      *
      * @return array As defined in initializeResultArray() of AbstractNode
@@ -116,7 +133,7 @@ class T3editorElement extends AbstractFormElement
             $attributeString .= $param . '="' . htmlspecialchars($value) . '" ';
         }
 
-        $this->resultArray['html'] = $this->getHTMLCodeForEditor(
+        $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],
             'text-monospace enable-tab',
             $parameterArray['itemFormElValue'],
@@ -124,6 +141,45 @@ class T3editorElement extends AbstractFormElement
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             ['target' => 0]
         );
+
+        $legacyWizards = $this->renderWizards();
+        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
+        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
+
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldInformationResult, false);
+
+        $fieldControlResult = $this->renderFieldControl();
+        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldControlResult, false);
+
+        $fieldWizardResult = $this->renderFieldWizard();
+        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldWizardResult, false);
+
+        $html = [];
+        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] =   $fieldInformationHtml;
+        $html[] =   '<div class="form-control-wrap">';
+        $html[] =       '<div class="form-wizards-wrap">';
+        $html[] =           '<div class="form-wizards-element">';
+        $html[] =               $editorHtml;
+        $html[] =           '</div>';
+        $html[] =           '<div class="form-wizards-items-aside">';
+        $html[] =               '<div class="btn-group">';
+        $html[] =                   $fieldControlHtml;
+        $html[] =               '</div>';
+        $html[] =           '</div>';
+        $html[] =           '<div class="form-wizards-items-bottom">';
+        $html[] =               $fieldWizardHtml;
+        $html[] =           '</div>';
+        $html[] =       '</div>';
+        $html[] =   '</div>';
+        $html[] = '</div>';
+
+        $this->resultArray['html'] = implode(LF, $html);
+
         $this->resultArray['additionalJavaScriptPost'][] = 'require(["TYPO3/CMS/T3editor/T3editor"], function(T3editor) {T3editor.findAndInitializeEditors();});';
 
         $this->initJavascriptCode();
@@ -201,10 +257,10 @@ class T3editorElement extends AbstractFormElement
         $attributesString .= $additionalParams;
 
         $code[] = '<div class="t3editor">';
-        $code[] = '	<div class="t3e_wrap">';
-        $code[] = str_replace([CR, LF], '', file_get_contents(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')));
-        $code[] = '	</div>';
-        $code[] = '	<textarea ' . $attributesString . '>' . htmlspecialchars($content) . '</textarea>';
+        $code[] =   '<div class="t3e_wrap">';
+        $code[] =       str_replace([CR, LF], '', file_get_contents(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')));
+        $code[] =   '</div>';
+        $code[] =   '<textarea ' . $attributesString . '>' . htmlspecialchars($content) . '</textarea>';
         $code[] = '</div>';
 
         if (!empty($hiddenfields)) {

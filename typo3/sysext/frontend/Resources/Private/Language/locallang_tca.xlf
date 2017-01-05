@@ -576,6 +576,9 @@
 			<trans-unit id="sys_template.basedOn_add">
 				<source>Add New Basis Template</source>
 			</trans-unit>
+			<trans-unit id="sys_template.basedOn_edit">
+				<source>Edit template</source>
+			</trans-unit>
 			<trans-unit id="sys_template.tabs.files">
 				<source>Resources</source>
 			</trans-unit>

@@ -78,7 +78,7 @@ return [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.lastupdated',
             'config' => [
                 'type' => 'input',
-                'size' => 30,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime'
             ]
         ],

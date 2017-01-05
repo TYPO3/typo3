@@ -188,7 +188,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                             'internal_type' => 'db',
                             'maxitems' => 22,
                             'minitems' => 0,
-                            'show_thumbs' => true,
                             'size' => 3,
                         ],
                     ],
@@ -1157,14 +1156,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'field' => 'text',
                         'title' => null,
                         'palette' => null,
-                        'spec' => [
-                            'richtext' => 1,
-                            'rte_transform' => [
-                                'parameters' => [
-                                    0 => 'mode=ts_css'
-                                ]
-                            ]
-                        ],
+                        'spec' => [],
                         'origString' => 'text'
                     ],
                     4 => [
@@ -1202,14 +1194,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                         'field' => 'text2',
                         'title' => null,
                         'palette' => null,
-                        'spec' => [
-                            'richtext' => 1,
-                            'rte_transform' => [
-                                'parameters' => [
-                                    0 => 'mode=fooBar,type=RTE'
-                                ]
-                            ]
-                        ],
+                        'spec' => [],
                         'origString' => 'text2'
                     ]
                 ]

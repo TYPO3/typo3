@@ -17,16 +17,38 @@ namespace TYPO3\CMS\Backend\Form;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Create an element object depending on type.
+ * Create an element object depending on renderType.
+ *
+ * This is the main factory to instantiate any node within the render
+ * chain of FormEngine. All nodes must implement NodeInterface.
+ *
+ * Nodes are "container" classes of the render chain, "element" classes that
+ * render single elements, as well as "fieldWizard", "fieldInformation" and
+ * "fieldControl" classes which are called by single elements to enrich them.
+ *
+ * This factory gets a string "renderType" and then looks up in a list which
+ * specific class should handle this renderType. This list can be extended with
+ * own renderTypes by extensions, existing renderTypes can be overriden, and
+ * - for complex cases - it is possible to register own resolver classes for single
+ * renderTypes that can return a node class name to override the default lookup list.
  */
 class NodeFactory
 {
+    /**
+     * Node resolver classes
+     * Nested array with nodeName as key, (sorted) priority as sub key and class as value
+     *
+     * @var array
+     */
+    protected $nodeResolver = [];
+
     /**
      * Default registry of node name to handling class
      *
      * @var array
      */
     protected $nodeTypes = [
+        // Default container classes
         'flex' => Container\FlexFormEntryContainer::class,
         'flexFormContainerContainer' => Container\FlexFormContainerContainer::class,
         'flexFormElementContainer' => Container\FlexFormElementContainer::class,
@@ -44,9 +66,12 @@ class NodeFactory
         'soloFieldContainer' => Container\SoloFieldContainer::class,
         'tabsContainer' => Container\TabsContainer::class,
 
+        // Default single element classes
         'check' => Element\CheckboxElement::class,
         'group' => Element\GroupElement::class,
         'input' => Element\InputTextElement::class,
+        'inputDateTime' => Element\InputDateTimeElement::class,
+        'inputLink' => Element\InputLinkElement::class,
         'hidden' => Element\InputHiddenElement::class,
         // rsaInput is defined with a fallback so extensions can use it even if ext:rsaauth is not loaded
         'rsaInput' => Element\InputTextElement::class,
@@ -62,17 +87,35 @@ class NodeFactory
         // t3editor is defined with a fallback so extensions can use it even if ext:t3editor is not loaded
         't3editor' => Element\TextElement::class,
         'text' => Element\TextElement::class,
+        'textTable' => Element\TextTableElement::class,
         'unknown' => Element\UnknownElement::class,
         'user' => Element\UserElement::class,
-    ];
 
-    /**
-     * Node resolver classes
-     * Nested array with nodeName as key, (sorted) priority as sub key and class as value
-     *
-     * @var array
-     */
-    protected $nodeResolver = [];
+        // Default classes to enrich single elements
+        'fieldControl' => NodeExpansion\FieldControl::class,
+        'fieldInformation' => NodeExpansion\FieldInformation::class,
+        'fieldWizard' => NodeExpansion\FieldWizard::class,
+
+        // Element wizards
+        'defaultLanguageDifferences' => FieldWizard\DefaultLanguageDifferences::class,
+        'fileThumbnails' => FieldWizard\FileThumbnails::class,
+        'fileTypeList' => FieldWizard\FileTypeList::class,
+        'fileUpload' => FieldWizard\FileUpload::class,
+        'otherLanguageContent' => FieldWizard\OtherLanguageContent::class,
+        'recordsOverview' => FieldWizard\RecordsOverview::class,
+        'selectIcons' => FieldWizard\SelectIcons::class,
+        'tableList' => FieldWizard\TableList::class,
+
+        // Element controls
+        'addRecord' => FieldControl\AddRecord::class,
+        'editPopup' => FieldControl\EditPopup::class,
+        'elementBrowser' => FieldControl\ElementBrowser::class,
+        'insertClipboard' => FieldControl\InsertClipboard::class,
+        'linkPopup' => FieldControl\LinkPopup::class,
+        'listModule' => FieldControl\ListModule::class,
+        'resetSelection' => FieldControl\ResetSelection::class,
+        'tableWizard' => FieldControl\TableWizard::class,
+    ];
 
     /**
      * Set up factory. Initialize additionally registered nodes.

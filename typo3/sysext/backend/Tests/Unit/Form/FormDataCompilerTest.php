@@ -151,6 +151,19 @@ class FormDataCompilerTest extends \TYPO3\CMS\Components\TestingFramework\Core\U
     /**
      * @test
      */
+    public function compileThrowsExceptionIfRenderDataIsNotEmpty()
+    {
+        $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn([
+            'renderData' => [ 'foo' ],
+        ]);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1485201279);
+        $this->subject->compile([]);
+    }
+
+    /**
+     * @test
+     */
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray()
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {

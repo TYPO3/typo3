@@ -75,7 +75,6 @@ class FlexFormElementContainer extends AbstractContainer
                         'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
                         'config' => $flexFormFieldArray['config'],
                         'children' => $flexFormFieldArray['children'],
-                        'defaultExtras' => $flexFormFieldArray['defaultExtras'],
                         'onChange' => $flexFormFieldArray['onChange'],
                     ],
                     'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
@@ -152,8 +151,7 @@ class FlexFormElementContainer extends AbstractContainer
                 $html[] = '</div>';
 
                 $resultArray['html'] .= implode(LF, $html);
-                $childResult['html'] = '';
-                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
+                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult, false);
             }
         }
 

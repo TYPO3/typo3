@@ -19,3 +19,13 @@ foreach ($GLOBALS['TCA']['tt_content']['columns'] as $column => $config) {
         }
     }
 }
+
+// Enabling the full screen wizard here by checking isLoaded is a bit hacky, but currently the least
+// disturbing solution that does not trigger load-order issues
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('css_styled_content')) {
+    $GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['config']['fieldControl']['fullScreenRichtext']['disabled'] = false;
+    $GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config']['fieldControl']['fullScreenRichtext']['disabled'] = false;
+}
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluid_styled_content')) {
+    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['bodytext']['config']['fieldControl']['fullScreenRichtext']['disabled'] = false;
+}

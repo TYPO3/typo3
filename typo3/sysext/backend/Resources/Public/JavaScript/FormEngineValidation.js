@@ -297,14 +297,14 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 								}
 							}
 						}
-						if (typeof rule.config.lower !== 'undefined') {
-							var minValue = rule.config.lower * 1;
+						if (typeof rule.lower !== 'undefined') {
+							var minValue = rule.lower * 1;
 							if (!isNaN(minValue) && value < minValue) {
 								markParent = true;
 							}
 						}
-						if (typeof rule.config.upper !== 'undefined') {
-							var maxValue = rule.config.upper * 1;
+						if (typeof rule.upper !== 'undefined') {
+							var maxValue = rule.upper * 1;
 							if (!isNaN(maxValue) && value > maxValue) {
 								markParent = true;
 							}

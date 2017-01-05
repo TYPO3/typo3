@@ -32,8 +32,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
-                'size' => 8,
-                'max' => 20,
+                'renderType' => 'inputDateTime',
                 'eval' => 'date',
                 'default' => 0,
             ]
@@ -109,11 +108,6 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'indexcfgs' => [
@@ -125,11 +119,6 @@ return [
                 'size' => 5,
                 'minitems' => 0,
                 'maxitems' => 200,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'get_params' => [
@@ -192,7 +181,7 @@ return [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_next_indexing',
             'config' => [
                 'type' => 'input',
-                'size' => 12,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0,
             ]
@@ -201,8 +190,7 @@ return [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_offset',
             'config' => [
                 'type' => 'input',
-                'size' => 8,
-                'max' => 20,
+                'renderType' => 'inputDateTime',
                 'eval' => 'time',
                 'default' => 3600
             ]

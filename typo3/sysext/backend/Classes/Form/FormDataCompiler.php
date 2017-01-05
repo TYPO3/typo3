@@ -105,6 +105,13 @@ class FormDataCompiler
             );
         }
 
+        if (!empty($result['renderData'])) {
+            throw new \RuntimeException(
+                'Array \'renderData\' not empty. Data providers must not add data here',
+                1485201279
+            );
+        }
+
         $resultKeysAfterFormDataGroup = array_keys($result);
 
         if ($resultKeysAfterFormDataGroup !== $resultKeysBeforeFormDataGroup) {
@@ -281,6 +288,11 @@ class FormDataCompiler
             // This array of fields will be set as hidden-fields instead of rendered normally!
             // This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
             'overrideValues' => [],
+
+            // This array must NOT be set / manipulated by data providers but is instead used by the render part
+            // of FormEngine to add runtime data. Containers and elements add data here which is given to
+            // sub-containers, elements, controls and wizards.
+            'renderData' => [],
         ];
     }
 }

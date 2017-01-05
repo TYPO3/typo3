@@ -8901,7 +8901,7 @@ div.dropdown-menu {
 }
 /*!
  * Datetimepicker for Bootstrap 3
- * version : 4.17.42
+ * version : 4.17.44
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 .bootstrap-datetimepicker-widget {
@@ -12814,30 +12814,28 @@ select.icon-select option {
   margin-top: 0;
   margin-bottom: 10px;
 }
-.form-wizards-wrap.form-wizards-top > .form-wizards-items {
-  margin-bottom: 9px;
-}
-.form-wizards-wrap.form-wizards-bottom > .form-wizards-element {
-  margin-bottom: 9px;
-}
-.form-wizards-wrap.form-wizards-aside {
+.form-wizards-wrap {
   display: table;
   width: 100%;
 }
-.form-wizards-wrap.form-wizards-aside > .form-wizards-element {
+.form-wizards-wrap > .form-wizards-element {
+  display: table-cell;
   width: 100%;
 }
-.form-wizards-wrap.form-wizards-aside > .form-wizards-element,
-.form-wizards-wrap.form-wizards-aside > .form-wizards-items {
+.form-wizards-wrap > .form-wizards-items-top {
+  display: table-row;
+}
+.form-wizards-wrap > .form-wizards-items-aside {
   display: table-cell;
   vertical-align: top;
-}
-.form-wizards-wrap.form-wizards-aside > .form-wizards-items {
-  white-space: nowrap;
   padding-left: 5px;
+  white-space: nowrap;
 }
-.form-wizards-element > .table-fit {
-  margin-bottom: 9px;
+.form-wizards-wrap > .form-wizards-items-bottom {
+  display: table-row;
+}
+.form-wizards-wrap > .form-wizards-items-bottom:first-child {
+  margin-top: 4px;
 }
 .form-irre-header {
   display: table;

@@ -12,6 +12,8 @@
  */
 
 /**
+ * Implementation of the value slider for input text elements.
+ *
  * Module: TYPO3/CMS/Backend/ValueSlider
  */
 define(['jquery', 'twbs/bootstrap-slider'], function($) {
@@ -46,19 +48,10 @@ define(['jquery', 'twbs/bootstrap-slider'], function($) {
 	ValueSlider.updateValue = function(e) {
 		var $slider = $(e.currentTarget),
 			$foreignField = $('[data-formengine-input-name="' + $slider.data('sliderItemName') + '"]'),
-			elementType = $slider.data('sliderElementType'),
 			sliderField = $slider.data('sliderField'),
 			sliderCallbackParams = $slider.data('sliderCallbackParams');
 
-		switch (elementType) {
-			case 'input':
-				$foreignField.val(e.value.newValue);
-				break;
-			case 'select':
-				$foreignField.find('option').eq(e.value.newValue).prop('selected', true);
-				break;
-		}
-
+		$foreignField.val(e.value.newValue);
 		TBE_EDITOR.fieldChanged.apply(TBE_EDITOR, sliderCallbackParams);
 	};
 
@@ -72,10 +65,6 @@ define(['jquery', 'twbs/bootstrap-slider'], function($) {
 			$slider = $('[data-slider-id="' + this.id + '"]'),
 			data = $slider.data();
 		switch (data.sliderValueType) {
-			case 'array':
-				var $foreignField = $('[data-formengine-input-name="' + data.sliderItemName + '"]');
-				renderedValue = $foreignField.find('option').eq(value).text();
-				break;
 			case 'double':
 				renderedValue = parseFloat(value).toFixed(2);
 				break;

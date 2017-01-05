@@ -9,10 +9,10 @@ if (is_array($GLOBALS['TCA']['tt_content']['types']['html'])) {
     if (!is_array($GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext'])) {
         $GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext'] = [];
     }
-    $GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap:wizards[t3editor]';
     if (!is_array($GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config'])) {
         $GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config'] = [];
     }
     $GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config']['renderType'] = 't3editor';
+    $GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config']['wrap'] = 'off';
     $GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config']['format'] = 'html';
 }

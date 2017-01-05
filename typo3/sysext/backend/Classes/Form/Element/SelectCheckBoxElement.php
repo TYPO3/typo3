@@ -28,12 +28,31 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SelectCheckBoxElement extends AbstractFormElement
 {
     /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [
+                'otherLanguageContent',
+            ],
+        ],
+    ];
+
+    /**
      * Render check boxes
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
     public function render()
     {
+        $resultArray = $this->initializeResultArray();
+
         $html = [];
         // Field configuration from TCA:
         $parameterArray = $this->data['parameterArray'];
@@ -110,6 +129,25 @@ class SelectCheckBoxElement extends AbstractFormElement
                     }
                 }
             }
+
+            $legacyWizards = $this->renderWizards();
+            $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
+
+            $fieldInformationResult = $this->renderFieldInformation();
+            $fieldInformationHtml = $fieldInformationResult['html'];
+            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+            $fieldWizardResult = $this->renderFieldWizard();
+            $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
+            $html[] = '<div class="t3js-formengine-field-item">';
+            if (!$disabled) {
+                $html[] = $fieldInformationHtml;
+            }
+            $html[] =   '<div class="form-wizards-wrap">';
+            $html[] =       '<div class="form-wizards-element">';
+
             // Add an empty hidden field which will send a blank value if all items are unselected.
             $html[] = '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="">';
 
@@ -190,25 +228,19 @@ class SelectCheckBoxElement extends AbstractFormElement
                 }
                 $html[] = '</div>';
             }
+
+            $html[] =       '</div>';
+            if (!$disabled) {
+                $html[] =   '<div class="form-wizards-items-bottom">';
+                $html[] =       $fieldWizardHtml;
+                $html[] =   '</div>';
+            }
+            $html[] =   '</div>';
+            $html[] = '</div>';
         }
 
-        if (!$disabled) {
-            $html = $this->renderWizards(
-                [implode(LF, $html)],
-                $config['wizards'],
-                $this->data['tableName'],
-                $this->data['databaseRow'],
-                $this->data['fieldName'],
-                $parameterArray,
-                $parameterArray['itemFormElName'],
-                BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
-            );
-        }
-
-        $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = $html;
+        $resultArray['html'] = implode(LF, $html);
         $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tooltip';
-
         return $resultArray;
     }
 }

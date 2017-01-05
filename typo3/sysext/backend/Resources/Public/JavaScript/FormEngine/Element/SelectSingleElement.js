@@ -51,7 +51,7 @@ define(['jquery'], function ($) {
 			$selectElement.on('focus', options.onFocus);
 		}
 
-		$selectElement.closest('.form-control-wrap').next('.t3js-forms-select-single-icons').on('click', function(e) {
+		$selectElement.closest('.form-control-wrap').find('.t3js-forms-select-single-icons').on('click', function(e) {
 			var $selectIcon = $(e.target).closest('[data-select-index]');
 
 			$selectElement

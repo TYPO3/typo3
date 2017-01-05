@@ -126,7 +126,6 @@ return [
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                 'max_size' => 3000,
                 'uploadfolder' => 'uploads/pics',
-                'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0
@@ -157,33 +156,18 @@ return [
                 'items' => [
                     ['--none--', 0],
                 ],
-                'wizards' => [
-                     '_VERTICAL' => 1,
-                     'edit' => [
-                         'type' => 'popup',
-                         'title' => 'Edit',
-                         'module' => [
-                             'name' => 'wizard_edit',
-                         ],
-                         'icon' => 'actions-open',
-                         'popup_onlyOpenIfSelected' => 1,
-                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1',
-                     ],
-                     'add' => [
-                         'type' => 'script',
-                         'title' => 'Create new',
-                         'icon' => 'actions-add',
-                         'params' => [
-                             'table'=>'fe_users',
-                             'pid' => '###CURRENT_PID###',
-                             'setValue' => 'prepend'
-                         ],
-                         'module' => [
-                             'name' => 'wizard_add',
-                         ],
-                     ],
-                 ]
-            ]
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'setValue' => 'prepend',
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
     'types' => [

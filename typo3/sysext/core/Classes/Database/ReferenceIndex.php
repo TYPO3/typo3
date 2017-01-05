@@ -556,7 +556,7 @@ class ReferenceIndex
                     }
                 }
                 // Add a softref definition for link fields if the TCA does not specify one already
-                if ($conf['type'] === 'input' && isset($conf['wizards']['link']) && empty($conf['softref'])) {
+                if ($conf['type'] === 'input' && $conf['renderType'] === 'inputLink' && empty($conf['softref'])) {
                     $conf['softref'] = 'typolink';
                 }
                 // Add DB:
@@ -664,7 +664,7 @@ class ReferenceIndex
             }
         }
         // Add a softref definition for link fields if the TCA does not specify one already
-        if ($dsConf['type'] === 'input' && isset($dsConf['wizards']['link']) && empty($dsConf['softref'])) {
+        if ($dsConf['type'] === 'input' && $dsConf['renderType'] === 'inputLink' && empty($dsConf['softref'])) {
             $dsConf['softref'] = 'typolink';
         }
         // Add DB:
@@ -1097,7 +1097,7 @@ class ReferenceIndex
             ||
             ($configuration['type'] === 'group' && ($configuration['internal_type'] === 'file' || $configuration['internal_type'] === 'file_reference')) // getRelations_procFiles
             ||
-            ($configuration['type'] === 'input' && isset($configuration['wizards']['link'])) // getRelations_procDB
+            ($configuration['type'] === 'input' && $configuration['renderType'] === 'inputLink') // getRelations_procDB
             ||
             $configuration['type'] === 'flex'
             ||

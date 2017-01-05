@@ -57,7 +57,7 @@ class RichTextNodeResolver implements NodeResolverInterface
             && $backendUser->isRTE()
             // If RTE is enabled for field
             && isset($parameterArray['fieldConf']['config']['enableRichtext'])
-            && $parameterArray['fieldConf']['config']['enableRichtext'] === true
+            && (bool)$parameterArray['fieldConf']['config']['enableRichtext'] === true
             // If RTE config is found (prepared by TcaText data provider)
             && isset($parameterArray['fieldConf']['config']['richtextConfiguration'])
             && is_array($parameterArray['fieldConf']['config']['richtextConfiguration'])

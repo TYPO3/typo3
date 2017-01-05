@@ -314,36 +314,26 @@ select {
 // Form Wizards
 //
 .form-wizards-wrap {
-	&.form-wizards-top {
-		> .form-wizards-items {
-			margin-bottom: 9px;
-		}
-	}
-	&.form-wizards-bottom {
-		> .form-wizards-element {
-			margin-bottom: 9px;
-		}
-	}
-	&.form-wizards-aside {
-		display: table;
+	display: table;
+	width: 100%;
+	> .form-wizards-element {
+		display: table-cell;
 		width: 100%;
-		> .form-wizards-element {
-			width: 100%;
-		}
-		> .form-wizards-element,
-		> .form-wizards-items {
-			display: table-cell;
-			vertical-align: top;
-		}
-		> .form-wizards-items {
-			white-space: nowrap;
-			padding-left: 5px;
-		}
 	}
-}
-.form-wizards-element {
-	> .table-fit {
-		margin-bottom: 9px;
+	> .form-wizards-items-top {
+		display: table-row;
+	}
+	> .form-wizards-items-aside {
+		display: table-cell;
+		vertical-align: top;
+		padding-left: 5px;
+		white-space: nowrap;
+	}
+	> .form-wizards-items-bottom {
+		display: table-row;
+	}
+	> .form-wizards-items-bottom:first-child {
+		margin-top: 4px;
 	}
 }
 

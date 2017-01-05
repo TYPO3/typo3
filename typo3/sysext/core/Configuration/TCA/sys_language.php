@@ -310,11 +310,14 @@ return [
                     ['zm', 'zm', 'flags-zm'],
                     ['zw', 'zw', 'flags-zw']
                 ],
-                'selicon_cols' => 16,
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'showIconTable' => true,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
             ]
         ]
     ],

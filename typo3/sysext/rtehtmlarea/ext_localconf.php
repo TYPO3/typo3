@@ -7,6 +7,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'][1433167475] = [
     'priority' => 40,
     'class' => \TYPO3\CMS\Rtehtmlarea\Form\Resolver\RichTextNodeResolver::class,
 ];
+// Register renderType "fullScreenRichtext" for the full screen button control
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1484760191] = [
+    'nodeName' => 'fullScreenRichtext',
+    'priority' => 30,
+    'class' => \TYPO3\CMS\Rtehtmlarea\Form\FieldControl\FullScreenRichtext::class,
+];
 
 // Unserializing the configuration so we can use it here
 $_EXTCONF = unserialize($_EXTCONF, ['allowed_classes' => false]);

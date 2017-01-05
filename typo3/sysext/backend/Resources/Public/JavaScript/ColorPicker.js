@@ -31,7 +31,7 @@ define(["require", "exports", 'jquery', "TYPO3/CMS/Core/Contrib/jquery.minicolor
             $(this.selector).minicolors({
                 format: 'hex',
                 position: 'bottom left',
-                theme: 'bootstrap',
+                theme: 'bootstrap'
             });
         };
         return ColorPicker;

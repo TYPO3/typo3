@@ -60,7 +60,11 @@ return [
                     ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
                 ],
                 'default' => 0,
-                'showIconTable' => true,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
             ]
         ],
         'l10n_parent' => [
@@ -99,7 +103,8 @@ return [
                 'eval' => 'int',
                 'maxitems' => 1,
                 'minitems' => 0,
-                'allowed' => 'sys_file'
+                'allowed' => 'sys_file',
+                'hideSuggest' => true,
             ]
         ],
         'uid_foreign' => [
@@ -161,18 +166,15 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.link',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputLink',
                 'size' => 20,
                 'max' => 1024,
-                'wizards' => [
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.link',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
+                'fieldControl' => [
+                    'linkPopup' => [
+                        'options' => [
+                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.link',
                         ],
-                        'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
-                    ]
+                    ],
                 ],
                 'softref' => 'typolink'
             ]

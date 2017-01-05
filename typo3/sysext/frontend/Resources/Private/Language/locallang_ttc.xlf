@@ -162,12 +162,6 @@
 			<trans-unit id="header_layout.I.6">
 				<source>Hidden</source>
 			</trans-unit>
-			<trans-unit id="bodytext.W.RTE">
-				<source>Fullscreen Rich Text Editing</source>
-			</trans-unit>
-			<trans-unit id="bodytext.W.table">
-				<source>Table Wizard</source>
-			</trans-unit>
 			<trans-unit id="bodytext.W.forms">
 				<source>Forms wizard</source>
 			</trans-unit>

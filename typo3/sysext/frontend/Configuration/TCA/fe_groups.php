@@ -78,9 +78,10 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 10
+                'rows' => 10,
+                'enableTabulator' => true,
+                'fixedFont' => true,
             ],
-            'defaultExtras' => 'fixed-font : enable-tab'
         ]
     ],
     'types' => [

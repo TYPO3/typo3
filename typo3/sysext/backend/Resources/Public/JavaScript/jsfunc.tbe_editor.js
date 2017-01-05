@@ -257,20 +257,6 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 
 
 var typo3form = {
-	fieldSetNull: function(fieldName, isNull) {
-		if (document[TBE_EDITOR.formname][fieldName]) {
-			$(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item').toggleClass('disabled', isNull);
-		}
-	},
-	fieldTogglePlaceholder: function(fieldName, showPlaceholder) {
-		if (!document[TBE_EDITOR.formname][fieldName]) {
-			return;
-		}
-
-		var $formFieldItemWrapper = $(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
-		$formFieldItemWrapper.find('.t3js-formengine-placeholder-placeholder').toggle(showPlaceholder);
-		$formFieldItemWrapper.find('.t3js-formengine-placeholder-formfield').toggle(!showPlaceholder);
-	},
 	fieldSet: function(theField, evallist, is_in, checkbox, checkboxValue) {
 		if (document[TBE_EDITOR.formname][theField]) {
 			var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);

@@ -580,8 +580,8 @@ define(['jquery',
 
 
 	/**
-	 * initialize events for all form engine relevant tasks
-	 * this function only needs to be called once on page load,
+	 * Initialize events for all form engine relevant tasks.
+	 * This function only needs to be called once on page load,
 	 * as it using deferrer methods only
 	 */
 	FormEngine.initializeEvents = function() {
@@ -695,6 +695,12 @@ define(['jquery',
 				$elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', '1');
 
 			$me.parents('form').append($elem);
+		}).on('change', '.t3-form-field-eval-null-checkbox input[type="checkbox"]', function(e) {
+			// Null checkboxes without placeholder click event handler
+			$(this).closest('.t3js-formengine-field-item').toggleClass('disabled');
+		}).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', function(e) {
+			$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').toggle();
+			$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').toggle();
 		});
 	};
 
@@ -892,14 +898,44 @@ define(['jquery',
 	};
 
 	/**
-	 * this is the main function that is called on page load, but also after elements are asynchroniously
-	 * called e.g. after IRRE elements are loaded again, or a new flexform section is added.
-	 * use this function in your extension like this "TYPO3.FormEngine.initialize()"
+	 * Initialize input / text field "null" checkbox CSS overlay if no placeholder is set.
+	 */
+	FormEngine.initializeNullNoPlaceholderCheckboxes = function() {
+		$('.t3-form-field-eval-null-checkbox').each(function() {
+			// Add disabled class to "t3js-formengine-field-item" if the null checkbox is NOT set,
+			// This activates a CSS overlay "disabling" the input field and everything around.
+			var $checkbox = $(this).find('input[type="checkbox"]');
+			var $fieldItem = $(this).closest('.t3js-formengine-field-item');
+			if (!$checkbox.attr('checked')) {
+				$fieldItem.addClass('disabled');
+			}
+		});
+	};
+
+	/**
+	 * Initialize input / text field "null" checkbox placeholder / real field if placeholder is set.
+	 */
+	FormEngine.initializeNullWithPlaceholderCheckboxes = function() {
+		$('.t3js-form-field-eval-null-placeholder-checkbox').each(function() {
+			// Set initial state of both div's (one containing actual field, other containing placeholder field)
+			// depending on whether checkbox is checked or not
+			var $checkbox = $(this).find('input[type="checkbox"]');
+			if ($checkbox.attr('checked')) {
+				$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').toggle();
+			} else {
+				$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').toggle();
+			}
+		});
+	};
+
+	/**
+	 * This is the main function that is called on page load, but also after elements are asynchronously
+	 * called e.g. after inline elements are loaded, or a new flexform section is added.
+	 * Use this function in your extension like this "TYPO3.FormEngine.initialize()"
 	 * if you add new fields dynamically.
-	 *
 	 */
 	FormEngine.reinitialize = function() {
-		// apply "close" button to all input / datetime fields
+		// Apply "close" button to all input / datetime fields
 		if ($('.t3js-clearable').length) {
 			require(['TYPO3/CMS/Backend/jquery.clearable'], function() {
 				$('.t3js-clearable').clearable();
@@ -910,13 +946,15 @@ define(['jquery',
 				Suggest($('.t3-form-suggest'));
 			});
 		}
-		// apply DatePicker to all date time fields
+		// Apply DatePicker to all date time fields
 		require(['TYPO3/CMS/Backend/DateTimePicker'], function(DateTimePicker) {
 			DateTimePicker.initialize();
 		});
 
 		FormEngine.convertTextareasResizable();
 		FormEngine.convertTextareasEnableTab();
+		FormEngine.initializeNullNoPlaceholderCheckboxes();
+		FormEngine.initializeNullWithPlaceholderCheckboxes();
 	};
 
 	/**

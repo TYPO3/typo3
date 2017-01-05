@@ -113,10 +113,9 @@ class FlexFormContainerContainer extends AbstractContainer
         $html[] =    '</div>';
         $html[] = '</div>';
 
-        $containerContentResult['html'] = '';
         $resultArray = $this->initializeResultArray();
         $resultArray['html'] = implode(LF, $html);
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $containerContentResult);
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $containerContentResult, false);
 
         return $resultArray;
     }

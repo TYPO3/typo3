@@ -285,8 +285,7 @@ class InlineControlContainer extends AbstractContainer
             $options['renderType'] = 'inlineRecordContainer';
             $childResult = $this->nodeFactory->create($options)->render();
             $html .= $childResult['html'];
-            $childArray['html'] = '';
-            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
+            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult, false);
             if (!$options['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 // Don't add record to list of "valid" uids if it is only the default
                 // language record of a not yet localized child
@@ -323,7 +322,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
-            . $this->getValidationDataAsDataAttribute(['type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']])
+            . ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString(['type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']])) . '"'
             . ' class="inlineRecord" />';
         // Close the wrap for all inline fields (container)
         $html .= '</div>';

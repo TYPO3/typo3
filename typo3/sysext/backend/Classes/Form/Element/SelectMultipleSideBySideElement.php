@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -29,6 +28,45 @@ use TYPO3\CMS\Lang\LanguageService;
 class SelectMultipleSideBySideElement extends AbstractFormElement
 {
     /**
+     * Default field controls for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldControl = [
+        'editPopup' => [
+            'renderType' => 'editPopup',
+            'disabled' => true,
+        ],
+        'addRecord' => [
+            'renderType' => 'addRecord',
+            'disabled' => true,
+            'after' => [ 'editPopup' ],
+        ],
+        'listModule' => [
+            'renderType' => 'listModule',
+            'disabled' => true,
+            'after' => [ 'addRecord' ],
+        ],
+    ];
+
+    /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [
+                'otherLanguageContent',
+            ],
+        ],
+    ];
+
+    /**
      * Render side by side element.
      *
      * @return array As defined in initializeResultArray() of AbstractNode
@@ -36,6 +74,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
     public function render()
     {
         $languageService = $this->getLanguageService();
+        $resultArray = $this->initializeResultArray();
 
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
@@ -156,108 +195,127 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $selectableListStyle = ' style="' . htmlspecialchars($config['itemListStyle']) . '"';
         }
 
+        $legacyWizards = $this->renderWizards();
+        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
+        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
+
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+        $fieldControlResult = $this->renderFieldControl();
+        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
+
+        $fieldWizardResult = $this->renderFieldWizard();
+        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
         $html = [];
-        $html[] = '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($elementName) . '" value="' . (int)$itemCanBeSelectedMoreThanOnce . '" />';
-        $html[] = '<div class="form-multigroup-wrap t3js-formengine-field-group">';
-        $html[] =   '<div class="form-multigroup-item form-multigroup-element">';
-        $html[] =       '<label>';
-        $html[] =           htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
-        $html[] =       '</label>';
-        $html[] =       '<div class="form-wizards-wrap form-wizards-aside">';
-        $html[] =           '<div class="form-wizards-element">';
-        $html[] =               '<select';
-        $html[] =                   ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
-        $html[] =                   ' size="' . $size . '"';
-        $html[] =                   ' class="' . implode(' ', $classes) . '"';
-        $html[] =                   $multipleAttribute;
-        $html[] =                   ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
-        $html[] =                   $selectedListStyle;
-        $html[] =               '>';
-        $html[] =                   implode(LF, $selectedItemsHtml);
-        $html[] =               '</select>';
-        $html[] =           '</div>';
-        $html[] =           '<div class="form-wizards-items">';
-        $html[] =               '<div class="btn-group-vertical">';
+        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] =   $fieldInformationHtml;
+        $html[] =   '<div class="form-wizards-wrap">';
+        $html[] =       '<div class="form-wizards-element">';
+        $html[] =           '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($elementName) . '" value="' . (int)$itemCanBeSelectedMoreThanOnce . '" />';
+        $html[] =           '<div class="form-multigroup-wrap t3js-formengine-field-group">';
+        $html[] =               '<div class="form-multigroup-item form-multigroup-element">';
+        $html[] =                   '<label>';
+        $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
+        $html[] =                   '</label>';
+        $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
+        $html[] =                       '<div class="form-wizards-element">';
+        $html[] =                           '<select';
+        $html[] =                               ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                               ' size="' . $size . '"';
+        $html[] =                               ' class="' . implode(' ', $classes) . '"';
+        $html[] =                               $multipleAttribute;
+        $html[] =                               ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
+        $html[] =                               $selectedListStyle;
+        $html[] =                           '>';
+        $html[] =                               implode(LF, $selectedItemsHtml);
+        $html[] =                           '</select>';
+        $html[] =                       '</div>';
+        $html[] =                       '<div class="form-wizards-items-aside">';
+        $html[] =                           '<div class="btn-group-vertical">';
         if ($maxItems > 1 && $size >= 5) {
-            $html[] =               '<a href="#"';
-            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-top"';
-            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
-            $html[] =               '>';
-            $html[] =                   $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
-            $html[] =               '</a>';
+            $html[] =                           '<a href="#"';
+            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-top"';
+            $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
+            $html[] =                           '>';
+            $html[] =                               $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
+            $html[] =                           '</a>';
         }
         if ($maxItems > 1) {
-            $html[] =               '<a href="#"';
-            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-up"';
-            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
-            $html[] =               '>';
-            $html[] =                   $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
-            $html[] =               '</a>';
-            $html[] =               '<a href="#"';
-            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-down"';
-            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
-            $html[] =               '>';
-            $html[] =                   $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
-            $html[] =               '</a>';
+            $html[] =                           '<a href="#"';
+            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-up"';
+            $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
+            $html[] =                           '>';
+            $html[] =                               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
+            $html[] =                           '</a>';
+            $html[] =                           '<a href="#"';
+            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-down"';
+            $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
+            $html[] =                           '>';
+            $html[] =                               $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
+            $html[] =                           '</a>';
         }
         if ($maxItems > 1 && $size >= 5) {
-            $html[] =               '<a href="#"';
-            $html[] =                   ' class="btn btn-default t3js-btn-moveoption-bottom"';
-            $html[] =                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
-            $html[] =               '>';
-            $html[] =                   $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
-            $html[] =               '</a>';
+            $html[] =                           '<a href="#"';
+            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-bottom"';
+            $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
+            $html[] =                           '>';
+            $html[] =                               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
+            $html[] =                           '</a>';
         }
-        $html[] =                   '<a href="#"';
-        $html[] =                       ' class="btn btn-default t3js-btn-removeoption"';
-        $html[] =                       ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-        $html[] =                       ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
+        $html[] =                               '<a href="#"';
+        $html[] =                                   ' class="btn btn-default t3js-btn-removeoption"';
+        $html[] =                                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+        $html[] =                                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
+        $html[] =                               '>';
+        $html[] =                                   $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
+        $html[] =                               '</a>';
+        $html[] =                           '</div>';
+        $html[] =                       '</div>';
+        $html[] =                   '</div>';
+        $html[] =               '</div>';
+        $html[] =               '<div class="form-multigroup-item form-multigroup-element">';
+        $html[] =                   '<label>';
+        $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.items'));
+        $html[] =                   '</label>';
+        $html[] =                   implode(LF, $filterHtml);
+        $html[] =                   '<select';
+        $html[] =                       ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
+        $html[] =                       ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
+        $html[] =                       ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                       ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
+        $html[] =                       ' class="form-control t3js-formengine-select-itemstoselect"';
+        $html[] =                       ' size="' . $size . '"';
+        $html[] =                       ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
+        $html[] =                       ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
+        $html[] =                       $selectableListStyle;
         $html[] =                   '>';
-        $html[] =                       $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
-        $html[] =                   '</a>';
+        $html[] =                       implode(LF, $selectableItemsHtml);
+        $html[] =                   '</select>';
         $html[] =               '</div>';
         $html[] =           '</div>';
+        $html[] =           '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
+        $html[] =       '</div>';
+        $html[] =       '<div class="form-wizards-items-aside">';
+        $html[] =           '<div class="btn-group-vertical">';
+        $html[] =               $fieldControlHtml;
+        $html[] =           '</div>';
+        $html[] =       '</div>';
+        $html[] =       '<div class="form-wizards-items-bottom">';
+        $html[] =           $fieldWizardHtml;
         $html[] =       '</div>';
         $html[] =   '</div>';
-        $html[] =   '<div class="form-multigroup-item form-multigroup-element">';
-        $html[] =       '<label>';
-        $html[] =           htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.items'));
-        $html[] =       '</label>';
-        $html[] =       implode(LF, $filterHtml);
-        $html[] =       '<select';
-        $html[] =           ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
-        $html[] =           ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
-        $html[] =           ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
-        $html[] =           ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
-        $html[] =           ' class="form-control t3js-formengine-select-itemstoselect"';
-        $html[] =           ' size="' . $size . '"';
-        $html[] =           ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
-        $html[] =           $this->getValidationDataAsDataAttribute($config);
-        $html[] =           $selectableListStyle;
-        $html[] =       '>';
-        $html[] =           implode(LF, $selectableItemsHtml);
-        $html[] =       '</select>';
-        $html[] =   '</div>';
         $html[] = '</div>';
-        $html[] = '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
 
-        $html = $this->renderWizards(
-            [ implode(LF, $html) ],
-            $config['wizards'],
-            $this->data['tableName'],
-            $this->data['databaseRow'],
-            $this->data['fieldName'],
-            $parameterArray,
-            $elementName,
-            BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
-        );
-
-        $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = $html;
+        $resultArray['html'] = implode(LF, $html);
         return $resultArray;
     }
 
@@ -291,10 +349,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         if ($size !== 1) {
             $multiple = ' multiple="multiple"';
         }
-        $style = '';
-        if (isset($config['selectedListStyle'])) {
-            $style = ' style="' . htmlspecialchars($config['selectedListStyle']) . '"';
-        }
 
         $listOfSelectedValues = [];
         $optionsHtml = [];
@@ -310,25 +364,30 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
 
         $html = [];
-        $html[] = '<label>';
-        $html[] =   htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
-        $html[] = '</label>';
-        $html[] = '<div class="form-wizards-wrap form-wizards-aside">';
-        $html[] =   '<div class="form-wizards-element">';
-        $html[] =       '<select';
-        $html[] =           ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
-        $html[] =           ' size="' . $size . '"';
-        $html[] =           ' class="form-control tceforms-multiselect"';
-        $html[] =           $multiple;
-        $html[] =           ' data-formengine-input-name="' . htmlspecialchars($fieldName) . '"';
-        $html[] =           $style;
-        $html[] =           ' disabled="disabled">';
-        $html[] =       '/>';
-        $html[] =           implode(LF, $optionsHtml);
-        $html[] =       '</select>';
+        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] =   '<div class="form-wizards-wrap">';
+        $html[] =       '<div class="form-wizards-element">';
+        $html[] =           '<label>';
+        $html[] =               htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
+        $html[] =           '</label>';
+        $html[] =           '<div class="form-wizards-wrap form-wizards-aside">';
+        $html[] =               '<div class="form-wizards-element">';
+        $html[] =                   '<select';
+        $html[] =                       ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                       ' size="' . $size . '"';
+        $html[] =                       ' class="form-control tceforms-multiselect"';
+        $html[] =                       $multiple;
+        $html[] =                       ' data-formengine-input-name="' . htmlspecialchars($fieldName) . '"';
+        $html[] =                       ' disabled="disabled">';
+        $html[] =                   '/>';
+        $html[] =                       implode(LF, $optionsHtml);
+        $html[] =                   '</select>';
+        $html[] =               '</div>';
+        $html[] =           '</div>';
+        $html[] =           '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
+        $html[] =       '</div>';
         $html[] =   '</div>';
         $html[] = '</div>';
-        $html[] = '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
 
         $resultArray = $this->initializeResultArray();
         $resultArray['html'] = implode(LF, $html);

@@ -97,7 +97,7 @@ class SuggestWizardController
 
         $pageTsConfig = BackendUtility::getPagesTSconfig($pid);
 
-        $wizardConfig = $fieldConfig['wizards']['suggest'];
+        $wizardConfig = $fieldConfig['suggestOptions'] ?? [];
 
         $queryTables = $this->getTablesToQueryFromFieldConfiguration($fieldConfig);
         $whereClause = $this->getWhereClause($fieldConfig);

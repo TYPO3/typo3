@@ -14,12 +14,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Element\NoneElement;
+use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 
 /**
  * Test case
  */
-class NoneElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class AbstractFormElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array
@@ -275,11 +275,11 @@ class NoneElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTe
      */
     public function formatValueWithGivenConfiguration($config, $itemValue, $expectedResult)
     {
-        /** @var NoneElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(NoneElement::class, ['dummy'], [], '', false);
+        /** @var AbstractFormElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
+        $subject = $this->getAccessibleMock(AbstractFormElement::class, ['render'], [], '', false);
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');
-        $result = $subject->_call('formatValue', $config, $itemValue);
+        $result = $subject->_call('formatValue', $config['format'], $itemValue, $config['format.']);
         date_default_timezone_set($timezoneBackup);
 
         $this->assertEquals($expectedResult, $result);

@@ -129,8 +129,18 @@ class OuterWrapContainer extends AbstractContainer
             ]);
         }
 
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $result = $this->mergeChildReturnIntoExistingResult($result, $fieldInformationResult, false);
+
+        $fieldWizardResult = $this->renderfieldWizard();
+        $fieldWizardHtml = $fieldWizardResult['html'];
+        $result = $this->mergeChildReturnIntoExistingResult($result, $fieldWizardResult, false);
+
         $view->assignMultiple([
             'pageTitle' => $pageTitle,
+            'fieldInformationHtml' => $fieldInformationHtml,
+            'fieldWizardHtml' => $fieldWizardHtml,
             'childHtml' => $childHtml,
             'icon' => $icon,
             'tableTitle' => $tableTitle,

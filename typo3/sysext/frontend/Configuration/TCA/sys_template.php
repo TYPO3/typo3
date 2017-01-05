@@ -52,7 +52,7 @@ return [
             'exclude' => true,
             'config' => [
                 'type' => 'input',
-                'size' => 13,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0
             ]
@@ -62,7 +62,7 @@ return [
             'exclude' => true,
             'config' => [
                 'type' => 'input',
-                'size' => 13,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0,
                 'range' => [
@@ -101,10 +101,11 @@ return [
                 'type' => 'text',
                 'cols' => 48,
                 'rows' => 10,
-                'wrap' => 'OFF',
+                'wrap' => 'off',
+                'enableTabulator' => true,
+                'fixedFont' => true,
                 'softref' => 'email[subst],url[subst]'
             ],
-            'defaultExtras' => 'fixed-font : enable-tab'
         ],
         'nextLevel' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.nextLevel',
@@ -112,16 +113,10 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'sys_template',
-                'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0,
                 'default' => '',
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'include_static_file' => [
@@ -142,41 +137,25 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'sys_template',
-                'show_thumbs' => true,
-                'size' => 3,
                 'maxitems' => 50,
                 'autoSizeMax' => 10,
                 'minitems' => 0,
                 'default' => '',
-                'wizards' => [
-                    '_VERTICAL' => 1,
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ],
-                    'edit' => [
-                        'type' => 'popup',
-                        'title' => 'Edit template',
-                        'module' => [
-                            'name' => 'wizard_edit',
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn_edit',
                         ],
-                        'popup_onlyOpenIfSelected' => 1,
-                        'icon' => 'actions-open',
-                        'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ],
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn_add',
-                        'icon' => 'actions-add',
-                        'params' => [
-                            'table' => 'sys_template',
-                            'pid' => '###CURRENT_PID###',
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn_add',
                             'setValue' => 'prepend'
                         ],
-                        'module' => [
-                            'name' => 'wizard_add'
-                        ]
-                    ]
-                ]
+                    ],
+                ],
             ]
         ],
         'includeStaticAfterBasedOn' => [
@@ -193,10 +172,11 @@ return [
                 'type' => 'text',
                 'rows' => 10,
                 'cols' => 48,
-                'wrap' => 'OFF',
+                'wrap' => 'off',
+                'enableTabulator' => true,
+                'fixedFont' => true,
                 'softref' => 'email[subst],url[subst]'
             ],
-            'defaultExtras' => 'fixed-font : enable-tab'
         ],
         'description' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.description',

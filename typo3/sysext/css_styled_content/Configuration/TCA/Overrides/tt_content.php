@@ -544,7 +544,7 @@ $GLOBALS['TCA']['tt_content']['types']['textpic']['showitem'] = '
 ';
 
 if (!isset($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config'])
-    || !is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytextpic']['config'])
+    || !is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config'])
 ) {
     $GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config'] = [];
 }
@@ -602,7 +602,7 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverride
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext'])) {
     $GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext'] = [];
 }
-$GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap';
+$GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext']['config']['wrap'] = 'off';
 
 // Field arrangement for CE "table"
 $GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = '
@@ -632,7 +632,8 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides'
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext'])) {
     $GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext'] = [];
 }
-$GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap:wizards[table]';
+$GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['config']['renderType'] = 'textTable';
+$GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['config']['wrap'] = 'off';
 
 // Field arrangement for CE "uploads"
 $GLOBALS['TCA']['tt_content']['types']['uploads']['showitem'] = '

@@ -182,7 +182,11 @@ $tca = [
                         'filemetadata-status-3'
                     ],
                 ],
-                'showIconTable' => true,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
             ],
         ],
         'keywords' => [
@@ -349,8 +353,7 @@ $tca = [
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.content_creation_date',
             'config' => [
                 'type' => 'input',
-                'size' => 12,
-                'max' => 20,
+                'renderType' => 'inputDateTime',
                 'eval' => 'date',
                 'default' => time()
             ],
@@ -362,8 +365,7 @@ $tca = [
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.content_modification_date',
             'config' => [
                 'type' => 'input',
-                'size' => 12,
-                'max' => 20,
+                'renderType' => 'inputDateTime',
                 'eval' => 'date',
                 'default' => time()
             ],

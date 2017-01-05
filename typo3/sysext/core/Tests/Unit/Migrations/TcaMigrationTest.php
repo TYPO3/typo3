@@ -177,7 +177,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
             'aTable' => [
                 'types' => [
                     0 => [
-                        'showitem' => 'aField,anotherField;with;;special:configuration,thirdField',
+                        'showitem' => 'aField,anotherField;with;;nowrap,thirdField',
                     ],
                 ],
             ],
@@ -189,7 +189,9 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'showitem' => 'aField,anotherField;with,thirdField',
                         'columnsOverrides' => [
                             'anotherField' => [
-                                'defaultExtras' => 'special:configuration',
+                                'config' => [
+                                    'wrap' => 'off',
+                                ]
                             ],
                         ],
                     ],
@@ -209,12 +211,12 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
             'aTable' => [
                 'columns' => [
                     'anotherField' => [
-                        'defaultExtras' => 'some:values',
+                        'defaultExtras' => 'nowrap',
                     ],
                 ],
                 'types' => [
                     0 => [
-                        'showitem' => 'aField,anotherField;with;;special:configuration,thirdField',
+                        'showitem' => 'aField,anotherField;with;;enable-tab,thirdField',
                     ],
                 ],
             ],
@@ -223,7 +225,9 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
             'aTable' => [
                 'columns' => [
                     'anotherField' => [
-                        'defaultExtras' => 'some:values',
+                        'config' => [
+                            'wrap' => 'off',
+                        ],
                     ],
                 ],
                 'types' => [
@@ -231,7 +235,10 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                         'showitem' => 'aField,anotherField;with,thirdField',
                         'columnsOverrides' => [
                             'anotherField' => [
-                                'defaultExtras' => 'some:values:special:configuration',
+                                'config' => [
+                                    'wrap' => 'off',
+                                    'enableTabulator' => true,
+                                ],
                             ],
                         ],
                     ],
@@ -245,7 +252,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     /**
      * @test
      */
-    public function migrateChangesT3editorWizardThatIsEnabledByTypeConfigToRenderTypeInColmnnsOverrides()
+    public function migrateChangesT3editorWizardThatIsEnabledByTypeConfigToRenderTypeInColumnsOverrides()
     {
         $input = [
             'aTable' => [
@@ -320,7 +327,6 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                                     'format' => 'typoscript',
                                     'renderType' => 't3editor',
                                 ],
-                                'defaultExtras' => 'wizards[someOtherWizard]',
                             ],
                         ],
                     ],
@@ -331,8 +337,8 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                                 'config' => [
                                     'format' => 'html',
                                     'renderType' => 't3editor',
+                                    'wrap' => 'off',
                                 ],
-                                'defaultExtras' => 'nowrap',
                             ],
                         ],
                     ],
@@ -450,7 +456,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     /**
      * @test
      */
-    public function migrateIconsForFormFieldWizardsToNewLocation()
+    public function migrateIconsForFormFieldWizardToNewLocation()
     {
         $input = [
             'aTable' => [
@@ -899,7 +905,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'renderType' => 'selectSingle',
                 ],
             ],
-            'noIconsBelowSelect-false-is-removed-sets-showIconTable' => [
+            'noIconsBelowSelect-false-is-removed-sets-field-wizard' => [
                 [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
@@ -908,10 +914,14 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
-                    'showIconTable' => true,
+                    'fieldWizard' => [
+                        'selectIcons' => [
+                            'disabled' => false,
+                        ],
+                    ],
                 ],
             ],
-            'noIconsBelowSelect-false-is-removed-keeps-given-showIconTable' => [
+            'noIconsBelowSelect-false-is-removes-given-showIconTable-false' => [
                 [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
@@ -921,7 +931,6 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
-                    'showIconTable' => false,
                 ],
             ],
             'suppress-icons-1-is-removed' => [
@@ -946,7 +955,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'renderType' => 'selectSingle',
                 ],
             ],
-            'selicon-cols-sets-showIconTable' => [
+            'selicon-cols-is-removed' => [
                 [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
@@ -955,22 +964,6 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
-                    'selicon_cols' => 16,
-                    'showIconTable' => true,
-                ],
-            ],
-            'selicon-cols-does-not-override-given-showIconTable' => [
-                [
-                    'type' => 'select',
-                    'renderType' => 'selectSingle',
-                    'selicon_cols' => 16,
-                    'showIconTable' => false,
-                ],
-                [
-                    'type' => 'select',
-                    'renderType' => 'selectSingle',
-                    'selicon_cols' => 16,
-                    'showIconTable' => false,
                 ],
             ],
             'foreign_table_loadIcons-is-removed' => [
@@ -1585,49 +1578,6 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
-    }
-
-    /**
-     * @test
-     */
-    public function migrateRewritesColorpickerWizard()
-    {
-        $input = [
-            'aTable' => [
-                'columns' => [
-                    'aCol' => [
-                        'config' => [
-                            'type' => 'input',
-                            'wizards' => [
-                                'colorpicker' => [
-                                    'type' => 'colorbox',
-                                    'title' => 'Color picker',
-                                    'module' => [
-                                        'name' => 'wizard_colorpicker',
-                                    ],
-                                    'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $expected = [
-            'aTable' => [
-                'columns' => [
-                    'aCol' => [
-                        'config' => [
-                            'type' => 'input',
-                            'renderType' => 'colorpicker',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $subject = new TcaMigration();
-        $this->assertEquals($expected, $subject->migrate($input));
     }
 
     /**
@@ -2264,6 +2214,3256 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
      * @dataProvider migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider
      */
     public function migrateMovesRequestUpdateCtrlFieldToColumns(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesTypeInputDateTimeToRenderTypeDataProvider()
+    {
+        return [
+            'simple input with eval date' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'date',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'date',
+                                    'renderType' => 'inputDateTime',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'simple input with eval datetime' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'datetime',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'datetime',
+                                    'renderType' => 'inputDateTime',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'simple input with eval time' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'time',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'time',
+                                    'renderType' => 'inputDateTime',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'simple input with eval timesec' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'timesec',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'timesec',
+                                    'renderType' => 'inputDateTime',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'input with multiple evals' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'null,date, required',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'eval' => 'null,date, required',
+                                    'renderType' => 'inputDateTime',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesTypeInputDateTimeToRenderTypeDataProvider
+     */
+    public function migrateMovesTypeInputDateTimeToRenderType(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesWizardsWithEnableByTypeConfigToColumnsOverridesDataProvider()
+    {
+        return [
+            'enableByTypeConfig on multiple wizards' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'exclude' => true,
+                                'label' => 'aLabel',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'aWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'aTitle',
+                                            'enableByTypeConfig' => '1',
+                                        ],
+                                        'anotherWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'anotherTitle',
+                                            'enableByTypeConfig' => 1,
+                                        ],
+                                        'yetAnotherWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'yetAnotherTitle',
+                                        ],
+                                        'andYetAnotherWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'yetAnotherTitle',
+                                            'enableByTypeConfig' => 0,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'firstType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'nowrap:wizards[aWizard|anotherWizard|aNotExistingWizard]:enable-tab',
+                                    ],
+                                ],
+                            ],
+                            'secondType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'wizards[aWizard]',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'exclude' => true,
+                                'label' => 'aLabel',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'yetAnotherWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'yetAnotherTitle',
+                                        ],
+                                        'andYetAnotherWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'yetAnotherTitle',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'firstType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wrap' => 'off',
+                                            'enableTabulator' => true,
+                                            'wizards' => [
+                                                'aWizard' => [
+                                                    'type' => 'aType',
+                                                    'title' => 'aTitle',
+                                                ],
+                                                'anotherWizard' => [
+                                                    'type' => 'aType',
+                                                    'title' => 'anotherTitle',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'secondType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'aWizard' => [
+                                                    'type' => 'aType',
+                                                    'title' => 'aTitle',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'empty wizard array is removed' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'exclude' => true,
+                                'label' => 'aLabel',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'aWizard' => [
+                                            'type' => 'aType',
+                                            'title' => 'aTitle',
+                                            'enableByTypeConfig' => 1,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'firstType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'wizards[aWizard]',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'exclude' => true,
+                                'label' => 'aLabel',
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'firstType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'aWizard' => [
+                                                    'type' => 'aType',
+                                                    'title' => 'aTitle',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesWizardsWithEnableByTypeConfigToColumnsOverridesDataProvider
+     */
+    public function migrateMovesWizardsWithEnableByTypeConfigToColumnsOverrides(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateRewritesColorpickerWizardDataProvider()
+    {
+        return [
+            'colorpicker in columns field' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'colorpicker' => [
+                                            'type' => 'colorbox',
+                                            'title' => 'Color picker',
+                                            'module' => [
+                                                'name' => 'wizard_colorpicker',
+                                            ],
+                                            'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'colorpicker',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'colorpicker is not migrated if custom renderType is already given' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'myPersonalRenderType',
+                                    'wizards' => [
+                                        'colorpicker' => [
+                                            'type' => 'colorbox',
+                                            'title' => 'Color picker',
+                                            'module' => [
+                                                'name' => 'wizard_colorpicker',
+                                            ],
+                                            'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'myPersonalRenderType',
+                                    'wizards' => [
+                                        'colorpicker' => [
+                                            'type' => 'colorbox',
+                                            'title' => 'Color picker',
+                                            'module' => [
+                                                'name' => 'wizard_colorpicker',
+                                            ],
+                                            'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'colorpicker in a type columnsOverrides field' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                          'aField' => [
+                              'config' => [
+                                  'type' => 'input',
+                              ]
+                          ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'colorpicker' => [
+                                                    'type' => 'colorbox',
+                                                    'title' => 'Color picker',
+                                                    'module' => [
+                                                        'name' => 'wizard_colorpicker',
+                                                    ],
+                                                    'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'type' => 'input',
+                                            'renderType' => 'colorpicker',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateRewritesColorpickerWizardDataProvider
+     */
+    public function migrateRewritesColorpickerWizard(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesSelectWizardToValuePickerDataProvider()
+    {
+        return [
+            'select wizard without mode' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'items' => [
+                                                [ 'aLabel', 'aValue' ],
+                                                [ 'anotherLabel', 'anotherValue' ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'valuePicker' => [
+                                        'items' => [
+                                            [ 'aLabel', 'aValue' ],
+                                            [ 'anotherLabel', 'anotherValue' ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select wizard with empty mode' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => '',
+                                            'items' => [
+                                                [ 'aLabel', 'aValue' ],
+                                                [ 'anotherLabel', 'anotherValue' ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'valuePicker' => [
+                                        'mode' => '',
+                                        'items' => [
+                                            [ 'aLabel', 'aValue' ],
+                                            [ 'anotherLabel', 'anotherValue' ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select wizard with prepend mode' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => 'prepend',
+                                            'items' => [
+                                                [ 'aLabel', 'aValue' ],
+                                                [ 'anotherLabel', 'anotherValue' ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'valuePicker' => [
+                                        'mode' => 'prepend',
+                                        'items' => [
+                                            [ 'aLabel', 'aValue' ],
+                                            [ 'anotherLabel', 'anotherValue' ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select wizard with append mode' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => 'append',
+                                            'items' => [
+                                                [ 'aLabel', 'aValue' ],
+                                                [ 'anotherLabel', 'anotherValue' ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'valuePicker' => [
+                                        'mode' => 'append',
+                                        'items' => [
+                                            [ 'aLabel', 'aValue' ],
+                                            [ 'anotherLabel', 'anotherValue' ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select wizard with broken mode' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => 'foo',
+                                            'items' => [
+                                                [ 'aLabel', 'aValue' ],
+                                                [ 'anotherLabel', 'anotherValue' ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'valuePicker' => [
+                                        'items' => [
+                                            [ 'aLabel', 'aValue' ],
+                                            [ 'anotherLabel', 'anotherValue' ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select wizard without items is not migrated' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => '',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => '',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select wizard with broken items is not migrated' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => '',
+                                            'items' => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => '',
+                                            'items' => 'foo',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'two wizards' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'target_picker' => [
+                                            'type' => 'select',
+                                            'mode' => '',
+                                            'items' => [
+                                                [ 'aLabel', 'aValue' ],
+                                                [ 'anotherLabel', 'anotherValue' ],
+                                            ],
+                                        ],
+                                        'differentWizard' => [
+                                            'type' => 'foo',
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'valuePicker' => [
+                                        'mode' => '',
+                                        'items' => [
+                                            [ 'aLabel', 'aValue' ],
+                                            [ 'anotherLabel', 'anotherValue' ],
+                                        ],
+                                    ],
+                                    'wizards' => [
+                                        'differentWizard' => [
+                                            'type' => 'foo',
+                                        ],
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'select value wizard to value Picker columnsOverrides field' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'target_picker' => [
+                                                    'type' => 'select',
+                                                    'items' => [
+                                                        [ 'aLabel', 'aValue' ],
+                                                        [ 'anotherLabel', 'anotherValue' ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'valuePicker' => [
+                                                'items' => [
+                                                    [ 'aLabel', 'aValue' ],
+                                                    [ 'anotherLabel', 'anotherValue' ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesSelectWizardToValuePickerDataProvider
+     */
+    public function migrateMovesSelectWizardToValuePicker(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesSliderWizardToSliderConfigurationDataProvider()
+    {
+        return [
+            'slider wizard with no options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'slider' => [
+                                            'type' => 'slider',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'slider' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'slider wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'slider' => [
+                                            'type' => 'slider',
+                                            'width' => 200,
+                                            'step' => 10,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'slider' => [
+                                        'width' => 200,
+                                        'step' => 10,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'two wizards' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'slider' => [
+                                            'type' => 'slider',
+                                            'width' => 200,
+                                        ],
+                                        'differentWizard' => [
+                                            'type' => 'foo',
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'slider' => [
+                                        'width' => 200,
+                                    ],
+                                    'wizards' => [
+                                        'differentWizard' => [
+                                            'type' => 'foo',
+                                        ],
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'slider wizard to columnsOverrides field' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'slider' => [
+                                                    'type' => 'slider',
+                                                    'width' => 200,
+                                                ],
+                                                'differentWizard' => [
+                                                    'type' => 'foo',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'slider' => [
+                                                'width' => 200,
+                                            ],
+                                            'wizards' => [
+                                                'differentWizard' => [
+                                                    'type' => 'foo',
+                                                ],
+                                            ]
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesSliderWizardToSliderConfigurationDataProvider
+     */
+    public function migrateMovesSliderWizardToSliderConfiguration(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesLinkWizardToRenderTypeWithFieldControlDataProvider()
+    {
+        return [
+            'simple link wizard without options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'link' => [
+                                            'type' => 'popup',
+                                            'module' => [
+                                                'name' => 'wizard_link',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'inputLink',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'link wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'link' => [
+                                            'type' => 'popup',
+                                            'title' => 'aLinkTitle',
+                                            'module' => [
+                                                'name' => 'wizard_link',
+                                            ],
+                                            'JSopenParams' => 'height=800,width=600,status=0,menubar=0,scrollbars=1',
+                                            'params' => [
+                                                'blindLinkOptions' => 'folder',
+                                                'blindLinkFields' => 'class, target',
+                                                'allowedExtensions' => 'jpg',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'inputLink',
+                                    'fieldControl' => [
+                                        'linkPopup' => [
+                                            'options' => [
+                                                'title' => 'aLinkTitle',
+                                                'windowOpenParameters' => 'height=800,width=600,status=0,menubar=0,scrollbars=1',
+                                                'blindLinkOptions' => 'folder',
+                                                'blindLinkFields' => 'class, target',
+                                                'allowedExtensions' => 'jpg',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'link wizard does not migrate if renderType is already set' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'aRenderType',
+                                    'wizards' => [
+                                        'link' => [
+                                            'type' => 'popup',
+                                            'module' => [
+                                                'name' => 'wizard_link',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'aRenderType',
+                                    'wizards' => [
+                                        'link' => [
+                                            'type' => 'popup',
+                                            'module' => [
+                                                'name' => 'wizard_link',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'two wizards' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'wizards' => [
+                                        'link' => [
+                                            'type' => 'popup',
+                                            'module' => [
+                                                'name' => 'wizard_link',
+                                            ],
+                                        ],
+                                        'differentWizard' => [
+                                            'type' => 'foo',
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'input',
+                                    'renderType' => 'inputLink',
+                                    'wizards' => [
+                                        'differentWizard' => [
+                                            'type' => 'foo',
+                                        ],
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'link wizard columnsOverrides field' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'link' => [
+                                                    'type' => 'popup',
+                                                    'title' => 'aLinkTitle',
+                                                    'module' => [
+                                                        'name' => 'wizard_link',
+                                                    ],
+                                                    'JSopenParams' => 'height=800,width=600,status=0,menubar=0,scrollbars=1',
+                                                    'params' => [
+                                                        'blindLinkOptions' => 'folder',
+                                                        'blindLinkFields' => 'class, target',
+                                                        'allowedExtensions' => 'jpg',
+                                                    ],
+                                                ],
+                                                'differentWizard' => [
+                                                    'type' => 'foo',
+                                                ]
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ]
+                            ]
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'renderType' => 'inputLink',
+                                            'fieldControl' => [
+                                                'linkPopup' => [
+                                                    'options' => [
+                                                        'title' => 'aLinkTitle',
+                                                        'windowOpenParameters' => 'height=800,width=600,status=0,menubar=0,scrollbars=1',
+                                                        'blindLinkOptions' => 'folder',
+                                                        'blindLinkFields' => 'class, target',
+                                                        'allowedExtensions' => 'jpg',
+                                                    ],
+                                                ],
+                                            ],
+                                            'wizards' => [
+                                                'differentWizard' => [
+                                                    'type' => 'foo',
+                                                ],
+                                            ]
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesLinkWizardToRenderTypeWithFieldControlDataProvider
+     */
+    public function migrateMovesLinkWizardToRenderTypeWithFieldControl(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesEditWizardToFieldControlDataProvider()
+    {
+        return [
+            'simple link wizard without options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                    'wizards' => [
+                                        'edit' => [
+                                            'type' => 'popup',
+                                            'module' => [
+                                                'name' => 'wizard_edit',
+                                            ],
+                                            'icon' => 'actions-open',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldControl' => [
+                                        'editPopup' => [
+                                            'disabled' => false,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple link wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectMultipleSideBySide',
+                                    'wizards' => [
+                                        'edit' => [
+                                            'type' => 'popup',
+                                            'title' => 'aLabel',
+                                            'module' => [
+                                                'name' => 'wizard_edit',
+                                            ],
+                                            'popup_onlyOpenIfSelected' => 1,
+                                            'icon' => 'actions-open',
+                                            'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectMultipleSideBySide',
+                                    'fieldControl' => [
+                                        'editPopup' => [
+                                            'disabled' => false,
+                                            'options' => [
+                                                'title' => 'aLabel',
+                                                'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'edit wizard in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'edit' => [
+                                                    'type' => 'popup',
+                                                    'title' => 'aLabel',
+                                                    'module' => [
+                                                        'name' => 'wizard_edit',
+                                                    ],
+                                                    'icon' => 'actions-open',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'fieldControl' => [
+                                                'editPopup' => [
+                                                    'disabled' => false,
+                                                    'options' => [
+                                                        'title' => 'aLabel',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesEditWizardToFieldControlDataProvider
+     */
+    public function migrateMovesEditWizardToFieldControl(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesAddWizardToFieldControlDataProvider()
+    {
+        return [
+            'simple add wizard without options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                    'wizards' => [
+                                        'edit' => [
+                                            'type' => 'script',
+                                            'module' => [
+                                                'name' => 'wizard_add',
+                                            ],
+                                            'icon' => 'actions-add',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldControl' => [
+                                        'addRecord' => [
+                                            'disabled' => false,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple add wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectMultipleSideBySide',
+                                    'wizards' => [
+                                        'edit' => [
+                                            'type' => 'script',
+                                            'title' => 'aLabel',
+                                            'module' => [
+                                                'name' => 'wizard_add',
+                                            ],
+                                            'icon' => 'actions-add',
+                                            'params' => [
+                                                'table' => 'aTable',
+                                                'pid' => 'aPid',
+                                                'setValue' => 'prepend',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectMultipleSideBySide',
+                                    'fieldControl' => [
+                                        'addRecord' => [
+                                            'disabled' => false,
+                                            'options' => [
+                                                'title' => 'aLabel',
+                                                'table' => 'aTable',
+                                                'pid' => 'aPid',
+                                                'setValue' => 'prepend',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'add wizard in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'edit' => [
+                                                    'type' => 'script',
+                                                    'title' => 'aLabel',
+                                                    'module' => [
+                                                        'name' => 'wizard_add',
+                                                    ],
+                                                    'icon' => 'actions-add',
+                                                    'params' => [
+                                                        'table' => 'aTable',
+                                                        'pid' => 'aPid',
+                                                        'setValue' => 'prepend',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'fieldControl' => [
+                                                'addRecord' => [
+                                                    'disabled' => false,
+                                                    'options' => [
+                                                        'title' => 'aLabel',
+                                                        'table' => 'aTable',
+                                                        'pid' => 'aPid',
+                                                        'setValue' => 'prepend',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesAddWizardToFieldControlDataProvider
+     */
+    public function migrateMovesAddWizardToFieldControl(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesListWizardToFieldControlDataProvider()
+    {
+        return [
+            'simple list wizard without options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                    'wizards' => [
+                                        'edit' => [
+                                            'type' => 'script',
+                                            'module' => [
+                                                'name' => 'wizard_list',
+                                            ],
+                                            'icon' => 'actions-system-list-open',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldControl' => [
+                                        'listModule' => [
+                                            'disabled' => false,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple list wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectMultipleSideBySide',
+                                    'wizards' => [
+                                        'edit' => [
+                                            'type' => 'script',
+                                            'title' => 'aLabel',
+                                            'module' => [
+                                                'name' => 'wizard_list',
+                                            ],
+                                            'icon' => 'actions-system-list-open',
+                                            'params' => [
+                                                'table' => 'aTable',
+                                                'pid' => 'aPid',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectMultipleSideBySide',
+                                    'fieldControl' => [
+                                        'listModule' => [
+                                            'disabled' => false,
+                                            'options' => [
+                                                'title' => 'aLabel',
+                                                'table' => 'aTable',
+                                                'pid' => 'aPid',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'list wizard in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'edit' => [
+                                                    'type' => 'script',
+                                                    'title' => 'aLabel',
+                                                    'module' => [
+                                                        'name' => 'wizard_list',
+                                                    ],
+                                                    'icon' => 'actions-system-list-open',
+                                                    'params' => [
+                                                        'table' => 'aTable',
+                                                        'pid' => 'aPid',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'fieldControl' => [
+                                                'listModule' => [
+                                                    'disabled' => false,
+                                                    'options' => [
+                                                        'title' => 'aLabel',
+                                                        'table' => 'aTable',
+                                                        'pid' => 'aPid',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesListWizardToFieldControlDataProvider
+     */
+    public function migrateMovesListWizardToFieldControl(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesLastDefaultExtrasValuesDataProvider()
+    {
+        return [
+            'rte_only is removed' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                                'defaultExtras' => 'rte-only',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'rte_only is removed in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'rte-only',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [],
+                                ]
+                            ]
+                        ]
+                    ],
+                ],
+            ],
+            'enable-tab, fixed-font, nowrap is migrated' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                                'defaultExtras' => 'enable-tab : fixed-font:nowrap',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableTabulator' => true,
+                                    'fixedFont' => true,
+                                    'wrap' => 'off',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'enable-tab, fixed-font, nowrap is migrated in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'enable-tab : fixed-font:nowrap',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'enableTabulator' => true,
+                                            'fixedFont' => true,
+                                            'wrap' => 'off',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesLastDefaultExtrasValuesDataProvider
+     */
+    public function migrateMovesLastDefaultExtrasValues(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesTableWizardToRenderTypeDataProvider()
+    {
+        return [
+            'simple table wizard without options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'table' => [
+                                            'type' => 'script',
+                                            'icon' => 'content-table',
+                                            'module' => [
+                                                'name' => 'wizard_table'
+                                            ],
+                                            'notNewRecords' => 1,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'renderType' => 'textTable',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple table wizard without options in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'table' => [
+                                                    'type' => 'script',
+                                                    'icon' => 'content-table',
+                                                    'module' => [
+                                                        'name' => 'wizard_table'
+                                                    ],
+                                                    'notNewRecords' => 1,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'renderType' => 'textTable',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple table wizard with default options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'table' => [
+                                            'type' => 'script',
+                                            'icon' => 'content-table',
+                                            'module' => [
+                                                'name' => 'wizard_table'
+                                            ],
+                                            'params' => [
+                                                'xmlOutput' => 0
+                                            ],
+                                            'notNewRecords' => 1,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'renderType' => 'textTable',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple table wizard with default options in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'table' => [
+                                                    'type' => 'script',
+                                                    'icon' => 'content-table',
+                                                    'module' => [
+                                                        'name' => 'wizard_table'
+                                                    ],
+                                                    'params' => [
+                                                        'xmlOutput' => 0
+                                                    ],
+                                                    'notNewRecords' => 1,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'renderType' => 'textTable',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple table wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'table' => [
+                                            'type' => 'script',
+                                            'title' => 'aTitle',
+                                            'icon' => 'content-table',
+                                            'module' => [
+                                                'name' => 'wizard_table'
+                                            ],
+                                            'params' => [
+                                                'xmlOutput' => 1,
+                                                'numNewRows' => 23,
+                                            ],
+                                            'notNewRecords' => 1,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'renderType' => 'textTable',
+                                    'fieldControl' => [
+                                        'tableWizard' => [
+                                            'options' => [
+                                                'title' => 'aTitle',
+                                                'xmlOutput' => 1,
+                                                'numNewRows' => 23,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple table wizard with options in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'table' => [
+                                                    'type' => 'script',
+                                                    'title' => 'aTitle',
+                                                    'icon' => 'content-table',
+                                                    'module' => [
+                                                        'name' => 'wizard_table'
+                                                    ],
+                                                    'params' => [
+                                                        'xmlOutput' => '1',
+                                                        'numNewRows' => 23,
+                                                    ],
+                                                    'notNewRecords' => 1,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'renderType' => 'textTable',
+                                            'fieldControl' => [
+                                                'tableWizard' => [
+                                                    'options' => [
+                                                        'title' => 'aTitle',
+                                                        'xmlOutput' => 1,
+                                                        'numNewRows' => 23,
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesTableWizardToRenderTypeDataProvider
+     */
+    public function migrateMovesTableWizardToRenderType(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateMovesFullScreenRichtextWizardToFieldControlDataProvider()
+    {
+        return [
+            'simple rte wizard' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'wizards' => [
+                                        'RTE' => [
+                                            'notNewRecords' => true,
+                                            'RTEonly' => true,
+                                            'type' => 'script',
+                                            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
+                                            'icon' => 'actions-wizard-rte',
+                                            'module' => [
+                                                'name' => 'wizard_rte'
+                                            ]
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'fieldControl' => [
+                                        'fullScreenRichtext' => [
+                                            'disabled' => false,
+                                            'options' => [
+                                                'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'wizard is moved to columnsOverrides if enableRichtext is not set on columns' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                    'wizards' => [
+                                        'RTE' => [
+                                            'notNewRecords' => true,
+                                            'RTEonly' => true,
+                                            'type' => 'script',
+                                            'icon' => 'actions-wizard-rte',
+                                            'module' => [
+                                                'name' => 'wizard_rte'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'anotherType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'someProperty' => 'someValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'foo',
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'fieldControl' => [
+                                                'fullScreenRichtext' => [
+                                                    'disabled' => false,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'anotherType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'someProperty' => 'someValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'simple rte wizard in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'RTE' => [
+                                                    'notNewRecords' => true,
+                                                    'RTEonly' => true,
+                                                    'type' => 'script',
+                                                    'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
+                                                    'icon' => 'actions-wizard-rte',
+                                                    'module' => [
+                                                        'name' => 'wizard_rte'
+                                                    ]
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'fieldControl' => [
+                                                'fullScreenRichtext' => [
+                                                    'disabled' => false,
+                                                    'options' => [
+                                                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateMovesFullScreenRichtextWizardToFieldControlDataProvider
+     */
+    public function migrateMovesFullScreenRichtextWizardToFieldControl(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateSuggestWizardDataProvider()
+    {
+        return [
+            'no suggest wizard in main field but configured in columnOverrides' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'suggest' => [
+                                                    'type' => 'suggest',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'hideSuggest' => true,
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'hideSuggest' => false,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'no suggest wizard in main field but configured in columnOverrides with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'wizards' => [
+                                                'suggest' => [
+                                                    'type' => 'suggest',
+                                                    'default' => [
+                                                        'minimumCharacters' => 23,
+                                                    ],
+                                                    'aTable' => [
+                                                        'searchCondition' => 'doktype = 1'
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'hideSuggest' => true,
+                                ],
+                            ],
+                        ],
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'hideSuggest' => false,
+                                            'suggestOptions' => [
+                                                'default' => [
+                                                    'minimumCharacters' => 23,
+                                                ],
+                                                'aTable' => [
+                                                    'searchCondition' => 'doktype = 1'
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'suggest wizard configured without options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'wizards' => [
+                                        'suggest' => [
+                                            'type' => 'suggest',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'suggest wizard with options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'wizards' => [
+                                        'suggest' => [
+                                            'type' => 'suggest',
+                                            'default' => [
+                                                'minimumCharacters' => 23,
+                                                'anOption' => 'anOptionValue',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'suggestOptions' => [
+                                        'default' => [
+                                            'minimumCharacters' => 23,
+                                            'anOption' => 'anOptionValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'suggest wizard with table specific options' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'wizards' => [
+                                        'suggest' => [
+                                            'type' => 'suggest',
+                                            'default' => [
+                                                'minimumCharacters' => 23,
+                                            ],
+                                            'aTable' => [
+                                                'searchCondition' => 'doktype = 1'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'allowed' => 'aTable',
+                                    'suggestOptions' => [
+                                        'default' => [
+                                            'minimumCharacters' => 23,
+                                        ],
+                                        'aTable' => [
+                                            'searchCondition' => 'doktype = 1'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateSuggestWizardDataProvider
+     */
+    public function migrateSuggestWizard(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateOptionsOfTypeGroupDataProvider()
+    {
+        return [
+            'selectedListStyle is dropped' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'selectedListStyle' => 'data-foo: bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'show_thumbs true is dropped' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'show_thumbs' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'show_thumbs false internal_type db disables tableList' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'show_thumbs' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'db',
+                                    'fieldWizard' => [
+                                        'recordsOverview' => [
+                                            'disabled' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'show_thumbs false internal_type file disables fileThumbnails' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'file',
+                                    'show_thumbs' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'internal_type' => 'file',
+                                    'fieldWizard' => [
+                                        'fileThumbnails' => [
+                                            'disabled' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'disable_controls browser sets fieldControl elementBrowser disabled' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'disable_controls' => 'browser',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldControl' => [
+                                        'elementBrowser' => [
+                                            'disabled' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'disable_controls list is dropped' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'disable_controls' => 'list,browser',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldControl' => [
+                                        'elementBrowser' => [
+                                            'disabled' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'disable_controls delete sets hideDeleteIcon true' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'disable_controls' => 'delete',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'hideDeleteIcon' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'disable_controls allowedTables sets fieldWizard tableList disabled' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'disable_controls' => 'allowedTables',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldWizard' => [
+                                        'tableList' => [
+                                            'disabled' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'disable_controls upload sets fieldWizard fileUpload disabled' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'disable_controls' => 'upload',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'group',
+                                    'fieldWizard' => [
+                                        'fileUpload' => [
+                                            'disabled' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateOptionsOfTypeGroupDataProvider
+     */
+    public function migrateOptionsOfTypeGroup(array $input, array $expected)
+    {
+        $this->assertEquals($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateSelectSingleShowIconTableDataProvider()
+    {
+        return [
+            'showIconTable enabled selectIcons field wizard' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectSingle',
+                                    'showIconTable' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectSingle',
+                                    'fieldWizard' => [
+                                        'selectIcons' => [
+                                            'disabled' => false,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'selicon_cols is removed' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectSingle',
+                                    'selicon_cols' => 4,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectSingle',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $input
+     * @param array $expected
+     * @test
+     * @dataProvider migrateSelectSingleShowIconTableDataProvider
+     */
+    public function migrateSelectSingleShowIconTable(array $input, array $expected)
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }

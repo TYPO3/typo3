@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -29,12 +28,34 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SelectSingleElement extends AbstractFormElement
 {
     /**
+     * Default field wizards enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [
+        'selectIcons' => [
+            'renderType' => 'selectIcons',
+            'disabled' => true,
+        ],
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+            'after' => [ 'selectIcons' ],
+        ],
+        'defaultLanguageDifferences' => [
+            'renderType' => 'defaultLanguageDifferences',
+            'after' => [ 'otherLanguageContent' ],
+        ],
+    ];
+
+    /**
      * Render single element
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
     public function render()
     {
+        $resultArray = $this->initializeResultArray();
+
         $table = $this->data['tableName'];
         $field = $this->data['fieldName'];
         $row = $this->data['databaseRow'];
@@ -87,7 +108,6 @@ class SelectSingleElement extends AbstractFormElement
         $selectItemCounter = 0;
         $selectItemGroupCount = 0;
         $selectItemGroups = [];
-        $selectIcons = [];
         $selectedValue = '';
         $hasIcons = false;
 
@@ -118,18 +138,7 @@ class SelectSingleElement extends AbstractFormElement
                     'value' => $item[1],
                     'icon' => $icon,
                     'selected' => $selected,
-                    'index' => $selectItemCounter
                 ];
-
-                // ICON
-                if ($icon) {
-                    $selectIcons[] = [
-                        'title' => $item[0],
-                        'icon' => $icon,
-                        'index' => $selectItemCounter,
-                    ];
-                }
-
                 $selectItemCounter++;
             }
         }
@@ -162,91 +171,60 @@ class SelectSingleElement extends AbstractFormElement
             $options .= ($optionGroup ? '</optgroup>' : '');
         }
 
-        // Build the element
-        $html = ['<div class="form-control-wrap">'];
-
-        if ($hasIcons) {
-            $html[] = '<div class="input-group">';
-            $html[] =    '<span class="input-group-addon input-group-icon">';
-            $html[] =        $selectedIcon;
-            $html[] =    '</span>';
+        $selectAttributes = [
+            'id' => $selectId,
+            'name' => $parameterArray['itemFormElName'],
+            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+            'class' => 'form-control form-control-adapt',
+        ];
+        if ($size) {
+            $selectAttributes['size'] = $size;
+        }
+        if ($disabled) {
+            $selectAttributes['disabled'] = 'disabled';
         }
 
-        $html[] = '<select'
-                    . ' id="' . $selectId . '"'
-                    . ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
-                    . $this->getValidationDataAsDataAttribute($config)
-                    . ' class="form-control form-control-adapt"'
-                    . ($size ? ' size="' . $size . '"' : '')
-                    . ($disabled ? ' disabled="disabled"' : '')
-                    . '>';
-        $html[] =    $options;
-        $html[] = '</select>';
+        $legacyWizards = $this->renderWizards();
+        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
 
-        if ($hasIcons) {
-            $html[] = '</div>';
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+        $fieldWizardResult = $this->renderFieldWizard();
+        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
+        $html = [];
+        $html[] = '<div class="t3js-formengine-field-item">';
+        if (!$disabled) {
+            $html[] = $fieldInformationHtml;
         }
-
+        $html[] =   '<div class="form-control-wrap">';
+        $html[] =       '<div class="form-wizards-wrap">';
+        $html[] =           '<div class="form-wizards-element">';
+        if ($hasIcons) {
+            $html[] =           '<div class="input-group">';
+            $html[] =               '<span class="input-group-addon input-group-icon">';
+            $html[] =                   $selectedIcon;
+            $html[] =               '</span>';
+        }
+        $html[] =                   '<select ' . GeneralUtility::implodeAttributes($selectAttributes, true) . '>';
+        $html[] =                       $options;
+        $html[] =                   '</select>';
+        if ($hasIcons) {
+            $html[] =           '</div>';
+        }
+        $html[] =           '</div>';
+        if (!$disabled) {
+            $html[] =       '<div class="form-wizards-items-bottom">';
+            $html[] =           $fieldWizardHtml;
+            $html[] =       '</div>';
+        }
+        $html[] =       '</div>';
+        $html[] =   '</div>';
         $html[] = '</div>';
 
-        // Create icon table:
-        if (!empty($selectIcons) && !empty($config['showIconTable'])) {
-            $selectIconColumns = (int)$config['selicon_cols'];
-
-            if (!$selectIconColumns) {
-                $selectIconColumns = count($selectIcons);
-            }
-
-            $selectIconColumns = ($selectIconColumns > 12 ? 12 : $selectIconColumns);
-            $selectIconRows = ceil(count($selectIcons) / $selectIconColumns);
-            $selectIcons = array_pad($selectIcons, $selectIconRows * $selectIconColumns, '');
-
-            $html[] = '<div class="t3js-forms-select-single-icons table-icons table-fit table-fit-inline-block">';
-            $html[] =    '<table class="table table-condensed table-white table-center">';
-            $html[] =        '<tbody>';
-            $html[] =            '<tr>';
-
-            foreach ($selectIcons as $i => $selectIcon) {
-                if ($i % $selectIconColumns === 0 && $i !== 0) {
-                    $html[] =    '</tr>';
-                    $html[] =    '<tr>';
-                }
-
-                $html[] =            '<td>';
-
-                if (is_array($selectIcon)) {
-                    $html[] = '<a href="#" title="' . htmlspecialchars($selectIcon['title'], ENT_COMPAT, 'UTF-8', false) . '" data-select-index="' . htmlspecialchars($selectIcon['index']) . '">';
-                    $html[] = $selectIcon['icon'];
-                    $html[] = '</a>';
-                }
-
-                $html[] =            '</td>';
-            }
-
-            $html[] =            '</tr>';
-            $html[] =        '</tbody>';
-            $html[] =    '</table>';
-            $html[] = '</div>';
-        }
-
-        $html = implode(LF, $html);
-
-        // Wizards:
-        if (!$disabled) {
-            $html = $this->renderWizards(
-                [$html],
-                $config['wizards'],
-                $table,
-                $row,
-                $field,
-                $parameterArray,
-                $parameterArray['itemFormElName'],
-                BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
-            );
-        }
-
-        $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = $html;
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement' => implode(LF, [
             'function(SelectSingleElement) {',
                 'SelectSingleElement.initialize(',
@@ -260,6 +238,7 @@ class SelectSingleElement extends AbstractFormElement
             '}',
         ])];
 
+        $resultArray['html'] = implode(LF, $html);
         return $resultArray;
     }
 }

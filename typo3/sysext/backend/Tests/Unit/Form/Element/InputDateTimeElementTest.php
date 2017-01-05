@@ -14,13 +14,16 @@ namespace typo3\sysext\backend\Tests\Unit\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Element\InputTextElement;
+use Prophecy\Argument;
+use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  */
-class InputTextElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class InputDateTimeElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var string Selected timezone backup
@@ -98,9 +101,18 @@ class InputTextElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\U
                 'itemFormElValue' => $input
             ]
         ];
-        /** @var NodeFactory $nodeFactoryProphecy */
-        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class)->reveal();
-        $subject = new InputTextElement($nodeFactoryProphecy, $data);
+        $abstractNode = $this->prophesize(AbstractNode::class);
+        $abstractNode->render(Argument::cetera())->willReturn([
+            'additionalJavaScriptPost' => [],
+            'additionalJavaScriptSubmit' => [],
+            'additionalHiddenFields' => [],
+            'stylesheetFiles' => [],
+        ]);
+        $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
+        $nodeFactoryProphecy->create(Argument::cetera())->willReturn($abstractNode->reveal());
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $subject = new InputDateTimeElement($nodeFactoryProphecy->reveal(), $data);
         $result = $subject->render();
         $this->assertContains('<input type="hidden" name="" value="' . $expectedOutput . '" />', $result['html']);
     }

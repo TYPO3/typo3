@@ -149,8 +149,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                     ];
                 }
 
-                $childResultArray['html'] = '';
-                $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $childResultArray);
+                $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $childResultArray, false);
             }
         }
 
@@ -226,9 +225,8 @@ class PaletteAndSingleContainer extends AbstractContainer
                         'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $singleFieldContentArray['html'],
                     ];
-                    $singleFieldContentArray['html'] = '';
                 }
-                $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
+                $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray, false);
             }
         }
 

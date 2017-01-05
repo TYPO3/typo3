@@ -101,7 +101,6 @@ return [
                 'uploadfolder' => 'uploads/tx_impexpgroupfiles',
                 'size' => 5,
                 'maxitems' => 5,
-                'show_thumbs' => true,
             ],
         ],
         'image_references' => [
@@ -113,7 +112,6 @@ return [
                 'disallowed' => 'php',
                 'size' => 5,
                 'maxitems' => 5,
-                'show_thumbs' => true,
             ],
         ],
         'flexform' => [
@@ -135,21 +133,11 @@ return [
 													<label>Link</label>
 													<config>
 														<type>input</type>
+														<renderType>inputLink</renderType>
 														<size>50</size>
 														<max>256</max>
 														<eval>trim</eval>
 														<softref>typolink</softref>
-														<wizards type="array">
-															<link type="array">
-																<type>popup</type>
-																<title>Link</title>
-																<icon>actions-wizard-link</icon>
-																<module type="array">
-																	<name>wizard_link</name>
-																</module>
-																<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
-															</link>
-														</wizards>
 													</config>
 												</TCEforms>
 											</link>
@@ -164,7 +152,6 @@ return [
 														<uploadfolder>uploads/tx_impexpgroupfiles</uploadfolder>
 														<size>5</size>
 														<maxitems>5</maxitems>
-														<show_thumbs>1</show_thumbs>
 													</config>
 												</TCEforms>
 											</images>
@@ -179,7 +166,6 @@ return [
 														<uploadfolder>uploads/tx_impexpgroupfiles</uploadfolder>
 														<size>5</size>
 														<maxitems>5</maxitems>
-														<show_thumbs>1</show_thumbs>
 													</config>
 												</TCEforms>
 											</image_references>

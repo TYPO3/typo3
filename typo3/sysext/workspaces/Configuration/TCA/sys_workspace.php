@@ -41,12 +41,6 @@ return [
                 'size' => 3,
                 'maxitems' => 10,
                 'autoSizeMax' => 10,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'members' => [
@@ -59,12 +53,6 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'db_mountpoints' => [
@@ -76,12 +64,6 @@ return [
                 'size' => 3,
                 'maxitems' => 25,
                 'autoSizeMax' => 10,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'file_mountpoints' => [
@@ -100,7 +82,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_workspace.publish_time',
             'config' => [
                 'type' => 'input',
-                'size' => 8,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0,
             ]
@@ -109,7 +91,7 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_workspace.unpublish_time',
             'config' => [
                 'type' => 'input',
-                'size' => 8,
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => 0,
                 'range' => [
@@ -189,12 +171,6 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'edit_allow_notificaton_settings' => [
@@ -233,12 +209,6 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'publish_allow_notificaton_settings' => [
@@ -277,12 +247,6 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => true,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest'
-                    ]
-                ]
             ]
         ],
         'execute_allow_notificaton_settings' => [

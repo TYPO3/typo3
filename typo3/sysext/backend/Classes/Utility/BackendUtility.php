@@ -774,20 +774,11 @@ class BackendUtility
             // Traverse fields in types config and parse the configuration into a nice array:
             foreach ($fieldList as $k => $v) {
                 list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $v);
-                $defaultExtras = '';
-                if (!empty($typesConf['columnsOverrides'][$pFieldName]['defaultExtras'])) {
-                    // Use defaultExtras from columnsOverrides if given
-                    $defaultExtras = $typesConf['columnsOverrides'][$pFieldName]['defaultExtras'];
-                } elseif (!empty($GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'])) {
-                    // Use defaultExtras from columns if given
-                    $defaultExtras = $GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'];
-                }
-                $specConfParts = self::getSpecConfParts($defaultExtras);
                 $fieldList[$k] = [
                     'field' => $pFieldName,
                     'title' => $pAltTitle,
                     'palette' => $pPalette,
-                    'spec' => $specConfParts,
+                    'spec' => [],
                     'origString' => $v
                 ];
                 if ($useFieldNameAsKey) {
@@ -882,9 +873,11 @@ class BackendUtility
      *
      * @param string $defaultExtrasString "defaultExtras" string from columns config
      * @return array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function getSpecConfParts($defaultExtrasString)
     {
+        GeneralUtility::logDeprecatedFunction();
         $specConfParts = GeneralUtility::trimExplode(':', $defaultExtrasString, true);
         $reg = [];
         if (!empty($specConfParts)) {

@@ -18,6 +18,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Wizard for rendering an AJAX selector for records
+ *
+ * This is the old implementation of the slider as wizard, that has been called
+ * via "renderWizards()" method. This is no longer used and the slider implementation
+ * has been integrated to the "InputTextElement" directly as config option "slider".
+ *
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class ValueSliderWizard
 {
@@ -26,9 +32,11 @@ class ValueSliderWizard
      *
      * @param array $params
      * @return string
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function renderWizard($params)
     {
+        GeneralUtility::logDeprecatedFunction();
         $field = $params['field'];
         if (is_array($params['row'][$field])) {
             $value = $params['row'][$field][0];

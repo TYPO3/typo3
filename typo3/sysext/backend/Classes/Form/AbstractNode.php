@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form;
 
 /*
@@ -23,6 +24,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractNode implements NodeInterface
 {
     /**
+     * Instance of the node factory to create sub elements, container and single element expansions.
+     *
+     * @var NodeFactory
+     */
+    protected $nodeFactory;
+
+    /**
      * Main data array to work on, given from parent to child elements
      *
      * @var array
@@ -30,13 +38,30 @@ abstract class AbstractNode implements NodeInterface
     protected $data = [];
 
     /**
-     * Set data to data array.
+     * A list of default field information added to the element / container.
      *
-     * @todo: Should NOT set the nodeFactory instance, this is done by AbstractContainer only,
-     * @todo: but not done for Element classes: Elements are tree leaves, they MUST
-     * @todo: not create new nodes again.
-     * @todo: Currently, AbstractFormElement still does that, but do not rely on the fact that
-     * @todo: Element classes have an instance of NodeFactory at hand.
+     * @var array
+     */
+    protected $defaultFieldInformation = [];
+
+    /**
+     * A list of default field controls added to the element / container.
+     * This property is often reset by single elements.
+     *
+     * @var array
+     */
+    protected $defaultFieldControl = [];
+
+    /**
+     * A list of default field wizards added to the element / container.
+     * This property is often reset by single elements.
+     *
+     * @var array
+     */
+    protected $defaultFieldWizard = [];
+
+    /**
+     * Set data to data array and register node factory to render sub elements
      *
      * @param NodeFactory $nodeFactory
      * @param array $data
@@ -44,6 +69,7 @@ abstract class AbstractNode implements NodeInterface
     public function __construct(NodeFactory $nodeFactory, array $data)
     {
         $this->data = $data;
+        $this->nodeFactory = $nodeFactory;
     }
 
     /**
@@ -60,7 +86,7 @@ abstract class AbstractNode implements NodeInterface
      *
      * @return array
      */
-    protected function initializeResultArray()
+    protected function initializeResultArray(): array
     {
         return [
             'additionalJavaScriptPost' => [],
@@ -68,7 +94,9 @@ abstract class AbstractNode implements NodeInterface
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            // can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
+            // can hold strings or arrays,
+            // string = requireJS module,
+            // array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
             'requireJsModules' => [],
             'inlineData' => [],
             'html' => '',
@@ -80,14 +108,17 @@ abstract class AbstractNode implements NodeInterface
      *
      * @param array $existing Currently merged array
      * @param array $childReturn Array returned by child
+     * @param bool $mergeHtml If false, the ['html'] section of $childReturn will NOT be added to $existing
      * @return array Result array
      */
-    protected function mergeChildReturnIntoExistingResult(array $existing, array $childReturn)
+    protected function mergeChildReturnIntoExistingResult(array $existing, array $childReturn, bool $mergeHtml = true): array
     {
-        if (!empty($childReturn['html'])) {
+        if ($mergeHtml && !empty($childReturn['html'])) {
             $existing['html'] .= LF . $childReturn['html'];
         }
         if (!empty($childReturn['extJSCODE'])) {
+            // @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
+            GeneralUtility::logDeprecatedFunction();
             $existing['extJSCODE'] .= LF . $childReturn['extJSCODE'];
         }
         foreach ($childReturn['additionalJavaScriptPost'] as $value) {
@@ -127,9 +158,11 @@ abstract class AbstractNode implements NodeInterface
      *
      * @param array $config
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use getValidationDataAsJsonString() instead
      */
-    protected function getValidationDataAsDataAttribute(array $config)
+    protected function getValidationDataAsDataAttribute(array $config): string
     {
+        GeneralUtility::logDeprecatedFunction();
         return sprintf(' data-formengine-validation-rules="%s" ', htmlspecialchars($this->getValidationDataAsJsonString($config)));
     }
 
@@ -139,24 +172,28 @@ abstract class AbstractNode implements NodeInterface
      * @param array $config
      * @return string
      */
-    protected function getValidationDataAsJsonString(array $config)
+    protected function getValidationDataAsJsonString(array $config): string
     {
         $validationRules = [];
         if (!empty($config['eval'])) {
             $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-            unset($config['eval']);
             foreach ($evalList as $evalType) {
                 $validationRules[] = [
                     'type' => $evalType,
-                    'config' => $config
                 ];
             }
         }
         if (!empty($config['range'])) {
-            $validationRules[] = [
+            $newValidationRule = [
                 'type' => 'range',
-                'config' => $config['range']
             ];
+            if (!empty($config['range']['lower'])) {
+                $newValidationRule['lower'] = $config['range']['lower'];
+            }
+            if (!empty($config['range']['upper'])) {
+                $newValidationRule['upper'] = $config['range']['upper'];
+            }
+            $validationRules[] = $newValidationRule;
         }
         if (!empty($config['maxitems']) || !empty($config['minitems'])) {
             $minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;

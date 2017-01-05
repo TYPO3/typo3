@@ -220,8 +220,23 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.close">
 				<source>Close</source>
 			</trans-unit>
+			<trans-unit id="labels.tableWizard">
+				<source>Table Wizard</source>
+			·</trans-unit>
 			<trans-unit id="labels.new">
 				<source>NEW</source>
+			</trans-unit>
+			<trans-unit id="labels.list">
+				<source>List</source>
+			</trans-unit>
+			<trans-unit id="labels.link">
+				<source>Link</source>
+			</trans-unit>
+			<trans-unit id="labels.edit">
+				<source>Edit</source>
+			</trans-unit>
+			<trans-unit id="labels.createNew">
+				<source>Create new</source>
 			</trans-unit>
 			<trans-unit id="labels.createNewPage">
 				<source>Create new %s</source>
@@ -351,6 +366,9 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="labels.placeholder.override_not_available">
 				<source>Set element specific value (No default)</source>
+			</trans-unit>
+			<trans-unit id="labels.nullCheckbox">
+				<source>Set value</source>
 			</trans-unit>
 			<trans-unit id="labels.changeInOrig">
 				<source>Changed in original translation</source>

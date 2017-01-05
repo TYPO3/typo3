@@ -20,6 +20,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Wizard for rendering an AJAX selector for records.
  * See SuggestWizardController for the ajax handling counterpart.
+ *
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - suggest has been merged to GroupElement directly
  */
 class SuggestWizard
 {
@@ -33,9 +35,11 @@ class SuggestWizard
      * Construct
      *
      * @param StandaloneView $view
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function __construct(StandaloneView $view = null)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->view = $view ?: $this->getFluidTemplateObject('SuggestWizard.html');
     }
 

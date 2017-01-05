@@ -1716,7 +1716,7 @@ class DataHandler
         if ($columnsOverridesConfigOfField) {
             ArrayUtility::mergeRecursiveWithOverrule($tcaFieldConf, $columnsOverridesConfigOfField);
         }
-        if (isset($tcaFieldConf['enableRichtext']) && $tcaFieldConf['enableRichtext'] === true) {
+        if (isset($tcaFieldConf['enableRichtext']) && (bool)$tcaFieldConf['enableRichtext'] === true) {
             $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
             $richtextConfiguration = $richtextConfigurationProvider->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
             $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);

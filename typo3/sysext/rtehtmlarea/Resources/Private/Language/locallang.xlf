@@ -3,6 +3,9 @@
 	<file t3:id="1415814970" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
+			<trans-unit id="wizard.fullScreen">
+				<source>Fullscreen Rich Text Editing</source>
+			</trans-unit>
 			<trans-unit id="Please wait">
 				<source>The editor is being loaded. Please wait...</source>
 			</trans-unit>

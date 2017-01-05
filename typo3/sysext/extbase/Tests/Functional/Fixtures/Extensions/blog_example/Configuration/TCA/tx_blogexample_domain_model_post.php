@@ -105,33 +105,18 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_blogexample_domain_model_person',
-                'wizards' => [
-                     '_VERTICAL' => 1,
-                     'edit' => [
-                         'type' => 'popup',
-                         'title' => 'Edit',
-                         'module' => [
-                             'name' => 'wizard_edit',
-                         ],
-                         'icon' => 'actions-open',
-                         'popup_onlyOpenIfSelected' => 1,
-                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1',
-                     ],
-                     'add' => [
-                         'type' => 'script',
-                         'title' => 'Create new',
-                         'icon' => 'actions-add',
-                         'params' => [
-                             'table'=>'tx_blogexample_domain_model_person',
-                             'pid' => '###CURRENT_PID###',
-                             'setValue' => 'prepend'
-                         ],
-                         'module' => [
-                             'name' => 'wizard_add',
-                         ],
-                     ],
-                 ]
-            ]
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'setValue' => 'prepend',
+                        ],
+                    ],
+                ],
+            ],
         ],
         'content' => [
             'exclude' => true,

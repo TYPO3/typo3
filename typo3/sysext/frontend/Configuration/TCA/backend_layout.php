@@ -64,7 +64,6 @@ return [
                 'internal_type' => 'file',
                 'allowed' => 'jpg,gif,png',
                 'uploadfolder' => 'uploads/media',
-                'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1
             ]

@@ -138,13 +138,11 @@ class InlineRecordContainer extends AbstractContainer
                 if (isset($data['combinationChild'])) {
                     $combinationChild = $this->renderCombinationChild($data, $appendFormFieldNames);
                     $combinationHtml = $combinationChild['html'];
-                    $combinationChild['html'] = '';
-                    $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $combinationChild);
+                    $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $combinationChild, false);
                 }
                 $childArray = $this->renderChild($data);
                 $html = $childArray['html'];
-                $childArray['html'] = '';
-                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
+                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray, false);
             } else {
                 // This string is the marker for the JS-function to check if the full content has already been loaded
                 $html = '<!--notloaded-->';
