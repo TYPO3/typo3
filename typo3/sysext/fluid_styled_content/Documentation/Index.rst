@@ -23,7 +23,7 @@ Content Elements based on Fluid
       frontend, content, fluid
 
 :Copyright:
-      2015-2016
+      2015-2017
 
 :Author:
       TYPO3 CMS Core Development Team
