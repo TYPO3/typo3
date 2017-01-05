@@ -23,7 +23,7 @@ Workspaces and Versioning
       worspaces
 
 :Copyright:
-      2000-2016
+      2000-2017
 
 :Author:
       TYPO3 CMS Core Development Team
