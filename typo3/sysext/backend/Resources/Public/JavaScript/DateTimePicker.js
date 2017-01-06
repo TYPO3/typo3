@@ -44,6 +44,10 @@ define(['jquery'], function($) {
     if ($dateTimeFields.length > 0) {
       require(['moment', 'TYPO3/CMS/Backend/Storage/Persistent', 'twbs/bootstrap-datetimepicker'], function(moment, PersistentStorage) {
         var userLocale = PersistentStorage.get('lang');
+        // Fix our made up locale "ch"
+        if (userLocale === 'ch') {
+          userLocale = 'zh-cn';
+        }
         var setLocale = userLocale ? moment.locale(userLocale) : false;
 
         // initialize the datepicker on each selected element
