@@ -265,7 +265,11 @@ define(['jquery'], function($) {
          * @return object
          */
         function getTemplate(templateName) {
-            return $(getDomElementDataAttribute('template', 'bracesWithKeyValue', [getDomElementDataAttributeValue(templateName)]));
+            if (!getUtility().isUndefinedOrNull(_configuration['domElementDataAttributeValues'][templateName])) {
+                templateName = getDomElementDataAttributeValue(templateName);
+            }
+
+            return $(getDomElementDataAttribute('template', 'bracesWithKeyValue', [templateName]));
         };
 
         /**
