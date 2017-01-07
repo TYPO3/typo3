@@ -28,7 +28,7 @@ css_styled_content
       css_styled_content, content elements, rendering, TypoScript
 
 :Copyright:
-      2000-2014
+      2000-2017
 
 :Author:
       TYPO3 CMS Core Development Team
