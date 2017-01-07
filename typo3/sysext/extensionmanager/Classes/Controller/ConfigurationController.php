@@ -81,6 +81,8 @@ class ConfigurationController extends AbstractModuleController
         if (!isset($extension['key'])) {
             throw new ExtensionManagerException('Extension key not found.', 1359206803);
         }
+        $this->handleTriggerArguments();
+
         $extKey = $extension['key'];
         $configuration = $this->configurationItemRepository->findByExtensionKey($extKey);
         if ($configuration) {
@@ -117,7 +119,12 @@ class ConfigurationController extends AbstractModuleController
         ) {
             $this->redirect('welcome', 'Distribution', null, ['extension' => $extension->getUid()]);
         } else {
-            $this->redirect('showConfigurationForm', null, null, ['extension' => ['key' => $extensionKey]]);
+            $this->redirect('showConfigurationForm', null, null, [
+                'extension' => [
+                    'key' => $extensionKey
+                ],
+                self::TRIGGER_RefreshTopbar => true
+            ]);
         }
     }
 
@@ -131,7 +138,9 @@ class ConfigurationController extends AbstractModuleController
     public function saveAndCloseAction(array $config, $extensionKey)
     {
         $this->saveConfiguration($config, $extensionKey);
-        $this->redirect('index', 'List');
+        $this->redirect('index', 'List', null, [
+            self::TRIGGER_RefreshTopbar => true
+        ]);
     }
 
     /**

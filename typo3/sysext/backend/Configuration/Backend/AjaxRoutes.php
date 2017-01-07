@@ -111,6 +111,10 @@ return [
         'path' => '/module-menu',
         'target' => Controller\BackendController::class . '::getModuleMenu'
     ],
+    'topbar' => [
+        'path' => '/topbar',
+        'target' => Controller\BackendController::class . '::getTopbar'
+    ],
 
     // Log in into backend
     'login' => [

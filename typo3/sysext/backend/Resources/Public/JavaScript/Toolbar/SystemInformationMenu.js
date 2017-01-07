@@ -15,7 +15,12 @@
  * Module: TYPO3/CMS/Backend/Toolbar/SystemInformationMenu
  * System information menu handler
  */
-define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], function($, Icons, Storage) {
+define([
+	'jquery',
+	'TYPO3/CMS/Backend/Icons',
+	'TYPO3/CMS/Backend/Storage',
+	'TYPO3/CMS/Backend/Viewport'
+], function($, Icons, Storage, Viewport) {
 	'use strict';
 
 	/**
@@ -28,10 +33,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
 			toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
 			menuContainerSelector: '.dropdown-menu',
-			moduleLinks: '.t3js-systeminformation-module'
-		},
-		elements: {
-			$counter: $('.t3js-systeminformation-counter')
+			moduleLinks: '.t3js-systeminformation-module',
+			counter: '.t3js-systeminformation-counter'
 		}
 	};
 
@@ -78,14 +81,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 	 */
 	SystemInformationMenu.updateCounter = function() {
 		var $container = $(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector).find('.t3js-systeminformation-container'),
+			$counter = $(SystemInformationMenu.identifier.counter),
 			count = $container.data('count'),
 			badgeClass = $container.data('severityclass');
 
-		SystemInformationMenu.elements.$counter.text(count).toggle(parseInt(count) > 0);
-		SystemInformationMenu.elements.$counter.removeClass();
+		$counter.text(count).toggle(parseInt(count) > 0);
+		$counter.removeClass();
 
 		if (badgeClass !== '') {
-			SystemInformationMenu.elements.$counter.addClass('toolbar-item-badge badge ' + badgeClass);
+			$counter.addClass('toolbar-item-badge badge ' + badgeClass);
 		}
 	};
 
@@ -113,11 +117,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 		$ajax.done(function() {
 			// finally, open the module now
 			TYPO3.ModuleMenu.App.showModule(requestedModule);
-			SystemInformationMenu.updateMenu();
+			Viewport.Topbar.refresh();
 		});
 	};
 
-	$(SystemInformationMenu.updateMenu);
+	Viewport.Topbar.Toolbar.registerEvent(SystemInformationMenu.updateMenu);
 
 	return SystemInformationMenu;
 });

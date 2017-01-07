@@ -98,7 +98,10 @@ class ActionController extends AbstractController
         } catch (\TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException $e) {
             $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
         }
-        $this->redirect('index', 'List', null, [self::TRIGGER_RefreshModuleMenu => true]);
+        $this->redirect('index', 'List', null, [
+            self::TRIGGER_RefreshModuleMenu => true,
+            self::TRIGGER_RefreshTopbar => true
+        ]);
     }
 
     /**

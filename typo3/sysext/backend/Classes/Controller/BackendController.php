@@ -76,6 +76,11 @@ class BackendController
     protected $templatePath = 'EXT:backend/Resources/Private/Templates/';
 
     /**
+     * @var string
+     */
+    protected $partialPath = 'EXT:backend/Resources/Private/Partials/';
+
+    /**
      * @var \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository
      */
     protected $backendModuleRepository;
@@ -262,40 +267,8 @@ class BackendController
         // Prepare the scaffolding, at this point extension may still add javascript and css
         $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 
-        // Extension Configuration to find the TYPO3 logo in the left corner
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend'], ['allowed_classes' => false]);
-        $logoPath = '';
-        if (!empty($extConf['backendLogo'])) {
-            $customBackendLogo = GeneralUtility::getFileAbsFileName($extConf['backendLogo']);
-            if (!empty($customBackendLogo)) {
-                $logoPath = $customBackendLogo;
-            }
-        }
-        // if no custom logo was set or the path is invalid, use the original one
-        if (empty($logoPath)) {
-            $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
-            $logoWidth = 22;
-            $logoHeight = 22;
-        } else {
-            // set width/height for custom logo
-            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
-            $logoWidth = $imageInfo->getWidth() ?? '22';
-            $logoHeight = $imageInfo->getHeight() ?? '22';
-
-            // High-resolution?
-            if (strpos($logoPath, '@2x.') !== false) {
-                $logoWidth /= 2;
-                $logoHeight /= 2;
-            }
-        }
-
-        $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
-        $view->assign('logoWidth', $logoWidth);
-        $view->assign('logoHeight', $logoHeight);
-        $view->assign('applicationVersion', TYPO3_version);
-        $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $view->assign('moduleMenu', $this->generateModuleMenu());
-        $view->assign('toolbar', $this->renderToolbar());
+        $view->assign('topbar', $this->renderTopbar());
 
         /******************************************************
          * Now put the complete backend document together
@@ -340,6 +313,52 @@ class BackendController
         $this->content = $this->getDocumentTemplate()->render($title, $view->render());
         $hookConfiguration = ['content' => &$this->content];
         $this->executeHook('renderPostProcess', $hookConfiguration);
+    }
+
+    /**
+     * Renders the topbar, containing the backend logo, sitename etc.
+     *
+     * @return string
+     */
+    protected function renderTopbar()
+    {
+        $view = $this->getFluidTemplateObject($this->partialPath . 'Backend/Topbar.html');
+
+        // Extension Configuration to find the TYPO3 logo in the left corner
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend'], ['allowed_classes' => false]);
+        $logoPath = '';
+        if (!empty($extConf['backendLogo'])) {
+            $customBackendLogo = GeneralUtility::getFileAbsFileName($extConf['backendLogo']);
+            if (!empty($customBackendLogo)) {
+                $logoPath = $customBackendLogo;
+            }
+        }
+        // if no custom logo was set or the path is invalid, use the original one
+        if (empty($logoPath)) {
+            $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
+            $logoWidth = 22;
+            $logoHeight = 22;
+        } else {
+            // set width/height for custom logo
+            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
+            $logoWidth = $imageInfo->getWidth() ?? '22';
+            $logoHeight = $imageInfo->getHeight() ?? '22';
+
+            // High-resolution?
+            if (strpos($logoPath, '@2x.') !== false) {
+                $logoWidth /= 2;
+                $logoHeight /= 2;
+            }
+        }
+
+        $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
+        $view->assign('logoWidth', $logoWidth);
+        $view->assign('logoHeight', $logoHeight);
+        $view->assign('applicationVersion', TYPO3_version);
+        $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $view->assign('toolbar', $this->renderToolbar());
+
+        return $view->render();
     }
 
     /**
@@ -837,6 +856,19 @@ class BackendController
     }
 
     /**
+     * Returns the toolbar for the AJAX request
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function getTopbar(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $response->getBody()->write(json_encode(['topbar' => $this->renderTopbar()]));
+        return $response;
+    }
+
+    /**
      * returns a new standalone view, shorthand function
      *
      * @param string $templatePathAndFileName optional the path to set the template path and filename
@@ -845,6 +877,7 @@ class BackendController
     protected function getFluidTemplateObject($templatePathAndFileName = null)
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         if ($templatePathAndFileName) {
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
         }

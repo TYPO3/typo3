@@ -3533,6 +3533,13 @@ class BackendUtility
 								if (top && top.TYPO3.ModuleMenu && top.TYPO3.ModuleMenu.App) {
 									top.TYPO3.ModuleMenu.App.refreshMenu();
 								}';
+                        break;
+                    case 'updateTopbar':
+                        $signals[] = '
+								if (top && top.TYPO3.Backend && top.TYPO3.Backend.Topbar) {
+									top.TYPO3.Backend.Topbar.refresh();
+								}';
+                        break;
                 }
             }
         }

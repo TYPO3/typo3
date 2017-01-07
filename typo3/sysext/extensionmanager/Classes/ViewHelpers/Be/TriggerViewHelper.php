@@ -60,6 +60,13 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
                 'if (top && top.TYPO3.ModuleMenu.App) { top.TYPO3.ModuleMenu.App.refreshMenu(); }'
             );
         }
+
+        if (!empty($this->arguments['triggers'][AbstractController::TRIGGER_RefreshTopbar])) {
+            $pageRenderer->addJsInlineCode(
+                AbstractController::TRIGGER_RefreshTopbar,
+                'if (top && top.TYPO3.Backend && top.TYPO3.Backend.Topbar) { top.TYPO3.Backend.Topbar.refresh(); }'
+            );
+        }
         return '';
     }
 }

@@ -19,8 +19,9 @@
 define(['jquery',
 		'TYPO3/CMS/Backend/Modal',
 		'TYPO3/CMS/Backend/Icons',
-		'TYPO3/CMS/Backend/Notification'
-	], function($, Modal, Icons, Notification) {
+		'TYPO3/CMS/Backend/Notification',
+		'TYPO3/CMS/Backend/Viewport'
+	], function($, Modal, Icons, Notification, Viewport) {
 	'use strict';
 
 	/**
@@ -210,7 +211,7 @@ define(['jquery',
 		});
 	};
 
-	$(ShortcutMenu.initializeEvents);
+	Viewport.Topbar.Toolbar.registerEvent(ShortcutMenu.initializeEvents);
 
 	// expose as global object
 	TYPO3.ShortcutMenu = ShortcutMenu;

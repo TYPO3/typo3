@@ -16,7 +16,7 @@
  * toolbar menu for the workspaces functionality to switch between the workspaces
  * and jump to the workspaces module
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Viewport'], function($, Viewport) {
 	'use strict';
 
 	/**
@@ -160,7 +160,7 @@ define(['jquery'], function($) {
 		}
 	};
 
-	$(function() {
+	Viewport.Topbar.Toolbar.registerEvent(function() {
 		WorkspacesMenu.initializeEvents();
 		WorkspacesMenu.updateBackendContext();
 	});

@@ -16,7 +16,12 @@
  * main functionality for clearing caches via the top bar
  * reloading the clear cache icon
  */
-define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], function($, Icons, Notification) {
+define([
+	'jquery',
+	'TYPO3/CMS/Backend/Icons',
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/Viewport'
+], function($, Icons, Notification, Viewport) {
 	'use strict';
 
 	/**
@@ -76,7 +81,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], 
 		});
 	};
 
-	$(ClearCacheMenu.initializeEvents);
+	Viewport.Topbar.Toolbar.registerEvent(ClearCacheMenu.initializeEvents);
 
 	return ClearCacheMenu;
 });

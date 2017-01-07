@@ -16,7 +16,12 @@
  * Global search to deal with everything in the backend that is search-related
  * @exports TYPO3/CMS/Backend/LiveSearch
  */
-define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
+define([
+	'jquery',
+	'TYPO3/CMS/Backend/Viewport',
+	'jquery/autocomplete',
+	'TYPO3/CMS/Backend/jquery.clearable'
+], function ($, Viewport) {
 	'use strict';
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
@@ -28,7 +33,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 	var url = TYPO3.settings.ajaxUrls['livesearch'];
 	var category = '';
 
-	$(function() {
+	Viewport.Topbar.Toolbar.registerEvent(function() {
 		$(searchFieldSelector).autocomplete({
 			// ajax options
 			serviceUrl: url,

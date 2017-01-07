@@ -142,6 +142,21 @@ define(
 						return 0;
 					}
 				}
+			},
+			Topbar: {
+				topbarSelector: '.t3js-scaffold-header',
+				refresh: function() {
+					$.ajax(TYPO3.settings.ajaxUrls['topbar']).done(function(data) {
+						$(TYPO3.Backend.Topbar.topbarSelector).html(data.topbar);
+						$(TYPO3.Backend.Topbar.topbarSelector).trigger('t3-topbar-update');
+					});
+				},
+				Toolbar: {
+					registerEvent: function (callback) {
+						$(callback);
+						$(TYPO3.Backend.Topbar.topbarSelector).on('t3-topbar-update', callback);
+					}
+				}
 			}
 		};
 

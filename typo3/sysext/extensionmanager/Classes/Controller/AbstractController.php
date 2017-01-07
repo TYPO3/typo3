@@ -21,11 +21,14 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 {
     const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
 
+    const TRIGGER_RefreshTopbar = 'refreshTopbar';
+
     /**
      * @var array
      */
     protected $triggerArguments = [
         self::TRIGGER_RefreshModuleMenu,
+        self::TRIGGER_RefreshTopbar
     ];
 
     /**

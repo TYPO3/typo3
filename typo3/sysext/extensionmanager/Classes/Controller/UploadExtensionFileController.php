@@ -179,7 +179,10 @@ class UploadExtensionFileController extends AbstractController
             $this->removeExtensionAndRestoreFromBackup($fileName);
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         }
-        $this->redirect('index', 'List', null, [self::TRIGGER_RefreshModuleMenu => true]);
+        $this->redirect('index', 'List', null, [
+            self::TRIGGER_RefreshModuleMenu => true,
+            self::TRIGGER_RefreshTopbar => true
+        ]);
     }
 
     /**

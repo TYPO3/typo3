@@ -299,6 +299,8 @@ class SetupModuleController extends AbstractModule
                 }
                 // Restore admin status after processing
                 $beUser->user['admin'] = $isAdmin;
+
+                BackendUtility::setUpdateSignal('updateTopbar');
             }
         }
     }

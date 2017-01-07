@@ -17,7 +17,11 @@
  *  - navigating to the documents
  *  - updating the menu
  */
-define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
+define([
+	'jquery',
+	'TYPO3/CMS/Backend/Icons',
+	'TYPO3/CMS/Backend/Viewport'
+], function($, Icons, Viewport) {
 	'use strict';
 
 	/**
@@ -113,7 +117,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 		$(OpendocsMenu.options.containerSelector).toggleClass('open');
 	};
 
-	$(function() {
+	Viewport.Topbar.Toolbar.registerEvent(function() {
 		OpendocsMenu.initializeEvents();
 		OpendocsMenu.updateMenu();
 	});

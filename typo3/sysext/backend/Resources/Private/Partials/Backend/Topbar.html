@@ -1,0 +1,37 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<div class="scaffold-topbar t3js-scaffold-topbar">
+	<div class="topbar">
+		<div class="topbar-header t3js-topbar-header">
+			<button class="topbar-button topbar-button-modulemenu t3js-topbar-button-modulemenu">
+				<core:icon identifier="actions-move-move" alternativeMarkupIdentifier="inline" />
+			</button>
+			<button class="topbar-button topbar-button-navigationcomponent t3js-topbar-button-navigationcomponent">
+				<core:icon identifier="apps-pagetree-category-collapse-all" alternativeMarkupIdentifier="inline" />
+			</button>
+			<div class="topbar-header-site">
+				<a href="./" target="_top" title="{siteName} - {applicationVersion}">
+					<span class="topbar-header-site-logo">
+						<img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" title="TYPO3 Content Management System" alt="" />
+					</span>
+					<span class="topbar-header-site-title">
+						<span class="topbar-header-site-name">{siteName}</span>
+						<span class="topbar-header-site-version">{applicationVersion}</span>
+					</span>
+				</a>
+			</div>
+			<button class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar">
+				<core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
+			</button>
+			<button class="topbar-button topbar-button-search t3js-topbar-button-search">
+				<core:icon identifier="actions-search" alternativeMarkupIdentifier="inline" />
+			</button>
+		</div>
+	</div>
+</div>
+<div class="scaffold-toolbar t3js-scaffold-toolbar">
+	<div class="toolbar t3js-topbar-toolbar">
+		<ul class="toolbar-list" data-typo3-role="typo3-module-menu">
+			<f:format.raw>{toolbar}</f:format.raw>
+		</ul>
+	</div>
+</div>
