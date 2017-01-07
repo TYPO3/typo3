@@ -977,7 +977,7 @@ class ResourceStorage implements ResourceStorageInterface
     {
         // Check if targetFolder is within this storage
         if ($this->getUid() !== $targetFolder->getStorage()->getUid()) {
-            throw new \RuntimeException('The target folder is not in the same storage. Target folder given: "' . $targetFolder . '"', 1422553107);
+            throw new \RuntimeException('The target folder is not in the same storage. Target folder given: "' . $targetFolder->getIdentifier() . '"', 1422553107);
         }
         // Check for a valid file extension
         if (!$this->checkFileExtensionPermission($targetFileName)) {
