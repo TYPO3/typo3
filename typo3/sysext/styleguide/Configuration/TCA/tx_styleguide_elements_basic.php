@@ -66,6 +66,41 @@ return [
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
         ],
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'special' => 'languages',
+                'items' => [
+                    [
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple'
+                    ],
+                ],
+                'default' => 0,
+            ]
+        ],
+        'l10n_parent' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'tx_styleguide_elements_basic',
+                'foreign_table_where' => 'AND tx_styleguide_elements_basic.pid=###CURRENT_PID### AND tx_styleguide_elements_basic.sys_language_uid IN (-1,0)',
+                'default' => 0
+            ]
+        ],
 
 
         'input_1' => [
