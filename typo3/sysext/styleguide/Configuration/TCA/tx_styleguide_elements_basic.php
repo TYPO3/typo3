@@ -450,7 +450,6 @@ return [
                 'type' => 'input',
                 'size' => 10,
                 'eval' => 'date',
-                'checkbox' => 0,
                 'default' => '0000-00-00'
             ],
         ],
@@ -462,7 +461,6 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'datetime',
-                'checkbox' => 0,
                 'default' => '0000-00-00 00:00:00'
             ],
         ],
