@@ -570,7 +570,18 @@ class BackendController
     {
         $beUser = $this->getBackendUser();
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
+        // ISO 8601:2000 Datetime format is Year-Month-Day.
+        // Not all the countries are the UK/US date format.
+        // First letter of $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']  = 'Y' or 'y'
+        // Date format will be ISO format
+        if (strtoupper(substr( $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], 0, 1 ))=='Y'){
+            //Some countries use date format 'Year-Month-Day'
+            $dateFormat = ['YYYY-MM-DD', 'YYYY-MM-DD HH:mm'];
+        }elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']){
+            $dateFormat = ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'];
+        }else{
+            $dateFormat = ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY'];
+        }
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         // If another page module was specified, replace the default Page module with the new one
