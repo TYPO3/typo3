@@ -42,8 +42,7 @@ return [
             'label' => 'Publish Date',
             'config' => [
                 'type' => 'input',
-                'size' => '13',
-                'max' => '20',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => '0'
             ],
@@ -55,8 +54,7 @@ return [
             'label' => 'Expiration Date',
             'config' => [
                 'type' => 'input',
-                'size' => '13',
-                'max' => '20',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => '0',
                 'range' => [
@@ -81,6 +79,7 @@ return [
             'label' => 'input_26 default=0, eval=datetime, readonly=1',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'readOnly' => 1,
                 'eval' => 'datetime',
                 'default' => 0,

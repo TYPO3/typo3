@@ -82,7 +82,7 @@ return [
             'label' => 'Publish Date',
             'config' => [
                 'type' => 'input',
-                'size' => '13',
+                'renderType' => 'inputDateTime',
                 'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0'
@@ -95,7 +95,7 @@ return [
             'label' => 'Expiration Date',
             'config' => [
                 'type' => 'input',
-                'size' => '13',
+                'renderType' => 'inputDateTime',
                 'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0',

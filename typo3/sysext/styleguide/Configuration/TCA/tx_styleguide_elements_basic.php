@@ -42,8 +42,7 @@ return [
             'label' => 'Publish Date',
             'config' => [
                 'type' => 'input',
-                'size' => '13',
-                'max' => '20',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => '0'
             ],
@@ -55,8 +54,7 @@ return [
             'label' => 'Expiration Date',
             'config' => [
                 'type' => 'input',
-                'size' => '13',
-                'max' => '20',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
                 'default' => '0',
                 'range' => [
@@ -142,22 +140,6 @@ return [
                 'eval' => 'alphanum',
             ],
         ],
-        'input_6' => [
-            'exclude' => 1,
-            'label' => 'input_6 eval=date',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'date',
-            ],
-        ],
-        'input_7' => [
-            'exclude' => 1,
-            'label' => 'input_7 eval=datetime',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'datetime',
-            ],
-        ],
         'input_8' => [
             'exclude' => 1,
             'label' => 'input_8 eval=double2',
@@ -229,22 +211,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'eval' => 'password',
-            ],
-        ],
-        'input_17' => [
-            'exclude' => 1,
-            'label' => 'input_17 eval=time',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'time',
-            ],
-        ],
-        'input_18' => [
-            'exclude' => 1,
-            'label' => 'input_18 eval=timesec',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'timesec',
             ],
         ],
         'input_19' => [
@@ -442,26 +408,64 @@ return [
                 'renderType' => 'colorpicker',
             ],
         ],
-        'input_36' => [
+
+
+        'inputdatetime_1' => [
             'exclude' => 1,
-            'label' => 'input_36 dbType=date eval=date',
+            'label' => 'inputdatetime_1 eval=date',
             'config' => [
-                'dbType' => 'date',
                 'type' => 'input',
-                'size' => 10,
+                'renderType' => 'inputDateTime',
+                'eval' => 'date',
+            ],
+        ],
+        'inputdatetime_2' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_2 dbType=date eval=date',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'dbType' => 'date',
                 'eval' => 'date',
                 'default' => '0000-00-00'
             ],
         ],
-        'input_37' => [
+        'inputdatetime_3' => [
             'exclude' => 1,
-            'label' => 'input_37 dbType=datetime eval=datetime',
+            'label' => 'inputdatetime_3 eval=datetime',
             'config' => [
-                'dbType' => 'datetime',
                 'type' => 'input',
-                'size' => 20,
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+            ],
+        ],
+        'inputdatetime_4' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_4 dbType=datetime eval=datetime',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'dbType' => 'datetime',
                 'eval' => 'datetime',
                 'default' => '0000-00-00 00:00:00'
+            ],
+        ],
+        'inputdatetime_5' => [
+            'exclude' => 1,
+            'label' => 'input_17 eval=time',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'time',
+            ],
+        ],
+        'inputdatetime_6' => [
+            'exclude' => 1,
+            'label' => 'input_18 eval=timesec',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'timesec',
             ],
         ],
 
@@ -1232,10 +1236,12 @@ return [
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_2, input_3, input_4, input_5, input_6, input_36, input_7, input_37, input_8, input_9, input_10,
-                    input_11, input_12, input_13, input_15, input_16, input_17, input_18, input_19, input_20,
+                    input_1, input_2, input_3, input_4, input_5, input_8, input_9, input_10,
+                    input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29, input_30,
                     input_31, input_32, input_33, input_34,
+                --div--;inputDateTime,
+                    inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5, inputdatetime_6,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17,
