@@ -381,21 +381,17 @@ return [
         ],
         'input_33' => [
             'exclude' => 1,
-            'label' => 'input_33 wizard select',
+            'label' => 'input_33 valuePicker',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'wizards' => [
-                    'season_picker' => [
-                        'type' => 'select',
-                        'mode' => '',
-                        'items' => [
-                            ['spring', 'Spring'],
-                            ['summer', 'Summer'],
-                            ['autumn', 'Autumn'],
-                            ['winter', 'Winter'],
-                        ],
+                'valuePicker' => [
+                    'items' => [
+                        [ 'spring', 'Spring', ],
+                        [ 'summer', 'Summer', ],
+                        [ 'autumn', 'Autumn', ],
+                        [ 'winter', 'Winter', ],
                     ],
                 ],
             ],
@@ -406,6 +402,42 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker',
+            ],
+        ],
+        'input_35' => [
+            'exclude' => 1,
+            'label' => 'input_35 valuePicker append',
+            'config' => [
+                'type' => 'input',
+                'size' => 20,
+                'eval' => 'trim',
+                'valuePicker' => [
+                    'mode' => 'append',
+                    'items' => [
+                        [ 'spring', 'Spring', ],
+                        [ 'summer', 'Summer', ],
+                        [ 'autumn', 'Autumn', ],
+                        [ 'winter', 'Winter', ],
+                    ],
+                ],
+            ],
+        ],
+        'input_36' => [
+            'exclude' => 1,
+            'label' => 'input_36 valuePicker prepend',
+            'config' => [
+                'type' => 'input',
+                'size' => 20,
+                'eval' => 'trim',
+                'valuePicker' => [
+                    'mode' => 'prepend',
+                    'items' => [
+                        [ 'spring', 'Spring', ],
+                        [ 'summer', 'Summer', ],
+                        [ 'autumn', 'Autumn', ],
+                        [ 'winter', 'Winter', ],
+                    ],
+                ],
             ],
         ],
 
@@ -452,7 +484,7 @@ return [
         ],
         'inputdatetime_5' => [
             'exclude' => 1,
-            'label' => 'input_17 eval=time',
+            'label' => 'inputdatetime_5 eval=time',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -461,11 +493,51 @@ return [
         ],
         'inputdatetime_6' => [
             'exclude' => 1,
-            'label' => 'input_18 eval=timesec',
+            'label' => 'inputdatetime_6 eval=timesec',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'timesec',
+            ],
+        ],
+        'inputdatetime_7' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_7 eval=date readOnly',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'date',
+                'readOnly' => true,
+            ],
+        ],
+        'inputdatetime_8' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_8 eval=datetime readOnly',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+                'readOnly' => true,
+            ],
+        ],
+        'inputdatetime_9' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_9 eval=time readOnly',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'time',
+                'readOnly' => true,
+            ],
+        ],
+        'inputdatetime_10' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_10 eval=timesec readOnly',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'timesec',
+                'readOnly' => true,
             ],
         ],
 
@@ -1118,22 +1190,18 @@ return [
                                                     <label>input_3 wizard select</label>
                                                     <config>
                                                         <type>input</type>
-                                                        <wizards>
-                                                            <valuePicker>
-                                                                <type>select</type>
-                                                                <mode></mode>
-                                                                <items>
-                                                                    <numIndex index="0">
-                                                                        <numIndex index="0">Foo</numIndex>
-                                                                        <numIndex index="1">foo</numIndex>
-                                                                    </numIndex>
-                                                                    <numIndex index="1">
-                                                                        <numIndex index="0">Bar</numIndex>
-                                                                        <numIndex index="1">bar</numIndex>
-                                                                    </numIndex>
-                                                                </items>
-                                                            </valuePicker>
-                                                        </wizards>
+                                                        <valuePicker>
+                                                            <items>
+                                                                <numIndex index="0">
+                                                                    <numIndex index="0">Foo</numIndex>
+                                                                    <numIndex index="1">foo</numIndex>
+                                                                </numIndex>
+                                                                <numIndex index="1">
+                                                                    <numIndex index="0">Bar</numIndex>
+                                                                    <numIndex index="1">bar</numIndex>
+                                                                </numIndex>
+                                                            </items>
+                                                        </valuePicker>
                                                     </config>
                                                 </TCEforms>
                                             </input_3>
@@ -1239,9 +1307,10 @@ return [
                     input_1, input_2, input_3, input_4, input_5, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29, input_30,
-                    input_31, input_32, input_33, input_34,
+                    input_31, input_32, input_33, input_35, input_36, input_34,
                 --div--;inputDateTime,
-                    inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5, inputdatetime_6,
+                    inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
+                    inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17,

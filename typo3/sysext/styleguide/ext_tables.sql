@@ -68,6 +68,8 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_32 text,
 	input_33 text,
 	input_34 text,
+	input_35 text,
+	input_36 text,
 
 	inputdatetime_1 text,
 	inputdatetime_2 date,
@@ -75,6 +77,10 @@ CREATE TABLE tx_styleguide_elements_basic (
 	inputdatetime_4 datetime,
 	inputdatetime_5 text,
 	inputdatetime_6 text,
+	inputdatetime_7 text,
+	inputdatetime_8 text,
+	inputdatetime_9 text,
+	inputdatetime_10 text,
 
 	text_1 text,
 	text_2 text,
