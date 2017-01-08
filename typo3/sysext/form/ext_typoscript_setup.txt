@@ -1,2 +1,14 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/TypoScript/setup.txt">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/TypoScript/backend.txt">
+module.tx_form {
+    settings {
+        yamlConfigurations {
+            10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
+            20 = EXT:form/Configuration/Yaml/FormEditorSetup.yaml
+            30 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+        }
+    }
+    view {
+        templateRootPaths.10 = EXT:form/Resources/Private/Backend/Templates/
+        partialRootPaths.10 = EXT:form/Resources/Private/Backend/Partials/
+        layoutRootPaths.10 = EXT:form/Resources/Private/Backend/Layouts/
+    }
+}
