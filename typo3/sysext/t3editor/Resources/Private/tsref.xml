@@ -7215,9 +7215,9 @@ status=1,menubar=1,scrollbars=1,resizable=1,location=1,directories=1,toolbar=1]]
 ]]></default>
 		</property>
 		<property name="addQueryString" type="boolean">
-			<description><![CDATA[Add the QUERY_STRING to the start of the link. Notice that this does not check for any duplicate parameters! This is not a problem (only the last parameter of the same name will be applied), but enable "config.uniqueLinkVars" if you still don't like it.
+			<description><![CDATA[Add the QUERY_STRING to the start of the link. Notice that this does not check for any duplicate parameters! This is not a problem (only the last parameter of the same name will be applied).
 
-.method: If set to to GET or POST then then the parsed query arguments (GET or POST data) will be used. This settings are useful if you use URL processing extensions like Real URL, which translate part of the path into query arguments.
+.method: If set to GET or POST then then the parsed query arguments (GET or POST data) will be used. This settings are useful if you use URL processing extensions like Real URL, which translate part of the path into query arguments.
 It's also possible to get both, POST and GET data, on setting this to
 "POST,GET" or "GET,POST". The last method in this sequence takes
 precedence and overwrites the parts that are also present for the first
