@@ -81,6 +81,7 @@ class RemoveUserViewHelper extends AbstractViewHelper
         $url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
 
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
+            . ' title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:delete')) . '"'
             . ' data-severity="warning"'
             . ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
             . ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'beuser', [$backendUser->getUserName()])) . '" '

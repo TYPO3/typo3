@@ -42,6 +42,9 @@
 			<trans-unit id="never">
 				<source>Never</source>
 			</trans-unit>
+			<trans-unit id="delete">
+				<source>Delete backend user (!)</source>
+			</trans-unit>
 			<trans-unit id="disable">
 				<source>Disable</source>
 			</trans-unit>
