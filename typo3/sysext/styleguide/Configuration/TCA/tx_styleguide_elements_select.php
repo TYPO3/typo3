@@ -188,30 +188,6 @@ return [
                 ],
             ],
         ],
-        'select_single_9' => [
-            'exclude' => 1,
-            'label' => 'select_single_9 wizard slider',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 4],
-                    ['foo 4', 7],
-                    ['foo 5', 8],
-                    ['foo 6', 11],
-                ],
-                'default' => 4,
-                'wizards' => [
-                    'angle' => [
-                        'type' => 'slider',
-                        'step' => 1,
-                        'width' => 200,
-                    ],
-                ],
-            ],
-        ],
         // @todo: selectSingle with size > 1 overlaps with selectSingleBox, except that only one item can be selected
         'select_single_10' => [
             'exclude' => 1,
@@ -832,7 +808,7 @@ return [
             'showitem' => '
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
-                    select_single_6, select_single_7, select_single_12, select_single_8, select_single_9, select_single_10,
+                    select_single_6, select_single_7, select_single_12, select_single_8, select_single_10,
                     select_single_11,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1,

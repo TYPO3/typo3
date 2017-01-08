@@ -321,7 +321,7 @@ return [
         ],
         'input_30' => [
             'exclude' => 1,
-            'label' => 'input_30 wizard slider, step=10, width=200, eval=trim,int',
+            'label' => 'input_30 slider, step=10, width=200, eval=trim,int',
             'config' => [
                 'type' => 'input',
                 'size' => 5,
@@ -331,18 +331,15 @@ return [
                     'upper' => 90,
                 ],
                 'default' => 0,
-                'wizards' => [
-                    'angle' => [
-                        'type' => 'slider',
-                        'step' => 10,
-                        'width' => 200,
-                    ],
+                'slider' => [
+                    'step' => 10,
+                    'width' => 200,
                 ],
             ],
         ],
         'input_31' => [
             'exclude' => 1,
-            'label' => 'input_31 wizard slider, default=14.5, step=0.5, width=150, eval=trim,double2',
+            'label' => 'input_31 slider, default=14.5, step=0.5, width=150, eval=trim,double2',
             'config' => [
                 'type' => 'input',
                 'size' => 5,
@@ -352,12 +349,9 @@ return [
                     'upper' => 90,
                 ],
                 'default' => 14.5,
-                'wizards' => [
-                    'angle' => [
-                        'type' => 'slider',
-                        'step' => 0.5,
-                        'width' => 150,
-                    ],
+                'slider' => [
+                    'step' => 0.5,
+                    'width' => 150,
                 ],
             ],
         ],
