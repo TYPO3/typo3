@@ -45,6 +45,9 @@
 			<trans-unit id="FileUtility.DirectoryRenamedFromTo">
 				<source>Directory renamed from "%s" to "%s".</source>
 			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryRenamedSameName">
+				<source>Directory "%s" was not renamed. (Same name as before)</source>
+			</trans-unit>
 			<trans-unit id="FileUtility.DirectoryWasNotCopiedTo">
 				<source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
 			</trans-unit>
@@ -95,6 +98,9 @@
 			</trans-unit>
 			<trans-unit id="FileUtility.FileRenamedFromTo">
 				<source>File renamed from "%s" to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileRenamedSameName">
+				<source>File "%s" was not renamed. (Same name as before)</source>
 			</trans-unit>
 			<trans-unit id="FileUtility.FileSavedToBytesMd5">
 				<source>File saved to "%s", bytes: %s, MD5: %s.</source>

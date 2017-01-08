@@ -844,7 +844,11 @@ class ExtendedFileUtility extends BasicFileUtility
                 // Try to rename the File
                 $resultObject = $sourceFileObject->rename($targetFile);
                 $this->writeLog(5, 0, 1, 'File renamed from "%s" to "%s"', [$sourceFile, $targetFile]);
-                $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $targetFile], FlashMessage::OK);
+                if ($sourceFile === $targetFile) {
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedSameName', [$sourceFile], FlashMessage::INFO);
+                } else {
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $targetFile], FlashMessage::OK);
+                }
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(5, 1, 102, 'You are not allowed to rename files!', []);
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToRenameFiles');
@@ -867,7 +871,11 @@ class ExtendedFileUtility extends BasicFileUtility
                 // Try to rename the Folder
                 $resultObject = $sourceFileObject->rename($targetFile);
                 $this->writeLog(5, 0, 2, 'Directory renamed from "%s" to "%s"', [$sourceFile, $targetFile]);
-                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromTo', [$sourceFile, $targetFile], FlashMessage::OK);
+                if ($sourceFile === $targetFile) {
+                    $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedSameName', [$sourceFile], FlashMessage::INFO);
+                } else {
+                    $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromTo', [$sourceFile, $targetFile], FlashMessage::OK);
+                }
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(5, 1, 111, 'You are not allowed to rename directories!', []);
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToRenameDirectories');
