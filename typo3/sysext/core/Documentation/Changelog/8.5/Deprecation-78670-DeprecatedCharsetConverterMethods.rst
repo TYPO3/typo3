@@ -14,6 +14,7 @@ Therefore some methods of :php:`CharsetConverter` have been marked as deprecated
 
 - :php:`strlen()`: use :php:`mb_strlen()` directly
 - :php:`substr()`: use :php:`mb_substr()` directly
+- :php:`strtrunc()`: use :php:`mb_strcut()` directly
 - :php:`convCapitalize()`: use :php:`mb_convert_case()` directly
 - :php:`conv_case()`: use :php:`mb_strtolower()` or :php:`mb_strtoupper()` directly
 - :php:`utf8_substr()`: use :php:`mb_substr()` directly

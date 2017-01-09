@@ -317,11 +317,11 @@ class CharsetConverter implements SingletonInterface
         }
         // PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
         if ($toCharset === 'utf-8' || !$useEntityForNoChar) {
+            // Returns FALSE for unsupported charsets
             $convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
             if (false !== $convertedString) {
                 return $convertedString;
             }
-            // Returns FALSE for unsupported charsets
         }
         if ($fromCharset !== 'utf-8') {
             $inputString = $this->utf8_encode($inputString, $fromCharset);
@@ -1194,9 +1194,11 @@ class CharsetConverter implements SingletonInterface
      * @param int $len The byte length
      * @return string The shortened string
      * @see mb_strcut()
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9, use mb_strcut() directly
      */
     public function strtrunc($charset, $string, $len)
     {
+        GeneralUtility::logDeprecatedFunction();
         if ($len <= 0) {
             return '';
         }
