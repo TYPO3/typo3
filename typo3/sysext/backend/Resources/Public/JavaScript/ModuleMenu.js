@@ -128,9 +128,9 @@ require(
 				var expandedClass = 'scaffold-modulemenu-expanded';
 
 				if (typeof collapse === 'undefined') {
-					collapse = $mainContainer.hasClass(expandedClass);
+					collapse = $mainContainer.hasClass(expandedClass) ? 'true' : '';
 				}
-				if (collapse) {
+				if (collapse === 'true') {
 					$mainContainer.removeClass(expandedClass);
 				} else {
 					$mainContainer.addClass(expandedClass);
