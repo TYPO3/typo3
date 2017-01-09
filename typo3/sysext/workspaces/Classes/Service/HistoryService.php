@@ -161,6 +161,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (!isset($this->differencesObject)) {
             $this->differencesObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+            $this->differencesObject->stripTags = false;
         }
         return $this->differencesObject;
     }

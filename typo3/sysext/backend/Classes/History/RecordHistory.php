@@ -616,6 +616,7 @@ class RecordHistory
         $lines = [];
         if (is_array($entry['newRecord'])) {
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+            $diffUtility->stripTags = false;
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
             foreach ($fieldsToDisplay as $fN) {
