@@ -580,7 +580,6 @@ class BackendController
             $pageModule = '';
         }
         $t3Configuration = [
-            'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
             'username' => htmlspecialchars($beUser->user['username']),
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,

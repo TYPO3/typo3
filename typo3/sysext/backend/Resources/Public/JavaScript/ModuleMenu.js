@@ -231,7 +231,7 @@ require(
 
 			openInNavFrame: function (url, params) {
 				var navUrl = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
-				var currentUrl = this.relativeUrl(TYPO3.Backend.NavigationContainer.getUrl());
+				var currentUrl = TYPO3.Backend.NavigationContainer.getUrl();
 				if (currentUrl !== navUrl) {
 					TYPO3.Backend.NavigationContainer.refresh();
 				}
@@ -251,14 +251,6 @@ require(
 			highlightModuleMenuItem: function (module, mainModule) {
 				$('.modulemenu-item.active').removeClass('active');
 				$('#' + module).addClass('active');
-			},
-
-			relativeUrl: function (url) {
-				if (url) {
-					return url.replace(TYPO3.configuration.siteUrl + 'typo3/', '');
-				} else {
-					return '';
-				}
 			},
 
 			// refresh the HTML by fetching the menu again

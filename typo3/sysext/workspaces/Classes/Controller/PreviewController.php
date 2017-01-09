@@ -220,7 +220,6 @@ class PreviewController extends AbstractController
             $pageModule = '';
         }
         $t3Configuration = [
-            'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
             'username' => htmlspecialchars($backendUser->user['username']),
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,
