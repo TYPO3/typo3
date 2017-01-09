@@ -1686,8 +1686,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // mod.web_layout.tt_content.preview.media = EXT:site_mysite/Resources/Private/Templates/Preview/Media.html
         if ($drawItem) {
             $tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod.web_layout.tt_content.preview');
-            if (!empty($tsConfig['properties'][$row['CType']])) {
+            $fluidTemplateFile = '';
+
+            if (
+                $row['CType'] === 'list' && !empty($row['list_type'])
+                && !empty($tsConfig['properties']['list.'][$row['list_type']])
+            ) {
+                $fluidTemplateFile = $tsConfig['properties']['list.'][$row['list_type']];
+            } elseif (!empty($tsConfig['properties'][$row['CType']])) {
                 $fluidTemplateFile = $tsConfig['properties'][$row['CType']];
+            }
+
+            if ($fluidTemplateFile) {
                 $fluidTemplateFile = GeneralUtility::getFileAbsFileName($fluidTemplateFile);
                 if ($fluidTemplateFile) {
                     try {
