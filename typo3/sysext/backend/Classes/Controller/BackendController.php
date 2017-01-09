@@ -585,11 +585,7 @@ class BackendController
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,
             'inWorkspace' => $beUser->workspace !== 0,
-            'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
-            'ContextHelpWindows' => [
-                'width' => 600,
-                'height' => 400
-            ]
+            'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false
         ];
         $this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';

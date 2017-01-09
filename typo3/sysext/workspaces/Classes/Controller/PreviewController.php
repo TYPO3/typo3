@@ -225,11 +225,7 @@ class PreviewController extends AbstractController
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,
             'inWorkspace' => $backendUser->workspace !== 0,
-            'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
-            'ContextHelpWindows' => [
-                'width' => 600,
-                'height' => 400
-            ]
+            'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false
         ];
 
         return '

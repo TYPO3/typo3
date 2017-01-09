@@ -106,14 +106,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 	 * @param {Object} $trigger
 	 */
 	ContextHelp.showHelpPopup = function($trigger) {
-		var configuration = top.TYPO3.configuration.ContextHelpWindows;
 		try {
 			var cshWindow = window.open(
 				ContextHelp.helpModuleUrl +
 					'&tx_cshmanual_help_cshmanualcshmanual[table]=' + $trigger.data('table') +
 					'&tx_cshmanual_help_cshmanualcshmanual[field]=' + $trigger.data('field'),
 				'ContextHelpWindow',
-				'height=' + configuration.height + ',width=' + configuration.width + ',status=0,menubar=0,scrollbars=1'
+				'height=400,width=600,status=0,menubar=0,scrollbars=1'
 			);
 			cshWindow.focus();
 			TYPO3.Popover.hide($trigger);
