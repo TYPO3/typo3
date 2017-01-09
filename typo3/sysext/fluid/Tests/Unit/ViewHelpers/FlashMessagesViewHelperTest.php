@@ -81,45 +81,6 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function renderRespectsGivenCssClass()
-    {
-        $flashMessage = new FlashMessage('test message body', 'test message title');
-
-        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn([$flashMessage]);
-        $this->setArgumentsUnderTest(
-            $this->viewHelper,
-            [
-                'class' => 'flashy',
-            ]
-        );
-        $expected = '<div class="flashy"><div class="alert alert-success">';
-        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertContains($expected, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function renderReturnsDefaultTemplate()
-    {
-        $flashMessage = new FlashMessage('test message body', 'test message title');
-
-        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn([$flashMessage]);
-        $this->setArgumentsUnderTest(
-            $this->viewHelper,
-            []
-        );
-        $expectedTitle = '<h4 class="alert-title">test message title</h4>';
-        $expectedMessage = '<p class="alert-message">test message body</p>';
-
-        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertContains($expectedTitle, $actualResult);
-        $this->assertContains($expectedMessage, $actualResult);
-    }
-
-    /**
-     * @test
-     */
     public function parameterAsStartsRenderingOnTemplate()
     {
         $this->viewHelper->setRenderChildrenClosure(function () {

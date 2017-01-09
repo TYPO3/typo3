@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Messaging;
 
 /*
@@ -14,6 +15,8 @@ namespace TYPO3\CMS\Core\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A class representing flash messages.
  */
@@ -28,6 +31,7 @@ class FlashMessage extends AbstractMessage
 
     /**
      * @var string The message severity class names
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected $classes = [
         self::NOTICE => 'notice',
@@ -39,6 +43,7 @@ class FlashMessage extends AbstractMessage
 
     /**
      * @var string The message severity icon names
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected $icons = [
         self::NOTICE => 'lightbulb-o',
@@ -89,9 +94,11 @@ class FlashMessage extends AbstractMessage
      * Gets the message severity class name
      *
      * @return string The message severity class name
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getClass()
     {
+        GeneralUtility::logDeprecatedFunction();
         return 'alert-' . $this->classes[$this->severity];
     }
 
@@ -99,37 +106,11 @@ class FlashMessage extends AbstractMessage
      * Gets the message severity icon name
      *
      * @return string The message severity icon name
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getIconName()
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->icons[$this->severity];
-    }
-
-    /**
-     * Gets the message rendered as clean and secure markup
-     *
-     * @return string
-     */
-    public function getMessageAsMarkup()
-    {
-        $messageTitle = $this->getTitle();
-        $markup = [];
-        $markup[] = '<div class="alert ' . htmlspecialchars($this->getClass()) . '">';
-        $markup[] = '    <div class="media">';
-        $markup[] = '        <div class="media-left">';
-        $markup[] = '            <span class="fa-stack fa-lg">';
-        $markup[] = '                <i class="fa fa-circle fa-stack-2x"></i>';
-        $markup[] = '                <i class="fa fa-' . htmlspecialchars($this->getIconName()) . ' fa-stack-1x"></i>';
-        $markup[] = '            </span>';
-        $markup[] = '        </div>';
-        $markup[] = '        <div class="media-body">';
-        if (!empty($messageTitle)) {
-            $markup[] = '            <h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
-        }
-        $markup[] = '            <p class="alert-message">' . htmlspecialchars($this->getMessage()) . '</p>';
-        $markup[] = '        </div>';
-        $markup[] = '    </div>';
-        $markup[] = '</div>';
-        return implode('', $markup);
     }
 }

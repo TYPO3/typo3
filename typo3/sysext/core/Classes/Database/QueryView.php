@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -366,7 +367,9 @@ class QueryView
                 }
             }
             if (!empty($flashMessage)) {
-                $msg = $flashMessage->getMessageAsMarkup();
+                $msg = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
+                    ->resolve()
+                    ->render([$flashMessage]);
             }
         }
         if ($saveStoreArray) {
@@ -500,7 +503,9 @@ class QueryView
                         '',
                         FlashMessage::INFO
                     );
-                    $out = $flashMessage->getMessageAsMarkup();
+                    GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
+                        ->resolve()
+                        ->render([$flashMessage]);
                 }
                 $cPR['header'] = 'Result';
                 $cPR['content'] = $out;

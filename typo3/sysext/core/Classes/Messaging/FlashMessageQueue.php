@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Messaging;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class which collects and renders flash messages.
@@ -197,19 +199,21 @@ class FlashMessageQueue extends \SplQueue
     /**
      * Fetches and renders all available flash messages from the queue.
      *
-     * @return string All flash messages in the queue rendered as HTML.
+     * @param FlashMessageRendererInterface|null $flashMessageRenderer
+     * @return string All flash messages in the queue rendered by context based FlashMessageRendererResolver.
      */
-    public function renderFlashMessages()
+    public function renderFlashMessages(FlashMessageRendererInterface $flashMessageRenderer = null)
     {
         $content = '';
         $flashMessages = $this->getAllMessagesAndFlush();
+
         if (!empty($flashMessages)) {
-            $content .= '<div class="typo3-messages">';
-            foreach ($flashMessages as $flashMessage) {
-                $content .= $flashMessage->getMessageAsMarkup();
+            if ($flashMessageRenderer === null) {
+                $flashMessageRenderer = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve();
             }
-            $content .= '</div>';
+            $content = $flashMessageRenderer->render($flashMessages);
         }
+
         return $content;
     }
 

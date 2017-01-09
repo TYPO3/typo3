@@ -42,8 +42,8 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Components\TestingFramework\Core\
         $this->setUpBackendUserFromFixture(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $messages = [
-            0 => new FlashMessage('This is a test message', 1, FlashMessage::NOTICE),
-            1 => new FlashMessage('This is another test message', 2, FlashMessage::WARNING)
+            0 => new FlashMessage('This is a test message', '1', FlashMessage::NOTICE),
+            1 => new FlashMessage('This is another test message', '2', FlashMessage::WARNING)
         ];
         $flashMessageQueue->enqueue($messages[0]);
         $flashMessageQueue->enqueue($messages[1]);
@@ -90,8 +90,8 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Components\TestingFramework\Core\
         $this->setUpBackendUserFromFixture(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $messages = [
-            0 => new FlashMessage('This is a test message', 1, FlashMessage::NOTICE),
-            1 => new FlashMessage('This is another test message', 2, FlashMessage::WARNING)
+            0 => new FlashMessage('This is a test message', '1', FlashMessage::NOTICE),
+            1 => new FlashMessage('This is another test message', '2', FlashMessage::WARNING)
         ];
         $flashMessageQueue->addMessage($messages[0]);
         $flashMessageQueue->addMessage($messages[1]);

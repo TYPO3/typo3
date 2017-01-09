@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Messaging;
 
 /*
@@ -13,6 +14,8 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * A class used for any kind of messages.
@@ -51,7 +54,7 @@ abstract class AbstractMessage
      *
      * @return string The message's title.
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }
@@ -62,9 +65,9 @@ abstract class AbstractMessage
      * @param string $title The message's title
      * @return void
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
-        $this->title = (string)$title;
+        $this->title = $title;
     }
 
     /**
@@ -72,7 +75,7 @@ abstract class AbstractMessage
      *
      * @return string The message.
      */
-    public function getMessage()
+    public function getMessage() : string
     {
         return $this->message;
     }
@@ -83,9 +86,9 @@ abstract class AbstractMessage
      * @param string $message The message
      * @return void
      */
-    public function setMessage($message)
+    public function setMessage(string $message)
     {
-        $this->message = (string)$message;
+        $this->message = $message;
     }
 
     /**
@@ -93,7 +96,7 @@ abstract class AbstractMessage
      *
      * @return int The message' severity, must be one of AbstractMessage::INFO or similar contstants
      */
-    public function getSeverity()
+    public function getSeverity() : int
     {
         return $this->severity;
     }
@@ -104,9 +107,9 @@ abstract class AbstractMessage
      * @param int $severity The severity, must be one of AbstractMessage::INFO or similar constants
      * @return void
      */
-    public function setSeverity($severity = self::OK)
+    public function setSeverity(int $severity = self::OK)
     {
-        $this->severity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
+        $this->severity = MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
     }
 
     /**
@@ -118,13 +121,14 @@ abstract class AbstractMessage
     public function __toString()
     {
         $severities = [
+            self::NOTICE => 'NOTICE',
             self::INFO => 'INFO',
             self::OK => 'OK',
             self::WARNING => 'WARNING',
             self::ERROR => 'ERROR'
         ];
         $title = '';
-        if (!empty($this->title)) {
+        if ($this->title !== '') {
             $title = ' - ' . $this->title;
         }
         return $severities[$this->severity] . $title . ': ' . $this->message;

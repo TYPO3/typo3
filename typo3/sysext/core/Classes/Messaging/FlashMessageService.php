@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Messaging;
 
 /*
@@ -14,15 +15,18 @@ namespace TYPO3\CMS\Core\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A class representing flash messages.
  */
-class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface
+class FlashMessageService implements SingletonInterface
 {
     /**
      * Array of \TYPO3\CMS\Core\Messaging\FlashMessageQueue objects
      *
-     * @var array
+     * @var FlashMessageQueue[]
      */
     protected $flashMessageQueues = [];
 
@@ -31,14 +35,14 @@ class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface
      * If no queue exists, an empty one will be created.
      *
      * @param string $identifier
-     * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     * @return FlashMessageQueue
      * @api
      */
-    public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages')
+    public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages') : FlashMessageQueue
     {
         if (!isset($this->flashMessageQueues[$identifier])) {
-            $this->flashMessageQueues[$identifier] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
+            $this->flashMessageQueues[$identifier] = GeneralUtility::makeInstance(
+                FlashMessageQueue::class,
                 $identifier
             );
         }
