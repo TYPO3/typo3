@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Data Provider of the Page Tree
  */
-class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTree
+class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTree
 {
     /**
      * Data Provider

@@ -289,24 +289,23 @@ class BackendController
         $this->generateJavascript();
         $this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js, false);
         $this->loadResourcesForRegisteredNavigationComponents();
-
-        // Add state provider
-        $this->getDocumentTemplate()->setExtDirectStateProvider();
-        $states = $this->getBackendUser()->uc['BackendComponents']['States'];
-        // Save states in BE_USER->uc
-        $extOnReadyCode = '
-			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
-				key: "BackendComponents.States",
-				autoRead: false
-			}));
-		';
-
-        if ($states) {
-            $extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . json_encode($states) . ');';
-        }
-
-        $this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
-
+        // @todo: remove this when ExtJS is removed
+        $this->pageRenderer->addExtOnReadyCode('
+            var TYPO3ExtJSStateProviderBridge = function() {};
+            Ext.extend(TYPO3ExtJSStateProviderBridge, Ext.state.Provider, {
+                prefix: "BackendComponents.States.",
+                get: function(name, defaultValue) {
+                    return TYPO3.Storage.Persistent.isset(this.prefix + name) ? TYPO3.Storage.Persistent.get(this.prefix + name) : defaultValue;
+                },
+                clear: function(name) {
+                    TYPO3.Storage.Persistent.unset(this.prefix + name);
+                },
+                set: function(name, value) {
+                    TYPO3.Storage.Persistent.set(this.prefix + name, value);
+                }
+            });
+            Ext.state.Manager.setProvider(new TYPO3ExtJSStateProviderBridge());
+	        ');
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
         // Renders the module page

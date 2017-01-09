@@ -235,11 +235,6 @@ function jumpToUrl(URL) {
     protected $pageHeaderFooterTemplateFile = '';
 
     /**
-     * @var bool
-     */
-    protected $extDirectStateProvider = false;
-
-    /**
      * Whether flashmessages should be rendered or not
      *
      * @var bool $showFlashMessages
@@ -336,16 +331,6 @@ function jumpToUrl(URL) {
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
             $this->pageRenderer->enableDebugMode();
         }
-    }
-
-    /**
-     * Sets inclusion of StateProvider
-     *
-     * @return void
-     */
-    public function setExtDirectStateProvider()
-    {
-        $this->extDirectStateProvider = true;
     }
 
     /*****************************************
@@ -614,9 +599,6 @@ function jumpToUrl(URL) {
         $this->pageRenderer->setTitle($title);
         // add docstyles
         $this->docStyle();
-        if ($this->extDirectStateProvider) {
-            $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
-        }
         $this->pageRenderer->addHeaderData($this->JScode);
         foreach ($this->JScodeArray as $name => $code) {
             $this->pageRenderer->addJsInlineCode($name, $code, false);
