@@ -180,28 +180,11 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				}, this);
 			}
 
-			if (TYPO3.Components.PageTree.Configuration.indicator !== '') {
-				this.addIndicatorItems();
-			}
 			this.doLayout();
 
 		}, this);
 
 		TYPO3.Components.PageTree.App.superclass.initComponent.apply(this, arguments);
-	},
-
-	/**
-	 * Adds the default indicator items
-	 *
-	 * @return {void}
-	 */
-	addIndicatorItems: function() {
-		this.addIndicator({
-			border: false,
-			id: this.id + '-indicatorBar-indicatorTitle',
-			cls: this.id + '-indicatorBar-item',
-			html: TYPO3.Components.PageTree.Configuration.indicator
-		});
 	},
 
 	/**
@@ -333,19 +316,6 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		if (!isNaN(fsMod.recentIds['web']) && fsMod.recentIds['web'] !== '') {
 			this.select(fsMod.recentIds['web'], true);
 		}
-
-		TYPO3.Components.PageTree.DataProvider.getIndicators(function(response) {
-			var indicators = Ext.getCmp(this.id + '-indicatorBar-indicatorTitle');
-			if (indicators) {
-				this.removeIndicator(indicators);
-			}
-
-			if (response._COUNT > 0) {
-				TYPO3.Components.PageTree.Configuration.indicator = response.html;
-				this.addIndicatorItems();
-			}
-		}, this);
-
 		this.activeTree.refreshTree();
 	},
 
