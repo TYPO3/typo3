@@ -100,25 +100,9 @@ return [
             'label' => 'input_3 eval=required, wizard link',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputLink',
                 'size' => 60,
                 'eval' => 'trim,required',
-                'wizards' => [
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'a title',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
-                            'urlParameters' => [
-                                'act' => 'file|url',
-                            ],
-                        ],
-                        'params' => [
-                            'blindLinkOptions' => 'page,folder,mail,spec',
-                            'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        ],
-                    ],
-                ],
             ],
         ],
 

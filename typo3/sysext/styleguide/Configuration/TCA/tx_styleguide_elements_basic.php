@@ -306,17 +306,7 @@ return [
             'label' => 'input_29 wizard link',
             'config' => [
                 'type' => 'input',
-                'wizards' => [
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'Link',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                    ],
-                ],
+                'renderType' => 'inputLink',
             ],
         ],
         'input_30' => [
@@ -1133,25 +1123,18 @@ return [
                                                     <label>input_1 wizard link</label>
                                                     <config>
                                                         <type>input</type>
+                                                        <renderType>inputLink</renderType>
                                                         <eval>trim</eval>
                                                         <softref>typolink</softref>
-                                                        <wizards type="array">
-                                                            <link type="array">
-                                                                <type>popup</type>
-                                                                <title>Link</title>
-                                                                <icon>actions-wizard-link</icon>
-                                                                <module type="array">
-                                                                    <name>wizard_link</name>
-                                                                    <urlParameters type="array">
-                                                                        <act>file|url</act>
-                                                                    </urlParameters>
-                                                                </module>
-                                                                <params type="array">
+                                                        <fieldControls>
+                                                            <linkPopup>
+                                                                <options>
+                                                                    <title>Link</title>
                                                                     <blindLinkOptions>mail,folder,spec</blindLinkOptions>
-                                                                </params>
-                                                                <JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-                                                            </link>
-                                                        </wizards>
+                                                                    <windowOpenParameters>height=300,width=500,status=0,menubar=0,scrollbars=1</windowOpenParameters>
+                                                                </options>
+                                                            </linkPopup>
+                                                        </fieldControls>
                                                     </config>
                                                 </TCEforms>
                                             </input_1>
