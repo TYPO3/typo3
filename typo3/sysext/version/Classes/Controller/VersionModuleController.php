@@ -287,6 +287,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $diff_2_record = BackendUtility::getRecord($this->table, $diff_2);
                 if (is_array($diff_1_record) && is_array($diff_2_record)) {
                     $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+                    $diffUtility->stripTags = false;
                     $rows = [];
                     $rows[] = '
 									<tr>

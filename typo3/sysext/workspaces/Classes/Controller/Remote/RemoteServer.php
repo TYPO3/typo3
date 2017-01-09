@@ -502,6 +502,7 @@ class RemoteServer extends AbstractHandler
     {
         if (!isset($this->differenceHandler)) {
             $this->differenceHandler = GeneralUtility::makeInstance(DiffUtility::class);
+            $this->differenceHandler->stripTags = false;
         }
         return $this->differenceHandler;
     }

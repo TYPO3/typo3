@@ -406,6 +406,7 @@ class SingleFieldContainer extends AbstractContainer
                     // Create diff-result:
                     /** @var DiffUtility $diffUtility */
                     $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+                    $diffUtility->stripTags = false;
                     $diffres = $diffUtility->makeDiffDisplay(
                         BackendUtility::getProcessedValue($table, $field, $dLVal['old'][$field], 0, 1),
                         BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1)
