@@ -132,7 +132,7 @@ function getModuleUrl(inUrl)	{	//
 // which was in use (top.content) before TYPO3 8.4. Now, the direct "top.nav_frame" and "top.list_frame"
 // calls do work directly.
 // @deprecated since TYPO3 v8, will be removed in TYPO3 v9, this functionality will be removed in TYPO3 v9.
-TYPO3.jQuery(document).on('ready', function() {
+$(document).on('ready', function() {
 	top.content = {
 		list_frame: top.list_frame,
 		nav_frame: top.nav_frame

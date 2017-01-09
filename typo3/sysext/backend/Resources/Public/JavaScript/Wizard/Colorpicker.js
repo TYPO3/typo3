@@ -56,7 +56,7 @@ define(['jquery'], function ($) {
 		// Handle the transfer of the color value and closing of popup
 		$('#colorpicker-saveclose').on('click', function(e) {
 			e.preventDefault();
-			var theField = parent.opener.TYPO3.jQuery('[data-formengine-input-name="' + $('[name="fieldName"]').val() + '"]').get(0);
+			var theField = $('[data-formengine-input-name="' + $('[name="fieldName"]').val() + '"]').get(0);
 			if (theField) {
 				theField.value = $('#colorValue').val();
 

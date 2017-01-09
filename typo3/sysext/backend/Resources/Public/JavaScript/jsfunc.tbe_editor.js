@@ -97,8 +97,8 @@ var TBE_EDITOR = {
 		TBE_EDITOR.isChanged = 1;
 
 		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)
-		var $formField = TYPO3.jQuery('[name="' + el + '"]');
-		var $humanReadableField = TYPO3.jQuery('[data-formengine-input-name="' + el + '"]');
+		var $formField = $('[name="' + el + '"]');
+		var $humanReadableField = $('[data-formengine-input-name="' + el + '"]');
 		if (!$formField.is($humanReadableField)) {
 			$humanReadableField.triggerHandler('change');
 		}
@@ -204,7 +204,7 @@ var TBE_EDITOR = {
 		return (theStr.substring(sPos+lengthOfDelim,ePos));
 	},
 	curSelected: function(theField) {
-		var fObjSel = TYPO3.jQuery('[data-formengine-input-name="' + theField + '"]').get(1);
+		var fObjSel = $('[data-formengine-input-name="' + theField + '"]').get(1);
 		var retVal="";
 		if (fObjSel) {
 			if (fObjSel.type=='select-multiple' || fObjSel.type=='select-one') {
@@ -259,7 +259,7 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 var typo3form = {
 	fieldSetNull: function(fieldName, isNull) {
 		if (document[TBE_EDITOR.formname][fieldName]) {
-			TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item').toggleClass('disabled', isNull);
+			$(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item').toggleClass('disabled', isNull);
 		}
 	},
 	fieldTogglePlaceholder: function(fieldName, showPlaceholder) {
@@ -267,7 +267,7 @@ var typo3form = {
 			return;
 		}
 
-		var $formFieldItemWrapper = TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
+		var $formFieldItemWrapper = $(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
 		$formFieldItemWrapper.find('.t3js-formengine-placeholder-placeholder').toggle(showPlaceholder);
 		$formFieldItemWrapper.find('.t3js-formengine-placeholder-formfield').toggle(!showPlaceholder);
 	},

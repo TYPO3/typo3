@@ -25,8 +25,8 @@
 		// AMD. Register as an anonymous module.
 		define([ "jquery" ], factory);
 	} else {
-		// Browser globals, TYPO3.jQuery kept for backwards-compatibility, will be removed with CMS 8
-		factory(jQuery || TYPO3.jQuery);
+		// Browser globals
+		factory(jQuery);
 	}
 }(function($) {
 	$.fn.clearable = function(options) {

@@ -517,7 +517,7 @@ define([
 					]);
 					Modal.currentModal.on('shown.bs.modal', function() {
 						var $actionButton = Modal.currentModal.find('.t3js-dependencies');
-						top.TYPO3.jQuery('input[name=unlockDependencyIgnoreButton]').on('change', function() {
+						$('input[name=unlockDependencyIgnoreButton]').on('change', function() {
 							$actionButton.toggleClass('disabled', !$(this).prop('checked'));
 						});
 					});
@@ -756,7 +756,7 @@ define([
 				success: ExtensionManager.updateExtension
 			});
 		}).on('change', 'input[name=unlockDependencyIgnoreButton]', function() {
-			var $actionButton = TYPO3.jQuery('.t3js-dependencies');
+			var $actionButton = $('.t3js-dependencies');
 			$actionButton.toggleClass('disabled', !$(this).prop('checked'));
 		});
 

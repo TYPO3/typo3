@@ -260,7 +260,7 @@ define(['jquery',
 					me.closest('.t3-form-field-container').find('.t3-flex-container').append(response.html);
 					$('.t3-flex-container').t3FormEngineFlexFormElement();
 					if (response.scriptCall && response.scriptCall.length > 0) {
-						TYPO3.jQuery.each(response.scriptCall, function (index, value) {
+						$.each(response.scriptCall, function (index, value) {
 							eval(value);
 						});
 					}

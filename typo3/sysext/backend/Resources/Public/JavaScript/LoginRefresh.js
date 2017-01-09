@@ -75,7 +75,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	 * @returns {Object}
 	 */
 	LoginRefresh.generateModal = function(identifier) {
-		return TYPO3.jQuery('<div />', {id: identifier, class: 't3-modal t3-blr-modal ' + identifier + ' modal fade'}).append(
+		return $('<div />', {id: identifier, class: 't3-modal t3-blr-modal ' + identifier + ' modal fade'}).append(
 			$('<div />', {class: 'modal-dialog'}).append(
 				$('<div />', {class: 'modal-content'}).append(
 					$('<div />', {class: 'modal-header'}).append(

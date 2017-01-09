@@ -232,7 +232,7 @@ define(['jquery',
 			$(this).remove();
 			// Keep class modal-open on body tag as long as open modals exist
 			if (Modal.instances.length > 0) {
-				top.TYPO3.jQuery('body').addClass('modal-open');
+				$('body').addClass('modal-open');
 			}
 		});
 		// When modal is opened/shown add it to Modal.instances and make it Modal.currentModal

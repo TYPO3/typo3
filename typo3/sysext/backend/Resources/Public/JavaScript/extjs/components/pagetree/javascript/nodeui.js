@@ -129,7 +129,7 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 					this.iconNode.setAttribute("ext:qtitle", title);
 				}
 			}
-			TYPO3.jQuery(this.iconNode).tooltip();
+			$(this.iconNode).tooltip();
 		}
 	},
 

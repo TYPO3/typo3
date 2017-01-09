@@ -455,7 +455,7 @@ define(['jquery',
 			reloadPageTree = false;
 		if (action === 'undo') {
 			data.action = 'undoRecords';
-			data.recursive = top.TYPO3.jQuery('#undo-recursive').prop('checked')  ? 1 : 0;
+			data.recursive = $('#undo-recursive').prop('checked')  ? 1 : 0;
 			reloadPageTree = true;
 		} else if (action === 'delete') {
 			data.action = 'deleteRecords';

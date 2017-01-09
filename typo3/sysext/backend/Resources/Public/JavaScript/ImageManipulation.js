@@ -89,7 +89,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 				$modalContent.addClass('cropper-bg');
 
 				// Determine available height
-				var height = top.TYPO3.jQuery(window).height()
+				var height = $(window).height()
 						- (ImageManipulation.margin * 4);
 				$image.css({maxHeight: height});
 

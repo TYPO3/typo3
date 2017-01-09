@@ -2247,7 +2247,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             case self::JQUERY_NAMESPACE_DEFAULT:
 
             default:
-                $scriptTag .= GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true);') . LF;
+                $scriptTag .= GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true); var $ = TYPO3.' . $namespace . ';') . LF;
         }
         return $scriptTag;
     }
