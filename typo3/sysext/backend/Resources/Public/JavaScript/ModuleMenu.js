@@ -18,10 +18,11 @@
 require(
 	[
 		'jquery',
+		'TYPO3/CMS/Backend/Storage',
 		'TYPO3/CMS/Backend/Icons',
 		'TYPO3/CMS/Backend/Viewport'
 	],
-	function ($, Icons) {
+	function ($, Storage, Icons) {
 		if (typeof TYPO3.ModuleMenu !== 'undefined') {
 			return TYPO3.ModuleMenu.App;
 		}
@@ -48,30 +49,28 @@ require(
 				}
 
 				// check if module menu should be collapsed or not
-				var state = Ext.state.Manager.getProvider().get('typo3-module-menu');
+				var state = Storage.Persistent.get('BackendComponents.States.typo3-module-menu');
 				if (state && state.collapsed) {
 					TYPO3.ModuleMenu.App.toggleMenu(state.collapsed);
 				}
 
 				// check if there are collapsed items in the users' configuration
-				require(['TYPO3/CMS/Backend/Storage'], function () {
-					var collapsedMainMenuItems = me.getCollapsedMainMenuItems();
-					$.each(collapsedMainMenuItems, function (key, itm) {
-						if (itm !== true) {
-							return;
-						}
-						var $group = $('#' + key);
-						if ($group.length > 0) {
-							var $groupContainer = $group.find('.modulemenu-group-container');
-							$group.addClass('collapsed').removeClass('expanded');
-							TYPO3.Backend.NavigationContainer.cleanup();
-							$groupContainer.hide().promise().done(function () {
-								TYPO3.Backend.doLayout();
-							});
-						}
-					});
-					me.initializeEvents();
+				var collapsedMainMenuItems = me.getCollapsedMainMenuItems();
+				$.each(collapsedMainMenuItems, function (key, itm) {
+					if (itm !== true) {
+						return;
+					}
+					var $group = $('#' + key);
+					if ($group.length > 0) {
+						var $groupContainer = $group.find('.modulemenu-group-container');
+						$group.addClass('collapsed').removeClass('expanded');
+						TYPO3.Backend.NavigationContainer.cleanup();
+						$groupContainer.hide().promise().done(function () {
+							TYPO3.Backend.doLayout();
+						});
+					}
 				});
+				me.initializeEvents();
 			},
 
 			initializeEvents: function () {
@@ -139,9 +138,9 @@ require(
 					$('.scaffold').removeClass('scaffold-toolbar-expanded');
 				}
 
-				// @todo remove once we have a new state manager
-				Ext.state.Manager.set(
-					'typo3-module-menu',
+				// Persist collapsed state in the UC of the current user
+				Storage.Persistent.set(
+					'BackendComponents.States.typo3-module-menu',
 					{
 						collapsed: collapse
 					}
