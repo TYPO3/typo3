@@ -21,15 +21,6 @@ to match your system):
 
    /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler
 
-If the "cli\_scheduler" user was not created, this will result in the
-following error:
-
-::
-
-   ERROR: No backend user named "_cli_scheduler" was found! [Database: my_typo3_database]
-
-If the user exists, you should see nothing, as the Scheduler doesn't
-give any visual feedback while running.
 
 .. _options:
 
@@ -43,7 +34,7 @@ To run a specific scheduler task you need to provide the uid of the task:
 
 ::
 
-   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler -i 8
+   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler --task=8
 
 The example will trigger the task with uid 8.
 
@@ -51,6 +42,6 @@ To run a task even if it is disabled, you need to provide the force option
 
 ::
 
-   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler -i 8 -f
+   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler --task=8 -f
 
 This will also run the task with uid 8 if it is disabled.

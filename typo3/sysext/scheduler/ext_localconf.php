@@ -3,9 +3,11 @@ defined('TYPO3_MODE') or die();
 
 // Register the Scheduler as a possible key for CLI calls
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'] = [
-    function () {
-        $schedulerCliController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerCliController::class);
-        $schedulerCliController->run();
+    function ($input, $output) {
+        $app = new \Symfony\Component\Console\Application('TYPO3 Scheduler', TYPO3_version);
+        $app->add(new \TYPO3\CMS\Scheduler\Command\SchedulerCommand('scheduler'));
+        $app->setDefaultCommand('scheduler');
+        $app->run($input, $output);
     }
 ];
 
