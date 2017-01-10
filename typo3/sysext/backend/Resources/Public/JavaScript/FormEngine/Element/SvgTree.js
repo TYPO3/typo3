@@ -16,19 +16,6 @@
  */
 define(['jquery', 'd3'], function ($, d3) {
     'use strict';
-    /**
-     * Returns descendants of the current node in the pre-order traversal, such that a given node is only visited
-     * after all of its ancestors have already been visited. In other words "children before siblings"
-     *
-     * @returns {Node[]}
-     */
-    d3.hierarchy.prototype.descendantsBefore = function () {
-        var nodes = [];
-        this.eachBefore(function (node) {
-            nodes.push(node);
-        });
-        return nodes;
-    };
 
     /**
      * @constructor
@@ -81,13 +68,6 @@ define(['jquery', 'd3'], function ($, d3) {
          * @type {Selection}
          */
         this.linksContainer = null;
-
-        /**
-         * Tree root node
-         *
-         * @type {Node}
-         */
-        this.rootNode = null;
 
         /**
          *
@@ -590,7 +570,7 @@ define(['jquery', 'd3'], function ($, d3) {
             if (this.settings.exclusiveNodesIdentifiers.length && node.checked === false) {
                 if (exclusiveKeys.indexOf('' + node.identifier) > -1) {
                     // this key is exclusive, so uncheck all others
-                    this.rootNode.each(function (node) {
+                    this.nodes.forEach(function (node) {
                         if (node.checked === true) {
                             node.checked = false;
                             me.dispatch.call('nodeSelectedAfter', me, node);

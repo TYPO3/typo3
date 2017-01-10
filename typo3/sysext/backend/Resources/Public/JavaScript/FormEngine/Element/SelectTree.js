@@ -114,23 +114,6 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
     };
 
     /**
-     * Does not modify the data, just checking with early return
-     *
-     * @param {Node} node
-     */
-    SelectTree.prototype.hasCheckedOrIndeterminateChildren = function (node) {
-        if (!node.children) {
-            return false;
-        }
-
-        return node.children.some(function (child) {
-            if (child.checked || child.indeterminate) {
-                return true;
-            }
-        });
-    };
-
-    /**
      * Updates the indeterminate state for ancestors of the current node
      *
      * @param {Node} node
@@ -138,9 +121,12 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
     SelectTree.prototype.updateAncestorsIndetermineState = function (node) {
         var me = this;
         //foreach ancestor except node itself
+        var indeterminate = false;
         node.parents.forEach(function (index) {
             var n = me.nodes[index];
-            n.indeterminate = (node.checked || node.indeterminate) ? true : me.hasCheckedOrIndeterminateChildren(n);
+            n.indeterminate = (node.checked || node.indeterminate || indeterminate);
+            // check state for the next level
+            indeterminate = (node.checked || node.indeterminate || n.checked || n.indeterminate)
         });
     };
 
@@ -164,17 +150,14 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
     /**
      * Sets indeterminate state for a subtree. It relays on the tree to have indeterminate state reset beforehand.
      *
-     * @param {Node} node
+     * @param {Array} nodes
      */
-    SelectTree.prototype.calculateIndeterminate = function (node) {
-        if (!node.children) {
-            node.indeterminate = false;
-            return;
-        }
-
-        node.eachAfter(function (n) {
-            if ((n.checked || n.indeterminate) && n.parent) {
-                n.parent.indeterminate = true;
+    SelectTree.prototype.calculateIndeterminate = function (nodes) {
+        nodes.forEach(function(node) {
+            if ((node.checked || node.indeterminate) && node.parents && node.parents.length > 0) {
+                node.parents.forEach(function(parentNodeIndex) {
+                    nodes[parentNodeIndex].indeterminate = true;
+                })
             }
         })
     };
@@ -186,6 +169,8 @@ define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, Svg
      */
     SelectTree.prototype.nodeSelectedAfter = function (node) {
         this.updateAncestorsIndetermineState(node);
+        // check all nodes again, to ensure correct display of indeterminate state
+        this.calculateIndeterminate(this.nodes);
         this.saveCheckboxes(node);
     };
 
