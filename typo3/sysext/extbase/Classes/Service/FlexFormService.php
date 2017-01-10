@@ -93,7 +93,8 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
                         $currentNode = &$currentNode[$nodeKeyParts[$i]];
                     }
                     $newNode = [next($nodeKeyParts) => $nodeValue];
-                    $currentNode = $this->walkFlexFormNode($newNode, $valuePointer);
+                    $subVal = $this->walkFlexFormNode($newNode, $valuePointer);
+                    $currentNode[key($subVal)] = current($subVal);
                 } elseif (is_array($nodeValue)) {
                     if (array_key_exists($valuePointer, $nodeValue)) {
                         $return[$nodeKey] = $nodeValue[$valuePointer];

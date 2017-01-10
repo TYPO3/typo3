@@ -67,6 +67,12 @@ class FlexFormServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 									<field index="bum">
 										<value index="vDEF">Bum1-Value</value>
 									</field>
+									<field index="dot.one">
+										<value index="vDEF">dot.one-Value</value>
+									</field>
+									<field index="dot.two">
+										<value index="vDEF">dot.two-Value</value>
+									</field>
 								</el>
 							</itemType>
 							<itemType index="_TOGGLE">0</itemType>
@@ -97,7 +103,11 @@ class FlexFormServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'bar' => [
                     1 => [
                         'baz' => 'Baz1-Value',
-                        'bum' => 'Bum1-Value'
+                        'bum' => 'Bum1-Value',
+                        'dot' => [
+                            'one' => 'dot.one-Value',
+                            'two' => 'dot.two-Value',
+                        ],
                     ],
                     2 => [
                         'baz' => 'Baz2-Value',
