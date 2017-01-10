@@ -810,10 +810,13 @@ class ClickMenu
             . $this->frameLocation($loc . '.document') . '.search)+'
             . GeneralUtility::quoteJSvalue(
                 '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode()
-            );
+            )
+            . ';';
 
         if ($table === 'pages') {
-            $jsCode .= 'top.nav.refresh.defer(500, top.nav);';
+            $jsCode .= 'if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer.PageTree) {';
+            $jsCode .= '     top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);';
+            $jsCode .= '}';
         }
 
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
@@ -1093,7 +1096,7 @@ class ClickMenu
         return $this->linkItem(
             $this->label($type),
             $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render(),
-            $editOnClick . 'top.nav.refresh();'
+            $editOnClick
         );
     }
 
@@ -1184,7 +1187,7 @@ class ClickMenu
         $jsCode = $loc . '.location.href='
             . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=')
             . '+top.rawurlencode(' . $this->frameLocation($loc . '.document')
-            . '.pathname+' . $this->frameLocation($loc . '.document') . '.search); top.nav.refresh();';
+            . '.pathname+' . $this->frameLocation($loc . '.document') . '.search);';
 
         if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $title = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
@@ -1295,7 +1298,7 @@ class ClickMenu
             GeneralUtility::quoteJSvalue(
                 '&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' .
                 $this->backendUser->veriCode()
-            ) . ';};top.nav.refresh();';
+            ) . ';};';
         return $this->linkItem(
             $this->label($action . 'Page_' . $into),
             $this->iconFactory->getIcon('actions-document-paste-' . $into, Icon::SIZE_SMALL)->render(),
@@ -1321,7 +1324,7 @@ class ClickMenu
             GeneralUtility::quoteJSvalue(
                 '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' .
                 $this->backendUser->veriCode()
-            ) . ';};top.nav.refresh();';
+            ) . ';};';
         return $this->linkItem(
             $this->label($action . 'Folder_into'),
             $this->iconFactory->getIcon('apps-pagetree-drag-move-into', Icon::SIZE_SMALL)->render(),
