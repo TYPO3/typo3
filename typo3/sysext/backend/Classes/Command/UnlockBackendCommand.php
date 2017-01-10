@@ -14,33 +14,25 @@ namespace TYPO3\CMS\Backend\Command;
  * The TYPO3 project - inspiring people to share!
  */
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Core function for locking the TYPO3 Backend
+ * Core function for unlocking the TYPO3 Backend
  */
-class LockBackendCommand extends Command
+class UnlockBackendCommand extends Command
 {
     /**
      * Configure the command by defining the name, options and arguments
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Lock the TYPO3 Backend')
-            ->addArgument(
-                'redirect',
-                InputArgument::OPTIONAL,
-                'If set, then the TYPO3 Backend will redirect to the locking state (only used when locking the TYPO3 Backend'
-            );
+        $this->setDescription('Unlock the TYPO3 Backend');
     }
 
     /**
-     * Executes the command for adding the lock file
+     * Executes the command for removing the lock file
      *
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -52,18 +44,15 @@ class LockBackendCommand extends Command
         $io->title($this->getDescription());
         $lockFile = $this->getLockFileName();
         if (@is_file($lockFile)) {
-            $io->note('A lock file already exists. Overwriting it.');
-        }
-        $output = 'Wrote lock file to "' . $lockFile . '"';
-        if ($input->getArgument('redirect')) {
-            $lockFileContent = $input->getArgument('redirect');
-            $output .= LF . 'with content "' . $lockFileContent . '".';
+            unlink($lockFile);
+            if (@is_file($lockFile)) {
+                $io->caution('Could not remove lock file "' . $lockFile . '"!');
+            } else {
+                $io->success('Removed lock file "' . $lockFile . '".');
+            }
         } else {
-            $lockFileContent = '';
-            $output .= '.';
+            $io->note('No lock file "' . $lockFile . '" was found.' . LF . 'Hence no lock can be removed.');
         }
-        GeneralUtility::writeFile($lockFile, $lockFileContent);
-        $io->success($output);
     }
 
     /**

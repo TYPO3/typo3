@@ -18,6 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -49,6 +50,8 @@ class ReferenceIndexUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        Bootstrap::getInstance()->initializeBackendAuthentication();
+
         $isTestOnly = $input->getOption('check');
         $isSilent = $output->getVerbosity() !== OutputInterface::VERBOSITY_QUIET;
 
