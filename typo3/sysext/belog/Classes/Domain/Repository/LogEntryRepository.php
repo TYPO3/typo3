@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sys log entry repository
@@ -78,7 +81,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($constraint->getAction() > 0) {
             $queryConstraints[] = $query->equals('type', $constraint->getAction());
         } elseif ($constraint->getAction() == -1) {
-            $queryConstraints[] = $query->in('error', [-1, 1, 2, 3]);
+            $queryConstraints[] = $query->equals('type', 5);
         }
         // Start / endtime handling: The timestamp calculation was already done
         // in the controller, since we need those calculated values in the view as well.
@@ -152,6 +155,28 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         } elseif ($userOrGroup === '-1') {
             $queryConstraints[] = $query->equals('userid', (int)$GLOBALS['BE_USER']->user['uid']);
         }
+    }
+
+    /**
+     * Deletes all messages which have the same message details
+     *
+     * @param LogEntry $logEntry
+     * @return int
+     */
+    public function deleteByMessageDetails(LogEntry $logEntry): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_log');
+        $constraints = [];
+        $constraints[] = $queryBuilder->expr()->eq('details', $queryBuilder->createNamedParameter($logEntry->getDetails()));
+        // If the detailsNo is 11 or 12 we got messages that are heavily using placeholders. In this case
+        // we need to compare both the message and the actual log data to not remove too many log entries.
+        if (GeneralUtility::inList('11,12', $logEntry->getDetailsNumber())) {
+            $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogData()));
+        }
+        return $queryBuilder->delete('sys_log')
+            ->where(...$constraints)
+            ->execute();
     }
 
     /**

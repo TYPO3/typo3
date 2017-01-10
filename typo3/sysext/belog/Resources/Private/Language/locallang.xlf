@@ -369,6 +369,21 @@
 			<trans-unit id="systemmessage.errorsInPeriod">
 				<source><![CDATA[We have found %1$d errors. Please check your <a href="%2$s">system log</a>.]]></source>
 			</trans-unit>
+			<trans-unit id="actions">
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="actions.delete">
+				<source>Delete similar errors</source>
+			</trans-unit>
+			<trans-unit id="actions.deleteWarnings">
+				<source>Delete similar warnings</source>
+			</trans-unit>
+			<trans-unit id="actions.delete.message">
+				<source>Total entries deleted: %1$d</source>
+			</trans-unit>
+			<trans-unit id="actions.delete.noRowFound">
+				<source>Log entry could not be found.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
