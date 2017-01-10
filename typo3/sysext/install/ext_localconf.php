@@ -45,3 +45,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\In
     = \TYPO3\CMS\Install\Updates\FrontendUserImageUpdateWizard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\DbalAndAdodbExtractionUpdate::class]
     = \TYPO3\CMS\Install\Updates\DbalAndAdodbExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class]
+    = \TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class;

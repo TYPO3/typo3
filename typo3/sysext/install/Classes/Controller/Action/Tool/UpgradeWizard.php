@@ -23,7 +23,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Install\Status\ErrorStatus;
+use TYPO3\CMS\Install\Status\NoticeStatus;
+use TYPO3\CMS\Install\Status\OkStatus;
+use TYPO3\CMS\Install\Status\StatusInterface;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
+use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 
 /**
  * Handle update wizards
@@ -77,7 +81,7 @@ class UpgradeWizard extends Action\AbstractAction
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = \TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class;
             }
         } catch (StatementException $exception) {
-            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+            /** @var $message StatusInterface */
             $message = GeneralUtility::makeInstance(ErrorStatus::class);
             $message->setTitle('SQL error');
             $message->setMessage($exception->getMessage());
@@ -94,10 +98,22 @@ class UpgradeWizard extends Action\AbstractAction
             $actionMessages[] = $this->performUpdate();
             $this->view->assign('updateAction', 'performUpdate');
         } elseif (isset($this->postValues['set']['recheckWizards'])) {
-            $actionMessages[] = $this->recheckWizards();
+            $actionMessages[] = $this->recheckWizardsAndRowUpdaters();
+            if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
+                /** @var $message StatusInterface */
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
+                $message->setTitle('No update wizards registered');
+                $actionMessages[] = $message;
+            }
             $this->listUpdates();
             $this->view->assign('updateAction', 'listUpdates');
         } else {
+            if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
+                /** @var $message StatusInterface */
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
+                $message->setTitle('No update wizards registered');
+                $actionMessages[] = $message;
+            }
             $this->listUpdates();
             $this->view->assign('updateAction', 'listUpdates');
         }
@@ -114,69 +130,83 @@ class UpgradeWizard extends Action\AbstractAction
      */
     protected function listUpdates()
     {
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
-            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
-            $message->setTitle('No update wizards registered');
-            return $message;
-        }
-
         $availableUpdates = [];
+        $markedWizardsDoneInRegistry = [];
+        $markedWizardsDoneByCallingShouldRenderWizard = [];
+        $registry = GeneralUtility::makeInstance(Registry::class);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
             $updateObject = $this->getUpdateObjectInstance($className, $identifier);
-            if ($updateObject->shouldRenderWizard()) {
-                // $explanation is changed by reference in Update objects!
-                $explanation = '';
-                $updateObject->checkForUpdate($explanation);
-                $availableUpdates[$identifier] = [
+            $markedDoneInRegistry = $registry->get('installUpdate', $className, false);
+            if ($markedDoneInRegistry) {
+                $markedWizardsDoneInRegistry[] = [
                     'identifier' => $identifier,
                     'title' => $updateObject->getTitle(),
-                    'explanation' => $explanation,
-                    'renderNext' => false,
                 ];
-                if ($identifier === 'initialUpdateDatabaseSchema') {
-                    $availableUpdates['initialUpdateDatabaseSchema']['renderNext'] = $this->needsInitialUpdateDatabaseSchema;
-                    // initialUpdateDatabaseSchema is always the first update
-                    // we stop immediately here as the remaining updates may
-                    // require the new fields to be present in order to avoid SQL errors
-                    break;
-                } elseif ($identifier === 'finalUpdateDatabaseSchema') {
-                    // Okay to check here because finalUpdateDatabaseSchema is last element in array
-                    $availableUpdates['finalUpdateDatabaseSchema']['renderNext'] = count($availableUpdates) === 1;
-                } elseif (!$this->needsInitialUpdateDatabaseSchema && $updateObject->shouldRenderNextButton()) {
-                    // There are Updates that only show text and don't want to be executed
-                    $availableUpdates[$identifier]['renderNext'] = true;
+            } else {
+                if ($updateObject->shouldRenderWizard()) {
+                    // $explanation is changed by reference in Update objects!
+                    $explanation = '';
+                    $updateObject->checkForUpdate($explanation);
+                    $availableUpdates[$identifier] = [
+                        'identifier' => $identifier,
+                        'title' => $updateObject->getTitle(),
+                        'explanation' => $explanation,
+                        'renderNext' => false,
+                    ];
+                    if ($identifier === 'initialUpdateDatabaseSchema') {
+                        $availableUpdates['initialUpdateDatabaseSchema']['renderNext'] = $this->needsInitialUpdateDatabaseSchema;
+                        // initialUpdateDatabaseSchema is always the first update
+                        // we stop immediately here as the remaining updates may
+                        // require the new fields to be present in order to avoid SQL errors
+                        break;
+                    } elseif ($identifier === 'finalUpdateDatabaseSchema') {
+                        // Okay to check here because finalUpdateDatabaseSchema is last element in array
+                        $availableUpdates['finalUpdateDatabaseSchema']['renderNext'] = count($availableUpdates) === 1;
+                    } elseif (!$this->needsInitialUpdateDatabaseSchema && $updateObject->shouldRenderNextButton()) {
+                        // There are Updates that only show text and don't want to be executed
+                        $availableUpdates[$identifier]['renderNext'] = true;
+                    }
+                } else {
+                    $markedWizardsDoneByCallingShouldRenderWizard[] = [
+                        'identifier' => $identifier,
+                        'title' => $updateObject->getTitle(),
+                    ];
                 }
             }
         }
 
-        $this->view->assign('availableUpdates', $availableUpdates);
-
-        // compute done wizards for statistics
-        $wizardsDone = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
-            /** @var AbstractUpdate $updateObject */
-            $updateObject = $this->getUpdateObjectInstance($className, $identifier);
-            if ($updateObject->shouldRenderWizard() !== true) {
-                $doneWizard = [
-                    'identifier' => $identifier,
-                    'title'      => $updateObject->getTitle()
-                ];
-                $wizardsDone[] = $doneWizard;
+        // List of row updaters marked as done from "DatabaseRowsUpdateWizard"
+        $rowUpdatersDoneClassNames = GeneralUtility::makeInstance(Registry::class)->get('installUpdateRows', 'rowUpdatersDone', []);
+        $rowUpdatersDone = [];
+        foreach ($rowUpdatersDoneClassNames as $rowUpdaterClassName) {
+            /** @var RowUpdaterInterface $rowUpdater */
+            $rowUpdater = GeneralUtility::makeInstance($rowUpdaterClassName);
+            if (!$rowUpdater instanceof RowUpdaterInterface) {
+                throw new \RuntimeException(
+                    'Row updater must implement RowUpdaterInterface',
+                    1484152906
+                );
             }
+            $rowUpdatersDone[] = [
+                'identifier' => $rowUpdaterClassName,
+                'title' => $rowUpdater->getTitle(),
+            ];
         }
-        $this->view->assign('wizardsDone', $wizardsDone);
 
-        $wizardsTotal = (count($wizardsDone) + count($availableUpdates));
+        $wizardsTotal = (count($markedWizardsDoneInRegistry) + count($markedWizardsDoneByCallingShouldRenderWizard) + count($availableUpdates));
+        $percentageDone = floor(($wizardsTotal - count($availableUpdates)) * 100 / $wizardsTotal);
+
+        $this->view->assign('wizardsDone', $markedWizardsDoneInRegistry);
+        $this->view->assign('rowUpdatersDone', $rowUpdatersDone);
+        $this->view->assign('availableUpdates', $availableUpdates);
         $this->view->assign('wizardsTotal', $wizardsTotal);
-
-        $this->view->assign('wizardsPercentageDone', floor(($wizardsTotal - count($availableUpdates)) * 100 / $wizardsTotal));
+        $this->view->assign('wizardsPercentageDone', $percentageDone);
     }
 
     /**
      * Get user input of update wizard
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return StatusInterface
      */
     protected function getUserInputForUpdate()
     {
@@ -197,30 +227,47 @@ class UpgradeWizard extends Action\AbstractAction
 
         $this->view->assign('updateData', $updateData);
 
-        /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+        /** @var $message StatusInterface */
+        $message = GeneralUtility::makeInstance(OkStatus::class);
         $message->setTitle('Show wizard options');
         return $message;
     }
 
     /**
-     * Rechecks whether the chosen wizards should be executed
+     * Rechecks the chosen wizards and row updaters to mark them as "was not executed" again.
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return StatusInterface
      */
-    protected function recheckWizards()
+    protected function recheckWizardsAndRowUpdaters()
     {
-        if (empty($this->postValues['values']['recheck'])) {
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\NoticeStatus::class);
+        if (empty($this->postValues['values']['recheck']) && empty($this->postValues['values']['recheckRowUpdater'])) {
+            $message = GeneralUtility::makeInstance(NoticeStatus::class);
             $message->setTitle('No wizards selected to recheck');
             return $message;
         }
-        foreach ($this->postValues['values']['recheck'] as $wizardIdentifier => $value) {
-            $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
-            $updateObject = $this->getUpdateObjectInstance($className, $wizardIdentifier);
-            GeneralUtility::makeInstance(Registry::class)->set('installUpdate', get_class($updateObject), 0);
+        $registry = GeneralUtility::makeInstance(Registry::class);
+        if (!empty($this->postValues['values']['recheck'])) {
+            foreach ($this->postValues['values']['recheck'] as $wizardIdentifier => $value) {
+                $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
+                $updateObject = $this->getUpdateObjectInstance($className, $wizardIdentifier);
+                $registry->set('installUpdate', get_class($updateObject), 0);
+            }
         }
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+        if (!empty($this->postValues['values']['recheckRowUpdater'])) {
+            $rowUpdatersToRecheck = $this->postValues['values']['recheckRowUpdater'];
+            $rowUpdatersMarkedAsDone = $registry->get('installUpdateRows', 'rowUpdatersDone', []);
+            foreach ($rowUpdatersToRecheck as $rowUpdaterToReCheckClassName => $value) {
+                foreach ($rowUpdatersMarkedAsDone as $rowUpdaterMarkedAsDonePosition => $rowUpdaterMarkedAsDone) {
+                    if ($rowUpdaterMarkedAsDone === $rowUpdaterToReCheckClassName) {
+                        unset($rowUpdatersMarkedAsDone[$rowUpdaterMarkedAsDonePosition]);
+                        break;
+                    }
+                }
+            }
+            $registry->set('installUpdateRows', 'rowUpdatersDone', $rowUpdatersMarkedAsDone);
+        }
+
+        $message = GeneralUtility::makeInstance(OkStatus::class);
         $message->setTitle('Successfully rechecked');
         return $message;
     }
@@ -229,7 +276,7 @@ class UpgradeWizard extends Action\AbstractAction
      * Perform update of a specific wizard
      *
      * @throws \TYPO3\CMS\Install\Exception
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return StatusInterface
      */
     protected function performUpdate()
     {
@@ -247,8 +294,8 @@ class UpgradeWizard extends Action\AbstractAction
         // $wizardInputErrorMessage is given as reference to wizard object!
         $wizardInputErrorMessage = '';
         if (method_exists($updateObject, 'checkUserInput') && !$updateObject->checkUserInput($wizardInputErrorMessage)) {
-            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            /** @var $message StatusInterface */
+            $message = GeneralUtility::makeInstance(ErrorStatus::class);
             $message->setTitle('Input parameter broken');
             $message->setMessage($wizardInputErrorMessage ?: 'Something went wrong!');
             $wizardData['wizardInputBroken'] = true;
@@ -266,12 +313,12 @@ class UpgradeWizard extends Action\AbstractAction
             $performResult = $updateObject->performUpdate($databaseQueries, $customOutput);
 
             if ($performResult) {
-                /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+                /** @var $message StatusInterface */
+                $message = GeneralUtility::makeInstance(OkStatus::class);
                 $message->setTitle('Update successful');
             } else {
-                /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                /** @var $message StatusInterface */
+                $message = GeneralUtility::makeInstance(ErrorStatus::class);
                 $message->setTitle('Update failed!');
                 if ($customOutput) {
                     $message->setMessage($customOutput);

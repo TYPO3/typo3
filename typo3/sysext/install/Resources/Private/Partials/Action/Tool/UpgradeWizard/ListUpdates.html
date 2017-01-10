@@ -44,7 +44,13 @@
 <f:if condition="{wizardsDone}">
 	<form method="post">
 		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-		<h2>Wizards done</h2>
+		<h2>Wizards marked as done</h2>
+		<p>
+			Some wizards fully automatically check whether they should be executed, while others just set a flag in
+			the system registry if they have been executed once. This "I have been executed" flag can be reset by
+			selecting specific wizards from the list below, so the according wizards show up as possible upgrade
+			wizards again.
+		</p>
 		<table class="table table-striped">
 			<tbody>
 			<f:for each="{wizardsDone}" as="wizardDone">
@@ -54,6 +60,16 @@
 					</td>
 					<td>
 						{wizardDone.title}
+					</td>
+				</tr>
+			</f:for>
+			<f:for each="{rowUpdatersDone}" as="rowUpdaterDone">
+				<tr>
+					<td>
+						<input id="t3-recheck-{rowUpdaterDone.identifier}" type="checkbox" name="install[values][recheckRowUpdater][{rowUpdaterDone.identifier}]" value="1" />
+					</td>
+					<td>
+						Row updater: {rowUpdaterDone.title}
 					</td>
 				</tr>
 			</f:for>

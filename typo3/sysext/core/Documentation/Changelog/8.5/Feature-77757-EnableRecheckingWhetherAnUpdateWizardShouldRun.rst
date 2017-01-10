@@ -10,7 +10,7 @@ Description
 ===========
 
 It is now possible to reset the upgrade wizards marked as done. In Install Tool you
-will find a list of wizards that has been marked as done, additionally with a
+will find a list of wizards that have been marked as done, additionally with a
 checkbox for each to reset their status. Then the wizard will test whether
 it needs to be executed again.
 
