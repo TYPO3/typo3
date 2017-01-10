@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
@@ -465,6 +466,93 @@ class ExpressionBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\
         $this->assertSame(
             'COUNT("tableName"."fieldName") AS "anAlias"',
             $this->subject->count('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function trimQuotesIdentifierWithDefaultValues()
+    {
+        $platform = new MockPlatform();
+        $this->connectionProphet->getDatabasePlatform(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($platform);
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())
+            ->shouldBeCalled()
+            ->will(
+                function ($args) use ($platform) {
+                    return $platform->quoteIdentifier($args[0]);
+                }
+            );
+
+        $this->assertSame(
+            'TRIM("tableName"."fieldName")',
+            $this->subject->trim('tableName.fieldName')
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function trimQuotesIdentifierDataProvider()
+    {
+        return  [
+            'trim leading character' => [
+                AbstractPlatform::TRIM_LEADING,
+                'x',
+                'TRIM(LEADING "x" FROM "tableName"."fieldName")'
+            ],
+            'trim trailing character' => [
+                AbstractPlatform::TRIM_TRAILING,
+                'x',
+                'TRIM(TRAILING "x" FROM "tableName"."fieldName")',
+            ],
+            'trim character' => [
+                AbstractPlatform::TRIM_BOTH,
+                'x',
+                'TRIM(BOTH "x" FROM "tableName"."fieldName")',
+            ],
+            'trim space' => [
+                AbstractPlatform::TRIM_BOTH,
+                ' ',
+                'TRIM(BOTH " " FROM "tableName"."fieldName")',
+            ]
+        ];
+    }
+
+    /**
+     * @param int $position
+     * @param string $char
+     * @param string $expected
+     *
+     * @test
+     * @dataProvider trimQuotesIdentifierDataProvider
+     */
+    public function trimQuotesIdentifier(int $position, string $char, string $expected)
+    {
+        $platform = new MockPlatform();
+        $this->connectionProphet->getDatabasePlatform(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($platform);
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())
+            ->shouldBeCalled()
+            ->will(
+                function ($args) use ($platform) {
+                    return $platform->quoteIdentifier($args[0]);
+                }
+            );
+        $this->connectionProphet->quote(Argument::cetera())
+            ->shouldBeCalled()
+            ->will(
+                function ($args) {
+                    return '"' . $args[0] . '"';
+                }
+            );
+
+        $this->assertSame(
+            $expected,
+            $this->subject->trim('tableName.fieldName', $position, $char)
         );
     }
 

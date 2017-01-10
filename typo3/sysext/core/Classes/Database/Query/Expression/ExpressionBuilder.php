@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Database\Query\Expression;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 
 /**
@@ -435,7 +436,7 @@ class ExpressionBuilder
     }
 
     /**
-     * Create a SQL aggregrate function.
+     * Create a SQL aggregate function.
      *
      * @param string $aggregateName
      * @param string $fieldName
@@ -455,6 +456,23 @@ class ExpressionBuilder
         }
 
         return $aggregateSQL;
+    }
+
+    /**
+     * Creates a TRIM expression for the given field.
+     *
+     * @param string $fieldName Field name to build expression for
+     * @param int $position Either constant out of LEADING, TRAILING, BOTH
+     * @param string $char Character to be trimmed (defaults to space)
+     * @return string
+     */
+    public function trim(string $fieldName, int $position = AbstractPlatform::TRIM_UNSPECIFIED, string $char = null)
+    {
+        return $this->connection->getDatabasePlatform()->getTrimExpression(
+            $this->connection->quoteIdentifier($fieldName),
+            $position,
+            ($char === null ? false : $this->literal($char))
+        );
     }
 
     /**
