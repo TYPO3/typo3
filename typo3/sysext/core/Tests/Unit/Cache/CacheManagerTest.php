@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
@@ -418,5 +419,78 @@ class CacheManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1464557160);
         $manager->getCache($cacheIdentifier);
+    }
+
+    /**
+     * @test
+     */
+    public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
+        $cacheIdentifier = 'aTest';
+
+        $cacheGroups = [
+            'group1' => [$cacheIdentifier],
+            'group2' => [$cacheIdentifier],
+        ];
+        $manager->_set('cacheGroups', $cacheGroups);
+
+        $frontend = $this->prophesize(FrontendFixture::class);
+
+        $caches = [
+            $cacheIdentifier => $frontend->reveal()
+        ];
+        $manager->_set('caches', $caches);
+
+        $frontend->flushByTags(Argument::any())->shouldNotBeCalled();
+
+        $configuration = [
+            $cacheIdentifier => [
+                'frontend' => $frontend,
+                'backend' => BackendFixture::class,
+                'options' => [],
+                'groups' => ['group1', 'group2']
+            ],
+        ];
+        $manager->setCacheConfigurations($configuration);
+        $manager->flushCachesInGroupByTags('group2', []);
+    }
+
+    /**
+     * @test
+     */
+    public function flushCachesInGroupByTagsDeletesByTag()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
+        $cacheIdentifier = 'aTest';
+
+        $cacheGroups = [
+            'group1' => [$cacheIdentifier],
+            'group2' => [$cacheIdentifier],
+        ];
+        $manager->_set('cacheGroups', $cacheGroups);
+
+        $frontend = $this->prophesize(FrontendFixture::class);
+
+        $caches = [
+            $cacheIdentifier => $frontend->reveal()
+        ];
+        $manager->_set('caches', $caches);
+
+        $tags = ['tag1', 'tag2'];
+        $frontend->flushByTags($tags)->shouldBeCalled();
+
+        $configuration = [
+            $cacheIdentifier => [
+                'frontend' => $frontend,
+                'backend' => BackendFixture::class,
+                'options' => [],
+                'groups' => ['group1', 'group2']
+            ],
+        ];
+        $manager->setCacheConfigurations($configuration);
+        $manager->flushCachesInGroupByTags('group2', $tags);
     }
 }
