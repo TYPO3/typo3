@@ -313,9 +313,12 @@ class LocalizationRepository
      * @param int $language The uid of the language record in sys_language
      * @param string $andWhereClause Optional additional WHERE clause (default: '')
      * @return mixed Multidimensional array with selected records; if none exist, FALSE is returned
+     *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getRecordLocalization($table, $uid, $language, $andWhereClause = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         $recordLocalization = false;
 
         // Pages still stores translations in the pages_language_overlay table, all other tables store in themself
@@ -355,9 +358,12 @@ class LocalizationRepository
      * @param int $sourceLanguage Language of origin
      * @param int $destinationLanguage Language of localization
      * @return int uid of record after which the localized record should be inserted
+     *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getPreviousLocalizedRecordUid($table, $uid, $pid, $sourceLanguage, $destinationLanguage)
     {
+        GeneralUtility::logDeprecatedFunction();
         $previousLocalizedRecordUid = $uid;
         if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
             $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
