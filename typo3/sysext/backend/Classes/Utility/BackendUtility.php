@@ -2093,7 +2093,7 @@ class BackendUtility
             $l10n_mode = isset($GLOBALS['TCA'][$originalTable]['columns'][$field]['l10n_mode'])
                 ? $GLOBALS['TCA'][$originalTable]['columns'][$field]['l10n_mode']
                 : '';
-            if ($l10n_mode === 'exclude' || ($l10n_mode === 'mergeIfNotBlank' && trim($row[$field]) === '')) {
+            if ($l10n_mode === 'exclude') {
                 $row[$field] = $originalRow[$field];
             }
         }

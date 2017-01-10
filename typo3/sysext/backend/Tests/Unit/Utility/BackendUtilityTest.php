@@ -913,35 +913,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
     public function replaceL10nModeFieldsReplacesFieldsDataProvider()
     {
         return [
-            'same table: mergeIfNotBlank' => [
-                'foo',
-                [
-                    'origUid' => 1,
-                    'field2' => 'fdas',
-                    'field3' => 'trans',
-                ],
-                [
-                    'foo' => [
-                        'ctrl' => [
-                            'transOrigPointerField' => 'origUid'
-                        ],
-                        'columns' => [
-                            'field2' => ['l10n_mode' => 'mergeIfNotBlank'],
-                            'field3' => ['l10n_mode' => 'mergeIfNotBlank']
-                        ]
-                    ]
-                ],
-                [
-                    'origUid' => 0,
-                    'field2' => 'basic',
-                    'field3' => '',
-                ],
-                [
-                    'origUid' => 1,
-                    'field2' => 'fdas',
-                    'field3' => 'trans',
-                ]
-            ],
             'same table: exclude' => [
                 'foo',
                 [

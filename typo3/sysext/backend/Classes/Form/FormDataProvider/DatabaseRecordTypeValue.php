@@ -108,7 +108,6 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                         // @todo: It might be necessary to fetch the value from default language record as well here,
                         // @todo: this was buggy in the "old" implementation and never worked. It was therefor left out here for now.
                         // @todo: To implement that, see if the foreign row is a localized overlay, fetch default and merge exclude
-                        // @todo: and mergeIfNotBlank if needed.
                         $recordTypeValue = $foreignRow[$foreignTableTypeField];
                     }
                 }
@@ -153,8 +152,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
 
     /**
      * If a localized row is handled, the field value of the default language record
-     * is used instead if tca is configured as "exclude" or "mergeIfNotBlank" with
-     * empty localized value.
+     * is used instead if tca is configured as "exclude" with empty localized value.
      *
      * @param array $result Main "$result" data array
      * @param string $field Field name to fetch value for
@@ -169,16 +167,8 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
             && $result['databaseRow'][$result['processedTca']['ctrl']['languageField']] > 0
             // l10n_mode for field is configured
             && !empty($result['processedTca']['columns'][$field]['l10n_mode'])
-            && (
-                // is exclude -> fall back to value of default record
-                $result['processedTca']['columns'][$field]['l10n_mode'] === 'exclude'
-                // is mergeIfNotBlank and own value is empty -> fall back to value of default record
-                || (
-                    $result['processedTca']['columns'][$field]['l10n_mode'] === 'mergeIfNotBlank'
-                    // 0 means "not empty"
-                    && $result['databaseRow'][$field] === ''
-                )
-            )
+            // is exclude -> fall back to value of default record
+            && $result['processedTca']['columns'][$field]['l10n_mode'] === 'exclude'
         ) {
             $value = $result['defaultLanguageRow'][$field];
         }

@@ -1989,6 +1989,25 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ],
                 ]
             ],
+            'remove l10n_mode mergeIfNotBlank' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'l10n_mode' => 'mergeIfNotBlank',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                            ],
+                        ],
+                    ],
+                ]
+            ],
         ];
     }
 

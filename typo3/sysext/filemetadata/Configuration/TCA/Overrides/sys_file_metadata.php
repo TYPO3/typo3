@@ -270,7 +270,6 @@ $tca = [
         ],
         'location_country' => [
             'exclude' => true,
-            'l10n_mode' => 'mergeIfNotBlank',
             'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.location_country',
             'config' => [
@@ -281,7 +280,6 @@ $tca = [
         ],
         'location_region' => [
             'exclude' => true,
-            'l10n_mode' => 'mergeIfNotBlank',
             'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.location_region',
             'config' => [
@@ -292,7 +290,6 @@ $tca = [
         ],
         'location_city' => [
             'exclude' => true,
-            'l10n_mode' => 'mergeIfNotBlank',
             'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.location_city',
             'config' => [

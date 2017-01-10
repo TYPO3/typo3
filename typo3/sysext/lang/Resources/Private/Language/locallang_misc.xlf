@@ -288,9 +288,6 @@
 			<trans-unit id="localizeAllRecords">
 				<source>Localize all records</source>
 			</trans-unit>
-			<trans-unit id="localizeMergeIfNotBlank">
-				<source>The value of the default language will be used if this field is left empty in the translation.</source>
-			</trans-unit>
 			<trans-unit id="synchronizeWithOriginalLanguage">
 				<source>Synchronize with original language</source>
 			</trans-unit>

@@ -1731,8 +1731,6 @@ abstract class AbstractMenuContentObject
      *
      * Since the pages records used for menu rendering are overlaid by default,
      * the original 'shortcut' value is lost, if a translation did not define one.
-     * The behaviour in TSFE can be compared to the 'mergeIfNotBlank' feature, but
-     * it's hardcoded there and not related to the mentioned setting at all.
      *
      * @param array $page
      * @return array

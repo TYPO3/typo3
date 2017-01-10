@@ -950,6 +950,11 @@ class TcaMigration
                     $this->messages[] = 'The TCA setting \'noCopy\' was removed '
                         . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
                 }
+                if ($fieldConfig['l10n_mode'] === 'mergeIfNotBlank') {
+                    unset($fieldConfig['l10n_mode']);
+                    $this->messages[] = 'The TCA setting \'mergeIfNotBlank\' was removed '
+                        . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
+                }
             }
         }
         return $tca;

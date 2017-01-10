@@ -4623,7 +4623,7 @@ class DataHandler
                     $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
                 }
             } elseif (
-                ($fCfg['l10n_mode'] === 'exclude' || $fCfg['l10n_mode'] === 'mergeIfNotBlank')
+                ($fCfg['l10n_mode'] === 'exclude')
                     && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField']
                     && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']
              ) {

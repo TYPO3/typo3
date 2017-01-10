@@ -1933,17 +1933,6 @@ class PageRepository
 
         if ($l10n_mode === 'exclude') {
             $shouldFieldBeOverlaid = false;
-        } elseif ($l10n_mode === 'mergeIfNotBlank') {
-            $checkValue = $value;
-
-            // 0 values are considered blank when coming from a group field
-            if (empty($value) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'group') {
-                $checkValue = '';
-            }
-
-            if ($checkValue === [] || !is_array($checkValue) && trim($checkValue) === '') {
-                $shouldFieldBeOverlaid = false;
-            }
         }
 
         return $shouldFieldBeOverlaid;

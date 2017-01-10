@@ -358,9 +358,8 @@ class SingleFieldContainer extends AbstractContainer
                 /** @var IconFactory $iconFactory */
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 if ($defaultLanguageValue !== '') {
-                    $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
+                    $item .= '<div class="t3-form-original-language">'
                         . $iconFactory->getIcon($this->data['systemLanguageRows'][0]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
-                        . $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
                         . $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
                 }
                 $additionalPreviewLanguages = $this->data['additionalLanguageRows'];
@@ -373,35 +372,14 @@ class SingleFieldContainer extends AbstractContainer
                         true
                     );
                     if ($defaultLanguageValue !== '') {
-                        $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
+                        $item .= '<div class="t3-form-original-language">'
                             . $iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
-                            . $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
                             . $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
                     }
                 }
             }
         }
         return $item;
-    }
-
-    /**
-     * Renders an icon to indicate the way the translation and the original is merged (if this is relevant).
-     *
-     * If a field is defined as 'mergeIfNotBlank' this is useful information for an editor. He/she can leave the field blank and
-     * the original value will be used. Without this hint editors are likely to copy the contents even if it is not necessary.
-     *
-     * @param string $l10nMode Localization mode from TCA
-     * @return string
-     */
-    protected function getMergeBehaviourIcon($l10nMode)
-    {
-        $icon = '';
-        if ($l10nMode === 'mergeIfNotBlank') {
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $icon = $iconFactory->getIcon('actions-edit-merge-localization', Icon::SIZE_SMALL)->render();
-        }
-        return $icon;
     }
 
     /**

@@ -861,7 +861,6 @@ var typoscriptWords = {
 	'sys_filemounts': 'keyword3',
 	'sys_language_mode': 'reserved',
 	'sys_language_overlay': 'reserved',
-	'sys_language_softMergeIfNotBlank': 'reserved',
 	'sys_language_uid': 'reserved',
 	'sys_note': 'keyword3',
 	'sys_template': 'keyword3',
