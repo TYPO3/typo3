@@ -65,6 +65,7 @@ class TcaMigration
         $tca = $this->migrateShowIfRteOption($tca);
         $tca = $this->migrateWorkspacesOptions($tca);
         $tca = $this->migrateTranslationTable($tca);
+        $tca = $this->migrateL10nModeDefinitions($tca);
         $tca = $this->migrateRequestUpdate($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
@@ -923,6 +924,32 @@ class TcaMigration
                 unset($tableDefinition['ctrl']['transOrigPointerTable']);
                 $this->messages[] = 'The TCA setting \'transOrigPointerTable\' was removed '
                     . 'in TCA ' . $table . '[\'ctrl\'][\'transOrigPointerTable\']';
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes "noCopy" from possible settings for "l10n_mode" for each column.
+     *
+     * @param array $tca
+     * @return array Migrated TCA
+     */
+    protected function migrateL10nModeDefinitions(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (empty($fieldConfig['l10n_mode'])) {
+                    continue;
+                }
+                if ($fieldConfig['l10n_mode'] === 'noCopy') {
+                    unset($fieldConfig['l10n_mode']);
+                    $this->messages[] = 'The TCA setting \'noCopy\' was removed '
+                        . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
+                }
             }
         }
         return $tca;

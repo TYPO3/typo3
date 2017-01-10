@@ -1967,6 +1967,46 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     /**
      * @return array
      */
+    public function migrateL10nModeDefinitionsDataProvider()
+    {
+        return [
+            'remove l10n_mode noCopy' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'l10n_mode' => 'noCopy',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     * @test
+     * @dataProvider migrateTranslationTableDataProvider
+     */
+    public function migrateL10nModeDefinitions(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
+
+    /**
+     * @return array
+     */
     public function migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider()
     {
         return [

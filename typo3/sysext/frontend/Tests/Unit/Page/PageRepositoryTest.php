@@ -116,10 +116,6 @@ class PageRepositoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
                 // no l10n_mode set
                 'config' => ['type' => 'input'],
             ],
-            'noCopy' => [
-                'l10n_mode' => 'noCopy',
-                'config' => ['type' => 'input'],
-            ],
             'prefixLangTitle' => [
                 'l10n_mode' => 'prefixLangTitle',
                 'config' => ['type' => 'input'],
@@ -153,9 +149,6 @@ class PageRepositoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
             ['mergeIfNotBlank_group', 'fake_table', 0,        false, 'mergeIfNotBlank on group is not merged with 0'],
             ['mergeIfNotBlank_group', 'fake_table', '0',      false, 'mergeIfNotBlank on group is not merged with "0"'],
             ['mergeIfNotBlank_group', 'fake_table', 'foobar', true,  'mergeIfNotBlank on group is merged with non-empty string'],
-
-            ['noCopy',                'fake_table', 'foobar', true,  'noCopy is merged with non-empty string'],
-            ['noCopy',                'fake_table', '',       true,  'noCopy is merged with empty string'],
 
             ['prefixLangTitle',       'fake_table', 'foobar', true,  'prefixLangTitle is merged with non-empty string'],
             ['prefixLangTitle',       'fake_table', '',       true,  'prefixLangTitle is merged with empty string'],
