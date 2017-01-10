@@ -5,6 +5,7 @@ TYPO3:
         allowedFileMounts:
           10: 1:/user_upload/
         allowSaveToExtensionPaths: false
+        allowDeleteFromExtensionPaths: false
         #allowedExtensionPaths:
           #10: EXT:example/Resources/Private/Forms/
 

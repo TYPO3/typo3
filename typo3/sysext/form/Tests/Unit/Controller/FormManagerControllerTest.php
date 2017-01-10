@@ -69,12 +69,23 @@ class FormManagerControllerTest extends \TYPO3\CMS\Components\TestingFramework\C
             ->getMock();
         $mockController->_set('formPersistenceManager', $formPersistenceManagerProphecy->reveal());
 
+        $mockController->_set('formSettings', [
+            'persistenceManager' => [
+                'allowSaveToExtensionPaths' => true,
+            ],
+        ]);
+
         $folder1 = new Folder($mockStorage, '/user_upload/', 'user_upload');
         $folder2 = new Folder($mockStorage, '/forms/', 'forms');
 
         $formPersistenceManagerProphecy->getAccessibleFormStorageFolders(Argument::cetera())->willReturn([
             '1:/user_upload/' => $folder1,
             '2:/forms/' => $folder2,
+        ]);
+
+        $formPersistenceManagerProphecy->getAccessibleExtensionFolders(Argument::cetera())->willReturn([
+            'EXT:form/Resources/Forms/' => '/some/path/form/Resources/Forms/',
+            'EXT:form_additions/Resources/Forms/' => '/some/path/form_additions/Resources/Forms/',
         ]);
 
         $expected = [
@@ -85,6 +96,14 @@ class FormManagerControllerTest extends \TYPO3\CMS\Components\TestingFramework\C
             1 => [
                 'label' => 'forms',
                 'value' => '2:/forms/',
+            ],
+            2 => [
+                'label' => 'EXT:form/Resources/Forms/',
+                'value' => 'EXT:form/Resources/Forms/',
+            ],
+            3 => [
+                'label' => 'EXT:form_additions/Resources/Forms/',
+                'value' => 'EXT:form_additions/Resources/Forms/',
             ],
         ];
 
@@ -182,6 +201,7 @@ class FormManagerControllerTest extends \TYPO3\CMS\Components\TestingFramework\C
                 'name' => 'some name',
                 'persistenceIdentifier' => '1:/user_uploads/someFormName.yaml',
                 'readOnly' => false,
+                'removable' => true,
                 'location' => 'storage',
                 'duplicateIdentifier' => false,
             ],
@@ -201,6 +221,7 @@ class FormManagerControllerTest extends \TYPO3\CMS\Components\TestingFramework\C
                 'name' => 'some name',
                 'persistenceIdentifier' => '1:/user_uploads/someFormName.yaml',
                 'readOnly' => false,
+                'removable' => true,
                 'location' => 'storage',
                 'duplicateIdentifier' => false,
                 'referenceCount' => 2,

@@ -46,6 +46,28 @@ class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\
     /**
      * @test
      */
+    public function loadThrowsExceptionIfPersistenceIdentifierIsAExtensionLocationWhichIsNotAllowed()
+    {
+        $this->expectException(PersistenceManagerException::class);
+        $this->expectExceptionCode(1484071985);
+
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'dummy'
+        ], [], '', false);
+
+        $mockFormPersistenceManager->_set('formSettings', [
+            'persistenceManager' => [
+                'allowedExtensionPaths' => [],
+            ],
+        ]);
+
+        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $mockFormPersistenceManager->_call('load', $input);
+    }
+
+    /**
+     * @test
+     */
     public function saveThrowsExceptionIfPersistenceIdentifierHasNoYamlExtension()
     {
         $this->expectException(PersistenceManagerException::class);
@@ -74,6 +96,29 @@ class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
                 'allowSaveToExtensionPaths' => false,
+            ],
+        ]);
+
+        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $mockFormPersistenceManager->_call('save', $input, []);
+    }
+
+    /**
+     * @test
+     */
+    public function saveThrowsExceptionIfPersistenceIdentifierIsAExtensionLocationWhichIsNotAllowed()
+    {
+        $this->expectException(PersistenceManagerException::class);
+        $this->expectExceptionCode(1484073571);
+
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'dummy'
+        ], [], '', false);
+
+        $mockFormPersistenceManager->_set('formSettings', [
+            'persistenceManager' => [
+                'allowSaveToExtensionPaths' => true,
+                'allowedExtensionPaths' => [],
             ],
         ]);
 
@@ -121,7 +166,7 @@ class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\
     /**
      * @test
      */
-    public function deleteThrowsExceptionIfPersistenceIdentifierIsExtensionLocation()
+    public function deleteThrowsExceptionIfPersistenceIdentifierIsExtensionLocationAndDeleteFromExtensionLocationsIsNotAllowed()
     {
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1472239536);
@@ -134,6 +179,40 @@ class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\
             ->expects($this->any())
             ->method('exists')
             ->willReturn(true);
+
+        $mockFormPersistenceManager->_set('formSettings', [
+            'persistenceManager' => [
+                'allowDeleteFromExtensionPaths' => false,
+            ],
+        ]);
+
+        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $mockFormPersistenceManager->_call('delete', $input);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteThrowsExceptionIfPersistenceIdentifierIsExtensionLocationWhichIsNotAllowed()
+    {
+        $this->expectException(PersistenceManagerException::class);
+        $this->expectExceptionCode(1484073878);
+
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'exists'
+        ], [], '', false);
+
+        $mockFormPersistenceManager
+            ->expects($this->any())
+            ->method('exists')
+            ->willReturn(true);
+
+        $mockFormPersistenceManager->_set('formSettings', [
+            'persistenceManager' => [
+                'allowDeleteFromExtensionPaths' => true,
+                'allowedExtensionPaths' => [],
+            ],
+        ]);
 
         $input = 'EXT:form/Resources/Forms/_example.yaml';
         $mockFormPersistenceManager->_call('delete', $input);
@@ -190,6 +269,14 @@ class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\
             'dummy'
         ], [], '', false);
 
+        $mockFormPersistenceManager->_set('formSettings', [
+            'persistenceManager' => [
+                'allowedExtensionPaths' => [
+                    'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/'
+                ],
+            ],
+        ]);
+
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.yaml';
         $this->assertTrue($mockFormPersistenceManager->_call('exists', $input));
     }
@@ -204,6 +291,25 @@ class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\
         ], [], '', false);
 
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt';
+        $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
+    }
+
+    /**
+     * @test
+     */
+    public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndExtensionLocationIsNotAllowed()
+    {
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'dummy'
+        ], [], '', false);
+
+        $mockFormPersistenceManager->_set('formSettings', [
+            'persistenceManager' => [
+                'allowedExtensionPaths' => [],
+            ],
+        ]);
+
+        $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.yaml';
         $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
 

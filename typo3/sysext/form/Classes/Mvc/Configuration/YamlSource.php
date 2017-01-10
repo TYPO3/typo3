@@ -142,9 +142,12 @@ class YamlSource
         $header = '';
         if ($file instanceof File) {
             $fileLines = explode(LF, $file->getContents());
-        } else {
+        } elseif (is_file($file)) {
             $fileLines = file($file);
+        } else {
+            return '';
         }
+
         foreach ($fileLines as $line) {
             if (preg_match('/^#/', $line)) {
                 $header .= $line;

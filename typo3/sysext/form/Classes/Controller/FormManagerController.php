@@ -154,7 +154,6 @@ class FormManagerController extends AbstractBackendController
 
     /**
      * Delete a formDefinition identified by the $formPersistenceIdentifier.
-     * Only formDefinitions within storage folders are deletable.
      *
      * @param string $formPersistenceIdentifier persistence identifier to delete
      * @return void
@@ -162,10 +161,7 @@ class FormManagerController extends AbstractBackendController
      */
     public function deleteAction(string $formPersistenceIdentifier)
     {
-        if (
-            empty($this->getReferences($formPersistenceIdentifier))
-            && strpos($formPersistenceIdentifier, 'EXT:') === false
-        ) {
+        if (empty($this->getReferences($formPersistenceIdentifier))) {
             $this->formPersistenceManager->delete($formPersistenceIdentifier);
         } else {
             $this->addFlashMessage(
@@ -209,6 +205,16 @@ class FormManagerController extends AbstractBackendController
                 'value' => $identifier
             ];
         }
+
+        if ($this->formSettings['persistenceManager']['allowSaveToExtensionPaths']) {
+            foreach ($this->formPersistenceManager->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
+                $preparedAccessibleFormStorageFolders[] = [
+                    'label' => $relativePath,
+                    'value' => $relativePath
+                ];
+            }
+        }
+
         return $preparedAccessibleFormStorageFolders;
     }
 

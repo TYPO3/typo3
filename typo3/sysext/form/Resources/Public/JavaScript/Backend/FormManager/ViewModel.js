@@ -88,7 +88,18 @@ define(['jquery',
                     nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
                     folders = _formManagerApp.getAccessibleFormStorageFolders();
-                    _formManagerApp.assert(folders.length > 0, 'No accessible form storage folders', 1477506500);
+                    if (folders.length === 0) {
+                        html = '<div class="new-form-modal">'
+                                 + '<div class="form-horizontal">'
+                                     + '<div>'
+                                         + '<label class="control-label">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</label>'
+                                     + '</div>'
+                                 + '</div>'
+                             + '</div>';
+
+                        slide.html(html);
+                        _formManagerApp.assert(false, 'No accessible form storage folders', 1477506500);
+                    }
 
                     Wizard.set('savePath', folders[0]['value']);
                     if (folders.length > 1) {

@@ -33,6 +33,9 @@
             <trans-unit id="formManager.newFormWizard.step1.title" xml:space="preserve">
                 <source>Create new form</source>
             </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step1.noStorages" xml:space="preserve">
+                <source>No accessible form storage folders</source>
+            </trans-unit>
             <trans-unit id="formManager.newFormWizard.step1.advanced" xml:space="preserve">
                 <source>Advanced settings</source>
             </trans-unit>

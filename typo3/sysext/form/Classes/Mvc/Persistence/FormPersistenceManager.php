@@ -85,7 +85,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Load the array formDefinition identified by $persistenceIdentifier, and return it.
      * Only files with the extension .yaml are loaded.
-     * At this place there is no check if the file location is allowed.
      *
      * @param string $persistenceIdentifier
      * @return array
@@ -99,6 +98,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         if (strpos($persistenceIdentifier, 'EXT:') === 0) {
+            if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
+                throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1484071985);
+            }
             $file = $persistenceIdentifier;
         } else {
             $file = $this->getFileByIdentifier($persistenceIdentifier);
@@ -130,6 +132,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             if (!$this->formSettings['persistenceManager']['allowSaveToExtensionPaths']) {
                 throw new PersistenceManagerException('Save to extension paths is not allowed.', 1477680881);
             }
+            if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
+                throw new PersistenceManagerException(sprintf('The file "%s" could not be saved.', $persistenceIdentifier), 1484073571);
+            }
             $fileToSave = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
         } else {
             $fileToSave = $this->getOrCreateFile($persistenceIdentifier);
@@ -141,7 +146,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Delete the form representation identified by $persistenceIdentifier.
      * Only files with the extension .yaml are removed.
-     * formDefinitions within an EXT: resource are not removable.
      *
      * @param string $persistenceIdentifier
      * @return void
@@ -157,16 +161,23 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1472239535);
         }
         if (strpos($persistenceIdentifier, 'EXT:') === 0) {
-            throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1472239536);
+            if (!$this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths']) {
+                throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1472239536);
+            }
+            if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
+                throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1484073878);
+            }
+            $fileToDelete = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
+            unlink($fileToDelete);
+        } else {
+            list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
+            $storage = $this->getStorageByUid((int)$storageUid);
+            $file = $storage->getFile($fileIdentifier);
+            if (!$storage->checkFileActionPermission('delete', $file)) {
+                throw new PersistenceManagerException(sprintf('No delete access to file "%s".', $persistenceIdentifier), 1472239516);
+            }
+            $storage->deleteFile($file);
         }
-
-        list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
-        $storage = $this->getStorageByUid((int)$storageUid);
-        $file = $storage->getFile($fileIdentifier);
-        if (!$storage->checkFileActionPermission('delete', $file)) {
-            throw new PersistenceManagerException(sprintf('No delete access to file "%s".', $persistenceIdentifier), 1472239516);
-        }
-        $storage->deleteFile($file);
     }
 
     /**
@@ -181,7 +192,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $exists = false;
         if (pathinfo($persistenceIdentifier, PATHINFO_EXTENSION) === 'yaml') {
             if (strpos($persistenceIdentifier, 'EXT:') === 0) {
-                $exists = file_exists(GeneralUtility::getFileAbsFileName($persistenceIdentifier));
+                if (array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
+                    $exists = file_exists(GeneralUtility::getFileAbsFileName($persistenceIdentifier));
+                }
             } else {
                 list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
                 $storage = $this->getStorageByUid((int)$storageUid);
@@ -223,6 +236,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
                     'persistenceIdentifier' => $persistenceIdentifier,
                     'readOnly' => false,
+                    'removable' => true,
                     'location' => 'storage',
                     'duplicateIdentifier' => false,
                 ];
@@ -243,6 +257,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
                     'persistenceIdentifier' => $relativePath . $fileInfo->getFilename(),
                     'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
+                    'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
                     'location' => 'extension',
                     'duplicateIdentifier' => false,
                 ];
@@ -335,6 +350,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             if (!file_exists($allowedExtensionFullPath)) {
                 continue;
             }
+            $allowedExtensionPath = rtrim($allowedExtensionPath, '/') . '/';
             $extensionFolders[$allowedExtensionPath] = $allowedExtensionFullPath;
         }
         return $extensionFolders;
