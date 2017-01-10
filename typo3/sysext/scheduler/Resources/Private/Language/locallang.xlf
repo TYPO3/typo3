@@ -27,9 +27,6 @@
 			<trans-unit id="hdg.lastRun">
 				<source>Last run</source>
 			</trans-unit>
-			<trans-unit id="hdg.schedulerUser">
-				<source>TYPO3 Scheduler backend user</source>
-			</trans-unit>
 			<trans-unit id="label.automatically">
 				<source>automatically</source>
 			</trans-unit>
@@ -273,18 +270,6 @@
 			<trans-unit id="msg.schedulerSetupCheck">
 				<source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerUser">
-				<source>The backend user "_cli_scheduler" is used by the CLI-script to log into TYPO3. This user may not have administrator privileges. The user's password is not important but should be set to a secure value for security reasons.</source>
-			</trans-unit>
-			<trans-unit id="msg.schedulerUserFound">
-				<source>The backend user "_cli_scheduler" was found.</source>
-			</trans-unit>
-			<trans-unit id="msg.schedulerUserFoundButDisabled">
-				<source>The backend user "_cli_scheduler" exists but is currently disabled.</source>
-			</trans-unit>
-			<trans-unit id="msg.schedulerUserMissing">
-				<source>The backend user "_cli_scheduler" was not found.&lt;br/&gt;&lt;br/&gt; &lt;a href="%s" class="btn btn-danger" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;</source>
-			</trans-unit>
 			<trans-unit id="msg.serverTime">
 				<source>Current server time is %s.</source>
 			</trans-unit>
@@ -308,15 +293,6 @@
 			</trans-unit>
 			<trans-unit id="msg.updateError">
 				<source>The task could not be updated.</source>
-			</trans-unit>
-			<trans-unit id="msg.userCreated">
-				<source>The "_cli_scheduler" user was created successfully.</source>
-			</trans-unit>
-			<trans-unit id="msg.userExists">
-				<source>The "_cli_scheduler" user already exists. It was not created.</source>
-			</trans-unit>
-			<trans-unit id="msg.userNotCreated">
-				<source>The creation of the "_cli_scheduler" user failed.</source>
 			</trans-unit>
 			<trans-unit id="msg.selectionOfNonExistingDatabaseTables">
 				<source>Some of the selected database tables do not exist. Please select only valid tables.</source>

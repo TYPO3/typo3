@@ -20,17 +20,12 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
-use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -319,85 +314,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     }
 
     /**
-     * This method checks the status of the '_cli_scheduler' user
-     * It will differentiate between a non-existing user and an existing,
-     * but disabled user (as per enable fields)
-     *
-     * @return int -1 if user doesn't exist, 0 if user exists but is not enabled, 1 if user exists and is enabled
-     */
-    protected function checkSchedulerUser()
-    {
-        $schedulerUserStatus = -1;
-        // Check if user exists at all
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $cliUserExists = (int)$queryBuilder->count('*')
-            ->from('be_users')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'username',
-                    $queryBuilder->createNamedParameter('_cli_scheduler', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-            )
-            ->execute()
-            ->fetchColumn();
-
-        if ($cliUserExists !== 0) {
-            $schedulerUserStatus = 0;
-            // Check if user exists and is enabled
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
-            $cliUserExistsAndEnabled = (int)$queryBuilder->execute()->fetchColumn();
-            if ($cliUserExistsAndEnabled !== 0) {
-                $schedulerUserStatus = 1;
-            }
-        }
-        return $schedulerUserStatus;
-    }
-
-    /**
-     * This method creates the "cli_scheduler" BE user if it doesn't exist
-     *
-     * @return void
-     */
-    protected function createSchedulerUser()
-    {
-        // Check _cli_scheduler user status
-        $checkUser = $this->checkSchedulerUser();
-        // Prepare default message
-        $message = $this->getLanguageService()->getLL('msg.userExists');
-        $severity = FlashMessage::WARNING;
-        // If the user does not exist, try creating it
-        if ($checkUser == -1) {
-            // Prepare necessary data for _cli_scheduler user creation
-            $password = StringUtility::getUniqueId('scheduler');
-            if (SaltedPasswordsUtility::isUsageEnabled()) {
-                $objInstanceSaltedPW = SaltFactory::getSaltingInstance();
-                $password = $objInstanceSaltedPW->getHashedPassword($password);
-            }
-            $data = ['be_users' => ['NEW' => ['username' => '_cli_scheduler', 'password' => $password, 'pid' => 0]]];
-            /** @var $dataHandler \TYPO3\CMS\Core\DataHandling\DataHandler */
-            $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $dataHandler->start($data, []);
-            $dataHandler->process_datamap();
-            // Check if a new uid was indeed generated (i.e. a new record was created)
-            // (counting DataHandler errors doesn't work as some failures don't report errors)
-            $numberOfNewIDs = count($dataHandler->substNEWwithIDs);
-            if ($numberOfNewIDs === 1) {
-                $message = $this->getLanguageService()->getLL('msg.userCreated');
-                $severity = FlashMessage::OK;
-            } else {
-                $message = $this->getLanguageService()->getLL('msg.userNotCreated');
-                $severity = FlashMessage::ERROR;
-            }
-        }
-        $this->addMessage($message, $severity);
-    }
-
-    /**
      * This method displays the result of a number of checks
      * on whether the Scheduler is ready to run or running properly
      *
@@ -406,11 +322,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     protected function checkScreenAction()
     {
         $this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'CheckScreen.html');
-
-        // First, check if _cli_scheduler user creation was requested
-        if ($this->CMD === 'user') {
-            $this->createSchedulerUser();
-        }
 
         // Display information about last automated run, as stored in the system registry
         /** @var $registry \TYPO3\CMS\Core\Registry */
@@ -439,22 +350,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         }
         $this->view->assign('lastRunMessage', $message);
         $this->view->assign('lastRunSeverity', $severity);
-
-        // Check CLI user
-        $checkUser = $this->checkSchedulerUser();
-        if ($checkUser == -1) {
-            $link = $this->moduleUri . '&SET[function]=check&CMD=user';
-            $message = sprintf($this->getLanguageService()->getLL('msg.schedulerUserMissing'), htmlspecialchars($link));
-            $severity = InfoboxViewHelper::STATE_ERROR;
-        } elseif ($checkUser == 0) {
-            $message = $this->getLanguageService()->getLL('msg.schedulerUserFoundButDisabled');
-            $severity = InfoboxViewHelper::STATE_WARNING;
-        } else {
-            $message = $this->getLanguageService()->getLL('msg.schedulerUserFound');
-            $severity = InfoboxViewHelper::STATE_OK;
-        }
-        $this->view->assign('cliUserMessage', $message);
-        $this->view->assign('cliUserSeverity', $severity);
 
         // Check if CLI script is executable or not
         $script = PATH_typo3 . 'cli_dispatch.phpsh';

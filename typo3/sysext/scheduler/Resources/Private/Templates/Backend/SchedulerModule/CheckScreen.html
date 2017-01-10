@@ -4,11 +4,6 @@
 
 <f:be.infobox  title="{f:translate(key: 'hdg.lastRun')}" message="{lastRunMessage}" state="{lastRunSeverity}" />
 
-<f:be.infobox  title="{f:translate(key: 'hdg.schedulerUser')}" state="{cliUserSeverity}">
-	<p><f:translate key="msg.schedulerUser" /></p>
-	<f:format.raw>{cliUserMessage}</f:format.raw>
-</f:be.infobox>
-
 <f:be.infobox title="{f:translate(key: 'hdg.cliScript')}" state="{isExecutableSeverity}">
 	<p>{f:translate(key: 'msg.cliScript', arguments: '{0: script}') -> f:format.raw()}</p>
 	{isExecutableMessage}
