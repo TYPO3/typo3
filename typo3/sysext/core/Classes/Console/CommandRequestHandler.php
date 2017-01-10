@@ -66,21 +66,16 @@ class CommandRequestHandler implements RequestHandlerInterface
     {
         $output = new ConsoleOutput();
 
-        $this->bootstrap->loadExtensionTables();
+        $this->bootstrap
+            ->loadExtensionTables()
+            // create the BE_USER object (not logged in yet)
+            ->initializeBackendUser(CommandLineUserAuthentication::class)
+            ->initializeLanguageObject()
+            // Make sure output is not buffered, so command-line output and interaction can take place
+            ->endOutputBufferingAndCleanPreviousOutput();
 
         // Check if the command to run needs a backend user to be loaded
         $command = $this->getCommandToRun($input);
-        foreach ($this->availableCommands as $data) {
-            if ($data['command'] !== $command) {
-                continue;
-            }
-            if (isset($data['user'])) {
-                $this->initializeBackendUser();
-            }
-        }
-
-        // Make sure output is not buffered, so command-line output and interaction can take place
-        $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
 
         if (!$command) {
             $cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
@@ -96,23 +91,6 @@ class CommandRequestHandler implements RequestHandlerInterface
 
         $exitCode = $this->application->run($input, $output);
         exit($exitCode);
-    }
-
-    /**
-     * Logs in the user _cli_ to the system
-     *
-     * @throws \RuntimeException if a non-admin Backend user could not be loaded
-     */
-    protected function initializeBackendUser()
-    {
-        // create the BE_USER object
-        $this->bootstrap->initializeBackendUser(CommandLineUserAuthentication::class);
-        // log-in the _cli_ user, create the record if it does not exist
-        /** @var CommandLineUserAuthentication $backendUser */
-        $backendUser = $GLOBALS['BE_USER'];
-        $backendUser->authenticate();
-        $this->bootstrap
-            ->initializeLanguageObject();
     }
 
     /**

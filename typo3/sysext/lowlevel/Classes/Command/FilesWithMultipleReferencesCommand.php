@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -82,6 +83,9 @@ If you want to get more detailed information, use the --verbose option.')
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Make sure the _cli_ user is loaded
+        Bootstrap::getInstance()->initializeBackendAuthentication();
+
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
 

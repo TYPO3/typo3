@@ -35,11 +35,16 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
 
     /**
      * Constructor, only allowed in CLI mode
+     *
+     * @throws \RuntimeException
      */
     public function __construct()
     {
         if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
             throw new \RuntimeException('Creating a CLI-based user object on non-CLI level is not allowed', 1483971165);
+        }
+        if (!$this->isUserAllowedToLogin()) {
+            throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1483971855);
         }
         $this->dontSetCookie = true;
         parent::__construct();
@@ -56,7 +61,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
         $this->setBeUserByName($this->username);
         if (!$this->user['uid']) {
             // create a new BE user in the database
-            if (!$this->checkCliUserExists()) {
+            if (!$this->checkIfCliUserExists()) {
                 $this->createCliUser();
             } else {
                 throw new \RuntimeException('No backend user named "_cli_" could be authenticated, maybe this user is "hidden"?', 1484050401);
@@ -68,20 +73,15 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
         }
         // The groups are fetched and ready for permission checking in this initialization.
         $this->fetchGroupData();
-        if (!$this->isUserAllowedToLogin()) {
-            throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1483971855);
-        }
         $this->backendSetUC();
+        // activate this functionality for DataHandler
+        $this->uc['recursiveDelete'] = true;
     }
 
     /**
-     * Check if user is logged in and if so, call ->fetchGroupData() to load group information and
-     * access lists of all kind, further check IP, set the ->uc array and send login-notification email if required.
-     * If no user is logged in the default behaviour is to exit with an error message.
-     * This function is called right after ->start() in fx. the TYPO3 Bootstrap.
+     * Logs in the TYPO3 Backend user "_cli_"
      *
      * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
-     * @throws \RuntimeException
      * @return void
      */
     public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
@@ -103,8 +103,10 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     /**
      * Check if a user with username "_cli_" exists. Deleted users are left out
      * but hidden and start / endtime restricted users are considered.
+     *
+     * @return bool true if the user exists
      */
-    protected function checkCliUserExists()
+    protected function checkIfCliUserExists()
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()

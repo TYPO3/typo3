@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -106,9 +106,8 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // The backend user needs super-powers because datahandler is executed
-        $previouslyAppliedAdminRights = $this->getBackendUser()->user['admin'];
-        $this->getBackendUser()->user['admin'] = 1;
+        // Make sure the _cli_ user is loaded
+        Bootstrap::getInstance()->initializeBackendAuthentication();
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
@@ -258,10 +257,6 @@ class WorkspaceVersionRecordsCommand extends Command
                 $io->note('No action specified, just displaying statistics. See --action option for details.');
                 break;
         }
-
-        // Restore backend user administration rights
-        $this->getBackendUser()->user['admin'] = $previouslyAppliedAdminRights;
-
         $io->success('All done!');
     }
 
@@ -691,15 +686,5 @@ class WorkspaceVersionRecordsCommand extends Command
             }
         }
         return $tables;
-    }
-
-    /**
-     * Short-hand function for accessing the current backend user
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

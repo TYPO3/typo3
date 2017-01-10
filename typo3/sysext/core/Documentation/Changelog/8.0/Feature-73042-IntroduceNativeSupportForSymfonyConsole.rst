@@ -22,8 +22,8 @@ Registering a command to be available via the `typo3` command line tool works by
 to be executed by `typo3` is an associative array. The key is the name of the command to be called as
 the first argument to `typo3`.
 
-A required parameter when registering a command is the `class` property. Optionally the `user` parameter can be
-set so a backend user is logged in when calling the command.
+A required parameter when registering a command is the `class` property which should inherit from Symfony's
+base Command class.
 
 A `Configuration/Commands.php` could look like this:
 
@@ -34,8 +34,7 @@ A `Configuration/Commands.php` could look like this:
             'class' => \TYPO3\CMS\Backend\Command\LockBackendCommand::class
         ],
         'referenceindex:update' => [
-            'class' => \TYPO3\CMS\Backend\Command\ReferenceIndexUpdateCommand::class,
-            'user' => '_cli_lowlevel'
+            'class' => \TYPO3\CMS\Backend\Command\ReferenceIndexUpdateCommand::class
         ]
     ];
 
