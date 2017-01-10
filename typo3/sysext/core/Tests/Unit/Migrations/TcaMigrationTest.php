@@ -560,7 +560,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'items' => [
-                                ['foo', 0, 'EXT:t3skin/icons/gfx/i/tt_content.gif'],
+                                ['foo', 0, 'EXT:backend/Resources/Public/Images/tt_content.gif'],
                             ],
                         ],
                     ],
@@ -644,7 +644,7 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
         $expected = [
                 'aTable' => [
                         'ctrl' => [
-                                'iconfile' => 'EXT:t3skin/icons/gfx/i/iconfile.gif',
+                                'iconfile' => 'EXT:backend/Resources/Public/Images/iconfile.gif',
                         ],
                 ],
         ];

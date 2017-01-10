@@ -471,7 +471,7 @@ class TcaMigration
                                 $itemConfig[2] = 'EXT:' . $path;
                             } elseif (strpos($itemConfig[2], 'i/') === 0) {
                                 $this->messages[] = '[' . $tcaPath . '] i/ within the path (' . $path . ') in items array is deprecated, use EXT: reference';
-                                $itemConfig[2] = 'EXT:t3skin/icons/gfx/' . $itemConfig[2];
+                                $itemConfig[2] = 'EXT:backend/Resources/Public/Images/' . substr($itemConfig[2], 2);
                             }
                         }
                     }
@@ -526,7 +526,7 @@ class TcaMigration
                 $tcaPath = implode('.', [$table, 'ctrl', 'iconfile']);
                 $this->messages[] = '[' . $tcaPath . '] relative path to ../typo3conf/ext/ is deprecated, use EXT: instead';
             } elseif (strpos($tableDefinition['ctrl']['iconfile'], '/') === false) {
-                $tableDefinition['ctrl']['iconfile'] = 'EXT:t3skin/icons/gfx/i/' . $tableDefinition['ctrl']['iconfile'];
+                $tableDefinition['ctrl']['iconfile'] = 'EXT:backend/Resources/Public/Images/' . $tableDefinition['ctrl']['iconfile'];
                 $tcaPath = implode('.', [$table, 'ctrl', 'iconfile']);
                 $this->messages[] = '[' . $tcaPath . '] filename only is deprecated, use EXT: or absolute reference instead';
             }

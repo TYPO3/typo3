@@ -561,7 +561,7 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 
 .loading-indicator {
 	font-size: 10px;
-	background-image: url('../images/spinner/ffffff.gif');
+	background-image: url('images/ffffff.gif');
 }
 
 .x-spotlight {
@@ -611,7 +611,7 @@ ul.x-tab-strip-bottom{
 	border-color:#a2aab8;
 	background-color: #ececec;
 	background-repeat: repeat-x;
-	background-image: url(../images/backgrounds/tab.png);
+	background-image: url(images/tab.png);
 	background-image: linear-gradient(center top , #ffffff 0, #ececec 100px);
 }
 
@@ -765,7 +765,7 @@ ul.x-tab-strip-bottom{
 
 .x-btn {
 	background-color: #d5d5d5;
-	background-image: url('../images/backgrounds/button.png');
+	background-image: url('images/button.png');
 	background-repeat: repeat-x;
 	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
 	border: 1px solid #7c7c7c;
@@ -873,7 +873,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-item-disabled .x-tbar-loading{
-	background-image: url('../images/spinner/ffffff.gif') !important;
+	background-image: url('images/ffffff.gif') !important;
 }
 
 .x-item-disabled .x-tbar-page-first{
@@ -901,7 +901,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-statusbar .x-status-busy {
-	background-image: url('../images/spinner/ffffff.gif');
+	background-image: url('images/ffffff.gif');
 }
 
 .x-statusbar .x-status-text-panel {
@@ -1237,7 +1237,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-node-loading .x-tree-node-icon{
-	background-image: url('../images/spinner/ffffff.gif') !important;
+	background-image: url('images/ffffff.gif') !important;
 }
 .x-tree-node .icon, .x-tree-node .x-tree-node-icon {
 	margin-right: 3px;
@@ -1279,31 +1279,31 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-lines .x-tree-elbow{
-	background-image: url('../icons/gfx/ol/join.gif');
+	background-image: url('images/ol/join.gif');
 }
 
 .x-tree-lines .x-tree-elbow-plus {
-	background-image: url('../icons/gfx/ol/plus.gif');
+	background-image: url('images/ol/plus.gif');
 }
 
 .x-tree-lines .x-tree-elbow-minus {
-	background-image: url('../icons/gfx/ol/minus.gif');
+	background-image: url('images/ol/minus.gif');
 }
 
 .x-tree-lines .x-tree-elbow-end-minus {
-	background: url('../icons/gfx/ol/minusbottom.gif') left top no-repeat;
+	background: url('images/ol/minusbottom.gif') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-end {
-	background: url('../icons/gfx/ol/joinbottom.gif') left top no-repeat;
+	background: url('images/ol/joinbottom.gif') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-end-plus{
-	background: url('../icons/gfx/ol/plusbottom.gif') left top no-repeat;
+	background: url('images/ol/plusbottom.gif') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-line{
-	background-image: url('../icons/gfx/ol/line.gif');
+	background-image: url('images/ol/line.gif');
 }
 
 .x-tree-no-lines .x-tree-elbow-plus{
@@ -2073,7 +2073,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-window-dlg .x-msg-box-wait {
-	background-image: url('../images/spinner/ffffff.gif');
+	background-image: url('images/ffffff.gif');
 }
 
 .x-window-dlg .ext-mb-info {

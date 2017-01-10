@@ -127,7 +127,6 @@
 		"typo3/cms-sys-action": "self.version",
 		"typo3/cms-sys-note": "self.version",
 		"typo3/cms-t3editor": "self.version",
-		"typo3/cms-t3skin": "self.version",
 		"typo3/cms-taskcenter": "self.version",
 		"typo3/cms-tstemplate": "self.version",
 		"typo3/cms-version": "self.version",
