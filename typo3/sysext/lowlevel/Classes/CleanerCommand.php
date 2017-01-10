@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Core functions for cleaning and analysing
+ *
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
 {
@@ -106,9 +108,11 @@ This will show you missing files in the TYPO3 system and only report back if err
      *
      * @param array $argv Command line arguments
      * @return string
+     * @deprecated the Cleaner Command is deprecated since TYPO3 v8 and will be removed in TYPO3 v9, use a separate CLI Command instead
      */
     public function cli_main($argv)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->cli_setArguments($argv);
 
         // Force user to admin state and set workspace to "Live":
