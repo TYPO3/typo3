@@ -76,15 +76,39 @@ return [
                 'size' => '30',
             ],
         ],
+        'group_db_1' => [
+            'exclude' => 1,
+            'label' => 'group_db_1 allowed=tx_styleguide_staticdata, wizard suggest',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'tx_styleguide_staticdata',
+                'wizards' => [
+                    'suggest' => [
+                        'type' => 'suggest',
+                    ],
+                ],
+            ],
+        ],
+        'select_tree_1' => [
+            'exclude' => 1,
+            'label' => 'select_tree_1 pages',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                ],
+            ],
+        ],
 
 
     ],
-
-
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, input_1,
+                --div--;General, input_1, group_db_1, select_tree_1,
                 --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, disable, parentid, parenttable
             ',
         ],
