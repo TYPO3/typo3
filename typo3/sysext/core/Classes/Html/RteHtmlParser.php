@@ -94,6 +94,45 @@ class RteHtmlParser extends HtmlParser
     public $allowedClasses = [];
 
     /**
+     * A list of HTML attributes for <p> tags. Because <p> tags are wrapped currently in a special handling,
+     * they have a special place for configuration via 'proc.keepPDIVattribs'
+     *
+     * @var array
+     */
+    protected $allowedAttributesForParagraphTags = [
+        'class',
+        'align',
+        'id',
+        'title',
+        'dir',
+        'lang',
+        'xml:lang',
+        'itemscope',
+        'itemtype',
+        'itemprop'
+    ];
+
+    /**
+     * Any tags that are allowed outside of <p> sections - usually similar to the block elements
+     * plus some special tags like <hr> and <img> (if images are allowed).
+     * Completely overrideable via 'proc.allowTagsOutside'
+     *
+     * @var array
+     */
+    protected $allowedTagsOutsideOfParagraphs = [
+        'address',
+        'article',
+        'aside',
+        'blockquote',
+        'div',
+        'footer',
+        'header',
+        'hr',
+        'nav',
+        'section'
+    ];
+
+    /**
      * Initialize, setting element reference and record PID
      *
      * @param string $elRef Element reference, eg "tt_content:bodytext
@@ -123,45 +162,41 @@ class RteHtmlParser extends HtmlParser
      */
     public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = [])
     {
-        // Init:
         $this->tsConfig = $thisConfig;
         $this->procOptions = (array)$thisConfig['proc.'];
-        // dynamic configuration of blockElementList
+        $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
+
+        // Dynamic configuration of blockElementList
         if ($this->procOptions['blockElementList']) {
             $this->blockElementList = $this->procOptions['blockElementList'];
         }
-        // Setting modes:
+
+        // Define which attributes are allowed on <p> tags
+        if (isset($this->procOptions['keepPDIVattribs'])) {
+            $this->allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
+        }
+        // Override tags which are allowed outside of <p> tags
+        if (isset($this->procOptions['allowTagsOutside'])) {
+            $this->allowedTagsOutsideOfParagraphs = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside']), true);
+        }
+
+        // Setting modes / transformations to be called
         if ((string)$this->procOptions['overruleMode'] !== '') {
-            $modes = array_unique(GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']));
+            $modes = GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']);
         } else {
             // Get parameters for rte_transformation:
             $specialFieldConfiguration = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-            $modes = array_unique(GeneralUtility::trimExplode('-', $specialFieldConfiguration['mode']));
+            $modes = GeneralUtility::trimExplode('-', $specialFieldConfiguration['mode']);
         }
-        $revmodes = array_flip($modes);
-        // Find special modes and extract them:
-        if (isset($revmodes['ts_css'])) {
-            $modes[$revmodes['ts_css']] = 'detectbrokenlinks,css_transform,ts_images,ts_links';
-        }
-        // Make list unique
-        $modes = array_unique(GeneralUtility::trimExplode(',', implode(',', $modes), true));
-        // Reverse order if direction is "rte"
-        if ($direction === 'rte') {
-            $modes = array_reverse($modes);
-        }
-        // Getting additional HTML cleaner configuration. These are applied either before or after the main transformation is done and is thus totally independent processing options you can set up:
-        $entry_HTMLparser = $this->procOptions['entryHTMLparser_' . $direction] ? $this->HTMLparserConfig($this->procOptions['entryHTMLparser_' . $direction . '.']) : '';
-        $exit_HTMLparser = $this->procOptions['exitHTMLparser_' . $direction] ? $this->HTMLparserConfig($this->procOptions['exitHTMLparser_' . $direction . '.']) : '';
+        $modes = $this->resolveAppliedTransformationModes($direction, $modes);
 
         $value = $this->streamlineLineBreaksForProcessing($value);
 
-        // In an entry-cleaner was configured, pass value through the HTMLcleaner with that:
-        if (is_array($entry_HTMLparser)) {
-            $value = $this->HTMLcleaner($value, $entry_HTMLparser[0], $entry_HTMLparser[1], $entry_HTMLparser[2], $entry_HTMLparser[3]);
-        }
-        // Traverse modes:
+        // If an entry HTML cleaner was configured, pass the content through the HTMLcleaner
+        $value = $this->runHtmlParserIfConfigured($value, 'entryHTMLparser_' . $direction);
+
+        // Traverse modes
         foreach ($modes as $cmd) {
-            // ->DB
             if ($direction == 'db') {
                 // Checking for user defined transformation:
                 if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
@@ -182,7 +217,6 @@ class RteHtmlParser extends HtmlParser
                             $value = $this->TS_links_db($value);
                             break;
                         case 'css_transform':
-                            $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
                             // Transform empty paragraphs into spacing paragraphs
                             $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
                             // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
@@ -193,9 +227,7 @@ class RteHtmlParser extends HtmlParser
                             // Do nothing
                     }
                 }
-            }
-            // ->RTE
-            if ($direction == 'rte') {
+            } elseif ($direction == 'rte') {
                 // Checking for user defined transformation:
                 if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
                     $_procObj = GeneralUtility::getUserObj($_classRef);
@@ -222,14 +254,58 @@ class RteHtmlParser extends HtmlParser
                 }
             }
         }
-        // In an exit-cleaner was configured, pass value through the HTMLcleaner with that:
-        if (is_array($exit_HTMLparser)) {
-            $value = $this->HTMLcleaner($value, $exit_HTMLparser[0], $exit_HTMLparser[1], $exit_HTMLparser[2], $exit_HTMLparser[3]);
-        }
+
+        // If an exit HTML cleaner was configured, pass the content through the HTMLcleaner
+        $value = $this->runHtmlParserIfConfigured($value, 'exitHTMLparser_' . $direction);
+
         // Final clean up of linebreaks
         $value = $this->streamlineLineBreaksAfterProcessing($value);
 
         return $value;
+    }
+
+    /**
+     * Ensures what transformation modes should be executed, and that they are only executed once.
+     *
+     * @param string $direction
+     * @param array $modes
+     * @return array the resolved transformation modes
+     */
+    protected function resolveAppliedTransformationModes(string $direction, array $modes)
+    {
+        $modeList = implode(',', $modes);
+
+        // Replace the shortcut "ts_css" with all custom modes
+        $modeList = str_replace('ts_css', 'detectbrokenlinks,css_transform,ts_images,ts_links', $modeList);
+
+        // Make list unique
+        $modes = array_unique(GeneralUtility::trimExplode(',', $modeList, true));
+        // Reverse order if direction is "rte"
+        if ($direction === 'rte') {
+            $modes = array_reverse($modes);
+        }
+
+        return $modes;
+    }
+
+    /**
+     * Runs the HTML parser if it is configured
+     * Getting additional HTML cleaner configuration. These are applied either before or after the main transformation
+     * is done and thus totally independent processing options you can set up.
+     *
+     * This is only possible via TSconfig (procOptions) currently.
+     *
+     * @param string $content
+     * @param string $configurationDirective used to look up in the procOptions if enabled, and then fetch the
+     * @return string the processed content
+     */
+    protected function runHtmlParserIfConfigured($content, $configurationDirective)
+    {
+        if ($this->procOptions[$configurationDirective]) {
+            list($keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration) = $this->HTMLparserConfig($this->procOptions[$configurationDirective . '.']);
+            $content = $this->HTMLcleaner($content, $keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration);
+        }
+        return $content;
     }
 
     /************************************
@@ -334,7 +410,9 @@ class RteHtmlParser extends HtmlParser
                                 $fileName = GeneralUtility::shortMD5($absoluteUrl) . '.' . $pI['extension'];
                                 // We insert this image into the user default upload folder
                                 list($table, $field) = explode(':', $this->elRef);
+                                /** @var Resource\Folder $folder */
                                 $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder($this->recPid, $table, $field);
+                                /** @var Resource\File $fileObject */
                                 $fileObject = $folder->createFile($fileName)->setContents($externalFile);
                                 $imageConfiguration = [
                                     'width' => $attribArray['width'],
@@ -368,6 +446,7 @@ class RteHtmlParser extends HtmlParser
                                 $fileOrFolderObject = $resourceFactory->retrieveFileOrFolderObject($path);
                                 if ($fileOrFolderObject instanceof Resource\FileInterface) {
                                     $fileIdentifier = $fileOrFolderObject->getIdentifier();
+                                    /** @var Resource\AbstractFile $fileObject */
                                     $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
                                     // @todo if the retrieved file is a processed file, get the original file...
                                     $attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
@@ -609,6 +688,7 @@ class RteHtmlParser extends HtmlParser
                             } elseif ($fileOrFolderObject instanceof Resource\FileInterface) {
                                 // It's a file
                                 $fileIdentifier = $fileOrFolderObject->getIdentifier();
+                                /** @var Resource\File $fileObject */
                                 $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
                                 $href = $siteUrl . '?file:' . $fileObject->getUid();
                             } else {
@@ -765,7 +845,7 @@ class RteHtmlParser extends HtmlParser
                 if ($attribArray['style'] && !$attribArray['rteerror']) {
                     $attribArray_copy['style'] = $attribArray['style'];
                     unset($attribArray['style']);
-                    $bTag = '<span ' . GeneralUtility::implodeAttributes($attribArray_copy, 1) . '><a ' . GeneralUtility::implodeAttributes($attribArray, 1) . '>';
+                    $bTag = '<span ' . GeneralUtility::implodeAttributes($attribArray_copy, true) . '><a ' . GeneralUtility::implodeAttributes($attribArray, true) . '>';
                     $eTag = '</a></span>';
                     $blockSplit[$k] = $bTag . $this->removeFirstAndLastTag($blockSplit[$k]) . $eTag;
                 }
@@ -936,112 +1016,60 @@ class RteHtmlParser extends HtmlParser
     }
 
     /**
-     * This resolves the $value into parts based on <p>-sections and <br />-tags. These are returned as lines separated by LF.
+     * This resolves the $value into parts based on <p>-sections. These are returned as lines separated by LF.
      * This point is to resolve the HTML-code returned from RTE into ordinary lines so it's 'human-readable'
      * The function ->setDivTags does the opposite.
      * This function processes content to go into the database.
      *
      * @param string $value Value to process.
-     * @param int $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p/div tags).
+     * @param int $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p tags).
      * @param bool $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
      * @return string Processed input value.
      * @see setDivTags()
      */
     public function divideIntoLines($value, $count = 5, $returnArray = false)
     {
-        // Setting configuration for processing:
-        $allowTagsOutside = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? 'hr,' . $this->procOptions['allowTagsOutside'] : 'hr,img'), true);
         // Setting the third param will eliminate false end-tags. Maybe this is a good thing to do...?
-        $divSplit = $this->splitIntoBlock('p', $value, true);
-        // Returns plainly the value if there was no div/p sections in it
-        if (count($divSplit) <= 1 || $count <= 0) {
-            // Wrap hr tags with LF's
-            $newValue = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $value);
-            $newValue = str_replace(LF . LF, LF, $newValue);
-            $newValue = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $newValue);
-            return $newValue;
+        $paragraphBlocks = $this->splitIntoBlock('p', $value, true);
+        // Returns plainly the content if there was no p sections in it
+        if (count($paragraphBlocks) <= 1 || $count <= 0) {
+            return $this->sanitizeLineBreaksForContentOnly($value);
         }
 
-        // define which attributes are allowed on <p> tags
-        if ($this->procOptions['keepPDIVattribs']) {
-            $allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
-        } else {
-            $allowedAttributesForParagraphTags = [];
-        }
-
-        // Traverse the splitted sections:
-        foreach ($divSplit as $k => $v) {
+        // Traverse the splitted sections
+        foreach ($paragraphBlocks as $k => $v) {
             if ($k % 2) {
-                // Inside
+                // Inside a <p> section
                 $v = $this->removeFirstAndLastTag($v);
-                // Fetching 'sub-lines' - which will explode any further p nesting...
+                // Fetching 'sub-lines' - which will explode any further p nesting recursively
                 $subLines = $this->divideIntoLines($v, $count - 1, true);
                 // So, if there happened to be sub-nesting of p, this is written directly as the new content of THIS section. (This would be considered 'an error')
-                if (!is_array($subLines)) {
+                if (is_array($subLines)) {
+                    $paragraphBlocks[$k] = implode(LF, $subLines);
+                } else {
                     //... but if NO subsection was found, we process it as a TRUE line without erroneous content:
-                    $subLines = [$subLines];
-                    // Traverse sublines (there is typically one)
-                    foreach ($subLines as $sk => $value) {
-                        // Clear up the subline for DB.
-                        $subLines[$sk] = $this->HTMLcleaner_db($subLines[$sk]);
-                        // Get first tag, attributes etc:
-                        $fTag = $this->getFirstTag($divSplit[$k]);
-                        list($tagAttributes) = $this->get_tag_attributes($fTag);
-                        // Keep attributes (lowercase)
-                        $newAttribs = [];
-                        if (!empty($allowedAttributesForParagraphTags)) {
-                            foreach ($allowedAttributesForParagraphTags as $keepA) {
-                                if (isset($tagAttributes[$keepA])) {
-                                    $newAttribs[$keepA] = $tagAttributes[$keepA];
-                                }
-                            }
-                            // CLASS attribute - sort out the allowed tags
-                            if (trim($newAttribs['class']) !== '' && !empty($this->allowedClasses) && !in_array($newAttribs['class'], $this->allowedClasses)) {
-                                $classes = GeneralUtility::trimExplode(' ', $newAttribs['class'], true);
-                                $newClasses = [];
-                                foreach ($classes as $class) {
-                                    if (in_array($class, $this->allowedClasses)) {
-                                        $newClasses[] = $class;
-                                    }
-                                }
-                                if (!empty($newClasses)) {
-                                    $newAttribs['class'] = implode(' ', $newClasses);
-                                } else {
-                                    unset($newAttribs['class']);
-                                }
-                            }
-                        }
-                        // Remove any line break
-                        $subLines[$sk] = str_replace(LF, '', $subLines[$sk]);
-                        $subLines[$sk] = '<' . rtrim('p ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</p>';
-                    }
+                    $paragraphBlocks[$k] = $this->processContentWithinParagraph($subLines, $paragraphBlocks[$k]);
                 }
-                // Add the processed line(s)
-                $divSplit[$k] = implode(LF, $subLines);
                 // If it turns out the line is just blank (containing a &nbsp; possibly) then just make it pure blank.
                 // But, prevent filtering of lines that are blank in sense above, but whose tags contain attributes.
                 // Those attributes should have been filtered before; if they are still there they must be considered as possible content.
-                if (trim(strip_tags($divSplit[$k])) == '&nbsp;' && !preg_match('/\\<(img)(\\s[^>]*)?\\/?>/si', $divSplit[$k]) && !preg_match('/\\<([^>]*)?( align| class| style| id| title| dir| lang| xml:lang)([^>]*)?>/si', trim($divSplit[$k]))) {
-                    $divSplit[$k] = '';
+                if (trim(strip_tags($paragraphBlocks[$k])) === '&nbsp;' && !preg_match('/\\<(img)(\\s[^>]*)?\\/?>/si', $paragraphBlocks[$k]) && !preg_match('/\\<([^>]*)?( align| class| style| id| title| dir| lang| xml:lang)([^>]*)?>/si', trim($paragraphBlocks[$k]))) {
+                    $paragraphBlocks[$k] = '';
                 }
             } else {
-                // outside div:
-                // Remove positions which are outside p tags and without content
-                $divSplit[$k] = trim(strip_tags($divSplit[$k], '<' . implode('><', $allowTagsOutside) . '>'));
-                // Wrap hr tags with LF's
-                $divSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $divSplit[$k]);
-                $divSplit[$k] = str_replace(LF . LF, LF, $divSplit[$k]);
-                $divSplit[$k] = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $divSplit[$k]);
-                if ((string)$divSplit[$k] === '') {
-                    unset($divSplit[$k]);
+                // Outside a paragraph, if there is still something in there, just add a <p> tag
+                // Remove positions which are outside <p> tags and without content
+                $paragraphBlocks[$k] = trim(strip_tags($paragraphBlocks[$k], '<' . implode('><', $this->allowedTagsOutsideOfParagraphs) . '>'));
+                $paragraphBlocks[$k] = $this->sanitizeLineBreaksForContentOnly($paragraphBlocks[$k]);
+                if ((string)$paragraphBlocks[$k] === '') {
+                    unset($paragraphBlocks[$k]);
                 } else {
                     // add <p> tags around the content
-                    $divSplit[$k] = str_replace(strip_tags($divSplit[$k]), '<p>' . strip_tags($divSplit[$k]) . '</p>', $divSplit[$k]);
+                    $paragraphBlocks[$k] = str_replace(strip_tags($paragraphBlocks[$k]), '<p>' . strip_tags($paragraphBlocks[$k]) . '</p>', $paragraphBlocks[$k]);
                 }
             }
         }
-        // Return value:
-        return $returnArray ? $divSplit : implode(LF, $divSplit);
+        return $returnArray ? $paragraphBlocks : implode(LF, $paragraphBlocks);
     }
 
     /**
@@ -1083,6 +1111,64 @@ class RteHtmlParser extends HtmlParser
         }
         // Implode result:
         return implode(LF, $parts);
+    }
+
+    /**
+     * Used for transformation from RTE to DB
+     *
+     * Works on a single line within a <p> tag when storing into the database
+     * This always adds <p> tags and validates the arguments,
+     * additionally the content is cleaned up via the HTMLcleaner.
+     *
+     * @param string $content the content within the <p> tag
+     * @param string $fullContentWithTag the whole <p> tag surrounded as well
+     *
+     * @return string the full <p> tag with cleaned content
+     */
+    protected function processContentWithinParagraph(string $content, string $fullContentWithTag)
+    {
+        // clean up the content
+        $content = $this->HTMLcleaner_db($content);
+        // Get the <p> tag, and validate the attributes
+        $fTag = $this->getFirstTag($fullContentWithTag);
+        // Check which attributes of the <p> tag to keep attributes
+        if (!empty($this->allowedAttributesForParagraphTags)) {
+            list($tagAttributes) = $this->get_tag_attributes($fTag);
+            // Make sure the tag attributes only contain the ones that are defined to be allowed
+            $tagAttributes = array_intersect_key($tagAttributes, $this->allowedAttributesForParagraphTags);
+
+            // Only allow classes that are whitelisted in $this->allowedClasses
+            if (trim($tagAttributes['class']) !== '' && !empty($this->allowedClasses) && !in_array($tagAttributes['class'], $this->allowedClasses, true)) {
+                $classes = GeneralUtility::trimExplode(' ', $tagAttributes['class'], true);
+                $classes = array_intersect($classes, $this->allowedClasses);
+                if (!empty($classes)) {
+                    $tagAttributes['class'] = implode(' ', $classes);
+                } else {
+                    unset($tagAttributes['class']);
+                }
+            }
+        } else {
+            $tagAttributes = [];
+        }
+        // Remove any line break
+        $content = str_replace(LF, '', $content);
+        // Compile the surrounding <p> tag
+        $content = '<' . rtrim('p ' . $this->compileTagAttribs($tagAttributes)) . '>' . $content . '</p>';
+        return $content;
+    }
+
+    /**
+     * Wrap <hr> tags with LFs, and also remove double LFs, used when transforming from RTE to DB
+     *
+     * @param string $content
+     * @return string the modified content
+     */
+    protected function sanitizeLineBreaksForContentOnly(string $content)
+    {
+        $content = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $content);
+        $content = str_replace(LF . LF, LF, $content);
+        $content = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $content);
+        return $content;
     }
 
     /**
@@ -1237,6 +1323,10 @@ class RteHtmlParser extends HtmlParser
                     if ($attribArray['width'] > $imageInfo[0]) {
                         $attribArray['width'] = $imageInfo[0];
                     }
+                    if ($imageInfo[0] > 0) {
+                        $attribArray['height'] = round($attribArray['width'] * ($imageInfo[1] / $imageInfo[0]));
+                    }
+                    break;
                 case 'lockRatio':
                     if ($imageInfo[0] > 0) {
                         $attribArray['height'] = round($attribArray['width'] * ($imageInfo[1] / $imageInfo[0]));
