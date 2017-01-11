@@ -638,9 +638,9 @@ class ResourceCompressor
     {
         $externalContent = GeneralUtility::getUrl($url);
         $filename = $this->targetDirectory . 'external-' . md5($url);
-        // write only if file does not exist and md5 of the content is not the same as fetched one
+        // Write only if file does not exist OR md5 of the content is not the same as fetched one
         if (!file_exists(PATH_site . $filename)
-            && (md5($externalContent) !== md5(file_get_contents(PATH_site . $filename)))
+            || (md5($externalContent) !== md5(file_get_contents(PATH_site . $filename)))
         ) {
             GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
         }
