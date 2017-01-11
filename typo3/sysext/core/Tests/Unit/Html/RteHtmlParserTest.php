@@ -30,7 +30,6 @@ class RteHtmlParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\Unit
         $this->subject->procOptions = [
             'dontConvBRtoParagraph' => '1',
             'allowTagsOutside' => 'hr, address',
-            'disableUnifyLineBreaks' => '0',
             'overruleMode' => 'ts_css'
         ];
     }

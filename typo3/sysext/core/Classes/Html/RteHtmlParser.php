@@ -23,6 +23,11 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
+ *
+ * Concerning line breaks:
+ * Regardless if LF (Unix-style) or CRLF (Windows) was put in, the HtmlParser works with LFs and migrates all
+ * line breaks to LFs internally, however when all transformations are done, all LFs are transformed to CRLFs.
+ * This means: RteHtmlParser always returns CRLFs to be maximum compatible with all formats.
  */
 class RteHtmlParser extends HtmlParser
 {
@@ -146,10 +151,9 @@ class RteHtmlParser extends HtmlParser
         // Getting additional HTML cleaner configuration. These are applied either before or after the main transformation is done and is thus totally independent processing options you can set up:
         $entry_HTMLparser = $this->procOptions['entryHTMLparser_' . $direction] ? $this->HTMLparserConfig($this->procOptions['entryHTMLparser_' . $direction . '.']) : '';
         $exit_HTMLparser = $this->procOptions['exitHTMLparser_' . $direction] ? $this->HTMLparserConfig($this->procOptions['exitHTMLparser_' . $direction . '.']) : '';
-        // Line breaks of content is unified into char-10 only (removing char 13)
-        if (!$this->procOptions['disableUnifyLineBreaks']) {
-            $value = str_replace(CRLF, LF, $value);
-        }
+
+        $value = $this->streamlineLineBreaksForProcessing($value);
+
         // In an entry-cleaner was configured, pass value through the HTMLcleaner with that:
         if (is_array($entry_HTMLparser)) {
             $value = $this->HTMLcleaner($value, $entry_HTMLparser[0], $entry_HTMLparser[1], $entry_HTMLparser[2], $entry_HTMLparser[3]);
@@ -175,8 +179,6 @@ class RteHtmlParser extends HtmlParser
                             break;
                         case 'css_transform':
                             $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
-                            // CR has a very disturbing effect, so just remove all CR and rely on LF
-                            $value = str_replace(CR, '', $value);
                             // Transform empty paragraphs into spacing paragraphs
                             $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
                             // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
@@ -205,8 +207,6 @@ class RteHtmlParser extends HtmlParser
                             $value = $this->TS_links_rte($value);
                             break;
                         case 'css_transform':
-                            // Has a very disturbing effect, so just remove all '13' - depend on '10'
-                            $value = str_replace(CR, '', $value);
                             $value = $this->TS_transform_rte($value);
                             break;
                         default:
@@ -219,14 +219,9 @@ class RteHtmlParser extends HtmlParser
         if (is_array($exit_HTMLparser)) {
             $value = $this->HTMLcleaner($value, $exit_HTMLparser[0], $exit_HTMLparser[1], $exit_HTMLparser[2], $exit_HTMLparser[3]);
         }
-        // Final clean up of linebreaks:
-        if (!$this->procOptions['disableUnifyLineBreaks']) {
-            // Make sure no \r\n sequences has entered in the meantime...
-            $value = str_replace(CRLF, LF, $value);
-            // ... and then change all \n into \r\n
-            $value = str_replace(LF, CRLF, $value);
-        }
-        // Return value:
+        // Final clean up of linebreaks
+        $value = $this->streamlineLineBreaksAfterProcessing($value);
+
         return $value;
     }
 
@@ -726,18 +721,18 @@ class RteHtmlParser extends HtmlParser
                     default:
                         // usually <hx> tags and <table> tags where no other block elements are within the tags
                         // Eliminate true linebreaks inside block element tags
-                        $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k]));
+                        $blockSplit[$k] = preg_replace(('/[' . LF . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k]));
                 }
             } else {
                 // NON-block:
                 if (trim($blockSplit[$k]) !== '') {
                     $blockSplit[$k] = str_replace('<hr/>', '<hr />', $blockSplit[$k]);
                     // Remove linebreaks preceding hr tags
-                    $blockSplit[$k] = preg_replace('/[' . LF . CR . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
+                    $blockSplit[$k] = preg_replace('/[' . LF . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
                     // Remove linebreaks following hr tags
-                    $blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . CR . ']+/', '<$1$2/>', $blockSplit[$k]);
+                    $blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . ']+/', '<$1$2/>', $blockSplit[$k]);
                     // Replace other linebreaks with space
-                    $blockSplit[$k] = preg_replace('/[' . LF . CR . ']+/', ' ', $blockSplit[$k]);
+                    $blockSplit[$k] = preg_replace('/[' . LF . ']+/', ' ', $blockSplit[$k]);
                     $blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]);
                     $blockSplit[$k] = $this->transformStyledATags($blockSplit[$k]);
                 } else {
@@ -1016,8 +1011,8 @@ class RteHtmlParser extends HtmlParser
                                 }
                             }
                         }
-                        // Remove any line break char (10 or 13)
-                        $subLines[$sk] = str_replace([LF, CR], '', $subLines[$sk]);
+                        // Remove any line break
+                        $subLines[$sk] = str_replace(LF, '', $subLines[$sk]);
                         $subLines[$sk] = '<' . rtrim('p ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</p>';
                     }
                 }
@@ -1252,6 +1247,39 @@ class RteHtmlParser extends HtmlParser
             }
         }
         return $attribArray;
+    }
+
+    /**
+     * Called before any processing / transformation is made
+     * Removing any CRs (char 13) and only deal with LFs (char 10) internally.
+     * CR has a very disturbing effect, so just remove all CR and rely on LF
+     *
+     * Historical note: Previously it was possible to disable this functionality via disableUnifyLineBreaks.
+     *
+     * @param string $content the content to process
+     * @return string the modified content
+     */
+    protected function streamlineLineBreaksForProcessing(string $content)
+    {
+        return str_replace(CR, '', $content);
+    }
+
+    /**
+     * Called after any processing / transformation was made
+     * just before the content is returned by the RTE parser all line breaks
+     * get unified to be "CRLF"s again.
+     *
+     * Historical note: Previously it was possible to disable this functionality via disableUnifyLineBreaks.
+     *
+     * @param string $content the content to process
+     * @return string the modified content
+     */
+    protected function streamlineLineBreaksAfterProcessing(string $content)
+    {
+        // Make sure no \r\n sequences has entered in the meantime
+        $content = $this->streamlineLineBreaksForProcessing($content);
+        // ... and then change all \n into \r\n
+        return str_replace(LF, CRLF, $content);
     }
 
     /**
