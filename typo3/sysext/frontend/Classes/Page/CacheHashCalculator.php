@@ -160,14 +160,16 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Checks whether the given parameter starts with TSFE_ADMIN_PANEL
-	 * stristr check added to avoid bad performance
+	 * Checks whether the given parameter is out of a known data-set starting
+	 * with ADMCMD or starts with TSFE_ADMIN_PANEL.
 	 *
 	 * @param string $key
 	 * @return boolean
 	 */
 	protected function isAdminPanelParameter($key) {
-		return stristr($key, 'TSFE_ADMIN_PANEL') !== FALSE && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
+		return $key === 'ADMCMD_noBeUser' || $key === 'ADMCMD_view' || $key === 'ADMCMD_editIcons'
+			|| $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime' || $key === 'ADMCMD_previewWS'
+			|| stripos($key, 'TSFE_ADMIN_PANEL') !== FALSE && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
 	}
 
 	/**
