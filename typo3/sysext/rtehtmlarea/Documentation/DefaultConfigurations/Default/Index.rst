@@ -142,16 +142,6 @@ Make sure we can set rules on any tag listed in allowTags.
 
    denyTags >
 
-AVOID CONTENT BEING HSC'ed TWICE
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-::
-
-   htmlSpecialChars = 0
-
-::
-
-   tags {
-
 REMOVE IMG TAGS
 ^^^^^^^^^^^^^^^
 
@@ -246,15 +236,6 @@ Without this rule, the parser will remove all tags! Presumably, this rule will b
 ::
 
    keepNonMatchedTags = 1
-
-AVOID CONTENT BEING HSC'ed TWICE
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-::
-
-   htmlSpecialChars = 0
-
-Use same RTE processing rules in FE
 
 ::
 
