@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
+
 /**
  * Extension status reports
  */
@@ -74,7 +76,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     public function getStatus()
     {
         $status = [];
-        $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
+
+        if (!Bootstrap::usesComposerClassLoading()) {
+            $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
+        }
 
         $extensionStatus = $this->getSecurityStatusOfExtensions();
         $status['extensionsSecurityStatusInstalled'] = $extensionStatus->loaded;
