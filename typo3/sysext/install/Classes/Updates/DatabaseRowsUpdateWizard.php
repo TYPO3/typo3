@@ -23,7 +23,7 @@ use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
  * This is a generic updater to migrate content of TCA rows.
  *
  * Multiple classes implementing interface "RowUpdateInterface" can be
- * registered here, each for a specific update purpose,
+ * registered here, each for a specific update purpose.
  *
  * The updater fetches each row of all TCA registered tables and
  * visits the client classes who may modify the row content.
@@ -34,7 +34,7 @@ use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
  *
  * A start position pointer is stored in the registry that is updated during
  * the run process, so if for instance the PHP process runs into a timeout,
- * the job can restart at the position it stopped again.
+ * the job can restart at the position it stopped.
  */
 class DatabaseRowsUpdateWizard extends AbstractUpdate
 {
@@ -67,7 +67,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
             return false;
         }
 
-        $description = 'Some row updates have not been run yet:';
+        $description = 'Some row updaters have not been executed:';
         foreach ($rowUpdaterNotExecuted as $rowUpdateClassName) {
             $rowUpdater = GeneralUtility::makeInstance($rowUpdateClassName);
             if (!$rowUpdater instanceof RowUpdaterInterface) {
@@ -85,7 +85,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
     /**
      * Performs the configuration update.
      *
-     * @param array &$databaseQueries Queries done in this update
+     * @param array &$databaseQueries Queries done in this update - not filled for this updater
      * @param mixed &$customMessages Custom messages
      * @return bool
      * @throws \Doctrine\DBAL\ConnectionException
@@ -118,14 +118,11 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
         }
 
         // Scope of the row updater is to update all rows that have TCA,
-        // so our list of tables is just the list of loaded TCA tables.
+        // our list of tables is just the list of loaded TCA tables.
         $listOfAllTables = array_keys($GLOBALS['TCA']);
 
-        // @todo: hack
-        $listOfAllTables = [ 'tx_styleguide_staticdata' ];
-
         // In case the PHP ended for whatever reason, fetch the last position from registry
-        // and throw away all tables before the first table from registry table name.
+        // and throw away all tables before that start point.
         sort($listOfAllTables);
         reset($listOfAllTables);
         $firstTable = current($listOfAllTables);
@@ -138,7 +135,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
             }
         }
 
-        // Ask each row updater if it potentially has field updates for rows of each table
+        // Ask each row updater if it potentially has field updates for rows of a table
         $tableToUpdaterList = [];
         foreach ($listOfAllTables as $table) {
             foreach ($rowUpdaterInstances as $updater) {
@@ -151,8 +148,9 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
             }
         }
 
-        // Iterate through all rows of all table that have potential row updaters attached,
-        // feed them each single row to each updater and finally update each row
+        // Iterate through all rows of all tables that have potential row updaters attached,
+        // feed each single row to each updater and finally update each row in database if
+        // a row updater changed a fields
         foreach ($tableToUpdaterList as $table => $updaters) {
             /** @var RowUpdaterInterface[] $updaters */
             $connectionForTable = $connectionPool->getConnectionForTable($table);
@@ -177,7 +175,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
                     // Updaters changed no field of that row
                     $rowCountWithoutUpdate ++;
                     if ($rowCountWithoutUpdate >= 200) {
-                        // Update startPosition every number rows without update
+                        // Update startPosition if there were many rows without data change
                         $startPosition = [
                             'table' => $table,
                             'uid' => $row['uid'],
@@ -219,7 +217,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
                         }
                     } else {
                         // Different connections for table and sys_registry -> execute two
-                        // distinct queries  and hope for the best.
+                        // distinct queries and hope for the best.
                         $connectionForTable->update(
                             $table,
                             $updatedFields,
@@ -244,7 +242,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
 
         // Ready with updates, remove position information from sys_registry
         $registry->remove('installUpdateRows', 'rowUpdatePosition');
-        // Mark those row updaters as done
+        // Mark row updaters that were executed as done
         foreach ($rowUpdaterInstances as $updater) {
             $this->setRowUpdaterExecuted($updater);
         }
