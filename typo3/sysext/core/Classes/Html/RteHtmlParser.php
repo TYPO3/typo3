@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Html;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -140,7 +141,7 @@ class RteHtmlParser extends HtmlParser
         $revmodes = array_flip($modes);
         // Find special modes and extract them:
         if (isset($revmodes['ts_css'])) {
-            $modes[$revmodes['ts_css']] = 'css_transform,ts_images,ts_links';
+            $modes[$revmodes['ts_css']] = 'detectbrokenlinks,css_transform,ts_images,ts_links';
         }
         // Make list unique
         $modes = array_unique(GeneralUtility::trimExplode(',', implode(',', $modes), true));
@@ -171,6 +172,9 @@ class RteHtmlParser extends HtmlParser
                 } else {
                     // ... else use defaults:
                     switch ($cmd) {
+                        case 'detectbrokenlinks':
+                            $value = $this->removeBrokenLinkMarkers($value);
+                            break;
                         case 'ts_images':
                             $value = $this->TS_images_db($value);
                             break;
@@ -200,6 +204,9 @@ class RteHtmlParser extends HtmlParser
                 } else {
                     // ... else use defaults:
                     switch ($cmd) {
+                        case 'detectbrokenlinks':
+                            $value = $this->markBrokenLinks($value);
+                            break;
                         case 'ts_images':
                             $value = $this->TS_images_rte($value);
                             break;
@@ -451,11 +458,6 @@ class RteHtmlParser extends HtmlParser
                 unset($attribArray_copy['class']);
                 unset($attribArray_copy['title']);
                 unset($attribArray_copy['data-htmlarea-external']);
-                // Unset "rteerror" and "style" attributes if "rteerror" is set!
-                if ($attribArray_copy['rteerror']) {
-                    unset($attribArray_copy['style']);
-                    unset($attribArray_copy['rteerror']);
-                }
                 // Remove additional parameters
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'])) {
                     $parameters = [
@@ -647,8 +649,7 @@ class RteHtmlParser extends HtmlParser
                     . ($tagCode['target'] ? ' target="' . htmlspecialchars($tagCode['target']) . '"' : '')
                     . ($tagCode['class'] ? ' class="' . htmlspecialchars($tagCode['class']) . '"' : '')
                     . ($tagCode['title'] ? ' title="' . htmlspecialchars($tagCode['title']) . '"' : '')
-                    . ($external ? ' data-htmlarea-external="1"' : '')
-                    . ($error ? ' rteerror="' . htmlspecialchars($error) . '" style="background-color: yellow; border:2px red solid; color: black;"' : '') . '>';
+                    . ($external ? ' data-htmlarea-external="1"' : '') . '>';
                 $eTag = '</a>';
                 // Modify parameters
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {
@@ -721,7 +722,7 @@ class RteHtmlParser extends HtmlParser
                     default:
                         // usually <hx> tags and <table> tags where no other block elements are within the tags
                         // Eliminate true linebreaks inside block element tags
-                        $blockSplit[$k] = preg_replace(('/[' . LF . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k]));
+                        $blockSplit[$k] = preg_replace(('/[' . LF . ']+/'), ' ', $blockSplit[$k]);
                 }
             } else {
                 // NON-block:
@@ -734,7 +735,6 @@ class RteHtmlParser extends HtmlParser
                     // Replace other linebreaks with space
                     $blockSplit[$k] = preg_replace('/[' . LF . ']+/', ' ', $blockSplit[$k]);
                     $blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]);
-                    $blockSplit[$k] = $this->transformStyledATags($blockSplit[$k]);
                 } else {
                     unset($blockSplit[$k]);
                 }
@@ -746,6 +746,10 @@ class RteHtmlParser extends HtmlParser
 
     /**
      * Wraps a-tags that contain a style attribute with a span-tag
+     * This is not in use anymore, but was necessary before because <a> tags are transformed into <link> tags
+     * in the database, but <link> tags cannot handle style attributes. However, this is considered a
+     * bad approach as it leaves an ugly <span> tag in the database, if allowedTags=span with style attributes are
+     * allowed.
      *
      * @param string $value Content input
      * @return string Content output
@@ -1280,6 +1284,84 @@ class RteHtmlParser extends HtmlParser
         $content = $this->streamlineLineBreaksForProcessing($content);
         // ... and then change all \n into \r\n
         return str_replace(LF, CRLF, $content);
+    }
+
+    /**
+     * Content Transformation from DB to RTE
+     * Checks all <a> tags which reference a t3://page and checks if the page is available
+     * If not, some offensive styling is added.
+     *
+     * @param string $content
+     * @return string the modified content
+     */
+    protected function markBrokenLinks(string $content): string
+    {
+        $blocks = $this->splitIntoBlock('A', $content);
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        foreach ($blocks as $position => $value) {
+            if ($position % 2 === 0) {
+                continue;
+            }
+            list($attributes) = $this->get_tag_attributes($this->getFirstTag($value), true);
+            if (empty($attributes['href'])) {
+                continue;
+            }
+            $hrefInformation = $linkService->resolve($attributes['href']);
+            if ($hrefInformation['type'] === LinkService::TYPE_PAGE) {
+                $pageRecord = BackendUtility::getRecord('pages', $hrefInformation['pageuid']);
+                if (!is_array($pageRecord)) {
+                    // Page does not exist
+                    $attributes['data-rte-error'] = 'Page with ID ' . $hrefInformation['pageuid'] . ' not found';
+                    $styling = 'background-color: yellow; border:2px red solid; color: black;';
+                    if (empty($attributes['style'])) {
+                        $attributes['style'] = $styling;
+                    } else {
+                        $attributes['style'] .= ' ' . $styling;
+                    }
+                }
+            }
+            // Always rewrite the block to allow the nested calling even if a page is found
+            $blocks[$position] =
+                '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'
+                . $this->markBrokenLinks($this->removeFirstAndLastTag($blocks[$position]))
+                . '</a>';
+        }
+        return implode('', $blocks);
+    }
+
+    /**
+     * Content Transformation from RTE to DB
+     * Removes link information error attributes from <a> tags that are added to broken links
+     *
+     * @param string $content the content to process
+     * @return string the modified content
+     */
+    protected function removeBrokenLinkMarkers(string $content): string
+    {
+        $blocks = $this->splitIntoBlock('A', $content);
+        foreach ($blocks as $position => $value) {
+            if ($position % 2 === 0) {
+                continue;
+            }
+            list($attributes) = $this->get_tag_attributes($this->getFirstTag($value), true);
+            if (empty($attributes['href'])) {
+                continue;
+            }
+            // Always remove the styling again (regardless of the page was found or not)
+            // so the database does not contain ugly stuff
+            unset($attributes['data-rte-error']);
+            if (isset($attributes['style'])) {
+                $attributes['style'] = trim(str_replace('background-color: yellow; border:2px red solid; color: black;', '', $attributes['style']));
+                if (empty($attributes['style'])) {
+                    unset($attributes['style']);
+                }
+            }
+            $blocks[$position] =
+                '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'
+                . $this->removeBrokenLinkMarkers($this->removeFirstAndLastTag($blocks[$position]))
+                . '</a>';
+        }
+        return implode('', $blocks);
     }
 
     /**
