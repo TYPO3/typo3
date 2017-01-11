@@ -37,7 +37,7 @@ class UserSettingsController
     {
         // do the regular / main logic, depending on the action parameter
         $action = isset($request->getParsedBody()['action']) ? $request->getParsedBody()['action'] : $request->getQueryParams()['action'];
-        $key = isset($request->getParsedBody()['key']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['key'];
+        $key = isset($request->getParsedBody()['key']) ? $request->getParsedBody()['key'] : $request->getQueryParams()['key'];
         $value = isset($request->getParsedBody()['value']) ? $request->getParsedBody()['value'] : $request->getQueryParams()['value'];
 
         $content = $this->process($action, $key, $value);

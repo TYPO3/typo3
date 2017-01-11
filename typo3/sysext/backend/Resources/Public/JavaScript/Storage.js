@@ -130,7 +130,7 @@ define(['jquery'], function ($) {
 	 * @returns {*}
 	 */
 	Storage.Persistent.addToList = function(key, value) {
-		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'addToList', key: key, value: value}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {method: 'post', data: {'action': 'addToList', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
@@ -142,7 +142,7 @@ define(['jquery'], function ($) {
 	 * @returns {*}
 	 */
 	Storage.Persistent.removeFromList = function(key, value) {
-		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'removeFromList', key: key, value: value}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {method: 'post', data: {'action': 'removeFromList', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
@@ -153,7 +153,7 @@ define(['jquery'], function ($) {
 	 * @returns {*}
 	 */
 	Storage.Persistent.unset = function(key) {
-		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'unset', key: key}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {method: 'post', data: {'action': 'unset', key: key}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
@@ -208,7 +208,7 @@ define(['jquery'], function ($) {
 	 * @private
 	 */
 	Storage.Persistent._storeOnServer = function(key, value) {
-		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'set', key: key, value: value}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {method: 'post', data: {'action': 'set', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
