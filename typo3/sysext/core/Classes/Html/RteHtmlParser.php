@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Html;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
@@ -599,7 +600,11 @@ class RteHtmlParser extends HtmlParser
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
                 $linkInformation = $linkService->resolve($tagCode['url']);
 
-                $href = $linkService->asString($linkInformation);
+                try {
+                    $href = $linkService->asString($linkInformation);
+                } catch (UnknownLinkHandlerException $e) {
+                    $href = '';
+                }
 
                 // Modify parameters by a hook
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {

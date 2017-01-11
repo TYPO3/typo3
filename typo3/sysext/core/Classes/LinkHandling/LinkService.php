@@ -78,7 +78,7 @@ class LinkService implements SingletonInterface
         try {
             // Check if the new syntax with "t3://" is used
             return $this->resolveByStringRepresentation($linkParameter);
-        } catch (\InvalidArgumentException $e) {
+        } catch (Exception\UnknownUrnException $e) {
             $legacyLinkNotationConverter = GeneralUtility::makeInstance(LegacyLinkNotationConverter::class);
             return $legacyLinkNotationConverter->resolve($linkParameter);
         }
@@ -89,6 +89,8 @@ class LinkService implements SingletonInterface
      *
      * @param string $urn
      * @return array
+     * @throws Exception\UnknownLinkHandlerException
+     * @throws Exception\UnknownUrnException
      */
     public function resolveByStringRepresentation(string $urn): array
     {
@@ -108,7 +110,7 @@ class LinkService implements SingletonInterface
                 $result = $this->handlers[$type]->resolveHandlerData($data);
                 $result['type'] = $type;
             } else {
-                throw new \InvalidArgumentException('LinkHandler for ' . $type . ' was not registered', 1460581769);
+                throw new Exception\UnknownLinkHandlerException('LinkHandler for ' . $type . ' was not registered', 1460581769);
             }
             // this was historically named "section"
             if ($fragment) {
@@ -121,7 +123,7 @@ class LinkService implements SingletonInterface
             $result = $this->handlers[self::TYPE_EMAIL]->resolveHandlerData(['email' => $urn]);
             $result['type'] = self::TYPE_EMAIL;
         } else {
-            throw new \InvalidArgumentException('No valid URN to resolve found', 1457177667);
+            throw new Exception\UnknownUrnException('No valid URN to resolve found', 1457177667);
         }
 
         return $result;
@@ -138,13 +140,13 @@ class LinkService implements SingletonInterface
      *
      * @param array $parameters
      * @return string
-     * @throws \InvalidArgumentException
+     * @throws Exception\UnknownLinkHandlerException
      */
     public function asString(array $parameters): string
     {
         if (is_object($this->handlers[$parameters['type']])) {
             return $this->handlers[$parameters['type']]->asString($parameters);
         }
-        throw new \InvalidArgumentException('No valid handlers found for type: ' . $parameters['type'], 1460629247);
+        throw new Exception\UnknownLinkHandlerException('No valid handlers found for type: ' . $parameters['type'], 1460629247);
     }
 }
