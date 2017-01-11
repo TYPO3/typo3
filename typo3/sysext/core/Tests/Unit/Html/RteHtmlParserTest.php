@@ -28,7 +28,6 @@ class RteHtmlParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\Unit
     {
         $this->subject = new \TYPO3\CMS\Core\Html\RteHtmlParser();
         $this->subject->procOptions = [
-            'dontConvBRtoParagraph' => '1',
             'allowTagsOutside' => 'hr, address',
             'overruleMode' => 'ts_css'
         ];

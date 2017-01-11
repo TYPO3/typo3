@@ -50,17 +50,6 @@ We assume that CSS Styled Content is used.
 
    overruleMode = ts_css
 
-DO NOT CONVERT BR TAGS INTO LINEBREAKS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-br tags in the content are assumed to be intentional.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-::
-
-   dontConvBRtoParagraph = 1
-
-
 TAGS ALLOWED OUTSIDE P & DIV
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

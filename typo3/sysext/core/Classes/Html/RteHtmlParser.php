@@ -978,13 +978,9 @@ class RteHtmlParser extends HtmlParser
                 $subLines = $this->divideIntoLines($v, $count - 1, true);
                 // So, if there happened to be sub-nesting of p, this is written directly as the new content of THIS section. (This would be considered 'an error')
                 if (!is_array($subLines)) {
-                    //... but if NO subsection was found, we process it as a TRUE line without erronous content:
+                    //... but if NO subsection was found, we process it as a TRUE line without erroneous content:
                     $subLines = [$subLines];
-                    // process break-tags, if configured for. Simply, the breaktags will here be treated like if each was a line of content...
-                    if (!$this->procOptions['dontConvBRtoParagraph']) {
-                        $subLines = preg_split('/<br[[:space:]]*[\\/]?>/i', $v);
-                    }
-                    // Traverse sublines (there is typically one, except if <br/> has been converted to lines as well!)
+                    // Traverse sublines (there is typically one)
                     foreach ($subLines as $sk => $value) {
                         // Clear up the subline for DB.
                         $subLines[$sk] = $this->HTMLcleaner_db($subLines[$sk]);
@@ -1060,9 +1056,7 @@ class RteHtmlParser extends HtmlParser
     {
         // First, setting configuration for the HTMLcleaner function. This will process each line between the <div>/<p> section on their way to the RTE
         $keepTags = $this->getKeepTags('rte');
-        // Default: remove unknown tags.
-        $kUknown = $this->procOptions['dontProtectUnknownTags_rte'] ? 0 : 'protect';
-        // Divide the content into lines, based on LF:
+        // Divide the content into lines
         $parts = explode(LF, $value);
         foreach ($parts as $k => $v) {
             // Processing of line content:
@@ -1070,13 +1064,13 @@ class RteHtmlParser extends HtmlParser
             if (trim($parts[$k]) === '') {
                 $parts[$k] = '&nbsp;';
             } else {
-                // Clean the line content:
-                $parts[$k] = $this->HTMLcleaner($parts[$k], $keepTags, $kUknown);
-                if (!$this->procOptions['dontConvAmpInNBSP_rte']) {
-                    $parts[$k] = str_replace('&amp;nbsp;', '&nbsp;', $parts[$k]);
-                }
+                // Clean the line content, keeping unknown tags (as they can be removed in the entryHTMLparser)
+                $parts[$k] = $this->HTMLcleaner($parts[$k], $keepTags, 'protect');
+                // convert double-encoded &nbsp; into regular &nbsp; however this could also be reversed via the exitHTMLparser
+                // This was previously an option to disable called "dontConvAmpInNBSP_rte"
+                $parts[$k] = str_replace('&amp;nbsp;', '&nbsp;', $parts[$k]);
             }
-            // Wrapping the line in <$dT> if not already wrapped and does not contain an hr tag
+            // Wrapping the line in <p> tags if not already wrapped and does not contain an hr tag
             if (!preg_match('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', $parts[$k])) {
                 $testStr = strtolower(trim($parts[$k]));
                 if (substr($testStr, 0, 4) != '<div' || substr($testStr, -6) != '</div>') {
