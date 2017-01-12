@@ -35,9 +35,6 @@ RTE.default.proc {
 		## ALLOWED P ATTRIBUTES
 	keepPDIVattribs = class, align, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop
 
-		## REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
-	transformBoldAndItalicTags = 1
-
 		## CONTENT TO DATABASE
 	entryHTMLparser_db = 1
 	entryHTMLparser_db {
@@ -104,6 +101,21 @@ RTE.default.proc {
 			## If this list of tags is not set, it will default to: b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike.
 			## However, we want to keep xml:lang attribute on most tags and tags from the default list where cleaned on entry.
 		noAttrib = br
+
+			# Previously called "transformBoldAndItalicTags"
+			# When storing content in the DB, all <strong> and <em> tags are transferred to <b> and <i>
+		tags {
+			strong.remap = B
+			em.remap = I
+		}
+	}
+	HTMLparser_rte {
+			# Previously called "transformBoldAndItalicTags"
+			# When fetching content from the DB, all <b> and <i> tags are transferred to <strong> and <em>
+		tags {
+			b.remap = strong
+			i.remap = em
+		}
 	}
 
 	exitHTMLparser_db = 1

@@ -806,8 +806,8 @@ class RteHtmlParser extends HtmlParser
     }
 
     /**
-     * Creates an array of configuration for the HTMLcleaner function based on whether content go TO or FROM the Rich Text Editor ($direction)
-     * Unless "tagList" is given, the function will cache the configuration for next time processing goes on. (In this class that is the case only if we are processing a bulletlist)
+     * Creates an array of configuration for the HTMLcleaner function based on whether content
+     * go TO or FROM the Rich Text Editor ($direction)
      *
      * @param string $direction The direction of the content being processed by the output configuration; "db" (content going into the database FROM the rte) or "rte" (content going into the form)
      * @return array Configuration array
@@ -828,28 +828,11 @@ class RteHtmlParser extends HtmlParser
             // Based on the direction of content, set further options:
             switch ($direction) {
                 case 'rte':
-                    if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
-                        // Transform bold/italics tags to strong/em
-                        if (isset($keepTags['b'])) {
-                            $keepTags['b'] = ['remap' => 'STRONG'];
-                        }
-                        if (isset($keepTags['i'])) {
-                            $keepTags['i'] = ['remap' => 'EM'];
-                        }
-                    }
-                    // Transforming keepTags array so it can be understood by the HTMLcleaner function. This basically converts the format of the array from TypoScript (having .'s) to plain multi-dimensional array.
+                    // Transforming keepTags array so it can be understood by the HTMLcleaner function.
+                    // This basically converts the format of the array from TypoScript (having dots) to plain multi-dimensional array.
                     list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'], $keepTags);
                     break;
                 case 'db':
-                    if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
-                        // Transform strong/em back to bold/italics:
-                        if (isset($keepTags['strong'])) {
-                            $keepTags['strong'] = ['remap' => 'b'];
-                        }
-                        if (isset($keepTags['em'])) {
-                            $keepTags['em'] = ['remap' => 'i'];
-                        }
-                    }
                     // Setting up span tags if they are allowed:
                     if (isset($keepTags['span'])) {
                         $keepTags['span'] = [
@@ -865,7 +848,7 @@ class RteHtmlParser extends HtmlParser
                             $keepTags['span']['fixAttrib']['class']['list'] = $this->allowedClasses;
                         }
                     }
-                    // Setting further options, getting them from the processiong options:
+                    // Setting further options, getting them from the processing options
                     $TSc = $this->procOptions['HTMLparser_db.'];
                     if (!$TSc['globalNesting']) {
                         $TSc['globalNesting'] = 'b,i,u,a,center,font,sub,sup,strong,em,strike,span';
@@ -877,7 +860,7 @@ class RteHtmlParser extends HtmlParser
                     list($keepTags) = $this->HTMLparserConfig($TSc, $keepTags);
                     break;
             }
-            // Caching (internally, in object memory) the result unless tagList is set:
+            // Caching (internally, in object memory) the result
             $this->getKeepTags_cache[$direction] = $keepTags;
         }
         // Return result:

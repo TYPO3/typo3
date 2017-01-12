@@ -2,6 +2,31 @@
 # Additonal proc options in Page TSconfig for Inline Elements extension
 # ***************************************************************************************
 
-	## DO NOT REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
-RTE.default.proc.transformBoldAndItalicTags = 0
-RTE.default.FE.proc.transformBoldAndItalicTags = 0
+# Previously called "transformBoldAndItalicTags"
+# When storing content in the DB, all <strong> and <em> tags are transferred to <b> and <i>
+# When fetching content from the DB, all <b> and <i> tags are transferred to <strong> and <em>
+# This is explicitly disabled so all tags remain the same in RTE and DB
+RTE.default.proc {
+	HTMLparser_db {
+		tags {
+			strong.remap >
+			em.remap >
+		}
+	}
+	HTMLparser_rte {
+		tags {
+			b.remap >
+			i.remap >
+		}
+	}
+}
+RTE.default.proc.FE {
+	HTMLparser_db.tags {
+		strong.remap >
+		em.remap >
+	}
+	HTMLparser_rte.tags {
+		b.remap >
+		i.remap >
+	}
+}
