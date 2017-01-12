@@ -715,14 +715,14 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $parameter = $input->format('U');
             }
+        } elseif ($input instanceof DomainObjectInterface) {
+            $parameter = (int)$input->getUid();
         } elseif (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {
             $plainValueArray = [];
             foreach ($input as $inputElement) {
                 $plainValueArray[] = $this->getPlainValue($inputElement, $columnMap, $parseStringValueCallback, $parseStringValueCallbackParameters);
             }
             $parameter = implode(',', $plainValueArray);
-        } elseif ($input instanceof DomainObjectInterface) {
-            $parameter = (int)$input->getUid();
         } elseif (is_object($input)) {
             if (TypeHandlingUtility::isCoreType($input)) {
                 $parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
