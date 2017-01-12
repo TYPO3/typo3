@@ -1345,6 +1345,9 @@ class DataHandler
                 $shadowCols = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
                 $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
                 $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+                if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
+                    $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['translationSource'];
+                }
                 $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['type'];
                 $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
                 $shadowColumns = array_unique(GeneralUtility::trimExplode(',', $shadowCols, true));
@@ -3209,6 +3212,7 @@ class DataHandler
                     // Only execute default commands if a hook hasn't been processed the command already
                     if (!$commandIsProcessed) {
                         $procId = $id;
+                        $backupUseTransOrigPointerField = $this->useTransOrigPointerField;
                         // Branch, based on command
                         switch ($command) {
                             case 'move':
@@ -3218,7 +3222,7 @@ class DataHandler
                                 if ($table === 'pages') {
                                     $this->copyPages($id, $value);
                                 } else {
-                                    $this->copyRecord($table, $id, $value, 1);
+                                    $this->copyRecord($table, $id, $value, true);
                                 }
                                 $procId = $this->copyMappingArray[$table][$id];
                                 break;
@@ -3240,6 +3244,7 @@ class DataHandler
                                 $this->undeleteRecord($table, $id);
                                 break;
                         }
+                        $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
                         if (is_array($pasteUpdate)) {
                             $pasteDatamap[$table][$procId] = $pasteUpdate;
                         }
@@ -3423,6 +3428,7 @@ class DataHandler
         if (!$ignoreLocalization && $language == 0) {
             //repointing the new translation records to the parent record we just created
             $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
+            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['translationSource']] = 0;
             $this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
         }
 
@@ -3503,11 +3509,16 @@ class DataHandler
                     $fields = ['uid'];
                     $languageField = null;
                     $transOrigPointerField = null;
+                    $translationSourceField = null;
                     if (BackendUtility::isTableLocalizable($table)) {
                         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
                         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
                         $fields[] = $languageField;
                         $fields[] = $transOrigPointerField;
+                        if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
+                            $translationSourceField = $GLOBALS['TCA'][$table]['ctrl']['translationSource'];
+                            $fields[] = $translationSourceField;
+                        }
                     }
                     $isTableWorkspaceEnabled = BackendUtility::isTableWorkspaceEnabled($table);
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -3559,6 +3570,9 @@ class DataHandler
                             );
                         }
                         if (is_array($rows)) {
+                            $languageSourceMap = [];
+                            $overrideValues = $translationSourceField ? [$translationSourceField => 0] : [];
+                            $doRemap = false;
                             foreach ($rows as $row) {
                                 // Skip localized records that will be processed in
                                 // copyL10nOverlayRecords() on copying the default language record
@@ -3567,7 +3581,17 @@ class DataHandler
                                     continue;
                                 }
                                 // Copying each of the underlying records...
-                                $this->copyRecord($table, $row['uid'], $theNewRootID);
+                                $newUid = $this->copyRecord($table, $row['uid'], $theNewRootID, false, $overrideValues);
+                                if ($translationSourceField) {
+                                    $languageSourceMap[$row['uid']] = $newUid;
+                                    if ($row[$languageField] > 0) {
+                                        $doRemap = true;
+                                    }
+                                }
+                            }
+                            if ($doRemap) {
+                                //remap is needed for records in non-default language records in the "free mode"
+                                $this->copy_remapTranslationSourceField($table, $rows, $languageSourceMap);
                             }
                         }
                     } catch (DBALException $e) {
@@ -4090,7 +4114,7 @@ class DataHandler
      * Find l10n-overlay records and perform the requested copy action for these records.
      *
      * @param string $table Record Table
-     * @param string $uid Record UID
+     * @param string $uid UID of the record in the default language
      * @param string $destPid Position to copy to
      * @param bool $first
      * @param array $overrideValues
@@ -4124,13 +4148,62 @@ class DataHandler
                     }
                 }
             }
+            $languageSourceMap = [
+                $uid => $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]
+            ];
             // Copy the localized records after the corresponding localizations of the destination record
             foreach ($l10nRecords as $record) {
                 $localizedDestPid = (int)$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]];
                 if ($localizedDestPid < 0) {
-                    $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                    $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
                 } else {
-                    $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                    $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                }
+                $languageSourceMap[$record['uid']] = $newUid;
+            }
+            $this->copy_remapTranslationSourceField($table, $l10nRecords, $languageSourceMap);
+        }
+    }
+
+    /**
+     * Remap languageSource field to uids of newly created records
+     *
+     * @param string $table Table name
+     * @param array $l10nRecords array of localized records from the page we're copying from (source records)
+     * @param array $languageSourceMap array mapping source records uids to newly copied uids
+     */
+    protected function copy_remapTranslationSourceField($table, $l10nRecords, $languageSourceMap)
+    {
+        if (empty($GLOBALS['TCA'][$table]['ctrl']['translationSource']) || empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
+            return;
+        }
+        $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'];
+        $translationParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+
+        //We can avoid running these update queries by sorting the $l10nRecords by languageSource dependency (in copyL10nOverlayRecords)
+        //and first copy records depending on default record (and map the field).
+        foreach ($l10nRecords as $record) {
+            $oldSourceUid = $record[$translationSourceFieldName];
+            if ($oldSourceUid <= 0 && $record[$translationParentFieldName] > 0) {
+                //BC fix - in connected mode 'translationSource' field should not be 0
+                $oldSourceUid = $record[$translationParentFieldName];
+            }
+            if ($oldSourceUid > 0) {
+                if (empty($languageSourceMap[$oldSourceUid])) {
+                    // we don't have mapping information available e.g when copyRecord returned null
+                    continue;
+                }
+                $newFieldValue = $languageSourceMap[$oldSourceUid];
+                $updateFields = [
+                    $translationSourceFieldName => $newFieldValue
+                ];
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->update($table, $updateFields, ['uid' => (int)$languageSourceMap[$record['uid']]]);
+                if ($this->BE_USER->workspace > 0) {
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($table)
+                        ->update($table, $updateFields, ['t3ver_oid' => (int)$languageSourceMap[$record['uid']], 't3ver_wsid' => $this->BE_USER->workspace]);
                 }
             }
         }
@@ -4591,6 +4664,9 @@ class DataHandler
         } elseif (!$this->useTransOrigPointerField) {
             $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = 0;
         }
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
+            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['translationSource']] = $uid;
+        }
         // Copy the type (if defined in both tables) from the original record so that translation has same type as original record
         if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
             $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
@@ -4636,7 +4712,7 @@ class DataHandler
             // Get the uid of record after which this localized record should be inserted
             $previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
             // Execute the copy:
-            $newId = $this->copyRecord($table, $uid, -$previousUid, 1, $overrideValues, implode(',', $excludeFields), $language);
+            $newId = $this->copyRecord($table, $uid, -$previousUid, true, $overrideValues, implode(',', $excludeFields), $language);
             $autoVersionNewId = $this->getAutoVersionId($table, $newId);
             if (is_null($autoVersionNewId) === false) {
                 $this->triggerRemapAction($table, $newId, [$this, 'placeholderShadowing'], [$table, $autoVersionNewId], true);

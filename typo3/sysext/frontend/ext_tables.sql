@@ -292,6 +292,7 @@ CREATE TABLE tt_content (
 	accessibility_bypass_text varchar(30) DEFAULT '' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumblob,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
 	selected_categories text,
 	category_field varchar(64) DEFAULT '' NOT NULL,
 	table_caption varchar(255) DEFAULT NULL,

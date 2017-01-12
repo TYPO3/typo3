@@ -161,7 +161,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
     /**
@@ -176,7 +176,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
     /**
@@ -301,6 +301,11 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
     }
 
     /**
+     * Copy page (id 90) containing content elements translated in "free mode".
+     * Values in l10n_source field are remapped to ids of newly copied records
+     * e.g. record 314 has l10n_source = 315 and record 313 has l10n_source = 314
+     * also note that 314 is NOT a record in the default language
+     *
      * @test
      * @see DataSet/copyPageFreeMode.csv
      */
