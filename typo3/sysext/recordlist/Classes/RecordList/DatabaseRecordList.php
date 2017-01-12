@@ -1957,7 +1957,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         // Create a checkbox for each field:
         $checkboxes = [];
         $checkAllChecked = true;
+        $tsConfig = BackendUtility::getPagesTSconfig($this->id);
+        $tsConfigOfTable = is_array($tsConfig['TCEFORM.'][$table . '.']) ? $tsConfig['TCEFORM.'][$table . '.'] : null;
         foreach ($fields as $fieldName) {
+            // Hide field if hidden
+            if ($tsConfigOfTable && is_array($tsConfigOfTable[$fieldName . '.']) && isset($tsConfigOfTable[$fieldName . '.']['disabled']) && (int)$tsConfigOfTable[$fieldName . '.']['disabled'] === 1) {
+                continue;
+            }
             // Determine, if checkbox should be checked
             if (in_array($fieldName, $setFields, true) || $fieldName === $this->fieldArray[0]) {
                 $checked = ' checked="checked"';
