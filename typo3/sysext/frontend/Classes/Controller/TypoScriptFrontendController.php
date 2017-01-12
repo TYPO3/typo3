@@ -1458,25 +1458,6 @@ class TypoScriptFrontendController
             ];
             $this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
         }
-        if ($this->page['url_scheme'] > 0) {
-            $newUrl = '';
-            $currentRequestIsSecure = GeneralUtility::getIndpEnv('TYPO3_SSL');
-            // force http
-            if ((int)$this->page['url_scheme'] === HttpUtility::SCHEME_HTTP && $currentRequestIsSecure) {
-                $newUrl = 'http://' . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 8);
-            } elseif ((int)$this->page['url_scheme'] === HttpUtility::SCHEME_HTTPS && !$currentRequestIsSecure) {
-                // force https
-                $newUrl = 'https://' . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 7);
-            }
-            if ($newUrl !== '') {
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $headerCode = HttpUtility::HTTP_STATUS_303;
-                } else {
-                    $headerCode = HttpUtility::HTTP_STATUS_301;
-                }
-                HttpUtility::redirect($newUrl, $headerCode);
-            }
-        }
         // Set no_cache if set
         if ($this->page['no_cache']) {
             $this->set_no_cache('no_cache is set in page properties');

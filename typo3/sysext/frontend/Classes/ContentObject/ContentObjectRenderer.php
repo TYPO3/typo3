@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -6001,12 +6000,10 @@ class ContentObjectRenderer
                     }
                     $absoluteUrlScheme = 'http';
                     // URL shall be absolute:
-                    if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl'] || $page['url_scheme'] > 0) {
+                    if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {
                         // Override scheme:
                         if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
                             $absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
-                        } elseif ($page['url_scheme'] > 0) {
-                            $absoluteUrlScheme = (int)$page['url_scheme'] === HttpUtility::SCHEME_HTTP ? 'http' : 'https';
                         } elseif ($this->getEnvironmentVariable('TYPO3_SSL')) {
                             $absoluteUrlScheme = 'https';
                         }

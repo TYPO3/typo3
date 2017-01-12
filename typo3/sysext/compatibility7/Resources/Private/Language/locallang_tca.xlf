@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1484231191" source-language="en" datatype="plaintext" original="messages" date="2017-10-12T14:22:32Z" product-name="compatibility7">
+		<header/>
+		<body>
+			<trans-unit id="pages.url_scheme">
+				<source>Enforce Protocol:</source>
+			</trans-unit>
+			<trans-unit id="pages.url_scheme_formlabel">
+				<source>Use Protocol</source>
+			</trans-unit>
+			<trans-unit id="pages.url_scheme.http">
+				<source>http://</source>
+			</trans-unit>
+			<trans-unit id="pages.url_scheme.https">
+				<source>https://</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

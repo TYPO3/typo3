@@ -241,29 +241,6 @@ return [
                 'default' => 0
             ]
         ],
-        'url_scheme' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
-                        0
-                    ],
-                    [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme.http',
-                        1
-                    ],
-                    [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme.https',
-                        2
-                    ]
-                ],
-                'default' => 0
-            ]
-        ],
         'fe_group' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
@@ -997,7 +974,7 @@ return [
             'showitem' => 'layout, lastUpdated, newUntil, no_search'
         ],
         '3' => [
-            'showitem' => 'alias, target, no_cache, cache_timeout, cache_tags, url_scheme'
+            'showitem' => 'alias, target, no_cache, cache_timeout, cache_tags'
         ],
         '5' => [
             'showitem' => 'author, author_email',
@@ -1066,7 +1043,7 @@ return [
             'showitem' => 'content_from_pid;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid_formlabel',
         ],
         'links' => [
-            'showitem' => 'alias;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias_formlabel, --linebreak--, target;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target_formlabel, --linebreak--, url_scheme;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme_formlabel',
+            'showitem' => 'alias;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias_formlabel, --linebreak--, target;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target_formlabel',
         ],
         'caching' => [
             'showitem' => 'cache_timeout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout_formlabel, cache_tags, no_cache;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache_formlabel',

@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -3184,13 +3183,7 @@ class BackendUtility
         // Checks alternate domains
         if (!empty($rootLine)) {
             $urlParts = parse_url($domain);
-            /** @var PageRepository $sysPage */
-            $sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-            $page = (array)$sysPage->getPage($pageId);
-            $protocol = 'http';
-            if ($page['url_scheme'] == HttpUtility::SCHEME_HTTPS || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-                $protocol = 'https';
-            }
+            $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
             $previewDomainConfig = static::getBackendUserAuthentication()->getTSConfig(
                 'TCEMAIN.previewDomain',
                 self::getPagesTSconfig($pageId)

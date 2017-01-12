@@ -126,18 +126,6 @@
 			<trans-unit id="pages.layout.I.3">
 				<source>Layout 3</source>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme">
-				<source>Enforce Protocol:</source>
-			</trans-unit>
-			<trans-unit id="pages.url_scheme_formlabel">
-				<source>Use Protocol</source>
-			</trans-unit>
-			<trans-unit id="pages.url_scheme.http">
-				<source>http://</source>
-			</trans-unit>
-			<trans-unit id="pages.url_scheme.https">
-				<source>https://</source>
-			</trans-unit>
 			<trans-unit id="pages.extendToSubpages">
 				<source>Include Subpages:</source>
 			</trans-unit>

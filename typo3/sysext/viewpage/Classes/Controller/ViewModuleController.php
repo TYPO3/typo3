@@ -147,11 +147,7 @@ class ViewModuleController extends ActionController
                 if (strpos($domainName, '://') !== false) {
                     $protocolAndHost = $domainName;
                 } else {
-                    $protocol = 'http';
-                    $page = (array)$sysPage->getPage($finalPageIdToShow);
-                    if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-                        $protocol = 'https';
-                    }
+                    $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
                     $protocolAndHost = $protocol . '://' . $domainName;
                 }
             }
