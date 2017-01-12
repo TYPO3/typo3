@@ -85,12 +85,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
 			linkElement.setAttribute(attrName, attrValue);
 		});
 
-		// todo: check if this still needed?
-		// if there is no handler keyword (mailto:, record:, etc) or an external link, we always prepend the siteUrl
-		if (!/^\w+:/.test(link) && !attributes['data-htmlarea-external']) {
-			link = RteLinkBrowser.siteUrl + '?' + link;
-		}
-
 		linkElement.setAttribute('href', link + params);
 
 		var selection = RteLinkBrowser.CKEditor.getSelection();

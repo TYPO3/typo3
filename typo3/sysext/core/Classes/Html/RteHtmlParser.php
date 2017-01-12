@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
@@ -514,7 +513,10 @@ class RteHtmlParser extends HtmlParser
 
     /**
      * Transformation handler: 'ts_links' / direction: "db"
-     * Converting <A>-tags to <link tags>
+     * Processing anchor tags, and resolves them correctly again via the LinkService syntax
+     *
+     * Splits content into <a> tag blocks and processes each tag, and allows hooks to actually render
+     * the result.
      *
      * @param string $value Content input
      * @return string Content output
@@ -522,89 +524,31 @@ class RteHtmlParser extends HtmlParser
      */
     public function TS_links_db($value)
     {
-        $conf = [];
-        // Split content into <a> tag blocks and process:
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
-            // If an A-tag was found:
             if ($k % 2) {
-                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
-                $info = $this->urlInfoForLinkTags($attribArray['href']);
-                // Check options:
-                $attribArray_copy = $attribArray;
-                unset($attribArray_copy['href']);
-                unset($attribArray_copy['target']);
-                unset($attribArray_copy['class']);
-                unset($attribArray_copy['title']);
-                unset($attribArray_copy['data-htmlarea-external']);
-                // Remove additional parameters
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'])) {
+                list($tagAttributes) = $this->get_tag_attributes($this->getFirstTag($v), true);
+                $linkService = GeneralUtility::makeInstance(LinkService::class);
+                $linkInformation = $linkService->resolve($tagAttributes['href']);
+
+                // Modify parameters, this hook should be deprecated
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])
+                    && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
                     $parameters = [
-                        'conf' => &$conf,
-                        'aTagParams' => &$attribArray_copy
+                        'currentBlock' => $v,
+                        'linkInformation' => $linkInformation,
+                        'url' => $linkInformation['href'],
+                        'attributes' => $tagAttributes
                     ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'] as $objRef) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $objRef) {
                         $processor = GeneralUtility::getUserObj($objRef);
-                        $attribArray_copy = $processor->removeParams($parameters, $this);
-                    }
-                }
-                // Only if href, target, class and tile are the only attributes, we can alter the link!
-                if (empty($attribArray_copy)) {
-                    // Quoting class and title attributes if they contain spaces
-                    $attribArray['class'] = preg_match('/ /', $attribArray['class']) ? '"' . $attribArray['class'] . '"' : $attribArray['class'];
-                    $attribArray['title'] = preg_match('/ /', $attribArray['title']) ? '"' . $attribArray['title'] . '"' : $attribArray['title'];
-                    // Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
-                    // If data-htmlarea-external attribute is set, keep the href unchanged
-                    if ($attribArray['data-htmlarea-external']) {
-                        $href = $attribArray['href'];
-                    } else {
-                        $href = $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
-                    }
-                    $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode(['url' => $href, 'target' => $attribArray['target'], 'class' => trim($attribArray['class'], '"'), 'title' => trim($attribArray['title'], '"'), 'additionalParams' => '']);
-                    $bTag = '<link ' . $typoLink . '>';
-                    $eTag = '</link>';
-                    // Modify parameters
-                    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
-                        $parameters = [
-                            'conf' => &$conf,
-                            'currentBlock' => $v,
-                            'url' => $href,
-                            'attributes' => $attribArray
-                        ];
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $objRef) {
-                            $processor = GeneralUtility::getUserObj($objRef);
-                            $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
-                        }
-                    } else {
-                        $blockSplit[$k] = $bTag . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+                        $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
                     }
                 } else {
-                    // ... otherwise store the link as a-tag.
-                    // Unsetting 'rtekeep' attribute if that had been set.
-                    unset($attribArray['rtekeep']);
-                    if (!$attribArray['data-htmlarea-external']) {
-                        $siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-                        // If the url is local, remove url-prefix
-                        if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
-                            $attribArray['href'] = substr($attribArray['href'], strlen($siteURL));
-                        }
-                        // Check for FAL link-handler keyword
-                        list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $attribArray['href'], 2);
-                        if ($linkHandlerKeyword === '?file') {
-                            try {
-                                $fileOrFolderObject = Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject(rawurldecode($linkHandlerValue));
-                                if ($fileOrFolderObject instanceof Resource\FileInterface || $fileOrFolderObject instanceof Resource\Folder) {
-                                    $attribArray['href'] = $fileOrFolderObject->getPublicUrl();
-                                }
-                            } catch (Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {
-                                // The identifier inserted in the RTE is already gone...
-                            }
-                        }
-                    }
-                    unset($attribArray['data-htmlarea-external']);
-                    $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, 1) . '>';
-                    $eTag = '</a>';
-                    $blockSplit[$k] = $bTag . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+                    // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
+                    $tagAttributes['href'] = $linkService->asString($linkInformation);
+                    $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
+                        . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
                 }
             }
         }
@@ -613,132 +557,48 @@ class RteHtmlParser extends HtmlParser
 
     /**
      * Transformation handler: 'ts_links' / direction: "rte"
-     * Converting <link tags> to <A>-tags
+     * Converting TYPO3-specific <link> tags to <a> tags
+     *
+     * This functionality is only used to convert legacy <link> tags to the new linking syntax using <a> tags, and will
+     * not be converted back to <link> tags anymore.
      *
      * @param string $value Content input
      * @return string Content output
-     * @see TS_links_rte()
      */
     public function TS_links_rte($value)
     {
-        $conf = [];
         $value = $this->TS_AtagToAbs($value);
-        // Split content by the TYPO3 pseudo tag "<link>":
-        $blockSplit = $this->splitIntoBlock('link', $value, 1);
-        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        // Split content by the TYPO3 pseudo tag "<link>"
+        $blockSplit = $this->splitIntoBlock('link', $value, true);
         foreach ($blockSplit as $k => $v) {
-            $error = '';
-            $external = false;
             // Block
             if ($k % 2) {
-                // split away the first "<link" part
-                $typolink = explode(' ', substr($this->getFirstTag($v), 0, -1), 2)[1];
-                $tagCode = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typolink);
+                // Split away the first "<link " part
+                $typoLinkData = explode(' ', substr($this->getFirstTag($v), 0, -1), 2)[1];
+                $tagCode = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typoLinkData);
 
-                $link_param = $tagCode['url'];
-                // Parsing the typolink data. This parsing is roughly done like in \TYPO3\CMS\Frontend\ContentObject->typoLink()
-                // Parse URL:
-                $pU = parse_url($link_param);
-                if (strstr($link_param, '@') && (!$pU['scheme'] || $pU['scheme'] == 'mailto')) {
-                    // mailadr
-                    $href = 'mailto:' . preg_replace('/^mailto:/i', '', $link_param);
-                } elseif ($link_param[0] === '#') {
-                    // check if anchor
-                    $href = $siteUrl . $link_param;
-                } else {
-                    // Check for FAL link-handler keyword:
-                    list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
-                    if ($linkHandlerKeyword === 'file' && strpos($link_param, 'file://') !== 0) {
-                        $href = $siteUrl . '?' . $linkHandlerKeyword . ':' . rawurlencode($linkHandlerValue);
-                    } else {
-                        $fileChar = (int)strpos($link_param, '/');
-                        $urlChar = (int)strpos($link_param, '.');
-                        // Detects if a file is found in site-root.
-                        list($rootFileDat) = explode('?', $link_param);
-                        $rFD_fI = pathinfo($rootFileDat);
-                        $fileExtension = strtolower($rFD_fI['extension']);
-                        if (strpos($link_param, '/') === false && trim($rootFileDat) && (@is_file(PATH_site . $rootFileDat) || $fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm')) {
-                            $href = $siteUrl . $link_param;
-                        } elseif (
-                            (
-                                $pU['scheme']
-                                && !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$pU['scheme']])
-                            )
-                            || $urlChar && (!$fileChar || $urlChar < $fileChar)
-                        ) {
-                            // url (external): if has scheme or if a '.' comes before a '/'.
-                            $href = $link_param;
-                            if (!$pU['scheme']) {
-                                $href = 'http://' . $href;
-                            }
-                            $external = true;
-                        } elseif ($fileChar) {
-                            // It is an internal file or folder
-                            // Try to transform the href into a FAL reference
-                            try {
-                                $fileOrFolderObject = Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
-                            } catch (Resource\Exception $exception) {
-                                // Nothing to be done if file/folder not found or path invalid
-                                $fileOrFolderObject = null;
-                            }
-                            if ($fileOrFolderObject instanceof Resource\Folder) {
-                                // It's a folder
-                                $folderIdentifier = $fileOrFolderObject->getIdentifier();
-                                $href = $siteUrl . '?file:' . rawurlencode($folderIdentifier);
-                            } elseif ($fileOrFolderObject instanceof Resource\FileInterface) {
-                                // It's a file
-                                $fileIdentifier = $fileOrFolderObject->getIdentifier();
-                                /** @var Resource\File $fileObject */
-                                $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
-                                $href = $siteUrl . '?file:' . $fileObject->getUid();
-                            } else {
-                                $href = $siteUrl . $link_param;
-                            }
-                        } else {
-                            // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
-                            // Splitting the parameter by ',' and if the array counts more than 1 element it's an id/type/parameters triplet
-                            $pairParts = GeneralUtility::trimExplode(',', $link_param, true);
-                            $idPart = $pairParts[0];
-                            $link_params_parts = explode('#', $idPart);
-                            $idPart = trim($link_params_parts[0]);
-                            $sectionMark = trim($link_params_parts[1]);
-                            if ((string)$idPart === '') {
-                                $idPart = $this->recPid;
-                            }
-                            // If no id or alias is given, set it to class record pid
-                            // Checking if the id-parameter is an alias.
-                            if (!MathUtility::canBeInterpretedAsInteger($idPart)) {
-                                list($idPartR) = BackendUtility::getRecordsByField('pages', 'alias', $idPart);
-                                $idPart = (int)$idPartR['uid'];
-                            }
-                            $page = BackendUtility::getRecord('pages', $idPart);
-                            if (is_array($page)) {
-                                // Page must exist...
-                                $href = $siteUrl . '?id=' . $idPart . ($pairParts[2] ? $pairParts[2] : '') . ($sectionMark ? '#' . $sectionMark : '');
-                            } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
-                                $href = $link_param;
-                            } else {
-                                $href = $siteUrl . '?id=' . $link_param;
-                                $error = 'No page found: ' . $idPart;
-                            }
+                // Parsing the TypoLink data. This parsing is done like in \TYPO3\CMS\Frontend\ContentObject->typoLink()
+                $linkService = GeneralUtility::makeInstance(LinkService::class);
+                $linkInformation = $linkService->resolve($tagCode['url']);
+
+                $href = $linkService->asString($linkInformation);
+
+                // Modify parameters by a hook
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {
+                    // backwards-compatibility: show an error message if the page is not found
+                    $error = '';
+                    if ($linkInformation['type'] === LinkService::TYPE_PAGE) {
+                        $pageRecord = BackendUtility::getRecord('pages', $linkInformation['pageuid']);
+                        // Page does not exist
+                        if (!is_array($pageRecord)) {
+                            $error = 'Page with ID ' . $linkInformation['pageuid'] . ' not found';
                         }
                     }
-                }
-                // Setting the A-tag:
-                $bTag = '<a href="' . htmlspecialchars($href) . '"'
-                    . ($tagCode['target'] ? ' target="' . htmlspecialchars($tagCode['target']) . '"' : '')
-                    . ($tagCode['class'] ? ' class="' . htmlspecialchars($tagCode['class']) . '"' : '')
-                    . ($tagCode['title'] ? ' title="' . htmlspecialchars($tagCode['title']) . '"' : '')
-                    . ($external ? ' data-htmlarea-external="1"' : '') . '>';
-                $eTag = '</a>';
-                // Modify parameters
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {
                     $parameters = [
-                        'conf' => &$conf,
                         'currentBlock' => $v,
                         'url' => $href,
                         'tagCode' => $tagCode,
-                        'external' => $external,
+                        'external' => $linkInformation['type'] === LinkService::TYPE_URL,
                         'error' => $error
                     ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] as $objRef) {
@@ -746,11 +606,20 @@ class RteHtmlParser extends HtmlParser
                         $blockSplit[$k] = $processor->modifyParamsLinksRte($parameters, $this);
                     }
                 } else {
-                    $blockSplit[$k] = $bTag . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+                    $anchorAttributes = [
+                        'href'   => $href,
+                        'target' => $tagCode['target'],
+                        'class'  => $tagCode['class'],
+                        'title'  => $tagCode['title']
+                    ];
+
+                    // Setting the <a> tag
+                    $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($anchorAttributes, true) . '>'
+                        . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k]))
+                        . '</a>';
                 }
             }
         }
-        // Return content:
         return implode('', $blockSplit);
     }
 
@@ -1204,6 +1073,7 @@ class RteHtmlParser extends HtmlParser
 
     /**
      * Parse <A>-tag href and return status of email,external,file or page
+     * This functionality is not in use anymore
      *
      * @param string $url URL to analyse.
      * @return array Information in an array about the URL
@@ -1269,7 +1139,7 @@ class RteHtmlParser extends HtmlParser
      * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
      *
      * @param string $value Content input
-     * @param bool $dontSetRTEKEEP If TRUE, then the "rtekeep" attribute will not be set.
+     * @param bool $dontSetRTEKEEP If TRUE, then the "rtekeep" attribute will not be set. (not in use anymore)
      * @return string Content output
      */
     public function TS_AtagToAbs($value, $dontSetRTEKEEP = false)
@@ -1285,14 +1155,7 @@ class RteHtmlParser extends HtmlParser
                     $uP = parse_url(strtolower($attribArray['href']));
                     if (!$uP['scheme']) {
                         $attribArray['href'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $attribArray['href'];
-                    } elseif ($uP['scheme'] != 'mailto') {
-                        $attribArray['data-htmlarea-external'] = 1;
                     }
-                } else {
-                    $attribArray['rtekeep'] = 1;
-                }
-                if (!$dontSetRTEKEEP) {
-                    $attribArray['rtekeep'] = 1;
                 }
                 $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, true) . '>';
                 $eTag = '</a>';

@@ -78,7 +78,7 @@ class Typo3Link extends RteHtmlAreaApi
             if (is_array($this->configuration['RTEsetup']['properties']['classesAnchor.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.classesAnchorUrl = "' . $this->writeTemporaryFile('classesAnchor_' . $this->configuration['contentLanguageUid'], 'js', $this->buildJSClassesAnchorArray()) . '";';
             }
-            $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.additionalAttributes = "data-htmlarea-external' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '') . '";';
+            $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.additionalAttributes = "' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '') . '";';
         }
         return implode(LF, $jsArray);
     }

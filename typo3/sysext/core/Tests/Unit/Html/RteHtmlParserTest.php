@@ -195,7 +195,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\Unit
         return [
             'external url with @ sign' => [
                 '<link http://www.example.org/at@sign>link text</link>',
-                '<p><a href="http://www.example.org/at@sign" data-htmlarea-external="1">link text</a></p>'
+                '<p><a href="http://www.example.org/at@sign">link text</a></p>'
             ],
             'email address with @ sign' => [
                 '<link name@example.org - mail "Opens window for sending email">link text</link>',

@@ -321,7 +321,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						node.title = cur_title.trim();
 					} else {
 						node.removeAttribute('title');
-						node.removeAttribute('rtekeep');
 					}
 					if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes && typeof(additionalValues) == 'object') {
 						for (var additionalAttribute in additionalValues) {

@@ -96,16 +96,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 		delete attributes.target;
 		delete attributes.params;
 
-		// replace page: prefix
-		if (input.indexOf('page:') === 0) {
-			input = 'id=' + input.substr(5);
-		}
-
-		// if there is no handler keyword (mailto:, record:, etc) or an external link, we always prepend the siteUrl
-		if (!/^\w+:/.test(input) && !attributes['data-htmlarea-external']) {
-			input = RteLinkBrowser.siteUrl + '?' + input;
-		}
-
         RteLinkBrowser.plugin.createLink(
 			input + curParams,
 			curTarget,

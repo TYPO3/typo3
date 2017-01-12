@@ -37,8 +37,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 			return;
 		}
 
-		LinkBrowser.setAdditionalLinkAttribute('data-htmlarea-external', '1');
-
 		LinkBrowser.finalizeFunction(value);
 	};
 
