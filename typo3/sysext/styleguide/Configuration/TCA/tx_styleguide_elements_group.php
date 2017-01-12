@@ -73,6 +73,23 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
+                'wizards' => [
+                    'edit' => [
+                        'type' => 'popup',
+                        'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup_edit_title',
+                        'module' => array(
+                           'name' => 'wizard_edit',
+                        ),
+                        'popup_onlyOpenIfSelected' => 1,
+                        'icon' => 'actions-open',
+                        'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
+                     ],
+                ],
+                'fieldControls' => [
+                    'editPopup' => [
+                        'renderType' => 'editPopup',
+                    ],
+                ],
             ],
         ],
         'group_db_2' => [
