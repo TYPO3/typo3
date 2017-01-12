@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\RowUpdater\L10nModeUpdater;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 
 /**
@@ -47,6 +48,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
      * @var array Single classes that may update rows
      */
     protected $rowUpdater = [
+        L10nModeUpdater::class,
     ];
 
     /**
