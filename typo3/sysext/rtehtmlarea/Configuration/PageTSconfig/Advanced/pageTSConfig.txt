@@ -8,7 +8,7 @@ RTE.default {
 
 		## Toolbar options applicable to all RTE's
 		## The TCA configuration may add buttons to the toolbar
-	showButtons =  bold,italic,undo,redo,about
+	showButtons = bold,italic,undo,redo,about
 
 }
 
