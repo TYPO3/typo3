@@ -137,6 +137,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
     }
 
+    public function localizeContentWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
+    }
+
     /**
      * @test
      * @see DataSet/localizeContentFromNonDefaultLanguage.csv

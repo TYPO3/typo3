@@ -82,9 +82,13 @@ class GroupElement extends AbstractFormElement
             'renderType' => 'fileUpload',
             'after' => [ 'recordsOverview' ],
         ],
+        'localizationStateSelector' => [
+            'renderType' => 'localizationStateSelector',
+            'after' => [ 'fileUpload' ],
+        ],
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
-            'after' => [ 'fileUpload' ],
+            'after' => [ 'localizationStateSelector' ],
         ],
         'defaultLanguageDifferences' => [
             'renderType' => 'defaultLanguageDifferences',

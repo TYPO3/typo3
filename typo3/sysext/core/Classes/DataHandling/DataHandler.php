@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -977,6 +978,8 @@ class DataHandler
                 $hookObjectsArr[] = $hookObject;
             }
         }
+        // Pre-process data-map and synchronize localization states
+        $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER)->process();
         // Organize tables so that the pages-table is always processed first. This is required if you want to make sure that content pointing to a new page will be created.
         $orderOfTables = [];
         // Set pages first.
@@ -1499,6 +1502,9 @@ class DataHandler
                 case 't3ver_stage':
                 case 't3ver_tstamp':
                     // t3ver_label is not here because it CAN be edited as a regular field!
+                    break;
+                case 'l10n_state':
+                    $fieldArray[$field] = $fieldValue;
                     break;
                 default:
                     if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {

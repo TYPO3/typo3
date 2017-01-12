@@ -69,6 +69,14 @@ $signalSlotDispatcher->connect(
     'processFile'
 );
 
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
+    'tablesDefinitionIsBeingBuilt',
+    \TYPO3\CMS\Core\DataHandling\DatabaseSchemaService::class,
+    'getLocalizationRequiredDatabaseSchema'
+);
+
+
 unset($signalSlotDispatcher);
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = \TYPO3\CMS\Core\Controller\FileDumpController::class . '::dumpAction';

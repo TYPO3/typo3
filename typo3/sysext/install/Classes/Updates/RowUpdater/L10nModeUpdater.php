@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Install\Updates\RowUpdater;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
@@ -25,26 +24,11 @@ use TYPO3\CMS\Install\Service\LoadTcaService;
 /**
  * Migrate values for database records having columns
  * using "l10n_mode" set to "mergeIfNotBlank".
+ *
+ * @todo: This needs a review and finish
  */
 class L10nModeUpdater implements RowUpdaterInterface
 {
-    /**
-     * Field names that previously had a migrated l10n_mode setting in TCA.
-     *
-     * @var array
-     */
-    protected $migratedL10nCoreFieldNames = [
-        'sys_category' => [
-            'starttime' => 'mergeIfNotBlank',
-            'endtime' => 'mergeIfNotBlank',
-        ],
-        'sys_file_metadata' => [
-            'location_country' => 'mergeIfNotBlank',
-            'location_region' => 'mergeIfNotBlank',
-            'location_city' => 'mergeIfNotBlank',
-        ],
-    ];
-
     /**
      * List of tables with information about to migrate fields.
      * Created during hasPotentialUpdateForTable(), used in updateTableRow()
@@ -60,7 +44,8 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     public function getTitle(): string
     {
-        return 'Migrate values in database records having "l10n_mode" set to "mergeIfNotBlank';
+        return 'Migrate values in database records having "l10n_mode"'
+            . ' either set to "exclude" or "mergeIfNotBlank"';
     }
 
     /**
@@ -102,6 +87,7 @@ class L10nModeUpdater implements RowUpdaterInterface
         $fakeAdminUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $fakeAdminUser->user = ['admin' => 1];
 
+        // disable DataHandler hooks for processing this update
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php'])) {
             $dataHandlerHooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php'];
             unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']);
@@ -119,12 +105,15 @@ class L10nModeUpdater implements RowUpdaterInterface
         $sourceRow = $this->getRow($sourceTableName, $source);
 
         $updateValues = [];
+        $l10nState = [];
 
         $row = $this->getRow($tableName, $uid);
         foreach ($row as $fieldName => $fieldValue) {
             if (!in_array($fieldName, $fieldNames)) {
                 continue;
             }
+
+            $l10nState[$fieldName] = 'custom';
 
             if (
                 // default
@@ -139,6 +128,7 @@ class L10nModeUpdater implements RowUpdaterInterface
                 )
             ) {
                 $updateValues[$fieldName] = $sourceRow[$fieldName];
+                $l10nState[$fieldName] = 'parent';
             }
             // inline types, but only file references
             if (
@@ -161,12 +151,11 @@ class L10nModeUpdater implements RowUpdaterInterface
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                 $dataHandler->start([], $commandMap, $fakeAdminUser);
                 $dataHandler->process_cmdmap();
+                $l10nState[$fieldName] = 'parent';
             }
         }
 
-        if (empty($updateValues)) {
-            return $inputRow;
-        }
+        $updateValues['l10n_state'] = json_encode($l10nState);
 
         $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
         foreach ($updateValues as $updateFieldName => $updateValue) {
@@ -233,18 +222,14 @@ class L10nModeUpdater implements RowUpdaterInterface
         foreach ($tableDefinition['columns'] as $fieldName => $fieldConfiguration) {
             if (
                 empty($fieldConfiguration['l10n_mode'])
-                && !empty($this->migratedL10nCoreFieldNames[$tableName][$fieldName])
-            ) {
-                $fieldConfiguration['l10n_mode'] = $this->migratedL10nCoreFieldNames[$tableName][$fieldName];
-            }
-
-            if (
-                empty($fieldConfiguration['l10n_mode'])
                 || empty($fieldConfiguration['config']['type'])
             ) {
                 continue;
             }
-            if ($fieldConfiguration['l10n_mode'] === 'mergeIfNotBlank') {
+            if (
+                $fieldConfiguration['l10n_mode'] === 'exclude'
+                || $fieldConfiguration['l10n_mode'] === 'mergeIfNotBlank'
+            ) {
                 $fields[$fieldName] = $fieldConfiguration;
             }
         }
@@ -253,35 +238,17 @@ class L10nModeUpdater implements RowUpdaterInterface
             return $payload;
         }
 
-        $parentQueryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-        $parentQueryBuilder->getRestrictions()->removeAll();
-        $parentQueryBuilder->from($tableName);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->from($tableName);
 
-        $predicates = [];
         foreach ($fields as $fieldName => $fieldConfiguration) {
-            $predicates[] = $parentQueryBuilder->expr()->comparison(
-                $parentQueryBuilder->expr()->trim($fieldName),
-                ExpressionBuilder::EQ,
-                $parentQueryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-            );
-            $predicates[] = $parentQueryBuilder->expr()->eq(
-                $fieldName,
-                $parentQueryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-            );
-
             if (empty($fieldConfiguration['config']['type'])) {
                 continue;
             }
 
             if ($fieldConfiguration['config']['type'] === 'group') {
                 $fieldTypes[$fieldName] = 'group';
-                $predicates[] = $parentQueryBuilder->expr()->isNull(
-                    $fieldName
-                );
-                $predicates[] = $parentQueryBuilder->expr()->eq(
-                    $fieldName,
-                    $parentQueryBuilder->createNamedParameter('0', \PDO::PARAM_STR)
-                );
             }
             if (
                 $fieldConfiguration['config']['type'] === 'inline'
@@ -291,32 +258,6 @@ class L10nModeUpdater implements RowUpdaterInterface
                 && $fieldConfiguration['config']['foreign_table'] === 'sys_file_reference'
             ) {
                 $fieldTypes[$fieldName] = 'inline/FAL';
-
-                $childQueryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
-                $childQueryBuilder->getRestrictions()->removeAll();
-                $childExpression = $childQueryBuilder
-                    ->count('uid')
-                    ->from('sys_file_reference')
-                    ->andWhere(
-                        $childQueryBuilder->expr()->eq(
-                            'sys_file_reference.uid_foreign',
-                            $parentQueryBuilder->getConnection()->quoteIdentifier($tableName . '.uid')
-                        ),
-                        $childQueryBuilder->expr()->eq(
-                            'sys_file_reference.tablenames',
-                            $parentQueryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
-                        ),
-                        $childQueryBuilder->expr()->eq(
-                            'sys_file_reference.fieldname',
-                            $parentQueryBuilder->createNamedParameter($fieldName, \PDO::PARAM_STR)
-                        )
-                    );
-
-                $predicates[] = $parentQueryBuilder->expr()->comparison(
-                    '(' . $childExpression->getSQL() . ')',
-                    ExpressionBuilder::GT,
-                    $parentQueryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                );
             }
         }
 
@@ -330,18 +271,17 @@ class L10nModeUpdater implements RowUpdaterInterface
             );
         }
 
-        $statement = $parentQueryBuilder
+        $statement = $queryBuilder
             ->select(...$selectFieldNames)
             ->andWhere(
-                $parentQueryBuilder->expr()->gt(
+                $queryBuilder->expr()->gt(
                     $tableDefinition['ctrl']['languageField'],
-                    $parentQueryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 ),
-                $parentQueryBuilder->expr()->gt(
+                $queryBuilder->expr()->gt(
                     $sourceFieldName,
-                    $parentQueryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                ),
-                $parentQueryBuilder->expr()->orX(...$predicates)
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
             )
             ->execute();
 

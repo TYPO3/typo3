@@ -187,6 +187,9 @@ class FormDataCompiler
             'pageLanguageOverlayRows' => [],
             // If the handled row is a localized row, this entry hold the default language row array
             'defaultLanguageRow' => null,
+            // If the handled row is a localived row and $TCA[<tableName>]['ctrl']['translationSource'] is configured,
+            // This entry holds the row of the language source record.
+            'sourceLanguageRow' => null,
             // If the handled row is a localized row and a transOrigDiffSourceField is defined, this
             // is the unserialized version of it. The diff source field is basically a shadow version
             // of the default language record at the time when the language overlay record was created.

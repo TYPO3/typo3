@@ -262,42 +262,6 @@ class DatabaseRecordTypeValueTest extends \TYPO3\Components\TestingFramework\Cor
     /**
      * @test
      */
-    public function addDataSetsRecordTypeValueToValueOfDefaultLanguageRecordIfConfiguredAsExclude()
-    {
-        $input = [
-            'recordTypeValue' => '',
-            'processedTca' => [
-                'ctrl' => [
-                    'languageField' => 'sys_language_uid',
-                    'type' => 'aField',
-                ],
-                'columns' => [
-                    'aField' => [
-                        'l10n_mode' => 'exclude',
-                    ],
-                ],
-                'types' => [
-                    '3' => 'foo',
-                ],
-            ],
-            'databaseRow' => [
-                'sys_language_uid' => 2,
-                'aField' => 4,
-            ],
-            'defaultLanguageRow' => [
-                'aField' => 3,
-            ],
-        ];
-
-        $expected = $input;
-        $expected['recordTypeValue'] = '3';
-
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
     public function addDataThrowsExceptionForForeignTypeConfigurationNotAsSelectOrGroup()
     {
         $input = [

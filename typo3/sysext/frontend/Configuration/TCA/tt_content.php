@@ -466,8 +466,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 50,
-                'max' => 255
-            ]
+                'max' => 255,
+            ],
         ],
         'header_layout' => [
             'exclude' => true,
@@ -971,7 +971,7 @@ return [
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', [
                 'appearance' => [
                     'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
-                ]
+                ],
             ])
         ],
         'filelink_size' => [

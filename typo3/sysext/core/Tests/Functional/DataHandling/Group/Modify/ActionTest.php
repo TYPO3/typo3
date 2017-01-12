@@ -288,6 +288,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Group\Abs
 
     /**
      * @test
+     * @see DataSet/localizeContentOfRelationWSynchronization.csv
+     */
+    public function localizeContentOfRelationWithLanguageSynchronization()
+    {
+        parent::localizeContentOfRelationWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeContentOfRelationWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeElementOfRelation.csv
      */
     public function localizeElementOfRelation()

@@ -101,6 +101,7 @@ class NodeFactory
         'fileThumbnails' => FieldWizard\FileThumbnails::class,
         'fileTypeList' => FieldWizard\FileTypeList::class,
         'fileUpload' => FieldWizard\FileUpload::class,
+        'localizationStateSelector' => FieldWizard\LocalizationStateSelector::class,
         'otherLanguageContent' => FieldWizard\OtherLanguageContent::class,
         'recordsOverview' => FieldWizard\RecordsOverview::class,
         'selectIcons' => FieldWizard\SelectIcons::class,

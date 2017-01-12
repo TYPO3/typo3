@@ -367,4 +367,77 @@ class DatabaseLanguageRowsTest extends \TYPO3\Components\TestingFramework\Core\U
 
         $this->assertEquals($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataSetsSourceLanguageRow()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'localized text',
+                'sys_language_uid' => 3,
+                'l10n_parent' => 23,
+                'l10n_source' => 24,
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                    'translationSource' => 'l10n_source',
+                ],
+            ],
+            'systemLanguageRows' => [
+                0 => [
+                    'uid' => 0,
+                    'title' => 'Default Language',
+                    'iso' => 'DEV',
+                ],
+                2 => [
+                    'uid' => 2,
+                    'title' => 'dansk',
+                    'iso' => 'dk,'
+                ],
+                3 => [
+                    'uid' => 3,
+                    'title' => 'french',
+                    'iso' => 'fr',
+                ],
+            ],
+            'defaultLanguageRow' => null,
+            'sourceLanguageRow' => null,
+            'additionalLanguageRows' => [],
+        ];
+
+        // For BackendUtility::getRecord()
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
+        $sourceLanguageRow = [
+            'uid' => 24,
+            'pid' => 32,
+            'text' => 'localized text in dank',
+            'sys_language_uid' => 2,
+        ];
+        $defaultLanguageRow = [
+            'uid' => 23,
+            'pid' => 32,
+            'text' => 'default language text',
+            'sys_language_uid' => 0,
+        ];
+        $this->subject->expects($this->at(0))
+            ->method('getRecordWorkspaceOverlay')
+            ->with('tt_content', 23)
+            ->willReturn($defaultLanguageRow);
+        $this->subject->expects($this->at(1))
+            ->method('getRecordWorkspaceOverlay')
+            ->with('tt_content', 24)
+            ->willReturn($sourceLanguageRow);
+
+        $expected = $input;
+        $expected['defaultLanguageRow'] = $defaultLanguageRow;
+        $expected['sourceLanguageRow'] = $sourceLanguageRow;
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 }

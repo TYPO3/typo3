@@ -52,13 +52,19 @@ class InputLinkElement extends AbstractFormElement
      * @var array
      */
     protected $defaultFieldWizard = [
-        OtherLanguageContent::class => [
-            'renderType' => 'otherLanguageContent',
+        'localizationStateSelector' => [
+            'renderType' => 'localizationStateSelector',
         ],
-        DefaultLanguageDifferences::class => [
+        'otherLanguageContent' => [
+            'renderType' => 'otherLanguageContent',
+            'after' => [
+                'localizationStateSelector'
+            ],
+        ],
+        'defaultLanguageDifferences' => [
             'renderType' => 'defaultLanguageDifferences',
             'after' => [
-                OtherLanguageContent::class
+                'otherLanguageContent',
             ],
         ],
     ];

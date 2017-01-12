@@ -116,7 +116,10 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-                'default' => 0
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ]
             ]
         ],
         'endtime' => [
@@ -129,6 +132,9 @@ return [
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
                 ]
             ]
         ],

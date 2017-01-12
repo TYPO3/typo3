@@ -62,6 +62,15 @@ class InlineControlContainer extends AbstractContainer
     protected $requireJsModules = [];
 
     /**
+     * @var array Default wizards
+     */
+    protected $defaultFieldWizard = [
+        'localizationStateSelector' => [
+            'renderType' => 'localizationStateSelector',
+        ],
+    ];
+
+    /**
      * Container objects give $nodeFactory down to other containers.
      *
      * @param NodeFactory $nodeFactory
@@ -294,6 +303,11 @@ class InlineControlContainer extends AbstractContainer
         }
 
         $html .= '</div>';
+
+        $fieldWizardResult = $this->renderfieldWizard();
+        $fieldWizardHtml = $fieldWizardResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+        $html .= $fieldWizardHtml;
 
         // Add the level links after all child records:
         if ($config['appearance']['levelLinksPosition'] ===  'both' || $config['appearance']['levelLinksPosition'] === 'bottom') {

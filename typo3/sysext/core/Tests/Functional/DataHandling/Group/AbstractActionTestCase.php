@@ -217,6 +217,16 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
+    public function localizeContentOfRelationWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['tx_testdatahandler_group']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $this->actionService->modifyReferences(
+            self::TABLE_Content, self::VALUE_ContentIdLast, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
+        );
+    }
+
     /**
      * @test
      * @see DataSet/localizeElementOfRelation.csv

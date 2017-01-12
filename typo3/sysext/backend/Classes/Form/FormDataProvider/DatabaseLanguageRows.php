@@ -103,6 +103,22 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                         }
                     }
                 }
+
+                // @todo do that only if l10n_parent > 0 (not in "free mode")?
+                if (!empty($result['processedTca']['ctrl']['translationSource'])
+                    && is_string($result['processedTca']['ctrl']['translationSource'])
+                ) {
+                    $translationSourceFieldName = $result['processedTca']['ctrl']['translationSource'];
+                    if (isset($result['databaseRow'][$translationSourceFieldName])
+                        && $result['databaseRow'][$translationSourceFieldName] > 0
+                    ) {
+                        $uidOfTranslationSource = $result['databaseRow'][$translationSourceFieldName];
+                        $result['sourceLanguageRow'] = $this->getRecordWorkspaceOverlay(
+                            $result['tableName'],
+                            $uidOfTranslationSource
+                        );
+                    }
+                }
             }
         }
 

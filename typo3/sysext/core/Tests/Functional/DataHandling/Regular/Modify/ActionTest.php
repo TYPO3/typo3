@@ -166,6 +166,20 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * @see DataSet/localizeContentWSynchronization.csv
+     */
+    public function localizeContentWithLanguageSynchronization()
+    {
+        parent::localizeContentWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeContentWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeContentFromNonDefaultLanguage.csv
      */
     public function localizeContentFromNonDefaultLanguage()

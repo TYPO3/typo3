@@ -201,6 +201,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * @see DataSet/localizeParentContentWAllChildrenSelect.csv
+     */
+    public function localizeParentContentWithAllChildrenInSelectModeAndLanguageSynchronization()
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizationMode'] = 'select';
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizeChildrenAtParentLocalization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['localizeChildrenAtParentLocalization'] = true;
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['uid' => self::VALUE_ContentIdLast, self::FIELD_ContentHotel => '5,__nextUid'],
+                self::TABLE_Hotel => ['uid' => '__NEW', 'title' => 'Hotel #2'],
+            ]
+        );
+    }
+
+    /**
      * @see DataSet/changeParentContentRecordSorting.csv
      */
     public function changeParentContentSorting()

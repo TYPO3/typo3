@@ -230,6 +230,22 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
+     * @see DataSet/localizeParentContentWAllChildrenSelectNLanguageSynchronization.csv
+     */
+    public function localizeParentContentWithAllChildrenInSelectModeAndLanguageSynchronization()
+    {
+        parent::localizeParentContentWithAllChildrenInSelectModeAndLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeParentContentWAllChildrenSelectNLanguageSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            // @todo Actually Hotel #2 should be prefixed as well
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1', 'Hotel #2'));
+    }
+
+    /**
+     * @test
      * @see DataSet/changeParentContentRecordSorting.csv
      */
     public function changeParentContentSorting()

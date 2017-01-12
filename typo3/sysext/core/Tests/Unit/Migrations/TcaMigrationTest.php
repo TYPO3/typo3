@@ -2121,6 +2121,11 @@ class TcaMigrationTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
                     'aTable' => [
                         'columns' => [
                             'aColumn' => [
+                                'config' => [
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ]
+                                ]
                             ],
                         ],
                     ],

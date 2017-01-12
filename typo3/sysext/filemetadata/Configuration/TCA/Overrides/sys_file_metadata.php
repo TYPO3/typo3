@@ -279,7 +279,10 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim'
+                'eval' => 'trim',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ]
             ],
         ],
         'location_region' => [
@@ -289,7 +292,10 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim'
+                'eval' => 'trim',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ]
             ],
         ],
         'location_city' => [
@@ -299,7 +305,10 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim'
+                'eval' => 'trim',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ]
             ],
         ],
         'latitude' => [

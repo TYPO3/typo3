@@ -37,9 +37,15 @@ class SelectSingleElement extends AbstractFormElement
             'renderType' => 'selectIcons',
             'disabled' => true,
         ],
+        'localizationStateSelector' => [
+            'renderType' => 'localizationStateSelector',
+            'after' => [
+                'selectIcons',
+            ],
+        ],
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
-            'after' => [ 'selectIcons' ],
+            'after' => [ 'localizationStateSelector' ],
         ],
         'defaultLanguageDifferences' => [
             'renderType' => 'defaultLanguageDifferences',

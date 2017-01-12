@@ -330,6 +330,18 @@
 			<trans-unit id="imwizard.crop-height">
 				<source>height:</source>
 			</trans-unit>
+			<trans-unit id="localizationStateSelector.header">
+			    <source>Translation behavior</source>
+			</trans-unit>
+			<trans-unit id="localizationStateSelector.customValue">
+			    <source>Custom value</source>
+			</trans-unit>
+			<trans-unit id="localizationStateSelector.defaultLanguageValue">
+			    <source>Value of default language</source>
+			</trans-unit>
+			<trans-unit id="localizationStateSelector.sourceLanguageValue">
+			    <source>Value of %1s language</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

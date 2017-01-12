@@ -928,8 +928,13 @@ class TcaMigration
                 }
                 if ($fieldConfig['l10n_mode'] === 'mergeIfNotBlank') {
                     unset($fieldConfig['l10n_mode']);
+                    if (empty($fieldConfig['config']['behaviour']['allowLanguageSynchronization'])) {
+                        $fieldConfig['config']['behaviour']['allowLanguageSynchronization'] = true;
+                    }
                     $this->messages[] = 'The TCA setting \'mergeIfNotBlank\' was removed '
-                        . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
+                        . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']'
+                        . ' and changed to ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'behaviour\']'
+                        . '[\'allowLanguageSynchronization\'] = true';
                 }
             }
         }

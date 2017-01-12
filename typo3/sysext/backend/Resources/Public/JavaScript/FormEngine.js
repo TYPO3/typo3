@@ -701,6 +701,34 @@ define(['jquery',
 		}).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', function(e) {
 			$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').toggle();
 			$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').toggle();
+		}).on('change', '.t3js-l10n-state-container input[type=radio]', function(event) {
+			// Change handler for "l10n_state" field changes
+			var $me = $(this);
+			var $input = $me.closest('.t3js-formengine-field-item').find('[data-formengine-input-name]');
+
+			if ($input.length > 0) {
+				var lastState = $input.data('last-l10n-state') || false,
+					currentState = $(this).val();
+
+				if (lastState && currentState === lastState) {
+					return;
+				}
+
+				if (currentState === 'custom') {
+					if (lastState) {
+						$(this).attr('data-original-language-value', $input.val());
+					}
+					$input.attr('disabled', false);
+				} else {
+					if (lastState === 'custom') {
+						$(this).closest('.t3js-l10n-state-container').find('.t3js-l10n-state-custom').attr('data-original-language-value', $input.val());
+					}
+					$input.attr('disabled', 'disabled');
+				}
+
+				$input.val($(this).attr('data-original-language-value')).trigger('change');
+				$input.data('last-l10n-state', $(this).val());
+			}
 		});
 	};
 
@@ -956,12 +984,26 @@ define(['jquery',
 		FormEngine.initializeNullNoPlaceholderCheckboxes();
 		FormEngine.initializeNullWithPlaceholderCheckboxes();
 		FormEngine.initializeInputLinkToggle();
+		FormEngine.initializeLocalizationStateSelector();
+	};
+
+	/**
+	 * Disable the input field on load if localization state selector is set to "parent" or "source"
+	 */
+	FormEngine.initializeLocalizationStateSelector = function() {
+		$('.t3js-l10n-state-container').each(function() {
+			var $input = $(this).closest('.t3js-formengine-field-item').find('[data-formengine-input-name]');
+			var currentState = $(this).find('input[type="radio"]:checked').val();
+			if (currentState === 'parent' || currentState === 'source') {
+				$input.attr('disabled', 'disabled');
+			}
+		});
 	};
 
 	/**
 	 * Toggle for input link explanation
 	 */
-	FormEngine.initializeInputLinkToggle = function () {
+	FormEngine.initializeInputLinkToggle = function() {
 		$(document).on('click', '.t3js-form-field-inputlink-explanation-toggle', function(e) {
 			e.preventDefault();
 

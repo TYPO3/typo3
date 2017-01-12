@@ -506,9 +506,7 @@ class PageRepository
                     // Overwrite the original field with the overlay
                     foreach ($overlays[$origPage['uid']] as $fieldName => $fieldValue) {
                         if ($fieldName !== 'uid' && $fieldName !== 'pid') {
-                            if ($this->shouldFieldBeOverlaid('pages_language_overlay', $fieldName, $fieldValue)) {
-                                $pagesOutput[$key][$fieldName] = $fieldValue;
-                            }
+                            $pagesOutput[$key][$fieldName] = $fieldValue;
                         }
                     }
                 }
@@ -594,9 +592,7 @@ class PageRepository
                                 }
                                 foreach ($row as $fN => $fV) {
                                     if ($fN !== 'uid' && $fN !== 'pid' && isset($olrow[$fN])) {
-                                        if ($this->shouldFieldBeOverlaid($table, $fN, $olrow[$fN])) {
-                                            $row[$fN] = $olrow[$fN];
-                                        }
+                                        $row[$fN] = $olrow[$fN];
                                     } elseif ($fN === 'uid') {
                                         $row['_LOCALIZED_UID'] = $olrow['uid'];
                                     }
@@ -1889,10 +1885,7 @@ class PageRepository
         );
         if ($isTableLocalizable && $localizedId !== null) {
             $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);
-            $localizedReferencesValue = $localizedReferences ?: '';
-            if ($this->shouldFieldBeOverlaid($tableName, $fieldName, $localizedReferencesValue)) {
-                $references = $localizedReferences;
-            }
+            $references = $localizedReferences;
         }
 
         return $references;
@@ -1922,20 +1915,12 @@ class PageRepository
      * @param string $field TCA fieldname
      * @param mixed $value Current value of the field
      * @return bool Returns TRUE if a given record field needs to be overlaid
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected function shouldFieldBeOverlaid($table, $field, $value)
     {
-        $l10n_mode = isset($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'])
-            ? $GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode']
-            : '';
-
-        $shouldFieldBeOverlaid = true;
-
-        if ($l10n_mode === 'exclude') {
-            $shouldFieldBeOverlaid = false;
-        }
-
-        return $shouldFieldBeOverlaid;
+        GeneralUtility::logDeprecatedFunction();
+        return true;
     }
 
     /**
