@@ -1751,7 +1751,7 @@ class DataHandler
         // normal integer "date" fields (timestamps) are handled in checkValue_input_Eval
         if (isset($tcaFieldConf['dbType']) && ($tcaFieldConf['dbType'] === 'date' || $tcaFieldConf['dbType'] === 'datetime')) {
             if (empty($value)) {
-                $value = 0;
+                $value = null;
             } else {
                 $isDateOrDateTimeField = true;
                 $dateTimeFormats = QueryHelper::getDateTimeFormats();
@@ -1761,7 +1761,7 @@ class DataHandler
                 $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
                 // We store UTC timestamps in the database, which is what getTimestamp() returns.
                 $dateTime = new \DateTime($value);
-                $value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
+                $value = $value === $emptyValue ? null : $dateTime->getTimestamp();
             }
         }
         // Secures the string-length to be less than max.
@@ -1792,6 +1792,10 @@ class DataHandler
             }
 
             $res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
+            if (isset($tcaFieldConf['dbType']) && isset($res['value']) && !$res['value']) {
+                // set the value to null if we have an empty value for a native field
+                $res['value'] = null;
+            }
 
             // Process UNIQUE settings:
             // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...

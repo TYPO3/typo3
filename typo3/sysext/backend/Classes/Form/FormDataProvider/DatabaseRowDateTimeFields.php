@@ -43,8 +43,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
                     // makes date() treat it as a UTC date (which is what we store in the database).
                     $result['databaseRow'][$column] = date('c', strtotime($result['databaseRow'][$column] . ' UTC'));
                 } else {
-                    // Set to 0 timestamp
-                    $result['databaseRow'][$column] = 0;
+                    $result['databaseRow'][$column] = null;
                 }
             } else {
                 // its a UNIX timestamp! We do not modify this here, as it will only be treated as a datetime because
