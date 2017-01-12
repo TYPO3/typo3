@@ -117,7 +117,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
         foreach ($paths as $name => $defaultPaths) {
             if (!empty($configuredPaths[$name])) {
-                $paths[$name] = (array)$configuredPaths[$name] + $defaultPaths;
+                $paths[$name] = $defaultPaths + (array)$configuredPaths[$name];
             }
         }
 
