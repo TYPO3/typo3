@@ -86,13 +86,7 @@ class RichTextElement extends AbstractFormElement
             true
         );
 
-        $vanillaRteTsConfig = $this->getBackendUserAuthentication()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->data['effectivePid']));
-        $this->rteConfiguration = BackendUtility::RTEsetup(
-            $vanillaRteTsConfig['properties'],
-            $table,
-            $this->data['fieldName'],
-            $this->data['recordTypeValue']
-        );
+        $this->rteConfiguration = $parameterArray['fieldConf']['config']['richtextConfiguration'];
 
         $resultArray['requireJsModules'] = [];
         $resultArray['requireJsModules'][] =[

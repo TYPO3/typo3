@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -106,9 +108,27 @@ class ParseHtmlController
     public function main_parse_html($openKeys)
     {
         $html = GeneralUtility::_GP('content');
+
+        // @todo: This needs refactoring to enable sane config in flex form, either transfer parts of 'config', or use data providers
         $RTEtsConfigParts = explode(':', GeneralUtility::_GP('RTEtsConfigParams'));
-        $RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-        $thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+        $table = $RTEtsConfigParts[0];
+        $field = $RTEtsConfigParts[2];
+        $recordType = $RTEtsConfigParts[3];
+        $tcaConfigOfField = $GLOBALS['TCA'][$table][$field]['config'] ?? [];
+        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? [];
+        if (!empty($columnsOverridesConfigOfField)) {
+            ArrayUtility::mergeRecursiveWithOverrule($tcaConfigOfField, $columnsOverridesConfigOfField);
+        }
+        $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
+            $RTEtsConfigParts[0],
+            $RTEtsConfigParts[2],
+            $RTEtsConfigParts[3],
+            $RTEtsConfigParts[4],
+            $tcaConfigOfField
+        );
+        $thisConfig = $richtextConfiguration;
+
         $HTMLParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         if (is_array($thisConfig['enableWordClean.'])) {
             $HTMLparserConfig = $thisConfig['enableWordClean.']['HTMLparser.'];

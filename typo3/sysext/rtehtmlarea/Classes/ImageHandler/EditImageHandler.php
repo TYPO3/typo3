@@ -124,8 +124,8 @@ class EditImageHandler implements LinkHandlerInterface, LinkParameterProviderInt
 
         $lockPlainWidth = false;
         $lockPlainHeight = false;
-        if (isset($rteProperties['default.']['proc.']['plainImageMode'])) {
-            $plainImageMode = $rteProperties['default.']['proc.']['plainImageMode'];
+        if (isset($rteProperties['proc.']['plainImageMode'])) {
+            $plainImageMode = $rteProperties['proc.']['plainImageMode'];
             $lockPlainWidth = $plainImageMode === 'lockDimensions';
             $lockPlainHeight = $lockPlainWidth || $plainImageMode === 'lockRatio' || $plainImageMode === 'lockRatioWhenSmaller';
         }

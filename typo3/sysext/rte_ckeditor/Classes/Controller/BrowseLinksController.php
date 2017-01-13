@@ -16,9 +16,10 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
@@ -56,13 +57,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
      * @var array
      */
     protected $thisConfig = [];
-
-    /**
-     * RTE configuration
-     *
-     * @var array
-     */
-    protected $RTEProperties = [];
 
     /**
      * Used with the Rich Text Editor.
@@ -141,11 +135,26 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         $this->contentLanguageService->init($this->contentsLanguage);
 
+        // @todo: This needs refactoring to enable sane config in flex form, either transfer parts of 'config', or use data providers
         $RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-        $RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-        $this->RTEProperties = $RTEsetup['properties'];
+        $table = $RTEtsConfigParts[0];
+        $field = $RTEtsConfigParts[2];
+        $recordType = $RTEtsConfigParts[3];
+        $tcaConfigOfField = $GLOBALS['TCA'][$table][$field]['config'] ?? [];
+        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? [];
+        if (!empty($columnsOverridesConfigOfField)) {
+            ArrayUtility::mergeRecursiveWithOverrule($tcaConfigOfField, $columnsOverridesConfigOfField);
+        }
+        $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
+            $RTEtsConfigParts[0],
+            $RTEtsConfigParts[2],
+            $RTEtsConfigParts[3],
+            $RTEtsConfigParts[4],
+            $tcaConfigOfField
+        );
+        $this->thisConfig = $richtextConfiguration;
 
-        $this->thisConfig = BackendUtility::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
         $this->buttonConfig = $this->thisConfig['buttons.']['link.'] ?? [];
     }
 
@@ -213,8 +222,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
             ];
             $titleReadOnly = $this->buttonConfig['properties.']['title.']['readOnly']
                 || $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'];
-            if (is_array($this->RTEProperties['classesAnchor.'])) {
-                foreach ($this->RTEProperties['classesAnchor.'] as $label => $conf) {
+            if (is_array($this->thisConfig['classesAnchor.'])) {
+                foreach ($this->thisConfig['classesAnchor.'] as $label => $conf) {
                     if (in_array($conf['class'], $classesAnchorArray, true)) {
                         $classesAnchor['all'][] = $conf['class'];
                         if ($conf['type'] === $this->displayedLinkHandlerId) {
@@ -248,11 +257,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     if ($this->linkAttributeValues['class'] === $class || !$this->linkAttributeValues['class'] && $this->classesAnchorDefault[$this->displayedLinkHandlerId] == $class) {
                         $selected = 'selected="selected"';
                     }
-                    $classLabel = !empty($this->RTEProperties['classes.'][$class . '.']['name'])
-                        ? $this->getPageConfigLabel($this->RTEProperties['classes.'][$class . '.']['name'], 0)
+                    $classLabel = !empty($this->thisConfig['classes.'][$class . '.']['name'])
+                        ? $this->getPageConfigLabel($this->thisConfig['classes.'][$class . '.']['name'], 0)
                         : $class;
-                    $classStyle = !empty($this->RTEProperties['classes.'][$class . '.']['value'])
-                        ? $this->RTEProperties['classes.'][$class . '.']['value']
+                    $classStyle = !empty($this->thisConfig['classes.'][$class . '.']['value'])
+                        ? $this->thisConfig['classes.'][$class . '.']['value']
                         : '';
                     $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . $class . '"' . ($classStyle ? ' style="' . $classStyle . '"' : '') . '>' . $classLabel . '</option>';
                 }

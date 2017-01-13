@@ -910,9 +910,11 @@ class BackendUtility
      *
      * @param array $pArr Array of "[key] = [value]" strings to convert.
      * @return array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function getSpecConfParametersFromArray($pArr)
     {
+        GeneralUtility::logDeprecatedFunction();
         $out = [];
         if (is_array($pArr)) {
             foreach ($pArr as $k => $v) {
@@ -4059,9 +4061,11 @@ class BackendUtility
      * @param string $type Type value of the current record (like from CType of tt_content)
      * @return array Array with the configuration for the RTE
      * @internal
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
      */
     public static function RTEsetup($RTEprop, $table, $field, $type = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         $thisConfig = is_array($RTEprop['default.']) ? $RTEprop['default.'] : [];
         $thisFieldConf = $RTEprop['config.'][$table . '.'][$field . '.'];
         if (is_array($thisFieldConf)) {

@@ -58,8 +58,15 @@ call_user_func(function () {
                 rowDescription,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
         ',
-        'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'richtext:rte_transform']]
     ];
+
+    if (!isset($GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['bodytext']['config'])
+        || !is_array($GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['bodytext']['config'])
+    ) {
+        $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['bodytext']['config'] = [];
+    }
+    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['bodytext']['config']['enableRichtext'] = true;
+    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['bodytext']['config']['richtextConfiguration'] = 'default';
 
     $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['search']['andWhere'] .= ' OR CType=\'textmedia\'';
 

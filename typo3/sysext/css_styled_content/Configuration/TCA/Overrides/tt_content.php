@@ -508,17 +508,14 @@ $GLOBALS['TCA']['tt_content']['types']['text']['showitem'] = '
         rowDescription,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
 ';
-if (!is_array($GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides'])) {
-    $GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides'] = [];
+
+if (!isset($GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['config'])
+    || !is_array($GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['config'])
+) {
+    $GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['config'] = [];
 }
-if (!is_array($GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext'])) {
-    $GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext'] = [];
-}
-$baseDefaultExtrasOfBodytext = '';
-if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
-    $baseDefaultExtrasOfBodytext = $GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'] . ':';
-}
-$GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform';
+$GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['config']['enableRichtext'] = true;
+$GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['config']['richtextConfiguration'] = 'default';
 
 // Field arrangement for CE "textpic"
 $GLOBALS['TCA']['tt_content']['types']['textpic']['showitem'] = '
@@ -545,13 +542,14 @@ $GLOBALS['TCA']['tt_content']['types']['textpic']['showitem'] = '
         rowDescription,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
 ';
-if (!is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides'])) {
-    $GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides'] = [];
+
+if (!isset($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config'])
+    || !is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytextpic']['config'])
+) {
+    $GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config'] = [];
 }
-if (!is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext'])) {
-    $GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext'] = [];
-}
-$GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform';
+$GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config']['enableRichtext'] = true;
+$GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['config']['richtextConfiguration'] = 'default';
 
 // Field arrangement for CE "image"
 $GLOBALS['TCA']['tt_content']['types']['image']['showitem'] = '
@@ -604,7 +602,7 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverride
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext'])) {
     $GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext'] = [];
 }
-$GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'nowrap';
+$GLOBALS['TCA']['tt_content']['types']['bullets']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap';
 
 // Field arrangement for CE "table"
 $GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = '
@@ -634,7 +632,7 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides'
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext'])) {
     $GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext'] = [];
 }
-$GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'nowrap:wizards[table]';
+$GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap:wizards[table]';
 
 // Field arrangement for CE "uploads"
 $GLOBALS['TCA']['tt_content']['types']['uploads']['showitem'] = '

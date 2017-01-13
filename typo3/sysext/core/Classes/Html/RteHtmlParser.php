@@ -154,12 +154,12 @@ class RteHtmlParser extends HtmlParser
      * This is the main function called from DataHandler and transfer data classes
      *
      * @param string $value Input value
-     * @param array $specConf Special configuration for a field; This is coming from the types-configuration of the field in the TCA. In the types-configuration you can setup features for the field rendering and in particular the RTE takes al its major configuration options from there!
+     * @param array $specConf deprecated old "defaultExtras" parsed as array
      * @param string $direction Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
      * @param array $thisConfig Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
      * @return string Output value
      */
-    public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = [])
+    public function RTE_transform($value, $specConf = [], $direction = 'rte', $thisConfig = [])
     {
         $this->tsConfig = $thisConfig;
         $this->procOptions = (array)$thisConfig['proc.'];
@@ -184,6 +184,10 @@ class RteHtmlParser extends HtmlParser
             $modes = GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']);
         } else {
             // Get parameters for rte_transformation:
+            // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - the else{} part can be removed in v9
+            GeneralUtility::deprecationLog(
+                'Argument 2 of RteHtmlParser::RTE_transform() is deprecated. Transformations should be given in $thisConfig[\'proc.\'][\'overruleMode\']'
+            );
             $specialFieldConfiguration = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
             $modes = GeneralUtility::trimExplode('-', $specialFieldConfiguration['mode']);
         }
@@ -274,7 +278,10 @@ class RteHtmlParser extends HtmlParser
     {
         $modeList = implode(',', $modes);
 
+        // Replace the shortcut "default" with all custom modes
+        $modeList = str_replace('default', 'detectbrokenlinks,css_transform,ts_images,ts_links', $modeList);
         // Replace the shortcut "ts_css" with all custom modes
+        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - NEXT line can be removed in v9
         $modeList = str_replace('ts_css', 'detectbrokenlinks,css_transform,ts_images,ts_links', $modeList);
 
         // Make list unique

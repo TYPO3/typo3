@@ -685,18 +685,21 @@ class TcaMigration
             }
             foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
                 if (isset($fieldConfig['defaultExtras'])) {
-                    $oldValue = $fieldConfig['defaultExtras'];
-                    $fieldConfig['defaultExtras'] = preg_replace(
-                        '/richtext(\[([^\]]*)\])*:rte_transform(\[([^\]]*)\])/',
-                        'richtext${1}:rte_transform',
-                        $fieldConfig['defaultExtras'],
-                        -1,
-                        $replacementCount
-                    );
-                    if ($replacementCount) {
-                        $this->messages[] = 'rte_transform options are deprecated. String "' . $oldValue . '" in TCA'
-                            . ' ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'defaultExtras\'] was changed to "'
-                            . $fieldConfig['defaultExtras'] . '"';
+                    $originalValue = $fieldConfig['defaultExtras'];
+                    $defaultExtrasArray = GeneralUtility::trimExplode(':', $originalValue, true);
+                    $isRichtextField = false;
+                    foreach ($defaultExtrasArray as $defaultExtrasField) {
+                        if (substr($defaultExtrasField, 0, 8) === 'richtext') {
+                            $isRichtextField = true;
+                            $fieldConfig['config']['enableRichtext'] = true;
+                            $fieldConfig['config']['richtextConfiguration'] = 'default';
+                        }
+                    }
+                    if ($isRichtextField) {
+                        unset($fieldConfig['defaultExtras']);
+                        $this->messages[] = 'rte configuration via \'defaultExtras\' options are deprecated. String "' . $originalValue . '" in TCA'
+                            . ' ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'defaultExtras\'] was changed to'
+                            . ' options in [\'config\']';
                     }
                 }
             }
@@ -712,21 +715,24 @@ class TcaMigration
                 }
                 foreach ($typeArray['columnsOverrides'] as $fieldName => &$fieldConfig) {
                     if (isset($fieldConfig['defaultExtras'])) {
-                        $oldValue = $fieldConfig['defaultExtras'];
-                        $fieldConfig['defaultExtras'] = preg_replace(
-                            '/richtext(\[([^\]]*)\])*:rte_transform(\[([^\]]*)\])/',
-                            'richtext${1}:rte_transform',
-                            $fieldConfig['defaultExtras'],
-                            -1,
-                            $replacementCount
-                        );
-                        if ($replacementCount) {
-                            $this->messages[] = 'rte_transform options are deprecated. String "'
-                                . $oldValue . '" in TCA'
+                        $originalValue = $fieldConfig['defaultExtras'];
+                        $defaultExtrasArray = GeneralUtility::trimExplode(':', $originalValue, true);
+                        $isRichtextField = false;
+                        foreach ($defaultExtrasArray as $defaultExtrasField) {
+                            if (substr($defaultExtrasField, 0, 8) === 'richtext') {
+                                $isRichtextField = true;
+                                $fieldConfig['config']['enableRichtext'] = true;
+                                $fieldConfig['config']['richtextConfiguration'] = 'default';
+                            }
+                        }
+                        if ($isRichtextField) {
+                            unset($fieldConfig['defaultExtras']);
+                            $this->messages[] = 'rte configuration via \'defaultExtras\' options are deprecated.. String "'
+                                . $originalValue . '" in TCA'
                                 . ' ' . $table . '[\'types\'][\'' . $typeName
                                 . '\'][\'columnsOverrides\'][\'' . $fieldName
                                 . '\'][\'defaultExtras\']' .
-                                ' was changed to "' . $fieldConfig['defaultExtras'] . '"';
+                                ' was changed to config options.';
                         }
                     }
                 }

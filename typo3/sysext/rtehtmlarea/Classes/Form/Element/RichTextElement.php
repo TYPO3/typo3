@@ -61,27 +61,7 @@ class RichTextElement extends AbstractFormElement
     protected $pidOfVersionedMotherRecord;
 
     /**
-     * Native, not further processed TsConfig of RTE section for this record on given pid.
-     *
-     * Example:
-     *
-     * RTE = foo
-     * RTE.bar = xy
-     *
-     * array(
-     * 	'value' => 'foo',
-     * 	'properties' => array(
-     * 		'bar' => 'xy',
-     * 	),
-     * );
-     *
-     * @var array
-     */
-    protected $vanillaRteTsConfig;
-
-    /**
-     * Based on $vanillaRteTsConfig, this property contains "processed" configuration
-     * where table and type specific RTE setup is merged into 'default.' array.
+     * RTE configuration array. Set by TcaText provider.
      *
      * @var array
      */
@@ -223,13 +203,7 @@ class RichTextElement extends AbstractFormElement
         $this->pidOfPageRecord = $this->data['effectivePid'];
         BackendUtility::fixVersioningPid($table, $row);
         $this->pidOfVersionedMotherRecord = (int)$row['pid'];
-        $this->vanillaRteTsConfig = $backendUser->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->pidOfPageRecord));
-        $this->processedRteConfiguration = BackendUtility::RTEsetup(
-            $this->vanillaRteTsConfig['properties'],
-            $table,
-            $fieldName,
-            $this->data['recordTypeValue']
-        );
+        $this->processedRteConfiguration = $parameterArray['fieldConf']['config']['richtextConfiguration'];
         $this->client = $this->clientInfo();
         $this->domIdentifier = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $parameterArray['itemFormElName']);
         $this->domIdentifier = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $this->domIdentifier));
@@ -329,16 +303,9 @@ class RichTextElement extends AbstractFormElement
 
         $itemFormElementName = $this->data['parameterArray']['itemFormElName'];
 
-        // This seems to result in:
-        //	_TRANSFORM_bodytext (the handled field name) in case the field is a direct DB field
-        //	_TRANSFORM_vDEF (constant string) in case the RTE is within a flex form
-        $triggerFieldName = preg_replace('/\\[([^]]+)\\]$/', '[_TRANSFORM_\\1]', $itemFormElementName);
-
         $value = $this->transformDatabaseContentToEditor($this->data['parameterArray']['itemFormElValue']);
 
         $result = [];
-        // The hidden field tells the DataHandler that processing should be done on this value.
-        $result[] = '<input type="hidden" name="' . htmlspecialchars($triggerFieldName) . '" value="RTE" />';
         $result[] = '<div id="pleasewait' . $this->domIdentifier . '" class="pleasewait" style="display: block;" >';
         $result[] =    $this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:Please wait');
         $result[] = '</div>';
@@ -369,7 +336,6 @@ class RichTextElement extends AbstractFormElement
                         'contentTypo3Language' => $this->contentTypo3Language,
                         'contentISOLanguage' => $this->contentISOLanguage,
                         'contentLanguageUid' => $this->contentLanguageUid,
-                        'RTEsetup' => $this->vanillaRteTsConfig,
                         'client' => $this->client,
                         'thisConfig' => $this->processedRteConfiguration,
                         'specConf' => $this->defaultExtras,
@@ -806,7 +772,7 @@ class RichTextElement extends AbstractFormElement
      */
     protected function buildJSClassesArray()
     {
-        $RTEProperties = $this->vanillaRteTsConfig['properties'];
+        $RTEProperties = $this->processedRteConfiguration;
         // Declare sub-arrays
         $classesArray = [
             'labels' => [],
@@ -1214,7 +1180,6 @@ class RichTextElement extends AbstractFormElement
      */
     protected function RTEtsConfigParams()
     {
-        $parameters = BackendUtility::getSpecConfParametersFromArray($this->defaultExtras['rte_transform']['parameters']);
         $result = [
             $this->data['tableName'],
             $this->data['databaseRow']['uid'],
@@ -1222,7 +1187,6 @@ class RichTextElement extends AbstractFormElement
             $this->pidOfVersionedMotherRecord,
             $this->data['recordTypeValue'],
             $this->pidOfPageRecord,
-            $parameters['imgpath'],
         ];
         return implode(':', $result);
     }

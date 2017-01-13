@@ -75,7 +75,7 @@ class Typo3Link extends RteHtmlAreaApi
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.pathLinkModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_browse_links')) . ';';
-            if (is_array($this->configuration['RTEsetup']['properties']['classesAnchor.'])) {
+            if (is_array($this->configuration['thisConfig']['classesAnchor.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.classesAnchorUrl = "' . $this->writeTemporaryFile('classesAnchor_' . $this->configuration['contentLanguageUid'], 'js', $this->buildJSClassesAnchorArray()) . '";';
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.additionalAttributes = "' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '') . '";';
@@ -92,7 +92,7 @@ class Typo3Link extends RteHtmlAreaApi
     {
         $JSClassesAnchorArray = 'HTMLArea.classesAnchorSetup = [ ' . LF;
         $classesAnchorIndex = 0;
-        foreach ($this->configuration['RTEsetup']['properties']['classesAnchor.'] as $label => $conf) {
+        foreach ($this->configuration['thisConfig']['classesAnchor.'] as $label => $conf) {
             if (is_array($conf) && $conf['class']) {
                 $JSClassesAnchorArray .= ($classesAnchorIndex++ ? ',' : '') . ' { ' . LF;
                 $index = 0;

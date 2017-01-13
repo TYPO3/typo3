@@ -66,6 +66,8 @@ return [
                 'type' => 'text',
                 'cols' => 48,
                 'rows' => 5,
+                'enableRichtext' => true,
+                'richtextConfiguration' => 'default',
                 'wizards' => [
                     'RTE' => [
                         'notNewRecords' => true,
@@ -79,7 +81,6 @@ return [
                     ]
                 ]
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ]
     ],
     'types' => [

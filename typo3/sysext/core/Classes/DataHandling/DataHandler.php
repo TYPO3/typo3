@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -1520,54 +1521,8 @@ class DataHandler
             // If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
         }
-        // Checking for RTE-transformations of fields:
-        $types_fieldConfig = BackendUtility::getTCAtypes($table, $this->checkValue_currentRecord);
-        $theTypeString = null;
-        if (is_array($types_fieldConfig)) {
-            foreach ($types_fieldConfig as $vconf) {
-                // RTE transformations:
-                if ($this->dontProcessTransformations || !isset($fieldArray[$vconf['field']])) {
-                    continue;
-                }
-
-                // Look for transformation flag:
-                if ((string)$incomingFieldArray['_TRANSFORM_' . $vconf['field']] === 'RTE') {
-                    if ($theTypeString === null) {
-                        $theTypeString = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
-                    }
-                    $RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
-                    $thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
-                    $fieldArray[$vconf['field']] = $this->transformRichtextContentToDatabase(
-                        $fieldArray[$vconf['field']], $table, $vconf['field'], $vconf['spec'], $thisConfig, $this->checkValue_currentRecord['pid']
-                    );
-                }
-            }
-        }
         // Return fieldArray
         return $fieldArray;
-    }
-
-    /**
-     * Performs transformation of content from richtext element to database.
-     *
-     * @param string $value Value to transform.
-     * @param string $table The table name
-     * @param string $field The field name
-     * @param array $defaultExtras Default extras configuration of this field - typically "richtext:rte_transform"
-     * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and others. Configuration for additional transformation information
-     * @param int $pid PID value of record (true parent page id)
-     * @return string Transformed content
-     */
-    protected function transformRichtextContentToDatabase($value, $table, $field, $defaultExtras, $thisConfig, $pid)
-    {
-        if ($defaultExtras['rte_transform']) {
-            // Initialize transformation:
-            $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
-            $parseHTML->init($table . ':' . $field, $pid);
-            // Perform transformation:
-            $value = $parseHTML->RTE_transform($value, $defaultExtras, 'db', $thisConfig);
-        }
-        return $value;
     }
 
     /*********************************************
@@ -1677,7 +1632,7 @@ class DataHandler
 
         switch ($tcaFieldConf['type']) {
             case 'text':
-                $res = $this->checkValueForText($value, $tcaFieldConf);
+                $res = $this->checkValueForText($value, $tcaFieldConf, $table, $id, $realPid, $field);
                 break;
             case 'passthrough':
             case 'imageManipulation':
@@ -1717,21 +1672,45 @@ class DataHandler
      *
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @param int $id UID of record
+     * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+     * @param string $field Field name
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
      */
-    protected function checkValueForText($value, $tcaFieldConf)
+    protected function checkValueForText($value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
-        if (!isset($tcaFieldConf['eval']) || $tcaFieldConf['eval'] === '') {
-            return ['value' => $value];
-        }
-        $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
-        if ($this->runtimeCache->has($cacheId)) {
-            $evalCodesArray = $this->runtimeCache->get($cacheId);
+        if (isset($tcaFieldConf['eval']) && !$tcaFieldConf['eval'] === '') {
+            $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
+            if ($this->runtimeCache->has($cacheId)) {
+                $evalCodesArray = $this->runtimeCache->get($cacheId);
+            } else {
+                $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
+                $this->runtimeCache->set($cacheId, $evalCodesArray);
+            }
+            $valueArray = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
         } else {
-            $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
-            $this->runtimeCache->set($cacheId, $evalCodesArray);
+            $valueArray = ['value' => $value];
         }
-        return $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
+
+        // Handle richtext transformations
+        if ($this->dontProcessTransformations) {
+            return $valueArray;
+        }
+        $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
+        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? null;
+        if ($columnsOverridesConfigOfField) {
+            ArrayUtility::mergeRecursiveWithOverrule($tcaFieldConf, $columnsOverridesConfigOfField);
+        }
+        if (isset($tcaFieldConf['enableRichtext']) && $tcaFieldConf['enableRichtext'] === true) {
+            $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+            $richtextConfiguration = $richtextConfigurationProvider->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
+            $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
+            $parseHTML->init($table . ':' . $field, $realPid);
+            $valueArray['value'] = $parseHTML->RTE_transform($value, [], 'db', $richtextConfiguration);
+        }
+
+        return $valueArray;
     }
 
     /**
@@ -3019,23 +2998,6 @@ class DataHandler
                         ];
 
                         $res = $this->checkValue_SW([], $dataValues[$key][$vKey], $dsConf['TCEforms']['config'], $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
-                        // Look for RTE transformation of field:
-                        if ($dataValues[$key]['_TRANSFORM_' . $vKey] == 'RTE' && !$this->dontProcessTransformations) {
-                            // Unsetting trigger field - we absolutely don't want that into the data storage!
-                            unset($dataValues[$key]['_TRANSFORM_' . $vKey]);
-                            if (isset($res['value'])) {
-                                // Calculating/Retrieving some values here:
-                                list(, , $recFieldName) = explode(':', $CVrecFID);
-                                $theTypeString = BackendUtility::getTCAtypeValue($CVtable, $this->checkValue_currentRecord);
-                                $specConf = BackendUtility::getSpecConfParts($dsConf['TCEforms']['defaultExtras']);
-                                // Find, thisConfig:
-                                $RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($CVtscPID));
-                                $thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);
-                                $res['value'] = $this->transformRichtextContentToDatabase(
-                                    $res['value'], $CVtable, $recFieldName, $specConf, $thisConfig, $CVrealPid
-                                );
-                            }
-                        }
                     }
                     // Adding the value:
                     if (isset($res['value'])) {

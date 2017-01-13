@@ -16,10 +16,11 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Service\MagicImageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
@@ -126,13 +127,28 @@ class SelectImageController extends AbstractLinkBrowserController
             : '';
         $this->bparams = implode('|', $pArr);
 
+        // @todo: This needs refactoring to enable sane config in flex form, either transfer parts of 'config', or use data providers
         $RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-        $RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-        $this->RTEProperties = $RTEsetup['properties'];
+        $table = $RTEtsConfigParts[0];
+        $field = $RTEtsConfigParts[2];
+        $recordType = $RTEtsConfigParts[3];
+        $tcaConfigOfField = $GLOBALS['TCA'][$table][$field]['config'] ?? [];
+        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? [];
+        if (!empty($columnsOverridesConfigOfField)) {
+            ArrayUtility::mergeRecursiveWithOverrule($tcaConfigOfField, $columnsOverridesConfigOfField);
+        }
+        $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
+            $RTEtsConfigParts[0],
+            $RTEtsConfigParts[2],
+            $RTEtsConfigParts[3],
+            $RTEtsConfigParts[4],
+            $tcaConfigOfField
+        );
+        $this->RTEProperties = $richtextConfiguration;
 
-        $thisConfig = BackendUtility::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
-        $this->buttonConfig = isset($thisConfig['buttons.']['image.'])
-            ? $thisConfig['buttons.']['image.']
+        $this->buttonConfig = isset($this->RTEProperties['buttons.']['image.'])
+            ? $this->RTEProperties['buttons.']['image.']
             : [];
     }
 
@@ -296,7 +312,7 @@ class SelectImageController extends AbstractLinkBrowserController
             if ($this->displayedLinkHandlerId === 'magic') {
                 // Create the magic image service
                 $magicImageService = GeneralUtility::makeInstance(MagicImageService::class);
-                $magicImageService->setMagicImageMaximumDimensions($this->RTEProperties['default.']);
+                $magicImageService->setMagicImageMaximumDimensions($this->RTEProperties);
                 // Create the magic image
                 $imageConfiguration = [
                     'width' => GeneralUtility::_GP('cWidth'),

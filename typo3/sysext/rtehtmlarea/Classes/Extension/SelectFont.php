@@ -90,7 +90,7 @@ class SelectFont extends RteHtmlAreaApi
     public function main(array $configuration)
     {
         $enabled = parent::main($configuration) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['allowStyleAttribute'];
-        $this->RTEProperties = $this->configuration['RTEsetup']['properties'];
+        $this->RTEProperties = $this->configuration['thisConfig'];
         return $enabled;
     }
 

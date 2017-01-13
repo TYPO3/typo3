@@ -1066,12 +1066,15 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
     public function migrateRemovesRteTransformOptionsDataProvider()
     {
         return [
-            'remove empty options in columns' => [
+            'columns richtext configuration' => [
                 [
                     // Given config section
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext:rte_transform[]'
                             ]
                         ]
@@ -1082,17 +1085,24 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove nothing in columns' => [
+            'columns richtext configuration without bracket' => [
                 [
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext:rte_transform'
                             ]
                         ]
@@ -1102,17 +1112,24 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove mode in columns' => [
+            'columns richtext with mode' => [
                 [
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext:rte_transform[mode=ts_css]'
                             ]
                         ]
@@ -1122,17 +1139,24 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove flag and mode in columns' => [
+            'columns richtext with mode and others' => [
                 [
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]'
                             ]
                         ]
@@ -1142,17 +1166,24 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove flag and mode in columns with array notation' => [
+            'columns richtext with array with mode and others' => [
                 [
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext[]:rte_transform[flag=rte_enabled|mode=ts_css]'
                             ]
                         ]
@@ -1162,17 +1193,24 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext[]:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove flag and mode in columns with array notation and index' => [
+            'columns richtext * with mode and others' => [
                 [
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext[*]:rte_transform[flag=rte_enabled|mode=ts_css]'
                             ]
                         ]
@@ -1182,17 +1220,24 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext[*]:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove flag and mode in columns with array notation and index and option list' => [
+            'columns richtext cut-copy-paste with mode and others' => [
                 [
                     'aTable' => [
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                                 'defaultExtras' => 'richtext[cut|copy|paste]:rte_transform[flag=rte_enabled|mode=ts_css]'
                             ]
                         ]
@@ -1202,15 +1247,26 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     'aTable' => [
                         'columns' => [
                             'aField' => [
-                                'defaultExtras' => 'richtext[cut|copy|paste]:rte_transform'
+                                'config' => [
+                                    'type' => 'text',
+                                    'enableRichtext' => true,
+                                    'richtextConfiguration' => 'default',
+                                ],
                             ]
                         ]
                     ]
                 ],
             ],
-            'remove empty options in columnsOverrides' => [
+            'columnsOverrides richtext with brackets' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1224,11 +1280,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]
@@ -1236,9 +1302,16 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ]
                 ],
             ],
-            'remove nothing in columnsOverrides' => [
+            'columnsOverrides richtext' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1252,11 +1325,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]
@@ -1264,9 +1347,16 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ]
                 ],
             ],
-            'remove mode in columnsOverrides' => [
+            'columnsOverrides richtext with defalut mode' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1280,11 +1370,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]
@@ -1292,9 +1392,16 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ]
                 ],
             ],
-            'remove flag and mode in columnsOverrides' => [
+            'columnsOverrides richtext with mode and others' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1308,11 +1415,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]
@@ -1320,9 +1437,16 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ]
                 ],
             ],
-            'remove flag and mode in columnsOverrides with array notation' => [
+            'columnsOverrides richtext brackets mode and others' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1336,11 +1460,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext[]:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]
@@ -1348,9 +1482,16 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ]
                 ],
             ],
-            'remove flag and mode in columnsOverrides with array notation and index' => [
+            'columnsOverrides richtext star with mode and others' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1364,11 +1505,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext[*]:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]
@@ -1376,9 +1527,16 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                     ]
                 ],
             ],
-            'remove flag and mode in columnsOverrides with array notation and index and option list' => [
+            'columnsOverrides richtext cut-copy-paste ith mode and others' => [
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
@@ -1392,11 +1550,21 @@ class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitT
                 ],
                 [
                     'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
+                            ],
+                        ],
                         'types' => [
                             'aType' => [
                                 'columnsOverrides' => [
                                     'aField' => [
-                                        'defaultExtras' => 'richtext[copy|cut|paste]:rte_transform'
+                                        'config' => [
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
                                     ]
                                 ]
                             ]

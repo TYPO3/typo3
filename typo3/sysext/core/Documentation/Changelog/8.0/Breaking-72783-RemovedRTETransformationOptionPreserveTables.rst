@@ -20,7 +20,8 @@ without substitution.
 Impact
 ======
 
-When the RTE is configured to use `overruleMode = ts` instead of the default "ts_css" the option `RTE.default.proc.preserveTables = 1` will have no effect anymore.
+When the RTE is configured to use `overruleMode = ts` instead of the default "ts_css" the
+option `RTE.default.proc.preserveTables = 1` will have no effect anymore.
 
 Calling `RteHtmlParser->removeTables` or `HtmlParser->getAllParts` inside a custom extension will result in a fatal PHP error.
 
@@ -28,7 +29,8 @@ Calling `RteHtmlParser->removeTables` or `HtmlParser->getAllParts` inside a cust
 Affected Installations
 ======================
 
-Any TYPO3 instance with a legacy-mode (overruleMode = ts) from TYPO3 3.x or an extension doing custom transformations by using `RteHtmlParser->removeTables`.
+Any TYPO3 instance with a legacy-mode (overruleMode = ts) from TYPO3 3.x or an extension doing custom transformations
+by using `RteHtmlParser->removeTables`.
 
 
 Migration
