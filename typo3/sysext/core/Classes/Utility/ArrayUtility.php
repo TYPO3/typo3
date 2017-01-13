@@ -652,9 +652,11 @@ class ArrayUtility
      * @param array $in_array One-dimensional array of items
      * @param string $item Item to check for
      * @return bool TRUE if $item is in the one-dimensional array $in_array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use in_array instead
      */
     public static function inArray(array $in_array, $item)
     {
+        GeneralUtility::logDeprecatedFunction();
         foreach ($in_array as $val) {
             if (!is_array($val) && (string)$val === (string)$item) {
                 return true;

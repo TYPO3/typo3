@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Http;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -138,7 +137,7 @@ class AjaxRequestHandler
      */
     public function setContentFormat($format)
     {
-        if (ArrayUtility::inArray(['plain', 'xml', 'json', 'jsonhead', 'jsonbody', 'javascript'], $format)) {
+        if (in_array($format, ['plain', 'xml', 'json', 'jsonhead', 'jsonbody', 'javascript'], true)) {
             $this->contentFormat = $format;
         }
     }

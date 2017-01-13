@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -1273,7 +1272,7 @@ abstract class AbstractMenuContentObject
             ($this->mconf['SPC'] || !$spacer) // If the spacer-function is not enabled, spacers will not enter the $menuArr
             && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) // Not hidden in navigation
             && !GeneralUtility::inList($this->doktypeExcludeList, $data['doktype']) // Page may not be 'not_in_menu' or 'Backend User Section'
-            && !ArrayUtility::inArray($banUidArray, $data['uid']) // not in banned uid's
+            && !in_array($data['uid'], $banUidArray, false) // not in banned uid's
         ) {
             // Checks if the default language version can be shown:
             // Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
