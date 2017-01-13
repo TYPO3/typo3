@@ -859,6 +859,10 @@ return [
 			options.file_list.enableDisplayBigControlPanel=selectable
 			options.file_list.enableDisplayThumbnails=selectable
 			options.file_list.enableClipBoard=selectable
+			options.file_list.thumbnail {
+				width = 64
+				height = 64
+			}
 			options.pageTree {
 				doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,255,199
 			}

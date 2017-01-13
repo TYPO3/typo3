@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
@@ -67,6 +68,11 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $fileRepository;
 
     /**
+     * @var array
+     */
+    protected $thumbnailConfiguration = [];
+
+    /**
      * Loads additional JavaScript
      */
     protected function initialize()
@@ -74,6 +80,18 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
         $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+
+        $modTSconfig = BackendUtility::getModTSconfig(0, 'options.file_list');
+        if (isset($modTSconfig['properties']['thumbnail.']['width'])
+            && MathUtility::canBeInterpretedAsInteger($modTSconfig['properties']['thumbnail.']['width'])
+        ) {
+            $this->thumbnailConfiguration['width'] = (int)$modTSconfig['properties']['thumbnail.']['width'];
+        }
+        if (isset($modTSconfig['properties']['thumbnail.']['height'])
+            && MathUtility::canBeInterpretedAsInteger($modTSconfig['properties']['thumbnail.']['height'])
+        ) {
+            $this->thumbnailConfiguration['height'] = (int)$modTSconfig['properties']['thumbnail.']['height'];
+        }
     }
 
     /**
@@ -270,7 +288,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             if (!$noThumbs && GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']), strtolower($fileExtension))) {
                 $processedFile = $fileObject->process(
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    ['width' => 64, 'height' => 64]
+                    $this->thumbnailConfiguration
                 );
                 $imageUrl = $processedFile->getPublicUrl(true);
                 $imgInfo = [

@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
 use TYPO3\CMS\Filelist\FileList;
 
 /**
@@ -518,6 +519,12 @@ class FileListController extends ActionController
 
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
+
+        $thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
+        $this->view->assign('thumbnail', [
+            'width' => $thumbnailConfiguration->getWidth(),
+            'height' => $thumbnailConfiguration->getHeight(),
+        ]);
 
         $this->view->assign('searchWord', $searchWord);
         $this->view->assign('files', $fileFacades);

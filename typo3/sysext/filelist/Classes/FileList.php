@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
 use TYPO3\CMS\Filelist\Controller\FileListController;
 
 /**
@@ -267,6 +268,11 @@ class FileList
     protected $fileListController;
 
     /**
+     * @var ThumbnailConfiguration
+     */
+    protected $thumbnailConfiguration;
+
+    /**
      * Construct
      *
      * @param FileListController $fileListController
@@ -281,6 +287,7 @@ class FileList
         $this->determineScriptUrl();
         $this->fileListController = $fileListController;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
 
         $modTSconfig = BackendUtility::getModTSconfig(0, 'options.file_list');
         if (!empty($modTSconfig['properties']['filesPerPage'])) {
@@ -1099,7 +1106,13 @@ class FileList
                                 . '</span>';
                             // Thumbnails?
                         } elseif ($this->thumbs && ($this->isImage($ext) || $this->isMediaFile($ext))) {
-                            $processedFile = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
+                            $processedFile = $fileObject->process(
+                                ProcessedFile::CONTEXT_IMAGEPREVIEW,
+                                [
+                                    'width' => $this->thumbnailConfiguration->getWidth(),
+                                    'height' => $this->thumbnailConfiguration->getHeight()
+                                ]
+                            );
                             if ($processedFile) {
                                 $thumbUrl = $processedFile->getPublicUrl(true);
                                 $theData[$field] .= '<br /><img src="' . $thumbUrl . '" ' .
