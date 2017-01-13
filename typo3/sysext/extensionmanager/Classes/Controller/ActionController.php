@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Controller for handling extension related actions like
  * installing, removing, downloading of data or files
@@ -173,5 +176,23 @@ class ActionController extends AbstractController
             throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($error, 1343048718);
         }
         $this->fileHandlingUtility->sendSqlDumpFileToBrowserAndDelete($filePath, $fileName);
+    }
+
+    /**
+     * Reloads the static SQL data of an extension
+     *
+     * @param string $extension
+     */
+    protected function reloadExtensionDataAction($extension)
+    {
+        $extension = $this->installUtility->enrichExtensionWithDetails($extension, false);
+        $registryKey = $extension['siteRelPath'] . 'ext_tables_static+adt.sql';
+
+        $registry = GeneralUtility::makeInstance(Registry::class);
+        $registry->remove('extensionDataImport', $registryKey);
+
+        $this->installUtility->processDatabaseUpdates($extension);
+
+        $this->redirect('index', 'List');
     }
 }

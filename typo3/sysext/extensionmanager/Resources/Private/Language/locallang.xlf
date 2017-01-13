@@ -216,6 +216,12 @@
 			<trans-unit id="extensionList.updateConfirmation.message">
 				<source>Update Comments:</source>
 			</trans-unit>
+			<trans-unit id="extensionList.databaseImport">
+				<source>The static database data has changed. You should re-import the data.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.databaseReload">
+				<source>Nothing has changed since last import. You might want to reload static database data.</source>
+			</trans-unit>
 			<trans-unit id="extensionList.updateConfirmation.questionVersionComments">
 				<source>Version Comments</source>
 			</trans-unit>

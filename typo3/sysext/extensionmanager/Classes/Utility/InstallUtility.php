@@ -675,11 +675,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $extTablesStaticSqlRelFile = $extensionSiteRelPath . 'ext_tables_static+adt.sql';
         if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
             $extTablesStaticSqlFile = PATH_site . $extTablesStaticSqlRelFile;
+            $shortFileHash = '';
             if (file_exists($extTablesStaticSqlFile)) {
                 $extTablesStaticSqlContent = file_get_contents($extTablesStaticSqlFile);
+                $shortFileHash = md5($extTablesStaticSqlContent);
                 $this->importStaticSql($extTablesStaticSqlContent);
             }
-            $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, 1);
+            $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $shortFileHash);
             $this->emitAfterExtensionStaticSqlImportSignal($extTablesStaticSqlRelFile);
         }
     }
