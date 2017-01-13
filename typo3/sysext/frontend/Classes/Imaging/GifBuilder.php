@@ -704,6 +704,9 @@ class GifBuilder extends GraphicalFunctions
         $filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
         $filePrefix = $basicFileFunctions->cleanFileName($filePrefix);
 
+        // shorten prefix to avoid overly long file names
+        $filePrefix = substr($filePrefix, 0, 100);
+
         return $this->tempPath . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
     }
 
