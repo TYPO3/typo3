@@ -281,7 +281,7 @@ class TypoScriptFrontendController
      * configuration of the current page. Saved with the cached pages.
      * @var array
      */
-    public $config = '';
+    public $config = [];
 
     /**
      * The TypoScript template object. Used to parse the TypoScript template
@@ -2284,7 +2284,7 @@ class TypoScriptFrontendController
         // clearing the content-variable, which will hold the pagecontent
         $this->content = '';
         // Unsetting the lowlevel config
-        unset($this->config);
+        $this->config = [];
         $this->cacheContentFlag = false;
 
         if ($this->no_cache) {
@@ -2510,7 +2510,7 @@ class TypoScriptFrontendController
     public function getConfigArray()
     {
         // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
-        if (!is_array($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing) {
+        if (empty($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing) {
             $timeTracker = $this->getTimeTracker();
             $timeTracker->push('Parse template', '');
             // Force parsing, if set?:
