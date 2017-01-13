@@ -79,11 +79,6 @@ class TemplateService
     public $matchAll = false;
 
     /**
-     * @var bool
-     */
-    public $backend_info = false;
-
-    /**
      * Externally set breakpoints (used by Backend Modules)
      *
      * @var int
@@ -474,7 +469,8 @@ class TemplateService
     public function start($theRootLine)
     {
         if (is_array($theRootLine)) {
-            $setupData = '';
+            $constantsData = [];
+            $setupData = [];
             $cacheIdentifier = '';
             // Flag that indicates that the existing data in cache_pagesection
             // could be used (this is the case if $TSFE->all is set, and the
@@ -521,10 +517,15 @@ class TemplateService
             }
             if ($cacheIdentifier) {
                 // Get TypoScript setup array
-                $setupData = $this->getCacheEntry($cacheIdentifier);
+                $cachedData = $this->getCacheEntry($cacheIdentifier);
+                if (is_array($cachedData)) {
+                    $constantsData = $cachedData['constants'];
+                    $setupData = $cachedData['setup'];
+                }
             }
-            if (is_array($setupData) && !$this->forceTemplateParsing) {
-                // If TypoScript setup structure was cached we unserialize it here:
+            if (!empty($setupData) && !$this->forceTemplateParsing) {
+                // TypoScript constants + setup are found in the cache
+                $this->setup_constants = $constantsData;
                 $this->setup = $setupData;
                 if ($this->tt_track) {
                     $this->getTimeTracker()->setTSlogMessage('Using cached TS template data');
@@ -546,7 +547,7 @@ class TemplateService
                 ksort($cc);
                 $cacheIdentifier = md5(serialize($cc));
                 // This stores the data.
-                $this->setCacheEntry($cacheIdentifier, $this->setup, 'TS_TEMPLATE');
+                $this->setCacheEntry($cacheIdentifier, ['constants' => $this->setup_constants, 'setup' => $this->setup], 'TS_TEMPLATE');
                 if ($this->tt_track) {
                     $this->getTimeTracker()->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
                 }
@@ -1106,10 +1107,8 @@ class TemplateService
         $this->parserErrors['config'] = $config->errors;
         // Transfer the TypoScript array from the parser object to the internal $this->setup array:
         $this->setup = $config->setup;
-        if ($this->backend_info) {
-            // Used for backend purposes only
-            $this->setup_constants = $constants->setup;
-        }
+        // Do the same for the constants
+        $this->setup_constants = $constants->setup;
         // ****************************************************************
         // Final processing of the $this->setup TypoScript Template array
         // Basically: This is unsetting/setting of certain reserved keys.

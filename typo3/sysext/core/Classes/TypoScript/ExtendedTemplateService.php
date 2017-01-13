@@ -107,11 +107,6 @@ class ExtendedTemplateService extends TemplateService
     ];
 
     /**
-     * @var bool
-     */
-    public $backend_info = true;
-
-    /**
      * Tsconstanteditor
      *
      * @var int
