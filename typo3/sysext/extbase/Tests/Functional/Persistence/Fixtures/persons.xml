@@ -24,4 +24,12 @@
 		<tags>0</tags>
 		<tags_special>1</tags_special>
 	</tx_blogexample_domain_model_person>
+	<tx_blogexample_domain_model_person>
+		<uid>4</uid>
+		<pid>0</pid>
+		<firstname>Another Author</firstname>
+		<lastname>With special tag</lastname>
+		<tags>0</tags>
+		<tags_special>1</tags_special>
+	</tx_blogexample_domain_model_person>
 </dataset>

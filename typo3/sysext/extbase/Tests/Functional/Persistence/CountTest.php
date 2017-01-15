@@ -235,6 +235,6 @@ class CountTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTe
                 $query->equals('tagsSpecial.name', 'SpecialTagForAuthor1')
             )
         );
-        $this->assertSame(3, $query->count());
+        $this->assertSame(4, $query->count());
     }
 }

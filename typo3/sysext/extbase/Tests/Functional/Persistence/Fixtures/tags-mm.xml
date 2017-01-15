@@ -32,4 +32,12 @@
 		<sorting>1</sorting>
 		<sorting_foreign>1</sorting_foreign>
 	</tx_blogexample_domain_model_tag_mm>
+	<tx_blogexample_domain_model_tag_mm>
+		<uid_local>4</uid_local>
+		<uid_foreign>13</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_person</tablenames>
+		<fieldname>tags_special</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_domain_model_tag_mm>
 </dataset>

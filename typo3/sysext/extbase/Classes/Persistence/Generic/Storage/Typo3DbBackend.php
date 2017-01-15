@@ -416,13 +416,22 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
 
         $queryBuilder = $this->objectManager->get(Typo3DbQueryParser::class)
-            ->convertQueryToDoctrineQueryBuilder($query);
+            ->convertQueryToDoctrineQueryBuilder($query)
+            ->resetQueryPart('orderBy');
+
+        if (count($queryBuilder->getQueryPart('groupBy')) !== 0) {
+            $source = $queryBuilder->getQueryPart('from')[0];
+            // Tablename is already quoted for the DBMS, we need to treat table and field names separately
+            $tableName = $source['alias'] ?: $source['table'];
+            $fieldName = $queryBuilder->quoteIdentifier('uid');
+            $queryBuilder->resetQueryPart('groupBy')
+                ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
+        } else {
+            $queryBuilder->count('*');
+        }
 
         try {
-            $count = $queryBuilder->resetQueryPart('orderBy')
-                ->count('*')
-                ->execute()
-                ->fetchColumn(0);
+            $count = $queryBuilder->execute()->fetchColumn(0);
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379);
         }
