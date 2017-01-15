@@ -48,11 +48,6 @@ class DeleteFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
      */
     public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $veriCode = '&vC=';
-        if ($GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) {
-            $veriCode .= $GLOBALS['BE_USER']->veriCode();
-        }
-
         if (empty($arguments['returnUrl'])) {
             $arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
         }
@@ -71,6 +66,6 @@ class DeleteFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
             'redirect' => $arguments['returnUrl']
         ];
 
-        return BackendUtility::getModuleUrl('tce_file', $params) . $veriCode;
+        return BackendUtility::getModuleUrl('tce_file', $params);
     }
 }

@@ -3098,7 +3098,6 @@ class BackendUtility
         $urlParameters = [
             'prErr' => 1,
             'uPT' => 1,
-            'vC' => static::getBackendUserAuthentication()->veriCode()
         ];
         $url = self::getModuleUrl('tce_db', $urlParameters) . $parameters . '&redirect=';
         if ((int)$redirectUrl === -1) {

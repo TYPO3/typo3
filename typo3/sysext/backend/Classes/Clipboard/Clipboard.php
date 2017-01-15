@@ -609,7 +609,6 @@ class Clipboard
     public function pasteUrl($table, $uid, $setRedirect = true, array $update = null)
     {
         $urlParameters = [
-            'vC' => $this->getBackendUser()->veriCode(),
             'prErr' => 1,
             'uPT' => 1,
             'CB[paste]' => $table . '|' . $uid,
@@ -634,7 +633,6 @@ class Clipboard
     public function deleteUrl($setRedirect = 1, $file = 0)
     {
         $urlParameters = [
-            'vC' => $this->getBackendUser()->veriCode(),
             'prErr' => 1,
             'uPT' => 1,
             'CB[delete]' => 1,

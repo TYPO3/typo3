@@ -54,7 +54,6 @@ class IssueCommandViewHelper extends AbstractViewHelper
         /** @var BackendUserAuthentication $beUser */
         $beUser = $GLOBALS['BE_USER'];
         $urlParameters = [
-            'vC' => $beUser->veriCode(),
             'prErr' => 1,
             'uPT' => 1,
             'redirect' => $arguments['redirectUrl'] ?: GeneralUtility::getIndpEnv('REQUEST_URI')

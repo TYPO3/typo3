@@ -153,11 +153,6 @@ class EditDocumentController extends AbstractModule
     public $returnNewPageId;
 
     /**
-     * @var string
-     */
-    public $vC;
-
-    /**
      * update BE_USER->uc
      *
      * @var array
@@ -528,7 +523,6 @@ class EditDocumentController extends AbstractModule
         $this->cacheCmd = GeneralUtility::_GP('cacheCmd');
         $this->redirect = GeneralUtility::_GP('redirect');
         $this->returnNewPageId = GeneralUtility::_GP('returnNewPageId');
-        $this->vC = GeneralUtility::_GP('vC');
         // See tce_db.php for relevate options here:
         // Only options related to $this->data submission are included here.
         /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
@@ -562,7 +556,6 @@ class EditDocumentController extends AbstractModule
         $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         if ($httpHost != $refInfo['host']
-            && $this->vC != $beUser->veriCode()
             && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
         ) {
             $tce->log(
@@ -571,7 +564,7 @@ class EditDocumentController extends AbstractModule
                 0,
                 0,
                 1,
-                'Referer host \'%s\' and server host \'%s\' did not match and veriCode was not valid either!',
+                'Referer host \'%s\' and server host \'%s\' did not match!',
                 1,
                 [$refInfo['host'], $httpHost]
             );
@@ -793,7 +786,7 @@ class EditDocumentController extends AbstractModule
 				}
 			}
 			function deleteRecord(table,id,url) {	//
-				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $beUser->veriCode() . '&prErr=1&uPT=1";
+				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&prErr=1&uPT=1";
 			}
 		';
 

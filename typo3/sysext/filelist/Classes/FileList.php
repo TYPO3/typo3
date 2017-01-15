@@ -1009,7 +1009,6 @@ class FileList extends AbstractRecordList
                 . '" data-delete-url="' . htmlspecialchars($deleteUrl)
                 . '" data-title="' . htmlspecialchars($title)
                 . '" data-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier())
-                . '" data-veri-code="' . $this->getBackendUser()->veriCode()
                 . '" data-delete-type="' . $deleteType
                 . '" title="' . htmlspecialchars($title) . '">'
                 . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';

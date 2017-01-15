@@ -492,7 +492,6 @@ class FileListController extends ActionController
 
         $this->view->assign('searchWord', $searchWord);
         $this->view->assign('files', $fileFacades);
-        $this->view->assign('veriCode', $this->getBackendUser()->veriCode());
         $this->view->assign('deleteUrl', BackendUtility::getModuleUrl('tce_file'));
         $this->view->assign('settings', [
             'jsConfirmationDelete' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)

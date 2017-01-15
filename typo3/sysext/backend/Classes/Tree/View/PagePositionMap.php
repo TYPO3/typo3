@@ -559,9 +559,9 @@ class PagePositionMap
     {
         $table = 'tt_content';
         if (is_array($row)) {
-            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $this->getBackendUser()->veriCode();
+            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1';
         } else {
-            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $this->getBackendUser()->veriCode();
+            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1';
         }
         $location .= '&redirect=' . rawurlencode($this->R_URI);
         // returns to prev. page

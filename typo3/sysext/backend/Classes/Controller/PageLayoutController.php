@@ -763,7 +763,7 @@ class PageLayoutController
                 ' . ($this->popView ? BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)) : '') . '
                 function deleteRecord(table,id,url) {   //
                     window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[')
-                                             . ' + table + "][" + id + "][delete]=1&redirect=" + encodeURIComponent(url) + "&vC=' . $this->getBackendUser()->veriCode() . '&prErr=1&uPT=1";
+                                             . ' + table + "][" + id + "][delete]=1&redirect=" + encodeURIComponent(url) + "&prErr=1&uPT=1";
                     return false;
                 }
             ');

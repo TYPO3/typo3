@@ -77,11 +77,6 @@ class ImportExportController extends BaseScriptClass
     protected $fileProcessor;
 
     /**
-     * @var string
-     */
-    protected $vC = '';
-
-    /**
      * @var LanguageService
      */
     protected $lang = null;
@@ -167,7 +162,6 @@ class ImportExportController extends BaseScriptClass
     {
         $this->MCONF['name'] = $this->moduleName;
         parent::init();
-        $this->vC = GeneralUtility::_GP('vC');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         $this->lang = $this->getLanguageService();
     }
@@ -966,7 +960,6 @@ class ImportExportController extends BaseScriptClass
         if (
             $httpHost != $refInfo['host']
             && !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
-            && $this->vC != $this->getBackendUser()->veriCode()
         ) {
             $this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', [$refInfo['host'], $httpHost]);
         } else {

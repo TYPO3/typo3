@@ -27,9 +27,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 			redirectUrl = top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);
 		}
 		var identifier = $anchorElement.data('identifier');
-		var veriCode = $anchorElement.data('veriCode');
 		var deleteType = $anchorElement.data('deleteType');
-		var deleteUrl = $anchorElement.data('deleteUrl') + '&file[delete][0][data]=' + encodeURIComponent(identifier) + '&vC=' + encodeURIComponent(veriCode);
+		var deleteUrl = $anchorElement.data('deleteUrl') + '&file[delete][0][data]=' + encodeURIComponent(identifier);
 		if ($anchorElement.data('check')) {
 			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('content'), Severity.warning, [
 				{

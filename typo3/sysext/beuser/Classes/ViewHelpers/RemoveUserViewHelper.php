@@ -73,7 +73,6 @@ class RemoveUserViewHelper extends AbstractViewHelper
 
         $urlParameters = [
             'cmd[be_users][' . $backendUser->getUid() . '][delete]' => 1,
-            'vC' => $beUser->veriCode(),
             'prErr' => 1,
             'uPT' => 1,
             'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')

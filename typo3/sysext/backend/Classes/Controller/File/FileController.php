@@ -56,14 +56,6 @@ class FileController
     protected $overwriteExistingFiles;
 
     /**
-     * VeriCode - a hash of server specific value and other things which
-     * identifies if a submission is OK. (see $GLOBALS['BE_USER']->veriCode())
-     *
-     * @var string
-     */
-    protected $vC;
-
-    /**
      * The page where the user should be redirected after everything is done
      *
      * @var string
@@ -105,7 +97,6 @@ class FileController
         $this->file = GeneralUtility::_GP('file');
         $this->CB = GeneralUtility::_GP('CB');
         $this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
-        $this->vC = GeneralUtility::_GP('vC');
         $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
         $this->initClipboard();
         $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
@@ -146,7 +137,7 @@ class FileController
         // Checking referrer / executing:
         $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        if ($httpHost !== $refInfo['host'] && $this->vC !== $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+        if ($httpHost !== $refInfo['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
             $this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', [$refInfo['host'], $httpHost]);
         } else {
             $this->fileProcessor->start($this->file);

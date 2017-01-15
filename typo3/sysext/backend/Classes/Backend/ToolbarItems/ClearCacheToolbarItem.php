@@ -62,7 +62,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
                 'id' => 'pages',
                 'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle')),
                 'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription')),
-                'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'pages']),
+                'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'pages']),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-low', Icon::SIZE_SMALL)->render()
             ];
             $this->optionValues[] = 'pages';
@@ -76,7 +76,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
                 'id' => 'all',
                 'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2')),
                 'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2')),
-                'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all']),
+                'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'all']),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-high', Icon::SIZE_SMALL)->render()
             ];
             $this->optionValues[] = 'all';

@@ -1224,9 +1224,11 @@ abstract class AbstractUserAuthentication
      * tce_db.php from eg. MSIE 5.0 because the proper referer is not passed with this browser...
      *
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function veriCode()
     {
+        GeneralUtility::logDeprecatedFunction();
         return substr(md5($this->id . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 10);
     }
 

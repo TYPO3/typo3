@@ -92,13 +92,6 @@ class SimpleDataHandlerController
     public $CB;
 
     /**
-     * Verification code
-     *
-     * @var string
-     */
-    public $vC;
-
-    /**
      * Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
      *
      * @var int
@@ -138,7 +131,6 @@ class SimpleDataHandlerController
         $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
         $this->prErr = GeneralUtility::_GP('prErr');
         $this->CB = GeneralUtility::_GP('CB');
-        $this->vC = GeneralUtility::_GP('vC');
         $this->uPT = GeneralUtility::_GP('uPT');
         // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
@@ -204,8 +196,8 @@ class SimpleDataHandlerController
         // Checking referer / executing
         $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        if ($httpHost != $refInfo['host'] && $this->vC != $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-            $this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, [$refInfo['host'], $httpHost]);
+        if ($httpHost != $refInfo['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            $this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match!', 1, [$refInfo['host'], $httpHost]);
         } else {
             // Register uploaded files
             $this->tce->process_uploads($_FILES);

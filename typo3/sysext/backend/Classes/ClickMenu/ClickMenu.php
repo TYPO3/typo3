@@ -809,7 +809,7 @@ class ClickMenu
             . '+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+'
             . $this->frameLocation($loc . '.document') . '.search)+'
             . GeneralUtility::quoteJSvalue(
-                '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode()
+                '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1'
             )
             . ';';
 
@@ -925,7 +925,7 @@ class ClickMenu
             GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
             $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
             GeneralUtility::quoteJSvalue(
-                '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $this->backendUser->veriCode()
+                '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1'
             ) . ';};';
         if ($table === 'pages') {
             $editOnClick .= 'top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);';
@@ -1143,7 +1143,7 @@ class ClickMenu
             . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document'))
             . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
             GeneralUtility::quoteJSvalue(
-                '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode()
+                '&file[delete][0][data]=' . rawurlencode($path)
             );
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($path);
@@ -1296,8 +1296,7 @@ class ClickMenu
             GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
             $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
             GeneralUtility::quoteJSvalue(
-                '&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' .
-                $this->backendUser->veriCode()
+                '&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1'
             ) . ';};';
         return $this->linkItem(
             $this->label($action . 'Page_' . $into),
@@ -1322,8 +1321,7 @@ class ClickMenu
             GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=') . '+top.rawurlencode(' .
             $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
             GeneralUtility::quoteJSvalue(
-                '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' .
-                $this->backendUser->veriCode()
+                '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1'
             ) . ';};';
         return $this->linkItem(
             $this->label($action . 'Folder_into'),
