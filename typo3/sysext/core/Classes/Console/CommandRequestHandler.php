@@ -41,11 +41,6 @@ class CommandRequestHandler implements RequestHandlerInterface
     protected $application;
 
     /**
-     * @var []
-     */
-    protected $availableCommands;
-
-    /**
      * Constructor handing over the bootstrap
      *
      * @param Bootstrap $bootstrap
@@ -131,40 +126,29 @@ class CommandRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * put all available commands inside the application
+     * Put all available commands inside the application
      */
     protected function populateAvailableCommands()
     {
-        $this->availableCommands = $this->getAvailableCommands();
-        foreach ($this->availableCommands as $name => $data) {
-            /** @var Command $cmd */
-            $cmd = GeneralUtility::makeInstance($data['class'], $name);
-            $this->application->add($cmd);
-            $this->availableCommands[$name]['command'] = $cmd;
-        }
-    }
-
-    /**
-     * Fetches all commands registered via Commands.php of all active packages
-     *
-     * @return array
-     */
-    protected function getAvailableCommands()
-    {
         /** @var PackageManager $packageManager */
         $packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
-        $availableCommands = [];
 
         foreach ($packageManager->getActivePackages() as $package) {
             $commandsOfExtension = $package->getPackagePath() . 'Configuration/Commands.php';
             if (@is_file($commandsOfExtension)) {
                 $commands = require_once $commandsOfExtension;
                 if (is_array($commands)) {
-                    $availableCommands = array_merge($availableCommands, $commands);
+                    foreach ($commands as $commandName => $commandDescription) {
+                        /** @var Command $cmd */
+                        $cmd = GeneralUtility::makeInstance($commandDescription['class'], $commandName);
+                        // Check if the command name is already in use
+                        if ($this->application->has($commandName)) {
+                            throw new CommandNameAlreadyInUseException('Command "' . $commandName . '" registered by "' . $package->getPackageKey() . '" is already in use', 1484486383);
+                        }
+                        $this->application->add($cmd);
+                    }
                 }
             }
         }
-
-        return $availableCommands;
     }
 }
