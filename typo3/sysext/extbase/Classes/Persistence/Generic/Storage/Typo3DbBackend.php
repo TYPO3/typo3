@@ -416,9 +416,13 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
 
         $queryBuilder = $this->objectManager->get(Typo3DbQueryParser::class)
-                ->convertQueryToDoctrineQueryBuilder($query);
+            ->convertQueryToDoctrineQueryBuilder($query);
+
         try {
-            $count = $queryBuilder->count('*')->execute()->fetchColumn(0);
+            $count = $queryBuilder->resetQueryPart('orderBy')
+                ->count('*')
+                ->execute()
+                ->fetchColumn(0);
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379);
         }
