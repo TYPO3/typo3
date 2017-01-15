@@ -165,7 +165,7 @@ class LinkAnalyzer
                     ),
                     $queryBuilder->expr()->in(
                         'link_type',
-                        $queryBuilder->createNamedParameter($checkKeys, Connection::PARAM_INT_ARRAY)
+                        $queryBuilder->createNamedParameter($checkKeys, Connection::PARAM_STR_ARRAY)
                     )
                 )
                 ->execute();
