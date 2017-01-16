@@ -614,8 +614,8 @@ class ClickMenu
         ];
 
         if ($rec['perms_userid'] == $this->backendUser->user['uid'] || $this->backendUser->isAdmin()) {
-            $parameters['return_id'] = $uid;
-            $parameters['edit'] = '1';
+            $parameters['returnId'] = $uid;
+            $parameters['tx_beuser_system_beusertxpermission'] = ['action' => 'edit'];
         }
 
         $url = BackendUtility::getModuleUrl('system_BeuserTxPermission', $parameters);

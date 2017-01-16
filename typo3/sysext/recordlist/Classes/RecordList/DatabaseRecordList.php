@@ -1495,7 +1495,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
             // "Edit Perms" link:
             if ($table === 'pages' && $this->getBackendUserAuthentication()->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
-                $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1';
+                $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&returnId=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit';
                 $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
                     . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
                     . $this->iconFactory->getIcon('status-status-locked', Icon::SIZE_SMALL)->render() . '</a>';
