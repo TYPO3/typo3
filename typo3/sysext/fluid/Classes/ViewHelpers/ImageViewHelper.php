@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
 
@@ -94,50 +95,59 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
         $this->registerTagAttribute('ismap', 'string', 'Specifies an image as a server-side image-map. Rarely used. Look at usemap instead', false);
         $this->registerTagAttribute('longdesc', 'string', 'Specifies the URL to a document that contains a long description of an image', false);
         $this->registerTagAttribute('usemap', 'string', 'Specifies an image as a client-side image-map', false);
+
+        $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead');
+        $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record');
+        $this->registerArgument('image', 'object', 'a FAL object');
+        $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
+        $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
+
+        $this->registerArgument('width', 'string', 'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
+        $this->registerArgument('height', 'string', 'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
+        $this->registerArgument('minWidth', 'int', 'minimum width of the image');
+        $this->registerArgument('minHeight', 'int', 'minimum width of the image');
+        $this->registerArgument('maxWidth', 'int', 'minimum width of the image');
+        $this->registerArgument('maxHeight', 'int', 'minimum width of the image');
+        $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
     }
 
     /**
      * Resizes a given image (if required) and renders the respective img tag
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
-     * @param string $src a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead
-     * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-     * @param string $height height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-     * @param int $minWidth minimum width of the image
-     * @param int $minHeight minimum height of the image
-     * @param int $maxWidth maximum width of the image
-     * @param int $maxHeight maximum height of the image
-     * @param bool $treatIdAsReference given src argument is a sys_file_reference record
-     * @param object $image a FAL object
-     * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
-     * @param bool $absolute Force absolute URL
      *
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return string Rendered tag
      */
-    public function render($src = null, $width = null, $height = null, $minWidth = null, $minHeight = null, $maxWidth = null, $maxHeight = null, $treatIdAsReference = false, $image = null, $crop = null, $absolute = false)
+    public function render()
     {
-        if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
+        if ((is_null($this->arguments['src']) && is_null($this->arguments['image'])) || (!is_null($this->arguments['src']) && !is_null($this->arguments['image']))) {
             throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
         }
 
         try {
-            $image = $this->imageService->getImage($src, $image, $treatIdAsReference);
-            if ($crop === null) {
-                $crop = $image instanceof FileReference ? $image->getProperty('crop') : null;
+            $image = $this->imageService->getImage($this->arguments['src'], $this->arguments['image'], $this->arguments['treatIdAsReference']);
+            $cropString = $this->arguments['crop'];
+            if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+                $cropString = $image->getProperty('crop');
             }
+            $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+            $cropVariant = $this->arguments['cropVariant'] ?: 'default';
             $processingInstructions = [
-                'width' => $width,
-                'height' => $height,
-                'minWidth' => $minWidth,
-                'minHeight' => $minHeight,
-                'maxWidth' => $maxWidth,
-                'maxHeight' => $maxHeight,
-                'crop' => $crop,
+                'width' => $this->arguments['width'],
+                'height' => $this->arguments['height'],
+                'minWidth' => $this->arguments['minWidth'],
+                'minHeight' => $this->arguments['minHeight'],
+                'maxWidth' => $this->arguments['maxWidth'],
+                'maxHeight' => $this->arguments['maxHeight'],
+                'crop' => $cropVariantCollection->getCropArea($cropVariant)->makeAbsoluteBasedOnFile($image),
             ];
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-            $imageUri = $this->imageService->getImageUri($processedImage, $absolute);
+            $imageUri = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
 
+            if (!$cropVariantCollection->getFocusArea($cropVariant)->isEmpty()) {
+                $this->tag->addAttribute('data-focus-area', $cropVariantCollection->getFocusArea($cropVariant)->makeAbsoluteBasedOnFile($image));
+            }
             $this->tag->addAttribute('src', $imageUri);
             $this->tag->addAttribute('width', $processedImage->getProperty('width'));
             $this->tag->addAttribute('height', $processedImage->getProperty('height'));

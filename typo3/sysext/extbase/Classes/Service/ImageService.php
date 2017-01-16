@@ -55,7 +55,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Create a processed file
      *
-     * @param File|FileReference $image
+     * @param FileInterface|FileReference $image
      * @param array $processingInstructions
      * @return ProcessedFile
      * @api
@@ -116,7 +116,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $src
      * @param mixed $image
      * @param bool $treatIdAsReference
-     * @return FileInterface
+     * @return FileInterface|FileReference
      * @throws \UnexpectedValueException
      * @internal
      */

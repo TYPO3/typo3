@@ -306,23 +306,11 @@
 			<trans-unit id="imwizard.ratio.free">
 				<source>Free</source>
 			</trans-unit>
-			<trans-unit id="imwizard.zoom">
-				<source>Zoom</source>
-			</trans-unit>
-			<trans-unit id="imwizard.zoom-in">
-				<source>Zoom in</source>
-			</trans-unit>
-			<trans-unit id="imwizard.zoom-out">
-				<source>Zoom out</source>
+			<trans-unit id="imwizard.crop_variant.default">
+				<source>Default</source>
 			</trans-unit>
 			<trans-unit id="imwizard.selection">
 				<source>Selected Size</source>
-			</trans-unit>
-			<trans-unit id="imwizard.crop-x">
-				<source>x:</source>
-			</trans-unit>
-			<trans-unit id="imwizard.crop-y">
-				<source>y:</source>
 			</trans-unit>
 			<trans-unit id="imwizard.crop-width">
 				<source>width:</source>

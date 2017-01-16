@@ -1,0 +1,158 @@
+<?php
+declare(strict_types=1);
+namespace TYPO3\CMS\Core\Imaging\ImageManipulation;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Core\Resource\FileInterface;
+
+class Area
+{
+    /**
+     * @var float
+     */
+    protected $x;
+
+    /**
+     * @var float
+     */
+    protected $y;
+
+    /**
+     * @var float
+     */
+    protected $width;
+
+    /**
+     * @var float
+     */
+    protected $height;
+
+    /**
+     * @param float $x
+     * @param float $y
+     * @param float $width
+     * @param float $height
+     */
+    public function __construct(float $x, float $y, float $width, float $height)
+    {
+        $this->x = $x;
+        $this->y = $y;
+        $this->width = $width;
+        $this->height = $height;
+    }
+
+    /**
+     * @param array $config
+     * @return Area
+     * @throws InvalidConfigurationException
+     */
+    public static function createFromConfiguration(array $config): Area
+    {
+        try {
+            return new self(
+                $config['x'],
+                $config['y'],
+                $config['width'],
+                $config['height']
+            );
+        } catch (\Throwable $throwable) {
+            throw new InvalidConfigurationException(sprintf('Invalid type for area property given: %s', $throwable->getMessage()), 1485279226, $throwable);
+        }
+    }
+
+    /**
+     * @param array $config
+     * @return Area[]
+     * @throws InvalidConfigurationException
+     */
+    public static function createMultipleFromConfiguration(array $config): array
+    {
+        $areas = [];
+        foreach ($config as $areaConfig) {
+            $areas[] = self::createFromConfiguration($areaConfig);
+        }
+        return $areas;
+    }
+
+    /**
+     * @return Area
+     */
+    public static function createEmpty()
+    {
+        return new self(0.0, 0.0, 1.0, 1.0);
+    }
+
+    /**
+     * @return array
+     * @internal
+     */
+    public function asArray(): array
+    {
+        return [
+            'x' => $this->x,
+            'y' => $this->y,
+            'width' => $this->width,
+            'height' => $this->height,
+        ];
+    }
+
+    /**
+     * @param FileInterface $file
+     * @return Area
+     */
+    public function makeAbsoluteBasedOnFile(FileInterface $file)
+    {
+        return new self(
+            $this->x * $file->getProperty('width'),
+            $this->y * $file->getProperty('height'),
+            $this->width * $file->getProperty('width'),
+            $this->height * $file->getProperty('height')
+        );
+    }
+
+    /**
+     * @param FileInterface $file
+     * @return Area
+     */
+    public function makeRelativeBasedOnFile(FileInterface $file)
+    {
+        return new self(
+            $this->x / $file->getProperty('width'),
+            $this->y / $file->getProperty('height'),
+            $this->width / $file->getProperty('width'),
+            $this->height / $file->getProperty('height')
+        );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->x === 0.0 && $this->y === 0.0 && $this->width === 1.0 && $this->height === 1.0;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if ($this->isEmpty()) {
+            return '';
+        } else {
+            return json_encode($this->asArray());
+        }
+    }
+}

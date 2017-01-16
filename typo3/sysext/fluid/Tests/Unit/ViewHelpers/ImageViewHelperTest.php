@@ -14,60 +14,25 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
-use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
-/**
- * Test case
- */
-class ImageViewHelperTest extends UnitTestCase
+class ImageViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @test
+     * @var ImageViewHelper
      */
-    public function registersExpectedArgumentsInInitializeArgumentsMethod()
+    protected $viewHelper;
+
+    protected function setUp()
     {
-        $mock = $this->getMockBuilder(ImageViewHelper::class)
-            ->setMethods(['registerUniversalTagAttributes', 'registerTagAttribute'])
-            ->getMock();
-        $mock->expects($this->at(0))->method('registerUniversalTagAttributes');
-        $mock->expects($this->at(1))->method('registerTagAttribute')->with('alt', 'string', $this->anything(), false);
-        $mock->expects($this->at(2))->method('registerTagAttribute')->with('ismap', 'string', $this->anything(), false);
-        $mock->expects($this->at(3))->method('registerTagAttribute')->with('longdesc', 'string', $this->anything(), false);
-        $mock->expects($this->at(4))->method('registerTagAttribute')->with('usemap', 'string', $this->anything(), false);
-        $mock->initializeArguments();
-    }
-
-    /**
-     * @test
-     * @dataProvider getInvalidArguments
-     * @param array $arguments
-     */
-    public function renderMethodThrowsExceptionOnInvalidArguments(array $arguments)
-    {
-        $mock = $this->getMockBuilder(ImageViewHelper::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-        $mock->setArguments($arguments);
-
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
-        $this->expectExceptionCode(1382284106);
-
-        $mock->render(
-            isset($arguments['src']) ? $arguments['src'] : null,
-            isset($arguments['width']) ? $arguments['width'] : null,
-            isset($arguments['height']) ? $arguments['height'] : null,
-            isset($arguments['minWidth']) ? $arguments['minWidth'] : null,
-            isset($arguments['minHeight']) ? $arguments['minHeight'] : null,
-            isset($arguments['maxWidth']) ? $arguments['maxWidth'] : null,
-            isset($arguments['maxHeight']) ? $arguments['maxHeight'] : null,
-            isset($arguments['treatIdAsReference']) ? $arguments['treatIdAsReference'] : null,
-            isset($arguments['image']) ? $arguments['image'] : null,
-            isset($arguments['crop']) ? $arguments['crop'] : null
-        );
+        parent::setUp();
+        $this->viewHelper = new ImageViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -84,53 +49,17 @@ class ImageViewHelperTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider getRenderMethodTestValues
+     * @dataProvider getInvalidArguments
      * @param array $arguments
-     * @param array $expected
      */
-    public function renderMethodCreatesExpectedTag(array $arguments, array $expected)
+    public function renderMethodThrowsExceptionOnInvalidArguments(array $arguments)
     {
-        $image = $this->getMockBuilder(FileReference::class)
-            ->setMethods(['getProperty'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $image->expects($this->any())->method('getProperty')->willReturnMap([
-            ['width', $arguments['width']],
-            ['height', $arguments['height']],
-            ['alternative', 'alternative'],
-            ['title', 'title'],
-            ['crop', 'crop']
-        ]);
-        $imageService = $this->getMockBuilder(ImageService::class)
-            ->setMethods(['getImage', 'applyProcessingInstructions', 'getImageUri'])
-            ->getMock();
-        $imageService->expects($this->once())->method('getImage')->willReturn($image);
-        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($image);
-        $imageService->expects($this->once())->method('getImageUri')->with($image)->willReturn('test.png');
-        $tagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(['addAttribute', 'render'])
-            ->getMock();
-        $index = -1;
-        foreach ($expected as $expectedAttribute => $expectedValue) {
-            $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
-        }
-        $tagBuilder->expects($this->once())->method('render');
-        $mock = $this->getAccessibleMock(ImageViewHelper::class, ['dummy'], [], '', false);
-        $mock->_set('imageService', $imageService);
-        $mock->_set('tag', $tagBuilder);
-        $mock->setArguments($arguments);
-        $mock->render(
-            isset($arguments['src']) ? $arguments['src'] : null,
-            isset($arguments['width']) ? $arguments['width'] : null,
-            isset($arguments['height']) ? $arguments['height'] : null,
-            isset($arguments['minWidth']) ? $arguments['minWidth'] : null,
-            isset($arguments['minHeight']) ? $arguments['minHeight'] : null,
-            isset($arguments['maxWidth']) ? $arguments['maxWidth'] : null,
-            isset($arguments['maxHeight']) ? $arguments['maxHeight'] : null,
-            isset($arguments['treatIdAsReference']) ? $arguments['treatIdAsReference'] : null,
-            isset($arguments['image']) ? $arguments['image'] : null,
-            isset($arguments['crop']) ? $arguments['crop'] : null
-        );
+        $this->setArgumentsUnderTest($this->viewHelper, $arguments);
+
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectExceptionCode(1382284106);
+
+        $this->viewHelper->render();
     }
 
     /**
@@ -178,5 +107,54 @@ class ImageViewHelperTest extends UnitTestCase
                 ]
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getRenderMethodTestValues
+     * @param array $arguments
+     * @param array $expected
+     */
+    public function renderMethodCreatesExpectedTag(array $arguments, array $expected)
+    {
+        $this->setArgumentsUnderTest($this->viewHelper, $arguments);
+
+        $image = $this->getMockBuilder(FileReference::class)
+            ->setMethods(['getProperty'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $image->expects($this->any())->method('getProperty')->willReturnMap([
+            ['width', $arguments['width']],
+            ['height', $arguments['height']],
+            ['alternative', 'alternative'],
+            ['title', 'title'],
+            ['crop', 'crop']
+        ]);
+        $originalFile = $this->getMockBuilder(File::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $originalFile->expects($this->any())->method('getProperties')->willReturn([]);
+        $this->inject($image, 'originalFile', $originalFile);
+        $this->inject($image, 'propertiesOfFileReference', []);
+        $imageService = $this->getMockBuilder(ImageService::class)
+            ->setMethods(['getImage', 'applyProcessingInstructions', 'getImageUri'])
+            ->getMock();
+        $imageService->expects($this->once())->method('getImage')->willReturn($image);
+        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($image);
+        $imageService->expects($this->once())->method('getImageUri')->with($image)->willReturn('test.png');
+
+        $this->inject($this->viewHelper, 'imageService', $imageService);
+
+        $tagBuilder = $this->getMockBuilder(TagBuilder::class)
+            ->setMethods(['addAttribute', 'render'])
+            ->getMock();
+        $index = -1;
+        foreach ($expected as $expectedAttribute => $expectedValue) {
+            $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
+        }
+        $tagBuilder->expects($this->once())->method('render');
+        $this->inject($this->viewHelper, 'tag', $tagBuilder);
+
+        $this->viewHelper->render();
     }
 }

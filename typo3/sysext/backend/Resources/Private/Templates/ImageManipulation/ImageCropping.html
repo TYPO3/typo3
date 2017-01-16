@@ -1,0 +1,183 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
+
+	<f:section name="Element">
+		<div class="media">
+			<f:if condition="{isAllowedFileExtension}">
+				<f:then>
+					<div class="media-left">
+						<f:for each="{config.cropVariants}" as="cropVariant">
+							<div class="t3js-image-manipulation-preview media-object" data-preview-width="150" data-preview-height="200" data-crop-variant-id="{cropVariant.id}">
+								<f:image image="{image}" crop="{formEngine.field.value}" cropVariant="{cropVariant.id}" maxWidth="150" maxHeight="200" class="thumbnail thumbnail-status" additionalAttributes="{data-crop-variant: '{cropVariant -> f:format.json()}', data-crop-variant-id: cropVariant.id}" />
+							</div>
+						</f:for>
+					</div>
+					<div class="media-body">
+						<input type="hidden" id="{formEngine.field.id}" name="{formEngine.field.name}" value="{formEngine.field.value}" data-formengine-validation-rules="{formEngine.validation}" />
+						<button class="btn btn-default t3js-image-manipulation-trigger"
+										data-url="{wizardUri}"
+										data-preview-url="{previewUrl}"
+										data-severity="notice"
+										data-modal-title="{f:render(section: 'ModalTitle', arguments: _all)}"
+										data-image-uid="{image.uid}"
+										data-crop-variants="{config.cropVariants -> f:format.json()}"
+										data-file-field="{config.file_field}"
+										data-field="{formEngine.field.id}">
+							<span class="t3-icon fa fa-crop"></span><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.open-editor" />
+						</button>
+						<f:if condition="{crop}" >
+							<div class="table-fit-block table-spacer-wrap">
+								<table class="table table-no-borders t3js-image-manipulation-info">
+									<tr>
+										<td><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-width" /></td>
+										<td class="t3js-image-manipulation-info-crop-width">{crop.width}px</td>
+									</tr>
+									<tr>
+										<td><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-height" /></td>
+										<td class="t3js-image-manipulation-info-crop-height">{crop.height}px</td>
+									</tr>
+								</table>
+							</div>
+						</f:if>
+					</div>
+				</f:then>
+				<f:else>
+					<div class="media-body">
+					<p><em>
+						<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message" />
+						<br/>
+						{config.allowedExtensions -> f:format.case(mode: 'upper')}
+					</em></p>
+					</div>
+				</f:else>
+			</f:if>
+		</div>
+	</f:section>
+	<f:section name="Cropper">
+		<f:if condition="{image.properties.width}">
+			<f:then>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title">
+						{f:render(section: 'ModalTitle', arguments: _all)}
+					</h4>
+				</div>
+				<div class="cropper modal-panel">
+					<div class="modal-panel-body">
+						<div class="cropper-image-container">
+							<img id="t3js-crop-image" class="cropper-image-container-image"
+									 src="{f:uri.image(image:image, maxWidth:'1000', maxHeight: '700')}"
+									 data-original-width="{image.properties.width}" data-original-height="{image.properties.height}"/>
+						</div>
+					</div>
+					<div class="modal-panel-sidebar modal-panel-sidebar-right">
+						<div class="modal-body">
+							<div class="panel-group" id="accordion-cropper-variants" role="tablist" aria-multiselectable="true">
+								<f:for each="{cropVariants}" as="cropVariant" iteration="cropVariantIterator">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="cropper-accordion-heading-{cropVariantIterator.cycle}">
+											<h4 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion-cropper-variants"
+													 href="#cropper-collapse-{cropVariantIterator.cycle}"
+													 aria-expanded="{f:if(condition:cropVariantIterator.isFirst, then:'true', else:'false')}"
+													 aria-controls="cropper-collapse-{cropVariantIterator.cycle}"
+													 class="t3js-crop-variant-trigger {f:if(condition:cropVariantIterator.isFirst, then:'is-active', else:'collapsed')}"
+													 data-crop-variant-id="{cropVariant.id}"
+													 data-crop-variant>
+												<span><i class="fa fa-chevron-{f:if(condition:cropVariantIterator.isFirst, then:'up', else:'down')}"
+																 aria-hidden="true"></i> {cropVariant.title -> f:translate(id: cropVariant.title)}</span>
+													<div
+														class="cropper-preview-thumbnail {f:if(condition:'{image.properties.width}>{image.properties.height}', then:'wide', else: 'tall')}">
+														<img class="cropper-preview-thumbnail-image"
+																 src="{f:uri.image(image:image, maxWidth:'300', maxHeight: '300')}">
+														<div class="cropper-preview-thumbnail-crop-area t3js-cropper-preview-thumbnail-crop-area">
+															<img src="{f:uri.image(image:image, maxWidth:'300', maxHeight: '300')}"
+																	 class="cropper-preview-thumbnail-crop-image t3js-cropper-preview-thumbnail-crop-image">
+															<div class="cropper-preview-thumbnail-focus-area t3js-cropper-preview-thumbnail-focus-area"></div>
+														</div>
+													</div>
+												</a>
+											</h4>
+										</div>
+										<div id="cropper-collapse-{cropVariantIterator.cycle}"
+												 class="panel-collapse collapse {f:if(condition:cropVariantIterator.isFirst, then:'in')}"
+												 role="tabpanel"
+												 aria-labelledby="cropper-accordion-heading-{cropVariantIterator.cycle}">
+											<div class="panel-body">
+												<form class="form">
+													<div class="form-group">
+														<f:if condition="{cropVariant.allowedAspectRatios}">
+															<label for="ratio-{cropVariantIterator.cycle}">
+																<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>
+															</label>
+															<div id="ratio-{cropVariantIterator.cycle}" class="ratio-buttons t3js-ratio-buttons"
+																	 data-toggle="buttons">
+																<f:for each="{cropVariant.allowedAspectRatios}" as="ratio" iteration="ratioIterator">
+																	<label class="btn btn-secondary" data-method="setAspectRatio" data-option="{ratio.id}" title="{f:translate(id:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}">
+																		<input
+																			class="sr-only" id="aspectRatio-{cropVariantIterator.cycle}-{ratioIterator.cycle}"
+																			name="aspectRatio-{cropVariantIterator.cycle}-{ratioIterator.cycle}" value="{cropVariant.id}"
+																			type="radio">
+																		<span>{ratio.title -> f:translate(id: ratio.title)}</span> <i class="fa fa-check"></i></label>
+																</f:for>
+															</div>
+														</f:if>
+														<label><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.selection" /></label>
+														<div class="table-fit-block">
+															<table class="table table-no-borders table-transparent">
+																<tr>
+																	<td class="t3js-cropper-info-crop"></td>
+																</tr>
+															</table>
+														</div>
+														<button class="btn btn-secondary" data-method="reset" data-crop-variant="{cropVariant -> f:format.json()}"
+																		title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}">
+															<i class="fa fa-refresh"></i>
+															{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}
+														</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</f:for>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default pull-left" data-method="preview" title="Preview"><i
+						class="fa fa-eye"></i>
+						Preview
+					</button>
+					<button class="btn btn-default" data-method="dismiss"
+									title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.cancel')}">
+						<i class="fa fa-remove"></i>
+						{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.cancel')}
+					</button>
+					<button class="btn btn-primary" data-method="save"
+									title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.accept')}">
+						<i class="fa fa-check"></i>
+						{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.accept')}
+					</button>
+				</div>
+			</f:then>
+			<f:else>
+				<div class="alert alert-danger">
+					<h4 class="alert-title">
+						<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.no-image-found"/>
+					</h4>
+					<p class="alert-message">
+						<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.no-image-found-message"/>
+					</p>
+				</div>
+			</f:else>
+		</f:if>
+	</f:section>
+	<f:section name="ModalTitle">
+		{f:translate(id: 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.image-manipulation')}
+		: {f:if(condition:image.properties.title, then:image.properties.title, else:image.name)}
+		({image.properties.width} × {image.properties.height})
+	</f:section>
+</html>

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Wizard;
 
 /*
@@ -28,9 +29,21 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class ImageManipulationWizard
 {
     /**
-     * @var string
+     * @var StandaloneView
      */
-    protected $templatePath = 'EXT:backend/Resources/Private/Templates/';
+    private $templateView;
+
+    /**
+     * @param StandaloneView $templateView
+     */
+    public function __construct(StandaloneView $templateView = null)
+    {
+        if (!$templateView) {
+            $templateView = GeneralUtility::makeInstance(StandaloneView::class);
+            $templateView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ImageManipulation/ImageCropping.html'));
+        }
+        $this->templateView = $templateView;
+    }
 
     /**
      * Returns the HTML for the wizard inside the modal
@@ -41,9 +54,9 @@ class ImageManipulationWizard
      */
     public function getWizardAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        if ($this->isValidToken($request)) {
-            $queryParams = $request->getQueryParams();
-            $fileUid = isset($request->getParsedBody()['file']) ? $request->getParsedBody()['file'] : $queryParams['file'];
+        if ($this->isSignatureValid($request)) {
+            $queryParams = json_decode($request->getQueryParams()['arguments'], true);
+            $fileUid = $queryParams['image'];
             $image = null;
             if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
                 try {
@@ -51,14 +64,13 @@ class ImageManipulationWizard
                 } catch (FileDoesNotExistException $e) {
                 }
             }
-
-            $view = $this->getFluidTemplateObject($this->templatePath . 'Wizards/ImageManipulationWizard.html');
-            $view->assign('image', $image);
-            $view->assign('zoom', (bool)$queryParams['zoom']);
-            $view->assign('ratios', $this->getAvailableRatios($request));
-            $content = $view->render();
-
+            $viewData = [
+                'image' => $image,
+                'cropVariants' => $queryParams['cropVariants']
+            ];
+            $content = $this->templateView->renderSection('Cropper', $viewData);
             $response->getBody()->write($content);
+
             return $response;
         } else {
             return $response->withStatus(403);
@@ -66,52 +78,14 @@ class ImageManipulationWizard
     }
 
     /**
-     * Check if hmac token is correct
+     * Check if hmac signature is correct
      *
      * @param ServerRequestInterface $request the request with the GET parameters
      * @return bool
      */
-    protected function isValidToken(ServerRequestInterface $request)
+    protected function isSignatureValid(ServerRequestInterface $request)
     {
-        $parameters = [
-            'zoom'   => $request->getQueryParams()['zoom'] ? '1' : '0',
-            'ratios' => $request->getQueryParams()['ratios'] ?: '',
-            'file'   => $request->getQueryParams()['file'] ?: '',
-        ];
-
-        $token = GeneralUtility::hmac(implode('|', $parameters), 'ImageManipulationWizard');
-        return $token === $request->getQueryParams()['token'];
-    }
-
-    /**
-     * Get available ratios
-     *
-     * @param ServerRequestInterface $request
-     * @return array
-     */
-    protected function getAvailableRatios(ServerRequestInterface $request)
-    {
-        $ratios = json_decode($request->getQueryParams()['ratios']);
-        // Json transforms an array with string keys to an array,
-        // we need to transform this to an array for the fluid ForViewHelper
-        if (is_object($ratios)) {
-            $ratios = get_object_vars($ratios);
-        }
-        return $ratios;
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $templatePathAndFileName optional the path to set the template path and filename
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject($templatePathAndFileName = null)
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        if ($templatePathAndFileName) {
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
-        }
-        return $view;
+        $token = GeneralUtility::hmac($request->getQueryParams()['arguments'], 'ajax_wizard_image_manipulation');
+        return $token === $request->getQueryParams()['signature'];
     }
 }

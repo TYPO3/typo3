@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 /*
@@ -14,13 +15,18 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Generation of image manipulation FormEngine element.
@@ -28,6 +34,46 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class ImageManipulationElement extends AbstractFormElement
 {
+    /**
+     * Default element configuration
+     *
+     * @var array
+     */
+    protected static $defaultConfig = [
+        'file_field' => 'uid_local',
+        'allowedExtensions' => null, // default: $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+        'cropVariants' => [
+            'default' => [
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
+                'allowedAspectRatios' => [
+                    '16:9' => [
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
+                        'value' => 16 / 9
+                    ],
+                    '4:3' => [
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                        'value' => 4 / 3
+                    ],
+                    '1:1' => [
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.1_1',
+                        'value' => 1.0
+                    ],
+                    'NaN' => [
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                        'value' => 0.0
+                    ],
+                ],
+                'selectedRatio' => 'NaN',
+                'cropArea' => [
+                    'x' => 0.0,
+                    'y' => 0.0,
+                    'width' => 1.0,
+                    'height' => 1.0,
+                ],
+            ],
+        ]
+    ];
+
     /**
      * Default field wizards enabled for this element.
      *
@@ -52,163 +98,88 @@ class ImageManipulationElement extends AbstractFormElement
     ];
 
     /**
-     * Default element configuration
-     *
-     * @var array
+     * @var StandaloneView
      */
-    protected $defaultConfig = [
-        'file_field' => 'uid_local',
-        'enableZoom' => false,
-        'allowedExtensions' => null, // default: $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-        'ratios' => [
-            '1.7777777777777777' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
-            '1.3333333333333333' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
-            '1' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.1_1',
-            'NaN' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
-        ]
-    ];
+    protected $templateView;
+
+    /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
+     * @param NodeFactory $nodeFactory
+     * @param array $data
+     */
+    public function __construct(NodeFactory $nodeFactory, array $data)
+    {
+        parent::__construct($nodeFactory, $data);
+        // Would be great, if we could inject the view here, but since the constructor is in the interface, we can't
+        $this->templateView = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->templateView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ImageManipulation/ImageCropping.html'));
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    }
 
     /**
      * This will render an imageManipulation field
      *
      * @return array As defined in initializeResultArray() of AbstractNode
+     * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
     public function render()
     {
         $resultArray = $this->initializeResultArray();
-        $languageService = $this->getLanguageService();
-
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
-
-        // If ratios are set do not add default options
-        if (isset($parameterArray['fieldConf']['config']['ratios'])) {
-            unset($this->defaultConfig['ratios']);
-        }
-        $config = array_replace_recursive($this->defaultConfig, $parameterArray['fieldConf']['config']);
-
-        // By default we allow all image extensions that can be handled by the GFX functionality
-        if ($config['allowedExtensions'] === null) {
-            $config['allowedExtensions'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
-        }
+        $config = $this->populateConfiguration($parameterArray['fieldConf']['config']);
 
         if ($config['readOnly']) {
-            $html = [];
-            $html[] = '<div class="t3js-formengine-field-item">';
-            $html[] =   '<div class="form-wizards-wrap">';
-            $html[] =       '<div class="form-wizards-element">';
-            $html[] =           htmlspecialchars($parameterArray['itemFormElValue']);
-            $html[] =       '</div>';
-            $html[] =   '</div>';
-            $html[] = '</div>';
-            $resultArray['html'] = implode(LF, $html);
-            return $resultArray;
+            $options = [];
+            $options['parameterArray'] = [
+                'fieldConf' => [
+                    'config' => $parameterArray['fieldConf']['config'],
+                ],
+                'itemFormElValue' => $parameterArray['itemFormElValue'],
+            ];
+            $options['renderType'] = 'none';
+
+            // Early return in case the field is set to read only
+            return $this->nodeFactory->create($options)->render();
         }
 
-        $file = $this->getFile($row, $config['file_field']);
+        $file = $this->getFile($this->data['databaseRow'], $config['file_field']);
         if (!$file) {
+            // Early return in case we do not find a file
             return $resultArray;
         }
 
-        $content = '';
-        $preview = '';
-        if (GeneralUtility::inList(strtolower($config['allowedExtensions']), strtolower($file->getExtension()))) {
+        $config = $this->processConfiguration($config, $parameterArray['itemFormElValue'] ?? '{}');
 
-            // Get preview
-            $preview = $this->getPreview($file, $parameterArray['itemFormElValue']);
+        $arguments = [
+            'isAllowedFileExtension' => in_array(strtolower($file->getExtension()), GeneralUtility::trimExplode(',', strtolower($config['allowedExtensions'])), true),
+            'image' => $file,
+            'formEngine' => [
+                'field' => [
+                    'value' => $parameterArray['itemFormElValue'],
+                    'name' => $parameterArray['itemFormElName']
+                ],
+                'validation' => '[]'
+            ],
+            'config' => $config,
+            'wizardUri' => $this->getWizardUri($config['cropVariants'], $file),
+            'previewUrl' => $this->getPreviewUrl($this->data['databaseRow'], $file),
+        ];
 
-            // Check if ratio labels hold translation strings
-            foreach ((array)$config['ratios'] as $ratio => $label) {
-                $config['ratios'][$ratio] = htmlspecialchars($languageService->sL($label));
-            }
-
-            $formFieldId = StringUtility::getUniqueId('formengine-image-manipulation-');
-            $wizardData = [
-                'zoom' => $config['enableZoom'] ? '1' : '0',
-                'ratios' => json_encode($config['ratios']),
-                'file' => $file->getUid(),
-            ];
-            $wizardData['token'] = GeneralUtility::hmac(implode('|', $wizardData), 'ImageManipulationWizard');
-
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $buttonAttributes = [
-                'data-url' => $uriBuilder->buildUriFromRoute('ajax_wizard_image_manipulation', $wizardData),
-                'data-severity' => 'notice',
-                'data-image-name' => $file->getNameWithoutExtension(),
-                'data-image-uid' => $file->getUid(),
-                'data-file-field' => $config['file_field'],
-                'data-field' => $formFieldId,
-            ];
-
-            $button = '<button class="btn btn-default t3js-image-manipulation-trigger"';
-            $button .= GeneralUtility::implodeAttributes($buttonAttributes, true, true);
-            $button .= '><span class="t3-icon fa fa-crop"></span>';
-            $button .= htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.open-editor'));
-            $button .= '</button>';
-
-            $attributes = [];
-            $attributes['type'] = 'hidden';
-            $attributes['id'] = $formFieldId;
-            $attributes['name'] = $parameterArray['itemFormElName'];
-            $attributes['value'] = $parameterArray['itemFormElValue'];
-
-            $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-            if (in_array('required', $evalList, true)) {
-                $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(['required' => true]);
-            }
-
-            $inputField = '<input ' . GeneralUtility::implodeAttributes($attributes, true, true) . '" />';
-
-            $content .= $inputField . $button;
-
-            $content .= $this->getImageManipulationInfoTable($parameterArray['itemFormElValue']);
-
+        if ($arguments['isAllowedFileExtension']) {
             $resultArray['requireJsModules'][] = [
-                'TYPO3/CMS/Backend/ImageManipulation' => 'function(ImageManipulation){ImageManipulation.initializeTrigger()}'
+                'TYPO3/CMS/Backend/ImageManipulation' => 'function (ImageManipulation) {top.require(["cropper"], function() { ImageManipulation.initializeTrigger(); }); }'
             ];
+            $arguments['formEngine']['field']['id'] = StringUtility::getUniqueId('formengine-image-manipulation-');
+            if (GeneralUtility::inList($config['eval'], 'required')) {
+                $arguments['formEngine']['validation'] = $this->getValidationDataAsJsonString(['required' => true]);
+            }
         }
+        $resultArray['html'] = $this->templateView->renderSection('Element', $arguments);
 
-        $content .= '<p class="text-muted"><em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message')) . '<br />';
-        $content .= strtoupper(implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'])));
-        $content .= '</em></p>';
-
-        $item = '<div class="media">';
-        $item .= $preview;
-        $item .= '<div class="media-body">' . $content . '</div>';
-        $item .= '</div>';
-
-        $fieldInformationResult = $this->renderFieldInformation();
-        $fieldInformationHtml = $fieldInformationResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
-
-        $fieldControlResult = $this->renderFieldControl();
-        $fieldControlHtml = $fieldControlResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
-
-        $fieldWizardResult = $this->renderFieldWizard();
-        $fieldWizardHtml = $fieldWizardResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
-
-        $html = [];
-        $html[] = '<div class="t3js-formengine-field-item">';
-        $html[] =   $fieldInformationHtml;
-        $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
-        $html[] =           $item;
-        $html[] =       '</div>';
-        $html[] =      '<div class="form-wizards-items-aside">';
-        $html[] =          '<div class="btn-group">';
-        $html[] =              $fieldControlHtml;
-        $html[] =          '</div>';
-        $html[] =      '</div>';
-        $html[] =       '<div class="form-wizards-items-bottom">';
-        $html[] =           $fieldWizardHtml;
-        $html[] =       '</div>';
-        $html[] =   '</div>';
-        $html[] = '</div>';
-
-        $resultArray['html'] = $item;
         return $resultArray;
     }
 
@@ -217,7 +188,7 @@ class ImageManipulationElement extends AbstractFormElement
      *
      * @param array $row
      * @param string $fieldName
-     * @return NULL|\TYPO3\CMS\Core\Resource\File
+     * @return null|File
      */
     protected function getFile(array $row, $fieldName)
     {
@@ -237,79 +208,90 @@ class ImageManipulationElement extends AbstractFormElement
     }
 
     /**
-     * Get preview image if cropping is set
-     *
+     * @param array $databaseRow
      * @param File $file
-     * @param string $crop
      * @return string
      */
-    public function getPreview(File $file, $crop)
+    protected function getPreviewUrl(array $databaseRow, File $file): string
     {
-        $thumbnail = '';
-        $maxWidth = 150;
-        $maxHeight = 200;
-        if ($crop) {
-            $imageSetup = ['maxWidth' => $maxWidth, 'maxHeight' => $maxHeight, 'crop' => $crop];
-            $processedImage = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
-            // Only use a thumbnail if the processing process was successful by checking if image width is set
-            if ($processedImage->getProperty('width')) {
-                $imageUrl = $processedImage->getPublicUrl(true);
-                $thumbnail = '<img src="' . $imageUrl . '" ' .
-                    'class="thumbnail thumbnail-status" ' .
-                    'width="' . $processedImage->getProperty('width') . '" ' .
-                    'height="' . $processedImage->getProperty('height') . '" >';
+        $previewUrl = '';
+        // Hook to generate a preview URL
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl'])) {
+            $hookParameters = [
+                'databaseRow' => $databaseRow,
+                'file' => $file,
+                'previewUrl' => $previewUrl,
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl'] as $listener) {
+                $previewUrl = GeneralUtility::callUserFunction($listener, $hookParameters, $this);
             }
         }
-
-        $preview = '<div class="media-left">';
-        $preview .= '<div class="t3js-image-manipulation-preview media-object' . ($thumbnail ? '' : ' hide') . '" ';
-        // Set preview width/height needed by cropper
-        $preview .= 'data-preview-width="' . $maxWidth . '" data-preview-height="' . $maxHeight . '">';
-        $preview .= $thumbnail;
-        $preview .= '</div></div>';
-
-        return $preview;
+        return $previewUrl;
     }
 
     /**
-     * Get image manipulation info table
-     *
-     * @param string $rawImageManipulationValue
-     * @return string
+     * @param array $baseConfiguration
+     * @return array
+     * @throws InvalidConfigurationException
      */
-    protected function getImageManipulationInfoTable($rawImageManipulationValue)
+    protected function populateConfiguration(array $baseConfiguration)
     {
-        $content = '';
-        $imageManipulation = null;
-        $x = $y = $width = $height = 0;
+        $defaultConfig = self::$defaultConfig;
 
-        // Determine cropping values
-        if ($rawImageManipulationValue) {
-            $imageManipulation = json_decode($rawImageManipulationValue);
-            if (is_object($imageManipulation)) {
-                $x = (int)$imageManipulation->x;
-                $y = (int)$imageManipulation->y;
-                $width = (int)$imageManipulation->width;
-                $height = (int)$imageManipulation->height;
-            } else {
-                $imageManipulation = null;
+        // If ratios are set do not add default options
+        if (isset($baseConfiguration['cropVariants'])) {
+            unset($defaultConfig['cropVariants']);
+        }
+
+        $config = array_replace_recursive($defaultConfig, $baseConfiguration);
+
+        if (!is_array($config['cropVariants'])) {
+            throw new InvalidConfigurationException('Crop variants configuration must be an array', 1485377267);
+        }
+
+        foreach ($config['cropVariants'] as &$cropVariant) {
+            // Enforce a crop area (default is full image)
+            if (empty($cropVariant['cropArea'])) {
+                $cropVariant['cropArea'] = Area::createEmpty()->asArray();
             }
         }
-        $languageService = $this->getLanguageService();
+        unset($cropVariant);
 
-        $content .= '<div class="table-fit-block table-spacer-wrap">';
-        $content .= '<table class="table table-no-borders t3js-image-manipulation-info' . ($imageManipulation === null ? ' hide' : '') . '">';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-x')) . '</td>';
-        $content .= '<td class="t3js-image-manipulation-info-crop-x">' . $x . 'px</td></tr>';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-y')) . '</td>';
-        $content .= '<td class="t3js-image-manipulation-info-crop-y">' . $y . 'px</td></tr>';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-width')) . '</td>';
-        $content .= '<td class="t3js-image-manipulation-info-crop-width">' . $width . 'px</td></tr>';
-        $content .= '<tr><td>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-height')) . '</td>';
-        $content .= '<td class="t3js-image-manipulation-info-crop-height">' . $height . 'px</td></tr>';
-        $content .= '</table>';
-        $content .= '</div>';
+        // By default we allow all image extensions that can be handled by the GFX functionality
+        if ($config['allowedExtensions'] === null) {
+            $config['allowedExtensions'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
+        }
+        return $config;
+    }
 
-        return $content;
+    /**
+     * @param array $config
+     * @param string $elementValue
+     * @return array
+     * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
+     */
+    protected function processConfiguration(array $config, string $elementValue)
+    {
+        $cropVariantCollection = CropVariantCollection::create($elementValue, $config['cropVariants']);
+        $config['cropVariants'] = $cropVariantCollection->asArray();
+        $config['allowedExtensions'] = implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'], true));
+        return $config;
+    }
+
+    /**
+     * @param array $cropVariants
+     * @param File $image
+     * @return string
+     */
+    protected function getWizardUri(array $cropVariants, File $image): string
+    {
+        $routeName = 'ajax_wizard_image_manipulation';
+        $arguments = [
+            'cropVariants' => $cropVariants,
+            'image' => $image->getUid(),
+        ];
+        $uriArguments['arguments'] = json_encode($arguments);
+        $uriArguments['signature'] = GeneralUtility::hmac($uriArguments['arguments'], $routeName);
+        return (string)$this->uriBuilder->buildUriFromRoute($routeName, $uriArguments);
     }
 }

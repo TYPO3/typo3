@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,15 +74,17 @@ class ImageViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('src', 'string', 'src');
+        $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
         $this->registerArgument('image', 'object', 'image');
+        $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
+        $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
+
         $this->registerArgument('width', 'string', 'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('height', 'string', 'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('minWidth', 'int', 'minimum width of the image');
         $this->registerArgument('minHeight', 'int', 'minimum height of the image');
         $this->registerArgument('maxWidth', 'int', 'maximum width of the image');
         $this->registerArgument('maxHeight', 'int', 'maximum height of the image');
-        $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
-        $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
     }
 
@@ -99,10 +102,10 @@ class ImageViewHelper extends AbstractViewHelper
         $src = $arguments['src'];
         $image = $arguments['image'];
         $treatIdAsReference = $arguments['treatIdAsReference'];
-        $crop = $arguments['crop'];
+        $cropString = $arguments['crop'];
         $absolute = $arguments['absolute'];
 
-        if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
+        if ((is_null($src) && is_null($image)) || (!is_null($src) && !is_null($image))) {
             throw new Exception('You must either specify a string src or a File object.', 1460976233);
         }
 
@@ -110,10 +113,12 @@ class ImageViewHelper extends AbstractViewHelper
             $imageService = self::getImageService();
             $image = $imageService->getImage($src, $image, $treatIdAsReference);
 
-            if ($crop === null) {
-                $crop = $image instanceof FileReference ? $image->getProperty('crop') : null;
+            if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+                $cropString = $image->getProperty('crop');
             }
 
+            $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+            $cropVariant = $arguments['cropVariant'] ?: 'default';
             $processingInstructions = [
                 'width' => $arguments['width'],
                 'height' => $arguments['height'],
@@ -121,8 +126,9 @@ class ImageViewHelper extends AbstractViewHelper
                 'minHeight' => $arguments['minHeight'],
                 'maxWidth' => $arguments['maxWidth'],
                 'maxHeight' => $arguments['maxHeight'],
-                'crop' => $crop,
+                'crop' => $cropVariantCollection->getCropArea($cropVariant)->makeAbsoluteBasedOnFile($image),
             ];
+
             $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
             return $imageService->getImageUri($processedImage, $absolute);
         } catch (ResourceDoesNotExistException $e) {

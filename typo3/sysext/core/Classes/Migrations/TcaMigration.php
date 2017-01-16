@@ -82,6 +82,7 @@ class TcaMigration
         $tca = $this->migrateSuggestWizardTypeGroup($tca);
         $tca = $this->migrateOptionsOfTypeGroup($tca);
         $tca = $this->migrateSelectShowIconTable($tca);
+        $tca = $this->migrateImageManipulationConfig($tca);
         return $tca;
     }
 
@@ -2161,6 +2162,69 @@ class TcaMigration
                             $this->messages[] = 'The type=group option \'selicon_cols\' = false is obsolete'
                                 . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                 . ' and has been removed.';
+                        }
+                    }
+                }
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrate imageManipulation "ratio" config to new "cropVraiant" config
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateImageManipulationConfig(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
+                foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                    if ($fieldConfig['config']['type'] === 'imageManipulation') {
+                        if (isset($fieldConfig['config']['enableZoom'])) {
+                            unset($fieldConfig['config']['enableZoom']);
+                            $this->messages[] = sprintf(
+                                'The config option "enableZoom" has been removed from TCA type "imageManipulation" in table "%s" and field "%s"',
+                                $table,
+                                $fieldName
+                            );
+                        }
+                        if (isset($fieldConfig['config']['ratios'])) {
+                            $legacyRatios = $fieldConfig['config']['ratios'];
+                            unset($fieldConfig['config']['ratios']);
+                            if (isset($fieldConfig['config']['cropVariants'])) {
+                                $this->messages[] = sprintf(
+                                    'The config option "ratios" has been deprecated and cannot be used together with the option "cropVariants" in table "%s" and field "%s"',
+                                    $table,
+                                    $fieldName
+                                );
+                                continue;
+                            }
+                            $fieldConfig['config']['cropVariants']['default'] = [
+                                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
+                                'allowedAspectRatios' => [],
+                                'cropArea' => [
+                                    'x' => 0.0,
+                                    'y' => 0.0,
+                                    'width' => 1.0,
+                                    'height' => 1.0,
+                                ],
+                            ];
+                            foreach ($legacyRatios as $ratio => $ratioLabel) {
+                                $ratio = (float)$ratio;
+                                $ratioId = number_format($ratio, 2);
+                                $fieldConfig['config']['cropVariants']['default']['allowedAspectRatios'][$ratioId] = [
+                                    'title' => $ratioLabel,
+                                    'value' => $ratio,
+                                ];
+                            }
+                            $this->messages[] = sprintf(
+                                'Migrated config option "ratios" of type "imageManipulation" to option "cropVariants" in table "%s" and field "%s"',
+                                $table,
+                                $fieldName
+                            );
                         }
                     }
                 }
