@@ -160,7 +160,13 @@ class SystemEnvironmentBuilder
         // Absolute path of the document root of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/"
         if (!defined('PATH_site')) {
-            define('PATH_site', self::getPathSite($entryPointLevel));
+            // Check if the site path has been set by the outside (e.g. dotenv or the composer installer)
+            if (getenv('TYPO3_PATH_ROOT')) {
+                $rootPath = getenv('TYPO3_PATH_ROOT');
+                define('PATH_site', $rootPath . '/');
+            } else {
+                define('PATH_site', self::getPathSite($entryPointLevel));
+            }
         }
         // Absolute path of the typo3 directory of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3/"

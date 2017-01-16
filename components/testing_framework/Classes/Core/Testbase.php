@@ -97,7 +97,7 @@ class Testbase
         $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
         if (!file_exists(PATH_thisScript)) {
-            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.');
         }
     }
 
@@ -113,7 +113,7 @@ class Testbase
         }
 
         if (!file_exists(ORIGINAL_ROOT . 'typo3/cli_dispatch.phpsh')) {
-            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.');
         }
     }
 
@@ -681,7 +681,10 @@ class Testbase
      */
     protected function getWebRoot()
     {
-        if (getenv('TYPO3_PATH_WEB')) {
+        if (getenv('TYPO3_PATH_ROOT')) {
+            $webRoot = getenv('TYPO3_PATH_ROOT');
+        } elseif (getenv('TYPO3_PATH_WEB')) {
+            // @deprecated
             $webRoot = getenv('TYPO3_PATH_WEB');
         } else {
             $webRoot = getcwd();
