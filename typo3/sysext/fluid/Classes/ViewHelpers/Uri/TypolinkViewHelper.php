@@ -38,7 +38,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * </code>
  *
  * <code title="Full parameter usage">
- * <f:uri.typolink parameter="{link}" additionalParams="&u=b" />
+ * <f:uri.typolink parameter="{link}" additionalParams="&u=b" useCacheHash="TRUE" />
  * </code>
  * <output>
  * index.php?id=19&X=y&u=b
@@ -57,6 +57,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         parent::initializeArguments();
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
+        $this->registerArgument('useCacheHash', 'bool', '', false, false);
     }
 
     /**
@@ -70,6 +71,7 @@ class TypolinkViewHelper extends AbstractViewHelper
     {
         $parameter = $arguments['parameter'];
         $additionalParams = $arguments['additionalParams'];
+        $useCacheHash = $arguments['useCacheHash'];
 
         $content = '';
         if ($parameter) {
@@ -77,6 +79,7 @@ class TypolinkViewHelper extends AbstractViewHelper
             $content = $contentObject->typoLink_URL(
                 [
                     'parameter' => self::createTypolinkParameterFromArguments($parameter, $additionalParams),
+                    'useCacheHash' => $useCacheHash,
                 ]
             );
         }

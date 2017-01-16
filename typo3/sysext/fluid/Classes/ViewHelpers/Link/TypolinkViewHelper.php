@@ -40,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * </code>
  *
  * <code title="Full parameter usage">
- * <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="&u=b" additionalAttributes="{type:'button'}">
+ * <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="&u=b" additionalAttributes="{type:'button'}" useCacheHash="TRUE">
  * Linktext
  * </f:link.typolink>
  * </code>
@@ -74,6 +74,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('title', 'string', '', false, '');
         $this->registerArgument('additionalParams', 'string', '', false, '');
         $this->registerArgument('additionalAttributes', 'array', '', false, []);
+        $this->registerArgument('useCacheHash', 'bool', '', false, false);
     }
 
     /**
@@ -94,6 +95,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $title = $arguments['title'];
         $additionalParams = $arguments['additionalParams'];
         $additionalAttributes = $arguments['additionalAttributes'];
+        $useCacheHash = $arguments['useCacheHash'];
 
         // Merge the $parameter with other arguments
         $typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
@@ -118,6 +120,7 @@ class TypolinkViewHelper extends AbstractViewHelper
                     'typolink.' => [
                         'parameter' => $typolinkParameter,
                         'ATagParams' => $aTagParams,
+                        'useCacheHash' => $useCacheHash,
                     ]
                 ]
             );
