@@ -711,7 +711,7 @@ class DataHandlerHook
             $record = BackendUtility::getRecord($table, $id);
             $stat = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
             // check if the usere is allowed to the current stage, so it's also allowed to send to next stage
-            if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
+            if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
                 // Set stage of record:
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable($table)

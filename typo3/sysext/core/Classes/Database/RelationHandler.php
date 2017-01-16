@@ -437,7 +437,7 @@ class RelationHandler
             // Skip if not dealing with IRRE in a CSV list on a workspace
             if ($configuration['type'] !== 'inline' || empty($configuration['foreign_table']) || !empty($configuration['foreign_field'])
                 || !empty($configuration['MM']) || count($this->tableArray) !== 1 || empty($this->tableArray[$configuration['foreign_table']])
-                || (int)$GLOBALS['BE_USER']->workspace === 0 || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])) {
+                || $this->getWorkspaceId() === 0 || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])) {
                 return;
             }
 
@@ -1066,7 +1066,7 @@ class RelationHandler
             if (!(MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
                 $updateToUid = 0;
             }
-            $considerWorkspaces = ($GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($foreign_table));
+            $considerWorkspaces = BackendUtility::isTableWorkspaceEnabled($foreign_table);
             $fields = 'uid,pid,' . $foreign_field;
             // Consider the symmetric field if defined:
             if ($symmetric_field) {

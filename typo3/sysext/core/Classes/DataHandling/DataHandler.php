@@ -8917,13 +8917,13 @@ class DataHandler
     }
 
     /**
-     * function to make the static call to GeneralUtility mockable
-     *
      * @return RelationHandler
      */
     protected function createRelationHandlerInstance()
     {
-        return GeneralUtility::makeInstance(RelationHandler::class);
+        $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+        $relationHandler->setWorkspaceId($this->BE_USER->workspace);
+        return $relationHandler;
     }
 
     /**
