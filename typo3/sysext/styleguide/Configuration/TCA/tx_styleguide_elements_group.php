@@ -102,6 +102,14 @@ return [
                     'editPopup' => [
                         'renderType' => 'editPopup',
                     ],
+                    'addRecord' => [
+                        'renderType' => 'addRecord',
+                        'options' => [
+                            'table' => 'be_users',
+                            'pid' => 0,
+                            'setValue' => 'prepend',
+                        ],
+                    ],
                 ],
             ],
         ],
