@@ -76,7 +76,7 @@ return [
                 'wizards' => [
                     'edit' => [
                         'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tsfe:p_editRecord',
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.edit',
                         'module' => array(
                            'name' => 'wizard_edit',
                         ),
@@ -97,6 +97,18 @@ return [
                             'name' => 'wizard_add'
                         ],
                     ],
+                    'list' => [
+                        'type' => 'script',
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.list',
+                        'icon' => 'actions-system-list-open',
+                        'params' => [
+                            'table' => 'be_groups',
+                            'pid' => '0'
+                        ],
+                        'module' => [
+                            'name' => 'wizard_list'
+                        ]
+                    ]
                 ],
                 'fieldControls' => [
                     'editPopup' => [
@@ -108,6 +120,13 @@ return [
                             'table' => 'be_users',
                             'pid' => 0,
                             'setValue' => 'prepend',
+                        ],
+                    ],
+                    'listModule' => [
+                        'renderType' => 'listModule',
+                        'options' => [
+                            'table' => 'be_users',
+                            'pid' => 0,
                         ],
                     ],
                 ],
