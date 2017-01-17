@@ -73,43 +73,6 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'wizards' => [
-                    'edit' => [
-                        'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.edit',
-                        'module' => array(
-                           'name' => 'wizard_edit',
-                        ),
-                        'popup_onlyOpenIfSelected' => 1,
-                        'icon' => 'actions-open',
-                        'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
-                     ],
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.createNewPage',
-                        'icon' => 'actions-add',
-                        'params' => [
-                            'table' => 'be_users',
-                            'pid' => 0,
-                            'setValue' => 'prepend'
-                        ],
-                        'module' => [
-                            'name' => 'wizard_add'
-                        ],
-                    ],
-                    'list' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.list',
-                        'icon' => 'actions-system-list-open',
-                        'params' => [
-                            'table' => 'be_groups',
-                            'pid' => '0'
-                        ],
-                        'module' => [
-                            'name' => 'wizard_list'
-                        ]
-                    ]
-                ],
                 'fieldControls' => [
                     'editPopup' => [
                         'renderType' => 'editPopup',

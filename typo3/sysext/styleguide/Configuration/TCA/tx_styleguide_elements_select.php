@@ -390,42 +390,15 @@ return [
                 'rootLevel' => 1,
                 'size' => 5,
                 'autoSizeMax' => 20,
-                'wizards' => [
-                    '_VERTICAL' => 1,
-                    'edit' => [
-                        'type' => 'popup',
-                        'title' => 'edit',
-                        'module' => [
-                            'name' => 'wizard_edit',
-                        ],
-                        'icon' => 'actions-open',
-                        'popup_onlyOpenIfSelected' => 1,
-                        'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+                'fieldControls' => [
+                    'editPopup' => [
+                        'renderType' => 'editPopup',
                     ],
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'add',
-                        'icon' => 'actions-add',
-                        'module' => [
-                            'name' => 'wizard_add',
-                        ],
-                        'params' => [
-                            'table' => 'tx_styleguide_staticdata',
-                            'pid' => '0',
-                            'setValue' => 'prepend',
-                        ],
+                    'addRecord' => [
+                        'renderType' => 'addRecord',
                     ],
-                    'list' => [
-                        'type' => 'script',
-                        'title' => 'list',
-                        'icon' => 'actions-system-list-open',
-                        'module' => [
-                            'name' => 'wizard_list',
-                        ],
-                        'params' => [
-                            'table' => 'tx_styleguide_staticdata',
-                            'pid' => '0',
-                        ],
+                    'listModule' => [
+                        'renderType' => 'listModule',
                     ],
                 ],
             ],
