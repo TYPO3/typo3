@@ -905,8 +905,11 @@ class Typo3DbQueryParser
         $fullPropertyPath .= ($fullPropertyPath === '') ? $propertyName : '.' . $propertyName;
         $childTableAlias = $this->getUniqueAlias($childTableName, $fullPropertyPath);
 
-        // If there is already exists a union with the current identifier we do not need to build it again and exit early.
+        // If there is already a union with the current identifier we do not need to build it again and exit early.
         if (in_array($childTableAlias, $this->unionTableAliasCache, true)) {
+            $propertyPath = $explodedPropertyPath[1];
+            $tableName = $childTableAlias;
+            $className = $this->dataMapper->getType($className, $propertyName);
             return;
         }
 

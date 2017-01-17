@@ -197,7 +197,11 @@ class CountTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTe
             )
         );
 
-        $this->assertSame(10, $query->count());
+        // QueryResult is lazy, so we have to run valid method to initialize
+        $result = $query->execute();
+        $result->valid();
+
+        $this->assertSame(10, $result->count());
     }
 
     /**
