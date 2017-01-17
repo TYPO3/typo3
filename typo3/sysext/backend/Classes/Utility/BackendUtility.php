@@ -3747,8 +3747,13 @@ class BackendUtility
      */
     public static function isRecordLocked($table, $uid)
     {
-        if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
-            $GLOBALS['LOCKED_RECORDS'] = [];
+        $runtimeCache = self::getRuntimeCache();
+        $cacheId = 'backend-recordLocked-' . md5($table . '_' . $uid);
+        $recordLockedCache = $runtimeCache->get($cacheId);
+        if ($recordLockedCache !== false) {
+            $lockedRecords = $recordLockedCache;
+        } else {
+            $lockedRecords = [];
 
             $queryBuilder = static::getQueryBuilderForTable('sys_lockedrecords');
             $result = $queryBuilder
@@ -3772,6 +3777,7 @@ class BackendUtility
                 )
                 ->execute();
 
+            $lang = static::getLanguageService();
             while ($row = $result->fetch()) {
                 // Get the type of the user that locked this record:
                 if ($row['userid']) {
@@ -3781,7 +3787,6 @@ class BackendUtility
                 } else {
                     $userTypeLabel = 'user';
                 }
-                $lang = static::getLanguageService();
                 $userType = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.' . $userTypeLabel);
                 // Get the username (if available):
                 if ($row['username']) {
@@ -3789,8 +3794,8 @@ class BackendUtility
                 } else {
                     $userName = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.unknownUser');
                 }
-                $GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']] = $row;
-                $GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
+                $lockedRecords[$row['record_table'] . ':' . $row['record_uid']] = $row;
+                $lockedRecords[$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
                     $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser'),
                     $userType,
                     $userName,
@@ -3799,8 +3804,8 @@ class BackendUtility
                         $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     )
                 );
-                if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_pid']])) {
-                    $GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf(
+                if ($row['record_pid'] && !isset($lockedRecords[$row['record_table'] . ':' . $row['record_pid']])) {
+                    $lockedRecords['pages:' . $row['record_pid']]['msg'] = sprintf(
                         $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser_content'),
                         $userType,
                         $userName,
@@ -3811,8 +3816,10 @@ class BackendUtility
                     );
                 }
             }
+            $runtimeCache->set($cacheId, $lockedRecords);
         }
-        return $GLOBALS['LOCKED_RECORDS'][$table . ':' . $uid];
+
+        return $lockedRecords[$table . ':' . $uid];
     }
 
     /**
