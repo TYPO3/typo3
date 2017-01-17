@@ -303,7 +303,7 @@ return [
         ],
         'input_29' => [
             'exclude' => 1,
-            'label' => 'input_29 wizard link',
+            'label' => 'input_29 link',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
@@ -666,11 +666,12 @@ return [
         ],
         'text_15' => [
             'exclude' => 1,
-            'label' => 'text_15 defaultExtras="fixed-font : enable-tab"',
+            'label' => 'text_15 enableTabulator, fixedFont',
             'config' => [
                 'type' => 'text',
+                'enableTabulator' => true,
+                'fixedFont' => true,
             ],
-            'defaultExtras' => 'fixed-font : enable-tab'
         ],
         'text_16' => [
             'label' => 'text_16 wizard table',
