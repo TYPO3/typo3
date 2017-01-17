@@ -76,7 +76,7 @@ return [
                 'wizards' => [
                     'edit' => [
                         'type' => 'popup',
-                        'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup_edit_title',
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tsfe:p_editRecord',
                         'module' => array(
                            'name' => 'wizard_edit',
                         ),
@@ -84,6 +84,19 @@ return [
                         'icon' => 'actions-open',
                         'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
                      ],
+                    'add' => [
+                        'type' => 'script',
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.createNewPage',
+                        'icon' => 'actions-add',
+                        'params' => [
+                            'table' => 'be_users',
+                            'pid' => 0,
+                            'setValue' => 'prepend'
+                        ],
+                        'module' => [
+                            'name' => 'wizard_add'
+                        ],
+                    ],
                 ],
                 'fieldControls' => [
                     'editPopup' => [
