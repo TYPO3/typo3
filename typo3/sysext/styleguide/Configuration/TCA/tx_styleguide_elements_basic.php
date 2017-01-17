@@ -1050,16 +1050,7 @@ return [
         ],
         'none_5' => [
             'exclude' => 1,
-            'label' => 'none_5 rows=2, fixedRows=2',
-            'config' => [
-                'type' => 'none',
-                'rows' => 2,
-                'fixedRows' => 2,
-            ],
-        ],
-        'none_6' => [
-            'exclude' => 1,
-            'label' => 'none_6 size=6',
+            'label' => 'none_5 size=6',
             'config' => [
                 'type' => 'none',
                 'size' => 6,
