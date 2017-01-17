@@ -6213,7 +6213,8 @@ class ContentObjectRenderer
                 'conf' => &$conf,
                 'linktxt' => &$linkText,
                 'finalTag' => &$finalAnchorTag,
-                'finalTagParts' => &$finalTagParts
+                'finalTagParts' => &$finalTagParts,
+                'linkDetails' => &$linkDetails
             ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
