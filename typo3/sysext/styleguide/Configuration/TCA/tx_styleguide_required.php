@@ -242,8 +242,8 @@ return [
                 'eval' => 'required',
                 'rows' => '15',
                 'cols' => '80',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
         'rte_2' => [
             'exclude' => 1,

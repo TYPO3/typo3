@@ -71,8 +71,8 @@ return [
             'label' => 'rte_1',
             'config' => [
                 'type' => 'text',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
         'rte_2' => [
             'exclude' => 1,
@@ -80,8 +80,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'default' => 'rte_2',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
         'rte_3' => [
             'exclude' => 1,
@@ -89,8 +89,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'eval' => 'null',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
 
 
@@ -127,8 +127,8 @@ return [
                                                     <label>rte_1</label>
                                                     <config>
                                                         <type>text</type>
+                                                        <enableRichtext>1</enableRichtext>
                                                     </config>
-                                                    <defaultExtras>richtext:rte_transform</defaultExtras>
                                                 </TCEforms>
                                             </rte_1>
                                         </el>
@@ -155,8 +155,8 @@ return [
                                                                     <label>rte_1</label>
                                                                     <config>
                                                                         <type>text</type>
+                                                                        <enableRichtext>1</enableRichtext>
                                                                     </config>
-                                                                    <defaultExtras>richtext:rte_transform</defaultExtras>
                                                                 </TCEforms>
                                                             </rte_1>
                                                         </el>
@@ -209,8 +209,8 @@ return [
             'label' => 'rte_palette_1',
             'config' => [
                 'type' => 'text',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
 
 

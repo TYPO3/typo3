@@ -72,8 +72,8 @@ return [
             'label' => 'rte_1',
             'config' => [
                 'type' => 'text',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
 
 

@@ -73,8 +73,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'eval' => 'required',
+                'enableRichtext' => true,
             ],
-            'defaultExtras' => 'richtext:rte_transform',
         ],
 
 
