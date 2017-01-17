@@ -17,13 +17,9 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Render rich text editor in FormEngine
@@ -48,23 +44,19 @@ class RichTextElement extends AbstractFormElement
     ];
 
     /**
-     * pid of fixed versioned record.
-     * This is the pid of the record in normal cases, but is changed to the pid
-     * of the "mother" record in case the handled record is a versioned overlay
-     * and "mother" is located at a different pid.
-     *
-     * @var int
-     */
-    protected $pidOfVersionedMotherRecord;
-
-    /**
-     * RTE configuration
-     * This property contains "processed" configuration
-     * where table and type specific RTE setup is merged into 'default.' array.
+     * This property contains configuration related to the RTE
+     * But only the .editor configuration part
      *
      * @var array
      */
     protected $rteConfiguration = [];
+
+    /**
+     * The path to EXT:rte_ckeditor/Resources/Public/ where all assets etc. are stored.
+     *
+     * @var string
+     */
+    protected $defaultResourcesPath;
 
     /**
      * Renders the ckeditor element
@@ -75,17 +67,9 @@ class RichTextElement extends AbstractFormElement
     public function render() : array
     {
         $resultArray = $this->initializeResultArray();
-
-        $row = $this->data['databaseRow'];
-        $this->pidOfVersionedMotherRecord = (int)$row['pid'];
-
-        $resourcesPath = PathUtility::getAbsoluteWebPath(
-            ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/')
-        );
-        $table = $this->data['tableName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
+        $this->defaultResourcesPath = $this->resolveUrlPath('EXT:rte_ckeditor/Resources/Public/');
 
         $fieldId = $this->sanitizeFieldId($parameterArray['itemFormElName']);
         $itemFormElementName = $this->data['parameterArray']['itemFormElName'];
@@ -139,11 +123,10 @@ class RichTextElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $html);
 
-        $this->rteConfiguration = $parameterArray['fieldConf']['config']['richtextConfiguration'];
-
+        $this->rteConfiguration = $config['richtextConfiguration']['editor'];
         $resultArray['requireJsModules'] = [];
-        $resultArray['requireJsModules'][] =[
-            'ckeditor' => $this->getCkEditorRequireJsModuleCode($resourcesPath, $fieldId)
+        $resultArray['requireJsModules'][] = [
+            'ckeditor' => $this->getCkEditorRequireJsModuleCode($fieldId)
         ];
 
         return $resultArray;
@@ -154,113 +137,55 @@ class RichTextElement extends AbstractFormElement
      *
      * @return string
      */
-    protected function getContentsLanguage()
+    protected function getLanguageIsoCodeOfContent(): string
     {
-        $language = $this->getLanguageService()->lang;
-        if ($language === 'default' || !$language) {
-            $language = 'en';
-        }
         $currentLanguageUid = $this->data['databaseRow']['sys_language_uid'];
         if (is_array($currentLanguageUid)) {
             $currentLanguageUid = $currentLanguageUid[0];
         }
         $contentLanguageUid = (int)max($currentLanguageUid, 0);
         if ($contentLanguageUid) {
-            $contentISOLanguage = $language;
-            if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
-                $tableA = 'sys_language';
-                $tableB = 'static_languages';
-
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($tableA);
-
-                $result = $queryBuilder
-                    ->select('a.uid', 'b.lg_iso_2', 'b.lg_country_iso_2')
-                    ->from($tableA, 'a')
-                    ->where('a.uid', (int)$contentLanguageUid)
-                    ->leftJoin(
-                        'a',
-                        $tableB,
-                        'b',
-                        $queryBuilder->expr()->eq('a.static_lang_isocode', $queryBuilder->quoteIdentifier('b.uid'))
-                    )
-                    ->execute();
-
-                while ($languageRow = $result->fetch()) {
-                    $contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
-                }
-            }
+            $contentLanguage = $this->data['systemLanguageRows'][$currentLanguageUid]['iso'];
         } else {
-            $contentISOLanguage = trim($this->rteConfiguration['defaultContentLanguage'] ?? '') ?: 'en';
-            $languageCodeParts = explode('_', $contentISOLanguage);
-            $contentISOLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
+            $contentLanguage = $this->rteConfiguration['config']['defaultContentLanguage'] ?? 'en_US';
+            $languageCodeParts = explode('_', $contentLanguage);
+            $contentLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
             // Find the configured language in the list of localization locales
-            /** @var $locales Locales */
             $locales = GeneralUtility::makeInstance(Locales::class);
             // If not found, default to 'en'
-            if (!in_array($contentISOLanguage, $locales->getLocales(), true)) {
-                $contentISOLanguage = 'en';
+            if (!in_array($contentLanguage, $locales->getLocales(), true)) {
+                $contentLanguage = 'en';
             }
         }
-        return $contentISOLanguage;
+        return $contentLanguage;
     }
 
     /**
      * Gets the JavaScript code for CKEditor module
+     * Compiles the configuration, and then adds plugins
      *
-     * @param string $resourcesPath
      * @param string $fieldId
      * @return string
      */
-    protected function getCkEditorRequireJsModuleCode(string $resourcesPath, string $fieldId) : string
+    protected function getCkEditorRequireJsModuleCode(string $fieldId) : string
     {
-        $customConfig = [
-            'contentsCss' => $resourcesPath . 'Css/contents.css',
-            'customConfig' => $resourcesPath . 'JavaScript/defaultconfig.js',
-            'toolbar' => 'Basic',
-            'uiColor' => '#F8F8F8',
-            'stylesSet' => 'default',
-            'extraPlugins' => '',
-            'RTEtsConfigParams' => $this->getRTEtsConfigParams(),
-            'contentsLanguage' => $this->getContentsLanguage(),
-        ];
+        $configuration = $this->prepareConfigurationForEditor();
 
         $externalPlugins = '';
-        foreach ($this->getExternalPlugins() as $pluginName => $config) {
-            $customConfig[$pluginName] = $config['config'];
-            $customConfig['extraPlugins'] .= ',' . $pluginName;
+        foreach ($this->getExtraPlugins() as $pluginName => $config) {
+            $configuration[$pluginName] = $config['config'];
+            $configuration['extraPlugins'] .= ',' . $pluginName;
 
             $externalPlugins .= 'CKEDITOR.plugins.addExternal(';
             $externalPlugins .= GeneralUtility::quoteJSvalue($pluginName) . ',';
-            $externalPlugins .= GeneralUtility::quoteJSvalue($config['path']) . ',';
+            $externalPlugins .= GeneralUtility::quoteJSvalue($config['resource']) . ',';
             $externalPlugins .= '\'\');';
         }
 
         return 'function(CKEDITOR) {
-                CKEDITOR.config.height = 400;
-                CKEDITOR.contentsCss = "' . $resourcesPath . 'Css/contents.css";
-                CKEDITOR.config.width = "auto";
                 ' . $externalPlugins . '
-                CKEDITOR.replace("' . $fieldId . '", ' . json_encode($customConfig) . ');
+                CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
         }';
-    }
-
-    /**
-     * A list of parameters that is mostly given as GET/POST to other RTE controllers.
-     *
-     * @return string
-     */
-    protected function getRTEtsConfigParams() : string
-    {
-        $result = [
-            $this->data['tableName'],
-            $this->data['databaseRow']['uid'],
-            $this->data['fieldName'],
-            $this->pidOfVersionedMotherRecord,
-            $this->data['recordTypeValue'],
-            $this->data['effectivePid'],
-        ];
-        return implode(':', $result);
     }
 
     /**
@@ -268,54 +193,110 @@ class RichTextElement extends AbstractFormElement
      *
      * @return array
      */
-    protected function getExternalPlugins() : array
+    protected function getExtraPlugins(): array
     {
-        // todo: find new name for this option (do we still need this?)
-        // Initializing additional attributes
-        $additionalAttributes = [];
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes']) {
-            $additionalAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes'], true);
-        }
-
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        // todo: add api for this https://forge.typo3.org/issues/78929
-        $pluginPath = PathUtility::getAbsoluteWebPath(
-            ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Plugins/typo3link.js')
-        );
-        $externalPlugins = [
-            'typo3link' => [
-                'path' => $pluginPath,
-                'config' => [
-                    'routeUrl' => (string)$uriBuilder->buildUriFromRoute('rteckeditor_wizard_browse_links'),
-                    'additionalAttributes' => $additionalAttributes
-                ]
-            ]
+        $urlParameters = [
+            'table'      => $this->data['tableName'],
+            'uid'        => $this->data['databaseRow']['uid'],
+            'fieldName'  => $this->data['fieldName'],
+            'recordType' => $this->data['recordTypeValue'],
+            'pid'        => $this->data['effectivePid'],
         ];
 
-        return $externalPlugins;
+        $pluginConfiguration = [];
+        if (isset($this->rteConfiguration['externalPlugins']) && is_array($this->rteConfiguration['externalPlugins'])) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            foreach ($this->rteConfiguration['externalPlugins'] as $pluginName => $configuration) {
+                $pluginConfiguration[$pluginName] = [
+                    'resource' => $this->resolveUrlPath($configuration['resource'])
+                ];
+                unset($configuration['resource']);
+
+                if ($configuration['route']) {
+                    $configuration['routeUrl'] = (string)$uriBuilder->buildUriFromRoute($configuration['route'], $urlParameters);
+                }
+
+                $pluginConfiguration[$pluginName]['config'] = $configuration;
+            }
+        }
+        return $pluginConfiguration;
     }
 
     /**
-     * @return LanguageService
+     * Add configuration to replace absolute EXT: paths with relative ones
+     * @param array $configuration
+     *
+     * @return array
      */
-    protected function getLanguageService() : LanguageService
+    protected function replaceAbsolutePathsToRelativeResourcesPath(array $configuration): array
     {
-        return $GLOBALS['LANG'];
+        foreach ($configuration as $key => $value) {
+            if (is_array($value)) {
+                $configuration[$key] = $this->replaceAbsolutePathsToRelativeResourcesPath($value);
+            } elseif (is_string($value) && substr($value, 0, 4) === 'EXT:') {
+                $configuration[$key] = $this->resolveUrlPath($value);
+            }
+        }
+        return $configuration;
     }
 
     /**
-     * @return BackendUserAuthentication
+     * Resolves an EXT: syntax file to an absolute web URL
+     *
+     * @param string $value
+     * @return string
      */
-    protected function getBackendUserAuthentication() : BackendUserAuthentication
+    protected function resolveUrlPath(string $value): string
     {
-        return $GLOBALS['BE_USER'];
+        $value = GeneralUtility::getFileAbsFileName($value);
+        return PathUtility::getAbsoluteWebPath($value);
+    }
+
+    /**
+     * Compiles the configuration set from the outside
+     * to have it easily injected into the CKEditor.
+     *
+     * @return array the configuration
+     */
+    protected function prepareConfigurationForEditor(): array
+    {
+        // Set some good defaults
+        $configuration = [
+            'contentsCss' => $this->defaultResourcesPath . 'Css/contents.css',
+            'customConfig' => '', // do not load anything
+            'toolbar' => 'Basic',
+            'uiColor' => '#F8F8F8',
+            'stylesSet' => 'default',
+            'extraPlugins' => '',
+        ];
+
+        if (is_array($this->rteConfiguration['config'])) {
+            $configuration = array_replace_recursive($configuration, $this->rteConfiguration['config']);
+        }
+        $configuration['contentsLanguage'] = $this->getLanguageIsoCodeOfContent();
+
+        // replace all paths
+        $configuration = $this->replaceAbsolutePathsToRelativeResourcesPath($configuration);
+
+        // there are some places where we define an array, but it needs to be a list in order to work
+        if (is_array($configuration['extraPlugins'])) {
+            $configuration['extraPlugins'] = implode(',', $configuration['extraPlugins']);
+        }
+        if (is_array($configuration['removePlugins'])) {
+            $configuration['removePlugins'] = implode(',', $configuration['removePlugins']);
+        }
+        if (is_array($configuration['removeButtons'])) {
+            $configuration['removeButtons'] = implode(',', $configuration['removeButtons']);
+        }
+
+        return $configuration;
     }
 
     /**
      * @param string $itemFormElementName
      * @return string
      */
-    protected function sanitizeFieldId(string $itemFormElementName) : string
+    protected function sanitizeFieldId(string $itemFormElementName): string
     {
         $fieldId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);
         return htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $fieldId));

@@ -1,0 +1,5 @@
+# Register custom plugins for ckeditor
+# an example is the link plugin to select TYPO3-related links
+editor:
+  externalPlugins:
+    typo3link: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/typo3link.js", route: "rteckeditor_wizard_browse_links" }

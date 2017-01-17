@@ -163,7 +163,11 @@ class RteHtmlParser extends HtmlParser
     {
         $this->tsConfig = $thisConfig;
         $this->procOptions = (array)$thisConfig['proc.'];
-        $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
+        if (isset($this->procOptions['allowedClasses.'])) {
+            $this->allowedClasses = (array)$this->procOptions['allowedClasses.'];
+        } else {
+            $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
+        }
 
         // Dynamic configuration of blockElementList
         if ($this->procOptions['blockElementList']) {
@@ -171,17 +175,25 @@ class RteHtmlParser extends HtmlParser
         }
 
         // Define which attributes are allowed on <p> tags
-        if (isset($this->procOptions['keepPDIVattribs'])) {
+        if (isset($this->procOptions['allowAttributes.'])) {
+            $this->allowedAttributesForParagraphTags = $this->procOptions['allowAttributes.'];
+        } elseif (isset($this->procOptions['keepPDIVattribs'])) {
             $this->allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
         }
         // Override tags which are allowed outside of <p> tags
         if (isset($this->procOptions['allowTagsOutside'])) {
-            $this->allowedTagsOutsideOfParagraphs = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside']), true);
+            if (!isset($this->procOptions['allowTagsOutside.'])) {
+                $this->allowedTagsOutsideOfParagraphs = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside']), true);
+            } else {
+                $this->allowedTagsOutsideOfParagraphs = (array)$this->procOptions['allowTagsOutside.'];
+            }
         }
 
         // Setting modes / transformations to be called
         if ((string)$this->procOptions['overruleMode'] !== '') {
             $modes = GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']);
+        } elseif (!empty($this->procOptions['mode'])) {
+            $modes = [$this->procOptions['mode']];
         } else {
             // Get parameters for rte_transformation:
             // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - the else{} part can be removed in v9
@@ -826,7 +838,12 @@ class RteHtmlParser extends HtmlParser
             // Setting up allowed tags:
             // Default is to get allowed/denied tags from internal array of processing options:
             // Construct default list of tags to keep:
-            $keepTags = array_flip(GeneralUtility::trimExplode(',', $this->defaultAllowedTagsList . ',' . strtolower($this->procOptions['allowTags']), true));
+            if (is_array($this->procOptions['allowTags.'])) {
+                $keepTags = implode(',', $this->procOptions['allowTags.']);
+            } else {
+                $keepTags = $this->procOptions['allowTags'];
+            }
+            $keepTags = array_flip(GeneralUtility::trimExplode(',', $this->defaultAllowedTagsList . ',' . strtolower($keepTags), true));
             // For tags to deny, remove them from $keepTags array:
             $denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], true);
             foreach ($denyTags as $dKe) {

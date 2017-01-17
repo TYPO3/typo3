@@ -1,0 +1,13 @@
+# Add configuration for the editor for any configuration
+# For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
+editor:
+  config:
+    # the CSS file to be used inside the editor
+    contentsCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
+    # will be overridden by the record (if a language is set)
+    defaultContentLanguage: "en"
+    height: 300
+    width: "auto"
+    toolbar: "Basic"
+    uiColor: "#F8F8F8"
+    removeDialogTabs: "image:advanced;link:advanced"

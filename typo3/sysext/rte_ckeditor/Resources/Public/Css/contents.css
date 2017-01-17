@@ -211,3 +211,17 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
+
+/** justify **/
+.align-left {
+	text-align: left;
+}
+.align-center {
+	text-align: center;
+}
+.align-right {
+	text-align: right;
+}
+.align-justify {
+	text-align: justify;
+}

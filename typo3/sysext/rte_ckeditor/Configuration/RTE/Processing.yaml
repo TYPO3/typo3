@@ -1,0 +1,94 @@
+# ****************************************************
+# Sets the proc options for all default configurations
+# ****************************************************
+
+processing:
+  # previously known as "ts_css" for transformations
+  mode: default
+  # Tags that are allowed in the content in general
+  allowTags:
+    - a
+    - abbr
+    - acronym
+    - address
+    - article
+    - big
+    - blockquote
+    - br
+    - caption
+    - cite
+    - code
+    - col
+    - colgroup
+    - dd
+    - del
+    - dfn
+    - dl
+    - div
+    - dt
+    - em
+    - footer
+    - header
+    - h1
+    - h2
+    - h3
+    - h4
+    - h5
+    - h6
+    - hr
+    - i
+    - img
+    - ins
+    - kbd
+    - label
+    - li
+    - nav
+    - ol
+    - p
+    - pre
+    - q
+    - samp
+    - section
+    - small
+    - span
+    - strong
+    - style
+    - sub
+    - sup
+    - table
+    - thead
+    - tbody
+    - tfoot
+    - td
+    - th
+    - tr
+    - tt
+    - ul
+    - var
+
+  ## Tags that are allowed outside of paragraphs
+  allowTagsOutside: [address, article, aside, blockquote, footer, header, hr, nav, section, div]
+
+  ## allowed default attributes
+  allowAttributes: [class, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop]
+
+  ## CONTENT TO DATABASE
+  HTMLparser_db:
+    ## STRIP ALL ATTRIBUTES FROM THESE TAGS
+    ## If this list of tags is not set, it will default to: b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike.
+    ## However, we want to keep xml:lang attribute on most tags and tags from the default list were cleaned on entry.
+    noAttrib: br
+    # Can be disabled if you trust ckeditor (If Automatic Content Formatting is enabled, this should be OK)
+    # allowTags: %default%
+    denyTags: img
+    tags:
+      hr:
+        allowedAttribs:
+          - class
+
+    ## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS
+    ## We use this rule instead of the denyTags rule so that we can protect custom tags without protecting these unwanted tags.
+    removeTags: [center, font, link, meta, o:p, sdfield, strike, style, title, u]
+
+    ## PROTECT CUSTOM TAGS
+    keepNonMatchedTags: protect

@@ -1,0 +1,18 @@
+# Load default processing options
+imports:
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+
+# Minimal configuration for the editor
+editor:
+  config:
+    stylesSet: []
+    toolbarGroups:
+      - { name: basicstyles, groups: [ basicstyles] }
+      - { name: clipboard, groups: [clipboard, undo] }
+    removeButtons:
+      - Anchor
+      - Superscript
+      - Subscript
+      - Underline
+      - Strike

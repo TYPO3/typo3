@@ -100,7 +100,6 @@
 
 		return routeUrl
 			+ (routeUrl.indexOf('?') === -1 ? '?' : '&')
-			+ 'RTEtsConfigParams=' + editor.config.RTEtsConfigParams
 			+ '&contentsLanguage=' + editor.config.contentsLanguage
 			+ '&editorId=' + editor.id
 			+ (parameters ? parameters : '');

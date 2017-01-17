@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
@@ -60,11 +59,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
     /**
      * Used with the Rich Text Editor.
-     * Example value: "tt_content:NEW3fba58c969f5c:bodytext:23:text:23:"
      *
-     * @var string
+     * @var array
      */
-    protected $RTEtsConfigParams;
+    protected $editorDetails = [];
 
     /**
      * @var array
@@ -135,26 +133,22 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         $this->contentLanguageService->init($this->contentsLanguage);
 
-        // @todo: This needs refactoring to enable sane config in flex form, either transfer parts of 'config', or use data providers
-        $RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-        $table = $RTEtsConfigParts[0];
-        $field = $RTEtsConfigParts[2];
-        $recordType = $RTEtsConfigParts[3];
-        $tcaConfigOfField = $GLOBALS['TCA'][$table][$field]['config'] ?? [];
-        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? [];
-        if (!empty($columnsOverridesConfigOfField)) {
-            ArrayUtility::mergeRecursiveWithOverrule($tcaConfigOfField, $columnsOverridesConfigOfField);
-        }
-        $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
-        $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
-            $RTEtsConfigParts[0],
-            $RTEtsConfigParts[2],
-            $RTEtsConfigParts[3],
-            $RTEtsConfigParts[4],
-            $tcaConfigOfField
-        );
-        $this->thisConfig = $richtextConfiguration;
+        $this->editorDetails = [
+            'table' => $queryParameters['table'],
+            'uid' => $queryParameters['uid'],
+            'fieldName' => $queryParameters['fieldName'],
+            'pid' => $queryParameters['pid'],
+            'recordType' => $queryParameters['recordType'],
+        ];
 
+        $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $this->thisConfig = $richtextConfigurationProvider->getConfiguration(
+            $queryParameters['table'],
+            $queryParameters['fieldName'],
+            (int)$queryParameters['pid'],
+            $queryParameters['recordType'],
+            ['richtext' => true]
+        );
         $this->buttonConfig = $this->thisConfig['buttons.']['link.'] ?? [];
     }
 
@@ -536,7 +530,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getCurrentPageId()
     {
-        return explode(':', $this->RTEtsConfigParams)[5];
+        return (int)$this->editorDetails['uid'];
     }
 
     /**
@@ -571,11 +565,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     public function getUrlParameters(array $overrides = null)
     {
-        return [
+        return array_merge($this->editorDetails, [
             'act' => isset($overrides['act']) ? $overrides['act'] : $this->displayedLinkHandlerId,
             'editorId' => $this->editorId,
             'contentsLanguage' => $this->contentsLanguage,
-            'RTEtsConfigParams' => $this->RTEtsConfigParams,
-        ];
+        ]);
     }
 }
