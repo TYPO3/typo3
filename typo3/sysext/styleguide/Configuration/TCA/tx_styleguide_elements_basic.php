@@ -674,29 +674,7 @@ return [
             ],
         ],
         'text_16' => [
-            'label' => 'text_16 wizard table',
-            'config' => [
-                'type' => 'text',
-                'cols' => '40',
-                'rows' => '5',
-                'wizards' => [
-                    'table' => [
-                        'type' => 'script',
-                        'title' => 'Table wizard',
-                        'icon' => 'content-table',
-                        'module' => [
-                            'name' => 'wizard_table'
-                        ],
-                        'params' => [
-                            'xmlOutput' => 0
-                        ],
-                        'notNewRecords' => 1,
-                    ],
-                ],
-            ],
-        ],
-        'text_17' => [
-            'label' => 'text_17 wizard select',
+            'label' => 'text_16 valuePicker',
             'config' => [
                 'type' => 'text',
                 'cols' => '40',
@@ -708,6 +686,15 @@ return [
                         ['Option 3', 'Dummy Text for Option 3'],
                     ],
                 ],
+            ],
+        ],
+        'text_17' => [
+            'label' => 'text_16 renderType=table',
+            'config' => [
+                'type' => 'text',
+                'renderType' => 'textTable',
+                'cols' => '40',
+                'rows' => '5',
             ],
         ],
 
@@ -1132,22 +1119,9 @@ return [
                                                     <label>input_2 wizard table</label>
                                                     <config>
                                                         <type>text</type>
+                                                        <renderType>textTable</renderType>
                                                         <cols>30</cols>
                                                         <rows>5</rows>
-                                                        <wizards>
-                                                            <table type="array">
-                                                                <type>script</type>
-                                                                <title>Table wizard</title>
-                                                                <icon>content-table</icon>
-                                                                <module type="array">
-                                                                    <name>wizard_table</name>
-                                                                </module>
-                                                                <params type="array">
-                                                                    <xmlOutput>0</xmlOutput>
-                                                                </params>
-                                                                <notNewRecords>1</notNewRecords>
-                                                            </table>
-                                                        </wizards>
                                                     </config>
                                                 </TCEforms>
                                             </input_2>
