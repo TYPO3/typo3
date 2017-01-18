@@ -209,8 +209,6 @@ class LocalizationController
      */
     protected function process($params)
     {
-        $pageId = (int)$params['pageId'];
-        $srcLanguageId = (int)$params['srcLanguageId'];
         $destLanguageId = (int)$params['destLanguageId'];
 
         // Build command map
@@ -218,21 +216,20 @@ class LocalizationController
             'tt_content' => []
         ];
 
-        for ($i = 0, $count = count($params['uidList']); $i < $count; ++$i) {
-            $currentUid = $params['uidList'][$i];
-
-            if ($params['action'] === static::ACTION_LOCALIZE) {
-                $cmd['tt_content'][$currentUid] = [
-                    'localize' => $destLanguageId
-                ];
-            } else {
-                $cmd['tt_content'][$currentUid] = [
-                    'copyToLanguage' => $destLanguageId,
-                ];
+        if (isset($params['uidList']) && is_array($params['uidList'])) {
+            foreach ($params['uidList'] as $currentUid) {
+                if ($params['action'] === static::ACTION_LOCALIZE) {
+                    $cmd['tt_content'][$currentUid] = [
+                        'localize' => $destLanguageId
+                    ];
+                } else {
+                    $cmd['tt_content'][$currentUid] = [
+                        'copyToLanguage' => $destLanguageId,
+                    ];
+                }
             }
         }
 
-        /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
