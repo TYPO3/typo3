@@ -8074,7 +8074,12 @@ class DataHandler
      */
     public function noRecordsFromUnallowedTables($inList)
     {
-        $inList = trim($this->rmComma(trim($inList)));
+        if (strpos($inList, ',') !== false) {
+            $pids = GeneralUtility::intExplode(',', $inList, true);
+        } else {
+            $inList = trim($this->rmComma(trim($inList)));
+            $pids = [$inList];
+        }
         if ($inList && !$this->admin) {
             foreach ($GLOBALS['TCA'] as $table => $_) {
                 $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -8085,7 +8090,7 @@ class DataHandler
                     ->from($table)
                     ->where($query->expr()->in(
                         'pid',
-                        $query->createNamedParameter($inList, Connection::PARAM_INT_ARRAY)
+                        $query->createNamedParameter($pids, Connection::PARAM_INT_ARRAY)
                     ))
                     ->execute()
                     ->fetchColumn(0);
