@@ -701,14 +701,11 @@ return [
                 'type' => 'text',
                 'cols' => '40',
                 'rows' => '5',
-                'wizards' => [
-                    'select' => [
-                        'type' => 'select',
-                        'items' => [
-                            ['Option 1', 'Dummy Text for Option 1'],
-                            ['Option 2', 'Dummy Text for Option 2'],
-                            ['Option 3', 'Dummy Text for Option 3'],
-                        ],
+                'valuePicker' => [
+                    'items' => [
+                        ['Option 1', 'Dummy Text for Option 1'],
+                        ['Option 2', 'Dummy Text for Option 2'],
+                        ['Option 3', 'Dummy Text for Option 3'],
                     ],
                 ],
             ],
