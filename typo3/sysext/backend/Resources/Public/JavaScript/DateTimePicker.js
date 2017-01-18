@@ -36,7 +36,7 @@ define(['jquery'], function($) {
 	 * applies to fields which haven't been used yet.
 	 */
 	DateTimePicker.initialize = function() {
-		// fetch the date time fields that heven't been initialized yet
+		// fetch the date time fields that haven't been initialized yet
 		var $dateTimeFields = $(DateTimePicker.options.fieldSelector).filter(function() {
 			return ($(this).data('DateTimePicker') == undefined);
 		});
