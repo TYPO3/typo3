@@ -81,7 +81,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
     {
         // @deprecated since CMS 7, will be removed with CMS 8
         // this is a fallback to convert references to old 'cms' locallang files to the new location
-        if (strpos($fileReference, 'EXT:cms') === 0) {
+        if (strpos($fileReference, 'EXT:cms/') === 0) {
             $mapping = [
                 'cms/web_info/loallang.xlf' => 'frontend/Resources/Private/Language/locallang_webinfo.xlf',
                 'cms/locallang_ttc.xlf' => 'frontend/Resources/Private/Language/locallang_ttc.xlf',
