@@ -451,10 +451,9 @@ class ActionService
     /**
      * @param string $tableName
      * @param int $liveUid
-     * @param bool $useDeleteClause
      * @return NULL|int
      */
-    protected function getVersionedId($tableName, $liveUid, $useDeleteClause = false)
+    protected function getVersionedId($tableName, $liveUid)
     {
         $versionedId = null;
         $liveUid = (int)$liveUid;
