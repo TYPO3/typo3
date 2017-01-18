@@ -421,8 +421,8 @@ class SetupModuleController extends AbstractModule
     {
         $GLOBALS['SOBE'] = $this;
         $this->simulateUser();
-        $this->storeIncomingData();
         $this->init();
+        $this->storeIncomingData();
         $this->main();
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
