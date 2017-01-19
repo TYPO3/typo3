@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Reference index processing and relation extraction
@@ -44,37 +45,35 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ReferenceIndex
 {
     /**
-     * Definition of tables to exclude from searching for relations
+     * Definition of tables to exclude from the ReferenceIndex
      *
      * Only tables which do not contain any relations and never did so far since references also won't be deleted for
      * these. Since only tables with an entry in $GLOBALS['TCA] are handled by ReferenceIndex there is no need to add
      * *_mm-tables.
      *
-     * This is implemented as an array with fields as keys and booleans as values to be able to fast isset() instead of
-     * slow in_array() lookup.
+     * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
      *
      * @var array
      * @see updateRefIndexTable()
-     * @todo #65461 Create configuration for tables to exclude from ReferenceIndex
+     * @see shouldExcludeTableFromReferenceIndex()
      */
-    protected static $nonRelationTables = [
+    protected static $excludedTables = [
         'sys_log' => true,
         'sys_history' => true,
         'tx_extensionmanager_domain_model_extension' => true
     ];
 
     /**
-     * Definition of fields to exclude from searching for relations
+     * Definition of fields to exclude from ReferenceIndex in *every* table
      *
-     * This is implemented as an array with fields as keys and booleans as values to be able to fast isset() instead of
-     * slow in_array() lookup.
+     * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
      *
      * @var array
      * @see getRelations()
      * @see fetchTableRelationFields()
-     * @todo #65460 Create configuration for fields to exclude from ReferenceIndex
+     * @see shouldExcludeTableColumnFromReferenceIndex()
      */
-    protected static $nonRelationFields = [
+    protected static $excludedColumns = [
         'uid' => true,
         'perms_userid' => true,
         'perms_groupid' => true,
@@ -195,7 +194,7 @@ class ReferenceIndex
         ];
 
         // If this table cannot contain relations, skip it
-        if (isset(static::$nonRelationTables[$tableName])) {
+        if ($this->shouldExcludeTableFromReferenceIndex($tableName)) {
             return $result;
         }
 
@@ -523,7 +522,7 @@ class ReferenceIndex
         $uid = $row['uid'];
         $outRow = [];
         foreach ($row as $field => $value) {
-            if (!isset(static::$nonRelationFields[$field]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && (!$onlyField || $onlyField === $field)) {
+            if ($this->shouldExcludeTableColumnFromReferenceIndex($table, $field, $onlyField) === false) {
                 $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 // Add files
                 $resultsFromFiles = $this->getRelations_procFiles($value, $conf, $uid);
@@ -1175,7 +1174,7 @@ class ReferenceIndex
                 : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'];
 
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-            if (isset(static::$nonRelationTables[$tableName])) {
+            if ($this->shouldExcludeTableFromReferenceIndex($tableName)) {
                 continue;
             }
             $tableConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])
@@ -1336,6 +1335,50 @@ class ReferenceIndex
             $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
         }
         return [$headerContent, $bodyContent, $errorCount];
+    }
+
+    /**
+     * Checks if a given table should be excluded from ReferenceIndex
+     *
+     * @param string $tableName Name of the table
+     * @return bool true if it should be excluded
+     */
+    protected function shouldExcludeTableFromReferenceIndex($tableName)
+    {
+        if (isset(static::$excludedTables[$tableName])) {
+            return static::$excludedTables[$tableName];
+        }
+
+        // Only exclude tables from ReferenceIndex which do not contain any relations and never did since existing references won't be deleted!
+        // There is no need to add tables without a definition in $GLOBALS['TCA] since ReferenceIndex only handles those.
+        $excludeTable = false;
+        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $signalSlotDispatcher->dispatch(__CLASS__, 'shouldExcludeTableFromReferenceIndex', [$tableName, &$excludeTable]);
+
+        static::$excludedTables[$tableName] = $excludeTable;
+
+        return static::$excludedTables[$tableName];
+    }
+
+    /**
+     * Checks if a given column in a given table should be excluded in the ReferenceIndex process
+     *
+     * @param string $tableName Name of the table
+     * @param string $column Name of the column
+     * @param string $onlyColumn Name of a specific column to fetch
+     * @return bool true if it should be excluded
+     */
+    protected function shouldExcludeTableColumnFromReferenceIndex($tableName, $column, $onlyColumn)
+    {
+        if (isset(static::$excludedColumns[$column])) {
+            return true;
+        }
+
+        if (is_array($GLOBALS['TCA'][$tableName]['columns'][$column]) && (!$onlyColumn || $onlyColumn === $column)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
