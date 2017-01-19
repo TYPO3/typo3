@@ -382,7 +382,7 @@ return [
         ],
         'input_34' => [
             'exclude' => 1,
-            'label' => 'input_34 wizard colorbox',
+            'label' => 'input_34 renderType colorbox',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker',
@@ -1096,7 +1096,7 @@ return [
                                         <el>
                                             <input_1>
                                                 <TCEforms>
-                                                    <label>input_1 wizard link</label>
+                                                    <label>input_1 renderType inputLink</label>
                                                     <config>
                                                         <type>input</type>
                                                         <renderType>inputLink</renderType>
@@ -1116,7 +1116,7 @@ return [
                                             </input_1>
                                             <input_2>
                                                 <TCEforms>
-                                                    <label>input_2 wizard table</label>
+                                                    <label>input_2 renderyType textTable</label>
                                                     <config>
                                                         <type>text</type>
                                                         <renderType>textTable</renderType>
@@ -1127,7 +1127,7 @@ return [
                                             </input_2>
                                             <input_3>
                                                 <TCEforms>
-                                                    <label>input_3 wizard select</label>
+                                                    <label>input_3 valuePicker</label>
                                                     <config>
                                                         <type>input</type>
                                                         <valuePicker>

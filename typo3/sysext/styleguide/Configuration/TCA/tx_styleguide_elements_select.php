@@ -382,7 +382,7 @@ return [
         ],
         'select_multiplesidebyside_6' => [
             'exclude' => 1,
-            'label' => 'select_multiplesidebyside_6 wizards',
+            'label' => 'select_multiplesidebyside_6 fieldControls',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -677,44 +677,24 @@ return [
                                                                 <numIndex index="1">bar</numIndex>
                                                             </numIndex>
                                                         </multiSelectFilterItems>
-                                                        <wizards>
-                                                            <_VERTICAL>1</_VERTICAL>
-                                                            <edit>
-                                                                <type>popup</type>
-                                                                <title>edit</title>
-                                                                <module>
-                                                                    <name>wizard_edit</name>
-                                                                </module>
-                                                                <icon>actions-open</icon>
-                                                                <popup_onlyOpenIfSelected>1</popup_onlyOpenIfSelected>
-                                                                <JSopenParams>height=350,width=580,status=0,menubar=0,scrollbars=1</JSopenParams>
-                                                            </edit>
-                                                            <add>
-                                                                <type>script</type>
-                                                                <title>add</title>
-                                                                <icon>actions-add</icon>
-                                                                <module>
-                                                                    <name>wizard_add</name>
-                                                                </module>
-                                                                <params>
-                                                                    <table>tx_styleguide_staticdata</table>
+                                                        <fieldControls>
+                                                            <editPopup>
+                                                                <renderType>editPopup</renderType>
+                                                            </editPopup>
+                                                            <addRecord>
+                                                                <renderType>addRecord</renderType>
+                                                                <options>
                                                                     <pid>0</pid>
                                                                     <setValue>prepend</setValue>
-                                                                </params>
-                                                            </add>
-                                                            <list>
-                                                                <type>script</type>
-                                                                <title>liste</title>
-                                                                <icon>actions-system-list-open</icon>
-                                                                <module>
-                                                                    <name>wizard_list</name>
-                                                                </module>
-                                                                <params>
-                                                                    <table>tx_styleguide_staticdata</table>
+                                                                </options>
+                                                            </addRecord>
+                                                            <listModule>
+                                                                <renderType>listModule</renderType>
+                                                                <options>
                                                                     <pid>0</pid>
-                                                                </params>
-                                                            </list>
-                                                        </wizards>
+                                                                </options>
+                                                            </listModule>
+                                                        </fieldControls>
                                                     </config>
                                                 </TCEforms>
                                             </select_multiplesidebyside_1>

@@ -97,7 +97,7 @@ return [
         ],
         'input_3' => [
             'exclude' => 1,
-            'label' => 'input_3 eval=required, wizard link',
+            'label' => 'input_3 eval=required, renderType inputLink',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
