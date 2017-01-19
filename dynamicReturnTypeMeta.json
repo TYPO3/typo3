@@ -30,16 +30,16 @@
 			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject"
 		},
 		{
-			"class": "\\TYPO3\\CMS\\Core\\Tests\\BaseTestCase",
+			"class": "\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\BaseTestCase",
 			"method": "getAccessibleMock",
 			"position": 0,
-			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\CMS\\Core\\Tests\\AccessibleObjectInterface"
+			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\AccessibleObjectInterface"
 		},
 		{
-			"class": "\\TYPO3\\CMS\\Core\\Tests\\BaseTestCase",
+			"class": "\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\BaseTestCase",
 			"method": "getAccessibleMockForAbstractClass",
 			"position": 0,
-			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\CMS\\Core\\Tests\\AccessibleObjectInterface"
+			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\AccessibleObjectInterface"
 		}
 	],
 	"functionCalls": [
