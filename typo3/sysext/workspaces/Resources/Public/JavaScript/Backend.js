@@ -491,9 +491,8 @@ define([
 			var item = result.data[i],
 				$actions = $('<div />', {class: 'btn-group'}),
 				$integrityIcon = '';
-
 			$actions.append(
-				Backend.getAction(item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '', 'expand', 'apps-pagetree-collapse').attr('title', TYPO3.lang['tooltip.swap']).attr('data-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]').attr('data-toggle', 'collapse'),
+				Backend.getAction(item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '', 'expand', 'apps-pagetree-collapse').attr('title', TYPO3.lang['tooltip.expand']).attr('data-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]').attr('data-toggle', 'collapse'),
 				$('<button />', {class: 'btn btn-default', 'data-action': 'changes', 'data-toggle': 'tooltip', title: TYPO3.lang['tooltip.showChanges']}).append(Backend.getPreRenderedIcon('actions-document-info')),
 				Backend.getAction(item.allowedAction_swap && item.Workspaces_CollectionParent === '', 'swap', 'actions-version-swap-version').attr('title', TYPO3.lang['tooltip.swap']),
 				Backend.getAction(item.allowedAction_view, 'preview', 'actions-version-workspace-preview').attr('title', TYPO3.lang['tooltip.viewElementAction']),

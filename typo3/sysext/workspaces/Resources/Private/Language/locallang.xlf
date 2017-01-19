@@ -172,6 +172,9 @@
 			<trans-unit id="tooltip.swap">
 				<source>Swap live and workspace versions of record</source>
 			</trans-unit>
+			<trans-unit id="tooltip.expand">
+				<source>Expand element and show relations</source>
+			</trans-unit>
 			<trans-unit id="tooltip.showHistory">
 				<source>Show history of workspace version</source>
 			</trans-unit>
