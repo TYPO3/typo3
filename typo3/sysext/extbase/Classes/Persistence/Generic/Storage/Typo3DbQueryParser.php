@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
@@ -291,15 +293,16 @@ class Typo3DbQueryParser
      *
      * @param Qom\ComparisonInterface $comparison The comparison to parse
      * @param Qom\SourceInterface $source The source
-     * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException
      * @return string
+     * @throws \RuntimeException
+     * @throws RepositoryException
+     * @throws Exception\BadConstraintException
      */
     protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
         if ($comparison->getOperator() === QueryInterface::OPERATOR_CONTAINS) {
             if ($comparison->getOperand2() === null) {
-                return '1<>1';
+                throw new Exception\BadConstraintException('The value for the CONTAINS operator must not be null.', 1484828468);
             } else {
                 $value = $this->dataMapper->getPlainValue($comparison->getOperand2());
                 if (!$source instanceof Qom\SelectorInterface) {
@@ -368,7 +371,7 @@ class Typo3DbQueryParser
                         );
                     }
                 } else {
-                    throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
+                    throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
                 }
             }
         } else {
@@ -383,6 +386,7 @@ class Typo3DbQueryParser
      * @param Qom\SourceInterface $source The source
      * @return string
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+     * @thorws Exception\BadConstraintException
      */
     protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
@@ -401,11 +405,10 @@ class Typo3DbQueryParser
                         $plainValues[] = $plainValue;
                     }
                 }
-                if ($hasValue) {
-                    $expr = $exprBuilder->comparison($fieldName, 'IN', '(' . implode(', ', $plainValues) . ')');
-                } else {
-                    $expr = '1<>1';
+                if (!$hasValue) {
+                    throw new Exception\BadConstraintException('The IN operator needs a non-empty value list to compare against. The given value list is empty.', 1484828466);
                 }
+                $expr = $exprBuilder->comparison($fieldName, 'IN', '(' . implode(', ', $plainValues) . ')');
                 break;
             case QueryInterface::OPERATOR_EQUAL_TO:
                 if ($value === null) {
@@ -873,7 +876,7 @@ class Typo3DbQueryParser
      *
      * @param string &$className The name of the parent class, will be set to the child class after processing.
      * @param string &$tableName The name of the parent table, will be set to the table alias that is used in the union statement.
-     * @param array &$propertyPath The remaining property path, will be cut of by one part during the process.
+     * @param string &$propertyPath The remaining property path, will be cut of by one part during the process.
      * @param string $fullPropertyPath The full path the the current property, will be used to make table names unique.
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
      * @throws InvalidRelationConfigurationException
@@ -982,6 +985,7 @@ class Typo3DbQueryParser
     protected function replaceTableNameWithAlias($statement, $tableName, $tableAlias)
     {
         if ($tableAlias !== $tableName) {
+            /** @var Connection $connection */
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
             $quotedTableName = $connection->quoteIdentifier($tableName);
             $quotedTableAlias = $connection->quoteIdentifier($tableAlias);
