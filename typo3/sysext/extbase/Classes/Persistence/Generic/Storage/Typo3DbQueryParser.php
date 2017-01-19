@@ -386,7 +386,7 @@ class Typo3DbQueryParser
      * @param Qom\SourceInterface $source The source
      * @return string
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-     * @thorws Exception\BadConstraintException
+     * @throws Exception\BadConstraintException
      */
     protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
