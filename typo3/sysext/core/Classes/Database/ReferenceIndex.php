@@ -1170,10 +1170,18 @@ class ReferenceIndex
         }
         // Traverse all tables:
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $refIndexConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'])
+                ? ConnectionPool::DEFAULT_CONNECTION_NAME
+                : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'];
+
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             if (isset(static::$nonRelationTables[$tableName])) {
                 continue;
             }
+            $tableConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])
+                ? ConnectionPool::DEFAULT_CONNECTION_NAME
+                : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName];
+
             $fields = ['uid'];
             if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
                 $fields[] = 't3ver_wsid';
@@ -1195,14 +1203,12 @@ class ReferenceIndex
 
             $tableNames[] = $tableName;
             $tableCount++;
-            $uidList = [0];
             while ($record = $queryResult->fetch()) {
                 $refIndexObj = GeneralUtility::makeInstance(self::class);
                 if (isset($record['t3ver_wsid'])) {
                     $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
                 }
                 $result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
-                $uidList[] = $record['uid'];
                 $recCount++;
                 if ($result['addedNodes'] || $result['deletedNodes']) {
                     $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
@@ -1213,7 +1219,34 @@ class ReferenceIndex
                 }
             }
 
+            // Subselect based queries only work on the same connection
+            if ($refIndexConnectionName !== $tableConnectionName) {
+                GeneralUtility::sysLog(
+                    sprintf(
+                        'Not checking table "%s" for lost indexes, "sys_refindex" table uses a different connection',
+                        $tableName
+                    ),
+                    'core',
+                    GeneralUtility::SYSLOG_SEVERITY_ERROR
+                );
+                continue;
+            }
+
             // Searching for lost indexes for this table
+            // Build sub-query to find lost records
+            $subQueryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
+            $subQueryBuilder->getRestrictions()->removeAll();
+            $subQueryBuilder
+                ->select('uid')
+                ->from($tableName, 'sub_' . $tableName)
+                ->where(
+                    $subQueryBuilder->expr()->eq(
+                        'sub_' . $tableName . '.uid',
+                        $queryBuilder->quoteIdentifier('sys_refindex.recuid')
+                    )
+                );
+
+            // Main query to find lost records
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
             $queryBuilder->getRestrictions()->removeAll();
             $lostIndexes = $queryBuilder
@@ -1224,10 +1257,7 @@ class ReferenceIndex
                         'tablename',
                         $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
                     ),
-                    $queryBuilder->expr()->notIn(
-                        'recuid',
-                        $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
-                    )
+                    'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
                 )
                 ->execute()
                 ->fetchColumn(0);
@@ -1246,11 +1276,9 @@ class ReferenceIndex
                                 'tablename',
                                 $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
                             ),
-                            $queryBuilder->expr()->notIn(
-                                'recuid',
-                                $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
-                            )
-                        )->execute();
+                            'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
+                        )
+                        ->execute();
                 }
             }
         }
