@@ -27,14 +27,14 @@ use TYPO3\CMS\Install\Status;
  * text only. The return values of this class are not bound to HTML
  * and can be used in different scopes (eg. as json array).
  */
-class SetupCheck
+class SetupCheck implements CheckInterface
 {
     /**
      * Get all status information as array with status objects
      *
      * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $status = [];
 

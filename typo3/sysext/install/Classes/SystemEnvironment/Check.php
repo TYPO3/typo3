@@ -44,7 +44,7 @@ use TYPO3\CMS\Install\Status;
  * text only. The return values of this class are not bound to HTML
  * and can be used in different scopes (eg. as json array).
  */
-class Check
+class Check implements CheckInterface
 {
     /**
      * @var array List of required PHP extensions
@@ -70,7 +70,7 @@ class Check
      *
      * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $status = [];
         $status[] = $this->checkCurrentDirectoryIsInIncludePath();
