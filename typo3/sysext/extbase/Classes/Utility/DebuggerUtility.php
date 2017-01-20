@@ -103,7 +103,9 @@ class DebuggerUtility
             if ($plainText) {
                 $dump = self::ansiEscapeWrap(('"' . implode((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, ($level + 1))), str_split($croppedValue, 76)) . '"'), '33', $ansiColors) . ' (' . strlen($value) . ' chars)';
             } else {
-                $dump = sprintf('\'<span class="extbase-debug-string">%s</span>\' (%s chars)', implode('<br />' . str_repeat(self::HTML_INDENT, ($level + 1)), str_split(htmlspecialchars($croppedValue), 76)), strlen($value));
+                $lines = str_split($croppedValue, 76);
+                $lines = array_map('htmlspecialchars', $lines);
+                $dump = sprintf('\'<span class="extbase-debug-string">%s</span>\' (%s chars)', implode('<br />' . str_repeat(self::HTML_INDENT, $level + 1), $lines), strlen($value));
             }
         } elseif (is_numeric($value)) {
             $dump = sprintf('%s (%s)', self::ansiEscapeWrap($value, '35', $ansiColors), gettype($value));
