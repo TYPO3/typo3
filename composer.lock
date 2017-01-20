@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf3c1edb03d78588baceef9a394548dd",
+    "content-hash": "b74e1b0a1511a9a01531bbe16ee8a570",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1362,16 +1362,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "617595f736ca1e880817cea852572b9b0b329f39"
+                "reference": "48e434663ec3844bd8f8f91f8fa33587b1a643e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/617595f736ca1e880817cea852572b9b0b329f39",
-                "reference": "617595f736ca1e880817cea852572b9b0b329f39",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/48e434663ec3844bd8f8f91f8fa33587b1a643e2",
+                "reference": "48e434663ec3844bd8f8f91f8fa33587b1a643e2",
                 "shasum": ""
             },
             "require": {
@@ -1397,7 +1397,7 @@
                 "LGPL-3.0"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2016-12-11T12:09:36+00:00"
+            "time": "2017-01-18T15:34:20+00:00"
         }
     ],
     "packages-dev": [
