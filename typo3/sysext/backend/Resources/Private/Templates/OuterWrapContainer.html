@@ -2,7 +2,7 @@
 
 <f:if condition="{infoBoxMessage}">
 	<f:be.infobox title="{infoBoxMessageTitle}">
-		{infoBoxMessage}
+		{infoBoxMessage -> f:format.nl2br()}
 	</f:be.infobox>
 </f:if>
 
