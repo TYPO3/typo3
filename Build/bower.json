@@ -42,7 +42,7 @@
     "seiyria-bootstrap-slider": "^9.5.3",
     "devbridge-autocomplete": "^1.2.24",
     "region-flags": "*",
-    "wmdbsystems-typo3-icons": "^0.0.14",
+    "typo3-icons": "^1.0.0",
     "matchHeight": "matchheight#^0.7.0",
     "jquery-minicolors": "^2.2.4",
     "d3": "^4.4.0",

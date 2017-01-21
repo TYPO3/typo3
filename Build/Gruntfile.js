@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 			core      : '<%= paths.sysext %>core/Resources/',
 			bower     : 'bower_components/',
 			flags     : '<%= paths.bower %>region-flags/svg/',
-			t3icons   : '<%= paths.bower %>wmdbsystems-typo3-icons/dist/',
+			t3icons   : '<%= paths.bower %>typo3-icons/dist/',
 			npm       : 'node_modules/'
 		},
 		less: {
