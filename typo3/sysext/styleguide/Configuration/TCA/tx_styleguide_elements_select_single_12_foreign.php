@@ -68,7 +68,6 @@ return [
                 'internal_type' => 'file',
                 'allowed' => 'jpg,gif,png,svg',
                 'uploadfolder' => 'uploads/tx_styleguide',
-                'show_thumbs' => 1,
                 'size' => 1,
                 'maxitems' => 1,
             ],

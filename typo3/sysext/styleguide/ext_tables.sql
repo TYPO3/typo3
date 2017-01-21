@@ -215,7 +215,6 @@ CREATE TABLE tx_styleguide_elements_group (
 	group_file_1 text,
 	group_file_2 text,
 	group_file_3 text,
-	group_file_4 text,
 	group_folder_1 text,
 	group_requestUpdate_1 text,
 

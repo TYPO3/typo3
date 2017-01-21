@@ -78,16 +78,11 @@ return [
         ],
         'group_db_1' => [
             'exclude' => 1,
-            'label' => 'group_db_1 allowed=tx_styleguide_staticdata, wizard suggest',
+            'label' => 'group_db_1 allowed=tx_styleguide_staticdata',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest',
-                    ],
-                ],
             ],
         ],
         'select_tree_1' => [

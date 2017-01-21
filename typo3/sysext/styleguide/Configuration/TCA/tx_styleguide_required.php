@@ -226,7 +226,6 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
-                'show_thumbs' => true,
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,

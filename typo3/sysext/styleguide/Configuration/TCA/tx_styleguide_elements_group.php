@@ -110,96 +110,78 @@ return [
                 'allowed' => 'be_users,be_groups',
                 'fieldControls' => [
                     'editPopup' => [
-                        'renderType' => 'editPopup',
+                        'disabled' => false,
                     ],
                     'addRecord' => [
-                        'renderType' => 'addRecord',
-                        'options' => [
-                            'table' => 'be_users',
-                            'pid' => 0,
-                            'setValue' => 'prepend',
-                        ],
+                        'disabled' => false,
                     ],
                     'listModule' => [
-                        'renderType' => 'listModule',
-                        'options' => [
-                            'table' => 'be_users',
-                            'pid' => 0,
-                        ],
+                        'disabled' => false,
                     ],
                 ],
             ],
         ],
         'group_db_2' => [
             'exclude' => 1,
-            'label' => 'group_db_2 allowed=be_users,be_groups, show_thumbs=true',
+            'label' => 'group_db_2 allowed=be_users,be_groups, recordOverview disabled',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'show_thumbs' => true,
+                'fieldWizards' => [
+                    'recordOverview' => [
+                        'disabled' => true,
+                    ],
+                ],
             ],
         ],
         'group_db_9' => [
             'exclude' => 1,
-            'label' => 'group_db_9 allowed=be_users,be_groups, disable_controls=allowedTables, show_thumbs=true',
+            'label' => 'group_db_9 allowed=be_users,be_groups, disable tableList',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'disable_controls' => 'allowedTables',
-                'show_thumbs' => true,
+                'fieldWizards' => [
+                    'tableList' => [
+                        'disabled' => true,
+                    ],
+                ],
             ],
         ],
         'group_db_3' => [
             'exclude' => 1,
-            'label' => 'group_db_3 allowed=tx_styleguide_staticdata, wizard suggest, disable_controls=browser, position top',
+            'label' => 'group_db_3 allowed=tx_styleguide_staticdata, disable elementBrowser',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
-                'disable_controls' => 'browser',
-                'wizards' => [
-                    '_POSITION' => 'top',
-                    'suggest' => [
-                        'type' => 'suggest',
+                'fieldControls' => [
+                    'elementBrowser' => [
+                        'disable' => true,
                     ],
                 ],
             ],
         ],
         'group_db_8' => [
             'exclude' => 1,
-            'label' => 'group_db_8 allowed=tx_styleguide_staticdata, multiple, wizard suggest, disable_controls=browser, position top',
+            'label' => 'group_db_8 allowed=tx_styleguide_staticdata, multiple',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
-                'disable_controls' => 'browser',
                 'multiple' => true,
-                'wizards' => [
-                    '_POSITION' => 'top',
-                    'suggest' => [
-                        'type' => 'suggest',
-                    ],
-                ],
             ],
         ],
         'group_db_4' => [
             'exclude' => 1,
-            'label' => 'group_db_4 allowed=tx_styleguide_staticdata, show_thumbs=true, size=1, wizard suggest, position bottom',
+            'label' => 'group_db_4 allowed=tx_styleguide_staticdata, size=1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
-                'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1,
-                'wizards' => [
-                    '_POSITION' => 'bottom',
-                    'suggest' => [
-                        'type' => 'suggest',
-                    ],
-                ],
             ],
         ],
         'group_db_5' => [
@@ -232,48 +214,49 @@ return [
                     'elementBrowserType' => 'file',
                 ],
                 'max_size' => 2000,
-                'show_thumbs' => true,
                 'size' => '3',
                 'autoSizeMax' => 40,
             ],
         ],
         'group_db_7' => [
             'exclude' => 1,
-            'label' => 'group_db_7 allowed=be_users, show_thumbs=true, prepend_tname=false',
+            'label' => 'group_db_7 allowed=be_users, prepend_tname=false',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users',
-                'show_thumbs' => true,
             ],
         ],
 
 
         'group_file_1' => [
             'exclude' => 1,
-            'label' => 'group_file_1 show_thumbs=true',
+            'label' => 'group_file_1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'jpg, jpeg, png, gif',
                 'disallowed' => 'ai',
-                'show_thumbs' => true,
                 'size' => 3,
                 'uploadfolder' => 'uploads/tx_styleguide/',
-                'disable_controls' => 'upload',
                 'max_size' => 2000,
             ],
         ],
         'group_file_2' => [
             'exclude' => 1,
-            'label' => 'group_file_2 disable_controls=delete',
+            'label' => 'group_file_2 hideDeleteIcon, fileUpload disabled',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'jpg, jpeg, png, gif',
                 'size' => 3,
                 'uploadfolder' => 'uploads/tx_styleguide/',
-                'disable_controls' => 'delete',
+                'hideDeleteIcon' => true,
+                'fieldWizards' => [
+                    'fileUpload' => [
+                        'disabled' => true,
+                    ],
+                ],
             ],
         ],
         'group_file_3' => [
@@ -285,17 +268,6 @@ return [
                 'allowed' => 'jpg, jpeg, png, gif',
                 'size' => 1,
                 'uploadfolder' => 'uploads/tx_styleguide/',
-            ],
-        ],
-        'group_file_4' => [
-            'exclude' => 1,
-            'label' => 'group_file_4 selectedListStyles',
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'jpg, jpeg, png, gif',
-                'uploadfolder' => 'uploads/tx_styleguide/',
-                'selectedListStyle' => 'width:400px;background-color:#ccffcc;',
             ],
         ],
 
@@ -340,34 +312,26 @@ return [
                                         <el>
                                             <group_db_1>
                                                 <TCEforms>
-                                                    <label>group_db_1 wizard suggest</label>
+                                                    <label>group_db_1</label>
                                                     <config>
                                                         <type>group</type>
                                                         <internal_type>db</internal_type>
                                                         <allowed>tx_styleguide_staticdata</allowed>
-                                                        <wizards>
-                                                            <suggest>
-                                                                <type>suggest</type>
-                                                            </suggest>
-                                                        </wizards>
                                                     </config>
                                                 </TCEforms>
                                             </group_db_1>
                                             <group_db_2>
                                                 <TCEforms>
-                                                    <label>group_db_2 wizard suggest, order by uid DESC</label>
+                                                    <label>group_db_2 suggest, order by uid DESC</label>
                                                     <config>
                                                         <type>group</type>
                                                         <internal_type>db</internal_type>
                                                         <allowed>tx_styleguide_staticdata</allowed>
-                                                        <wizards>
-                                                            <suggest>
-                                                                <type>suggest</type>
-                                                                <default>
-                                                                    <orderBy>uid DESC</orderBy>
-                                                                </default>
-                                                            </suggest>
-                                                        </wizards>
+                                                        <suggestOptions>
+                                                            <default>
+                                                                <orderBy>uid DESC</orderBy>
+                                                            </default>
+                                                        </suggestOptions>
                                                     </config>
                                                 </TCEforms>
                                             </group_db_2>
@@ -416,18 +380,12 @@ return [
                                                         <el>
                                                             <group_db_1>
                                                                 <TCEforms>
-                                                                    <label>group_db_1 wizard suggest</label>
+                                                                    <label>group_db_1</label>
                                                                     <config>
                                                                         <type>group</type>
                                                                         <internal_type>db</internal_type>
                                                                         <allowed>pages</allowed>
                                                                         <size>5</size>
-                                                                        <show_thumbs>1</show_thumbs>
-                                                                        <wizards>
-                                                                            <suggest>
-                                                                                <type>suggest</type>
-                                                                            </suggest>
-                                                                        </wizards>
                                                                     </config>
                                                                 </TCEforms>
                                                             </group_db_1>
@@ -456,7 +414,7 @@ return [
                 --div--;internal_type=db,
                     group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_6, group_db_7,
                 --div--;internal_type=file,
-                    group_file_1, group_file_2, group_file_3, group_file_4,
+                    group_file_1, group_file_2, group_file_3,
                 --div--;internal_type=folder,
                     group_folder_1,
                 --div--;in flex,
