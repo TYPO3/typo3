@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 			backend   : '<%= paths.sysext %>backend/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			flags     : 'bower_components/region-flags/svg/',
-			t3icons   : 'bower_components/wmdbsystems-typo3-icons/dist/'
+			t3icons   : 'bower_components/typo3-icons/dist/'
 		},
 		less: {
 			t3skin: {
