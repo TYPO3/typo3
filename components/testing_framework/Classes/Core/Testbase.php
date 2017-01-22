@@ -16,7 +16,9 @@ namespace TYPO3\Components\TestingFramework\Core;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -555,6 +557,7 @@ class Testbase
 
         foreach ($schemaManager->listTables() as $table) {
             $connection->truncate($table->getName());
+            self::resetTableSequences($connection, $table->getName());
         }
     }
 
@@ -594,12 +597,14 @@ class Testbase
      *
      * @param string $path Absolute path to the XML file containing the data set to load
      * @return void
-     * @throws Exception
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function importXmlDatabaseFixture($path)
     {
         if (!is_file($path)) {
-            throw new Exception(
+            throw new \RuntimeException(
                 'Fixture file ' . $path . ' not found',
                 1376746261
             );
@@ -634,15 +639,62 @@ class Testbase
             }
 
             $tableName = $table->getName();
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($tableName);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
             $connection->insert(
                 $tableName,
                 $insertArray
             );
+            static::resetTableSequences($connection, $tableName);
+
             if (isset($table['id'])) {
                 $elementId = (string)$table['id'];
                 $foreignKeys[$tableName][$elementId] = $connection->lastInsertId($tableName);
+            }
+        }
+    }
+
+    /**
+     * Perform post processing of database tables after an insert has been performed.
+     * Doing this once per insert is rather slow, but due to the soft reference behavior
+     * this needs to be done after every row to ensure consistent results.
+     *
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @param string $tableName
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public static function resetTableSequences(Connection $connection, string $tableName)
+    {
+        if ($connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->getRestrictions()->removeAll();
+            $row = $queryBuilder->select('PGT.schemaname', 'S.relname', 'C.attname', 'T.relname AS tablename')
+                ->from('pg_class', 'S')
+                ->from('pg_depend', 'D')
+                ->from('pg_class', 'T')
+                ->from('pg_attribute', 'C')
+                ->from('pg_tables', 'PGT')
+                ->where(
+                    $queryBuilder->expr()->eq('S.relkind', $queryBuilder->quote('S')),
+                    $queryBuilder->expr()->eq('S.oid', $queryBuilder->quoteIdentifier('D.objid')),
+                    $queryBuilder->expr()->eq('D.refobjid', $queryBuilder->quoteIdentifier('T.oid')),
+                    $queryBuilder->expr()->eq('D.refobjid', $queryBuilder->quoteIdentifier('C.attrelid')),
+                    $queryBuilder->expr()->eq('D.refobjsubid', $queryBuilder->quoteIdentifier('C.attnum')),
+                    $queryBuilder->expr()->eq('T.relname', $queryBuilder->quoteIdentifier('PGT.tablename')),
+                    $queryBuilder->expr()->eq('PGT.tablename', $queryBuilder->quote($tableName))
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
+            if ($row !== false) {
+                $connection->exec(
+                    sprintf(
+                        'SELECT SETVAL(%s, COALESCE(MAX(%s), 0)+1, FALSE) FROM %s',
+                        $connection->quote($row['schemaname'] . '.' . $row['relname']),
+                        $connection->quoteIdentifier($row['attname']),
+                        $connection->quoteIdentifier($row['schemaname'] . '.' . $row['tablename'])
+                    )
+                );
             }
         }
     }
