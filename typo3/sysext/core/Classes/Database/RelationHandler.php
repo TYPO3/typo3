@@ -573,12 +573,14 @@ class RelationHandler
                 $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
             );
         }
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->eq(
-                $uidLocal_field,
-                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-            )
-        );
+        if (MathUtility::canBeInterpretedAsInteger($uid)) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $uidLocal_field,
+                    $queryBuilder->createNamedParameter((int)$uid, \PDO::PARAM_INT)
+                )
+            );
+        }
         $queryBuilder->orderBy($sorting_field);
         $statement = $queryBuilder->execute();
         while ($row = $statement->fetch()) {
