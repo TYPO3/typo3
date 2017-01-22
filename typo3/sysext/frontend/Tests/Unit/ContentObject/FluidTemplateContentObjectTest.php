@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Testcase
@@ -791,5 +793,57 @@ class FluidTemplateContentObjectTest extends \TYPO3\Components\TestingFramework\
             ->method('stdWrap')
             ->with('baz', ['foo' => 'bar']);
         $this->subject->render($configuration);
+    }
+
+    /**
+     * @param TemplateView $viewMock
+     * @param string|null $expectedHeader
+     * @param string|null $expectedFooter
+     * @test
+     * @dataProvider headerAssetDataProvider
+     */
+    public function renderFluidTemplateAssetsIntoPageRendererRendersAndAttachesAssets($viewMock, $expectedHeader, $expectedFooter)
+    {
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->setMethods(['addHeaderData', 'addFooterData'])->getMock();
+        if (!empty(trim($expectedHeader))) {
+            $pageRendererMock->expects($this->once())->method('addHeaderData')->with($expectedHeader);
+        } else {
+            $pageRendererMock->expects($this->never())->method('addHeaderData');
+        }
+        if (!empty(trim($expectedFooter))) {
+            $pageRendererMock->expects($this->once())->method('addFooterData')->with($expectedFooter);
+        } else {
+            $pageRendererMock->expects($this->never())->method('addFooterData');
+        }
+        $subject = $this->getMockBuilder(FluidTemplateContentObject::class)->setMethods(['getPageRenderer'])->disableOriginalConstructor()->getMock();
+        $subject->expects($this->once())->method('getPageRenderer')->willReturn($pageRendererMock);
+        $viewProperty = new \ReflectionProperty($subject, 'view');
+        $viewProperty->setAccessible(true);
+        $viewProperty->setValue($subject, $viewMock);
+
+        $method = new \ReflectionMethod($subject, 'renderFluidTemplateAssetsIntoPageRenderer');
+        $method->setAccessible(true);
+        $method->invoke($subject);
+    }
+
+    /**
+     * @return array
+     */
+    public function headerAssetDataProvider()
+    {
+        $viewWithHeaderData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithHeaderData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
+        $viewWithHeaderData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn(null);
+        $viewWithFooterData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithFooterData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn(null);
+        $viewWithFooterData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $viewWithBothData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithBothData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
+        $viewWithBothData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        return [
+            [$viewWithHeaderData, 'custom-header-data', null],
+            [$viewWithFooterData, null, 'custom-footer-data'],
+            [$viewWithBothData, 'custom-header-data', 'custom-footer-data']
+        ];
     }
 }
