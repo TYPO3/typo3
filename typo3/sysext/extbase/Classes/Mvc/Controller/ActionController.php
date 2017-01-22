@@ -15,11 +15,13 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
@@ -173,6 +175,44 @@ class ActionController extends AbstractController
             $this->initializeView($this->view);
         }
         $this->callActionMethod();
+        $this->renderAssetsForRequest($request);
+    }
+
+    /**
+     * Method which initializes assets that should be attached to the response
+     * for the given $request, which contains parameters that an override can
+     * use to determine which assets to add via PageRenderer.
+     *
+     * This default implementation will attempt to render the sections "HeaderAssets"
+     * and "FooterAssets" from the template that is being rendered, inserting the
+     * rendered content into either page header or footer, as appropriate. Both
+     * sections are optional and can be used one or both in combination.
+     *
+     * You can add assets with this method without worrying about duplicates, if
+     * for example you do this in a plugin that gets used multiple time on a page.
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
+     * @return void
+     */
+    protected function renderAssetsForRequest($request)
+    {
+        if (!$this->view instanceof TemplateView) {
+            // Only TemplateView (from Fluid engine, so this includes all TYPO3 Views based
+            // on TYPO3's AbstractTemplateView) supports renderSection(). The method is not
+            // declared on ViewInterface - so we must assert a specific class. We silently skip
+            // asset processing if the View doesn't match, so we don't risk breaking custom Views.
+            return;
+        }
+        $pageRenderer = $this->objectManager->get(PageRenderer::class);
+        $variables = ['request' => $request, 'arguments' => $this->arguments];
+        $headerAssets = $this->view->renderSection('HeaderAssets', $variables, true);
+        $footerAssets = $this->view->renderSection('FooterAssets', $variables, true);
+        if (!empty(trim($headerAssets))) {
+            $pageRenderer->addHeaderData($headerAssets);
+        }
+        if (!empty(trim($footerAssets))) {
+            $pageRenderer->addFooterData($footerAssets);
+        }
     }
 
     /**

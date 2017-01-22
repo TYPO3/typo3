@@ -14,10 +14,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3Fluid\Fluid\View\AbstractTemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Test case
@@ -538,6 +543,69 @@ class ActionControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\
                     '10' => 'some path'
                 ]
             ],
+        ];
+    }
+
+    /**
+     * @param TemplateView $viewMock
+     * @param string|null $expectedHeader
+     * @param string|null $expectedFooter
+     * @test
+     * @dataProvider headerAssetDataProvider
+     */
+    public function rendersAndAssignsAssetsFromViewIntoPageRenderer($viewMock, $expectedHeader, $expectedFooter)
+    {
+        $this->mockObjectManager = $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->getMock();
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->setMethods(['addHeaderData', 'addFooterData'])->getMock();
+        if (!$viewMock instanceof TemplateView) {
+            $this->mockObjectManager->expects($this->never())->method('get');
+        } else {
+            $this->mockObjectManager->expects($this->any())->method('get')->with(PageRenderer::class)->willReturn($pageRendererMock);
+        }
+        if (!empty(trim($expectedHeader))) {
+            $pageRendererMock->expects($this->once())->method('addHeaderData')->with($expectedHeader);
+        } else {
+            $pageRendererMock->expects($this->never())->method('addHeaderData');
+        }
+        if (!empty(trim($expectedFooter))) {
+            $pageRendererMock->expects($this->once())->method('addFooterData')->with($expectedFooter);
+        } else {
+            $pageRendererMock->expects($this->never())->method('addFooterData');
+        }
+        $requestMock = $this->getMockBuilder(RequestInterface::class)->getMockForAbstractClass();
+        $subject = new ActionController();
+        $viewProperty = new \ReflectionProperty($subject, 'view');
+        $viewProperty->setAccessible(true);
+        $viewProperty->setValue($subject, $viewMock);
+        $objectManagerProperty = new \ReflectionProperty($subject, 'objectManager');
+        $objectManagerProperty->setAccessible(true);
+        $objectManagerProperty->setValue($subject, $this->mockObjectManager);
+
+        $method = new \ReflectionMethod($subject, 'renderAssetsForRequest');
+        $method->setAccessible(true);
+        $method->invokeArgs($subject, [$requestMock]);
+    }
+
+    /**
+     * @return array
+     */
+    public function headerAssetDataProvider()
+    {
+        $viewWithHeaderData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithHeaderData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
+        $viewWithHeaderData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn(null);
+        $viewWithFooterData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithFooterData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn(null);
+        $viewWithFooterData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $viewWithBothData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithBothData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
+        $viewWithBothData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $invalidView = $this->getMockBuilder(AbstractTemplateView::class)->disableOriginalConstructor()->getMockForAbstractClass();
+        return [
+            [$viewWithHeaderData, 'custom-header-data', null],
+            [$viewWithFooterData, null, 'custom-footer-data'],
+            [$viewWithBothData, 'custom-header-data', 'custom-footer-data'],
+            [$invalidView, null, null]
         ];
     }
 }
