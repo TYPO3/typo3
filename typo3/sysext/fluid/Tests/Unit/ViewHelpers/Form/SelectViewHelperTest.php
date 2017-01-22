@@ -190,25 +190,6 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function anEmptyOptionTagIsRenderedIfOptionsArrayIsEmptyToAssureXhtmlCompatibility()
-    {
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value=""></option>' . chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
-
-        $this->arguments['options'] = [];
-        $this->arguments['value'] = 'value2';
-        $this->arguments['name'] = 'myName';
-        $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
-    }
-
-    /**
-     * @test
-     */
     public function OrderOfOptionsIsNotAlteredByDefault()
     {
         $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');

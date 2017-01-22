@@ -126,9 +126,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         }
         $this->tag->addAttribute('name', $name);
         $options = $this->getOptions();
-        if (empty($options)) {
-            $options = ['' => ''];
-        }
 
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
@@ -163,6 +160,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
             $tagContent .= $childContent;
         }
 
+        $this->tag->forceClosingTag(true);
         $this->tag->setContent($tagContent);
         $content .= $this->tag->render();
         return $content;
