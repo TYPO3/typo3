@@ -22,8 +22,9 @@
             </span></div>
         </f:then>
         <f:else>
-            <h3><core:icon identifier="status-dialog-notification" /><f:translate key="{LLPrefix}noConstants"/></h3>
-            <div><f:translate key="{LLPrefix}noConstantsDescription"/></div>
+            <f:be.infobox title="{f:translate(key:'{LLPrefix}noConstants')}">
+                {f:translate(key:'{LLPrefix}noConstantsDescription')}
+            </f:be.infobox>
         </f:else>
     </f:if>
     <div style="padding-top: 15px;"></div>
