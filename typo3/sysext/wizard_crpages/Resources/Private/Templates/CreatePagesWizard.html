@@ -69,7 +69,7 @@
 <f:section name="FormLine">
     <div class="form-section" id="form-line-{line.index}">
         <div class="row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-xs-8">
                 <label for="page_new_{line.index}">
                     <f:translate key="{line.llprefix}wiz_newPages_page"/> {line.label}:
                 </label>
@@ -77,8 +77,8 @@
                     <input class="form-control" type="text" id="page_new_{line.index}" name="data[pages][NEW{line.index}][title]" />
                 </div>
             </div>
-            <div class="form-group col-sm-6">
-                <label>
+            <div class="form-group col-xs-4">
+                <label for="page_new_select_{line.index}">
                     <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type"/>
                 </label>
                 <div class="form-control-wrap">
@@ -86,7 +86,7 @@
                         <div id="page_new_icon_{line.index}" class="input-group-addon input-group-icon">
                             <core:iconForRecord table="pages" row="{id: '0'}" />
                         </div>
-                        <select class="form-control form-control-adapt t3js-wizardcrpages-select-doktype" name="data[pages][NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
+                        <select id="page_new_select_{line.index}" class="form-control form-control-adapt t3js-wizardcrpages-select-doktype" name="data[pages][NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
                             <f:for each="{line.typeselect}" as="typegroup" key="group">
                                 <optgroup label="{f:translate(key: '{group}')}">
                                     <f:for each="{typegroup}" as="type">
