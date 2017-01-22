@@ -3275,7 +3275,7 @@ class BackendUtility
             return '
 
 				<!-- Function Menu of module -->
-				<select name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '">
+				<select class="form-control" name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '">
 					' . implode('
 					', $options) . '
 				</select>
