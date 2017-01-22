@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
@@ -131,6 +132,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] - 60,
                 'content' => 'myCachedContent',
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -155,6 +159,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
                 'content' => 'myCachedContent',
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -179,6 +186,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
                 'content' => gzcompress('myCachedContent'),
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -205,6 +215,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
                 'content' => gzcompress(''),
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -245,6 +258,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] - 60,
                 'content' => 'myCachedContent',
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -269,6 +285,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
                 'content' => 'myCachedContent',
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -307,6 +326,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
                 'content' => 'myCachedContent',
+            ],
+            [
+                'content' => Connection::PARAM_LOB
             ]
         );
 
@@ -332,7 +354,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Components\TestingFramework\Co
                 ['myIdentifier', $GLOBALS['EXEC_TIME'] + 60, 'myCachedContent'],
                 ['otherIdentifier', $GLOBALS['EXEC_TIME'] + 60, 'otherCachedContent'],
             ],
-            ['identifier', 'expires', 'content']
+            ['identifier', 'expires', 'content'],
+            [
+                'content' => Connection::PARAM_LOB
+            ]
         );
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
