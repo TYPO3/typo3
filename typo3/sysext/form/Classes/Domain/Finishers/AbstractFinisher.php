@@ -161,34 +161,23 @@ abstract class AbstractFinisher implements FinisherInterface
         }
 
         $formRuntime = $this->finisherContext->getFormRuntime();
-        $optionToCompare = $optionValue;
 
         // You can encapsulate a option value with {}.
         // This enables you to access every getable property from the
         // TYPO3\CMS\Form\Domain\Runtime.
         //
         // For example: {formState.formValues.<elemenIdentifier>}
-        // This is equal to "$formRuntime->getFormState()->getFormValues()[<elemenIdentifier>]"
+        // or {<elemenIdentifier>}
+        //
+        // Both examples are equal to "$formRuntime->getFormState()->getFormValues()[<elemenIdentifier>]"
+        // If the value is not a string nothing will be replaced.
         $optionValue = preg_replace_callback('/{([^}]+)}/', function ($match) use ($formRuntime) {
-            return ObjectAccess::getPropertyPath($formRuntime, $match[1]);
-        }, $optionValue);
-
-        if ($optionToCompare === $optionValue) {
-
-            // This is just a shortcut for a {formState.formValues.<elementIdentifier>} notation.
-            // If one of the finisher option values is equal
-            // to a identifier from the form definition then
-            // the value of the submitted form element is used
-            // insteed.
-            // Lets say you have a textfield in your form with the
-            // identifier "Text1". If you put "Text1"
-            // in the email finisher option "subject" then the submited value
-            // from the "Text1" element is used as the email subject.
-            $formValues = $this->finisherContext->getFormValues();
-            if (!is_bool($optionValue) && array_key_exists($optionValue, $formValues)) {
-                $optionValue = $formRuntime[$optionValue];
+            $value = ObjectAccess::getPropertyPath($formRuntime, $match[1]);
+            if (!is_string($value)) {
+                $value = '{' . $match[1] . '}';
             }
-        }
+            return $value;
+        }, $optionValue);
 
         if (isset($this->options['translation']['translationFile'])) {
             $optionValue = TranslationService::getInstance()->translateFinisherOption(
