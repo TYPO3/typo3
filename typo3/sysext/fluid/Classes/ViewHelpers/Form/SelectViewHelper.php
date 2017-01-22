@@ -149,6 +149,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         }
 
         $this->viewHelperVariableContainer->addOrUpdate(static::class, 'selectedValue', $this->getSelectedValue());
+        $prependContent = $this->renderPrependOptionTag();
         $tagContent = $this->renderOptionTags($options);
         $childContent = $this->renderChildren();
         $this->viewHelperVariableContainer->remove(static::class, 'selectedValue');
@@ -158,11 +159,28 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         } else {
             $tagContent .= $childContent;
         }
+        $tagContent = $prependContent . $tagContent;
 
         $this->tag->forceClosingTag(true);
         $this->tag->setContent($tagContent);
         $content .= $this->tag->render();
         return $content;
+    }
+
+   /*
+     * Render prepended option tag
+     *
+     * @return string rendered prepended empty option
+     */
+    protected function renderPrependOptionTag()
+    {
+        $output = '';
+        if ($this->hasArgument('prependOptionLabel')) {
+            $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
+            $label = $this->arguments['prependOptionLabel'];
+            $output .= $this->renderOptionTag($value, $label, false) . LF;
+        }
+        return $output;
     }
 
     /**
@@ -174,11 +192,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     protected function renderOptionTags($options)
     {
         $output = '';
-        if ($this->hasArgument('prependOptionLabel')) {
-            $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
-            $label = $this->arguments['prependOptionLabel'];
-            $output .= $this->renderOptionTag($value, $label, false) . LF;
-        }
         foreach ($options as $value => $label) {
             $isSelected = $this->isSelected($value);
             $output .= $this->renderOptionTag($value, $label, $isSelected) . LF;
