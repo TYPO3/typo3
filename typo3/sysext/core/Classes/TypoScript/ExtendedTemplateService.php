@@ -1071,6 +1071,8 @@ class ExtendedTemplateService extends TemplateService
                             } else {
                                 $retArr['params'] = GeneralUtility::intExplode('-', $retArr['paramstr']);
                             }
+                            $retArr['min'] = $retArr['params'][0];
+                            $retArr['max'] = $retArr['params'][1];
                             $retArr['paramstr'] = $retArr['params'][0] . ' - ' . $retArr['params'][1];
                             break;
                         case 'options':
@@ -1168,12 +1170,6 @@ class ExtendedTemplateService extends TemplateService
                         $head = trim($label_parts[0]);
                         $body = '';
                     }
-                    if (strlen($head) > 35) {
-                        if (!$body) {
-                            $body = $head;
-                        }
-                        $head = GeneralUtility::fixed_lgd_cs($head, 35);
-                    }
                     $typeDat = $this->ext_getTypeData($params['type']);
                     $p_field = '';
                     $raname = substr(md5($params['name']), 0, 10);
@@ -1184,17 +1180,26 @@ class ExtendedTemplateService extends TemplateService
                     switch ($typeDat['type']) {
                         case 'int':
                         case 'int+':
+                            $additionalAttributes = '';
                             if ($typeDat['paramstr']) {
                                 $hint = ' Range: ' . $typeDat['paramstr'];
                             } elseif ($typeDat['type'] === 'int+') {
                                 $hint = ' Range: 0 - ';
+                                $typeDat['min'] = 0;
                             } else {
                                 $hint = ' (Integer)';
                             }
 
+                            if (isset($typeDat['min'])) {
+                                $additionalAttributes .= ' min="' . (int)$typeDat['min'] . '" ';
+                            }
+                            if (isset($typeDat['max'])) {
+                                $additionalAttributes .= ' max="' . (int)$typeDat['max'] . '" ';
+                            }
+
                             $p_field =
-                                '<input class="form-control" id="' . $idName . '" type="text"'
-                                . ' name="' . $fN . '" value="' . $fV . '"' . ' onChange="uFormUrl(' . $aname . ')" />';
+                                '<input class="form-control" id="' . $idName . '" type="number"'
+                                . ' name="' . $fN . '" value="' . $fV . '"' . ' onChange="uFormUrl(' . $aname . ')"' . $additionalAttributes . ' />';
                             break;
                         case 'color':
                             $p_field = '
@@ -1280,8 +1285,6 @@ class ExtendedTemplateService extends TemplateService
                             $userFunctionParams = ['fieldName' => $fN, 'fieldValue' => $fV];
                             $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
                             break;
-                        case 'small':
-
                         default:
                             $p_field = '<input class="form-control" id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"'
                                 . ' onChange="uFormUrl(' . $aname . ')" />';
