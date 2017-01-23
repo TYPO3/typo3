@@ -1001,7 +1001,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 			'
             );
             // Setting up the context sensitive menu:
-            $this->taskObject->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            $this->taskObject->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             // Begin to compile the whole page
             $content .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">' . $dblist->HTMLcode . '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" />
 						</form>';

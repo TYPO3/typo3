@@ -165,7 +165,13 @@ return [
     // Load context menu for
     'contextmenu' => [
         'path' => '/context-menu',
-        'target' => Controller\ClickMenuController::class . '::getContextMenuAction'
+        'target' => Controller\ContextMenuController::class . '::getContextMenuAction'
+    ],
+
+    // Load context menu for
+    'contextmenu_clipboard' => [
+        'path' => '/context-menu/clipboard',
+        'target' => Controller\ContextMenuController::class . '::clipboardAction'
     ],
 
     // Process data handler commands

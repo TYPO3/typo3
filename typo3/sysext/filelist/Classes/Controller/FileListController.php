@@ -291,7 +291,7 @@ class FileListController extends ActionController
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileSearch');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->registerDocHeaderButtons();
     }
 

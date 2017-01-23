@@ -825,7 +825,7 @@ class PageLayoutController
     public function renderContent()
     {
         $this->moduleTemplate->getPageRenderer()->loadJquery();
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         /** @var $dbList \TYPO3\CMS\Backend\View\PageLayoutView */
         $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
         $dbList->thumbs = $this->imagemode;

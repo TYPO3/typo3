@@ -85,7 +85,7 @@ class OuterWrapContainer extends AbstractContainer
                 $pageTitle = sprintf($label, $tableTitle, $pageTitle);
             }
         } else {
-            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid'], 1, '', '+copy,info,edit,view');
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
             $newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
 
             // @todo: getRecordTitlePrep applies an htmlspecialchars here

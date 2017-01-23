@@ -35,4 +35,6 @@ if (TYPO3_MODE === 'BE') {
             'navigationComponentId' => 'typo3-pagetree'
         ]
     );
+
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1486418730] = \TYPO3\CMS\Beuser\ContextMenu\ItemProvider::class;
 }

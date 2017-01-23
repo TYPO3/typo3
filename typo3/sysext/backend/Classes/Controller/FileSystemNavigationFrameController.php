@@ -152,7 +152,7 @@ class FileSystemNavigationFrameController
 
         // Adding javascript for drag & drop activation and highlighting
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
             DragDrop.table = "folders";
 			Tree.registerDragDropHandlers();

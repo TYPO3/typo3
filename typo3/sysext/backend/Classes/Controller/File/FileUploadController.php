@@ -109,7 +109,7 @@ class FileUploadController extends AbstractModule
         }
 
         // Setting up the context sensitive menu
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // building pathInfo for metaInformation
         $pathInfo = [

@@ -796,7 +796,7 @@ class EditDocumentController extends AbstractModule
             $javascript . $previewCode
         );
         // Setting up the context sensitive menu:
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         $this->emitFunctionAfterSignal(__FUNCTION__);
     }

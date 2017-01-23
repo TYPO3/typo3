@@ -69,7 +69,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper
     {
         $id = GeneralUtility::_GP('id');
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
-        // Add icon with clickmenu, etc:
+        // Add icon with context menu, etc:
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($pageRecord['uid']) {
@@ -79,7 +79,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper
             // Make Icon:
             $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
 
-            // Setting icon with clickmenu + uid
+            // Setting icon with context menu + uid
             $theIcon .= ' <em>[PID: ' . $pageRecord['uid'] . ']</em>';
         } else {
             // On root-level of page tree

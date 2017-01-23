@@ -249,9 +249,6 @@
 			<trans-unit id="2_selectPosition">
 				<source>2: Select position:</source>
 			</trans-unit>
-			<trans-unit id="CM_editAccess">
-				<source>Visibility settings</source>
-			</trans-unit>
 			<trans-unit id="CM_history">
 				<source>History/Undo</source>
 			</trans-unit>

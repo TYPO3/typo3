@@ -165,7 +165,7 @@ class NewContentElementController extends AbstractModule
         // We keep this here in case somebody relies on it in a hook or alike
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         // Setting up the context sensitive menu:
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         // Getting the current page and receiving access information (used in main())
         $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);

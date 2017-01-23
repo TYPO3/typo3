@@ -474,7 +474,7 @@ define(['jquery',
 
 				// replace file icon
 				if (data.upload[0].icon) {
-					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.upload[0].id + '" data-listframe="1">' + data.upload[0].icon + '&nbsp;</span></a>');
+					me.$iconCol.html('<a href="#" class="t3js-contextmenutrigger" data-uid="' + data.upload[0].id + '" data-table="sys_file">' + data.upload[0].icon + '&nbsp;</span></a>');
 				}
 
 				if (me.dragUploader.irreObjectUid) {

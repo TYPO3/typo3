@@ -112,7 +112,7 @@ class InfoModuleController extends BaseScriptClass
 				'
             );
             // Setting up the context sensitive menu:
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
             $this->view = $this->getFluidTemplateObject();
             $this->view->assign('moduleName', BackendUtility::getModuleUrl($this->moduleName));

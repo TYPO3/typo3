@@ -1620,10 +1620,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $allowDragAndDrop = $this->isDragAndDropAllowed($row);
         $additionalIcons = [];
         if ($row['sys_language_uid'] > 0 && $this->checkIfTranslationsExistInLanguage([], (int)$row['sys_language_uid'])) {
-            $disabledClickMenuItems = 'new,move';
             $allowDragAndDrop = false;
         }
-        $additionalIcons[] = $this->getIcon('tt_content', $row, $disabledClickMenuItems) . ' ';
+        $additionalIcons[] = $this->getIcon('tt_content', $row) . ' ';
         $additionalIcons[] = $langMode ? $this->languageFlag($row['sys_language_uid'], false) : '';
         // Get record locking status:
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
@@ -1791,10 +1790,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 $icon = BackendUtility::wrapClickMenuOnIcon(
                                     $icon,
                                     $tableName,
-                                    $shortcutRecord['uid'],
-                                    1,
-                                    '',
-                                    '+copy,info,edit,view'
+                                    $shortcutRecord['uid']
                                 );
                                 $shortcutContent[] = $icon
                                     . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
@@ -2218,8 +2214,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * @return void
      *
      * @see \TYPO3\CMS\Recordlist\RecordList::main()
-     * @see \TYPO3\CMS\Backend\Controller\ClickMenuController::main()
-     * @see \TYPO3\CMS\Filelist\Controller\FileListController::main()
+     * @see \TYPO3\CMS\Backend\Controller\ContextMenuController::clipboardAction()
+     * @see \TYPO3\CMS\Filelist\Controller\FileListController::indexAction()
      */
     protected function initializeClipboard()
     {
@@ -2334,7 +2330,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $this->counter++;
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
-            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid'], true, '', $enabledClickMenuItems);
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }
         return $icon;
     }

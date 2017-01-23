@@ -125,7 +125,7 @@ class CreateFolderController extends AbstractModule
             'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
         ];
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->addJavaScriptCode(
             'CreateFolderInlineJavaScript',
             'var path = "' . $this->target . '";

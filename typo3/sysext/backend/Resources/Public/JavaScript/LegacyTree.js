@@ -62,10 +62,17 @@ define(['jquery'], function($) {
 	DragDrop.dropElement = function(event) {
 		var dropID = DragDrop.getIdFromEvent(event);
 		if ((DragDrop.dragID) && (DragDrop.dragID !== dropID)) {
-			var parameters = 'dragDrop=' + DragDrop.table +
-					'&srcId=' + DragDrop.dragID +
-					'&dstId=' + dropID;
-			TYPO3.ClickMenu.fetch(parameters);
+			var dragID = DragDrop.dragID;
+			var table = DragDrop.table;
+			var parameters = 'table=' + table + '-drag' +
+				'&uid=' + dragID +
+				'&dragDrop=' + table +
+				'&srcId=' + dragID +
+				'&dstId=' + dropID;
+			require(['TYPO3/CMS/Backend/ContextMenu'], function (ContextMenu) {
+				ContextMenu.record = {table: decodeURIComponent(table), uid: decodeURIComponent(dragID)};
+				ContextMenu.fetch(parameters);
+			});
 		}
 		DragDrop.cancelDragEvent();
 		return false;

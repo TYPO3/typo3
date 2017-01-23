@@ -518,7 +518,7 @@ class FileList extends AbstractRecordList
             // The icon with link
             $theIcon = '<span title="' . htmlspecialchars($folderName) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL)->render() . '</span>';
             if (!$isLocked && $this->clickMenus) {
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
             }
 
             // Preparing and getting the data-array
@@ -668,7 +668,7 @@ class FileList extends AbstractRecordList
             $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . (int)$fileObject->getUid() . ']') . '">'
                 . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
             if ($this->clickMenus) {
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
             }
             // Preparing and getting the data-array
             $theData = [];

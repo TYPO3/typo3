@@ -4,7 +4,6 @@ filteringtree.js
 nodeui.js
 deletiondropzone.js
 toppanel.js
-contextmenu.js
 actions.js
 Ext.ux.state.TreePanel.js
 app.js

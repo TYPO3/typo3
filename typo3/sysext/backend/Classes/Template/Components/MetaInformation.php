@@ -90,7 +90,7 @@ class MetaInformation
     }
 
     /**
-     * Setting page icon with clickMenu + uid for docheader
+     * Setting page icon with context menu + uid for docheader
      *
      * @return string Record info
      */
@@ -105,7 +105,7 @@ class MetaInformation
         $uid = '';
         $title = '';
         $additionalInfo = (!empty($pageRecord['_additional_info']) ? $pageRecord['_additional_info'] : '');
-        // Add icon with clickMenu, etc:
+        // Add icon with context menu, etc:
         // If there IS a real page
         if (is_array($pageRecord) && $pageRecord['uid']) {
             $toolTip = BackendUtility::getRecordToolTip($pageRecord, 'pages');
@@ -134,7 +134,7 @@ class MetaInformation
                         Icon::SIZE_SMALL
                     )->render() . '</span>';
                 }
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, $pageRecord['combined_identifier']);
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'sys_file', $pageRecord['combined_identifier']);
             } catch (ResourceDoesNotExistException $e) {
                 $theIcon = '';
             }
@@ -153,7 +153,7 @@ class MetaInformation
             $uid = '0';
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
-        // Setting icon with clickMenu + uid
+        // Setting icon with context menu + uid
         return $theIcon .
             ' <strong>' . htmlspecialchars($title) . ($uid !== '' ? '&nbsp;[' . $uid . ']' : '') . '</strong>' .
             (!empty($additionalInfo) ? ' ' . htmlspecialchars($additionalInfo) : '');

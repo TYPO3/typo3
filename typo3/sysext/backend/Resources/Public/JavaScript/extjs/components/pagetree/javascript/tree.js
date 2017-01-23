@@ -92,13 +92,6 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	commandProvider : null,
 
 	/**
-	 * Context menu provider
-	 *
-	 * @cfg {Object}
-	 */
-	contextMenuProvider: null,
-
-	/**
 	 * Id of the deletion drop zone if any
 	 *
 	 * @cfg {String}
@@ -180,6 +173,11 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 					return false;
 				}
 
+				if (event.target.tagName === 'IMG') {
+					// Stop this event if click event was triggered via the node icon to prevent loading the action of the node
+					return false;
+				}
+
 				this.clicksRegistered = 0;
 				if (this.commandProvider.singleClick) {
 					this.commandProvider.singleClick(node, this);
@@ -198,12 +196,20 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 			// prevents label edit on a selected node
 		beforeclick: {
 			fn: function(node, event) {
-				if (!this.clicksRegistered && this.getSelectionModel().isSelected(node)) {
-					node.fireEvent('click', node, event);
+				if (event.target.tagName === 'IMG') {
+					// Node icon was clicked
+					// This is a workaround to prevent TreeEditor being triggered, which also requires a patch within TreeEditor
+					node.attributes.editable = false;
+				} else {
+					node.attributes.editable = true;
+
+					if (!this.clicksRegistered && this.getSelectionModel().isSelected(node)) {
+						node.fireEvent('click', node, event);
+						++this.clicksRegistered;
+						return false;
+					}
 					++this.clicksRegistered;
-					return false;
 				}
-				++this.clicksRegistered;
 			}
 		}
 	},
@@ -228,10 +234,6 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 		if (this.enableDD) {
 			this.dragConfig = {ddGroup: this.ddGroup};
 			this.enableDragAndDrop();
-		}
-
-		if (this.contextMenuProvider) {
-			this.enableContextMenu();
 		}
 
 		TYPO3.Components.PageTree.Tree.superclass.initComponent.apply(this, arguments);
@@ -318,45 +320,6 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 				}
 			}
 		});
-	},
-
-	/**
-	 * Enables the context menu feature
-	 *
-	 * return {void}
-	 */
-	enableContextMenu: function() {
-		this.contextMenu = new TYPO3.Components.PageTree.ContextMenu();
-
-		this.on('contextmenu', function(node, event) {
-			this.openContextMenu(node, event);
-		});
-	},
-
-	/**
-	 * Open a context menu for the given node
-	 *
-	 * @param {Ext.tree.TreeNode} node
-	 * @param {Ext.EventObject} event
-	 * return {void}
-	 */
-	openContextMenu: function(node, event) {
-		var attributes = Ext.apply(node.attributes.nodeData, {
-			t3ContextInfo: node.ownerTree.t3ContextInfo
-		});
-
-		this.contextMenuProvider.getActionsForNodeArray(
-			attributes,
-			function(configuration) {
-				this.contextMenu.removeAll();
-				this.contextMenu.fill(node, this, configuration);
-				if (this.contextMenu.items.length) {
-					this.contextMenu.showAt(event.getXY());
-
-				}
-			},
-			this
-		);
 	},
 
 	/**

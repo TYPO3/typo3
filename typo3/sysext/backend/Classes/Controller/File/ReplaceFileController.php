@@ -136,7 +136,7 @@ class ReplaceFileController extends AbstractModule
             'combined_identifier' => $this->fileOrFolderObject->getCombinedIdentifier(),
         ];
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->addJavaScriptCode(
             'ReplaceFileOnlineJavaScript',
             'function backToList() {top.goToModule("file_FilelistList");}'

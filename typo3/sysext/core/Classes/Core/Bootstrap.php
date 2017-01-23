@@ -540,10 +540,6 @@ class Bootstrap
                 'TYPO3.Components.PageTree.Commands',
                 \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class
             );
-            ExtensionManagementUtility::registerExtDirectComponent(
-                'TYPO3.Components.PageTree.ContextMenuDataProvider',
-                \TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class
-            );
         }
         return $this;
     }

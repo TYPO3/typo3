@@ -9909,6 +9909,7 @@ div#contentMenu1 {
   min-width: 150px;
 }
 .context-menu .list-group-item {
+  cursor: pointer;
   padding: 5px;
   border-bottom-color: transparent;
   border-top-color: transparent;

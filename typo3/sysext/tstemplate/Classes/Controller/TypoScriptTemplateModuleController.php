@@ -203,7 +203,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 .tst-analyzer-options { margin:5px 0; }'
             );
             // Setting up the context sensitive menu:
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             // Build the module content
             $view->assign('actionName', $aHref);
             $view->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());

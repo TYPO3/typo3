@@ -3037,21 +3037,17 @@ class BackendUtility
      * Returns $str wrapped in a link which will activate the context sensitive
      * menu for the record ($table/$uid) or file ($table = file)
      * The link will load the top frame with the parameter "&item" which is the table, uid
-     * and listFrame arguments imploded by "|": rawurlencode($table.'|'.$uid.'|'.$listFr)
+     * and context arguments imploded by "|": rawurlencode($table.'|'.$uid.'|'.$context)
      *
      * @param string $content String to be wrapped in link, typ. image tag.
      * @param string $table Table name/File path. If the icon is for a database
      * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
      * the absolute filepath
-     * @param int $uid If icon is for database record this is the UID for the
-     * record from $table
-     * @param bool $listFrame Tells the top frame script that the link is coming
-     * from a "list" frame which means a frame from within the backend content frame.
-     * @param string $addParams Additional GET parameters for the link to the
-     * ClickMenu AJAX request
-     * @param string $enDisItems Enable / Disable click menu items.
-     * Example: "+new,view" will display ONLY these two items (and any spacers
-     * in between), "new,view" will display all BUT these two items.
+     * @param int|string $uid If icon is for database record this is the UID for the
+     * record from $table or identifier for sys_file record
+     * @param string $context Set tree if menu is called from tree view
+     * @param string $_addParams NOT IN USE
+     * @param string $_enDisItems NOT IN USE
      * @param bool $returnTagParameters If set, will return only the onclick
      * JavaScript, not the whole link.
      *
@@ -3061,18 +3057,16 @@ class BackendUtility
         $content,
         $table,
         $uid = 0,
-        $listFrame = true,
-        $addParams = '',
-        $enDisItems = '',
+        $context = '',
+        $_addParams = '',
+        $_enDisItems = '',
         $returnTagParameters = false
     ) {
         $tagParameters = [
-            'class' => 't3-js-clickmenutrigger',
+            'class' => 't3js-contextmenutrigger',
             'data-table' => $table,
-            'data-uid' => (int)$uid !== 0 ? (int)$uid : '',
-            'data-listframe' => $listFrame,
-            'data-iteminfo' => str_replace('+', '%2B', $enDisItems),
-            'data-parameters' => $addParams,
+            'data-uid' => $uid,
+            'data-context' => $context
         ];
 
         if ($returnTagParameters) {

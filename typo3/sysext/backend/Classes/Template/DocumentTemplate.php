@@ -1125,7 +1125,7 @@ function jumpToUrl(URL) {
     {
         GeneralUtility::logDeprecatedFunction();
         $this->pageRenderer->loadJquery();
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
     }
 
     /**
@@ -1453,14 +1453,14 @@ function jumpToUrl(URL) {
     }
 
     /**
-     * Setting page icon with clickmenu + uid for docheader
+     * Setting page icon with context menu + uid for docheader
      *
      * @param array $pageRecord Current page
      * @return string Page info
      */
     protected function getPageInfo($pageRecord)
     {
-        // Add icon with clickmenu, etc:
+        // Add icon with context menu, etc:
         // If there IS a real page
         if (is_array($pageRecord) && $pageRecord['uid']) {
             $alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
@@ -1481,7 +1481,7 @@ function jumpToUrl(URL) {
             $uid = '0';
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
-        // Setting icon with clickmenu + uid
+        // Setting icon with context menu + uid
         $pageInfo = $theIcon . '<strong>' . htmlspecialchars($title) . '&nbsp;[' . $uid . ']</strong>';
         return $pageInfo;
     }

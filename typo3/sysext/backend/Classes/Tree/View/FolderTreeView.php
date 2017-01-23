@@ -179,7 +179,9 @@ class FolderTreeView extends AbstractTreeView
         if (!$this->ext_IconMode) {
             // Check storage access to wrap with click menu
             if (!$folderObject instanceof InaccessibleFolder) {
-                $theFolderIcon = BackendUtility::wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
+                $tableName = $this->getTableNameForClickMenu($folderObject);
+                $theFolderIcon = BackendUtility::wrapClickMenuOnIcon($icon, $tableName, $folderObject->getCombinedIdentifier(), 'tree');
+
             }
         } elseif ($this->ext_IconMode === 'titlelink') {
             $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ',' . $this->bank . ');';
@@ -205,7 +207,8 @@ class FolderTreeView extends AbstractTreeView
             return $title;
         }
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
-        $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', true);
+        $tableName = $this->getTableNameForClickMenu($folderObject);
+        $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', $tableName, $folderObject->getCombinedIdentifier(), 'tree', '', '', true);
 
         return '<a href="#" title="' . htmlspecialchars(strip_tags($title)) . '" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
     }
@@ -552,6 +555,24 @@ class FolderTreeView extends AbstractTreeView
         // Finally close the first ul
         $out .= '</ul>';
         return $out;
+    }
+
+    /**
+     * Returns table name for click menu
+     *
+     * @param Folder $folderObject
+     * @return string
+     */
+    protected function getTableNameForClickMenu(Folder $folderObject)
+    {
+        if (strpos($folderObject->getRole(), FolderInterface::ROLE_MOUNT) !== false) {
+            $tableName = 'sys_filemounts';
+        } elseif ($folderObject->getIdentifier() === $folderObject->getStorage()->getRootLevelFolder()->getIdentifier()) {
+            $tableName = 'sys_file_storage';
+        } else {
+            $tableName = 'sys_file';
+        }
+        return $tableName;
     }
 
     /**

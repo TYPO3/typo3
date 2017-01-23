@@ -118,7 +118,7 @@ class RenameFileController extends AbstractModule
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
 
         // Setting up the context sensitive menu
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // Add javaScript
         $this->moduleTemplate->addJavaScriptCode(

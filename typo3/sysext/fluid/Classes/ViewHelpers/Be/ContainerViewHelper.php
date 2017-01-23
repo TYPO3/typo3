@@ -97,7 +97,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         // Load various standard libraries
         if ($enableClickMenu) {
             $pageRenderer->loadJquery();
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         }
         if ($loadExtJs) {
             $pageRenderer->loadExtJS(true, $loadExtJsTheme);

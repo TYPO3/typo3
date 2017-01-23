@@ -37289,7 +37289,6 @@ Ext.extend(Ext.tree.TreeEditor, Ext.Editor, {
     beforeNodeClick : function(node, e){
         clearTimeout(this.autoEditTimer);
         if(this.tree.getSelectionModel().isSelected(node)){
-            e.stopEvent();
             return this.triggerEdit(node);
         }
     },

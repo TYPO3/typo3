@@ -168,7 +168,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Setting up the context sensitive menu:
         $this->getPageRenderer()->loadJquery();
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         // Getting input data:
         $this->id = (int)GeneralUtility::_GP('id');
 
