@@ -378,7 +378,7 @@ class GraphicalFunctions
             $this->NO_IM_EFFECTS = 0;
             $this->V5_EFFECTS = 1;
             if ($gfxConf['processor_effects'] > 0) {
-                $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . (int)$gfxConf['jpg_quality'] . $this->v5_sharpen(10);
+                $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality . $this->v5_sharpen(10);
             }
         }
         // Secures that images are not scaled up.
