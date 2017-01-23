@@ -417,7 +417,7 @@ class ReferenceIndex
             'workspace' => $this->getWorkspaceId(),
             'ref_table' => $ref_table,
             'ref_uid' => $ref_uid,
-            'ref_string' => $ref_string
+            'ref_string' => mb_substr($ref_string, 0, 1024)
         ];
     }
 

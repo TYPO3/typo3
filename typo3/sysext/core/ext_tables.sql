@@ -580,7 +580,7 @@ CREATE TABLE sys_refindex (
 	workspace int(11) DEFAULT '0' NOT NULL,
 	ref_table varchar(255) DEFAULT '' NOT NULL,
 	ref_uid int(11) DEFAULT '0' NOT NULL,
-	ref_string varchar(200) DEFAULT '' NOT NULL,
+	ref_string varchar(1024) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (hash),
 	KEY lookup_rec (tablename,recuid),
