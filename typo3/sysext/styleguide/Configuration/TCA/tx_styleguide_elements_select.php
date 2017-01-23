@@ -129,7 +129,7 @@ return [
         ],
         'select_single_5' => [
             'exclude' => 1,
-            'label' => 'select_single_5 showIconTable=true, items with icons',
+            'label' => 'select_single_5 selectIcons, items with icons',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -137,29 +137,16 @@ return [
                     ['foo 1', 'foo1', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                     ['foo 2', 'foo2', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                 ],
-                'showIconTable' => true,
-            ],
-        ],
-        'select_single_6' => [
-            'exclude' => 1,
-            'label' => 'select_single_6 selicon_cols=3, showIconTable=true',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['foo 1', 'foo1', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 2', 'foo2', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 3', 'foo3', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 4', 'foo4', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 5', 'foo5', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                'fieldWizards' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
                 ],
-                'showIconTable' => true,
-                'selicon_cols' => 3,
             ],
         ],
         'select_single_7' => [
             'exclude' => 1,
-            'label' => 'select_single_7 fileFolder, dummy first entry, showIconTable=true',
+            'label' => 'select_single_7 fileFolder, dummy first entry, selectIcons',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -169,7 +156,11 @@ return [
                 'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
                 'fileFolder_extList' => 'svg',
                 'fileFolder_recursions' => 1,
-                'showIconTable' => true,
+                'fieldWizards' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
             ],
         ],
         'select_single_8' => [
@@ -223,8 +214,12 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'showIconTable' => true,
                 'foreign_table' => 'tx_styleguide_elements_select_single_12_foreign',
+                'fieldWizards' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
             ],
         ],
 
@@ -392,13 +387,13 @@ return [
                 'autoSizeMax' => 20,
                 'fieldControls' => [
                     'editPopup' => [
-                        'renderType' => 'editPopup',
+                        'disabled' => false,
                     ],
                     'addRecord' => [
-                        'renderType' => 'addRecord',
+                        'disabled' => false,
                     ],
                     'listModule' => [
-                        'renderType' => 'listModule',
+                        'disabled' => false,
                     ],
                 ],
             ],
@@ -761,7 +756,7 @@ return [
             'showitem' => '
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
-                    select_single_6, select_single_7, select_single_12, select_single_8, select_single_10,
+                    select_single_7, select_single_12, select_single_8, select_single_10,
                     select_single_11,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1,

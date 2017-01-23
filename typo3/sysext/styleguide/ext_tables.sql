@@ -476,7 +476,6 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_single_3 text,
 	select_single_4 text,
 	select_single_5 text,
-	select_single_6 text,
 	select_single_7 text,
 	select_single_8 text,
 	select_single_10 text,
