@@ -53,7 +53,7 @@
 <f:section name="TemplateTableRow">
     <tr>
         <td><a href="{line.url}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:editField')}"><strong>{line.label}</strong></a></td>
-        <td width="80%">{line.data}</td>
+        <td width="80%">{line.data -> f:format.nl2br()}</td>
         <td><a href="{line.url}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:editField')}"><span class="btn btn-default"><core:icon identifier="actions-open" /></span></a></td>
     </tr>
 </f:section>

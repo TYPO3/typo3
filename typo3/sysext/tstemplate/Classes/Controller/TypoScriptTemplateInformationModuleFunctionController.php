@@ -269,9 +269,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 
             // Processing:
             $tableRows = [];
-            $tableRows[] = $this->tableRowData($lang->getLL('title'), htmlspecialchars($this->templateRow['title']), 'title', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('sitetitle'), htmlspecialchars($this->templateRow['sitetitle']), 'sitetitle', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('description'), nl2br(htmlspecialchars($this->templateRow['description'])), 'description', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('title'), $this->templateRow['title'], 'title', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('sitetitle'), $this->templateRow['sitetitle'], 'sitetitle', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('description'), $this->templateRow['description'], 'description', $this->templateRow['uid']);
             $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($this->templateRow['constants']) ? count(explode(LF, $this->templateRow['constants'])) : 0), 'constants', $this->templateRow['uid']);
             $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($this->templateRow['config']) ? count(explode(LF, $this->templateRow['config'])) : 0), 'config', $this->templateRow['uid']);
             $assigns['tableRows'] = $tableRows;
