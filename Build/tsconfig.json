@@ -6,6 +6,7 @@
         "removeComments": false,
         "pretty": true,
         "baseUrl": ".",
+        "rootDir": "../",
         "paths": {
             "TYPO3/CMS/About/*": [
                 "../typo3/sysext/about/Resources/Public/JavaScript/"
