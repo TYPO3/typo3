@@ -784,6 +784,8 @@ return [
         'disable_exec_function' => false,                // Boolean: Don't use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all fileoperations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.
         'compressionLevel' => 0,                        // Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see _.htacces for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. 'true' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.
         'installToolPassword' => '',                    // String: This is the md5-hashed, salted password for the Install Tool. Set this to '' and access will be totally denied. You may consider to externally protect the typo3/sysext/install/ folder, eg. with a .htaccess file.
+        'checkStoredRecords' => true, // Boolean: If set, values of the record are validated after saving in DataHandler. Disable only if using a database in strict mode.
+        'checkStoredRecordsLoose' => true, // Boolean: If set, make a loose comparison ('' equals 0) when validating record values after saving in DataHandler.
         'pageTree' => [
             'preloadLimit' => 50
         ],

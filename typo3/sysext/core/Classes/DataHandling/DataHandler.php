@@ -707,6 +707,8 @@ class DataHandler
      */
     public function __construct()
     {
+        $this->checkStoredRecords = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecords'];
+        $this->checkStoredRecords_loose = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecordsLoose'];
         $this->runtimeCache = $this->getRuntimeCache();
     }
 
