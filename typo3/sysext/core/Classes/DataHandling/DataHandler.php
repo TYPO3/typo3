@@ -466,6 +466,8 @@ class DataHandler
      * Used by function checkRecordUpdateAccess() to store whether a record is updatable or not.
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
     public $recUpdateAccessCache = [];
 
@@ -473,6 +475,8 @@ class DataHandler
      * User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
     public $recInsertAccessCache = [];
 
@@ -480,6 +484,8 @@ class DataHandler
      * Caching array for check of whether records are in a webmount
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
     public $isRecordInWebMount_Cache = [];
 
@@ -487,6 +493,8 @@ class DataHandler
      * Caching array for page ids in webmounts
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
     public $isInWebMount_Cache = [];
 
@@ -494,6 +502,8 @@ class DataHandler
      * Caching for collecting TSconfig for page ids
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
     public $cachedTSconfig = [];
 
@@ -501,6 +511,8 @@ class DataHandler
      * Used for caching page records in pageInfo()
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
     public $pageCache = [];
 
@@ -508,6 +520,8 @@ class DataHandler
      * Array caching workspace access for BE_USER
      *
      * @var array
+     *
+     * @deprecated since TYPO3 v8, no refereces could be found in class will be removed in TYPO3 v9
      */
     public $checkWorkspaceCache = [];
 
