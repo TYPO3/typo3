@@ -375,15 +375,6 @@ class FormEditorController extends AbstractBackendController
     protected function renderFormEditorTemplates(array $formEditorTemplates, array $formEditorDefinitions): array
     {
         if (
-            !isset($formEditorTemplates['templateRootPaths'])
-            || !is_array($formEditorTemplates['templateRootPaths'])
-        ) {
-            throw new RenderingException(
-                'The option templateRootPaths must be set.',
-                1480294720
-            );
-        }
-        if (
             !isset($formEditorTemplates['layoutRootPaths'])
             || !is_array($formEditorTemplates['layoutRootPaths'])
         ) {
@@ -402,21 +393,27 @@ class FormEditorController extends AbstractBackendController
             );
         }
 
-        $standaloneView = $this->objectManager->get(StandaloneView::class);
-        $standaloneView->setTemplateRootPaths($formEditorTemplates['templateRootPaths']);
-        $standaloneView->setLayoutRootPaths($formEditorTemplates['layoutRootPaths']);
-        $standaloneView->setPartialRootPaths($formEditorTemplates['partialRootPaths']);
-        $standaloneView->assignMultiple([
-            'insertRenderablesPanelConfiguration' => $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements'])
-        ]);
+        $layoutRootPaths = $formEditorTemplates['layoutRootPaths'];
+        $partialRootPaths = $formEditorTemplates['partialRootPaths'];
+        $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements']);
 
-        unset($formEditorTemplates['templateRootPaths']);
         unset($formEditorTemplates['layoutRootPaths']);
         unset($formEditorTemplates['partialRootPaths']);
 
         $renderedFormEditorTemplates = [];
         foreach ($formEditorTemplates as $formEditorTemplateName => $formEditorTemplateTemplate) {
-            $renderedFormEditorTemplates[$formEditorTemplateName] = $standaloneView->render($formEditorTemplateTemplate);
+            $fakeControllerItems = explode('-', $formEditorTemplateName);
+
+            $standaloneView = $this->objectManager->get(StandaloneView::class);
+            $standaloneView->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray([
+                'partialRootPaths' => $partialRootPaths,
+                'layoutRootPaths' => $layoutRootPaths
+            ]);
+            $standaloneView->assign('insertRenderablesPanelConfiguration', $insertRenderablesPanelConfiguration);
+            $standaloneView->getRenderingContext()->setControllerName($fakeControllerItems[0]);
+            $standaloneView->getRenderingContext()->setControllerAction($fakeControllerItems[1]);
+            $standaloneView->setTemplatePathAndFilename($formEditorTemplateTemplate);
+            $renderedFormEditorTemplates[$formEditorTemplateName] = $standaloneView->render();
         }
 
         return $renderedFormEditorTemplates;

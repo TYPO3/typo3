@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Mvc\View\FormView;
+use TYPO3\CMS\Form\Mvc\View\TemplatePaths;
 
 /**
  * A renderer which render all renderables within the $formRuntime.
@@ -49,6 +50,10 @@ class FluidFormRenderer extends AbstractElementRenderer implements RendererInter
 
         $formView->setFormRuntime($this->formRuntime);
         $formView->setControllerContext($this->controllerContext);
+        $formView->getRenderingContext()->setTemplatePaths(
+            GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(TemplatePaths::class)
+        );
         return $formView->renderRenderable($renderable);
     }
 }

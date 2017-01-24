@@ -316,39 +316,6 @@ class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIfTemplateRootPathsNotSet()
-    {
-        $this->expectException(RenderingException::class);
-        $this->expectExceptionCode(1480294720);
-
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $mockController->_call('renderFormEditorTemplates', [], []);
-    }
-
-    /**
-     * @test
-     */
-    public function renderFormEditorTemplatesThrowsExceptionIfTemplateRootPathsNotArray()
-    {
-        $this->expectException(RenderingException::class);
-        $this->expectExceptionCode(1480294720);
-
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $input = [
-            'templateRootPaths' => '',
-        ];
-        $mockController->_call('renderFormEditorTemplates', $input, []);
-    }
-
-    /**
-     * @test
-     */
     public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotSet()
     {
         $this->expectException(RenderingException::class);

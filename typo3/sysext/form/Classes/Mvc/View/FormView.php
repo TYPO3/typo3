@@ -23,6 +23,7 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3Fluid\Fluid\Core\Parser\ParsedTemplateInterface;
 
 /**
  * A fluid TemplateView implementation which used to render *Renderables*.
@@ -128,7 +129,7 @@ class FormView extends AbstractTemplateView
     /**
      * Render the $renderable and return the content.
      *
-     * @param RootRenderable $renderable
+     * @param RootRenderableInterface $renderable
      * @return string
      * @throws RenderingException
      * @internal
@@ -152,7 +153,7 @@ class FormView extends AbstractTemplateView
                     1480286138
                 );
             }
-            $renderer->setControllerContext($this->baseRenderingContext->getControllerContext());
+            $renderer->setControllerContext($this->controllerContext);
             $renderer->setFormRuntime($this->formRuntime);
             return $renderer->render($renderable);
         }
@@ -184,22 +185,25 @@ class FormView extends AbstractTemplateView
             );
         }
 
-        $renderingContext = $this->getCurrentRenderingContext();
-        // Configure the fluid TemplateView with the rendering options
+        // Configure the fluid TemplatePaths with the rendering options
         // from the renderable
-        $renderingContext->getTemplatePaths()->setTemplateRootPaths($renderingOptions['templateRootPaths']);
-        $renderingContext->getTemplatePaths()->setLayoutRootPaths($renderingOptions['layoutRootPaths']);
-        $renderingContext->getTemplatePaths()->setPartialRootPaths($renderingOptions['partialRootPaths']);
+        $this->getTemplatePaths()->fillFromConfigurationArray([
+            'templateRootPaths' => $renderingOptions['templateRootPaths'],
+            'partialRootPaths' => $renderingOptions['partialRootPaths'],
+            'layoutRootPaths' => $renderingOptions['layoutRootPaths'],
+        ]);
 
         // Add the renderable object to the template variables and use the
         // configured variable name
-        $renderingContext->getVariableProvider()->add($renderingOptions['renderableNameInTemplate'], $renderable);
+        $this->assign($renderingOptions['renderableNameInTemplate'], $renderable);
 
         // Render the renderable.
         if (isset($renderingOptions['templatePathAndFilename'])) {
-            $renderingContext->getTemplatePaths()->setTemplatePathAndFilename($renderingOptions['templatePathAndFilename']);
+            $this->getTemplatePaths()->setTemplatePathAndFilename($renderingOptions['templatePathAndFilename']);
             $output = $this->render();
         } else {
+            // reset previously seted templatePathAndFilename
+            $this->getTemplatePaths()->clearTemplatePathAndFilename();
             // Use the *type* of the renderable as template name
             $output = $this->render($renderable->getType());
         }
@@ -229,5 +233,30 @@ class FormView extends AbstractTemplateView
             $output = sprintf('<span data-element-identifier-path="%s">%s</span>', $path, $output);
         }
         return $output;
+    }
+
+    /**
+     * Get the parsed template which is currently being rendered or compiled.
+     *
+     * @return ParsedTemplateInterface
+     */
+    protected function getCurrentParsedTemplate(): ParsedTemplateInterface
+    {
+        $renderingContext = $this->getCurrentRenderingContext();
+        $templatePaths = $renderingContext->getTemplatePaths();
+        $templateParser = $renderingContext->getTemplateParser();
+        $controllerName = $renderingContext->getControllerName();
+        $actionName = $renderingContext->getControllerAction();
+        $parsedTemplate = $templateParser->getOrParseAndStoreTemplate(
+            $templatePaths->getTemplateIdentifier($controllerName, $actionName),
+            function ($parent, TemplatePaths $paths) use ($controllerName, $actionName) {
+                return $paths->getTemplateSource($controllerName, $actionName);
+            }
+        );
+        if ($parsedTemplate->isCompiled()) {
+            $parsedTemplate->addCompiledNamespaces($this->baseRenderingContext);
+        }
+        $renderingContext->getTemplateCompiler()->reset();
+        return $parsedTemplate;
     }
 }
