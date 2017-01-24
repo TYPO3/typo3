@@ -108,7 +108,7 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'fieldControls' => [
+                'fieldControl' => [
                     'editPopup' => [
                         'disabled' => false,
                     ],
@@ -128,7 +128,7 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'fieldWizards' => [
+                'fieldWizard' => [
                     'recordOverview' => [
                         'disabled' => true,
                     ],
@@ -142,7 +142,7 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'fieldWizards' => [
+                'fieldWizard' => [
                     'tableList' => [
                         'disabled' => true,
                     ],
@@ -156,7 +156,7 @@ return [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
-                'fieldControls' => [
+                'fieldControl' => [
                     'elementBrowser' => [
                         'disable' => true,
                     ],
@@ -252,7 +252,7 @@ return [
                 'size' => 3,
                 'uploadfolder' => 'uploads/tx_styleguide/',
                 'hideDeleteIcon' => true,
-                'fieldWizards' => [
+                'fieldWizard' => [
                     'fileUpload' => [
                         'disabled' => true,
                     ],

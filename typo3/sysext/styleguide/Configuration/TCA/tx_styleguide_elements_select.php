@@ -137,7 +137,7 @@ return [
                     ['foo 1', 'foo1', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                     ['foo 2', 'foo2', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                 ],
-                'fieldWizards' => [
+                'fieldWizard' => [
                     'selectIcons' => [
                         'disabled' => false,
                     ],
@@ -156,7 +156,7 @@ return [
                 'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
                 'fileFolder_extList' => 'svg',
                 'fileFolder_recursions' => 1,
-                'fieldWizards' => [
+                'fieldWizard' => [
                     'selectIcons' => [
                         'disabled' => false,
                     ],
@@ -215,7 +215,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_elements_select_single_12_foreign',
-                'fieldWizards' => [
+                'fieldWizard' => [
                     'selectIcons' => [
                         'disabled' => false,
                     ],
@@ -377,7 +377,7 @@ return [
         ],
         'select_multiplesidebyside_6' => [
             'exclude' => 1,
-            'label' => 'select_multiplesidebyside_6 fieldControls',
+            'label' => 'select_multiplesidebyside_6 fieldControl',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -385,7 +385,7 @@ return [
                 'rootLevel' => 1,
                 'size' => 5,
                 'autoSizeMax' => 20,
-                'fieldControls' => [
+                'fieldControl' => [
                     'editPopup' => [
                         'disabled' => false,
                     ],
@@ -672,7 +672,7 @@ return [
                                                                 <numIndex index="1">bar</numIndex>
                                                             </numIndex>
                                                         </multiSelectFilterItems>
-                                                        <fieldControls>
+                                                        <fieldControl>
                                                             <editPopup>
                                                                 <renderType>editPopup</renderType>
                                                             </editPopup>
@@ -689,7 +689,7 @@ return [
                                                                     <pid>0</pid>
                                                                 </options>
                                                             </listModule>
-                                                        </fieldControls>
+                                                        </fieldControl>
                                                     </config>
                                                 </TCEforms>
                                             </select_multiplesidebyside_1>

@@ -72,7 +72,7 @@ return [
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,
-                'fieldControls' => [
+                'fieldControl' => [
                     'fullScreenRichtext' => [
                         'disabled' => false,
                     ],

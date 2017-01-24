@@ -1102,7 +1102,7 @@ return [
                                                         <renderType>inputLink</renderType>
                                                         <eval>trim</eval>
                                                         <softref>typolink</softref>
-                                                        <fieldControls>
+                                                        <fieldControl>
                                                             <linkPopup>
                                                                 <options>
                                                                     <title>Link</title>
@@ -1110,7 +1110,7 @@ return [
                                                                     <windowOpenParameters>height=300,width=500,status=0,menubar=0,scrollbars=1</windowOpenParameters>
                                                                 </options>
                                                             </linkPopup>
-                                                        </fieldControls>
+                                                        </fieldControl>
                                                     </config>
                                                 </TCEforms>
                                             </input_1>
