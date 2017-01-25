@@ -689,7 +689,7 @@ return [
             ],
         ],
         'text_17' => [
-            'label' => 'text_16 renderType=table',
+            'label' => 'text_17 renderType=textTable',
             'config' => [
                 'type' => 'text',
                 'renderType' => 'textTable',
