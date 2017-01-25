@@ -20,6 +20,10 @@
                 <source>Override finisher settings</source>
             </trans-unit>
 
+            <trans-unit id="tt_content.preview.noPersistenceIdentifier" xml:space="preserve">
+                <source>No form selected.</source>
+            </trans-unit>
+
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" xml:space="preserve">
                 <source>Email to sender</source>
             </trans-unit>
