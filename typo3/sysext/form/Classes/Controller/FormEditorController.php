@@ -305,6 +305,15 @@ class FormEditorController extends AbstractBackendController
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
 
+            $formSettingsButton = $buttonBar->makeInputButton()
+                ->setDataAttributes(['identifier' => 'formSettingsButton'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.form_settings_button'))
+                ->setName('formeditor-form-settings')
+                ->setValue('settings')
+                ->setClasses('t3-form-element-form-settings-button hidden')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-system-extension-configure', Icon::SIZE_SMALL))
+                ->setShowLabelText(true);
+
             $undoButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'undoButton'])
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.undo_button'))
@@ -324,8 +333,9 @@ class FormEditorController extends AbstractBackendController
             $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
-            $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
-            $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+            $buttonBar->addButton($formSettingsButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+            $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
+            $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
         }
     }
 

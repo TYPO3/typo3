@@ -842,7 +842,8 @@
   outline-style: initial;
   outline-width: 0px;
 }
-.module[data-module-name="web_FormFormbuilder_FormEditor"] .module-docheader-bar-column-left .btn-group {
+.module[data-module-name="web_FormFormbuilder_FormEditor"] .module-docheader-bar-column-left .btn-group,
+.module[data-module-name="web_FormFormbuilder_FormEditor"] .module-docheader-bar-column-left .t3-form-element-form-settings-button {
   margin-left: 25px;
 }
 .t3-form-element-new-page-button {

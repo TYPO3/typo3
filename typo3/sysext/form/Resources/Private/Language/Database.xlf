@@ -185,6 +185,9 @@
             <trans-unit id="formEditor.save_button" xml:space="preserve">
                 <source>Save</source>
             </trans-unit>
+            <trans-unit id="formEditor.form_settings_button" xml:space="preserve">
+                <source>Settings</source>
+            </trans-unit>
             <trans-unit id="formEditor.undo_button" xml:space="preserve">
                 <source>Undo</source>
             </trans-unit>

@@ -278,12 +278,28 @@ define(['jquery',
              * @subscribe view/header/button/save/clicked
              */
             getPublisherSubscriber().subscribe('view/header/button/save/clicked', function(topic, args) {
-
                 if (getFormEditorApp().validationResultsHasErrors(getFormEditorApp().validateFormElementRecursive(getRootFormElement(), true))) {
                     getViewModel().showValidationErrorsModal();
                 } else {
                     getFormEditorApp().saveFormDefinition();
                 }
+            });
+
+            /**
+             * @private
+             *
+             * @param string
+             * @param array
+             * @return void
+             * @subscribe view/header/formSettings/clicked
+             */
+            getPublisherSubscriber().subscribe('view/header/formSettings/clicked', function(topic, args) {
+                getViewModel().addStructureRootElementSelection();
+                getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement());
+                getViewModel().renderAbstractStageArea();
+                getViewModel().renewStructure();
+                getViewModel().renderPagination();
+                getViewModel().renderInspectorEditors();
             });
 
             /**

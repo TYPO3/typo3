@@ -58,6 +58,7 @@ define(['jquery',
                 buttonHeaderPaginationPrevious: 'buttonPaginationPrevious',
                 buttonHeaderRedo: 'redoButton',
                 buttonHeaderSave: 'saveButton',
+                buttonHeaderSettings: 'formSettingsButton',
                 buttonHeaderUndo: 'undoButton',
                 buttonHeaderViewModeAbstract: 'buttonViewModeAbstract',
                 buttonHeaderViewModePreview: 'buttonViewModePreview',
@@ -394,6 +395,10 @@ define(['jquery',
         function _buttonsSetup() {
             $(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSave')).on("click", function(e) {
                 getPublisherSubscriber().publish('view/header/button/save/clicked', []);
+            });
+
+            $(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSettings')).on('click', function(e) {
+                getPublisherSubscriber().publish('view/header/formSettings/clicked', []);
             });
 
             $(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')).on('click', function(e) {
@@ -1322,6 +1327,7 @@ define(['jquery',
             hideComponent($(getHelper().getDomElementDataIdentifierSelector('moduleLoadingIndicator')));
             showComponent($(getHelper().getDomElementDataIdentifierSelector('moduleWrapper')));
             showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSave')));
+            showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSettings')));
             showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderClose')));
             showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderNewPage')));
             showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderUndo')));
