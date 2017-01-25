@@ -1372,9 +1372,16 @@ define(['jquery',
                     }
                     setData(propertyData[propertyDataKey], propertyDataKey);
                 }
-            } else {
-                for (var i = 0, len = propertyData.length; i < len; ++i) {
-                    setData(propertyData[i]['_label'], propertyData[i]['_value']);
+            } else if ('array' === $.type(propertyData)) {
+                for (var propertyDataKey in propertyData) {
+                    if (!propertyData.hasOwnProperty(propertyDataKey)) {
+                        continue;
+                    }
+                    if (getUtility().isUndefinedOrNull(propertyData[propertyDataKey]['_label'])) {
+                        setData(propertyData[propertyDataKey], propertyDataKey);
+                    } else {
+                        setData(propertyData[propertyDataKey]['_label'], propertyData[propertyDataKey]['_value']);
+                    }
                 }
             }
         };

@@ -1012,8 +1012,15 @@ define(['jquery',
                     appendMultiValue(propertyValue[propertyValueKey], propertyValueKey, defaultValue);
                 }
             } else if ('array' === $.type(propertyValue)) {
-                for (var i = 0, len = propertyValue.length; i < len; ++i) {
-                    appendMultiValue(propertyValue[i]['_label'], propertyValue[i]['_value'], defaultValue);
+                for (var propertyValueKey in propertyValue) {
+                    if (!propertyValue.hasOwnProperty(propertyValueKey)) {
+                        continue;
+                    }
+                    if (getUtility().isUndefinedOrNull(propertyValue[propertyValueKey]['_label'])) {
+                        appendMultiValue(propertyValue[propertyValueKey], propertyValueKey, defaultValue);
+                    } else {
+                        appendMultiValue(propertyValue[propertyValueKey]['_label'], propertyValue[propertyValueKey]['_value'], defaultValue);
+                    }
                 }
             }
         };
