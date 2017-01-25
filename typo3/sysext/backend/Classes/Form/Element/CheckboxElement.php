@@ -78,7 +78,7 @@ class CheckboxElement extends AbstractFormElement
                 $label = $itemDefinition[0];
                 $html .=
                     '<div class="checkbox-column ' . $colClass . '">'
-                        . $this->renderSingleCheckboxElement($label, $itemKey,  $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
+                        . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
                     '</div>';
                 $counter = $counter + 1;
                 if ($counter < $numberOfItems && !empty($colClear)) {

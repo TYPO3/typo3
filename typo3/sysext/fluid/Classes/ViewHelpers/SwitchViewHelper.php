@@ -105,19 +105,19 @@ class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInte
             'break' => false
         ];
 
-        if ($viewHelperVariableContainer->exists(SwitchViewHelper::class, 'stateStack')) {
-            $stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+        if ($viewHelperVariableContainer->exists(self::class, 'stateStack')) {
+            $stateStack = $viewHelperVariableContainer->get(self::class, 'stateStack');
         } else {
             $stateStack = [];
         }
         $stateStack[] = $stackValue;
-        $viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
+        $viewHelperVariableContainer->addOrUpdate(self::class, 'stateStack', $stateStack);
 
         $result = $renderChildrenClosure();
 
-        $stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+        $stateStack = $viewHelperVariableContainer->get(self::class, 'stateStack');
         array_pop($stateStack);
-        $viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
+        $viewHelperVariableContainer->addOrUpdate(self::class, 'stateStack', $stateStack);
 
         return $result;
     }

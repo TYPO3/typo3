@@ -69,7 +69,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
         ];
 
         $expected = $input;
-        $expected['columnsToProcess'] = ['uid','aField','anotherField'];
+        $expected['columnsToProcess'] = ['uid', 'aField', 'anotherField'];
         $this->assertSame($expected, $this->subject->addData($input));
     }
 

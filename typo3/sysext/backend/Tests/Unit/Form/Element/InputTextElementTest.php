@@ -103,6 +103,6 @@ class InputTextElementTest extends UnitTestCase
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class)->reveal();
         $subject = new InputTextElement($nodeFactoryProphecy, $data);
         $result = $subject->render();
-        $this->assertContains('<input type="hidden" name="" value="' . $expectedOutput  . '" />', $result['html']);
+        $this->assertContains('<input type="hidden" name="" value="' . $expectedOutput . '" />', $result['html']);
     }
 }

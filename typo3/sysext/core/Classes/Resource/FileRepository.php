@@ -66,7 +66,7 @@ class FileRepository extends AbstractRepository
     {
         $itemList = [];
         if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
-            throw new \InvalidArgumentException('UID of related record has to be an integer. UID given: "' . $uid  . '"', 1316789798);
+            throw new \InvalidArgumentException('UID of related record has to be an integer. UID given: "' . $uid . '"', 1316789798);
         }
         $referenceUids = null;
         if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {

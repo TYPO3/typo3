@@ -227,15 +227,15 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
         switch ($comparator) {
             case '==':
                 if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
-                    return ($evaluatedLeftSide === $evaluatedRightSide);
+                    return $evaluatedLeftSide === $evaluatedRightSide;
                 } else {
-                    return ($evaluatedLeftSide == $evaluatedRightSide);
+                    return $evaluatedLeftSide == $evaluatedRightSide;
                 }
             case '!=':
                 if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
-                    return ($evaluatedLeftSide !== $evaluatedRightSide);
+                    return $evaluatedLeftSide !== $evaluatedRightSide;
                 } else {
-                    return ($evaluatedLeftSide != $evaluatedRightSide);
+                    return $evaluatedLeftSide != $evaluatedRightSide;
                 }
             case '%':
                 if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
@@ -329,16 +329,16 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
             return $value;
         }
 
-        if (is_integer($value) || is_float($value)) {
+        if (is_int($value) || is_float($value)) {
             return !empty($value);
         }
 
         if (is_numeric($value)) {
-            return ($value != 0);
+            return $value != 0;
         }
 
         if (is_string($value)) {
-            return (!empty($value) && strtolower($value) !== 'false');
+            return !empty($value) && strtolower($value) !== 'false';
         }
         if (is_array($value) || (is_object($value) && $value instanceof \Countable)) {
             return (bool)count($value);

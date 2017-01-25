@@ -75,7 +75,7 @@ class FlexFormContainerContainer extends AbstractContainer
         $options = $this->data;
         $options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
         // Append container specific stuff to field prefix
-        $options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' .  $this->data['flexFormContainerName'] . '][el]';
+        $options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' . $this->data['flexFormContainerName'] . '][el]';
         $options['renderType'] = 'flexFormElementContainer';
         $containerContentResult = $this->nodeFactory->create($options)->render();
 

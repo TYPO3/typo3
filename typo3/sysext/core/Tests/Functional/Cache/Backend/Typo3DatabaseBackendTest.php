@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
 /**
@@ -177,8 +176,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => gzcompress('myCachedContent'),
             ]
         );
-
-
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);

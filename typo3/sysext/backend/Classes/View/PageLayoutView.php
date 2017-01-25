@@ -314,7 +314,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $pKey = $this->getPageLayoutController()->MOD_SETTINGS['pages'];
             switch ($pKey) {
                 case 1:
-                    $this->fieldArray = ['title','uid'] + array_keys($this->cleanTableNames());
+                    $this->fieldArray = ['title', 'uid'] + array_keys($this->cleanTableNames());
                     break;
                 case 2:
                     $this->fieldArray = [

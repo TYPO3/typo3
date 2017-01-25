@@ -292,7 +292,7 @@ class RteController extends AbstractWizardController
                 ->setName('_savedokview_x')
                 ->setValue('1')
                 ->setForm('RteController')
-                ->setOnClick('document.editform.redirect.value+= '  . GeneralUtility::quoteJSvalue('&popView=1') . '; '
+                ->setOnClick('document.editform.redirect.value+= ' . GeneralUtility::quoteJSvalue('&popView=1') . '; '
                     . ' TBE_EDITOR.checkAndDoSubmit(1); return false;')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow'))
                 ->setIcon(

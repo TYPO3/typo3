@@ -198,7 +198,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function hasSession()
     {
-        return ($_SESSION['active'] === true);
+        return $_SESSION['active'] === true;
     }
 
     /**

@@ -28,7 +28,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * the normal render children closure, if that named
  * argument is specified and not empty.
  */
-trait CompileWithContentArgumentAndRenderStatic {
+trait CompileWithContentArgumentAndRenderStatic
+{
 
     /**
      * Name of variable that contains the value to use
@@ -64,11 +65,14 @@ trait CompileWithContentArgumentAndRenderStatic {
      * @return string Rendered string
      * @api
      */
-    public function render() {
+    public function render()
+    {
         $argumentName = $this->resolveContentArgumentName();
         $arguments = $this->arguments;
         if (!empty($argumentName) && isset($arguments[$argumentName])) {
-            $renderChildrenClosure = function() use ($arguments, $argumentName) { return $arguments[$argumentName]; };
+            $renderChildrenClosure = function () use ($arguments, $argumentName) {
+                return $arguments[$argumentName];
+            };
         } else {
             $renderChildrenClosure = $this->buildRenderChildrenClosure();
         }
@@ -112,7 +116,8 @@ trait CompileWithContentArgumentAndRenderStatic {
      * @return string
      * @throws Exception
      */
-    protected function resolveContentArgumentName() {
+    protected function resolveContentArgumentName()
+    {
         if (empty($this->contentArgumentName)) {
             foreach ($this->prepareArguments() as $registeredArgument) {
                 if (!$registeredArgument->isRequired()) {

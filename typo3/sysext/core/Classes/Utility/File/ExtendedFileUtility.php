@@ -472,7 +472,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         $shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
                         if ($shortcutRecord) {
-                            $shortcutContent[] = '[record:' . $row['tablename'] . ':' .  $row['recuid'] . ']';
+                            $shortcutContent[] = '[record:' . $row['tablename'] . ':' . $row['recuid'] . ']';
                         } else {
                             $brokenReferences[] = $fileReferenceRow['ref_uid'];
                         }

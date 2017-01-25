@@ -325,7 +325,7 @@ class ArrayUtility
     {
         $containsNumericalKeysOnly = true;
         array_walk($array, function ($value, $key) use (&$containsNumericalKeysOnly) {
-            if (!is_integer($key)) {
+            if (!is_int($key)) {
                 $containsNumericalKeysOnly = false;
                 return;
             }

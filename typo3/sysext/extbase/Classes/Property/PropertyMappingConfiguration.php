@@ -245,7 +245,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
             return $this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER];
         }
 
-        return new PropertyMappingConfiguration();
+        return new self();
     }
 
     /**

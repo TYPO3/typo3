@@ -132,7 +132,7 @@ class InputButton extends AbstractButton implements ButtonInterface
             trim($this->getName()) !== ''
             && trim($this->getValue()) !== ''
             && trim($this->getTitle()) !== ''
-            && $this->getType() === InputButton::class
+            && $this->getType() === self::class
             && $this->getIcon() !== null
         ) {
             return true;

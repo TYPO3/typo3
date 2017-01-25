@@ -74,7 +74,7 @@ class RemoveXSS
             'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onoffline', 'ononline', 'onpagehide', 'onpageshow', 'onpaste',
             'onpause', 'onplay', 'onplaying', 'onpopstate', 'onprogress', 'onpropertychange', 'onratechange', 'onreadystatechange',
             'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted',
-            'onscroll', 'onseeked', 'onseeking','onselect', 'onselectionchange', 'onselectstart', 'onshow', 'onstalled', 'onstart',
+            'onscroll', 'onseeked', 'onseeking', 'onselect', 'onselectionchange', 'onselectstart', 'onshow', 'onstalled', 'onstart',
             'onstop', 'onstorage', 'onsubmit', 'onsuspend', 'ontimeupdate', 'onunload', 'onvolumechange', 'onwaiting'];
         $tagKeywords = ['applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame',
             'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base', 'video', 'audio', 'track', 'canvas'];
@@ -90,7 +90,7 @@ class RemoveXSS
             'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onoffline', 'ononline',
             'onpagehide', 'onpageshow', 'onpaste', 'onpause', 'onplay', 'onplaying', 'onpopstate', 'onprogress',
             'onpropertychange', 'onratechange', 'onreadystatechange', 'onredo', 'onreset', 'onresize', 'onresizeend',
-            'onresizestart','onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onseeked', 'onseeking',
+            'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onseeked', 'onseeking',
             'onselect', 'onselectionchange', 'onselectstart', 'onshow', 'onstalled', 'onstart', 'onstop', 'onstorage', 'onsubmit',
             'onsuspend', 'ontimeupdate', 'onundo', 'onunload', 'onvolumechange', 'onwaiting'];
         $protocolKeywords = ['javascript', 'vbscript', 'expression'];

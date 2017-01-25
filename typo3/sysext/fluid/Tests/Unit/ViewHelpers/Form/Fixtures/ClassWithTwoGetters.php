@@ -32,6 +32,6 @@ class ClassWithTwoGetters
      */
     public function getValue()
     {
-        return new ClassWithTwoGetters();
+        return new self();
     }
 }

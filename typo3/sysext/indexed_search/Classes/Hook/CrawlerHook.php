@@ -40,7 +40,7 @@ class CrawlerHook
     /**
      * @var string
      */
-    public $callBack = CrawlerHook::class;
+    public $callBack = self::class;
 
     /**
      * The constructor

@@ -1147,7 +1147,7 @@ class ContentObjectRenderer
     public function convertToUserIntObject()
     {
         if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-            $this->getTimeTracker()->setTSlogMessage(ContentObjectRenderer::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
+            $this->getTimeTracker()->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
         } else {
             $this->doConvertToUserIntObject = true;
         }
@@ -5440,7 +5440,7 @@ class ContentObjectRenderer
                     if (GeneralUtility::inList($allowTags, $tag[0]) || $denyTags != '*' && !GeneralUtility::inList($denyTags, $tag[0])) {
                         $contentAccum[$contentAccumP] .= $data;
                     } else {
-                        $contentAccum[$contentAccumP] .= HTMLSpecialChars($data);
+                        $contentAccum[$contentAccumP] .= htmlspecialchars($data);
                     }
                 }
                 $inside = 0;

@@ -154,7 +154,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
             unset($fieldList);
         }
 
-        return (!empty($this->tableFields[$tableName]) ? $this->tableFields[$tableName] : []);
+        return !empty($this->tableFields[$tableName]) ? $this->tableFields[$tableName] : [];
     }
 
     /**

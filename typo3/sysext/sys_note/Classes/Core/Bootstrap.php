@@ -93,7 +93,7 @@ class Bootstrap
             return false;
         }
         // check if there are records
-        return ($this->databaseConnection->exec_SELECTcountRows('*', 'sys_note', 'pid IN (' . $pidList . ')' . BackendUtility::deleteClause('sys_note')) > 0);
+        return $this->databaseConnection->exec_SELECTcountRows('*', 'sys_note', 'pid IN (' . $pidList . ')' . BackendUtility::deleteClause('sys_note')) > 0;
     }
 
     /**

@@ -404,7 +404,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             // back
             $out = $lang->getLL('back');
             $out = '<a href="' . htmlspecialchars($aHref) . '" class="btn btn-default"><strong><i class="fa fa-chevron-left"></i>&nbsp;' . $out . '</strong></a>';
-            $theOutput .= '<div><hr style="margin-top: 5px; margin-bottom: 5px;" />'  . $out . '</div>';
+            $theOutput .= '<div><hr style="margin-top: 5px; margin-bottom: 5px;" />' . $out . '</div>';
         } else {
             $templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
             if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
@@ -502,7 +502,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $theOutput .= '<div class="panel-heading">';
             $theOutput .= '<strong>' . $label . ' ' . $remove . '</strong>';
             $theOutput .= '</div>';
-            $theOutput .= '<div class="panel-body">' . $tree  .  '</div>';
+            $theOutput .= '<div class="panel-body">' . $tree . '</div>';
             $theOutput .= '</div>';
 
             // second row options

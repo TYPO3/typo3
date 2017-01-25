@@ -168,7 +168,7 @@ class TestSetup extends Action\AbstractAction
     protected function getEmailSubject()
     {
         $name = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
-            ? ' from site "' .  $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"'
+            ? ' from site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"'
             : '';
         return 'Test TYPO3 CMS mail delivery' . $name;
     }

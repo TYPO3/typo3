@@ -30,7 +30,7 @@ trait CompileWithRenderStatic
     /**
      * @return \Closure
      */
-    abstract function buildRenderChildrenClosure();
+    abstract public function buildRenderChildrenClosure();
 
     /**
      * Default render method - simply calls renderStatic() with a
@@ -39,7 +39,8 @@ trait CompileWithRenderStatic
      * @return string Rendered string
      * @api
      */
-    public function render() {
+    public function render()
+    {
         return static::renderStatic(
             $this->arguments,
             $this->buildRenderChildrenClosure(),

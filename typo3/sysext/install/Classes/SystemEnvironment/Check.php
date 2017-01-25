@@ -1546,7 +1546,7 @@ class Check
      */
     protected function getBytesFromSizeMeasurement($measurement)
     {
-        $bytes = doubleval($measurement);
+        $bytes = floatval($measurement);
         if (stripos($measurement, 'G')) {
             $bytes *= 1024 * 1024 * 1024;
         } elseif (stripos($measurement, 'M')) {

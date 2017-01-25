@@ -74,7 +74,7 @@ class StageRecord extends AbstractRecord
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);
         }
-        return new StageRecord($workspace, $record);
+        return new self($workspace, $record);
     }
 
     /**
@@ -196,7 +196,7 @@ class StageRecord extends AbstractRecord
      */
     public function isEditStage()
     {
-        return ($this->getUid() === StagesService::STAGE_EDIT_ID);
+        return $this->getUid() === StagesService::STAGE_EDIT_ID;
     }
 
     /**
@@ -204,7 +204,7 @@ class StageRecord extends AbstractRecord
      */
     public function isPublishStage()
     {
-        return ($this->getUid() === StagesService::STAGE_PUBLISH_ID);
+        return $this->getUid() === StagesService::STAGE_PUBLISH_ID;
     }
 
     /**
@@ -212,7 +212,7 @@ class StageRecord extends AbstractRecord
      */
     public function isExecuteStage()
     {
-        return ($this->getUid() === StagesService::STAGE_PUBLISH_EXECUTE_ID);
+        return $this->getUid() === StagesService::STAGE_PUBLISH_EXECUTE_ID;
     }
 
     /**
@@ -220,7 +220,7 @@ class StageRecord extends AbstractRecord
      */
     public function isDialogEnabled()
     {
-        return (((int)$this->record['allow_notificaton_settings'] & 1) > 0);
+        return ((int)$this->record['allow_notificaton_settings'] & 1) > 0;
     }
 
     /**
@@ -228,7 +228,7 @@ class StageRecord extends AbstractRecord
      */
     public function isPreselectionChangeable()
     {
-        return (((int)$this->record['allow_notificaton_settings'] & 2) > 0);
+        return ((int)$this->record['allow_notificaton_settings'] & 2) > 0;
     }
 
     /**
@@ -236,7 +236,7 @@ class StageRecord extends AbstractRecord
      */
     public function areOwnersPreselected()
     {
-        return (((int)$this->record['notification_preselection'] & 1) > 0);
+        return ((int)$this->record['notification_preselection'] & 1) > 0;
     }
 
     /**
@@ -244,7 +244,7 @@ class StageRecord extends AbstractRecord
      */
     public function areMembersPreselected()
     {
-        return (((int)$this->record['notification_preselection'] & 2) > 0);
+        return ((int)$this->record['notification_preselection'] & 2) > 0;
     }
 
     /**
@@ -252,7 +252,7 @@ class StageRecord extends AbstractRecord
      */
     public function areEditorsPreselected()
     {
-        return (((int)$this->record['notification_preselection'] & 4) > 0);
+        return ((int)$this->record['notification_preselection'] & 4) > 0;
     }
 
     /**
@@ -260,7 +260,7 @@ class StageRecord extends AbstractRecord
      */
     public function areResponsiblePersonsPreselected()
     {
-        return (((int)$this->record['notification_preselection'] & 8) > 0);
+        return ((int)$this->record['notification_preselection'] & 8) > 0;
     }
 
     /**
@@ -268,12 +268,12 @@ class StageRecord extends AbstractRecord
      */
     public function hasPreselection()
     {
-        return (
+        return
             $this->areOwnersPreselected()
             || $this->areMembersPreselected()
             || $this->areEditorsPreselected()
             || $this->areResponsiblePersonsPreselected()
-        );
+        ;
     }
 
     /**
@@ -356,10 +356,10 @@ class StageRecord extends AbstractRecord
      */
     public function isAllowed()
     {
-        return (
+        return
             $this->isEditStage()
             || static::getBackendUser()->workspaceCheckStageForCurrent($this->getUid())
             || $this->isExecuteStage() && static::getBackendUser()->workspacePublishAccess($this->workspace->getUid())
-        );
+        ;
     }
 }

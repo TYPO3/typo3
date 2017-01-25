@@ -1486,8 +1486,8 @@ class ArrayUtilityTest extends UnitTestCase
                 []
             ],
             'returns self if array is already numerically keyed' => [
-                [1,2,3],
-                [1,2,3]
+                [1, 2, 3],
+                [1, 2, 3]
             ],
             'returns correctly if keys are numeric, but contains a leap' => [
                 [0 => 'One', 1 => 'Two', 3 => 'Three'],
@@ -1571,7 +1571,7 @@ class ArrayUtilityTest extends UnitTestCase
                         'three' => [
                             2 => 'SubSubOne',
                             5 => 'SubSubTwo',
-                            9 => [0,1,2],
+                            9 => [0, 1, 2],
                             []
                         ]
                     ]
@@ -1585,7 +1585,7 @@ class ArrayUtilityTest extends UnitTestCase
                         'three' => [
                             'SubSubOne',
                             'SubSubTwo',
-                            [0,1,2],
+                            [0, 1, 2],
                             []
                         ]
                     ]

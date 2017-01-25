@@ -137,6 +137,6 @@ class Menu
      */
     public function isValid(Menu $menu)
     {
-        return (trim($menu->getIdentifier()) !== '');
+        return trim($menu->getIdentifier()) !== '';
     }
 }

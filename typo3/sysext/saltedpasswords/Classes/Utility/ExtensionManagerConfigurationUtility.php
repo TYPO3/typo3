@@ -124,7 +124,7 @@ class ExtensionManagerConfigurationUtility
             case FlashMessage::OK:
                 $class = 'success';
                 break;
-            case FlashMessage::WARNING;
+            case FlashMessage::WARNING:
                 $class = 'warning';
                 break;
             case FlashMessage::ERROR:

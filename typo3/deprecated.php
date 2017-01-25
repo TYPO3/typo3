@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 call_user_func(function () {
     $classLoader = require __DIR__ . '/../vendor/autoload.php';
     (new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function () {
-
         $originalRequestedFilenameParts = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $originalRequestedFilename = basename($originalRequestedFilenameParts['path']);
 
@@ -220,6 +219,5 @@ call_user_func(function () {
             default:
                 throw new \RuntimeException('You cannot call this script directly.');
         }
-
     });
 });

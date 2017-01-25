@@ -1456,7 +1456,7 @@ class HtmlParser
         $tagRegEx = '[^ >]+'; // all characters until you reach a > or space;
         if ($tagList) {
             $tags = preg_split('/,/', $tagList);
-            $tagRegEx = preg_replace('/ */', '', join('|', $tags));
+            $tagRegEx = preg_replace('/ */', '', implode('|', $tags));
         }
         $count = 1;
         $nbspRegex = $treatNonBreakingSpaceAsEmpty ? '|(&nbsp;)' : '';

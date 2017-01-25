@@ -2351,7 +2351,7 @@ class BackendUtility
                             foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], true) as $f) {
                                 $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
                             }
-                            $MMfield = join(',', $MMfields);
+                            $MMfield = implode(',', $MMfields);
                         }
                         /** @var $dbGroup RelationHandler */
                         $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
@@ -2449,7 +2449,7 @@ class BackendUtility
                                         $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
                                     }
                                 }
-                                $MMfield = join(',', $MMfields);
+                                $MMfield = implode(',', $MMfields);
                             }
                             /** @var $dbGroup RelationHandler */
                             $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
@@ -3054,7 +3054,7 @@ class BackendUtility
             'uPT' => 1,
             'vC' => static::getBackendUserAuthentication()->veriCode()
         ];
-        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $parameters . '&redirect=';
+        $url = self::getModuleUrl('tce_db', $urlParameters) . $parameters . '&redirect=';
         if ((int)$redirectUrl === -1) {
             $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
         } else {
@@ -4267,7 +4267,7 @@ class BackendUtility
                 $outputRows[] = $row;
             } else {
                 // Select UID version:
-                $row = BackendUtility::getRecord($table, $uid, $fields, '', !$includeDeletedRecords);
+                $row = self::getRecord($table, $uid, $fields, '', !$includeDeletedRecords);
                 // Add rows to output array:
                 if ($row) {
                     $row['_CURRENT_VERSION'] = true;
@@ -4744,7 +4744,7 @@ class BackendUtility
             // -2 means "show at any login". We simulate first available fe_group.
             /** @var PageRepository $sysPage */
             $sysPage = GeneralUtility::makeInstance(PageRepository::class);
-            $activeFeGroupRow = BackendUtility::getRecordRaw('fe_groups', '1=1' . $sysPage->enableFields('fe_groups'), 'uid');
+            $activeFeGroupRow = self::getRecordRaw('fe_groups', '1=1' . $sysPage->enableFields('fe_groups'), 'uid');
             if (!empty($activeFeGroupRow)) {
                 $simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
             }

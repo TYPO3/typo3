@@ -31,7 +31,7 @@ class ValidationBuilder
     public static function create(Configuration $configuration)
     {
         /** @var ValidationBuilder $validationBuilder */
-        $validationBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ValidationBuilder::class);
+        $validationBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(self::class);
         $validationBuilder->setConfiguration($configuration);
         return $validationBuilder;
     }

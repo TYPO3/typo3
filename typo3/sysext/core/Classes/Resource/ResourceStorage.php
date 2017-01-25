@@ -2403,7 +2403,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitSanitizeFileNameSignal($fileName, Folder $targetFolder)
     {
-        list($fileName) = $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_SanitizeFileName, [$fileName, $targetFolder, $this, $this->driver]);
+        list($fileName) = $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_SanitizeFileName, [$fileName, $targetFolder, $this, $this->driver]);
         return $fileName;
     }
 

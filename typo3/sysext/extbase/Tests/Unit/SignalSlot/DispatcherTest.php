@@ -119,7 +119,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('slot')
             ->will($this->returnCallback(
                         function ($foo, $baz) {
-                            return ['modified_' . $foo, 'modified_' . $baz];}
+                            return ['modified_' . $foo, 'modified_' . $baz];
+                        }
                     ));
 
         $secondMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
@@ -145,7 +146,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('slot')
             ->will($this->returnCallback(
                         function ($foo, $baz) {
-                            return ['modified_' . $foo, 'modified_' . $baz];}
+                            return ['modified_' . $foo, 'modified_' . $baz];
+                        }
                     ));
 
         $secondMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
@@ -171,7 +173,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('slot')
             ->will($this->returnCallback(
                         function ($foo, $baz) {
-                            return ['modified_' . $foo, 'modified_' . $baz];}
+                            return ['modified_' . $foo, 'modified_' . $baz];
+                        }
                     ));
 
         $secondMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
@@ -203,7 +206,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('slot')
             ->will($this->returnCallback(
                         function () {
-                            return 'string';}
+                            return 'string';
+                        }
                     ));
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
@@ -223,7 +227,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('slot')
             ->will($this->returnCallback(
                         function () {
-                            return [1, 2, 3];}
+                            return [1, 2, 3];
+                        }
                     ));
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);

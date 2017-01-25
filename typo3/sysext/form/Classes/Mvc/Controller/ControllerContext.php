@@ -31,7 +31,7 @@ class ControllerContext extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerCont
      */
     public static function extend(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $source)
     {
-        $controllerContext = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ControllerContext::class);
+        $controllerContext = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(self::class);
         $propertyNames = ObjectAccess::getGettableProperties($source);
         foreach ($propertyNames as $propertyName => $propertyValue) {
             ObjectAccess::setProperty($controllerContext, $propertyName, $propertyValue);

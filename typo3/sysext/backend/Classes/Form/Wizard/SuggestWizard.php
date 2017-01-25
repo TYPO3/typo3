@@ -300,7 +300,7 @@ class SuggestWizard
                 foreach ($sheet as $_ => $dataStructure) {
                     $fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
                     if (!empty($fieldConfig)) {
-                        break(2);
+                        break 2;
                     }
                 }
             }

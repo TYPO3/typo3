@@ -110,7 +110,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         return [
             'string' => ['bar', '123', '123'],
-            'array' => ['bar', [1,2,3], '1,2,3'],
+            'array' => ['bar', [1, 2, 3], '1,2,3'],
         ];
     }
 

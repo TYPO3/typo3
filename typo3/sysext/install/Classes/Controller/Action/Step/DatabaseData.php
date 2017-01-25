@@ -78,7 +78,7 @@ class DatabaseData extends AbstractStepAction
             );
             $result[] = $errorStatus;
             return $result;
-        };
+        }
 
         // Set password as install tool password
         $configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $this->getHashedPassword($password));

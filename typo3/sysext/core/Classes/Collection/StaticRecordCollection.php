@@ -31,7 +31,7 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
     {
         /** @var $collection StaticRecordCollection */
         $collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            StaticRecordCollection::class,
+            self::class,
             $collectionRecord['table_name']
         );
         $collection->fromArray($collectionRecord);

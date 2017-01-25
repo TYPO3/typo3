@@ -503,9 +503,9 @@ class ImportExportController extends BaseScriptClass
             // Export for download:
             if ($inData['download_export']) {
                 $mimeType = 'application/octet-stream';
-                Header('Content-Type: ' . $mimeType);
-                Header('Content-Length: ' . strlen($out));
-                Header('Content-Disposition: attachment; filename=' . basename($dlFile));
+                header('Content-Type: ' . $mimeType);
+                header('Content-Length: ' . strlen($out));
+                header('Content-Disposition: attachment; filename=' . basename($dlFile));
                 echo $out;
                 die;
             }
@@ -876,7 +876,7 @@ class ImportExportController extends BaseScriptClass
                         }
                     }
                     $import->display_import_pid_record = $this->pageinfo;
-                    $this->standaloneView->assign('contentOverview',  $import->displayContentOverview());
+                    $this->standaloneView->assign('contentOverview', $import->displayContentOverview());
                 }
                 // Compile messages which are inhibiting a proper import and add them to output.
                 if (!empty($importInhibitedMessages)) {

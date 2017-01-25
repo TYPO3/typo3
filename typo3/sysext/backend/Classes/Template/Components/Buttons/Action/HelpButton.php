@@ -127,7 +127,7 @@ class HelpButton implements ButtonInterface, PositionInterface
      */
     public function isValid()
     {
-        return (!empty($this->moduleName));
+        return !empty($this->moduleName);
     }
 
     /**

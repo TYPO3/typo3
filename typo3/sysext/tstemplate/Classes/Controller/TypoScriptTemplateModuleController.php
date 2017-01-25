@@ -474,7 +474,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         if ($newStandardTemplate) {
             // Hook to change output, implemented for statictemplates
             if (isset(
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateView']
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['newStandardTemplateView']
             )) {
                 $selector = '';
                 $staticsText = '';
@@ -483,7 +483,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     'staticsText' => &$staticsText
                 ];
                 GeneralUtility::callUserFunction(
-                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateView'],
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['newStandardTemplateView'],
                     $reference,
                     $this
                 );
@@ -566,14 +566,14 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         } elseif (GeneralUtility::_GP('newWebsite')) {
             // Hook to handle row data, implemented for statictemplates
             if (isset(
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateHandler']
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['newStandardTemplateHandler']
             )) {
                 $reference = [
                     'recData' => &$recData,
                     'id' => $id,
                 ];
                 GeneralUtility::callUserFunction(
-                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateHandler'],
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['newStandardTemplateHandler'],
                     $reference,
                     $this
                 );

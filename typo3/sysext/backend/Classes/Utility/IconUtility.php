@@ -399,22 +399,22 @@ class IconUtility
                     }
                     // Converting to gray scale, dimming the icon:
                     if ($mode == 'disabled' or $mode != 'futuretiming' && $mode != 'no_icon_found' && !(!$mode && $user)) {
-                        $totalImageColors = ImageColorsTotal($im);
+                        $totalImageColors = imagecolorstotal($im);
                         for ($c = 0; $c < $totalImageColors; $c++) {
-                            $cols = ImageColorsForIndex($im, $c);
+                            $cols = imagecolorsforindex($im, $c);
                             $newcol = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
                             $lighten = $mode == 'disabled' ? 2.5 : 2;
                             $newcol = round(255 - (255 - $newcol) / $lighten);
-                            ImageColorSet($im, $c, $newcol, $newcol, $newcol);
+                            imagecolorset($im, $c, $newcol, $newcol, $newcol);
                         }
                     }
                     // Applying user icon, if there are access control on the item:
                     if ($user) {
                         if ($user < 100) {
                             // Apply user number only if lower than 100
-                            $black = ImageColorAllocate($im, 0, 0, 0);
+                            $black = imagecolorallocate($im, 0, 0, 0);
                             imagefilledrectangle($im, 0, 0, $user > 10 ? 9 : 5, 8, $black);
-                            $white = ImageColorAllocate($im, 255, 255, 255);
+                            $white = imagecolorallocate($im, 255, 255, 255);
                             imagestring($im, 1, 1, 1, $user, $white);
                         }
                         $ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_group.gif');
@@ -473,7 +473,7 @@ class IconUtility
                     }
                     @self::imagemake($im, $path);
                     GraphicalFunctions::gifCompress($path, 'IM');
-                    ImageDestroy($im);
+                    imagedestroy($im);
 
                     return $mainpath;
                 } else {
@@ -544,9 +544,9 @@ class IconUtility
     public static function imagemake($im, $path)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-            @ImagePng($im, $path);
+            @imagepng($im, $path);
         } else {
-            @ImageGif($im, $path);
+            @imagegif($im, $path);
         }
         if (@is_file($path)) {
             GeneralUtility::fixPermissions($path);

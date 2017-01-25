@@ -230,7 +230,7 @@ class CoreUpdateService
 
             if (!$this->checkCoreFilesAvailable($version)) {
                 // Explicit write check to upper directory of current core location
-                $coreLocation = @realPath($this->symlinkToCoreFiles . '/../');
+                $coreLocation = @realpath($this->symlinkToCoreFiles . '/../');
                 $file = $coreLocation . '/' . StringUtility::getUniqueId('install-core-update-test-');
                 $result = @touch($file);
                 if (!$result) {
@@ -448,7 +448,7 @@ class CoreUpdateService
             $messages[] = $message;
         } else {
             $downloadedCoreLocation = $this->downloadTargetPath . 'typo3_src-' . $version;
-            $newCoreLocation = @realPath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
+            $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
 
             if (!@is_dir($downloadedCoreLocation)) {
                 $success = false;
@@ -484,7 +484,7 @@ class CoreUpdateService
      */
     public function activateVersion($version)
     {
-        $newCoreLocation = @realPath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
+        $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
 
         $messages = [];
         $success = true;
@@ -568,7 +568,7 @@ class CoreUpdateService
      */
     protected function checkCoreFilesAvailable($version)
     {
-        $newCoreLocation = @realPath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
+        $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
         return @is_dir($newCoreLocation);
     }
 }

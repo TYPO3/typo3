@@ -123,11 +123,11 @@ class MathUtility
         $number = 0;
         $Msign = '+';
         $err = '';
-        $buffer = doubleval(current($reg[2]));
+        $buffer = floatval(current($reg[2]));
         // Advance pointer
         $regSliced = array_slice($reg[2], 1, null, true);
         foreach ($regSliced as $k => $v) {
-            $v = doubleval($v);
+            $v = floatval($v);
             $sign = $reg[1][$k];
             if ($sign == '+' || $sign == '-') {
                 $Msign == '-' ? ($number -= $buffer) : ($number += $buffer);

@@ -73,7 +73,7 @@ class ContentContentObject extends AbstractContentObject
             $cobjValue = '';
             if (!empty($records)) {
                 $this->cObj->currentRecordTotal = count($records);
-                $this->getTimeTracker()->setTSlogMessage('NUMROWS: ' .  count($records));
+                $this->getTimeTracker()->setTSlogMessage('NUMROWS: ' . count($records));
 
                 /** @var $cObj ContentObjectRenderer */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);

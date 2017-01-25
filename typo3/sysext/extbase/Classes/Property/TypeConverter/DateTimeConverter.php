@@ -105,7 +105,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
         if (is_array($source)) {
             return true;
         }
-        if (is_integer($source)) {
+        if (is_int($source)) {
             return true;
         }
         return is_string($source);
@@ -126,12 +126,12 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
         $dateFormat = $this->getDefaultDateFormat($configuration);
         if (is_string($source)) {
             $dateAsString = $source;
-        } elseif (is_integer($source)) {
+        } elseif (is_int($source)) {
             $dateAsString = strval($source);
         } else {
             if (isset($source['date']) && is_string($source['date'])) {
                 $dateAsString = $source['date'];
-            } elseif (isset($source['date']) && is_integer($source['date'])) {
+            } elseif (isset($source['date']) && is_int($source['date'])) {
                 $dateAsString = strval($source['date']);
             } elseif ($this->isDatePartKeysProvided($source)) {
                 if ($source['day'] < 1 || $source['month'] < 1 || $source['year'] < 1) {

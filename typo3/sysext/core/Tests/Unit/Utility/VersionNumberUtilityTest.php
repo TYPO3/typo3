@@ -55,7 +55,6 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'object' => [new \stdClass()],
             'NULL' => [null],
             'function' => [function () {
-
             }]
         ];
     }

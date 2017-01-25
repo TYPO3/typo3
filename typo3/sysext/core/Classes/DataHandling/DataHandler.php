@@ -2858,7 +2858,7 @@ class DataHandler
                     }
                     $valueArray = explode('.', $value);
                     $dec = array_pop($valueArray);
-                    $value = join('', $valueArray) . '.' . $dec;
+                    $value = implode('', $valueArray) . '.' . $dec;
                     if ($negative) {
                         $value *= -1;
                     }
@@ -4111,7 +4111,7 @@ class DataHandler
             $this->include_filefunctions = 1;
         }
         // Select all RTEmagic files in the reference table from the table/ID
-        $where = join(' AND ', [
+        $where = implode(' AND ', [
             'ref_table=' . $this->databaseConnection->fullQuoteStr('_FILE', 'sys_refindex'),
             'ref_string LIKE ' . $this->databaseConnection->fullQuoteStr('%/RTEmagic%', 'sys_refindex'),
             'softref_key=' . $this->databaseConnection->fullQuoteStr('images', 'sys_refindex'),
@@ -8359,7 +8359,7 @@ class DataHandler
         if (!isset($this->outerMostInstance)) {
             $stack = array_reverse(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS));
             foreach ($stack as $stackItem) {
-                if (isset($stackItem['object']) && $stackItem['object'] instanceof DataHandler) {
+                if (isset($stackItem['object']) && $stackItem['object'] instanceof self) {
                     $this->outerMostInstance = $stackItem['object'];
                     break;
                 }

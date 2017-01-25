@@ -68,7 +68,7 @@ class ApplicationContext
             $contextStringParts = explode('/', $contextString);
             $this->rootContextString = $contextStringParts[0];
             array_pop($contextStringParts);
-            $this->parentContext = new ApplicationContext(implode('/', $contextStringParts));
+            $this->parentContext = new self(implode('/', $contextStringParts));
         }
 
         if (!in_array($this->rootContextString, ['Development', 'Production', 'Testing'])) {
@@ -97,7 +97,7 @@ class ApplicationContext
      */
     public function isDevelopment()
     {
-        return ($this->rootContextString === 'Development');
+        return $this->rootContextString === 'Development';
     }
 
     /**
@@ -108,7 +108,7 @@ class ApplicationContext
      */
     public function isProduction()
     {
-        return ($this->rootContextString === 'Production');
+        return $this->rootContextString === 'Production';
     }
 
     /**
@@ -119,7 +119,7 @@ class ApplicationContext
      */
     public function isTesting()
     {
-        return ($this->rootContextString === 'Testing');
+        return $this->rootContextString === 'Testing';
     }
 
     /**

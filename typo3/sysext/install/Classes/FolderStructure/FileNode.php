@@ -306,6 +306,6 @@ class FileNode extends AbstractNode implements NodeInterface
     protected function isFile()
     {
         $path = $this->getAbsolutePath();
-        return (!is_link($path) && is_file($path));
+        return !is_link($path) && is_file($path);
     }
 }

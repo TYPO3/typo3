@@ -435,7 +435,7 @@ class ExtensionManagementUtility
                 }
                 if (
                     isset($fieldArrayWithOptions[$fieldNumber + 1])
-                    && StringUtility::beginsWith($fieldArrayWithOptions[$fieldNumber + 1],  '--palette--')
+                    && StringUtility::beginsWith($fieldArrayWithOptions[$fieldNumber + 1], '--palette--')
                 ) {
                     // Match for $field and next field is a palette - add fields to this one
                     $paletteName = GeneralUtility::trimExplode(';', $fieldArrayWithOptions[$fieldNumber + 1]);
@@ -862,7 +862,7 @@ class ExtensionManagementUtility
         $moduleConfiguration['name'] = $moduleSignature;
         $moduleConfiguration['script'] = 'extjspaneldummy.html';
         $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['configureModuleFunction'] = [ExtensionManagementUtility::class, 'configureModule'];
+        $moduleConfiguration['configureModuleFunction'] = [self::class, 'configureModule'];
         $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
         self::addModule($mainModuleName, $subModuleName, $position);
     }
@@ -1007,7 +1007,7 @@ class ExtensionManagementUtility
         GeneralUtility::logDeprecatedFunction();
         if (StringUtility::beginsWith($path, 'EXT:')) {
             list($extensionKey, $relativePath) = explode('/', substr($path, 4), 2);
-            $path = ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
+            $path = self::extPath($extensionKey) . $relativePath;
         }
         $GLOBALS['TBE_MODULES']['_PATHS'][$name] = $path;
     }
@@ -1501,7 +1501,7 @@ tt_content.' . $key . $suffix . ' {
             throw new \InvalidArgumentException('No TCA definition for table "pages".', 1447789492);
         }
 
-        $value = str_replace(',',  '', 'EXT:' . $extKey . '/' . $filePath);
+        $value = str_replace(',', '', 'EXT:' . $extKey . '/' . $filePath);
         $itemArray = [trim($title . ' (' . $extKey . ')'), $value];
         $GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
     }
@@ -1944,7 +1944,7 @@ tt_content.' . $key . $suffix . ' {
                 // Add ext_tables.php content of extension
                 $phpCodeToCache[] = trim(GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
                 $phpCodeToCache[] = '';
-                $phpCodeToCache[] = ExtensionManagementUtility::class . '::loadNewTcaColumnsConfigFiles();';
+                $phpCodeToCache[] = self::class . '::loadNewTcaColumnsConfigFiles();';
                 $phpCodeToCache[] = '';
             }
         }

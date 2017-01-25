@@ -62,7 +62,7 @@ abstract class AbstractConditionMatcher
      */
     public function setPageId($pageId)
     {
-        if (is_integer($pageId) && $pageId > 0) {
+        if (is_int($pageId) && $pageId > 0) {
             $this->pageId = $pageId;
         }
     }
@@ -243,17 +243,17 @@ abstract class AbstractConditionMatcher
                     if (strcspn($test, '=<>') == 0) {
                         switch ($test[0]) {
                             case '=':
-                                if (doubleval(substr($test, 1)) == $browserInfo['version']) {
+                                if (floatval(substr($test, 1)) == $browserInfo['version']) {
                                     return true;
                                 }
                                 break;
                             case '<':
-                                if (doubleval(substr($test, 1)) > $browserInfo['version']) {
+                                if (floatval(substr($test, 1)) > $browserInfo['version']) {
                                     return true;
                                 }
                                 break;
                             case '>':
-                                if (doubleval(substr($test, 1)) < $browserInfo['version']) {
+                                if (floatval(substr($test, 1)) < $browserInfo['version']) {
                                     return true;
                                 }
                                 break;
@@ -504,7 +504,7 @@ abstract class AbstractConditionMatcher
                 }
             }
             $arguments = trim($arguments);
-        };
+        }
         return $result;
     }
 
@@ -569,10 +569,10 @@ abstract class AbstractConditionMatcher
             $rightValue = $matches[2];
             switch ($operator) {
                 case '>=':
-                    return $leftValue >= doubleval($rightValue);
+                    return $leftValue >= floatval($rightValue);
                     break;
                 case '<=':
-                    return $leftValue <= doubleval($rightValue);
+                    return $leftValue <= floatval($rightValue);
                     break;
                 case '!=':
                     // multiple values may be split with '|'
@@ -580,7 +580,7 @@ abstract class AbstractConditionMatcher
                     $found = false;
                     $rightValueParts = GeneralUtility::trimExplode('|', $rightValue);
                     foreach ($rightValueParts as $rightValueSingle) {
-                        if ($leftValue == doubleval($rightValueSingle)) {
+                        if ($leftValue == floatval($rightValueSingle)) {
                             $found = true;
                             break;
                         }
@@ -588,10 +588,10 @@ abstract class AbstractConditionMatcher
                     return $found === false;
                     break;
                 case '<':
-                    return $leftValue < doubleval($rightValue);
+                    return $leftValue < floatval($rightValue);
                     break;
                 case '>':
-                    return $leftValue > doubleval($rightValue);
+                    return $leftValue > floatval($rightValue);
                     break;
                 default:
                     // nothing valid found except '=', use '='

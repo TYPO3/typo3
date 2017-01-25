@@ -77,7 +77,7 @@ class VariableFrontend extends AbstractFrontend
             }
         }
         if ($this->backend instanceof TransientBackendInterface) {
-                $this->backend->set($entryIdentifier, $variable, $tags, $lifetime);
+            $this->backend->set($entryIdentifier, $variable, $tags, $lifetime);
         } else {
             if ($this->useIgBinary === true) {
                 $this->backend->set($entryIdentifier, igbinary_serialize($variable), $tags, $lifetime);

@@ -82,7 +82,7 @@ class FullyRenderedButton implements ButtonInterface
     {
         if (
             trim($this->getHtmlSource()) !== ''
-            && $this->getType() === FullyRenderedButton::class
+            && $this->getType() === self::class
         ) {
             return true;
         }

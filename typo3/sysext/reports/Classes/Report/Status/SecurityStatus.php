@@ -222,7 +222,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
             case FlashMessage::INFO:
                 $messageDetail .= $resultCheck['html'];
                 break;
-            case FlashMessage::WARNING;
+            case FlashMessage::WARNING:
                 $severity = \TYPO3\CMS\Reports\Status::WARNING;
                 $messageDetail .= $resultCheck['html'];
                 break;

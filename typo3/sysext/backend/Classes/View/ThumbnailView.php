@@ -273,28 +273,28 @@ class ThumbnailView
             $im = imagecreatefromgif($basePath . 'NotFound.gif');
         }
         // Sets background color and print color.
-        $white = imageColorAllocate($im, 255, 255, 255);
-        $black = imageColorAllocate($im, 0, 0, 0);
+        $white = imagecolorallocate($im, 255, 255, 255);
+        $black = imagecolorallocate($im, 0, 0, 0);
         // Prints the text strings with the build-in font functions of GD
         $x = 0;
         $font = 0;
         if ($l1) {
             imagefilledrectangle($im, $x, 9, 56, 16, $white);
-            imageString($im, $font, $x, 9, $l1, $black);
+            imagestring($im, $font, $x, 9, $l1, $black);
         }
         if ($l2) {
             imagefilledrectangle($im, $x, 19, 56, 26, $white);
-            imageString($im, $font, $x, 19, $l2, $black);
+            imagestring($im, $font, $x, 19, $l2, $black);
         }
         if ($l3) {
             imagefilledrectangle($im, $x, 29, 56, 36, $white);
-            imageString($im, $font, $x, 29, substr($l3, -14), $black);
+            imagestring($im, $font, $x, 29, substr($l3, -14), $black);
         }
         // Outputting the image stream and exit
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-            imagePng($im);
+            imagepng($im);
         } else {
-            imageGif($im);
+            imagegif($im);
         }
         imagedestroy($im);
         die;
@@ -315,9 +315,9 @@ class ThumbnailView
             throw new \RuntimeException('TYPO3 Fatal Error: No gdlib.', 1270853953);
         }
         // Create image and set background color to white.
-        $im = imageCreate(250, 76);
-        $white = imageColorAllocate($im, 255, 255, 255);
-        $col = imageColorAllocate($im, 0, 0, 0);
+        $im = imagecreate(250, 76);
+        $white = imagecolorallocate($im, 255, 255, 255);
+        $col = imagecolorallocate($im, 0, 0, 0);
         // The test string and offset in x-axis.
         $string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÆæØøÅåÄäÖöÜüß';
         $x = 13;
@@ -336,10 +336,10 @@ class ThumbnailView
         // Output PNG or GIF based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
             header('Content-type: image/png');
-            imagePng($im);
+            imagepng($im);
         } else {
             header('Content-type: image/gif');
-            imageGif($im);
+            imagegif($im);
         }
         imagedestroy($im);
         die;

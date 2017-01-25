@@ -773,7 +773,7 @@ class ElementInformationController
 				<div class="table-fit">
 					<table class="table table-striped table-hover">
 						<thead>' . $infoDataHeader . '</thead>
-						<tbody>' . implode('', $infoData) .    '</tbody>
+						<tbody>' . implode('', $infoData) . '</tbody>
 					</table>
 				</div>';
         }

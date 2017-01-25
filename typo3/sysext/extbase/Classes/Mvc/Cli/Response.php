@@ -36,7 +36,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      */
     public function setExitCode($exitCode)
     {
-        if (!is_integer($exitCode)) {
+        if (!is_int($exitCode)) {
             throw new \InvalidArgumentException(sprintf('Tried to set invalid exit code. The value must be integer, %s given.', gettype($exitCode)), 1312222064);
         }
         $this->exitCode = $exitCode;

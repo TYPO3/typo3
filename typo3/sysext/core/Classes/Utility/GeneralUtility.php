@@ -2594,7 +2594,7 @@ class GeneralUtility
                 $msg .= implode(CRLF, $requestHeaders) . CRLF;
             }
             $msg .= CRLF;
-            fputs($fp, $msg);
+            fwrite($fp, $msg);
             while (!feof($fp)) {
                 $line = fgets($fp, 2048);
                 if (isset($report)) {
@@ -2977,7 +2977,7 @@ class GeneralUtility
             $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove') . '/';
             if (rename($directory, $temporaryDirectory)) {
                 if ($flushOpcodeCache) {
-                    GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
+                    self::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
                 }
                 if ($keepOriginalDirectory) {
                     static::mkdir($directory);
@@ -3222,7 +3222,7 @@ class GeneralUtility
      */
     public static function getBytesFromSizeMeasurement($measurement)
     {
-        $bytes = doubleval($measurement);
+        $bytes = floatval($measurement);
         if (stripos($measurement, 'G')) {
             $bytes *= 1024 * 1024 * 1024;
         } elseif (stripos($measurement, 'M')) {
@@ -3742,7 +3742,7 @@ class GeneralUtility
      */
     protected static function isInternalRequestType()
     {
-        return (!defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI)));
+        return !defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI));
     }
 
     /**
@@ -3783,29 +3783,29 @@ class GeneralUtility
             // Browser version
             switch ($bInfo['BROWSER']) {
                 case 'net':
-                    $bInfo['VERSION'] = doubleval(substr($useragent, 8));
+                    $bInfo['VERSION'] = floatval(substr($useragent, 8));
                     if (strpos($useragent, 'Netscape6/') !== false) {
-                        $bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape6/'), 10));
+                        $bInfo['VERSION'] = floatval(substr(strstr($useragent, 'Netscape6/'), 10));
                     }
                     // Will we ever know if this was a typo or intention...?! :-(
                     if (strpos($useragent, 'Netscape/6') !== false) {
-                        $bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/6'), 10));
+                        $bInfo['VERSION'] = floatval(substr(strstr($useragent, 'Netscape/6'), 10));
                     }
                     if (strpos($useragent, 'Netscape/7') !== false) {
-                        $bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/7'), 9));
+                        $bInfo['VERSION'] = floatval(substr(strstr($useragent, 'Netscape/7'), 9));
                     }
                     break;
                 case 'msie':
                     $tmp = strstr($useragent, 'MSIE');
-                    $bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 4)));
+                    $bInfo['VERSION'] = floatval(preg_replace('/^[^0-9]*/', '', substr($tmp, 4)));
                     break;
                 case 'opera':
                     $tmp = strstr($useragent, 'Opera');
-                    $bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 5)));
+                    $bInfo['VERSION'] = floatval(preg_replace('/^[^0-9]*/', '', substr($tmp, 5)));
                     break;
                 case 'konqu':
                     $tmp = strstr($useragent, 'Konqueror/');
-                    $bInfo['VERSION'] = doubleval(substr($tmp, 10));
+                    $bInfo['VERSION'] = floatval(substr($tmp, 10));
                     break;
             }
             // Client system

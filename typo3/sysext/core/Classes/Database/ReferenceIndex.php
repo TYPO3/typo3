@@ -1059,13 +1059,13 @@ class ReferenceIndex
      */
     protected function isDbReferenceField(array $configuration)
     {
-        return (
+        return
             ($configuration['type'] === 'group' && $configuration['internal_type'] === 'db')
             || (
                 ($configuration['type'] === 'select' || $configuration['type'] === 'inline')
                 && !empty($configuration['foreign_table'])
             )
-        );
+        ;
     }
 
     /**
@@ -1076,7 +1076,7 @@ class ReferenceIndex
      */
     public function isReferenceField(array $configuration)
     {
-        return (
+        return
             $this->isDbReferenceField($configuration)
             ||
             ($configuration['type'] === 'group' && ($configuration['internal_type'] === 'file' || $configuration['internal_type'] === 'file_reference')) // getRelations_procFiles
@@ -1092,7 +1092,7 @@ class ReferenceIndex
                 is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])
                 && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])
             )
-        );
+        ;
     }
 
     /**
@@ -1190,7 +1190,7 @@ class ReferenceIndex
             $uidList = [0];
             while ($record = $databaseConnection->sql_fetch_assoc($res)) {
                 /** @var $refIndexObj ReferenceIndex */
-                $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+                $refIndexObj = GeneralUtility::makeInstance(self::class);
                 if (isset($record['t3ver_wsid'])) {
                     $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
                 }

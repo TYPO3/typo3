@@ -200,7 +200,7 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with a simple example.');
 
         $source = 'some {}string\\{Object.bla}here as well';
-        $expected = ['some {}string\\', '{Object.bla}','here as well'];
+        $expected = ['some {}string\\', '{Object.bla}', 'here as well'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example. (1)');
 
         $source = 'some {f:viewHelper()} as well';

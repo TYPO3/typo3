@@ -253,6 +253,6 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return (isset($arguments['condition']) && $arguments['condition']);
+        return isset($arguments['condition']) && $arguments['condition'];
     }
 }

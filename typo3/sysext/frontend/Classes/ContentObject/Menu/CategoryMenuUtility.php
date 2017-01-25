@@ -119,7 +119,7 @@ class CategoryMenuUtility
                 uasort(
                     $pages,
                     [
-                        CategoryMenuUtility::class,
+                        self::class,
                         'sortPagesUtility'
                     ]
                 );

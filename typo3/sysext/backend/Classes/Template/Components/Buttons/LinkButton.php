@@ -74,7 +74,7 @@ class LinkButton extends AbstractButton implements ButtonInterface
         if (
             trim($this->getHref()) !== ''
             && trim($this->getTitle()) !== ''
-            && $this->getType() === LinkButton::class
+            && $this->getType() === self::class
             && $this->getIcon() !== null
         ) {
             return true;

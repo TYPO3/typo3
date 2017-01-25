@@ -1949,7 +1949,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
      * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
      * @see quoteStr()
      */
-    public function fullQuoteStr($str, $table,  $allowNull = false)
+    public function fullQuoteStr($str, $table, $allowNull = false)
     {
         if ($allowNull && $str === null) {
             return 'NULL';
@@ -2311,7 +2311,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                             }
                         } else {
                             foreach ($output as $key => $value) {
-                                if (is_integer($key)) {
+                                if (is_int($key)) {
                                     unset($output[$key]);
                                 }
                             }
@@ -2372,7 +2372,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                         $keyIndex = 0;
                         foreach ($output as $key => $value) {
                             unset($output[$key]);
-                            if (is_integer($key) || $this->runningADOdbDriver('mssql')) {
+                            if (is_int($key) || $this->runningADOdbDriver('mssql')) {
                                 $output[$keyIndex] = $value;
                                 if ($value === ' ') {
                                     // MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.

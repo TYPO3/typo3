@@ -89,7 +89,7 @@ class BytesViewHelper extends AbstractViewHelper implements CompilableInterface
         if (empty(self::$units)) {
             self::$units = GeneralUtility::trimExplode(',', LocalizationUtility::translate('viewhelper.format.bytes.units', 'fluid'));
         }
-        if (!is_integer($value) && !is_float($value)) {
+        if (!is_int($value) && !is_float($value)) {
             if (is_numeric($value)) {
                 $value = (float)$value;
             } else {

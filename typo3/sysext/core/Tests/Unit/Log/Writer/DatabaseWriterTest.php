@@ -85,7 +85,7 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $logRecordFixture->expects($this->any())->method('getData')->will($this->returnValue([]));
 
         /** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-        #$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
+        //$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
         $subject = new \TYPO3\CMS\Core\Log\Writer\DatabaseWriter();
 
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, [], [], '', false);

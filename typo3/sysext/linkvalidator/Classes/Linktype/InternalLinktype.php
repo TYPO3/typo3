@@ -97,7 +97,7 @@ class InternalLinktype extends AbstractLinktype
             $this->setErrorParams($this->errorParams);
         }
 
-        return ($this->responsePage && $this->responseContent);
+        return $this->responsePage && $this->responseContent;
     }
 
     /**

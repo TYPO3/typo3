@@ -60,7 +60,7 @@ class BetweenValidatorTest extends AbstractValidatorTest
     public function validInclusiveDataProvider()
     {
         return [
-            '1 ≤ 1 ≤ 1'                 => [[1,1,1]],
+            '1 ≤ 1 ≤ 1'                 => [[1, 1, 1]],
             '-10.1234 ≤ -10.12340 ≤ 10' => [[-10.1234, -10.12340, 10]],
             '-10.1234 ≤ -10 ≤ 10'       => [[-10.1234, -10.12340, 10]],
         ];
