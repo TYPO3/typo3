@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataGroup;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
-use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,24 +32,11 @@ class InlineParentRecord implements FormDataGroupInterface
      */
     public function compile(array $result)
     {
-        $dataProvider = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'];
-        $orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-        $orderedDataProvider = $orderingService->orderByDependencies($dataProvider, 'before', 'depends');
+        $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
+        $orderedProviderList->setProviderList(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord']
+        );
 
-        foreach ($orderedDataProvider as $providerClassName => $_) {
-            /** @var FormDataProviderInterface $provider */
-            $provider = GeneralUtility::makeInstance($providerClassName);
-
-            if (!$provider instanceof FormDataProviderInterface) {
-                throw new \UnexpectedValueException(
-                    'Data provider ' . $providerClassName . ' must implement FormDataProviderInterface',
-                    1444398947
-                );
-            }
-
-            $result = $provider->addData($result);
-        }
-
-        return $result;
+        return $orderedProviderList->compile($result);
     }
 }

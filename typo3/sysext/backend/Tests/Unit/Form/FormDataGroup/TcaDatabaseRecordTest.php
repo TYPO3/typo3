@@ -93,7 +93,7 @@ class TcaDatabaseRecordTest extends \TYPO3\CMS\Components\TestingFramework\Core\
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1437906440);
+        $this->expectExceptionCode(1485299408);
 
         $this->subject->compile([]);
     }

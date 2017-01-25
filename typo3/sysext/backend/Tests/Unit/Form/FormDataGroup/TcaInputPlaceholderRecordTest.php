@@ -93,7 +93,7 @@ class TcaInputPlaceholderRecordTest extends \TYPO3\CMS\Components\TestingFramewo
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1443986127);
+        $this->expectExceptionCode(1485299408);
 
         $this->subject->compile([]);
     }

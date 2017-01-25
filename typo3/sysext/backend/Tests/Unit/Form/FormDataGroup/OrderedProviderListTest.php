@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,16 +24,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class FlexFormSegmentTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class OrderedProviderListTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var FlexFormSegment
+     * @var OrderedProviderList
      */
     protected $subject;
 
     protected function setUp()
     {
-        $this->subject = new FlexFormSegment();
+        $this->subject = new OrderedProviderList();
     }
 
     /**
@@ -46,10 +46,9 @@ class FlexFormSegmentTest extends \TYPO3\CMS\Components\TestingFramework\Core\Un
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [];
-
         $input = ['foo'];
 
+        $this->subject->setProviderList([]);
         $this->assertEquals($input, $this->subject->compile($input));
     }
 
@@ -65,13 +64,13 @@ class FlexFormSegmentTest extends \TYPO3\CMS\Components\TestingFramework\Core\Un
 
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-            FormDataProviderInterface::class => [],
-        ];
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
         $providerResult = ['foo'];
         $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
+        $this->subject->setProviderList([
+            FormDataProviderInterface::class => [],
+        ]);
         $this->assertEquals($providerResult, $this->subject->compile([]));
     }
 
@@ -87,14 +86,14 @@ class FlexFormSegmentTest extends \TYPO3\CMS\Components\TestingFramework\Core\Un
 
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(\stdClass::class);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-            \stdClass::class => [],
-        ];
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1485299408);
 
+        $this->subject->setProviderList([
+            \stdClass::class => [],
+        ]);
         $this->subject->compile([]);
     }
 }

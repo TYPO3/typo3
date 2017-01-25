@@ -93,7 +93,7 @@ class InlineParentRecordTest extends \TYPO3\CMS\Components\TestingFramework\Core
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1444398947);
+        $this->expectExceptionCode(1485299408);
 
         $this->subject->compile([]);
     }
