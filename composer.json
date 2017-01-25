@@ -58,7 +58,7 @@
 		"codeception/codeception": "^2.2",
 		"se/selenium-server-standalone": "~2.53",
 		"7elix/styleguide": "~8.0.0",
-		"friendsofphp/php-cs-fixer": "^1.12",
+		"friendsofphp/php-cs-fixer": "^2.0",
 		"fiunchinho/phpunit-randomizer": "~2.0.3"
 	},
 	"suggest": {
