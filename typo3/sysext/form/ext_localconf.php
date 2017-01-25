@@ -40,6 +40,7 @@ call_user_func(function () {
         'fieldset',
         'file-upload',
         'finisher',
+        'form-element-selector',
         'image-upload',
         'insert-after',
         'insert-in',

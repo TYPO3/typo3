@@ -22,7 +22,7 @@
   text-decoration: none;
 }
 .t3-form-x-component ol,
-.t3-form-x-component ul {
+.t3-form-x-component ul:not(.dropdown-menu) {
   list-style: none;
   padding: 0;
 }
@@ -162,6 +162,12 @@
 #t3-form-inspector h4 span[data-template-property="label"] {
   vertical-align: top;
 }
+#t3-form-inspector .icon-size-small {
+  line-height: 1.5;
+}
+#t3-form-inspector .input-group-btn {
+  position: static;
+}
 #t3-form-inspector .t3-form-remove-element-button {
   position: absolute;
   top: 90px;
@@ -174,6 +180,16 @@
 }
 #t3-form-inspector .t3-form-inspector-editor-requiredValidator label {
   cursor: pointer;
+}
+#t3-form-inspector .t3-form-dropdown-buttons.open {
+  position: static;
+}
+#t3-form-inspector .t3-form-dropdown-buttons.open .dropdown-menu {
+  width: 100%;
+}
+#t3-form-inspector .t3-form-dropdown-buttons.open .dropdown-menu a {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .t3-form-add-collection-element {
   padding-bottom: 1em;
@@ -407,6 +423,7 @@
 }
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info:before,
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info:after {
+  z-index: 1;
   display: block;
   content: '';
   position: absolute;
@@ -472,6 +489,7 @@
 }
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list:before,
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list:after {
+  z-index: 1;
   display: block;
   content: '';
   position: absolute;
@@ -553,10 +571,7 @@
   right: -1px;
 }
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .dropdown-menu {
-  left: auto;
-  left: initial;
   min-width: initial;
-  right: 0;
   padding-left: 0;
   padding-right: 0;
   background-color: #005db3;
@@ -697,7 +712,7 @@
   display: none;
 }
 .meta-label {
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   bottom: 1em;
   left: 5.5em;
@@ -797,6 +812,9 @@
 }
 #t3-form-inspector-panels .t3-form-validation-errors.t3-form-collection-element .t3-form-collection-element-remove-button path {
   fill: #c83c3c;
+}
+#t3-form-inspector-panels .t3-form-validation-errors.t3-form-collection-element .t3-form-collection-element-remove-button:hover {
+  background: #eab3b3;
 }
 .form-editor-loading-spinner {
   width: 150px;

@@ -685,6 +685,13 @@
             <trans-unit id="formEditor.stage.toolbar.new_element.after" xml:space="preserve">
                 <source>After</source>
             </trans-unit>
+
+            <trans-unit id="formEditor.inspector.editor.formelement_selector.title" xml:space="preserve">
+                <source>Insert formelement identifier</source>
+            </trans-unit>
+            <trans-unit id="formEditor.inspector.editor.formelement_selector.no_elements" xml:space="preserve">
+                <source>No elements available</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

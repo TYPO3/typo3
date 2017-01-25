@@ -24,6 +24,7 @@
 @text-color: #000;
 @btn-default-bg: #eee;
 @btn-default-border: #bbb;
+@line-height-base: 1.5;
 
 // /Build/Resources/Public/Less/Component/module.less
 @module-docheader-height: 65px;
@@ -55,6 +56,7 @@
 
 .fade-out-gradient-effect-bottom (@color, @gradient-start-height, @gradient-height) {
   &:before, &:after {
+    z-index: 1;
     display: block;
     content: '';
     position: absolute;
@@ -112,7 +114,7 @@
     text-decoration: none;
   }
   ol,
-  ul {
+  ul:not(.dropdown-menu) {
     list-style: none;
     padding: 0;
   }
@@ -270,6 +272,12 @@
       vertical-align: top;
     }
   }
+  .icon-size-small {
+    line-height: @line-height-base;
+  }
+  .input-group-btn {
+    position: static;
+  }
   .t3-form-remove-element-button {
     position: absolute;
     top: 90px;
@@ -283,6 +291,16 @@
   .t3-form-inspector-editor-requiredValidator {
     label {
       cursor: pointer;
+    }
+  }
+  .t3-form-dropdown-buttons.open {
+    position: static;
+    .dropdown-menu {
+      width: 100%;
+      a {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
@@ -660,10 +678,7 @@
           right: -1px;
         }
         .dropdown-menu {
-          left: auto;
-          left: initial;
           min-width: initial;
-          right: 0;
           padding-left: 0;
           padding-right: 0;
           background-color: darken(@brand-primary, 10%);
@@ -723,7 +738,7 @@
       height: 32px;
       padding: 0.6em;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: @line-height-base;
       background-image: none;
       border: 1px solid @module-docheader-border;
       border-radius: 2px;
@@ -784,7 +799,7 @@
 }
 
 .meta-label {
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   bottom: 1em;
   left: 5.5em;
@@ -895,6 +910,9 @@
       border-color: transparent;
       path {
         fill: @brand-danger;
+      }
+      &:hover {
+        background: lighten(@brand-danger, 30%);
       }
     }
   }

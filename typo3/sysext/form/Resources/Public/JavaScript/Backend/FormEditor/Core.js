@@ -1310,6 +1310,35 @@ define(['jquery'], function($) {
             };
 
             /**
+             * @return object
+             */
+            function getNonCompositeNonToplevelFormElements() {
+                var collect, nonCompositeNonToplevelFormElements;
+
+                collect = function(formElement) {
+                    var formElements, formElementTypeDefinition;
+                    utility().assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364961);
+
+                    formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
+
+                    if (!formElementTypeDefinition['_isTopLevelFormElement'] && !formElementTypeDefinition['_isCompositeFormElement']) {
+                        nonCompositeNonToplevelFormElements.push(formElement);
+                    }
+
+                    formElements = formElement.get('renderables');
+                    if ('array' === $.type(formElements)) {
+                        for (var i = 0, len = formElements.length; i < len; ++i) {
+                            collect(formElements[i]);
+                        }
+                    }
+                };
+
+                nonCompositeNonToplevelFormElements = [];
+                collect(getRootFormElement());
+                return nonCompositeNonToplevelFormElements;
+            };
+
+            /**
              * @param string identifier
              * @returl bool
              * @throws 1475364966
@@ -1610,6 +1639,7 @@ define(['jquery'], function($) {
                 findEnclosingCompositeFormElementWhichIsNotOnTopLevel: findEnclosingCompositeFormElementWhichIsNotOnTopLevel,
                 findEnclosingCompositeFormElementWhichIsOnTopLevel: findEnclosingCompositeFormElementWhichIsOnTopLevel,
                 getIndexForEnclosingCompositeFormElementWhichIsOnTopLevelForFormElement: getIndexForEnclosingCompositeFormElementWhichIsOnTopLevelForFormElement,
+                getNonCompositeNonToplevelFormElements: getNonCompositeNonToplevelFormElements,
 
                 getNextFreeFormElementIdentifier: getNextFreeFormElementIdentifier,
                 isFormElementIdentifierUsed: isFormElementIdentifierUsed,

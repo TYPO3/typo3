@@ -803,6 +803,15 @@ define(['jquery',
             /**
              * @public
              *
+             * @return object
+             */
+            function getNonCompositeNonToplevelFormElements() {
+                return _getRepository().getNonCompositeNonToplevelFormElements();
+            };
+
+            /**
+             * @public
+             *
              * @return boolean
              */
             function isRootFormElementSelected() {
@@ -1051,6 +1060,7 @@ define(['jquery',
                 findEnclosingCompositeFormElementWhichIsNotOnTopLevel: findEnclosingCompositeFormElementWhichIsNotOnTopLevel,
                 isRootFormElementSelected: isRootFormElementSelected,
                 getLastFormElementWithinParentFormElement: getLastFormElementWithinParentFormElement,
+                getNonCompositeNonToplevelFormElements: getNonCompositeNonToplevelFormElements,
 
                 getFormElementDefinitionByType: getFormElementDefinitionByType,
                 getFormElementDefinition: getFormElementDefinition,

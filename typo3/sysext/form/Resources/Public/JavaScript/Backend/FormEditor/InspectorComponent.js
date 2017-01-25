@@ -49,6 +49,7 @@ define(['jquery',
                 collectionElement: 't3-form-collection-element',
                 finisherEditorPrefix: 't3-form-inspector-finishers-editor-',
                 inspectorEditor: 'form-editor',
+                inspectorInputGroup: 'input-group',
                 validatorEditorPrefix: 't3-form-inspector-validators-editor-'
             },
             domElementDataAttributeNames: {
@@ -58,8 +59,13 @@ define(['jquery',
             },
             domElementDataAttributeValues: {
                 collapse: 'actions-view-table-expand',
+                editorControlsInputGroup: 'inspectorEditorControlsGroup',
                 editorControlsWrapper: 'inspectorEditorControlsWrapper',
                 formElementHeaderEditor: 'inspectorFormElementHeaderEditor',
+                formElementSelectorControlsWrapper: 'inspectorEditorFormElementSelectorControlsWrapper',
+                formElementSelectorSplitButtonContainer: 'inspectorEditorFormElementSelectorSplitButtonContainer',
+                formElementSelectorSplitButtonListContainer: 'inspectorEditorFormElementSelectorSplitButtonListContainer',
+                iconNotAvailable: 'actions-message-error-close',
                 iconPage: 'apps-pagetree-page-default',
                 iconTtContent: 'mimetypes-x-content-text',
                 inspector: 'inspector',
@@ -1066,6 +1072,8 @@ define(['jquery',
 
             getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(propertyData);
 
+            renderFormElementSelectorEditorAddition(editorConfiguration, editorHtml, propertyPath);
+
             getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).on('keyup paste', function() {
                 getCurrentlySelectedFormElement().set(propertyPath, $(this).val());
                 _validateCollectionElement(propertyPath, editorHtml);
@@ -1708,6 +1716,115 @@ define(['jquery',
         /**
          * @public
          *
+         * @param object editorConfiguration
+         * @param object editorHtml
+         * @param string propertyPath
+         * @return void
+         * @throws 1484574704
+         * @throws 1484574705
+         * @throws 1484574706
+         */
+        function renderFormElementSelectorEditorAddition(editorConfiguration, editorHtml, propertyPath) {
+            var nonCompositeNonToplevelFormElements, formElementSelectorControlsWrapper, formElementSelectorSplitButtonListContainer, itemTemplate;
+
+            assert(
+                'object' === $.type(editorConfiguration),
+                'Invalid parameter "editorConfiguration"',
+                1484574704
+            );
+            assert(
+                'object' === $.type(editorHtml),
+                'Invalid parameter "editorHtml"',
+                1484574705
+            );
+            assert(
+                getUtility().isNonEmptyString(propertyPath),
+                'Invalid parameter "propertyPath"',
+                1484574706
+            );
+
+            formElementSelectorControlsWrapper = $(
+                getHelper().getDomElementDataIdentifierSelector('formElementSelectorControlsWrapper'), editorHtml
+            );
+
+            if (editorConfiguration['enableFormelementSelectionButton'] === true) {
+                if (formElementSelectorControlsWrapper.length === 0) {
+                    return;
+                }
+
+                formElementSelectorSplitButtonListContainer = $(
+                    getHelper().getDomElementDataIdentifierSelector('formElementSelectorSplitButtonListContainer'), editorHtml
+                );
+
+                formElementSelectorSplitButtonListContainer.off().empty();
+                nonCompositeNonToplevelFormElements = getFormEditorApp().getNonCompositeNonToplevelFormElements();
+
+                if (nonCompositeNonToplevelFormElements.length === 0) {
+                    Icons.getIcon(
+                        getHelper().getDomElementDataAttributeValue('iconNotAvailable'),
+                        Icons.sizes.small,
+                        null,
+                        Icons.states.default
+                    ).done(function(icon) {
+                        itemTemplate = $('<li data-no-sorting>'
+                                         +   '<a href="#"></a>'
+                                     +   '</li>');
+
+                        itemTemplate
+                            .append($(icon))
+                            .append(' ' + getFormElementDefinition(getRootFormElement(), 'inspectorEditorFormElementSelectorNoElements'));
+                        formElementSelectorSplitButtonListContainer.append(itemTemplate);
+                    });
+                } else {
+                    for (var i = 0, len = nonCompositeNonToplevelFormElements.length; i < len; ++i) {
+                        var nonCompositeNonToplevelFormElement;
+
+                        nonCompositeNonToplevelFormElement = nonCompositeNonToplevelFormElements[i];
+                        Icons.getIcon(
+                            getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier'),
+                            Icons.sizes.small,
+                            null,
+                            Icons.states.default
+                        ).done(function(icon) {
+                            itemTemplate = $('<li data-no-sorting>'
+                                             +   '<a href="#" data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '">'
+                                             +   '</a>'
+                                         +   '</li>');
+
+                            $('[data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '"]', itemTemplate)
+                                .append($(icon))
+                                .append(' ' + nonCompositeNonToplevelFormElements[i].get('label'));
+
+                            $('a', itemTemplate).on('click', function() {
+                                var propertyData;
+
+                                propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+
+                                if (propertyData.length === 0) {
+                                    propertyData = '{' + $(this).attr('data-formelement-identifier') + '}';
+                                } else {
+                                    propertyData = propertyData + ' ' + '{' + $(this).attr('data-formelement-identifier') + '}';
+                                }
+
+                                getCurrentlySelectedFormElement().set(propertyPath, propertyData);
+                                getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(propertyData);
+                                _validateCollectionElement(propertyPath, editorHtml);
+                            });
+
+                            formElementSelectorSplitButtonListContainer.append(itemTemplate);
+                        });
+                    }
+                }
+            } else {
+                $(getHelper().getDomElementDataIdentifierSelector('editorControlsInputGroup'), editorHtml)
+                    .removeClass(getHelper().getDomElementClassName('inspectorInputGroup'));
+                formElementSelectorControlsWrapper.off().empty().remove();
+            }
+        }
+
+        /**
+         * @public
+         *
          * @param string content
          * @return void
          */
@@ -1771,6 +1888,7 @@ define(['jquery',
             renderCollectionElementSelectionEditor: renderCollectionElementSelectionEditor,
             renderEditors: renderEditors,
             renderFormElementHeaderEditor: renderFormElementHeaderEditor,
+            renderFormElementSelectorEditorAddition: renderFormElementSelectorEditorAddition,
             renderPropertyGridEditor: renderPropertyGridEditor,
             renderRemoveElementEditor: renderRemoveElementEditor,
             renderRequiredValidatorEditor: renderRequiredValidatorEditor,
