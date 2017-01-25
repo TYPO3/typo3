@@ -602,7 +602,7 @@ class SingleFieldContainer extends AbstractContainer
      */
     protected function isAssociativeArray($object)
     {
-        return is_array($object) && !empty($object) && array_keys($object) !== range(0, sizeof($object) - 1);
+        return is_array($object) && !empty($object) && array_keys($object) !== range(0, count($object) - 1);
     }
 
     /**

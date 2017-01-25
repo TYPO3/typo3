@@ -887,7 +887,7 @@ class ImportExportController extends BaseScriptClass
                         }
                     }
                     $import->display_import_pid_record = $this->pageinfo;
-                    $this->standaloneView->assign('contentOverview',  $import->displayContentOverview());
+                    $this->standaloneView->assign('contentOverview', $import->displayContentOverview());
                 }
                 // Compile messages which are inhibiting a proper import and add them to output.
                 if (!empty($importInhibitedMessages)) {

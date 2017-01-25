@@ -6976,7 +6976,7 @@ class DataHandler
                 $errors = [];
                 foreach ($fieldArray as $key => $value) {
                     if (!$this->checkStoredRecords_loose || $value || $row[$key]) {
-                        if (is_double($row[$key])) {
+                        if (is_float($row[$key])) {
                             // if the database returns the value as double, compare it as double
                             if ((double)$value !== (double)$row[$key]) {
                                 $errors[] = $key;

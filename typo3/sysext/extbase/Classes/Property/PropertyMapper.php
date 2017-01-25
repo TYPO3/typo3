@@ -367,7 +367,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
             return 'array';
         } elseif (is_float($source)) {
             return 'float';
-        } elseif (is_integer($source)) {
+        } elseif (is_int($source)) {
             return 'integer';
         } elseif (is_bool($source)) {
             return 'boolean';

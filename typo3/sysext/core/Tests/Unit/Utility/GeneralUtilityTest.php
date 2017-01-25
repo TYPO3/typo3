@@ -4586,7 +4586,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
         $inputData = ['called' => []];
         GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
         GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
-        $this->assertEquals(1, sizeof($inputData['called']));
+        $this->assertEquals(1, count($inputData['called']));
     }
 
     /**

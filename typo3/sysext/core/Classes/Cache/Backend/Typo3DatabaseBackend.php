@@ -231,7 +231,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             ->from($this->cacheTable)
             ->from($this->tagsTable)
             ->where(
-                $queryBuilder->expr()->eq($this->cacheTable . '.identifier',  $queryBuilder->quoteIdentifier($this->tagsTable . '.identifier')),
+                $queryBuilder->expr()->eq($this->cacheTable . '.identifier', $queryBuilder->quoteIdentifier($this->tagsTable . '.identifier')),
                 $queryBuilder->expr()->eq(
                     $this->tagsTable . '.tag',
                     $queryBuilder->createNamedParameter($tag, \PDO::PARAM_STR)

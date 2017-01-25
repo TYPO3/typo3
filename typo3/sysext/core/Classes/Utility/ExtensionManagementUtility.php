@@ -433,7 +433,7 @@ class ExtensionManagementUtility
                 }
                 if (
                     isset($fieldArrayWithOptions[$fieldNumber + 1])
-                    && strpos($fieldArrayWithOptions[$fieldNumber + 1],  '--palette--') === 0
+                    && strpos($fieldArrayWithOptions[$fieldNumber + 1], '--palette--') === 0
                 ) {
                     // Match for $field and next field is a palette - add fields to this one
                     $paletteName = GeneralUtility::trimExplode(';', $fieldArrayWithOptions[$fieldNumber + 1]);
@@ -1482,7 +1482,7 @@ tt_content.' . $key . $suffix . ' {
             throw new \InvalidArgumentException('No TCA definition for table "pages".', 1447789492);
         }
 
-        $value = str_replace(',',  '', 'EXT:' . $extKey . '/' . $filePath);
+        $value = str_replace(',', '', 'EXT:' . $extKey . '/' . $filePath);
         $itemArray = [trim($title . ' (' . $extKey . ')'), $value];
         $GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
     }

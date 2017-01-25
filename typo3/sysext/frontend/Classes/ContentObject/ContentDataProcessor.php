@@ -43,7 +43,7 @@ class ContentDataProcessor
             foreach ($processorKeys as $key) {
                 $className = $processors[$key];
                 if (!class_exists($className)) {
-                    throw new \UnexpectedValueException('Processor class name "' . $className . '" does not exist!',  1427455378);
+                    throw new \UnexpectedValueException('Processor class name "' . $className . '" does not exist!', 1427455378);
                 }
 
                 if (!in_array(DataProcessorInterface::class, class_implements($className), true)) {

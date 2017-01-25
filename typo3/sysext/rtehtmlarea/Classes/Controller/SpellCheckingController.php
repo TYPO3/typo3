@@ -345,7 +345,7 @@ var selectedDictionary = "' . $this->dictionary . '";
             // Calculating parsing and spell checkting time
             $time = number_format(microtime(true) - $time_start, 2, ',', ' ');
             // Insert spellcheck info
-            $this->result .= 'var spellcheckInfo = { "Total words":"' . $this->wordCount . '","Misspelled words":"' . sizeof($this->misspelled) . '","Total suggestions":"' . $this->suggestionCount . '","Total words suggested":"' . $this->suggestedWordCount . '","Spelling checked in":"' . $time . '" };
+            $this->result .= 'var spellcheckInfo = { "Total words":"' . $this->wordCount . '","Misspelled words":"' . count($this->misspelled) . '","Total suggestions":"' . $this->suggestionCount . '","Total words suggested":"' . $this->suggestedWordCount . '","Spelling checked in":"' . $time . '" };
 // -->
 /*]]>*/
 </script>
@@ -586,13 +586,13 @@ var selectedDictionary = "' . $this->dictionary . '";
                 if ($this->pspell_is_available && !$this->forceCommandMode) {
                     if (!pspell_check($this->pspell_link, $word)) {
                         if (!in_array($word, $this->misspelled)) {
-                            if (sizeof($this->misspelled) != 0) {
+                            if (count($this->misspelled) != 0) {
                                 $this->suggestedWords .= ',';
                             }
                             $suggest = pspell_suggest($this->pspell_link, $word);
-                            if (sizeof($suggest) != 0) {
+                            if (count($suggest) != 0) {
                                 $this->suggestionCount++;
-                                $this->suggestedWordCount += sizeof($suggest);
+                                $this->suggestedWordCount += count($suggest);
                             }
                             $this->suggestedWords .= '"' . $word . '":"' . implode(',', $suggest) . '"';
                             $this->misspelled[] = $word;
@@ -632,7 +632,7 @@ var selectedDictionary = "' . $this->dictionary . '";
                     GeneralUtility::unlink_tempfile($tmpFileName);
                     if ($AspellResultLines['1'][0] !== '*') {
                         if (!in_array($word, $this->misspelled)) {
-                            if (sizeof($this->misspelled) != 0) {
+                            if (count($this->misspelled) != 0) {
                                 $this->suggestedWords .= ',';
                             }
                             $suggest = [];
@@ -641,9 +641,9 @@ var selectedDictionary = "' . $this->dictionary . '";
                                 $suggestions = GeneralUtility::trimExplode(':', $AspellResultLines['1'], true);
                                 $suggest = GeneralUtility::trimExplode(',', $suggestions['1'], true);
                             }
-                            if (sizeof($suggest) != 0) {
+                            if (count($suggest) != 0) {
                                 $this->suggestionCount++;
-                                $this->suggestedWordCount += sizeof($suggest);
+                                $this->suggestedWordCount += count($suggest);
                             }
                             $this->suggestedWords .= '"' . $word . '":"' . implode(',', $suggest) . '"';
                             $this->misspelled[] = $word;

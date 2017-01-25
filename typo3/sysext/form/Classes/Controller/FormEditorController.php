@@ -352,7 +352,7 @@ class FormEditorController extends AbstractBackendController
     {
         $output = [];
         foreach ($input as $key => $value) {
-            if (is_integer($key) && is_array($value) && isset($value['_label']) && isset($value['_value'])) {
+            if (is_int($key) && is_array($value) && isset($value['_label']) && isset($value['_value'])) {
                 $key = $value['_value'];
                 $value = $value['_label'];
             }

@@ -217,7 +217,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      */
     public function setDatabase($database)
     {
-        if (!is_integer($database)) {
+        if (!is_int($database)) {
             throw new \InvalidArgumentException('The specified database number is of type "' . gettype($database) . '" but an integer is expected.', 1279763057);
         }
         if ($database < 0) {
@@ -266,7 +266,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      */
     public function setCompressionLevel($compressionLevel)
     {
-        if (!is_integer($compressionLevel)) {
+        if (!is_int($compressionLevel)) {
             throw new \InvalidArgumentException('The specified compression of type "' . gettype($compressionLevel) . '" but an integer is expected.', 1289679154);
         }
         if ($compressionLevel >= -1 && $compressionLevel <= 9) {
@@ -300,7 +300,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
         }
         $lifetime = $lifetime === null ? $this->defaultLifetime : $lifetime;
-        if (!is_integer($lifetime)) {
+        if (!is_int($lifetime)) {
             throw new \InvalidArgumentException('The specified lifetime is of type "' . gettype($lifetime) . '" but an integer or NULL is expected.', 1279488008);
         }
         if ($lifetime < 0) {

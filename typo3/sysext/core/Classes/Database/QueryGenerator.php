@@ -436,13 +436,13 @@ class QueryGenerator
             // Initialize array to work on, save special parameters
             $ssArr = $this->getSubscript($POST['qG_del']);
             $workArr = &$this->queryConfig;
-            $ssArrSize = sizeof($ssArr) - 1;
+            $ssArrSize = count($ssArr) - 1;
             for ($i = 0; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Delete the entry and move the other entries
             unset($workArr[$ssArr[$i]]);
-            $workArrSize = sizeof($workArr);
+            $workArrSize = count($workArr);
             for ($j = $ssArr[$i]; $j < $workArrSize; $j++) {
                 $workArr[$j] = $workArr[$j + 1];
                 unset($workArr[$j + 1]);
@@ -453,12 +453,12 @@ class QueryGenerator
             // Initialize array to work on, save special parameters
             $ssArr = $this->getSubscript($POST['qG_ins']);
             $workArr = &$this->queryConfig;
-            $ssArrSize = sizeof($ssArr) - 1;
+            $ssArrSize = count($ssArr) - 1;
             for ($i = 0; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Move all entries above position where new entry is to be inserted
-            $workArrSize = sizeof($workArr);
+            $workArrSize = count($workArr);
             for ($j = $workArrSize; $j > $ssArr[$i]; $j--) {
                 $workArr[$j] = $workArr[$j - 1];
             }
@@ -471,7 +471,7 @@ class QueryGenerator
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_up']);
             $workArr = &$this->queryConfig;
-            $ssArrSize = sizeof($ssArr) - 1;
+            $ssArrSize = count($ssArr) - 1;
             for ($i = 0; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
@@ -485,7 +485,7 @@ class QueryGenerator
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_nl']);
             $workArr = &$this->queryConfig;
-            $ssArraySize = sizeof($ssArr) - 1;
+            $ssArraySize = count($ssArr) - 1;
             for ($i = 0; $i < $ssArraySize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
@@ -506,7 +506,7 @@ class QueryGenerator
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_remnl']);
             $workArr = &$this->queryConfig;
-            $ssArrSize = sizeof($ssArr) - 1;
+            $ssArrSize = count($ssArr) - 1;
             for ($i = 0; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }

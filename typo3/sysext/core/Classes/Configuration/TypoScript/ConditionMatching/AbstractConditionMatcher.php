@@ -63,7 +63,7 @@ abstract class AbstractConditionMatcher
      */
     public function setPageId($pageId)
     {
-        if (is_integer($pageId) && $pageId > 0) {
+        if (is_int($pageId) && $pageId > 0) {
             $this->pageId = $pageId;
         }
     }
