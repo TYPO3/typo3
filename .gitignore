@@ -25,6 +25,7 @@ nbproject
 .settings
 .TemporaryItems
 .webprj
+.php_cs.cache
 #
 # Ignore build stuff
 Build/bower_components/*
