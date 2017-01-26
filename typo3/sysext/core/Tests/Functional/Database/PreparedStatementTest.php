@@ -74,6 +74,7 @@ class PreparedStatementTest extends \TYPO3\Components\TestingFramework\Core\Func
     /**
      * @test
      *
+     * @group mysql
      * @return void
      */
     public function prepareSelectQueryCreateValidQuery()

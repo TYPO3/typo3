@@ -35,6 +35,8 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\Components\TestingFramework\C
 
     /**
      * @test
+     *
+     * @group mysql
      */
     public function columnAndKeyDeletionDoesNotReturnAnError()
     {
