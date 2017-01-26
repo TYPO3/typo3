@@ -230,14 +230,6 @@ abstract class AbstractUserAuthentication
     public $lockIP = 4;
 
     /**
-     * Keyword list (comma separated list with no spaces!)
-     * Each keyword indicates some information that can be included in a hash made to lock down user sessions.
-     * Configurable by $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['lockHashKeyWords']
-     * @var string
-     */
-    public $lockHashKeyWords = 'useragent';
-
-    /**
      * @var string
      */
     public $warningEmail = '';
@@ -414,8 +406,6 @@ abstract class AbstractUserAuthentication
         if ($mode == 'get' && $this->getFallBack && $this->get_name) {
             $this->get_URL_ID = '&' . $this->get_name . '=' . $id;
         }
-        // Set session hashKey lock keywords from configuration; currently only 'useragent' can be used.
-        $this->lockHashKeyWords = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockHashKeyWords'];
         // Make certain that NO user is set initially
         $this->user = null;
         // Set all possible headers that could ensure that the script is not cached on the client-side
@@ -905,7 +895,6 @@ abstract class AbstractUserAuthentication
             'ses_id' => $this->id,
             'ses_name' => $this->name,
             'ses_iplock' => $sessionIpLock,
-            'ses_hashlock' => $this->hashLockClause_getHashInt(),
             'ses_userid' => $tempuser[$this->userid_column],
             'ses_tstamp' => $GLOBALS['EXEC_TIME'],
             'ses_data' => ''
@@ -1080,10 +1069,6 @@ abstract class AbstractUserAuthentication
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_userid',
                     $queryBuilder->quoteIdentifier($this->user_table . '.' . $this->userid_column)
-                ),
-                $queryBuilder->expr()->eq(
-                    $this->session_table . '.ses_hashlock',
-                    $queryBuilder->createNamedParameter($this->hashLockClause_getHashInt(), \PDO::PARAM_INT)
                 )
             );
 
@@ -1230,32 +1215,6 @@ abstract class AbstractUserAuthentication
     {
         GeneralUtility::logDeprecatedFunction();
         return substr(md5($this->id . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 10);
-    }
-
-    /**
-     * This returns the where-clause needed to lock a user to a hash integer
-     *
-     * @return string
-     * @access private
-     */
-    protected function hashLockClause()
-    {
-        return 'AND ' . $this->session_table . '.ses_hashlock=' . $this->hashLockClause_getHashInt();
-    }
-
-    /**
-     * Creates hash integer to lock user to. Depends on configured keywords
-     *
-     * @return int Hash integer
-     * @access private
-     */
-    protected function hashLockClause_getHashInt()
-    {
-        $hashStr = '';
-        if (GeneralUtility::inList($this->lockHashKeyWords, 'useragent')) {
-            $hashStr .= ':' . GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
-        }
-        return GeneralUtility::md5int($hashStr);
     }
 
     /*************************

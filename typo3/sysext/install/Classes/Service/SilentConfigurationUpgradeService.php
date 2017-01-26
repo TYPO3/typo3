@@ -84,7 +84,10 @@ class SilentConfigurationUpgradeService
         // #77411
         'SYS/caching/cacheConfigurations/extbase_typo3dbbackend_tablecolumns',
         // #77460
-        'SYS/caching/cacheConfigurations/extbase_typo3dbbackend_queries'
+        'SYS/caching/cacheConfigurations/extbase_typo3dbbackend_queries',
+        // #79513
+        'FE/lockHashKeyWords',
+        'BE/lockHashKeyWords'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
