@@ -17,15 +17,102 @@ namespace TYPO3\CMS\Form\Domain\Renderer;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
-use TYPO3\CMS\Form\Mvc\View\FormView;
-use TYPO3\CMS\Form\Mvc\View\TemplatePaths;
+use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Form\Domain\Exception\RenderingException;
+use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
- * A renderer which render all renderables within the $formRuntime.
- * All the work is done within FormView::class.
- * This is just a proxy class to make the rendering process more clear.
- * See the documentation within FormView::class for additional information.
+ * A fluid RendererInterface implementation which used to render a *FormDefinition*.
+ *
+ * This renderer is called from {@link \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::render()}.
+ *
+ * Options
+ * =======
+ *
+ * The FluidFormRenderer uses some rendering options which are of particular
+ * importance, as they determine how the form field is resolved to a path
+ * in the file system.
+ *
+ * All rendering options are retrieved from the FormDefinition,
+ * using the {@link \TYPO3\CMS\Form\Domain\Model\FormDefinition::getRenderingOptions()}
+ * method.
+ *
+ * templateRootPaths
+ * -----------------
+ *
+ * Used to define several paths for templates, which will be tried in reversed
+ * order (the paths are searched from bottom to top). The first folder where
+ * the desired layout is found, is used. If the array keys are numeric,
+ * they are first sorted and then tried in reversed order.
+ * Within this paths, fluid will search for a file which is named like the
+ * renderable *type*.
+ * For example:
+ *   templateRootPaths.10 = EXT:form/Resources/Private/Frontend/Templates/
+ *   $renderable->getType() = Form
+ *   Expected template file: EXT:form/Resources/Private/Frontend/Templates/Form.html
+ * There is a setting available to set a custom template name. Please read
+ * the section 'templateName'.
+ *
+ * Only the root renderable (FormDefinition) has to be a template file.
+ * All child renderables are partials. By default, the root renderable
+ * is called 'Form'.
+ *
+ * layoutRootPaths
+ * ---------------
+ *
+ * Used to define several paths for layouts, which will be tried in reversed
+ * order (the paths are searched from bottom to top). The first folder where
+ * the desired layout is found, is used. If the array keys are numeric,
+ * they are first sorted and then tried in reversed order.
+ *
+ * partialRootPaths
+ * ----------------
+ *
+ * Used to define several paths for partials, which will be tried in reversed
+ * order. The first folder where the desired partial is found, is used.
+ * The keys of the array define the order.
+ *
+ * Within this paths, fluid will search for a file which is named like the
+ * renderable *type*.
+ * For example:
+ *   templateRootPaths.10 = EXT:form/Resources/Private/Frontend/Partials/
+ *   $renderable->getType() = Text
+ *   Expected template file: EXT:form/Resources/Private/Frontend/Partials/Text.html
+ * There is a setting available to set a custom partial name. Please read
+ * the section 'templateName'.
+ *
+ * templateName
+ * -----------
+ * By default, the renderable type will be taken as the name for the
+ * template / partial.
+ * For example:
+ *   partialRootPaths.10 = EXT:form/Resources/Private/Frontend/Partials/
+ *   $renderable->getType() = Text
+ *   Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
+ *
+ * Set 'templateName' to define a custom name which should be used instead.
+ * For example:
+ *   templateName = Foo
+ *   $renderable->getType() = Text
+ *   Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Foo.html
+ *
+ * Rendering Child Renderables
+ * ===========================
+ *
+ * If a renderable wants to render child renderables, inside its template / partial,
+ * it can do that using the <code><formvh:renderRenderable></code> ViewHelper.
+ *
+ * A template example from Page shall demonstrate this:
+ *
+ * <pre>
+ *   <formvh:renderRenderable renderable="{page}">
+ *       <f:for each="{page.elements}" as="element">
+ *           <formvh:renderRenderable renderable="{element}">
+ *               <f:render partial="{element.templateName}" arguments="{element: element}" />
+ *           </formvh:renderRenderable>
+ *       </f:for>
+ *   </formvh:renderRenderable>
+ * </pre>
  *
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
@@ -35,25 +122,59 @@ class FluidFormRenderer extends AbstractElementRenderer implements RendererInter
 {
 
     /**
-     * Initialize the FormView::class and render the this->formRuntime.
-     * This method is expected to invoke the beforeRendering() callback
-     * on each $renderable. This is done within FormView::class.
+     * Renders the FormDefinition.
      *
-     * @param RootRenderableInterface $renderable
+     * This method is expected to invoke the beforeRendering() callback
+     * on each renderable.
+     * This method invoke the beforeRendering() callback within the 'FormDefinition'.
+     * The callbacks for each other renderables will be triggered from the
+     * renderRenderable viewHelper.
+     * {@link \TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper::renderStatic()}
+     *
      * @return string the rendered $formRuntime
      * @internal
      */
-    public function render(RootRenderableInterface $renderable): string
+    public function render(): string
     {
-        $formView = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(FormView::class);
+        $formElementType = $this->formRuntime->getType();
+        $renderingOptions = $this->formRuntime->getRenderingOptions();
 
-        $formView->setFormRuntime($this->formRuntime);
-        $formView->setControllerContext($this->controllerContext);
-        $formView->getRenderingContext()->setTemplatePaths(
-            GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(TemplatePaths::class)
-        );
-        return $formView->renderRenderable($renderable);
+        $view = GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(TemplateView::class);
+        $view->setControllerContext($this->controllerContext);
+
+        if (!isset($renderingOptions['templateRootPaths'])) {
+            throw new RenderingException(
+                sprintf('The option templateRootPaths must be set for renderable "%s"', $formElementType),
+                1480293084
+            );
+        }
+        if (!isset($renderingOptions['layoutRootPaths'])) {
+            throw new RenderingException(
+                sprintf('The option layoutRootPaths must be set for renderable "%s"', $formElementType),
+                1480293085
+            );
+        }
+        if (!isset($renderingOptions['partialRootPaths'])) {
+            throw new RenderingException(
+                sprintf('The option partialRootPaths must be set for renderable "%s"', $formElementType),
+                1480293086
+            );
+        }
+
+        $view->assign('form', $this->formRuntime);
+
+        $view->getRenderingContext()
+            ->getViewHelperVariableContainer()
+            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $this->formRuntime);
+
+        // Configure the fluid TemplatePaths with the rendering options
+        // from the renderable
+        $view->getTemplatePaths()->fillFromConfigurationArray($renderingOptions);
+
+        // Invoke the beforeRendering callback on the renderable
+        $this->formRuntime->getFormDefinition()->beforeRendering($this->formRuntime);
+
+        return $view->render($this->formRuntime->getTemplateName());
     }
 }

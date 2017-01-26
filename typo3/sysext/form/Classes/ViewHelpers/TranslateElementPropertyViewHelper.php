@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
-use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -45,7 +44,6 @@ class TranslateElementPropertyViewHelper extends AbstractViewHelper
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
         $this->registerArgument('property', 'string', 'Property to translate', false);
         $this->registerArgument('renderingOptionProperty', 'string', 'Property to translate', false);
-        $this->registerArgument('formRuntime', FormRuntime::class, 'The form runtime', false);
     }
 
     /**
@@ -60,7 +58,6 @@ class TranslateElementPropertyViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $element = $arguments['element'];
-        $formRuntime = $arguments['formRuntime'];
 
         $property = null;
         if (!empty($arguments['property'])) {
@@ -69,11 +66,10 @@ class TranslateElementPropertyViewHelper extends AbstractViewHelper
             $property = $arguments['renderingOptionProperty'];
         }
 
-        if ($formRuntime === null) {
-            /** @var RendererInterface $fluidFormRenderer */
-            $fluidFormRenderer = $renderingContext->getViewHelperVariableContainer()->getView();
-            $formRuntime = $fluidFormRenderer->getFormRuntime();
-        }
+        /** @var FormRuntime $formRuntime */
+        $formRuntime =  $renderingContext
+            ->getViewHelperVariableContainer()
+            ->get(RenderRenderableViewHelper::class, 'formRuntime');
 
         return TranslationService::getInstance()->translateFormElementValue($element, $property, $formRuntime);
     }

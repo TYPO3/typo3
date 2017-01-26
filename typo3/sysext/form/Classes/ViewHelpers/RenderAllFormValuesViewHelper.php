@@ -23,8 +23,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
-use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders the values of a form
@@ -34,6 +35,7 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 class RenderAllFormValuesViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
      * @var bool
@@ -51,18 +53,21 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
         parent::initializeArguments();
         $this->registerArgument('renderable', RootRenderableInterface::class, 'A RootRenderableInterface instance', true);
         $this->registerArgument('as', 'string', 'The name within the template', false, 'formValue');
-        $this->registerArgument('formRuntime', FormRuntime::class, 'A FormRuntime instance', false, null);
     }
 
     /**
+     * Return array element by key.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string the rendered form values
      * @api
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $renderable = $this->arguments['renderable'];
-        $as = $this->arguments['as'];
-        $formRuntime = $this->arguments['formRuntime'];
+        $renderable = $arguments['renderable'];
+        $as = $arguments['as'];
 
         if ($renderable instanceof CompositeRenderableInterface) {
             $elements = $renderable->getRenderablesRecursively();
@@ -70,11 +75,9 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
             $elements = [$renderable];
         }
 
-        if ($formRuntime === null) {
-            /** @var RendererInterface $fluidFormRenderer */
-            $fluidFormRenderer = $this->viewHelperVariableContainer->getView();
-            $formRuntime = $fluidFormRenderer->getFormRuntime();
-        }
+        $formRuntime =  $renderingContext
+            ->getViewHelperVariableContainer()
+            ->get(RenderRenderableViewHelper::class, 'formRuntime');
 
         $output = '';
         foreach ($elements as $element) {
@@ -86,12 +89,12 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
             $formValue = [
                 'element' => $element,
                 'value' => $value,
-                'processedValue' => $this->processElementValue($element, $value, $formRuntime),
+                'processedValue' => self::processElementValue($element, $value, $renderChildrenClosure, $renderingContext),
                 'isMultiValue' => is_array($value) || $value instanceof \Iterator
             ];
-            $this->templateVariableContainer->add($as, $formValue);
-            $output .= $this->renderChildren();
-            $this->templateVariableContainer->remove($as);
+            $renderingContext->getTemplateVariableContainer()->add($as, $formValue);
+            $output .= $renderChildrenClosure();
+            $renderingContext->getTemplateVariableContainer()->remove($as);
         }
         return $output;
     }
@@ -101,26 +104,31 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
      *
      * @param FormElementInterface $element
      * @param mixed $value
-     * @param FormRuntime $formRuntime
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    protected function processElementValue(FormElementInterface $element, $value, FormRuntime $formRuntime)
-    {
+    public static function processElementValue(
+        FormElementInterface $element,
+        $value,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $properties = $element->getProperties();
         if (isset($properties['options']) && is_array($properties['options'])) {
             $properties['options'] = TranslateElementPropertyViewHelper::renderStatic(
-                ['element' => $element, 'property' => 'options', 'formRuntime' => $formRuntime],
-                $this->buildRenderChildrenClosure(),
-                $this->renderingContext
+                ['element' => $element, 'property' => 'options'],
+                $renderChildrenClosure,
+                $renderingContext
             );
             if (is_array($value)) {
-                return $this->mapValuesToOptions($value, $properties['options']);
+                return self::mapValuesToOptions($value, $properties['options']);
             } else {
-                return $this->mapValueToOption($value, $properties['options']);
+                return self::mapValueToOption($value, $properties['options']);
             }
         }
         if (is_object($value)) {
-            return $this->processObject($element, $value);
+            return self::processObject($element, $value);
         }
         return $value;
     }
@@ -133,11 +141,11 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
      * @param array $options
      * @return array
      */
-    protected function mapValuesToOptions(array $value, array $options): array
+    public static function mapValuesToOptions(array $value, array $options): array
     {
         $result = [];
         foreach ($value as $key) {
-            $result[] = $this->mapValueToOption($key, $options);
+            $result[] = self::mapValueToOption($key, $options);
         }
         return $result;
     }
@@ -150,7 +158,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
      * @param array $options
      * @return mixed
      */
-    protected function mapValueToOption($value, array $options)
+    public static function mapValueToOption($value, array $options)
     {
         return isset($options[$value]) ? $options[$value] : $value;
     }
@@ -162,7 +170,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
      * @param object $object
      * @return string
      */
-    protected function processObject(FormElementInterface $element, $object): string
+    public static function processObject(FormElementInterface $element, $object): string
     {
         $properties = $element->getProperties();
         if ($object instanceof \DateTime) {

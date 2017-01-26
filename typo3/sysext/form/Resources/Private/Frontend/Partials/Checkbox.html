@@ -1,0 +1,17 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:renderRenderable renderable="{element}">
+    <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+        <div class="form-check">
+            <label class="{element.properties.elementClassAttribute} form-check-label">
+                <f:form.checkbox
+                        property="{element.identifier}"
+                        id="{element.uniqueIdentifier}"
+                        class="{element.properties.elementClassAttribute}"
+                        value="{element.properties.value}"
+                        errorClass="{element.properties.elementErrorClassAttribute}"
+                        additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}"
+                />
+            </label>
+        </div>
+    </f:render>
+</formvh:renderRenderable>

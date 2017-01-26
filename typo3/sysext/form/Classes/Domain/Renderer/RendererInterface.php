@@ -18,11 +18,10 @@ namespace TYPO3\CMS\Form\Domain\Renderer;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
- * Base interface for Renderers. A Renderer is used to render a renderable.
+ * Base interface for Renderers. A Renderer is used to render a form.
  *
  * Scope: frontend
  * **This interface is meant to be implemented by developers, although often you
@@ -43,11 +42,10 @@ interface RendererInterface
      * Note: This method is expected to invoke the beforeRendering() callback
      * on each $renderable
      *
-     * @param RootRenderableInterface $renderable
      * @return string the rendered $formRuntime
      * @api
      */
-    public function render(RootRenderableInterface $renderable): string;
+    public function render(): string;
 
     /**
      * @param FormRuntime $formRuntime

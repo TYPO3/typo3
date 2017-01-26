@@ -1,0 +1,14 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:renderRenderable renderable="{element}">
+    <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+        <formvh:form.uploadedResource property="{element.identifier}" as="image" additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}" accept="{element.properties.allowedMimeTypes}">
+            <f:if condition="{image}">
+                <div id="{element.uniqueIdentifier}-preview">
+                    <a href="{f:uri.image(image: image, maxWidth: element.properties.imageLinkMaxWidth)}" class="{element.properties.elementClassAttribute}">
+                        <f:image image="{image}" maxWidth="{element.properties.imageMaxWidth}" maxHeight="{element.properties.imageMaxHeight}" alt="{formvh:translateElementProperty(element: element, property: 'altText')}" />
+                    </a>
+                </div>
+            </f:if>
+        </formvh:form.uploadedResource>
+    </f:render>
+</formvh:renderRenderable>

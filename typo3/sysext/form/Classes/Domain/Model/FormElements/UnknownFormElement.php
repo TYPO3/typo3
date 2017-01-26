@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
-use TYPO3\CMS\Form\Domain\Renderer\UnknownFormElementRenderer;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
@@ -64,14 +63,14 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     }
 
     /**
-     * Unknown Form Elements are rendered with the UnknownFormElementRenderer
+     * Get the template name of the renderable
      *
-     * @return string the renderer class name
-     * @internal
+     * @return string
+     * @api
      */
-    public function getRendererClassName(): string
+    public function getTemplateName(): string
     {
-        return UnknownFormElementRenderer::class;
+        return 'UnknownElement';
     }
 
     /**

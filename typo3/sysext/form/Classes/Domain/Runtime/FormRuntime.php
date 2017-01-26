@@ -69,7 +69,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * The FormRuntime asks the FormDefinition about the configured Renderer
  * which should be used ({@link \TYPO3\CMS\Form\Domain\Model\FormDefinition::getRendererClassName}),
- * and then trigger render() on this element.
+ * and then trigger render() on this Renderer.
  *
  * This makes it possible to declaratively define how a form should be rendered.
  *
@@ -751,6 +751,17 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function getLabel(): string
     {
         return $this->formDefinition->getLabel();
+    }
+
+    /**
+     * Get the template name of the renderable
+     *
+     * @return string
+     * @api
+     */
+    public function getTemplateName(): string
+    {
+        return $this->formDefinition->getTemplateName();
     }
 
     /**

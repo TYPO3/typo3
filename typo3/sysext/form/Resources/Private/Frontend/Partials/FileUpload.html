@@ -1,0 +1,12 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:renderRenderable renderable="{element}">
+    <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+        <formvh:form.uploadedResource property="{element.identifier}" as="resource" additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}" accept="{element.properties.allowedMimeTypes}">
+            <f:if condition="{resource}">
+                <div id="{element.uniqueIdentifier}-preview">
+                    {resource.originalResource.originalFile.name}
+                </div>
+            </f:if>
+        </formvh:form.uploadedResource>
+    </f:render>
+</formvh:renderRenderable>

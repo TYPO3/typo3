@@ -251,6 +251,13 @@ class FormDefinition extends AbstractCompositeRenderable
     protected $elementDefaultValues = [];
 
     /**
+     * Renderer class name to be used.
+     *
+     * @var string
+     */
+    protected $rendererClassName = null;
+
+    /**
      * @var array
      */
     protected $typeDefinitions;
@@ -399,10 +406,6 @@ class FormDefinition extends AbstractCompositeRenderable
             $page->setLabel($typeDefinition['label']);
         }
 
-        if (isset($typeDefinition['rendererClassName'])) {
-            $page->setRendererClassName($typeDefinition['rendererClassName']);
-        }
-
         if (isset($typeDefinition['renderingOptions'])) {
             foreach ($typeDefinition['renderingOptions'] as $key => $value) {
                 $page->setRenderingOption($key, $value);
@@ -411,7 +414,7 @@ class FormDefinition extends AbstractCompositeRenderable
 
         ArrayUtility::assertAllArrayKeysAreValid(
             $typeDefinition,
-            ['implementationClassName', 'label', 'rendererClassName', 'renderingOptions', 'formEditor']
+            ['implementationClassName', 'label', 'renderingOptions', 'formEditor']
         );
 
         $this->addPage($page);
@@ -701,5 +704,28 @@ class FormDefinition extends AbstractCompositeRenderable
     public function getPersistenceIdentifier(): string
     {
         return $this->persistenceIdentifier;
+    }
+
+    /**
+     * Set the renderer class name
+     *
+     * @param string $rendererClassName
+     * @return void
+     * @api
+     */
+    public function setRendererClassName(string $rendererClassName)
+    {
+        $this->rendererClassName = $rendererClassName;
+    }
+
+    /**
+     * Get the classname of the renderer
+     *
+     * @return null|string
+     * @api
+     */
+    public function getRendererClassName()
+    {
+        return $this->rendererClassName;
     }
 }

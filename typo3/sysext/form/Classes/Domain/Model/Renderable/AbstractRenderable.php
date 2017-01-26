@@ -75,22 +75,18 @@ abstract class AbstractRenderable implements RenderableInterface
     protected $renderingOptions = [];
 
     /**
-     * Renderer class name to be used for this renderable.
-     *
-     * Is only set if a specific renderer should be used for this renderable,
-     * if it is NULL the caller needs to determine the renderer or take care
-     * of the rendering itself.
-     *
-     * @var string
-     */
-    protected $rendererClassName = null;
-
-    /**
      * The position of this renderable inside the parent renderable.
      *
      * @var int
      */
     protected $index = 0;
+
+    /**
+     * The name of the template file of the renderable.
+     *
+     * @var string
+     */
+    protected $templateName = '';
 
     /**
      * Get the type of the renderable
@@ -139,10 +135,6 @@ abstract class AbstractRenderable implements RenderableInterface
             }
         }
 
-        if (isset($options['rendererClassName'])) {
-            $this->setRendererClassName($options['rendererClassName']);
-        }
-
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
                 if (is_array($value)) {
@@ -163,7 +155,7 @@ abstract class AbstractRenderable implements RenderableInterface
 
         ArrayUtility::assertAllArrayKeysAreValid(
             $options,
-            ['label', 'defaultValue', 'properties', 'rendererClassName', 'renderingOptions', 'validators', 'formEditor']
+            ['label', 'defaultValue', 'properties', 'renderingOptions', 'validators', 'formEditor']
         );
     }
 
@@ -233,26 +225,14 @@ abstract class AbstractRenderable implements RenderableInterface
     }
 
     /**
-     * Set the renderer class name
-     *
-     * @param string $rendererClassName
-     * @return void
-     * @api
-     */
-    public function setRendererClassName(string $rendererClassName)
-    {
-        $this->rendererClassName = $rendererClassName;
-    }
-
-    /**
      * Get the classname of the renderer
      *
-     * @return null|string
+     * @return string
      * @api
      */
-    public function getRendererClassName()
+    public function getRendererClassName(): string
     {
-        return $this->rendererClassName;
+        return $this->getRootForm()->getRendererClassName();
     }
 
     /**
@@ -399,6 +379,19 @@ abstract class AbstractRenderable implements RenderableInterface
     public function setLabel(string $label)
     {
         $this->label = $label;
+    }
+
+    /**
+     * Get the templateName name of the renderable
+     *
+     * @return string
+     * @api
+     */
+    public function getTemplateName(): string
+    {
+        return empty($this->renderingOptions['templateName'])
+            ? $this->type
+            : $this->renderingOptions['templateName'];
     }
 
     /**

@@ -1,0 +1,5 @@
+<f:for each="{formEditorPartials}" key="formEditorTemplateName" as="formEditorPartial">
+    <script type="text/x-formeditor-template" data-template-name="{formEditorTemplateName}">
+        <f:render partial="{formEditorPartial}" arguments="{insertRenderablesPanelConfiguration: insertRenderablesPanelConfiguration}" />
+    </script>
+</f:for>

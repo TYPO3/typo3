@@ -1,0 +1,13 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:renderRenderable renderable="{element}">
+    <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+        <f:form.select
+                property="{element.identifier}"
+                id="{element.uniqueIdentifier}"
+                class="{element.properties.elementClassAttribute} form-control"
+                options="{formvh:translateElementProperty(element: element, property: 'options')}"
+                multiple="multiple"
+                errorClass="{element.properties.elementErrorClassAttribute}"
+        />
+    </f:render>
+</formvh:renderRenderable>

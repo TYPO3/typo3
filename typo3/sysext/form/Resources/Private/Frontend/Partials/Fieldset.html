@@ -1,0 +1,11 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:renderRenderable renderable="{element}">
+    <fieldset id="{element.uniqueIdentifier}" class="form-group{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')}">
+        <f:if condition="{element.label}">
+            <legend>{formvh:translateElementProperty(element: element, property: 'label')}</legend>
+        </f:if>
+        <f:for each="{element.elements}" as="element">
+            <f:render partial="{element.templateName}" arguments="{element: element}" />
+        </f:for>
+    </fieldset>
+</formvh:renderRenderable>

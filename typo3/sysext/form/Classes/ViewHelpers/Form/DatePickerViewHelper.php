@@ -106,9 +106,9 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
 
         if ($enableDatePicker) {
             $datePickerDateFormat = $this->convertDateFormatToDatePickerFormat($dateFormat);
-            $this->templateVariableContainer->add('datePickerDateFormat', $datePickerDateFormat);
+            $this->renderingContext->getVariableProvider()->add('datePickerDateFormat', $datePickerDateFormat);
             $content .= $this->renderChildren();
-            $this->templateVariableContainer->remove('datePickerDateFormat');
+            $this->renderingContext->getVariableProvider()->remove('datePickerDateFormat');
         }
         return $content;
     }
@@ -118,8 +118,11 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
      */
     protected function getSelectedDate()
     {
-        $fluidFormRenderer = $this->viewHelperVariableContainer->getView();
-        $formRuntime = $fluidFormRenderer->getFormRuntime();
+        /** @var FormRuntime $formRuntime */
+        $formRuntime =  $this->renderingContext
+            ->getViewHelperVariableContainer()
+            ->get(RenderRenderableViewHelper::class, 'formRuntime');
+
         $formState = $formRuntime->getFormState();
 
         $date = $formRuntime[$this->arguments['property']];

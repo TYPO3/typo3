@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -49,7 +51,7 @@ class RenderRenderableViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('renderable', RenderableInterface::class, 'A RenderableInterface instance', true);
+        $this->registerArgument('renderable', RootRenderableInterface::class, 'A RenderableInterface instance', true);
     }
 
     /**
@@ -61,8 +63,49 @@ class RenderRenderableViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        /** @var \TYPO3\CMS\Form\Mvc\View\FormView $view */
-        $view = $renderingContext->getViewHelperVariableContainer()->getView();
-        return $view->renderRenderable($arguments['renderable']);
+        /** @var FormRuntime $formRuntime */
+        $formRuntime =  $renderingContext
+            ->getViewHelperVariableContainer()
+            ->get(self::class, 'formRuntime');
+
+        // Invoke the beforeRendering callback on the renderable
+        $arguments['renderable']->beforeRendering($formRuntime);
+
+        $renderable = $arguments['renderable'];
+        $content = $renderChildrenClosure();
+        if (!empty($content)) {
+            $content = static::renderPreviewMode($content, $renderable, $renderingContext, $formRuntime);
+        }
+        return $content;
+    }
+
+    /**
+     * Wrap every renderable with a span with a identifier path data attribute.
+     *
+     * @param string $content
+     * @param RootRenderableInterface $renderable
+     * @param RenderingContextInterface $renderingContext
+     * @param FormRuntime $formRuntime
+     * @return string
+     * @internal
+     */
+    public static function renderPreviewMode(
+        string $content,
+        RootRenderableInterface $renderable,
+        RenderingContextInterface $renderingContext,
+        FormRuntime $formRuntime
+    ): string {
+        $renderingOptions = $formRuntime->getRenderingOptions();
+        $previewMode = isset($renderingOptions['previewMode']) && $renderingOptions['previewMode'] === true;
+        if ($previewMode) {
+            $path = $renderable->getIdentifier();
+            if ($renderable instanceof RenderableInterface) {
+                while ($renderable = $renderable->getParentRenderable()) {
+                    $path = $renderable->getIdentifier() . '/' . $path;
+                }
+            }
+            $content = sprintf('<span data-element-identifier-path="%s">%s</span>', $path, $content);
+        }
+        return $content;
     }
 }

@@ -325,10 +325,15 @@ class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
             'dummy'
         ], [], '', false);
 
-        $input = [
-            'templateRootPaths' => [],
-        ];
-        $mockController->_call('renderFormEditorTemplates', $input, []);
+        $mockController->_set('prototypeConfiguration', [
+            'formEditor' => [
+                'formEditorFluidConfiguration' => [
+                    'templatePathAndFilename' => '',
+                ],
+            ],
+        ]);
+
+        $mockController->_call('renderFormEditorTemplates', []);
     }
 
     /**
@@ -343,11 +348,16 @@ class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
             'dummy'
         ], [], '', false);
 
-        $input = [
-            'templateRootPaths' => [],
-            'layoutRootPaths' => '',
-        ];
-        $mockController->_call('renderFormEditorTemplates', $input, []);
+        $mockController->_set('prototypeConfiguration', [
+            'formEditor' => [
+                'formEditorFluidConfiguration' => [
+                    'templatePathAndFilename' => '',
+                    'layoutRootPaths' => '',
+                ],
+            ],
+        ]);
+
+        $mockController->_call('renderFormEditorTemplates', []);
     }
 
     /**
@@ -362,11 +372,16 @@ class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
             'dummy'
         ], [], '', false);
 
-        $input = [
-            'templateRootPaths' => [],
-            'layoutRootPaths' => [],
-        ];
-        $mockController->_call('renderFormEditorTemplates', $input, []);
+        $mockController->_set('prototypeConfiguration', [
+            'formEditor' => [
+                'formEditorFluidConfiguration' => [
+                    'templatePathAndFilename' => '',
+                    'layoutRootPaths' => [],
+                ],
+            ],
+        ]);
+
+        $mockController->_call('renderFormEditorTemplates', []);
     }
 
     /**
@@ -381,10 +396,36 @@ class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Co
             'dummy'
         ], [], '', false);
 
-        $input = [
-            'templateRootPaths' => [],
-            'layoutRootPaths' => [],
-        ];
-        $mockController->_call('renderFormEditorTemplates', $input, []);
+        $mockController->_set('prototypeConfiguration', [
+            'formEditor' => [
+                'formEditorFluidConfiguration' => [
+                    'templatePathAndFilename' => '',
+                    'layoutRootPaths' => [],
+                ],
+            ],
+        ]);
+
+        $mockController->_call('renderFormEditorTemplates', []);
+    }
+
+    /**
+     * @test
+     */
+    public function renderFormEditorTemplatesThrowsExceptionIftemplatePathAndFilenameNotSet()
+    {
+        $this->expectException(RenderingException::class);
+        $this->expectExceptionCode(1485636499);
+
+        $mockController = $this->getAccessibleMock(FormEditorController::class, [
+            'dummy'
+        ], [], '', false);
+
+        $mockController->_set('prototypeConfiguration', [
+            'formEditor' => [
+                'formEditorFluidConfiguration' => [],
+            ],
+        ]);
+
+        $mockController->_call('renderFormEditorTemplates', []);
     }
 }

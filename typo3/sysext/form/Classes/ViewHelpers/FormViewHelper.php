@@ -57,8 +57,6 @@ class FormViewHelper extends FluidFormViewHelper
      */
     protected function getFormObjectName()
     {
-        $fluidFormRenderer = $this->viewHelperVariableContainer->getView();
-        $formRuntime = $fluidFormRenderer->getFormRuntime();
-        return $formRuntime->getFormDefinition()->getIdentifier();
+        return $this->arguments['object']->getFormDefinition()->getIdentifier();
     }
 }

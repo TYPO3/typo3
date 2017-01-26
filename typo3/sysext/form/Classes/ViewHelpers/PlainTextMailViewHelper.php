@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -39,7 +38,6 @@ class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
     {
         parent::initializeArguments();
         $this->registerArgument('formValue', 'array', 'The values from a form element', true);
-        $this->registerArgument('formRuntime', FormRuntime::class, 'A FormRuntime instance', true);
     }
 
     /**
@@ -52,11 +50,10 @@ class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $formValue = $arguments['formValue'];
-        $formRuntime = $arguments['formRuntime'];
 
         $label = $formValue['element']->getLabel();
         $label = TranslateElementPropertyViewHelper::renderStatic(
-            ['element' => $formValue['element'], 'property' => 'label', 'formRuntime' => $formRuntime],
+            ['element' => $formValue['element'], 'property' => 'label'],
             $renderChildrenClosure,
             $renderingContext
         );

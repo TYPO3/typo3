@@ -66,12 +66,8 @@ interface RootRenderableInterface
     public function beforeRendering(FormRuntime $formRuntime);
 
     /**
-     * Get the renderer class name to be used to display this renderable;
+     * Get the renderer class name to be used to display this form;
      * must implement RendererInterface
-     *
-     * Is only set if a specific renderer should be used for this renderable,
-     * if it is NULL the caller needs to determine the renderer or take care
-     * of the renderer itself.
      *
      * @return null|string the renderer class name
      * @api

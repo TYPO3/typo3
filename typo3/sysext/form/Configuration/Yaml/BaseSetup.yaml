@@ -21,19 +21,26 @@ TYPO3:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
               rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
               renderingOptions:
-                renderableNameInTemplate: 'form'
+                templateRootPaths:
+                  10: 'EXT:form/Resources/Private/Frontend/Templates/'
+                partialRootPaths:
+                  10: 'EXT:form/Resources/Private/Frontend/Partials/'
+                layoutRootPaths:
+                  10: 'EXT:form/Resources/Private/Frontend/Layouts/'
+
                 honeypot:
                   enable: true
                   formElementToUse: 'Honeypot'
+
+                # set this to TRUE if you want to avoid exceptions for FormElements without definitions
+                skipUnknownElements: true
 
             ### FORM ELEMENTS: CONTAINER ###
             Page:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
               implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\Page'
-              renderingOptions:
-                renderableNameInTemplate: 'page'
-
+ 
             SummaryPage:
               __inheritances:
                 10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.Page'
@@ -42,8 +49,6 @@ TYPO3:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
               implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\Section'
-              renderingOptions:
-                renderableNameInTemplate: 'section'
 
             ### FORM ELEMENTS: INPUT ###
             Text:
@@ -265,26 +270,14 @@ TYPO3:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.translationSettingsMixin'
 
-              templateRootPaths:
-                10: 'EXT:form/Resources/Private/Frontend/Templates/FormElements/'
-              partialRootPaths:
-                10: 'EXT:form/Resources/Private/Frontend/Partials/FormElements/'
-              layoutRootPaths:
-                10: 'EXT:form/Resources/Private/Frontend/Layouts/FormElements/'
-
-              # It is possible to set a full path to a template e.g. for custom elements
-              # In this case 'templateRootPaths' will be ignored
-              # templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/FormElements/RadioButton.html'
-
-              # set this to TRUE if you want to avoid exceptions for FormElements without definitions
-              skipUnknownElements: true
+              # The form element type is chosen as the template name by default.
+              # If you want another name you can set it with 'templateName'
+              #templateName: 'CustomTemplateName'
 
           ReadOnlyFormElementMixin:
             __inheritances:
               10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
             implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
-            renderingOptions:
-              renderableNameInTemplate: 'element'
 
           FormElementMixin:
             __inheritances:
@@ -294,8 +287,6 @@ TYPO3:
               containerClassAttribute: 'input'
               elementClassAttribute: ''
               elementErrorClassAttribute: 'error'
-            renderingOptions:
-              renderableNameInTemplate: 'element'
 
           TextMixin:
             __inheritances:

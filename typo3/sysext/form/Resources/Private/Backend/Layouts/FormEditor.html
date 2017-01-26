@@ -15,11 +15,7 @@
 </div>
 
 <div data-identifier="moduleWrapper" class="hidden">
-    <f:for each="{formEditorTemplates}" key="formEditorTemplateName" as="formEditorTemplate">
-        <script type="text/x-formeditor-template" data-template-name="{formEditorTemplateName}">
-            <f:format.raw>{formEditorTemplate}</f:format.raw>
-        </script>
-    </f:for>
+    <f:format.raw>{formEditorTemplates}</f:format.raw>
 
     <section id="t3-form-navigation-component" class="t3-form-x-component" data-identifier="structureSection">
         <div id="t3-form-structure-panel">

@@ -1,0 +1,13 @@
+{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
+<formvh:renderRenderable renderable="{element}">
+    <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+        <f:form.textfield
+                property="{element.identifier}"
+                id="{element.uniqueIdentifier}"
+                class="{element.properties.elementClassAttribute} form-control"
+                placeholder="{formvh:translateElementProperty(element: element, property: 'placeholder')}"
+                errorClass="{element.properties.elementErrorClassAttribute}"
+                required="{element.required}"
+        />
+    </f:render>
+</formvh:renderRenderable>

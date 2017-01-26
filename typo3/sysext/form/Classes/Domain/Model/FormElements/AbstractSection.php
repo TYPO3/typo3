@@ -117,6 +117,12 @@ abstract class AbstractSection extends AbstractCompositeRenderable
         if (isset($typeDefinitions[$typeName])) {
             $typeDefinition = $typeDefinitions[$typeName];
         } else {
+            $renderingOptions = $formDefinition->getRenderingOptions();
+            $skipUnknownElements = isset($renderingOptions['skipUnknownElements']) && $renderingOptions['skipUnknownElements'] === true;
+            if (!$skipUnknownElements) {
+                throw new TypeDefinitionNotFoundException(sprintf('Type "%s" not found. Probably some configuration is missing.', $typeName), 1382364019);
+            }
+
             $element = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get(UnknownFormElement::class, $identifier, $typeName);
             $this->addElement($element);

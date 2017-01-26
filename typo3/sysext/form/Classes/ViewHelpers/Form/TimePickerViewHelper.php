@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
+use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
  * Displays two select-boxes for hour and minute selection.
@@ -88,12 +89,14 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
     }
 
     /**
-     * @return \DateTime
+     * @return null|\DateTime
      */
-    protected function getSelectedDate(): \DateTime
+    protected function getSelectedDate()
     {
-        $fluidFormRenderer = $this->viewHelperVariableContainer->getView();
-        $formRuntime = $fluidFormRenderer->getFormRuntime();
+        /** @var FormRuntime $formRuntime */
+        $formRuntime =  $this->renderingContext
+            ->getViewHelperVariableContainer()
+            ->get(RenderRenderableViewHelper::class, 'formRuntime');
 
         $date = $formRuntime[$this->arguments['property']];
         if ($date instanceof \DateTime) {
@@ -122,7 +125,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         $hourSelector->addAttribute('name', sprintf('%s[hour]', $this->getName()));
         $options = '';
         foreach (range(0, 23) as $hour) {
-            $hour = str_pad($hour, 2, '0', STR_PAD_LEFT);
+            $hour = str_pad((string)$hour, 2, '0', STR_PAD_LEFT);
             $selected = $hour === $value ? ' selected="selected"' : '';
             $options .= '<option value="' . $hour . '"' . $selected . '>' . $hour . '</option>';
         }
@@ -144,7 +147,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         $minuteSelector->addAttribute('name', sprintf('%s[minute]', $this->getName()));
         $options = '';
         foreach (range(0, 59) as $minute) {
-            $minute = str_pad($minute, 2, '0', STR_PAD_LEFT);
+            $minute = str_pad((string)$minute, 2, '0', STR_PAD_LEFT);
             $selected = $minute === $value ? ' selected="selected"' : '';
             $options .= '<option value="' . $minute . '"' . $selected . '>' . $minute . '</option>';
         }

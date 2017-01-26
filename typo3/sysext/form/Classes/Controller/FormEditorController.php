@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
@@ -99,10 +99,7 @@ class FormEditorController extends AbstractBackendController
 
         $this->view->assign('formEditorAppInitialData', json_encode($formEditorAppInitialData));
         $this->view->assign('stylesheets', $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']));
-        $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates(
-            $this->prototypeConfiguration['formEditor']['formEditorTemplates'],
-            $formEditorDefinitions
-        ));
+        $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
         $this->view->assign('dynamicRequireJsModules', $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']);
 
         $popupWindowWidth  = 700;
@@ -378,15 +375,23 @@ class FormEditorController extends AbstractBackendController
     /**
      * Render the "text/x-formeditor-template" templates.
      *
-     * @param array $formEditorTemplates
      * @param array $formEditorDefinitions
-     * @return array
+     * @return string
      */
-    protected function renderFormEditorTemplates(array $formEditorTemplates, array $formEditorDefinitions): array
+    protected function renderFormEditorTemplates(array $formEditorDefinitions): string
     {
+        $fluidConfiguration = $this->prototypeConfiguration['formEditor']['formEditorFluidConfiguration'];
+        $formEditorPartials = $this->prototypeConfiguration['formEditor']['formEditorPartials'];
+
+        if (!isset($fluidConfiguration['templatePathAndFilename'])) {
+            throw new RenderingException(
+                'The option templatePathAndFilename must be set.',
+                1485636499
+            );
+        }
         if (
-            !isset($formEditorTemplates['layoutRootPaths'])
-            || !is_array($formEditorTemplates['layoutRootPaths'])
+            !isset($fluidConfiguration['layoutRootPaths'])
+            || !is_array($fluidConfiguration['layoutRootPaths'])
         ) {
             throw new RenderingException(
                 'The option layoutRootPaths must be set.',
@@ -394,8 +399,8 @@ class FormEditorController extends AbstractBackendController
             );
         }
         if (
-            !isset($formEditorTemplates['partialRootPaths'])
-            || !is_array($formEditorTemplates['partialRootPaths'])
+            !isset($fluidConfiguration['partialRootPaths'])
+            || !is_array($fluidConfiguration['partialRootPaths'])
         ) {
             throw new RenderingException(
                 'The option partialRootPaths must be set.',
@@ -403,30 +408,18 @@ class FormEditorController extends AbstractBackendController
             );
         }
 
-        $layoutRootPaths = $formEditorTemplates['layoutRootPaths'];
-        $partialRootPaths = $formEditorTemplates['partialRootPaths'];
         $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements']);
 
-        unset($formEditorTemplates['layoutRootPaths']);
-        unset($formEditorTemplates['partialRootPaths']);
+        $view = $this->objectManager->get(TemplateView::class);
+        $view->setControllerContext(clone $this->controllerContext);
+        $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
+        $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);
+        $view->assignMultiple([
+            'insertRenderablesPanelConfiguration' => $insertRenderablesPanelConfiguration,
+            'formEditorPartials' => $formEditorPartials,
+        ]);
 
-        $renderedFormEditorTemplates = [];
-        foreach ($formEditorTemplates as $formEditorTemplateName => $formEditorTemplateTemplate) {
-            $fakeControllerItems = explode('-', $formEditorTemplateName);
-
-            $standaloneView = $this->objectManager->get(StandaloneView::class);
-            $standaloneView->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray([
-                'partialRootPaths' => $partialRootPaths,
-                'layoutRootPaths' => $layoutRootPaths
-            ]);
-            $standaloneView->assign('insertRenderablesPanelConfiguration', $insertRenderablesPanelConfiguration);
-            $standaloneView->getRenderingContext()->setControllerName($fakeControllerItems[0]);
-            $standaloneView->getRenderingContext()->setControllerAction($fakeControllerItems[1]);
-            $standaloneView->setTemplatePathAndFilename($formEditorTemplateTemplate);
-            $renderedFormEditorTemplates[$formEditorTemplateName] = $standaloneView->render();
-        }
-
-        return $renderedFormEditorTemplates;
+        return $view->render();
     }
 
     /**

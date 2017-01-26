@@ -91,4 +91,12 @@ interface RenderableInterface extends RootRenderableInterface
      * @internal
      */
     public function registerInFormIfPossible();
+
+    /**
+     * Get the template name of the renderable
+     *
+     * @return string
+     * @api
+     */
+    public function getTemplateName(): string;
 }

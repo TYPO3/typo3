@@ -20,7 +20,9 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
  * This finisher sends an email to one recipient
@@ -73,8 +75,7 @@ class EmailFinisher extends AbstractFinisher
     protected function executeInternal()
     {
         $formRuntime = $this->finisherContext->getFormRuntime();
-        $standaloneView = $this->initializeStandaloneView();
-        $standaloneView->assign('form', $formRuntime);
+        $standaloneView = $this->initializeStandaloneView($formRuntime);
 
         $translationService = TranslationService::getInstance();
         if (isset($this->options['translation']['language']) && !empty($this->options['translation']['language'])) {
@@ -153,10 +154,11 @@ class EmailFinisher extends AbstractFinisher
     }
 
     /**
+     * @param FormRuntime $formRuntime
      * @return StandaloneView
      * @throws FinisherException
      */
-    protected function initializeStandaloneView(): StandaloneView
+    protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView
     {
         if (!isset($this->options['templatePathAndFilename'])) {
             throw new FinisherException('The option "templatePathAndFilename" must be set for the EmailFinisher.', 1327058829);
@@ -182,6 +184,12 @@ class EmailFinisher extends AbstractFinisher
         if (isset($this->options['variables'])) {
             $standaloneView->assignMultiple($this->options['variables']);
         }
+
+        $standaloneView->assign('form', $formRuntime);
+        $standaloneView->getRenderingContext()
+            ->getViewHelperVariableContainer()
+            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
+
         return $standaloneView;
     }
 }
