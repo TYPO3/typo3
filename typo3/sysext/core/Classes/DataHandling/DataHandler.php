@@ -3385,10 +3385,13 @@ class DataHandler
             return null;
         }
 
+        // Fetch record with permission check
+        $row = $this->recordInfoWithPermissionCheck($table, $uid, 'show');
+
         // This checks if the record can be selected which is all that a copy action requires.
-        if (!$this->doesRecordExist($table, $uid, 'show')) {
+        if ($row === false) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record "%s:%s" without permission', -1, [$table, $uid]);
+                $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record "%s:%s" which does not exist or you do not have permission to read', -1, [$table, $uid]);
             }
             return null;
         }
@@ -3412,14 +3415,7 @@ class DataHandler
 
         $data = [];
         $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
-        // So it copies (and localized) content from workspace...
-        $row = BackendUtility::getRecordWSOL($table, $uid);
-        if (!is_array($row)) {
-            if ($this->enableLogging) {
-                $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record that did not exist!');
-            }
-            return null;
-        }
+        BackendUtility::workspaceOL($table, $row, -99, false);
 
         // Initializing:
         $theNewID = StringUtility::getUniqueId('NEW');
@@ -3707,23 +3703,21 @@ class DataHandler
         if (!$GLOBALS['TCA'][$table] || !$uid || $this->isRecordCopied($table, $uid)) {
             return null;
         }
-        if (!$this->doesRecordExist($table, $uid, 'show')) {
+
+        // Fetch record with permission check
+        $row = $this->recordInfoWithPermissionCheck($table, $uid, 'show');
+
+        // This checks if the record can be selected which is all that a copy action requires.
+        if ($row === false) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1, 'Attempt to rawcopy/versionize record without copy permission');
+                $this->log($table, $uid, 3, 0, 1,
+                    'Attempt to rawcopy/versionize record which either does not exist or you don\'t have permission to read');
             }
             return null;
         }
 
         // Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
         $nonFields = ['uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_label', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
-        // Select main record:
-        $row = $this->recordInfo($table, $uid, '*');
-        if (!is_array($row)) {
-            if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1, 'Attempt to rawcopy/versionize record that did not exist!');
-            }
-            return null;
-        }
 
         // Merge in override array.
         $row = array_merge($row, $overrideArray);
@@ -4685,7 +4679,6 @@ class DataHandler
             }
             return false;
         }
-
         $langRec = BackendUtility::getRecord('sys_language', (int)$language, 'uid,title');
         if (!$langRec) {
             if ($this->enableLogging) {
@@ -5674,18 +5667,14 @@ class DataHandler
             return null;
         }
 
-        if (!$this->doesRecordExist($table, $id, 'show')) {
-            if ($this->enableLogging) {
-                $this->newlog('You didn\'t have correct permissions to make a new version (copy) of this record "' . $table . '" / ' . $id, 1);
-            }
-            return null;
-        }
+        // Fetch record with permission check
+        $row = $this->recordInfoWithPermissionCheck($table, $id, 'show');
 
-        // Select main record:
-        $row = $this->recordInfo($table, $id, 'pid,t3ver_id,t3ver_state');
-        if (!is_array($row)) {
+        // This checks if the record can be selected which is all that a copy action requires.
+        if ($row === false) {
             if ($this->enableLogging) {
-                $this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize did not exist!', 1);
+                $this->newlog('The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "' . $table . ':' . $id . '"',
+                    1);
             }
             return null;
         }
@@ -6599,77 +6588,7 @@ class DataHandler
      */
     public function doesRecordExist($table, $id, $perms)
     {
-        $id = (int)$id;
-        if ($this->bypassAccessCheckForRecords) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()->removeAll();
-
-            $record = $queryBuilder->select('uid')
-                ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                ->execute()
-                ->fetch();
-
-            return is_array($record);
-        }
-        // Processing the incoming $perms (from possible string to integer that can be AND'ed)
-        if (!MathUtility::canBeInterpretedAsInteger($perms)) {
-            if ($table !== 'pages') {
-                switch ($perms) {
-                    case 'edit':
-
-                    case 'delete':
-
-                    case 'new':
-                        // This holds it all in case the record is not page!!
-                    if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
-                        $perms = 'edit';
-                    } else {
-                        $perms = 'editcontent';
-                    }
-                        break;
-                }
-            }
-            $perms = (int)$this->pMap[$perms];
-        } else {
-            $perms = (int)$perms;
-        }
-        if (!$perms) {
-            throw new \RuntimeException('Internal ERROR: no permissions to check for non-admin user', 1270853920);
-        }
-        // For all tables: Check if record exists:
-        $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
-        if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id) || $this->admin)) {
-            if ($table !== 'pages') {
-                // Find record without checking page
-                // @todo: Thist should probably check for editlock
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-                $output = $queryBuilder
-                    ->select('uid', 'pid')
-                    ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                    ->execute()
-                    ->fetch();
-                BackendUtility::fixVersioningPid($table, $output, true);
-                // If record found, check page as well:
-                if (is_array($output)) {
-                    // Looking up the page for record:
-                    $pageRec = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
-                    // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
-                    $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
-                    if (is_array($pageRec) || !$output['pid'] && ($isRootLevelRestrictionIgnored || $this->admin)) {
-                        return true;
-                    }
-                }
-                return false;
-            } else {
-                $pageRec = $this->doesRecordExist_pageLookUp($id, $perms);
-                return is_array($pageRec);
-            }
-        }
-        return false;
+        return $this->recordInfoWithPermissionCheck($table, $id, $perms, 'uid, pid') !== false;
     }
 
     /**
@@ -6677,14 +6596,15 @@ class DataHandler
      *
      * @param int $id Page id
      * @param int $perms Permission integer
-     * @param string $fields List of fields (SQL CSV list) to select
+     * @param array $columns Columns to select
      * @return bool|array
      * @access private
      * @see doesRecordExist()
      */
-    protected function doesRecordExist_pageLookUp($id, $perms, $fieldList = 'uid')
+    protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
     {
-        $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . $fieldList . '_' . (string)$this->admin);
+        $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . implode('_',
+                $columns) . '_' . (string)$this->admin);
 
         // If result is cached, return it
         $cachedResult = $this->runtimeCache->get($cacheId);
@@ -6695,7 +6615,7 @@ class DataHandler
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $queryBuilder
-            ->select(...GeneralUtility::trimExplode(',', $fieldList, true))
+            ->select(...$columns)
             ->from('pages')
             ->where($queryBuilder->expr()->eq(
                 'uid',
@@ -6948,6 +6868,92 @@ class DataHandler
             ->execute()
             ->fetch();
         return $result ?: null;
+    }
+
+    /**
+     * Checks if record exists with and without permission check and returns that row
+     *
+     * @param string $table Record table name
+     * @param int $id Record UID
+     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
+     * @param string $fieldList - fields - default is '*'
+     * @throws \RuntimeException
+     * @return array|bool Row if exists and accessible, false otherwise
+     */
+    protected function recordInfoWithPermissionCheck(string $table, int $id, $perms, string $fieldList = '*')
+    {
+        $id = (int)$id;
+        if ($this->bypassAccessCheckForRecords) {
+            $columns = GeneralUtility::trimExplode(',', $fieldList, true);
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $record = $queryBuilder->select(...$columns)
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                ->execute()
+                ->fetch();
+
+            return $record ?: false;
+        }
+        // Processing the incoming $perms (from possible string to integer that can be AND'ed)
+        if (!MathUtility::canBeInterpretedAsInteger($perms)) {
+            if ($table !== 'pages') {
+                switch ($perms) {
+                    case 'edit':
+
+                    case 'delete':
+
+                    case 'new':
+                        // This holds it all in case the record is not page!!
+                        if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
+                            $perms = 'edit';
+                        } else {
+                            $perms = 'editcontent';
+                        }
+                        break;
+                }
+            }
+            $perms = (int)$this->pMap[$perms];
+        } else {
+            $perms = (int)$perms;
+        }
+        if (!$perms) {
+            throw new \RuntimeException('Internal ERROR: no permissions to check for non-admin user', 1270853920);
+        }
+        // For all tables: Check if record exists:
+        $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
+        if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($this->admin || $isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id))) {
+            $columns = GeneralUtility::trimExplode(',', $fieldList, true);
+            if ($table !== 'pages') {
+                // Find record without checking page
+                // @todo: This should probably check for editlock
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $output = $queryBuilder
+                    ->select(...$columns)
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                    ->execute()
+                    ->fetch();
+                BackendUtility::fixVersioningPid($table, $output, true);
+                // If record found, check page as well:
+                if (is_array($output)) {
+                    // Looking up the page for record:
+                    $pageRec = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
+                    // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
+                    $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
+                    if (is_array($pageRec) || !$output['pid'] && ($this->admin || $isRootLevelRestrictionIgnored)) {
+                        return $output;
+                    }
+                }
+                return false;
+            } else {
+                return $this->doesRecordExist_pageLookUp($id, $perms, $columns);
+            }
+        }
+        return false;
     }
 
     /**
