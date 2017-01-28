@@ -238,9 +238,12 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function setControllerAction($action)
     {
-        $action = lcfirst(pathinfo($action, PATHINFO_FILENAME));
+        $dotPosition = strpos($action, '.');
+        if ($dotPosition !== false) {
+            $action = substr($action, 0, $dotPosition);
+        }
         parent::setControllerAction($action);
-        $this->controllerContext->getRequest()->setControllerActionName($action);
+        $this->controllerContext->getRequest()->setControllerActionName(lcfirst($action));
     }
 
     /**
