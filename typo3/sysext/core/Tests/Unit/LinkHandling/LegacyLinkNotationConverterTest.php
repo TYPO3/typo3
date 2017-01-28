@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-class LegacyLinkNotationConverterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class LegacyLinkNotationConverterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
@@ -217,7 +217,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\CMS\Components\TestingFrame
             $expected['folder'] = $folderObject;
         }
 
-        /** @var LegacyLinkNotationConverter|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var LegacyLinkNotationConverter|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(LegacyLinkNotationConverter::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
         $this->assertEquals($expected, $subject->resolve($input));

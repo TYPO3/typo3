@@ -17,7 +17,7 @@
  * @ see http://ha.ckers.org/xss.html
  * @ examples from http://ha.ckers.org/xssAttacks.xml
  */
-class RemoveXSSTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class RemoveXSSTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Testcase for the storage collection class of the TYPO3 FAL
  */
-class FolderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FolderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

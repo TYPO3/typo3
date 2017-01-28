@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Sv\Tests\Unit;
  * Testcase for class \TYPO3\CMS\Sv\AuthenticationService
  *
  */
-class AuthenticationServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class AuthenticationServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Date provider for processLoginReturnsCorrectData

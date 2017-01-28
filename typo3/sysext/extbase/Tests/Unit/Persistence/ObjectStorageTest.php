@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 /**
  * Test case
  */
-class ObjectStorageTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ObjectStorageTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

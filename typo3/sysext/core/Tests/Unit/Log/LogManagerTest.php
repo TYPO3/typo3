@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
 /**
  * Test case
  */
-class LogManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class LogManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Log\LogManager

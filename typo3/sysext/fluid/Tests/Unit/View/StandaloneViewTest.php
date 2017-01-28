@@ -31,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class StandaloneViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class StandaloneViewTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances
@@ -39,7 +39,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
     protected $singletonInstances = [];
 
     /**
-     * @var StandaloneView|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var StandaloneView|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $view;
 

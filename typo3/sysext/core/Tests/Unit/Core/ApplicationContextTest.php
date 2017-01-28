@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 /**
  * Testcase for the ApplicationContext class
  */
-class ApplicationContextTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ApplicationContextTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Data provider with allowed contexts.

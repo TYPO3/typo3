@@ -19,7 +19,7 @@ use TYPO3\CMS\Scheduler\CronCommand\CronCommand;
 /**
  * Test case
  */
-class CronCommandTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CronCommandTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @const integer timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT

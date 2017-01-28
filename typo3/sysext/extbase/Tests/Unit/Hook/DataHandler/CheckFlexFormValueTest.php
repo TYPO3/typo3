@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Hook\DataHandler;
 /**
  * Test case
  */
-class CheckFlexFormValueTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CheckFlexFormValueTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

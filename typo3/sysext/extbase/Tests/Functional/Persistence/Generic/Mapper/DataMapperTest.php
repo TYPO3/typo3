@@ -5,7 +5,7 @@ use ExtbaseTeam\BlogExample\Domain\Model\Comment;
 use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class DataMapperTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class DataMapperTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager

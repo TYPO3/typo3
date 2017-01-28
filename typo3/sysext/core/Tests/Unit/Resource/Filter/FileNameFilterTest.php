@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 /**
  * Testcase for the filename filter of the TYPO3 VFS
  */
-class FileNameFilterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FileNameFilterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Return combinations of files and paths to test against.

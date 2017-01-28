@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 /**
  * Class BackendModuleRequestHandlerTest
  */
-class SplitButtonTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class SplitButtonTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Try to validate an empty button

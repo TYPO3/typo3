@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case
  */
-class NumberRangeValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class NumberRangeValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator::class;
 

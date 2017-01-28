@@ -21,7 +21,7 @@ use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
 /**
  * Tests for  GalleryProcessor
  */
-class GalleryProcessorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class GalleryProcessorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject

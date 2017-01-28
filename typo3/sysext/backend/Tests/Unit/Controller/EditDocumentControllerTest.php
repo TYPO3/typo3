@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Controller\EditDocumentController;
 /**
  * Tests for EditDocumentController
  */
-class EditDocumentControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class EditDocumentControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

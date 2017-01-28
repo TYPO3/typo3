@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 
-class BulkInsertTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class BulkInsertTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var Connection

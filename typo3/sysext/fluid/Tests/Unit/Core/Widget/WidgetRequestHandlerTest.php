@@ -23,7 +23,7 @@ use TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler;
 /**
  * Test case
  */
-class WidgetRequestHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class WidgetRequestHandlerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler

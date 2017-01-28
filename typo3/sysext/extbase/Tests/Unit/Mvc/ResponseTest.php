@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
 /**
  * Test case
  */
-class ResponseTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ResponseTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Response|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Mvc\Response|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockResponse;
 

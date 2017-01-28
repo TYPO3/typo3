@@ -20,7 +20,7 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 /**
  * Test case
  */
-class ConfigurationServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ConfigurationServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

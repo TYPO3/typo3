@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Service\TranslationService;
 /**
  * Test case
  */
-class FormEditorControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FormEditorControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

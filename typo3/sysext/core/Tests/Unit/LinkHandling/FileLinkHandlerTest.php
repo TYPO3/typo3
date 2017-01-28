@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-class FileLinkHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FileLinkHandlerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**
@@ -85,7 +85,7 @@ class FileLinkHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\Un
         $factory->expects($this->any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
         $expected['file'] = $fileObject;
 
-        /** @var FileLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var FileLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(FileLinkHandler::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
         $this->assertEquals($expected, $subject->resolveHandlerData($input));

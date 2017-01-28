@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
 /**
  * Test case
  */
-class ModuleDataStorageServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ModuleDataStorageServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

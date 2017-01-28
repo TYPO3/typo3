@@ -37,7 +37,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class TcaSelectItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TcaSelectItemsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaSelectItems|\PHPUnit_Framework_MockObject_MockObject

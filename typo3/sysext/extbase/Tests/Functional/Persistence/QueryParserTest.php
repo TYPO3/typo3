@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class QueryParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class QueryParserTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
 
     /**

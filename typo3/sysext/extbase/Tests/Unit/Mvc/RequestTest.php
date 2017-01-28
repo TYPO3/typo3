@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 /**
  * Test case
  */
-class RequestTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class RequestTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class CountTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class CountTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var int number of all records
@@ -60,7 +60,7 @@ class CountTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTe
     {
         parent::setUp();
 
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/core/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-post-mm.xml');

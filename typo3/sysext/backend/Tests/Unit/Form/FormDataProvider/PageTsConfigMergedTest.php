@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged;
 /**
  * Test case
  */
-class PageTsConfigMergedTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class PageTsConfigMergedTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var PageTsConfigMerged

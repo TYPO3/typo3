@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Test case
  */
-class DatabaseUserPermissionCheckTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DatabaseUserPermissionCheckTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabaseUserPermissionCheck

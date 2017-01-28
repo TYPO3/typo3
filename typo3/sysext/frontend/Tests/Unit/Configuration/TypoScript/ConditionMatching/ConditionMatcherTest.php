@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fix
 /**
  * Test case
  */
-class ConditionMatcherTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ConditionMatcherTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var string Name of a key in $GLOBALS for this test

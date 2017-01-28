@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Tests for SqlReader
  */
-class SqlReaderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class SqlReaderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var SqlReader

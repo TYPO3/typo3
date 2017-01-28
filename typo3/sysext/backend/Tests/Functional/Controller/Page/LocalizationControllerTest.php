@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 /**
  * Test case for TYPO3\CMS\Backend\Controller\Page\LocalizationController
  */
-class LocalizationControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class LocalizationControllerTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var LocalizationController
@@ -42,7 +42,7 @@ class LocalizationControllerTest extends \TYPO3\CMS\Components\TestingFramework\
         Bootstrap::getInstance()->initializeLanguageObject();
 
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/core/Functional/Fixtures/sys_language.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
 
         $this->subject = new LocalizationController();

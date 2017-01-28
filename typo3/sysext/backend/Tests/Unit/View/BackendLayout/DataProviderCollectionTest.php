@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 /**
  * Testing collection of backend layout data providers.
  */
-class DataProviderCollectionTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DataProviderCollectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection

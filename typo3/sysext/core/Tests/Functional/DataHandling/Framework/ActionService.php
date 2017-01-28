@@ -358,7 +358,7 @@ class ActionService
     /**
      * @param array $tableLiveUids
      * @param bool $throwException
-     * @throws \TYPO3\CMS\Components\TestingFramework\Core\Exception
+     * @throws \TYPO3\Components\TestingFramework\Core\Exception
      */
     public function publishRecords(array $tableLiveUids, $throwException = true)
     {
@@ -368,7 +368,7 @@ class ActionService
                 $versionedUid = $this->getVersionedId($tableName, $liveUid);
                 if (empty($versionedUid)) {
                     if ($throwException) {
-                        throw new \TYPO3\CMS\Components\TestingFramework\Core\Exception('Versioned UID could not be determined', 1476049592);
+                        throw new \TYPO3\Components\TestingFramework\Core\Exception('Versioned UID could not be determined', 1476049592);
                     } else {
                         continue;
                     }

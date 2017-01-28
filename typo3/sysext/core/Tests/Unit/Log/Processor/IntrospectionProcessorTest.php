@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 /**
  * Test case
  */
-class IntrospectionProcessorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class IntrospectionProcessorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor

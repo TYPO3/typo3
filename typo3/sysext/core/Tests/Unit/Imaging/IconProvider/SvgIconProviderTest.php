@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider
  */
-class SvgIconProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class SvgIconProviderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider

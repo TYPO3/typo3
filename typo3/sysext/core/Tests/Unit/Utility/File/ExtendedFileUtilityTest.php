@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
  */
-class ExtendedFileUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ExtendedFileUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Sets up this testcase

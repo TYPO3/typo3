@@ -13,13 +13,13 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Test case for \TYPO3\CMS\Core\Database\DatabaseConnection
  */
-class DatabaseConnectionTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class DatabaseConnectionTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var DatabaseConnection

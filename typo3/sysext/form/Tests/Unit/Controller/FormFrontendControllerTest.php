@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 /**
  * Test case
  */
-class FormFrontendControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FormFrontendControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

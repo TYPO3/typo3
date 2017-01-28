@@ -20,7 +20,7 @@ use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeComman
 /**
  * Test case
  */
-class NormalizeCommandTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class NormalizeCommandTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array

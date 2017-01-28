@@ -17,7 +17,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 /**
  * This class contains unit tests for the indexer
  */
-class IndexerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class IndexerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Indexer instance

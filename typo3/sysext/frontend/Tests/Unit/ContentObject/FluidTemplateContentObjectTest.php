@@ -24,7 +24,7 @@ use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 /**
  * Testcase
  */
-class FluidTemplateContentObjectTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FluidTemplateContentObjectTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances
@@ -32,7 +32,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Components\TestingFramew
     protected $singletonInstances = [];
 
     /**
-     * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject = null;
 

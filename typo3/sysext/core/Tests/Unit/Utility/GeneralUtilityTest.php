@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
-use TYPO3\CMS\Components\TestingFramework\Core\FileStreamWrapper;
+use TYPO3\Components\TestingFramework\Core\FileStreamWrapper;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
  */
-class GeneralUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class GeneralUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
     /**

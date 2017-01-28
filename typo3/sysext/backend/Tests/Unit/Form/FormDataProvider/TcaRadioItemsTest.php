@@ -26,7 +26,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class TcaRadioItemsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TcaRadioItemsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaRadioItems

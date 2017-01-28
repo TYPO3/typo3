@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Lang\LanguageService;
 
-class PagesVisibleFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class PagesVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * These form fields a visisble in the default page types.

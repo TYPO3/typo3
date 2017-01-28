@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 /**
  * Base class for test cases related to parser data types.
  */
-abstract class AbstractDataTypeBaseTestCase extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+abstract class AbstractDataTypeBaseTestCase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Insert datatype to test into this create table statement

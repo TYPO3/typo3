@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
-class FileMetadataVisibleFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class FileMetadataVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['filemetadata'];
 

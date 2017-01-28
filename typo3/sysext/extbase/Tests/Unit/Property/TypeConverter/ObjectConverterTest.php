@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 /**
  * Test case
  */
-class ObjectConverterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ObjectConverterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ObjectConverter

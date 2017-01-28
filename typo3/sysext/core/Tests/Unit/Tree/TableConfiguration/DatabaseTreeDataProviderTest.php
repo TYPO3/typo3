@@ -29,10 +29,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
  */
-class DatabaseTreeDataProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DatabaseTreeDataProviderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseTreeDataProvider|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseTreeDataProvider|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 
@@ -42,7 +42,7 @@ class DatabaseTreeDataProviderTest extends \TYPO3\CMS\Components\TestingFramewor
     protected $treeData;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseConnection|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseConnection|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $database;
 

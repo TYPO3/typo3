@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 /**
  * Test case for class \TYPO3\CMS\Beuser\Domain\Model\Demand
  */
-class DemandTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DemandTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Beuser\Domain\Model\Demand

@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Cache\Backend\ApcuBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * NOTE: If you want to execute these tests you need to enable apc in
  * cli context (apc.enable_cli = 1) and disable slam defense (apc.slam_defense = 0)
  */
-class ApcuBackendTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ApcuBackendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Set up

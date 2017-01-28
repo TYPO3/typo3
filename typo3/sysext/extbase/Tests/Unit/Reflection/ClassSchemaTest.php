@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 /**
  * Test case
  */
-class ClassSchemaTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ClassSchemaTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

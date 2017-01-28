@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * Test case
  */
-class FormInlineAjaxControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FormInlineAjaxControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Checks if the given file type may be uploaded without *ANY* limit to file types being given

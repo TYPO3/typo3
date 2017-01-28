@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * Test case
  */
-class TcaInlineTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TcaInlineTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaInline

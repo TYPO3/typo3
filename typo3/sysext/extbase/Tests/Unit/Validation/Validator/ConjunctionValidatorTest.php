@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 /**
  * Test case
  */
-class ConjunctionValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ConjunctionValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -105,7 +105,7 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Co
      */
     public function removingAValidatorOfTheValidatorConjunctionWorks()
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
         $validatorConjunction = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class, ['dummy'], [[]], '', true);
         $validator1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])

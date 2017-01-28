@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 /**
  * Test case
  */
-class ModuleLoaderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ModuleLoaderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     protected function setUp()
     {

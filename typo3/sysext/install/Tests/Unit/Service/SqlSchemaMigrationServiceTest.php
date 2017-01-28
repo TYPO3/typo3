@@ -19,16 +19,16 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 /**
  * Test case
  */
-class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class SqlSchemaMigrationServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Get a SchemaService instance with mocked DBAL enable database connection, DBAL not enabled
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected function getSqlSchemaMigrationService()
     {
-        /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $databaseConnection */
+        /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $databaseConnection */
         $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, ['isDbalEnabled'], [], '', false);
         $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(false));
 

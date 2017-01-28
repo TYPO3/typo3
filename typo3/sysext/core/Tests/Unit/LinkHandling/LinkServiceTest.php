@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 
-class LinkServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class LinkServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page

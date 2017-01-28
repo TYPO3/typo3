@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\CaseContentObject
  */
-class CaseContentObjectTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CaseContentObjectTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var CaseContentObject|\PHPUnit_Framework_MockObject_MockObject

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 /**
  * Testcase for the FAL driver registry.
  */
-class DriverRegistryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DriverRegistryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry

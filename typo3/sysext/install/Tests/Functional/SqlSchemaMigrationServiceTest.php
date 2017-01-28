@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Functional;
 /**
  * Functional tests for the SQL schema migration service.
  */
-class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class SqlSchemaMigrationServiceTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService

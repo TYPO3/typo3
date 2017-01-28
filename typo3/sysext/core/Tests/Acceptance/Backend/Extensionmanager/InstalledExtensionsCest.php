@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 
 /**
  * Tests for the "Install list view" of the extension manager

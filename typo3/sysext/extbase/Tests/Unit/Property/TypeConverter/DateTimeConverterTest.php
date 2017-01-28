@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\DateTimeSubFixt
 /**
  * Test case
  */
-class DateTimeConverterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DateTimeConverterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter

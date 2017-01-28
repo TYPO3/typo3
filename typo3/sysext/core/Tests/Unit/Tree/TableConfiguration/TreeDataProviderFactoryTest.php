@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 /**
  * Test case
  */
-class TreeDataProviderFactoryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TreeDataProviderFactoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TreeDataProviderFactory

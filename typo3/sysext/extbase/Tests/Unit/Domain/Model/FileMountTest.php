@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class FileMountTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FileMountTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\FileMount

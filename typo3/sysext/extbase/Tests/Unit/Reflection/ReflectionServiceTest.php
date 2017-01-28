@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  * @anothertest second test for reflection
  * @anothertest second test for reflection with second value
  */
-class ReflectionServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ReflectionServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @param array $foo The foo parameter

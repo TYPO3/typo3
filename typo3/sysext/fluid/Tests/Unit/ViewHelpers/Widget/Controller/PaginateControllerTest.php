@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Test case
  */
-class PaginateControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class PaginateControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Query
@@ -26,7 +26,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core
     protected $query;
 
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $controller;
 

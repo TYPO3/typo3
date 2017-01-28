@@ -22,7 +22,7 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 /**
  * Test case
  */
-class MimeTypeValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class MimeTypeValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

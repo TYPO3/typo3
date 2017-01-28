@@ -620,7 +620,7 @@ class ResourceStorageTest extends BaseTestCase
         /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\AbstractDriver|\PHPUnit_Framework_MockObject_MockObject */
         $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
         $mockedDriver->expects($this->once())->method('isFolderEmpty')->will($this->returnValue(false));
-        /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->expects($this->any())->method('checkFolderActionPermission')->will($this->returnValue(true));
         $subject->_set('driver', $mockedDriver);

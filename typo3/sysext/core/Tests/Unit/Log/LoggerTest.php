@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Log\Writer\NullWriter;
 /**
  * Test case
  */
-class LoggerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class LoggerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

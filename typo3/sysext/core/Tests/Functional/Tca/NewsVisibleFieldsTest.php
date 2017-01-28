@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
-class NewsVisibleFieldsTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class NewsVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     protected static $newsFields = [
         'hidden',

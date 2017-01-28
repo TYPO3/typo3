@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class TcaDatabaseRecordTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TcaDatabaseRecordTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var TcaDatabaseRecord

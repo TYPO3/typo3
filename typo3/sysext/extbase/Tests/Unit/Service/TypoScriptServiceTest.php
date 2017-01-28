@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 /**
  * Test case
  */
-class TypoScriptServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TypoScriptServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * data provider for convertTypoScriptArrayToPlainArray

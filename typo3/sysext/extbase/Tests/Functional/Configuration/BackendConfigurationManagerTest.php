@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Service\TypoScriptService;
 /**
  * Test case
  */
-class BackendConfigurationManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class BackendConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * Warning: white box test

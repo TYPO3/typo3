@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase;
+use TYPO3\Components\TestingFramework\Core\UnitTestCase;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\ListRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

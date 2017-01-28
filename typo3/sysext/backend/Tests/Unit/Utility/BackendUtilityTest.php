@@ -35,7 +35,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class BackendUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     ///////////////////////////////////////
     // Tests concerning calcAge
@@ -986,7 +986,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Components\TestingFramework\Core\Uni
 
         $GLOBALS['TCA'] = $tca;
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|BackendUtility $subject */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|BackendUtility $subject */
         $subject = $this->getAccessibleMock(BackendUtility::class, ['dummy']);
         $this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
     }

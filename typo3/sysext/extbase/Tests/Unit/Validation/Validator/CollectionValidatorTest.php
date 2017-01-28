@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case
  */
-class CollectionValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CollectionValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var string
@@ -44,7 +44,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Cor
     /**
      * @param array $options
      * @param array $mockedMethods
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected function getValidator(array $options = [], array $mockedMethods = ['translateErrorMessage'])
     {

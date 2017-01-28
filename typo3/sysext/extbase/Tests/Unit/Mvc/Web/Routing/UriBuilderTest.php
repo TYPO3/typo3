@@ -32,7 +32,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Test case
  */
-class UriBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class UriBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ConfigurationManagerInterface
@@ -55,7 +55,7 @@ class UriBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTes
     protected $mockExtensionService;
 
     /**
-     * @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $uriBuilder;
 
@@ -473,7 +473,7 @@ class UriBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTes
      */
     public function buildFrontendUriCreatesTypoLink()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(['someTypoLinkConfiguration']));
@@ -508,7 +508,7 @@ class UriBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTes
      */
     public function buildFrontendUriCreatesAbsoluteUrisIfSpecified()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(['foo' => 'bar']));
@@ -524,7 +524,7 @@ class UriBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTes
      */
     public function buildFrontendUriSetsAbsoluteUriSchemeIfSpecified()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(['foo' => 'bar']));
@@ -541,7 +541,7 @@ class UriBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTes
      */
     public function buildFrontendUriDoesNotSetAbsoluteUriSchemeIfCreateAbsoluteUriIsFalse()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(['foo' => 'bar']));

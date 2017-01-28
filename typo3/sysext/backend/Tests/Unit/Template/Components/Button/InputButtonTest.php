@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 /**
  * Test case for InputButton
  */
-class InputButtonTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class InputButtonTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Try to validate an empty button

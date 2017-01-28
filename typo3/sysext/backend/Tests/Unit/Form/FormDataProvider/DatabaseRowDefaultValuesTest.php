@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 /**
  * Test case
  */
-class DatabaseRowDefaultValuesTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DatabaseRowDefaultValuesTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabaseRowDefaultValues

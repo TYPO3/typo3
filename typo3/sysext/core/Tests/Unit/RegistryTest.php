@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Registry;
 /**
  * Test case
  */
-class RegistryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class RegistryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

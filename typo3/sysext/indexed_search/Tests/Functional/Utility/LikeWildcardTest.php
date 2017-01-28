@@ -20,7 +20,7 @@ use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 /**
  * This class contains unit tests for the LikeQueryUtility
  */
-class LikeWildcardTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class LikeWildcardTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @test

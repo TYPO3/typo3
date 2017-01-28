@@ -25,15 +25,15 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException;
 /**
  * Test case
  */
-class RequestBuilderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class RequestBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_Comparator_MockObject
+     * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_Comparator_MockObject
      */
     protected $requestBuilder;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $request;
 

@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows;
 /**
  * Test case
  */
-class DatabasePageLanguageOverlayRowsTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DatabasePageLanguageOverlayRowsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabasePageLanguageOverlayRows|\PHPUnit_Framework_MockObject_MockObject

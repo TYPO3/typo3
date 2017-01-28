@@ -19,7 +19,7 @@ use TYPO3\CMS\Form\Mvc\Validation\CountValidator;
 /**
  * Test case
  */
-class CountValidatorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CountValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

@@ -24,7 +24,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 /**
  * Test case
  */
-class FormPersistenceManagerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class FormPersistenceManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

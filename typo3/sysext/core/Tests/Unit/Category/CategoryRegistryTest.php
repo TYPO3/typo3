@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
 /**
  * Testcase for CategoryRegistry
  */
-class CategoryRegistryTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CategoryRegistryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Category\CategoryRegistry

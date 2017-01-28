@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 /**
  * Query helper test
  */
-class QueryHelperTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class QueryHelperTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Test cases for stripping of leading logical operators in where constraints.

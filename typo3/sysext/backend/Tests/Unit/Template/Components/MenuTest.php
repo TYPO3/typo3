@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\MenuRegistry;
 /**
  * Test case for Menu
  */
-class MenuTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class MenuTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Try setting an empty menu

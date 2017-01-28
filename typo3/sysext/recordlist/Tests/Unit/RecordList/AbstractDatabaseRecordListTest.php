@@ -19,7 +19,7 @@ use TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList;
 /**
  * Test case
  */
-class AbstractDatabaseRecordListTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class AbstractDatabaseRecordListTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
@@ -29,7 +29,7 @@ class AbstractDatabaseRecordListTest extends \TYPO3\CMS\Components\TestingFramew
      */
     public function setTableDisplayOrderConvertsStringInput(array $input, array $expected)
     {
-        /** @var AbstractDatabaseRecordList|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var AbstractDatabaseRecordList|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(AbstractDatabaseRecordList::class, ['dummy']);
         $subject->setTableDisplayOrder($input);
         $this->assertSame($expected, $subject->_get('tableDisplayOrder'));

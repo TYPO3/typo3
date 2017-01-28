@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Http\Uri;
  *
  * Adapted from https://github.com/phly/http/
  */
-class ServerRequestTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ServerRequestTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ServerRequest

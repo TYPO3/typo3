@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 use TYPO3\CMS\Core\LinkHandling\EmailLinkHandler;
 
-class EmailLinkHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class EmailLinkHandlerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**

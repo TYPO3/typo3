@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 /**
  * Test case
  */
-class AbstractFormElementTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class AbstractFormElementTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @return array
@@ -275,7 +275,7 @@ class AbstractFormElementTest extends \TYPO3\CMS\Components\TestingFramework\Cor
      */
     public function formatValueWithGivenConfiguration($config, $itemValue, $expectedResult)
     {
-        /** @var AbstractFormElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var AbstractFormElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(AbstractFormElement::class, ['render'], [], '', false);
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');

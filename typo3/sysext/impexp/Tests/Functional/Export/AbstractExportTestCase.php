@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for the Export
  */
-abstract class AbstractExportTestCase extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+abstract class AbstractExportTestCase extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @var array

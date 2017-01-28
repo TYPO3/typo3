@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 /**
  * Testcase for \TYPO3\CMS\Core\Html\HtmlParser
  */
-class HtmlParserTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class HtmlParserTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Html\HtmlParser

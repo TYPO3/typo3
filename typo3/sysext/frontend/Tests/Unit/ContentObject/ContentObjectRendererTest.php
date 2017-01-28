@@ -54,7 +54,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  */
-class ContentObjectRendererTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ContentObjectRendererTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
 
     /**
@@ -63,12 +63,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Components\TestingFramework\C
     protected $singletonInstances = [];
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
     protected $subject = null;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $frontendControllerMock = null;
 

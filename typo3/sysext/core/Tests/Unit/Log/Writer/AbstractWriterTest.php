@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 /**
  * Test case
  */
-class AbstractWriterTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class AbstractWriterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

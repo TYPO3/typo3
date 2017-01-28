@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Migrations\TcaMigration;
 /**
  * Test case
  */
-class TcaMigrationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TcaMigrationTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

@@ -33,7 +33,7 @@ lib.watcherDataObject {
 	1 = LOAD_REGISTER
 	1.watcher.dataWrap = |
 	2 = USER
-	2.userFunc = TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->addRecordData
+	2.userFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->addRecordData
 	99 = RESTORE_REGISTER
 }
 
@@ -42,7 +42,7 @@ lib.watcherFileObject {
 	1 = LOAD_REGISTER
 	1.watcher.dataWrap = |
 	2 = USER
-	2.userFunc = TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->addFileData
+	2.userFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->addFileData
 	99 = RESTORE_REGISTER
 }
 
@@ -53,7 +53,7 @@ page {
 		1 = LOAD_REGISTER
 		1.watcher.dataWrap = pages:{field:uid}
 		2 = USER
-		2.userFunc = TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->addRecordData
+		2.userFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->addRecordData
 		10 = CONTENT
 		10 {
 			stdWrap.required = 1
@@ -219,10 +219,10 @@ page {
 				}
 			}
 		}
-		stdWrap.postUserFunc = TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->attachSection
+		stdWrap.postUserFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Collector->attachSection
 		stdWrap.postUserFunc.as = Default
 	}
-	stdWrap.postUserFunc = TYPO3\CMS\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
+	stdWrap.postUserFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
 
 [globalVar = GP:L = 1]

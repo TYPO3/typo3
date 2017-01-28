@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class SuggestWizardControllerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class SuggestWizardControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

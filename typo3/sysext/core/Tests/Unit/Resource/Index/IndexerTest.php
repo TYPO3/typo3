@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\Index\Indexer;
 /**
  * Class IndexerTest
  */
-class IndexerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class IndexerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

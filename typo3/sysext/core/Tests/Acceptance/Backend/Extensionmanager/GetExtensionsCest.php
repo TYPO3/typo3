@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
  */
 
 use Facebook\WebDriver\WebDriverKeys;
-use TYPO3\CMS\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 
 /**
  * Tests for the "Get Extensions view" of the extension manager

@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for BackendUserAuthentication
  */
-class BackendUserAuthenticationTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array

@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationExcepti
 /**
  * Test case
  */
-class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * Data provider for generating the list of trusted properties

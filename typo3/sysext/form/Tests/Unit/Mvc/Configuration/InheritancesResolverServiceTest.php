@@ -20,7 +20,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
 /**
  * Test case
  */
-class InheritancesResolverServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class InheritancesResolverServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var InheritancesResolverService

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class DataHandlerTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DataHandlerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Http\Stream;
  *
  * Adapted from https://github.com/phly/http/
  */
-class ResponseTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ResponseTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var Response

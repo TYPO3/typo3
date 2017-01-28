@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues;
 /**
  * Test case
  */
-class DatabaseRecordOverrideValuesTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class DatabaseRecordOverrideValuesTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var DatabaseRecordOverrideValues

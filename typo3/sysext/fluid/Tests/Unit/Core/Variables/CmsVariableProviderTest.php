@@ -18,7 +18,7 @@ use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 /**
  * Test case
  */
-class CmsVariableProviderTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class CmsVariableProviderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test

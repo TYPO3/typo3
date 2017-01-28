@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 /**
  * Test case
  */
-class FlashMessageQueueTest extends \TYPO3\CMS\Components\TestingFramework\Core\FunctionalTestCase
+class FlashMessageQueueTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
 {
     /**
      * @test

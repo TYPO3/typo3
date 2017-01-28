@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\DataProcessorFixture;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor
  */
-class ContentDataProcessorTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ContentDataProcessorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var ContentDataProcessor

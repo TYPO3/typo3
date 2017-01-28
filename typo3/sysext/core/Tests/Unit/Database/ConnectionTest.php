@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Test case
  *
  */
-class ConnectionTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class ConnectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @var Connection|\PHPUnit_Framework_MockObject_MockObject

@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Test case
  */
-class TypoScriptServiceTest extends \TYPO3\CMS\Components\TestingFramework\Core\UnitTestCase
+class TypoScriptServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
 {
     /**
      * @test
