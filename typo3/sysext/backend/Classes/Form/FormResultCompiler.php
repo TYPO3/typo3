@@ -221,6 +221,7 @@ class FormResultCompiler
 			FormEngineValidation.setUsMode(' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ');
 			FormEngineValidation.registerReady();
 		}';
+        $this->requireJsModules['TYPO3/CMS/Backend/FormEngineReview'] = null;
 
         foreach ($this->requireJsModules as $moduleName => $callbacks) {
             if (!is_array($callbacks)) {

@@ -542,6 +542,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 				}
 			}
 		});
+		$(document).trigger('t3-formengine-postfieldvalidation');
 	};
 
 	/**

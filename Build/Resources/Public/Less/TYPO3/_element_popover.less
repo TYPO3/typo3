@@ -11,8 +11,24 @@
 		padding: 12px 14px;
 	}
 
-	&-content p {
-		margin: 0;
+	&-content {
+		p {
+			margin: 0;
+		}
+
+		.list-group {
+			margin: -9px -14px;
+
+			.list-group-item {
+				border-radius: 0;
+				border-left: 0;
+				border-right: 0;
+
+				&:last-child {
+					border-bottom: 0;
+				}
+			}
+		}
 	}
 
 	.close {

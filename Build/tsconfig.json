@@ -169,6 +169,7 @@
         "../typo3/sysext/*/Resources/Private/TypeScript/**/*.ts"
     ],
     "files": [
-        "../typo3/sysext/backend/Resources/Private/TypeScript/ColorPicker.ts"
+        "../typo3/sysext/backend/Resources/Private/TypeScript/ColorPicker.ts",
+        "../typo3/sysext/backend/Resources/Private/TypeScript/FormEngineReview.ts"
     ]
 }

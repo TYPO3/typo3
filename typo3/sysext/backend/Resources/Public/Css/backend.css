@@ -11217,6 +11217,17 @@ fieldset[disabled] .table .btn-default.focus {
 .popover-content p {
   margin: 0;
 }
+.popover-content .list-group {
+  margin: -9px -14px;
+}
+.popover-content .list-group .list-group-item {
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+}
+.popover-content .list-group .list-group-item:last-child {
+  border-bottom: 0;
+}
 .popover .close {
   margin-right: 10px;
   margin-top: 10px;
