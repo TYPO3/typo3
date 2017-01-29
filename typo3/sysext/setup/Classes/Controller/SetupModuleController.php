@@ -166,7 +166,13 @@ class SetupModuleController extends AbstractModule
     {
         parent::__construct();
         $this->formProtection = FormProtectionFactory::get();
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $pageRenderer = $this->moduleTemplate->getPageRenderer();
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
+        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
+        $pageRenderer->addInlineLanguageLabelArray([
+            'FormEngine.remainingCharacters'    => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
+        ], true);
     }
 
     /**
@@ -521,6 +527,12 @@ class SetupModuleController extends AbstractModule
                 case 'email':
                 case 'password':
                     $noAutocomplete = '';
+
+                    $maxLength = $config['max'] ?? 0;
+                    if ((int)$maxLength > 0) {
+                        $more .= ' maxlength="' . (int)$maxLength . '"';
+                    }
+
                     if ($type === 'password') {
                         $value = '';
                         $noAutocomplete = 'autocomplete="off" ';
@@ -624,7 +636,7 @@ class SetupModuleController extends AbstractModule
                     $html = '';
             }
 
-            $code[] = '<div class="form-section"><div class="row"><div class="form-group col-md-12">' .
+            $code[] = '<div class="form-section"><div class="row"><div class="form-group t3js-formengine-field-item col-md-12">' .
                 $label .
                 $html .
                 '</div></div></div>';

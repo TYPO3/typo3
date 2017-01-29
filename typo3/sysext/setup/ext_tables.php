@@ -26,13 +26,15 @@ if (TYPO3_MODE === 'BE') {
                 'type' => 'text',
                 'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:beUser_realName',
                 'table' => 'be_users',
-                'csh' => 'beUser_realName'
+                'csh' => 'beUser_realName',
+                'max' => 80
             ],
             'email' => [
                 'type' => 'email',
                 'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:beUser_email',
                 'table' => 'be_users',
-                'csh' => 'beUser_email'
+                'csh' => 'beUser_email',
+                'max' => 80
             ],
             'emailMeAtLogin' => [
                 'type' => 'check',
