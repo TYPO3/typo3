@@ -643,9 +643,7 @@ TYPO3:
                 iconIdentifier: 't3-form-icon-finisher'
                 label: 'formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label'
                 predefinedDefaults:
-                  options:
-                    table: ''
-                    elements:
+                  options: []
 
             DeleteUploads:
               formEditor:

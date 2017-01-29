@@ -213,9 +213,13 @@ TYPO3:
                 #whereClause: []
                 #elements:
                 #  <elementIdentifier>:
-                #    mapOnDatabaseColumn: sender_name
+                #    mapOnDatabaseColumn: <databaseColumnName>
                 #    saveFileIdentifierInsteadOfUid: false
-                #    skipIfValueIsNull: false
+                #    skipIfValueIsEmpty: false
+                #databaseColumnMappings:
+                #  <databaseColumnName>:
+                #    value: 'someValue'
+                #    skipIfValueIsEmpty: false
 
           ### VALIDATORS ###
           validatorsDefinition:

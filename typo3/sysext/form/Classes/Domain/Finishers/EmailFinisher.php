@@ -172,6 +172,7 @@ class EmailFinisher extends AbstractFinisher
 
         $standaloneView = $this->objectManager->get(StandaloneView::class);
         $standaloneView->setTemplatePathAndFilename($this->options['templatePathAndFilename']);
+        $standaloneView->assign('finisherVariableProvider', $this->finisherContext->getFinisherVariableProvider());
 
         if (isset($this->options['partialRootPaths']) && is_array($this->options['partialRootPaths'])) {
             $standaloneView->setPartialRootPaths($this->options['partialRootPaths']);

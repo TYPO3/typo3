@@ -42,6 +42,11 @@ abstract class AbstractFinisher implements FinisherInterface
     protected $finisherIdentifier = '';
 
     /**
+     * @var string
+     */
+    protected $shortFinisherIdentifier = '';
+
+    /**
      * The options which have been set from the outside. Instead of directly
      * accessing them, you should rather use parseOption().
      *
@@ -105,6 +110,7 @@ abstract class AbstractFinisher implements FinisherInterface
     final public function execute(FinisherContext $finisherContext)
     {
         $this->finisherIdentifier = (new \ReflectionClass($this))->getShortName();
+        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier);
         $this->finisherContext = $finisherContext;
         $this->executeInternal();
     }
@@ -164,16 +170,30 @@ abstract class AbstractFinisher implements FinisherInterface
 
         // You can encapsulate a option value with {}.
         // This enables you to access every getable property from the
-        // TYPO3\CMS\Form\Domain\Runtime.
+        // TYPO3\CMS\Form\Domain\Runtime\FormRuntime.
         //
         // For example: {formState.formValues.<elemenIdentifier>}
         // or {<elemenIdentifier>}
         //
         // Both examples are equal to "$formRuntime->getFormState()->getFormValues()[<elemenIdentifier>]"
         // If the value is not a string nothing will be replaced.
+        // There is a special option value '{__currentTimestamp}'.
+        // This will be replaced with the current timestamp.
         $optionValue = preg_replace_callback('/{([^}]+)}/', function ($match) use ($formRuntime) {
-            $value = ObjectAccess::getPropertyPath($formRuntime, $match[1]);
-            if (!is_string($value)) {
+            if ($match[1] === '__currentTimestamp') {
+                $value = time();
+            } else {
+                // try to resolve the path '{...}' within the FormRuntime
+                $value = ObjectAccess::getPropertyPath($formRuntime, $match[1]);
+                if ($value === null) {
+                    // try to resolve the path '{...}' within the FinisherVariableProvider
+                    $value = ObjectAccess::getPropertyPath(
+                        $this->finisherContext->getFinisherVariableProvider(),
+                        $match[1]
+                    );
+                }
+            }
+            if (!is_string($value) && !is_int($value)) {
                 $value = '{' . $match[1] . '}';
             }
             return $value;

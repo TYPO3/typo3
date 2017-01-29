@@ -263,4 +263,33 @@ class AbstractFinisherTest extends \TYPO3\Components\TestingFramework\Core\Unit\
 
         $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
+
+    /**
+     * @test
+     */
+    public function parseOptionReturnsTimestampIfOptionValueIsATimestampRequestTrigger()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $mockAbstractFinisher->_set('options', [
+            'crdate' => '{__currentTimestamp}'
+        ]);
+
+        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+
+        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+
+        $finisherContextProphecy->getFormRuntime(Argument::cetera())
+            ->willReturn($formRuntimeProphecy->reveal());
+
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+
+        $expected = '#^([0-9]{10})$#';
+        $this->assertEquals(1, preg_match($expected, $mockAbstractFinisher->_call('parseOption', 'crdate')));
+    }
 }
