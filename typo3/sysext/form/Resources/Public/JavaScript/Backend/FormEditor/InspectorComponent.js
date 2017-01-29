@@ -77,6 +77,7 @@ define(['jquery',
                 'Inspector-RemoveElementEditor': 'Inspector-RemoveElementEditor',
                 'Inspector-RequiredValidatorEditor': 'Inspector-RequiredValidatorEditor',
                 'Inspector-SingleSelectEditor': 'Inspector-SingleSelectEditor',
+                'Inspector-MultiSelectEditor': 'Inspector-MultiSelectEditor',
                 'Inspector-TextareaEditor': 'Inspector-TextareaEditor',
                 'Inspector-TextEditor': 'Inspector-TextEditor',
                 'Inspector-Typo3WinBrowserEditor': 'Inspector-Typo3WinBrowserEditor',
@@ -295,6 +296,14 @@ define(['jquery',
                     break;
                 case 'Inspector-SingleSelectEditor':
                     renderSingleSelectEditor(
+                        editorConfiguration,
+                        editorHtml,
+                        collectionElementIdentifier,
+                        collectionName
+                    );
+                    break;
+                case 'Inspector-MultiSelectEditor':
+                    renderMultiSelectEditor(
                         editorConfiguration,
                         editorHtml,
                         collectionElementIdentifier,
@@ -1162,6 +1171,96 @@ define(['jquery',
          * @param string collectionElementIdentifier
          * @param string collectionName
          * @return void
+         * @throws 1485712399
+         * @throws 1485712400
+         * @throws 1485712401
+         * @throws 1485712402
+         * @throws 1485712403
+         */
+        function renderMultiSelectEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
+            var propertyData, propertyPath, selectElement;
+            assert(
+                'object' === $.type(editorConfiguration),
+                'Invalid parameter "editorConfiguration"',
+                1485712399
+            );
+            assert(
+                'object' === $.type(editorHtml),
+                'Invalid parameter "editorHtml"',
+                1485712400
+            );
+            assert(
+                getUtility().isNonEmptyString(editorConfiguration['label']),
+                'Invalid configuration "label"',
+                1485712401
+            );
+            assert(
+                getUtility().isNonEmptyString(editorConfiguration['propertyPath']),
+                'Invalid configuration "propertyPath"',
+                1485712402
+            );
+            assert(
+                'array' === $.type(editorConfiguration['selectOptions']),
+                'Invalid configuration "selectOptions"',
+                1485712403
+            );
+
+            propertyPath = getFormEditorApp().buildPropertyPath(
+                editorConfiguration['propertyPath'],
+                collectionElementIdentifier,
+                collectionName
+            );
+
+            getHelper()
+                .getTemplatePropertyDomElement('label', editorHtml)
+                .append(editorConfiguration['label']);
+
+            selectElement = getHelper()
+                .getTemplatePropertyDomElement('selectOptions', editorHtml);
+
+            propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+
+            for (var i = 0, len1 = editorConfiguration['selectOptions'].length; i < len1; ++i) {
+                var option, value;
+
+                option = null;
+                for (var propertyDataKey in propertyData) {
+                    if (!propertyData.hasOwnProperty(propertyDataKey)) {
+                        continue;
+                    }
+                    if (editorConfiguration['selectOptions'][i]['value'] === propertyData[propertyDataKey]) {
+                        option = new Option(editorConfiguration['selectOptions'][i]['label'], i, false, true);
+                        break;
+                    }
+                }
+
+                if (!option) {
+                    option = new Option(editorConfiguration['selectOptions'][i]['label'], i);
+                }
+
+                $(option).data({value: editorConfiguration['selectOptions'][i]['value']});
+
+                selectElement.append(option);
+            }
+
+            selectElement.on('change', function() {
+                var selectValues = [];
+                $('option:selected', $(this)).each(function(i) {
+                    selectValues.push($(this).data('value'));
+                });
+
+                getCurrentlySelectedFormElement().set(propertyPath, selectValues);
+            });
+        };
+
+        /**
+         * @public
+         *
+         * @param object editorConfiguration
+         * @param object editorHtml
+         * @param string collectionElementIdentifier
+         * @param string collectionName
+         * @return void
          * @throws 1475419226
          * @throws 1475419227
          * @throws 1475419228
@@ -1793,7 +1892,7 @@ define(['jquery',
 
                             $('[data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '"]', itemTemplate)
                                 .append($(icon))
-                                .append(' ' + nonCompositeNonToplevelFormElements[i].get('label'));
+                                .append(' ' + nonCompositeNonToplevelFormElement.get('label'));
 
                             $('a', itemTemplate).on('click', function() {
                                 var propertyData;
@@ -1893,6 +1992,7 @@ define(['jquery',
             renderRemoveElementEditor: renderRemoveElementEditor,
             renderRequiredValidatorEditor: renderRequiredValidatorEditor,
             renderSingleSelectEditor: renderSingleSelectEditor,
+            renderMultiSelectEditor: renderMultiSelectEditor,
             renderTextareaEditor: renderTextareaEditor,
             renderTextEditor: renderTextEditor,
             renderTypo3WinBrowserEditor: renderTypo3WinBrowserEditor,

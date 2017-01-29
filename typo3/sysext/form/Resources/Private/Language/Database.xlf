@@ -665,15 +665,42 @@
             <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" xml:space="preserve">
                 <source>Allowed file mime types</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.1" xml:space="preserve">
-                <source>Documents (doc, docx, odt, pdf)</source>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" xml:space="preserve">
+                <source>Documents (doc)</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.2" xml:space="preserve">
-                <source>Spreadsheet documents (xls)</source>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" xml:space="preserve">
+                <source>Documents (docx)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" xml:space="preserve">
+                <source>Documents (xls)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" xml:space="preserve">
+                <source>Documents (xlsx)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" xml:space="preserve">
+                <source>Documents (pdf)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" xml:space="preserve">
+                <source>Documents (odt)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" xml:space="preserve">
+                <source>Documents (ods)</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.ImageUpload.label" xml:space="preserve">
                 <source>Image upload</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" xml:space="preserve">
+                <source>Allowed file mime types</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" xml:space="preserve">
+                <source>Images (jpg)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" xml:space="preserve">
+                <source>Images (png)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" xml:space="preserve">
+                <source>Images (bmp)</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.UnknownElement" xml:space="preserve">

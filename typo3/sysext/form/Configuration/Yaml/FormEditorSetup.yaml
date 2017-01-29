@@ -85,6 +85,7 @@ TYPO3:
               Inspector-TextEditor: 'Inspector/TextEditor'
               Inspector-PropertyGridEditor: 'Inspector/PropertyGridEditor'
               Inspector-SingleSelectEditor: 'Inspector/SingleSelectEditor'
+              Inspector-MultiSelectEditor: 'Inspector/MultiSelectEditor'
               Inspector-TextareaEditor: 'Inspector/TextareaEditor'
               Inspector-RemoveElementEditor: 'Inspector/RemoveElementEditor'
               Inspector-FinishersEditor: 'Inspector/FinishersEditor'
@@ -485,21 +486,36 @@ TYPO3:
                 groupSorting: 200
                 predefinedDefaults:
                   properties:
-                    allowedMimeTypes: ['application/doc', 'application/docx', 'application/odt', 'application/pdf']
+                    allowedMimeTypes: ['application/pdf']
                 iconIdentifier: 't3-form-icon-file-upload'
                 editors:
                   300:
                     identifier: 'allowedMimeTypes'
-                    templateName: 'Inspector-SingleSelectEditor'
+                    templateName: 'Inspector-MultiSelectEditor'
                     label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.label'
                     propertyPath: 'properties.allowedMimeTypes'
                     selectOptions:
                       10:
-                        value: ['application/doc', 'application/docx', 'application/odt', 'application/pdf']
-                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.1'
+                        value: 'application/msword'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.doc'
                       20:
-                        value: ['application/xls']
-                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.2'
+                        value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.docx'
+                      30:
+                        value: 'application/msexcel'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.xls'
+                      40:
+                        value: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx'
+                      50:
+                        value: 'application/pdf'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf'
+                      60:
+                        value: 'application/vnd.oasis.opendocument.text'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.odt'
+                      70:
+                        value: 'application/vnd.oasis.opendocument.spreadsheet-template'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.ods'
 
             ImageUpload:
               formEditor:
@@ -508,8 +524,24 @@ TYPO3:
                 groupSorting: 300
                 predefinedDefaults:
                   properties:
-                    allowedMimeTypes: ['image/jpeg', 'image/png', 'image/bmp']
+                    allowedMimeTypes: ['image/jpeg']
                 iconIdentifier: 't3-form-icon-image-upload'
+                editors:
+                  300:
+                    identifier: 'allowedMimeTypes'
+                    templateName: 'Inspector-MultiSelectEditor'
+                    label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.label'
+                    propertyPath: 'properties.allowedMimeTypes'
+                    selectOptions:
+                      10:
+                        value: 'image/jpeg'
+                        label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg'
+                      20:
+                        value: 'image/png'
+                        label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.png'
+                      30:
+                        value: 'image/bmp'
+                        label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp'
 
           ### FINISHERS ###
           finishersDefinition:
