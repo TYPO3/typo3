@@ -994,7 +994,7 @@ class RteHtmlParser extends HtmlParser
         if (!empty($this->allowedAttributesForParagraphTags)) {
             list($tagAttributes) = $this->get_tag_attributes($fTag);
             // Make sure the tag attributes only contain the ones that are defined to be allowed
-            $tagAttributes = array_intersect_key($tagAttributes, $this->allowedAttributesForParagraphTags);
+            $tagAttributes = array_intersect_key($tagAttributes, array_flip($this->allowedAttributesForParagraphTags));
 
             // Only allow classes that are whitelisted in $this->allowedClasses
             if (trim($tagAttributes['class']) !== '' && !empty($this->allowedClasses) && !in_array($tagAttributes['class'], $this->allowedClasses, true)) {
