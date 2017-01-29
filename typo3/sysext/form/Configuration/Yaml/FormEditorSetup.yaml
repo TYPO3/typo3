@@ -366,6 +366,11 @@ TYPO3:
                 group: input
                 groupSorting: 200
                 iconIdentifier: 't3-form-icon-textarea'
+                editors:
+                  900:
+                    selectOptions:
+                      # remove email validator
+                      50: null
 
             ### FORM ELEMENTS: SELECT ###
             Checkbox:
