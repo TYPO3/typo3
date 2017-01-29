@@ -253,12 +253,12 @@ define(['jquery',
                 case 'AdvancedPassword':
                 case 'Password':
                 case 'Text':
+                case 'DatePicker':
                     renderSimpleTemplateWithValidators(formElement, template);
                     break;
                 case 'Fieldset':
                 case 'SummaryPage':
                 case 'Page':
-                case 'DatePicker':
                 case 'StaticText':
                 case 'Hidden':
                 case 'ContentElement':

@@ -17,8 +17,11 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
+use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
  * Display a jQuery date picker.
@@ -65,6 +68,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
         $this->registerArgument('initialDate', 'string', 'Initial date (@see http://www.php.net/manual/en/datetime.formats.php for supported formats)');
         $this->registerArgument('enableDatePicker', 'bool', 'Enable the Datepicker', false, true);
+        $this->registerArgument('previewMode', 'bool', 'Preview mde flag', true, false);
         $this->registerArgument('dateFormat', 'string', 'The date format', false, 'Y-m-d');
         $this->registerUniversalTagAttributes();
     }
@@ -79,37 +83,44 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
     {
         $enableDatePicker = $this->arguments['enableDatePicker'];
         $dateFormat = $this->arguments['dateFormat'];
+        $previewMode = (bool)$this->arguments['previewMode'];
+        $placeholder = $this->arguments['placeholder'];
 
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
 
-        $this->tag->addAttribute('type', 'date');
+        $this->tag->addAttribute('type', 'input');
         $this->tag->addAttribute('name', $name . '[date]');
+
+        if ($this->hasArgument('id')) {
+            $id = $this->arguments['id'];
+        } else {
+            $id = 'field' . md5(uniqid());
+        }
+
+        if (empty($placeholder)) {
+            $this->tag->addAttribute('placeholder', $dateFormat);
+        }
+
         if ($enableDatePicker) {
             $this->tag->addAttribute('readonly', true);
+            if (!$previewMode) {
+                $datePickerDateFormat = $this->convertDateFormatToDatePickerFormat($dateFormat);
+                $this->renderInlineJavascript($id, $datePickerDateFormat);
+            }
         }
         $date = $this->getSelectedDate();
         if ($date !== null) {
             $this->tag->addAttribute('value', $date->format($dateFormat));
         }
 
-        if ($this->hasArgument('id')) {
-            $id = $this->arguments['id'];
-        } else {
-            $id = 'field' . md5(uniqid());
-            $this->tag->addAttribute('id', $id);
-        }
+        $this->tag->addAttribute('id', $id);
+
         $this->setErrorClassAttribute();
         $content = '';
         $content .= $this->tag->render();
         $content .= '<input type="hidden" name="' . $name . '[dateFormat]" value="' . htmlspecialchars($dateFormat) . '" />';
 
-        if ($enableDatePicker) {
-            $datePickerDateFormat = $this->convertDateFormatToDatePickerFormat($dateFormat);
-            $this->renderingContext->getVariableProvider()->add('datePickerDateFormat', $datePickerDateFormat);
-            $content .= $this->renderChildren();
-            $this->renderingContext->getVariableProvider()->remove('datePickerDateFormat');
-        }
         return $content;
     }
 
@@ -162,5 +173,38 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
             'y' => 'y'
         ];
         return strtr($dateFormat, $replacements);
+    }
+
+    /**
+     * @param string $uniqueIdentifier
+     * @param string $datePickerDateFormat
+     * @return void
+     */
+    protected function renderInlineJavascript(string $uniqueIdentifier, string $datePickerDateFormat)
+    {
+        $this->getPageRenderer()->addJsFooterInlineCode(
+            'ext_form_datepicker-' . $uniqueIdentifier,
+            'if ("undefined" !== typeof $) {
+                    $(function() {
+                        $("#' . $uniqueIdentifier . '").datepicker({
+                            dateFormat: "' . $datePickerDateFormat . '"
+                        }).on("keydown", function(e) {
+                            // By using "backspace" or "delete", you can clear the datepicker again.
+                            if(e.keyCode == 8 || e.keyCode == 46) {
+                                e.preventDefault();
+                                $.datepicker._clearDate(this);
+                            }
+                        });
+                    });
+                }
+            ');
+    }
+
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer(): PageRenderer
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

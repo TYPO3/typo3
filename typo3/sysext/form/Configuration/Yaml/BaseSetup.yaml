@@ -117,8 +117,10 @@ TYPO3:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
               implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker'
               properties:
-                elementClassAttribute: 'small'
+                elementClassAttribute: 'small form-control'
                 timeSelectorClassAttribute: 'mini'
+                timeSelectorHourLabel: ''
+                timeSelectorMinuteLabel: ''
                 dateFormat: 'Y-m-d'
                 enableDatePicker: true
                 displayTimeSelector: false

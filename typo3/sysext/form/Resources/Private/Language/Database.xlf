@@ -625,6 +625,15 @@
             <trans-unit id="formEditor.elements.DatePicker.label" xml:space="preserve">
                 <source>Date picker</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.editor.dateFormat.label" xml:space="preserve">
+                <source>Date format</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.editor.enableDatePicker.label" xml:space="preserve">
+                <source>Enable datepicker (needs jQuery UI)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.editor.displayTimeSelector.label" xml:space="preserve">
+                <source>Display time selector</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.DatePicker.editor.validators.label" xml:space="preserve">
                 <source>Validators</source>
             </trans-unit>

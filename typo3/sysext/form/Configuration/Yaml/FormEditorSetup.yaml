@@ -415,8 +415,28 @@ TYPO3:
                 label: 'formEditor.elements.DatePicker.label'
                 group: custom
                 groupSorting: 100
+                predefinedDefaults:
+                  properties:
+                    dateFormat: 'Y-m-d'
+                    enableDatePicker: true
+                    displayTimeSelector: false
                 iconIdentifier: 't3-form-icon-date-picker'
                 editors:
+                  300:
+                    identifier: 'dateFormat'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.DatePicker.editor.dateFormat.label'
+                    propertyPath: 'properties.dateFormat'
+                  400:
+                    identifier: 'enableDatePicker'
+                    templateName: 'Inspector-CheckboxEditor'
+                    label: 'formEditor.elements.DatePicker.editor.enableDatePicker.label'
+                    propertyPath: 'properties.enableDatePicker'
+                  500:
+                    identifier: 'displayTimeSelector'
+                    templateName: 'Inspector-CheckboxEditor'
+                    label: 'formEditor.elements.DatePicker.editor.displayTimeSelector.label'
+                    propertyPath: 'properties.displayTimeSelector'
                   900:
                     identifier: 'validators'
                     templateName: 'Inspector-ValidatorsEditor'

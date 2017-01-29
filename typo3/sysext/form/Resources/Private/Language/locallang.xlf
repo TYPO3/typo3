@@ -21,6 +21,12 @@
             <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve">
                 <source>uploaded image</source>
             </trans-unit>
+            <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve">
+                <source>Hour</source>
+            </trans-unit>
+            <trans-unit id="element.DatePicker.properties.timeSelectorMinuteLabel" xml:space="preserve">
+                <source>Minute</source>
+            </trans-unit>
 
             <trans-unit id="validation.error.1221560910" xml:space="preserve">
                 <source>This field is mandatory</source>

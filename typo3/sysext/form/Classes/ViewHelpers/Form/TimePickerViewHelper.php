@@ -64,6 +64,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the select element should be disabled when the page loads');
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
         $this->registerArgument('initialDate', 'string', 'Initial time (@see http://www.php.net/manual/en/datetime.formats.php for supported formats)');
+        $this->registerArgument('timeType', 'string', '"hour" or "minute"');
         $this->registerUniversalTagAttributes();
     }
 
@@ -77,14 +78,19 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
-
         $this->tag->addAttribute('name', $name . '[hour]');
+
         $date = $this->getSelectedDate();
         $this->setErrorClassAttribute();
 
         $content = '';
-        $content .= $this->buildHourSelector($date);
-        $content .= $this->buildMinuteSelector($date);
+
+        if ($this->arguments['timeType'] === 'hour') {
+            $content .= $this->buildHourSelector($date);
+        } else {
+            $content .= $this->buildMinuteSelector($date);
+        }
+
         return $content;
     }
 
