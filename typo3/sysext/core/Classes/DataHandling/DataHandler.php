@@ -1694,7 +1694,7 @@ class DataHandler
      */
     protected function checkValueForText($value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
-        if (isset($tcaFieldConf['eval']) && !$tcaFieldConf['eval'] === '') {
+        if (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
             $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
             if ($this->runtimeCache->has($cacheId)) {
                 $evalCodesArray = $this->runtimeCache->get($cacheId);
