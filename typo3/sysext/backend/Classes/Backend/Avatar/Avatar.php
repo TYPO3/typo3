@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -34,20 +36,6 @@ class Avatar
     protected $avatarProviders = [];
 
     /**
-     * Construct
-     */
-    public function __construct()
-    {
-        $this->validateSortAndInitiateAvatarProviders();
-        $this->view = $this->getFluidTemplateObject();
-    }
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    /**
      * Render avatar tag
      *
      * @param array $backendUser be_users record
@@ -57,26 +45,43 @@ class Avatar
      */
     public function render(array $backendUser = null, int $size = 32, bool $showIcon = false)
     {
+
         if (!is_array($backendUser)) {
             $backendUser = $this->getBackendUser()->user;
         }
 
-        // Icon
-        $icon = '';
-        if ($showIcon) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $icon = $iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render();
+        $cacheId = 'avatar_' . md5(
+                $backendUser['uid'] . '/' .
+                (string)$size . '/' .
+                (string)$showIcon);
+
+        $avatar = static::getCache()->get($cacheId);
+
+        if (!$avatar) {
+
+            $this->validateSortAndInitiateAvatarProviders();
+            $view = $this->getFluidTemplateObject();
+
+            // Icon
+            $icon = '';
+            if ($showIcon) {
+                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+                $icon = $iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render();
+            }
+
+            $image = $this->getImgTag($backendUser, $size);
+
+            $view->assignMultiple(
+                [
+                    'image' => $image,
+                    'icon' => $icon
+                ]
+            );
+            $avatar = $view->render();
+            static::getCache()->set($cacheId, $avatar);
         }
 
-        $image = $this->getImgTag($backendUser, $size);
-
-        $this->view->assignMultiple([
-                'image' => $image,
-                'icon' => $icon
-            ]
-        );
-
-        return $this->view->render();
+        return $avatar;
     }
 
     /**
@@ -195,5 +200,15 @@ class Avatar
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;
+    }
+
+    /**
+     * @return VariableFrontend
+     */
+    protected function getCache()
+    {
+        /** @var CacheManager $manager */
+        $manager = GeneralUtility::makeInstance(CacheManager::class);
+        return $manager->getCache('cache_runtime');
     }
 }
