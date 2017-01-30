@@ -202,15 +202,12 @@
 								</f:if>
 							</td>
 							<td>
-								<f:switch expression="{logItem.error}">
-									<f:case value="1">
-										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-warning"><f:translate key="actions.deleteWarnings" /></f:link.action>
-									</f:case>
-									<f:case value="2">
-										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-danger"><f:translate key="actions.delete" /></f:link.action>
-									</f:case>
-									<f:defaultCase />
-								</f:switch>
+								<f:if condition="{logItem.error} == 1">
+									<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-warning"><f:translate key="actions.deleteWarnings" /></f:link.action>
+								</f:if>
+								<f:if condition="{logItem.error} == 2">
+									<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-danger"><f:translate key="actions.delete" /></f:link.action>
+								</f:if>
 							</td>
 						</tr>
 					</f:for>
