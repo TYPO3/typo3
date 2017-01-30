@@ -216,6 +216,10 @@ class TranslationService implements SingletonInterface
 
         $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
         $translationFile = $renderingOptions['translationFile'];
+        if (empty($translationFile)) {
+            $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
+        }
+
         if (isset($renderingOptions['translatePropertyValueIfEmpty'])) {
             $translatePropertyValueIfEmpty = (bool)$renderingOptions['translatePropertyValueIfEmpty'];
         } else {
@@ -292,6 +296,9 @@ class TranslationService implements SingletonInterface
 
         $defaultValue = empty($defaultValue) ? '' : $defaultValue;
         $translationFile = $renderingOptions['translation']['translationFile'];
+        if (empty($translationFile)) {
+            $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
+        }
 
         $language = null;
         if (isset($renderingOptions['translation']['language'])) {
@@ -369,7 +376,6 @@ class TranslationService implements SingletonInterface
         if (!empty($locallangPathAndFilename)) {
             /** @var $languageFactory LocalizationFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-
             $this->LOCAL_LANG = $languageFactory->getParsedData($locallangPathAndFilename, $this->languageKey, 'utf-8');
 
             foreach ($this->alternativeLanguageKeys as $language) {
