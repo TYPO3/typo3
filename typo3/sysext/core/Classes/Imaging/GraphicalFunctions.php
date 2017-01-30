@@ -815,7 +815,7 @@ class GraphicalFunctions
                 foreach ($utf8Chars as $char) {
                     $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $char, $conf['splitRendering.'], $sF);
                     $charW = $charInf[2] - $charInf[0];
-                    $x += $charW + ($char == ' ' ? $wordSpacing : $spacing);
+                    $x += $charW + ($char === ' ' ? $wordSpacing : $spacing);
                 }
             }
         } elseif (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($conf['text'], $conf) > $conf['breakWidth']) {
@@ -933,7 +933,7 @@ class GraphicalFunctions
                 $charInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $char, $splitRenderingConf, $sF);
                 $charW = $charInf[2] - $charInf[0];
                 $this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $char, $splitRenderingConf, $sF);
-                $x += $charW + ($char == ' ' ? $wordSpacing : $spacing);
+                $x += $charW + ($char === ' ' ? $wordSpacing : $spacing);
             }
         }
     }
@@ -2679,7 +2679,7 @@ class GraphicalFunctions
         }
 
         $ext = strtolower(substr($theFile, -4, 4));
-        if ((string)$ext == '.png' && $output_png || (string)$ext == '.gif' && !$output_png) {
+        if ((string)$ext === '.png' && $output_png || (string)$ext === '.gif' && !$output_png) {
             return $theFile;
         }
 
@@ -2762,7 +2762,7 @@ class GraphicalFunctions
      */
     public function gif_or_jpg($type, $w, $h)
     {
-        if ($type == 'ai' || $w * $h < $this->pixelLimitGif) {
+        if ($type === 'ai' || $w * $h < $this->pixelLimitGif) {
             return $this->gifExtension;
         } else {
             return 'jpg';

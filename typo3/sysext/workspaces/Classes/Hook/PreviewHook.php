@@ -242,7 +242,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
         // If input code is available and shall not be ignored, look up the settings
         if ($inputCode && $inputCode !== 'IGNORE') {
             // "log out"
-            if ($inputCode == 'LOGOUT') {
+            if ($inputCode === 'LOGOUT') {
                 setcookie($this->previewKey, '', 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
                 if ($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']) {
                     $templateFile = PATH_site . $GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate'];

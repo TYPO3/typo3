@@ -167,7 +167,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         $assigns['tsBrowserType'] = $this->pObj->MOD_SETTINGS['ts_browser_type'];
         if ($existTemplate) {
             $assigns['templateRecord'] = $this->templateRow;
-            $assigns['linkWrapTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], ($bType == 'setup' ? 'config' : 'constants'));
+            $assigns['linkWrapTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], ($bType === 'setup' ? 'config' : 'constants'));
             $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
             if ($POST['add_property'] || $POST['update_value'] || $POST['clear_object']) {
@@ -209,7 +209,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                     $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
                     // Set the data to be saved
                     $recData = [];
-                    $field = $bType == 'setup' ? 'config' : 'constants';
+                    $field = $bType === 'setup' ? 'config' : 'constants';
                     $recData['sys_template'][$saveId][$field] = $this->templateRow[$field] . $line;
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
@@ -252,13 +252,13 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         $this->templateService->ext_regLinenumbers = true;
         $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
         $this->templateService->bType = $bType;
-        if ($this->pObj->MOD_SETTINGS['ts_browser_type'] == 'const') {
+        if ($this->pObj->MOD_SETTINGS['ts_browser_type'] === 'const') {
             $this->templateService->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
         } else {
             $this->templateService->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
         }
         $this->templateService->generateConfig();
-        if ($bType == 'setup') {
+        if ($bType === 'setup') {
             $theSetup = $this->templateService->setup;
         } else {
             $theSetup = $this->templateService->setup_constants;
@@ -329,7 +329,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             ];
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
             // Parser Errors:
-            $pEkey = $bType == 'setup' ? 'config' : 'constants';
+            $pEkey = $bType === 'setup' ? 'config' : 'constants';
             $assigns['hasParseErrors'] = !empty($this->templateService->parserErrors[$pEkey]);
             if (!empty($this->templateService->parserErrors[$pEkey])) {
                 $assigns['showErrorDetailsUri'] = $aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-';
@@ -350,11 +350,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $assigns['tsTree'] = $tree;
 
             // second row options
-            $assigns['isSetupAndCropLinesDisabled'] = $bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
+            $assigns['isSetupAndCropLinesDisabled'] = $bType === 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
             $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
             $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
             $assigns['checkBoxCropLines'] = BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
-            if ($bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
+            if ($bType === 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
                 $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
             }
 

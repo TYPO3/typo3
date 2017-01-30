@@ -991,7 +991,7 @@ class BackendUtility
                 $srcPointer = 'default';
             }
             // Get Data Source: Detect if it's a file reference and in that case read the file and parse as XML. Otherwise the value is expected to be XML.
-            if (substr($ds_array[$srcPointer], 0, 5) == 'FILE:') {
+            if (substr($ds_array[$srcPointer], 0, 5) === 'FILE:') {
                 $file = GeneralUtility::getFileAbsFileName(substr($ds_array[$srcPointer], 5));
                 if ($file && @is_file($file)) {
                     $dataStructArray = GeneralUtility::xml2array(file_get_contents($file));
@@ -1727,7 +1727,7 @@ class BackendUtility
                     }
 
                     $fileExtension = $fileObject->getExtension();
-                    if ($fileExtension == 'ttf'
+                    if ($fileExtension === 'ttf'
                         || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)
                     ) {
                         $imageUrl = $fileObject->process(
@@ -1884,14 +1884,14 @@ class BackendUtility
      */
     public static function getRecordIconAltText($row, $table = 'pages')
     {
-        if ($table == 'pages') {
+        if ($table === 'pages') {
             $out = self::titleAttribForPages($row, '', 0);
         } else {
             $out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'])) ? $row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] . ' ' : '';
             $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
             // Uid is added
             $out .= 'id=' . $row['uid'];
-            if ($table == 'pages' && $row['alias']) {
+            if ($table === 'pages' && $row['alias']) {
                 $out .= ' / ' . $row['alias'];
             }
             if (static::isTableWorkspaceEnabled($table) && $row['pid'] < 0) {
@@ -2651,7 +2651,7 @@ class BackendUtility
             if (is_array($GLOBALS['TCA'][$table])) {
                 if ($fN == $GLOBALS['TCA'][$table]['ctrl']['tstamp'] || $fN == $GLOBALS['TCA'][$table]['ctrl']['crdate']) {
                     $fVnew = self::datetime($fV);
-                } elseif ($fN == 'pid') {
+                } elseif ($fN === 'pid') {
                     // Fetches the path with no regard to the users permissions to select pages.
                     $fVnew = self::getRecordPath($fV, '1=1', 20);
                 } else {
@@ -2740,7 +2740,7 @@ class BackendUtility
                         case 'string':
 
                         case 'short':
-                            $formEl = '<input type="text" name="' . $dataPrefix . '[' . $fname . ']" value="' . $params[$fname] . '"' . static::getDocumentTemplate()->formWidth(($config[0] == 'short' ? 24 : 48)) . ' />';
+                            $formEl = '<input type="text" name="' . $dataPrefix . '[' . $fname . ']" value="' . $params[$fname] . '"' . static::getDocumentTemplate()->formWidth(($config[0] === 'short' ? 24 : 48)) . ' />';
                             break;
                         case 'check':
                             $formEl = '<input type="hidden" name="' . $dataPrefix . '[' . $fname . ']" value="0" /><input type="checkbox" name="' . $dataPrefix . '[' . $fname . ']" value="1"' . ($params[$fname] ? ' checked="checked"' : '') . ' />';
@@ -4201,7 +4201,7 @@ class BackendUtility
                 );
 
             // Look up the path:
-            if ($table == '_FILE') {
+            if ($table === '_FILE') {
                 if (!GeneralUtility::isFirstPartOfStr($ref, PATH_site)) {
                     return '';
                 }

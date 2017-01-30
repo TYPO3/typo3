@@ -118,7 +118,7 @@ class SuggestWizardDefaultReceiver
         if (isset($config['maxItemsInResultList'])) {
             $this->maxItems = $config['maxItemsInResultList'];
         }
-        if ($this->table == 'pages') {
+        if ($this->table === 'pages') {
             $this->queryBuilder->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1))
             );
@@ -328,7 +328,7 @@ class SuggestWizardDefaultReceiver
     {
         $retValue = true;
         $table = $this->mmForeignTable ?: $this->table;
-        if ($table == 'pages') {
+        if ($table === 'pages') {
             if (!BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
                 $retValue = false;
             }
@@ -369,7 +369,7 @@ class SuggestWizardDefaultReceiver
     protected function getRecordPath(&$row, $uid)
     {
         $titleLimit = max($this->config['maxPathTitleLength'], 0);
-        if (($this->mmForeignTable ? $this->mmForeignTable : $this->table) == 'pages') {
+        if (($this->mmForeignTable ? $this->mmForeignTable : $this->table) === 'pages') {
             $path = BackendUtility::getRecordPath($uid, '', $titleLimit);
             // For pages we only want the first (n-1) parts of the path,
             // because the n-th part is the page itself

@@ -233,7 +233,7 @@ class FrontendEditPanel
         } elseif ($conf['beforeLastTag'] > 0) {
             $cBuf = rtrim($content);
             $secureCount = 30;
-            while ($secureCount && substr($cBuf, -1) == '>' && substr($cBuf, -4) != '</a>') {
+            while ($secureCount && substr($cBuf, -1) === '>' && substr($cBuf, -4) !== '</a>') {
                 $cBuf = rtrim(preg_replace('/<[^<]*>$/', '', $cBuf));
                 $secureCount--;
             }
@@ -259,12 +259,12 @@ class FrontendEditPanel
     protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '')
     {
         $nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
-        if ($cmd == 'edit') {
+        if ($cmd === 'edit') {
             $rParts = explode(':', $currentRecord);
             $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView' => $nV, 'feEdit' => 1]), $currentRecord);
-        } elseif ($cmd == 'new') {
+        } elseif ($cmd === 'new') {
             $rParts = explode(':', $currentRecord);
-            if ($rParts[0] == 'pages') {
+            if ($rParts[0] === 'pages') {
                 $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('db_new', ['id' => $rParts[1], 'pagesOnly' => 1]), $currentRecord);
             } else {
                 if (!(int)$nPid) {

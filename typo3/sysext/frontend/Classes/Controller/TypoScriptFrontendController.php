@@ -1316,7 +1316,7 @@ class TypoScriptFrontendController
         if (!$this->loginAllowedInBranch) {
             // Only if there is a login will we run this...
             if ($this->isUserOrGroupSet()) {
-                if ($this->loginAllowedInBranch_mode == 'all') {
+                if ($this->loginAllowedInBranch_mode === 'all') {
                     // Clear out user and group:
                     $this->fe_user->hideActiveLogin();
                     $this->gr_list = '0,-1';
@@ -2707,7 +2707,7 @@ class TypoScriptFrontendController
             if (!empty($this->config['config']['sys_language_isocode_default'])) {
                 $this->sys_language_isocode = $this->config['config']['sys_language_isocode_default'];
             } else {
-                $this->sys_language_isocode = $this->lang != 'default' ? $this->lang : 'en';
+                $this->sys_language_isocode = $this->lang !== 'default' ? $this->lang : 'en';
             }
         }
 
@@ -2754,7 +2754,7 @@ class TypoScriptFrontendController
                 // As str_* methods are locale aware and turkish has no upper case I
                 // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
                 // @see http://bugs.php.net/bug.php?id=35050
-                if (substr($this->config['config']['locale_all'], 0, 2) != 'tr') {
+                if (substr($this->config['config']['locale_all'], 0, 2) !== 'tr') {
                     setlocale(LC_CTYPE, ...$availableLocales);
                 }
                 setlocale(LC_MONETARY, ...$availableLocales);

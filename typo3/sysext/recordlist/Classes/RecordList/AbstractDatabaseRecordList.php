@@ -693,7 +693,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // Set LIMIT:
         $limit = $this->iLimit ? ($this->firstElementNumber ? $this->firstElementNumber . ',' : '') . $this->iLimit : '';
         // Filtering on displayable pages (permissions):
-        $pC = $table == 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
+        $pC = $table === 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
         // Adding search constraints:
         $search = $this->makeSearchString($table, $id);
         // Compiling query array:
@@ -1068,7 +1068,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         switch ((string)$this->clickTitleMode) {
             case 'edit':
                 // If the listed table is 'pages' we have to request the permission settings for each page:
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
                     $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
                 } else {
@@ -1082,9 +1082,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 break;
             case 'show':
                 // "Show" link (only pages and tt_content elements)
-                if ($table == 'pages' || $table == 'tt_content') {
+                if ($table === 'pages' || $table === 'tt_content') {
                     $code = '<a href="#" onclick="' . htmlspecialchars(
-                        BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))
+                        BackendUtility::viewOnClick(($table === 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))
                     ) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $code . '</a>';
                 }
                 break;
@@ -1094,7 +1094,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 break;
             default:
                 // Output the label now:
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars($this->listURL($uid, '', 'firstElementNumber')) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
@@ -1216,7 +1216,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
                 // Traverse configured columns and add them to field array, if available for user.
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-                    if ($dontCheckUser || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] != 'passthrough') {
+                    if ($dontCheckUser || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] !== 'passthrough') {
                         $fieldListArr[] = $fN;
                     }
                 }

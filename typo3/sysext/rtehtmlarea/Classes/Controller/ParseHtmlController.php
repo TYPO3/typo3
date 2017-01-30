@@ -77,7 +77,7 @@ class ParseHtmlController
         $this->modData = $GLOBALS['BE_USER']->getModuleData($this->moduleName, 'ses');
         if (GeneralUtility::_GP('OC_key')) {
             $parts = explode('|', GeneralUtility::_GP('OC_key'));
-            $this->modData['openKeys'][$parts[1]] = $parts[0] == 'O' ? 1 : 0;
+            $this->modData['openKeys'][$parts[1]] = $parts[0] === 'O' ? 1 : 0;
             $GLOBALS['BE_USER']->pushModuleData($this->moduleName, $this->modData);
         }
     }

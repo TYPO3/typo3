@@ -314,7 +314,7 @@ class ImportExportController extends BaseScriptClass
         }
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
-        if ((string)$inData['action'] == 'import') {
+        if ((string)$inData['action'] === 'import') {
             if ($this->id && is_array($this->pageinfo) || $this->getBackendUser()->user['admin'] && !$this->id) {
                 if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
                     // View
@@ -357,7 +357,7 @@ class ImportExportController extends BaseScriptClass
         $inData['maxFileSize'] = MathUtility::forceIntegerInRange($inData['maxFileSize'], 1, 1000000, 1000);
         $inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'])));
         if (strlen($inData['filename'])) {
-            $inData['filename'] .= $inData['filetype'] == 'xml' ? '.xml' : '.t3d';
+            $inData['filename'] .= $inData['filetype'] === 'xml' ? '.xml' : '.t3d';
         }
         // Set exclude fields in export object:
         if (!is_array($inData['exclude'])) {
@@ -597,7 +597,7 @@ class ImportExportController extends BaseScriptClass
             return;
         }
         foreach ($GLOBALS['TCA'] as $table => $value) {
-            if ($table != 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
+            if ($table !== 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
                 if ($this->getBackendUser()->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
                     $statement = $this->exec_listQueryPid($table, $k, MathUtility::forceIntegerInRange($maxNumber, 1));
                     while ($subTrow = $statement->fetch()) {

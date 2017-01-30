@@ -492,7 +492,7 @@ class QueryGenerator
             // Do stuff:
             $tempEl = $workArr[$ssArr[$i]];
             if (is_array($tempEl)) {
-                if ($tempEl['type'] != 'newlevel') {
+                if ($tempEl['type'] !== 'newlevel') {
                     $workArr[$ssArr[$i]] = [
                         'type' => 'newlevel',
                         'operator' => $tempEl['operator'],
@@ -599,7 +599,7 @@ class QueryGenerator
             $fieldName = '';
             $subscript = $parent . '[' . $key . ']';
             $lineHTML = [];
-            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] != 'FIELD_');
+            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] !== 'FIELD_');
             if (substr($conf['type'], 0, 6) === 'FIELD_') {
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
@@ -718,7 +718,7 @@ class QueryGenerator
                 if ($c != 0) {
                     $lineHTML[] = '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-up fa-fw"></i></button>';
                 }
-                if ($c != 0 && $fieldType != 'newlevel') {
+                if ($c != 0 && $fieldType !== 'newlevel') {
                     $lineHTML[] = '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-right fa-fw"></i></button>';
                 }
                 if ($fieldType === 'newlevel') {

@@ -170,13 +170,13 @@ class DatabaseIntegrityView extends BaseScriptClass
         $addConditionCheck = GeneralUtility::_GP('qG_ins');
         $setLimitToStart = false;
         foreach ($OLD_MOD_SETTINGS as $key => $val) {
-            if (substr($key, 0, 5) == 'query' && $this->MOD_SETTINGS[$key] != $val && $key != 'queryLimit' && $key != 'use_listview') {
+            if (substr($key, 0, 5) === 'query' && $this->MOD_SETTINGS[$key] != $val && $key !== 'queryLimit' && $key !== 'use_listview') {
                 $setLimitToStart = true;
-                if ($key == 'queryTable' && !$addConditionCheck) {
+                if ($key === 'queryTable' && !$addConditionCheck) {
                     $this->MOD_SETTINGS['queryConfig'] = '';
                 }
             }
-            if ($key == 'queryTable' && $this->MOD_SETTINGS[$key] != $val) {
+            if ($key === 'queryTable' && $this->MOD_SETTINGS[$key] != $val) {
                 $this->MOD_SETTINGS['queryFields'] = '';
             }
         }
@@ -340,11 +340,11 @@ class DatabaseIntegrityView extends BaseScriptClass
         $fullsearch->setFormName($this->formName);
         $submenu = '<div class="form-inline form-inline-spaced">';
         $submenu .= BackendUtility::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search']);
-        if ($this->MOD_SETTINGS['search'] == 'query') {
+        if ($this->MOD_SETTINGS['search'] === 'query') {
             $submenu .= BackendUtility::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '<br />';
         }
         $submenu .= '</div>';
-        if ($this->MOD_SETTINGS['search'] == 'query') {
+        if ($this->MOD_SETTINGS['search'] === 'query') {
             $submenu .= '<div class="checkbox"><label for="checkSearch_query_smallparts">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . $lang->getLL('showSQL') . '</label></div>';
             $submenu .= '<div class="checkbox"><label for="checkSearch_result_labels">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . $lang->getLL('useFormattedStrings') . '</label></div>';
             $submenu .= '<div class="checkbox"><label for="checkLabels_noprefix">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . $lang->getLL('dontUseOrigValues') . '</label></div>';
@@ -399,7 +399,7 @@ class DatabaseIntegrityView extends BaseScriptClass
         $doktype = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         if (is_array($doktype)) {
             foreach ($doktype as $setup) {
-                if ($setup[1] != '--div--') {
+                if ($setup[1] !== '--div--') {
                     $doktypes[] = [
                         'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup[1]], Icon::SIZE_SMALL)->render(),
                         'title' => $lang->sL($setup[0]) . ' (' . $setup[1] . ')',

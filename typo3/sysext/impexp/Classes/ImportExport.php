@@ -372,7 +372,7 @@ abstract class ImportExport
             // Subrecords:
             if (is_array($this->dat['header']['pid_lookup'][$k])) {
                 foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
-                    if ($t != 'pages') {
+                    if ($t !== 'pages') {
                         foreach ($recUidArr as $ruid => $value) {
                             $this->singleRecordLines($t, $ruid, $lines, $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;');
                         }
@@ -418,7 +418,7 @@ abstract class ImportExport
         // Subrecords
         if (is_array($this->dat['header']['pid_lookup'][$pageUid])) {
             foreach ($this->dat['header']['pid_lookup'][$pageUid] as $table => $recordData) {
-                if ($table != 'pages') {
+                if ($table !== 'pages') {
                     foreach (array_keys($recordData) as $uid) {
                         unset($this->remainHeader['records'][$table][$uid]);
                     }
@@ -448,7 +448,7 @@ abstract class ImportExport
             // Subrecords:
             if (is_array($this->dat['header']['pid_lookup'][$k])) {
                 foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
-                    if ($t != 'pages') {
+                    if ($t !== 'pages') {
                         foreach ($recUidArr as $ruid => $value) {
                             $this->singleRecordLines($t, $ruid, $lines, '&nbsp;&nbsp;&nbsp;&nbsp;');
                         }
@@ -470,7 +470,7 @@ abstract class ImportExport
     {
         foreach ($pT as $t => $recUidArr) {
             $this->addGeneralErrorsByTable($t);
-            if ($t != 'pages') {
+            if ($t !== 'pages') {
                 $preCode = '';
                 foreach ($recUidArr as $ruid => $value) {
                     $this->singleRecordLines($t, $ruid, $lines, $preCode, 1);
@@ -637,7 +637,7 @@ abstract class ImportExport
                     if (strlen($info['subst']['description'])) {
                         $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_descr')) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
                     }
-                    $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_filename')) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_value')) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? htmlspecialchars($lang->getLL('impexpcore_softrefsel_record')) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
+                    $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] === 'file' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_filename')) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] === 'string' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_value')) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] === 'db' ? htmlspecialchars($lang->getLL('impexpcore_softrefsel_record')) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
                 }
                 $pInfo['ref'] = 'SOFTREF';
                 $pInfo['size'] = '';
@@ -650,12 +650,12 @@ abstract class ImportExport
                 }
                 $lines[] = $pInfo;
                 // Add relations:
-                if ($info['subst']['type'] == 'db') {
+                if ($info['subst']['type'] === 'db') {
                     list($tempTable, $tempUid) = explode(':', $info['subst']['recordRef']);
                     $this->addRelations([['table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID']]], $lines, $preCode_B, [], '');
                 }
                 // Add files:
-                if ($info['subst']['type'] == 'file') {
+                if ($info['subst']['type'] === 'file') {
                     $this->addFiles([$info['file_ID']], $lines, $preCode_B, '', $info['subst']['tokenID']);
                 }
             }
@@ -865,12 +865,12 @@ abstract class ImportExport
             if ($r['type'] === 'record') {
                 return '<input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('impexpcore_singlereco_exclude')) . '</label>';
             } else {
-                return  $r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
+                return  $r['type'] === 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
             }
         } else {
             // During import
             // For softreferences with editable fields:
-            if ($r['type'] == 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
+            if ($r['type'] === 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
                 $tokenID = $r['_softRefInfo']['subst']['tokenID'];
                 $cfg = $this->softrefCfg[$tokenID];
                 if ($cfg['mode'] === 'editable') {
@@ -1150,7 +1150,7 @@ abstract class ImportExport
         if (is_array($databaseRecord) && is_array($importRecord)) {
             // Traverse based on database record
             foreach ($databaseRecord as $fN => $value) {
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
+                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough') {
                     if (isset($importRecord[$fN])) {
                         if (trim($databaseRecord[$fN]) !== trim($importRecord[$fN])) {
                             // Create diff-result:

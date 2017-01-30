@@ -586,7 +586,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 }
             }
             $pageRepository->versionOL($tableName, $row, true);
-            if ($tableName == 'pages') {
+            if ($tableName === 'pages') {
                 $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
             } elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
                       && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''

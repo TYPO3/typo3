@@ -76,7 +76,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     // Non-selectable element:
                     if ($p[1] === '--div--') {
                         $selIcon = '';
-                        if (isset($p[2]) && $p[2] != 'empty-empty') {
+                        if (isset($p[2]) && $p[2] !== 'empty-empty') {
                             $selIcon = FormEngineUtility::getIconHtml($p[2]);
                         }
                         $currentGroup++;

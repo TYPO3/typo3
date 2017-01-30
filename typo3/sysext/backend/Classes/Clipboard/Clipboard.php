@@ -161,7 +161,7 @@ class Clipboard
     {
         if (is_array($cmd['el'])) {
             foreach ($cmd['el'] as $k => $v) {
-                if ($this->current == 'normal') {
+                if ($this->current === 'normal') {
                     unset($this->clipData['normal']);
                 }
                 if ($v) {
@@ -206,7 +206,7 @@ class Clipboard
             if (isset($this->clipData[$padIdent])) {
                 $this->clipData['current'] = ($this->current = $padIdent);
             }
-            if ($this->current != 'normal' || !$this->isElements()) {
+            if ($this->current !== 'normal' || !$this->isElements()) {
                 $this->clipData[$this->current]['mode'] = '';
             }
             // Setting mode to default (move) if no items on it or if not 'normal'
@@ -348,7 +348,7 @@ class Clipboard
             'label' => 'labels.normal',
             'padding' => $this->padTitle('normal')
         ];
-        if ($this->current == 'normal') {
+        if ($this->current === 'normal') {
             $tabArray['normal']['content'] = $this->getContentFromTab('normal');
         }
         // Print header and content for the NUMERIC tabs:
@@ -523,7 +523,7 @@ class Clipboard
     {
         $el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
         if ($el) {
-            return ' (' . ($pad == 'normal' ? ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el)) . ')';
+            return ' (' . ($pad === 'normal' ? ($this->clipData['normal']['mode'] === 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el)) . ')';
         }
         return '';
     }
@@ -710,19 +710,19 @@ class Clipboard
     public function confirmMsgText($table, $rec, $type, $clElements, $columnLabel = '')
     {
         if ($this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
-            $labelKey = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
+            $labelKey = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() === 'copy' ? 'copy' : 'move') . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
             $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos': ''));
-            if ($table == '_FILE') {
+            if ($table === '_FILE') {
                 $thisRecTitle = basename($rec);
-                if ($this->current == 'normal') {
+                if ($this->current === 'normal') {
                     $selItem = reset($clElements);
                     $selRecTitle = basename($selItem);
                 } else {
                     $selRecTitle = count($clElements);
                 }
             } else {
-                $thisRecTitle = $table == 'pages' && !is_array($rec) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : BackendUtility::getRecordTitle($table, $rec);
-                if ($this->current == 'normal') {
+                $thisRecTitle = $table === 'pages' && !is_array($rec) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : BackendUtility::getRecordTitle($table, $rec);
+                if ($this->current === 'normal') {
                     $selItem = $this->getSelectedRecord();
                     $selRecTitle = $selItem['_RECORD_TITLE'];
                 } else {
@@ -779,7 +779,7 @@ class Clipboard
                 if ($v) {
                     list($table, $uid) = explode('|', $k);
                     // Rendering files/directories on the clipboard
-                    if ($table == '_FILE') {
+                    if ($table === '_FILE') {
                         if (file_exists($v) && GeneralUtility::isAllowedAbsPath($v)) {
                             $params['tx_impexp'][is_dir($v) ? 'dir' : 'file'][] = $v;
                         }
@@ -832,7 +832,7 @@ class Clipboard
      */
     public function currentMode()
     {
-        return $this->clipData[$this->current]['mode'] == 'copy' ? 'copy' : 'cut';
+        return $this->clipData[$this->current]['mode'] === 'copy' ? 'copy' : 'cut';
     }
 
     /**
@@ -846,7 +846,7 @@ class Clipboard
         if (is_array($this->clipData[$this->current]['el'])) {
             foreach ($this->clipData[$this->current]['el'] as $k => $v) {
                 list($table, $uid) = explode('|', $k);
-                if ($table != '_FILE') {
+                if ($table !== '_FILE') {
                     if (!$v || !is_array(BackendUtility::getRecord($table, $uid, 'uid'))) {
                         unset($this->clipData[$this->current]['el'][$k]);
                         $this->changed = 1;
@@ -883,9 +883,9 @@ class Clipboard
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
                     list($table, $uid) = explode('|', $k);
-                    if ($table != '_FILE') {
+                    if ($table !== '_FILE') {
                         if ((!$matchTable || (string)$table == (string)$matchTable) && $GLOBALS['TCA'][$table]) {
-                            $list[$k] = $pad == 'normal' ? $v : $uid;
+                            $list[$k] = $pad === 'normal' ? $v : $uid;
                         }
                     } else {
                         if ((string)$table == (string)$matchTable) {
@@ -909,7 +909,7 @@ class Clipboard
     public function isSelected($table, $uid)
     {
         $k = $table . '|' . $uid;
-        return $this->clipData[$this->current]['el'][$k] ? ($this->current == 'normal' ? $this->currentMode() : 1) : '';
+        return $this->clipData[$this->current]['el'][$k] ? ($this->current === 'normal' ? $this->currentMode() : 1) : '';
     }
 
     /**
@@ -979,7 +979,7 @@ class Clipboard
             $elements = $this->elFromTable($pTable);
             // So the order is preserved.
             $elements = array_reverse($elements);
-            $mode = $this->currentMode() == 'copy' ? 'copy' : 'move';
+            $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
             // Traverse elements and make CMD array
             foreach ($elements as $tP => $value) {
                 list($table, $uid) = explode('|', $tP);
@@ -995,7 +995,7 @@ class Clipboard
                 } else {
                     $CMD[$table][$uid][$mode] = $pUid;
                 }
-                if ($mode == 'move') {
+                if ($mode === 'move') {
                     $this->removeElement($tP);
                 }
             }
@@ -1043,11 +1043,11 @@ class Clipboard
     {
         list($pTable, $pUid) = explode('|', $ref);
         $elements = $this->elFromTable('_FILE');
-        $mode = $this->currentMode() == 'copy' ? 'copy' : 'move';
+        $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
         // Traverse elements and make CMD array
         foreach ($elements as $tP => $path) {
             $FILE[$mode][] = ['data' => $path, 'target' => $pUid];
-            if ($mode == 'move') {
+            if ($mode === 'move') {
                 $this->removeElement($tP);
             }
         }

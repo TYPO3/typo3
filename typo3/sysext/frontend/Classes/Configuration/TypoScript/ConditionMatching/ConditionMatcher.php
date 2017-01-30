@@ -47,10 +47,10 @@ class ConditionMatcher extends AbstractConditionMatcher
                 case 'usergroup':
                     $groupList = $this->getGroupList();
                     // '0,-1' is the default usergroups when not logged in!
-                    if ($groupList != '0,-1') {
+                    if ($groupList !== '0,-1') {
                         $values = GeneralUtility::trimExplode(',', $value, true);
                         foreach ($values as $test) {
-                            if ($test == '*' || GeneralUtility::inList($groupList, $test)) {
+                            if ($test === '*' || GeneralUtility::inList($groupList, $test)) {
                                 return true;
                             }
                         }
@@ -68,7 +68,7 @@ class ConditionMatcher extends AbstractConditionMatcher
                 case 'PIDupinRootline':
                 case 'PIDinRootline':
                     $values = GeneralUtility::trimExplode(',', $value, true);
-                    if ($key == 'PIDinRootline' || !in_array($this->pageId, $values)) {
+                    if ($key === 'PIDinRootline' || !in_array($this->pageId, $values)) {
                         foreach ($values as $test) {
                             foreach ($this->rootline as $rlDat) {
                                 if ($rlDat['uid'] == $test) {

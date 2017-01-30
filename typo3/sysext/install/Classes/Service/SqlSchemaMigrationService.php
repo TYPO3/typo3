@@ -80,7 +80,7 @@ class SqlSchemaMigrationService
                 if (strtoupper($parts[0]) === 'CREATE' && strtoupper($parts[1]) === 'TABLE') {
                     $table = str_replace('`', '', $parts[2]);
                     // tablenames are always lowercase on windows!
-                    if (TYPO3_OS == 'WIN') {
+                    if (TYPO3_OS === 'WIN') {
                         $table = strtolower($table);
                     }
                 }
@@ -137,7 +137,7 @@ class SqlSchemaMigrationService
                             $parts[1] = preg_replace('/^(KEY|INDEX) /', '', $parts[1]);
                         }
                         $newParts = explode(' ', $parts[1], 2);
-                        $key = $parts[0] == 'PRIMARY' ? $parts[0] : $newParts[0];
+                        $key = $parts[0] === 'PRIMARY' ? $parts[0] : $newParts[0];
                         $total[$table]['keys'][$key] = $lineV;
                         // This is a protection against doing something stupid: Only allow clearing of cache_* and index_* tables.
                         if (preg_match('/^(cache|index)_/', $table)) {
@@ -214,7 +214,7 @@ class SqlSchemaMigrationService
                     $colName .= '(' . $keyRow['Sub_part'] . ')';
                 }
                 $tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
-                if ($keyName == 'PRIMARY') {
+                if ($keyName === 'PRIMARY') {
                     $prefix = 'PRIMARY KEY';
                 } else {
                     if ($keyRow['Index_type'] === 'FULLTEXT') {
@@ -282,7 +282,7 @@ class SqlSchemaMigrationService
                             if (is_array($info[$theKey])) {
                                 foreach ($info[$theKey] as $fieldN => $fieldC) {
                                     $fieldN = str_replace('`', '', $fieldN);
-                                    if ($fieldN == 'COLLATE') {
+                                    if ($fieldN === 'COLLATE') {
                                         // @todo collation support is currently disabled (needs more testing)
                                         continue;
                                     }
@@ -341,7 +341,7 @@ class SqlSchemaMigrationService
         $deletedPrefixKey = $this->deletedPrefixKey;
         $deletedPrefixLength = strlen($deletedPrefixKey);
         $remove = 0;
-        if ($keyList == 'remove') {
+        if ($keyList === 'remove') {
             $remove = 1;
             $keyList = 'extra';
         }
@@ -376,7 +376,7 @@ class SqlSchemaMigrationService
                                         $info['extra']['CLEAR'] = 2;
                                     }
                                 }
-                                if ($theKey == 'extra') {
+                                if ($theKey === 'extra') {
                                     if ($remove) {
                                         if (substr($fN, 0, $deletedPrefixLength) !== $deletedPrefixKey) {
                                             // we've to make sure we don't exceed the maximal length
@@ -391,7 +391,7 @@ class SqlSchemaMigrationService
                                         $statement = 'ALTER TABLE ' . $table . ' ADD ' . $fN . ' ' . $fV . ';';
                                         $statements['add'][md5($statement)] = $statement;
                                     }
-                                } elseif ($theKey == 'diff') {
+                                } elseif ($theKey === 'diff') {
                                     $statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $fN . ' ' . $fV . ';';
                                     $statements['change'][md5($statement)] = $statement;
                                     $statements['change_currentValue'][md5($statement)] = $diffArr['diff_currentValues'][$table]['fields'][$fN];
@@ -404,13 +404,13 @@ class SqlSchemaMigrationService
                             if ($info['whole_table']) {
                                 $whole_table[] = $fV;
                             } else {
-                                if ($theKey == 'extra') {
+                                if ($theKey === 'extra') {
                                     if (!$remove) {
                                         $statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
                                         $statements['add'][md5($statement)] = $statement;
                                     }
-                                } elseif ($theKey == 'diff') {
-                                    $statement = 'ALTER TABLE ' . $table . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
+                                } elseif ($theKey === 'diff') {
+                                    $statement = 'ALTER TABLE ' . $table . ($fN === 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
                                     $statements['change'][md5($statement)] = $statement;
                                     $statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
                                     $statements['change'][md5($statement)] = $statement;
@@ -427,7 +427,7 @@ class SqlSchemaMigrationService
                             if (!$remove) {
                                 if (!$info['whole_table']) {
                                     // If the whole table is created at once, we take care of this later by imploding all elements of $info['extra']
-                                    if ($fN == 'CLEAR') {
+                                    if ($fN === 'CLEAR') {
                                         // Truncate table must happen later, not now
                                         // Valid values for CLEAR: 1=only clear if keys are missing, 2=clear anyway (force)
                                         if (!empty($info['keys']) || $fV == 2) {
@@ -474,7 +474,7 @@ class SqlSchemaMigrationService
 )';
                             if ($info['extra']) {
                                 foreach ($info['extra'] as $k => $v) {
-                                    if ($k == 'COLLATE' || $k == 'CLEAR') {
+                                    if ($k === 'COLLATE' || $k === 'CLEAR') {
                                         // Skip these special statements.
                                         // @todo collation support is currently disabled (needs more testing)
                                         continue;
@@ -503,7 +503,7 @@ class SqlSchemaMigrationService
     public function assembleFieldDefinition($row)
     {
         $field = [$row['Type']];
-        if ($row['Null'] == 'NO') {
+        if ($row['Null'] === 'NO') {
             $field[] = 'NOT NULL';
         }
         if (!strstr($row['Type'], 'blob') && !strstr($row['Type'], 'text')) {
@@ -582,7 +582,7 @@ class SqlSchemaMigrationService
                 $table = trim($reg[1]);
                 if ($table) {
                     // Table names are always lowercase on Windows!
-                    if (TYPO3_OS == 'WIN') {
+                    if (TYPO3_OS === 'WIN') {
                         $table = strtolower($table);
                     }
                     $sqlLines = explode(LF, $lineContent);

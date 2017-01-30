@@ -84,7 +84,7 @@ class TerService extends TerUtility implements SingletonInterface
                 // Traverse the parsed XML structure:
             foreach ($values as $val) {
                 // First, process the tag-name (which is used in both cases, whether "complete" or "close")
-                $tagName = (string)($val['tag'] == 'languagepack' && $val['type'] == 'open') ? $val['attributes']['language'] : $val['tag'];
+                $tagName = (string)($val['tag'] === 'languagepack' && $val['type'] === 'open') ? $val['attributes']['language'] : $val['tag'];
                 if (!$documentTag) {
                     $documentTag = $tagName;
                 }

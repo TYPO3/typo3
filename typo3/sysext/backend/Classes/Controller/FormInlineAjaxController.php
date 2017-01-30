@@ -900,7 +900,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $childConfig = $childConfig[$flexFormNode];
 
             // Skip to the field configuration of a sheet
-            if (isset($childConfig['ROOT']) && $childConfig['ROOT']['type'] == 'array') {
+            if (isset($childConfig['ROOT']) && $childConfig['ROOT']['type'] === 'array') {
                 $childConfig = $childConfig['ROOT']['el'];
             }
         }

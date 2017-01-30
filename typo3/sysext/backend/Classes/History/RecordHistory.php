@@ -656,7 +656,7 @@ class RecordHistory
 
         $changeLog = $this->getHistoryData($elParts[0], $elParts[1]);
         // get history of tables of this page and merge it into changelog
-        if ($elParts[0] == 'pages' && $this->showSubElements && $this->hasPageAccess('pages', $elParts[1])) {
+        if ($elParts[0] === 'pages' && $this->showSubElements && $this->hasPageAccess('pages', $elParts[1])) {
             foreach ($GLOBALS['TCA'] as $tablename => $value) {
                 // check if there are records on the page
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tablename);

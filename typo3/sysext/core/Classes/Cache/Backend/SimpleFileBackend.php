@@ -130,7 +130,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
                 }
             } else {
                 $delimiter = ':';
-                if ($cacheDirectory[0] != '/') {
+                if ($cacheDirectory[0] !== '/') {
                     // relative path to cache directory.
                     $cacheDirectory = PATH_site . $cacheDirectory;
                 }
@@ -158,7 +158,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
                 );
             }
         } else {
-            if ($cacheDirectory[0] == '/') {
+            if ($cacheDirectory[0] === '/') {
                 // Absolute path to cache directory.
                 $documentRoot = '';
             }

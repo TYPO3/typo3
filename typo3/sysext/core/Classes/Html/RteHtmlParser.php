@@ -200,7 +200,7 @@ class RteHtmlParser extends HtmlParser
 
         // Traverse modes
         foreach ($modes as $cmd) {
-            if ($direction == 'db') {
+            if ($direction === 'db') {
                 // Checking for user defined transformation:
                 if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
                     $_procObj = GeneralUtility::getUserObj($_classRef);
@@ -230,7 +230,7 @@ class RteHtmlParser extends HtmlParser
                             // Do nothing
                     }
                 }
-            } elseif ($direction == 'rte') {
+            } elseif ($direction === 'rte') {
                 // Checking for user defined transformation:
                 if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
                     $_procObj = GeneralUtility::getUserObj($_classRef);
@@ -960,8 +960,8 @@ class RteHtmlParser extends HtmlParser
             // Wrapping the line in <p> tags if not already wrapped and does not contain an hr tag
             if (!preg_match('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', $parts[$k])) {
                 $testStr = strtolower(trim($parts[$k]));
-                if (substr($testStr, 0, 4) != '<div' || substr($testStr, -6) != '</div>') {
-                    if (substr($testStr, 0, 2) != '<p' || substr($testStr, -4) != '</p>') {
+                if (substr($testStr, 0, 4) !== '<div' || substr($testStr, -6) !== '</div>') {
+                    if (substr($testStr, 0, 2) !== '<p' || substr($testStr, -4) !== '</p>') {
                         // Only set p-tags if there is not already div or p tags:
                         $parts[$k] = '<p>' . $parts[$k] . '</p>';
                     }
@@ -1072,7 +1072,7 @@ class RteHtmlParser extends HtmlParser
     {
         $info = [];
         $url = trim($url);
-        if (substr(strtolower($url), 0, 7) == 'mailto:') {
+        if (substr(strtolower($url), 0, 7) === 'mailto:') {
             $info['url'] = trim(substr($url, 7));
             $info['type'] = 'email';
         } elseif (strpos($url, '?file:') !== false) {

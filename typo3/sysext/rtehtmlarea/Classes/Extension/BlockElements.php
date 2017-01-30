@@ -160,7 +160,7 @@ class BlockElements extends RteHtmlAreaApi
                 if (is_array($labels[$item . '.']) && $labels[$item . '.']['label']) {
                     $blockElementsOptions[$item] = $this->getPageConfigLabel($labels[$item . '.']['label']);
                 }
-                $blockElementsOptions[$item] = ($prefixLabelWithTag && $item != 'none' ? $item . ' - ' : '') . $blockElementsOptions[$item] . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $item : '');
+                $blockElementsOptions[$item] = ($prefixLabelWithTag && $item !== 'none' ? $item . ' - ' : '') . $blockElementsOptions[$item] . ($postfixLabelWithTag && $item !== 'none' ? ' - ' . $item : '');
             }
             $first = array_shift($blockElementsOptions);
             // Sorting the options

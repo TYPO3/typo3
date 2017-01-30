@@ -90,7 +90,7 @@ class ServerRequestFactory
                     $headers[$name] = $value;
                 } elseif (strpos($key, 'CONTENT_') === 0) {
                     $name = substr($key, 8); // Content-
-                    $name = 'Content-' . (($name == 'MD5') ? $name : ucfirst(strtolower($name)));
+                    $name = 'Content-' . (($name === 'MD5') ? $name : ucfirst(strtolower($name)));
                     $name = strtolower($name);
                     $headers[$name] = $value;
                 }

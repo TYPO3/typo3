@@ -78,7 +78,7 @@ class FileContentParser
         // Then read indexer-config and set if appropriate:
         $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
         // If windows, apply extension to tool name:
-        $exe = TYPO3_OS == 'WIN' ? '.exe' : '';
+        $exe = TYPO3_OS === 'WIN' ? '.exe' : '';
         // lg
         $extOK = false;
         $mainExtension = '';

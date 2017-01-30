@@ -79,7 +79,7 @@ class DataHandlerHook
     public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, DataHandler $dataHandler)
     {
         // custom command "version"
-        if ($command == 'version') {
+        if ($command === 'version') {
             $commandIsProcessed = true;
             $action = (string)$value['action'];
             $comment = !empty($value['comment']) ? $value['comment'] : '';
@@ -550,7 +550,7 @@ class DataHandlerHook
             $elementUid = (int)$elementUid;
             $elementRecord = BackendUtility::getRecord($elementTable, $elementUid);
             $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
-            if ($elementTable == 'pages') {
+            if ($elementTable === 'pages') {
                 $pageUid = $elementUid;
             } else {
                 BackendUtility::fixVersioningPid($elementTable, $elementRecord);
@@ -1207,7 +1207,7 @@ class DataHandlerHook
             return $elementData;
         }
         // Get page UID for LIVE and workspace
-        if ($table != 'pages') {
+        if ($table !== 'pages') {
             $rec = BackendUtility::getRecord($table, $id, 'pid');
             $pageId = $rec['pid'];
             $rec = BackendUtility::getRecord('pages', $pageId);
@@ -1454,7 +1454,7 @@ class DataHandlerHook
             if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
                 $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
             }
-            if ($table == 'pages') {
+            if ($table === 'pages') {
                 // Copy page access settings from original page to placeholder
                 $perms_clause = $dataHandler->BE_USER->getPagePermsClause(1);
                 $access = BackendUtility::readPageAccess($uid, $perms_clause);

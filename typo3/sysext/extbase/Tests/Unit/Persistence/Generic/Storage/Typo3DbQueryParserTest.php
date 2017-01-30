@@ -662,7 +662,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Components\TestingFramework\Core
         $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
-        $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue($mode == 'FE'));
+        $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue($mode === 'FE'));
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
@@ -724,7 +724,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Components\TestingFramework\Core
         $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
-        $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue($mode == 'FE'));
+        $mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->will($this->returnValue($mode === 'FE'));
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);

@@ -293,7 +293,7 @@ abstract class AbstractConditionMatcher
                 if ($this->isUserLoggedIn()) {
                     $values = GeneralUtility::trimExplode(',', $value, true);
                     foreach ($values as $test) {
-                        if ($test == '*' || (string)$this->getUserId() === (string)$test) {
+                        if ($test === '*' || (string)$this->getUserId() === (string)$test) {
                             return true;
                         }
                     }

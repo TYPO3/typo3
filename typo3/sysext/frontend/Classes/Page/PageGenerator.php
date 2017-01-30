@@ -980,7 +980,7 @@ class PageGenerator
     {
         $OK = false;
         // Integer
-        if ($needle == 'int' || $needle == 'integer') {
+        if ($needle === 'int' || $needle === 'integer') {
             if (MathUtility::canBeInterpretedAsInteger($haystack)) {
                 $OK = true;
             }

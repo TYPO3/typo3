@@ -846,7 +846,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
     {
         if ($this->isAdmin()) {
             $result = true;
-        } elseif ($tableName == 'pages') {
+        } elseif ($tableName === 'pages') {
             switch ($actionType) {
                 case 'edit':
                     $result = ($compiledPermissions & Permission::PAGE_EDIT) !== 0;

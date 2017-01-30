@@ -91,7 +91,7 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Components\TestingFrame
     protected function addRecordsForPid($pid, array $tables)
     {
         foreach ($GLOBALS['TCA'] as $table => $value) {
-            if ($table != 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
+            if ($table !== 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
                 if ($GLOBALS['BE_USER']->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
                     $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
 

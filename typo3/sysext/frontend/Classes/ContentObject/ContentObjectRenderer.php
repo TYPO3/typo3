@@ -3658,7 +3658,7 @@ class ContentObjectRenderer
         if (is_object($d)) {
             $count = 0;
             while ($entry = $d->read()) {
-                if ($entry != '.' && $entry != '..') {
+                if ($entry !== '.' && $entry !== '..') {
                     // Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
                     $wholePath = $path . '/' . $entry;
                     if (file_exists($wholePath) && filetype($wholePath) === 'file') {
@@ -3693,7 +3693,7 @@ class ContentObjectRenderer
         }
         // Sort if required
         if (!empty($items['sorting'])) {
-            if (strtolower(trim($data_arr[3])) != 'r') {
+            if (strtolower(trim($data_arr[3])) !== 'r') {
                 asort($items['sorting']);
             } else {
                 arsort($items['sorting']);
@@ -4838,7 +4838,7 @@ class ContentObjectRenderer
                 } else {
                     // If a tag was not a typo tag, then it is just added to the content
                     $stripNL = false;
-                    if (GeneralUtility::inList($allowTags, $tag[0]) || $denyTags != '*' && !GeneralUtility::inList($denyTags, $tag[0])) {
+                    if (GeneralUtility::inList($allowTags, $tag[0]) || $denyTags !== '*' && !GeneralUtility::inList($denyTags, $tag[0])) {
                         $contentAccum[$contentAccumP] .= $data;
                     } else {
                         $contentAccum[$contentAccumP] .= htmlspecialchars($data);

@@ -215,7 +215,7 @@ class ClientUtility
         // wap
         $browser = substr($userAgent, 0, 4);
         $wapviwer = substr(stristr($userAgent, 'wap'), 0, 3);
-        if ($wapviwer == 'wap' || $browser == 'noki' || $browser == 'eric' || $browser == 'r380' || $browser == 'up.b' || $browser == 'winw' || $browser == 'wapa') {
+        if ($wapviwer === 'wap' || $browser === 'noki' || $browser === 'eric' || $browser == 'r380' || $browser === 'up.b' || $browser === 'winw' || $browser === 'wapa') {
             $deviceType = 'wap';
         }
         // grabber

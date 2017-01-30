@@ -606,7 +606,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function createFileFixesPermissionsOnCreatedFile()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('createdFilesHaveCorrectRights() tests not available on Windows');
         }
 

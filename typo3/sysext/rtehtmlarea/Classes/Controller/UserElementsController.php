@@ -118,7 +118,7 @@ class UserElementsController
         $this->modData = $GLOBALS['BE_USER']->getModuleData('user.php', 'ses');
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('OC_key')) {
             $parts = explode('|', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('OC_key'));
-            $this->modData['openKeys'][$parts[1]] = $parts[0] == 'O' ? 1 : 0;
+            $this->modData['openKeys'][$parts[1]] = $parts[0] === 'O' ? 1 : 0;
             $GLOBALS['BE_USER']->pushModuleData('user.php', $this->modData);
         }
     }
@@ -201,7 +201,7 @@ class UserElementsController
             foreach ($thisConfig['userElements.'] as $k => $value) {
                 $ki = (int)$k;
                 $v = $thisConfig['userElements.'][$ki . '.'];
-                if (substr($k, -1) == '.' && is_array($v)) {
+                if (substr($k, -1) === '.' && is_array($v)) {
                     $subcats = [];
                     $openK = $ki;
                     if ($openKeys[$openK]) {
@@ -237,7 +237,7 @@ class UserElementsController
                         }
                         foreach ($v as $k2 => $dummyValue) {
                             $k2i = (int)$k2;
-                            if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
+                            if (substr($k2, -1) === '.' && is_array($v[$k2i . '.'])) {
                                 $title = trim($v[$k2i]);
                                 if (!$title) {
                                     $title = '[' . htmlspecialchars($GLOBALS['LANG']->getLL('noTitle')) . ']';
@@ -257,7 +257,7 @@ class UserElementsController
                                         break;
                                     case 'processor':
                                         $script = trim($v[$k2i . '.']['submitToScript']);
-                                        if (substr($script, 0, 4) != 'http') {
+                                        if (substr($script, 0, 4) !== 'http') {
                                             $script = $this->siteUrl . $script;
                                         }
                                         if ($script) {

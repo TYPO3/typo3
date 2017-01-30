@@ -52,7 +52,7 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
     public function parseXml($file)
     {
         $this->createParser();
-        if (!(is_object($this->objXml) && get_class($this->objXml) == 'XMLReader')) {
+        if (!(is_object($this->objXml) && get_class($this->objXml) === 'XMLReader')) {
             throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640820);
         }
         if ($this->objXml->open($file, 'utf-8') === false) {

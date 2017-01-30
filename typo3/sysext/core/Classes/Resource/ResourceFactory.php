@@ -479,7 +479,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             if (MathUtility::canBeInterpretedAsInteger($prefix)) {
                 // path or folder in a valid storageUID
                 return $this->getObjectFromCombinedIdentifier($input);
-            } elseif ($prefix == 'EXT') {
+            } elseif ($prefix === 'EXT') {
                 $input = GeneralUtility::getFileAbsFileName($input);
                 if (empty($input)) {
                     return null;

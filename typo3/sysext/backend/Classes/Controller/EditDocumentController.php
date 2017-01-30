@@ -607,7 +607,7 @@ class EditDocumentController extends AbstractModule
                             }
                             // Traverse all new records and forge the content of ->editconf so we can continue to EDIT
                             // these records!
-                            if ($tableName == 'pages'
+                            if ($tableName === 'pages'
                                 && $this->retUrl != BackendUtility::getModuleUrl('dummy')
                                 && $this->returnNewPageId
                             ) {
@@ -649,7 +649,7 @@ class EditDocumentController extends AbstractModule
                 $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
                 // Determine insertion mode ('top' is self-explaining,
                 // otherwise new elements are inserted after one using a negative uid)
-                $insertRecordOnTop = ($this->getNewIconMode($nTable) == 'top');
+                $insertRecordOnTop = ($this->getNewIconMode($nTable) === 'top');
                 // Setting a blank editconf array for a new record:
                 $this->editconf = [];
                 // Determine related page ID for regular live context
@@ -1026,7 +1026,7 @@ class EditDocumentController extends AbstractModule
             if (is_array($conf) && $GLOBALS['TCA'][$table] && $beUser->check('tables_modify', $table)) {
                 // Traverse the keys/comments of each table (keys can be a commalist of uids)
                 foreach ($conf as $cKey => $command) {
-                    if ($command == 'edit' || $command == 'new') {
+                    if ($command === 'edit' || $command === 'new') {
                         // Get the ids:
                         $ids = GeneralUtility::trimExplode(',', $cKey, true);
                         // Traverse the ids:
@@ -1067,7 +1067,7 @@ class EditDocumentController extends AbstractModule
                                 ) {
                                     $this->viewId = $formData['parentPageRow']['uid'];
                                 } else {
-                                    if ($table == 'pages') {
+                                    if ($table === 'pages') {
                                         $this->viewId = $formData['databaseRow']['uid'];
                                     } elseif (!empty($formData['parentPageRow']['uid'])) {
                                         $this->viewId = $formData['parentPageRow']['uid'];
@@ -1154,7 +1154,7 @@ class EditDocumentController extends AbstractModule
                                 $this->formResultCompiler->mergeResult($formResult);
 
                                 // Seems the pid is set as hidden field (again) at end?!
-                                if ($command == 'new') {
+                                if ($command === 'new') {
                                     // @todo: looks ugly
                                     $html .= LF
                                         . '<input type="hidden"'
@@ -1784,7 +1784,7 @@ class EditDocumentController extends AbstractModule
                     // Traverse the keys/comments of each table (keys can be a commalist of uids)
                     $newConf = [];
                     foreach ($conf as $cKey => $cmd) {
-                        if ($cmd == 'edit') {
+                        if ($cmd === 'edit') {
                             // Traverse the ids:
                             $ids = GeneralUtility::trimExplode(',', $cKey, true);
                             foreach ($ids as $idKey => $theUid) {

@@ -863,7 +863,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $this->internal['results_at_a_time'] = $this->piVars['results'];
                 $this->internal['maxPages'] = MathUtility::forceIntegerInRange($this->conf['search.']['page_links'], 1, 100, 10);
                 $resultSectionsCount = count($this->resultSections);
-                $addString = $resData['count'] && $this->piVars['group'] == 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL(($resultSectionsCount > 1 ? 'inNsections' : 'inNsection')), $resultSectionsCount) : '';
+                $addString = $resData['count'] && $this->piVars['group'] === 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL(($resultSectionsCount > 1 ? 'inNsections' : 'inNsection')), $resultSectionsCount) : '';
                 $browseBox1 = $this->renderPagination(1, $addString, $this->printResultSectionLinks(), $freeIndexUid);
                 $browseBox2 = $this->renderPagination(0, '', '', $freeIndexUid);
                 // Browsing nav, bottom.
@@ -876,7 +876,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $content .= '<p' . $this->pi_classParam('noresults') . '>' . htmlspecialchars($this->pi_getLL('noResults')) . '</p>';
         }
         // Print a message telling which words we searched for, and in which sections etc.
-        $what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . htmlspecialchars($this->pi_getLL('inSection')) . ' "' . $this->getPathFromPageId(substr($this->piVars['sections'], 4)) . '"' : '');
+        $what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) === 'rl' ? ' ' . htmlspecialchars($this->pi_getLL('inSection')) . ' "' . $this->getPathFromPageId(substr($this->piVars['sections'], 4)) . '"' : '');
         $what = '<div' . $this->pi_classParam('whatis') . '>' . $this->cObj->stdWrap($what, $this->conf['whatis_stdWrap.']) . '</div>';
         $content = $what . $content;
         // Return content:
@@ -920,7 +920,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($freeIndexUid <= 0) {
             switch ($this->piVars['group']) {
                 case 'sections':
-                    $rl2flag = substr($this->piVars['sections'], 0, 2) == 'rl';
+                    $rl2flag = substr($this->piVars['sections'], 0, 2) === 'rl';
                     $sections = [];
                     foreach ($resultRows as $row) {
                         $id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
@@ -932,7 +932,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         $theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1] ? $rlParts[1] : $rlParts[0]);
                         $theRLid = $rlParts[2] ? 'rl2_' . $rlParts[2] : ($rlParts[1] ? 'rl1_' . $rlParts[1] : '0');
                         $sectionName = $this->getPathFromPageId($theId);
-                        if ($sectionName[0] == '/') {
+                        if ($sectionName[0] === '/') {
                             $sectionName = substr($sectionName, 1);
                         }
                         if (!trim($sectionName)) {
@@ -1167,11 +1167,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $out = $this->wholeSiteIdList < 0 ? '' : ' AND ISEC.rl0 IN (' . $this->wholeSiteIdList . ')';
         $match = '';
-        if (substr($this->piVars['sections'], 0, 4) == 'rl1_') {
+        if (substr($this->piVars['sections'], 0, 4) === 'rl1_') {
             $list = implode(',', GeneralUtility::intExplode(',', substr($this->piVars['sections'], 4)));
             $out .= ' AND ISEC.rl1 IN (' . $list . ')';
             $match = true;
-        } elseif (substr($this->piVars['sections'], 0, 4) == 'rl2_') {
+        } elseif (substr($this->piVars['sections'], 0, 4) === 'rl2_') {
             $list = implode(',', GeneralUtility::intExplode(',', substr($this->piVars['sections'], 4)));
             $out .= ' AND ISEC.rl2 IN (' . $list . ')';
             $match = true;
@@ -1327,7 +1327,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Indexing configuration clause:
         $freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
         // If any of the ranking sortings are selected, we must make a join with the word/rel-table again, because we need to calculate ranking based on all search-words found.
-        if (substr($this->piVars['order'], 0, 5) == 'rank_') {
+        if (substr($this->piVars['order'], 0, 5) === 'rank_') {
             switch ($this->piVars['order']) {
                 case 'rank_flag':
                     // This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
@@ -2032,7 +2032,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             } else {
                 // Default creation / finding of icon:
                 $icon = '';
-                if ($it === '0' || substr($it, 0, 2) == '0:') {
+                if ($it === '0' || substr($it, 0, 2) === '0:') {
                     if (is_array($specRowConf['pageIcon.'])) {
                         $this->iconFileNameCache[$it] = $this->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon.']);
                     } else {

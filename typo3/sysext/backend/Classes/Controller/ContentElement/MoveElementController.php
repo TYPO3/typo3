@@ -149,7 +149,7 @@ class MoveElementController extends AbstractModule
             $assigns['makeCopyChecked'] = $this->makeCopy ? ' checked="checked"' : '';
             $assigns['makeCopyOnClick'] = $onClick;
             // IF the table is "pages":
-            if ((string)$this->table == 'pages') {
+            if ((string)$this->table === 'pages') {
                 // Get page record (if accessible):
                 $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
                 if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
@@ -176,7 +176,7 @@ class MoveElementController extends AbstractModule
                 }
             }
             // IF the table is "tt_content":
-            if ((string)$this->table == 'tt_content') {
+            if ((string)$this->table === 'tt_content') {
                 // First, get the record:
                 $tt_content_rec = BackendUtility::getRecord('tt_content', $this->moveUid);
                 // ?
@@ -248,12 +248,12 @@ class MoveElementController extends AbstractModule
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->page_id) {
-            if ((string)$this->table == 'pages') {
+            if ((string)$this->table === 'pages') {
                 $cshButton = $buttonBar->makeHelpButton()
                     ->setModuleName('xMOD_csh_corebe')
                     ->setFieldName('move_el_pages');
                 $buttonBar->addButton($cshButton);
-            } elseif ((string)$this->table == 'tt_content') {
+            } elseif ((string)$this->table === 'tt_content') {
                 $cshButton = $buttonBar->makeHelpButton()
                     ->setModuleName('xMOD_csh_corebe')
                     ->setFieldName('move_el_cs');

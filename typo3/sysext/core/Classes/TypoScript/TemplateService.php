@@ -902,7 +902,7 @@ class TemplateService
         }
         // If "Default (include before if root flag is set)" is set OR
         // "Always include before this template record" AND root-flag are set
-        if ($row['static_file_mode'] == 1 || $row['static_file_mode'] == 0 && substr($templateID, 0, 4) == 'sys_' && $row['root']) {
+        if ($row['static_file_mode'] == 1 || $row['static_file_mode'] == 0 && substr($templateID, 0, 4) === 'sys_' && $row['root']) {
             $this->addExtensionStatics($idList, $templateID, $pid, $row);
         }
         // Include Static Template Records after all other TypoScript has been included.
@@ -1122,7 +1122,7 @@ class TemplateService
         unset($this->setup['types']);
         if (is_array($this->setup)) {
             foreach ($this->setup as $key => $value) {
-                if ($value == 'PAGE') {
+                if ($value === 'PAGE') {
                     // Set the typeNum of the current page object:
                     if (isset($this->setup[$key . '.']['typeNum'])) {
                         $typeNum = $this->setup[$key . '.']['typeNum'];
@@ -1496,7 +1496,7 @@ class TemplateService
     public function removeQueryString($url)
     {
         GeneralUtility::logDeprecatedFunction();
-        if (substr($url, -1) == '?') {
+        if (substr($url, -1) === '?') {
             return substr($url, 0, -1);
         } else {
             return $url;
@@ -1656,7 +1656,7 @@ class TemplateService
             // Traverse rootpoints:
             foreach ($rootPoints as $p) {
                 $initMParray = [];
-                if ($p == 'root') {
+                if ($p === 'root') {
                     $p = $this->rootLine[0]['uid'];
                     if ($this->rootLine[0]['_MOUNT_OL'] && $this->rootLine[0]['_MP_PARAM']) {
                         $initMParray[] = $this->rootLine[0]['_MP_PARAM'];

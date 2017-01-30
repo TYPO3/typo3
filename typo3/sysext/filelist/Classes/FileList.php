@@ -373,7 +373,7 @@ class FileList extends AbstractRecordList
             // Header line is drawn
             $theData = [];
             foreach ($this->fieldArray as $v) {
-                if ($v == '_CLIPBOARD_' && $this->clipBoard) {
+                if ($v === '_CLIPBOARD_' && $this->clipBoard) {
                     $cells = [];
                     $table = '_FILE';
                     $elFromTable = $this->clipObj->elFromTable($table);

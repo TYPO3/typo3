@@ -144,7 +144,7 @@ class DatabaseIntegrityCheck
             // If all records should be shown, do so:
             if ($this->genTree_includeRecords) {
                 foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-                    if ($tableName != 'pages') {
+                    if ($tableName !== 'pages') {
                         $this->genTree_records($newID, '', $tableName);
                     }
                 }
@@ -245,7 +245,7 @@ class DatabaseIntegrityCheck
                     ];
                     $lostIdList[] = $row['uid'];
                 }
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $this->lostPagesList = implode(',', $lostIdList);
                 }
             }
@@ -349,12 +349,12 @@ class DatabaseIntegrityCheck
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
-                if ($config['config']['type'] == 'group') {
-                    if ((!$mode || $mode == 'file') && $config['config']['internal_type'] == 'file' || (!$mode || $mode == 'db') && $config['config']['internal_type'] == 'db') {
+                if ($config['config']['type'] === 'group') {
+                    if ((!$mode || $mode === 'file') && $config['config']['internal_type'] === 'file' || (!$mode || $mode === 'db') && $config['config']['internal_type'] === 'db') {
                         $result[$table][] = $field;
                     }
                 }
-                if ((!$mode || $mode == 'db') && $config['config']['type'] == 'select' && $config['config']['foreign_table']) {
+                if ((!$mode || $mode === 'db') && $config['config']['type'] === 'select' && $config['config']['foreign_table']) {
                     $result[$table][] = $field;
                 }
             }
@@ -377,7 +377,7 @@ class DatabaseIntegrityCheck
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
-                if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'file' && $config['config']['uploadfolder'] == $uploadfolder) {
+                if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'file' && $config['config']['uploadfolder'] == $uploadfolder) {
                     $result[] = [$table, $field];
                 }
             }
@@ -397,11 +397,11 @@ class DatabaseIntegrityCheck
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
-                if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'db') {
-                    if (trim($config['config']['allowed']) == '*' || strstr($config['config']['allowed'], $theSearchTable)) {
+                if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'db') {
+                    if (trim($config['config']['allowed']) === '*' || strstr($config['config']['allowed'], $theSearchTable)) {
                         $result[] = [$table, $field];
                     }
-                } elseif ($config['config']['type'] == 'select' && $config['config']['foreign_table'] == $theSearchTable) {
+                } elseif ($config['config']['type'] === 'select' && $config['config']['foreign_table'] == $theSearchTable) {
                     $result[] = [$table, $field];
                 }
             }
@@ -464,8 +464,8 @@ class DatabaseIntegrityCheck
                         foreach ($fields as $field) {
                             if (trim($row[$field])) {
                                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                                if ($fieldConf['type'] == 'group') {
-                                    if ($fieldConf['internal_type'] == 'file') {
+                                if ($fieldConf['type'] === 'group') {
+                                    if ($fieldConf['internal_type'] === 'file') {
                                         // Files...
                                         if ($fieldConf['MM']) {
                                             $tempArr = [];
@@ -486,7 +486,7 @@ class DatabaseIntegrityCheck
                                             }
                                         }
                                     }
-                                    if ($fieldConf['internal_type'] == 'db') {
+                                    if ($fieldConf['internal_type'] === 'db') {
                                         $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                                         $dbAnalysis->start(
                                             $row[$field],
@@ -501,7 +501,7 @@ class DatabaseIntegrityCheck
                                         }
                                     }
                                 }
-                                if ($fieldConf['type'] == 'select' && $fieldConf['foreign_table']) {
+                                if ($fieldConf['type'] === 'select' && $fieldConf['foreign_table']) {
                                     $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                                     $dbAnalysis->start(
                                         $row[$field],
@@ -679,7 +679,7 @@ class DatabaseIntegrityCheck
                 // Now this is the field, where the reference COULD come from.
                 // But we're not guaranteed, so we must carefully examine the data.
                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                $allowedTables = $fieldConf['type'] == 'group' ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
+                $allowedTables = $fieldConf['type'] === 'group' ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
                 $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                 $dbAnalysis->start($row[$field], $allowedTables, $fieldConf['MM'], $row['uid'], $table, $fieldConf);
                 foreach ($dbAnalysis->itemArray as $tempArr) {

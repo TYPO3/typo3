@@ -150,7 +150,7 @@ class GridDataService
                         $recordState = $this->workspaceState($versionRecord['t3ver_state']);
                     }
 
-                    $isDeletedPage = $table == 'pages' && $recordState == 'deleted';
+                    $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
                     $viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
                     $versionArray = [];
                     $versionArray['table'] = $table;
@@ -406,9 +406,9 @@ class GridDataService
             if ($a[$this->sort] == $b[$this->sort]) {
                 return 0;
             }
-            if ($this->sortDir == 'ASC') {
+            if ($this->sortDir === 'ASC') {
                 return $a[$this->sort] < $b[$this->sort] ? -1 : 1;
-            } elseif ($this->sortDir == 'DESC') {
+            } elseif ($this->sortDir === 'DESC') {
                 return $a[$this->sort] > $b[$this->sort] ? -1 : 1;
             }
         } elseif ($path_cmp > 0) {
@@ -436,9 +436,9 @@ class GridDataService
             if ($a[$this->sort] == $b[$this->sort]) {
                 return 0;
             }
-            if ($this->sortDir == 'ASC') {
+            if ($this->sortDir === 'ASC') {
                 return strcasecmp($a[$this->sort], $b[$this->sort]);
-            } elseif ($this->sortDir == 'DESC') {
+            } elseif ($this->sortDir === 'DESC') {
                 return strcasecmp($a[$this->sort], $b[$this->sort]) * -1;
             }
         } elseif ($path_cmp > 0) {

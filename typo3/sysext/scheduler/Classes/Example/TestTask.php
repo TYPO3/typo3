@@ -43,7 +43,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             // Get execution information
             $exec = $this->getExecution();
             // Get call method
-            if (basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
+            if (basename(PATH_thisScript) === 'cli_dispatch.phpsh') {
                 $calledBy = 'CLI module dispatcher';
                 $site = '-';
             } else {

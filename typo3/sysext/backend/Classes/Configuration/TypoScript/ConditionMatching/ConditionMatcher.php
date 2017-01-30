@@ -79,7 +79,7 @@ class ConditionMatcher extends AbstractConditionMatcher
                 case 'PIDupinRootline':
                 case 'PIDinRootline':
                     $values = GeneralUtility::trimExplode(',', $value, true);
-                    if ($key == 'PIDinRootline' || !in_array($this->pageId, $values) || $this->isNewPageWithPageId($this->pageId)) {
+                    if ($key === 'PIDinRootline' || !in_array($this->pageId, $values) || $this->isNewPageWithPageId($this->pageId)) {
                         foreach ($values as $test) {
                             foreach ($this->rootline as $rl_dat) {
                                 if ($rl_dat['uid'] == $test) {

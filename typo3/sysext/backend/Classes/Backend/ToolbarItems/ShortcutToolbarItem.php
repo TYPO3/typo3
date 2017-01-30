@@ -544,10 +544,10 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $shortcut['table'] = key($queryParameters['edit']);
                 $shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
                 $shortcut['pid'] = BackendUtility::getRecord($shortcut['table'], $shortcut['recordid'])['pid'];
-                if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+                if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
                     $shortcut['type'] = 'edit';
                     $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_edit'));
-                } elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+                } elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'new') {
                     $shortcut['type'] = 'new';
                     $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_create'));
                 }
@@ -874,7 +874,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     protected function getShortcutIconTitle($shortcutLabel, $moduleName, $parentModuleName = '')
     {
         $languageService = $this->getLanguageService();
-        if (substr($moduleName, 0, 5) == 'xMOD_') {
+        if (substr($moduleName, 0, 5) === 'xMOD_') {
             $title = substr($moduleName, 5);
         } else {
             list($mainModule, $subModule) = explode('_', $moduleName);

@@ -184,7 +184,7 @@ class InlineElements extends RteHtmlAreaApi
                 $inlineElementsOptions[$this->buttonToInlineElement[$item]] = $this->getLanguageService()->sL(
                     'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/InlineElements/locallang.xlf:' . $this->defaultInlineElements[$this->buttonToInlineElement[$item]]
                 );
-                $inlineElementsOptions[$this->buttonToInlineElement[$item]] = ($prefixLabelWithTag && $item != 'none' ? $this->buttonToInlineElement[$item] . ' - ' : '') . $inlineElementsOptions[$this->buttonToInlineElement[$item]] . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $this->buttonToInlineElement[$item] : '');
+                $inlineElementsOptions[$this->buttonToInlineElement[$item]] = ($prefixLabelWithTag && $item !== 'none' ? $this->buttonToInlineElement[$item] . ' - ' : '') . $inlineElementsOptions[$this->buttonToInlineElement[$item]] . ($postfixLabelWithTag && $item !== 'none' ? ' - ' . $this->buttonToInlineElement[$item] : '');
             }
             $first = array_shift($inlineElementsOptions);
             // Sorting the options

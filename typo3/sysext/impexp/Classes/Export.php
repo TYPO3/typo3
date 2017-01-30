@@ -457,13 +457,13 @@ class Export extends ImportExport
             }
             foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
                 // For all DB types of relations:
-                if ($vR['type'] == 'db') {
+                if ($vR['type'] === 'db') {
                     foreach ($vR['itemArray'] as $fI) {
                         $this->export_addDBRelations_registerRelation($fI, $addR);
                     }
                 }
                 // For all flex/db types of relations:
-                if ($vR['type'] == 'flex') {
+                if ($vR['type'] === 'flex') {
                     // DB relations in flex form fields:
                     if (is_array($vR['flexFormRels']['db'])) {
                         foreach ($vR['flexFormRels']['db'] as $subList) {
@@ -575,7 +575,7 @@ class Export extends ImportExport
             }
             foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
                 // For all file type relations:
-                if ($vR['type'] == 'file') {
+                if ($vR['type'] === 'file') {
                     foreach ($vR['newValueFiles'] as $key => $fI) {
                         $this->export_addFile($fI, $k, $fieldname);
                         // Remove the absolute reference to the file so it doesn't expose absolute paths from source server:
@@ -583,7 +583,7 @@ class Export extends ImportExport
                     }
                 }
                 // For all flex type relations:
-                if ($vR['type'] == 'flex') {
+                if ($vR['type'] === 'flex') {
                     if (is_array($vR['flexFormRels']['file'])) {
                         foreach ($vR['flexFormRels']['file'] as $key => $subList) {
                             foreach ($subList as $subKey => $fI) {
@@ -882,12 +882,12 @@ class Export extends ImportExport
     {
         $list = [];
         foreach ($dbrels as $dat) {
-            if ($dat['type'] == 'db') {
+            if ($dat['type'] === 'db') {
                 foreach ($dat['itemArray'] as $i) {
                     $list[$i['table'] . ':' . $i['id']] = $i;
                 }
             }
-            if ($dat['type'] == 'flex' && is_array($dat['flexFormRels']['db'])) {
+            if ($dat['type'] === 'flex' && is_array($dat['flexFormRels']['db'])) {
                 foreach ($dat['flexFormRels']['db'] as $subList) {
                     foreach ($subList as $i) {
                         $list[$i['table'] . ':' . $i['id']] = $i;
@@ -923,7 +923,7 @@ class Export extends ImportExport
                     }
                 }
             }
-            if ($dat['type'] == 'flex' && is_array($dat['flexFormRels']['softrefs'])) {
+            if ($dat['type'] === 'flex' && is_array($dat['flexFormRels']['softrefs'])) {
                 foreach ($dat['flexFormRels']['softrefs'] as $structurePath => $subSoftrefs) {
                     if (is_array($subSoftrefs['keys'])) {
                         foreach ($subSoftrefs['keys'] as $spKey => $elements) {
@@ -983,7 +983,7 @@ class Export extends ImportExport
      */
     public function compileMemoryToFileContent($type = '')
     {
-        if ($type == 'xml') {
+        if ($type === 'xml') {
             $out = $this->createXML();
         } else {
             $compress = $this->doOutputCompress();

@@ -257,7 +257,7 @@ abstract class RteHtmlAreaApi
     {
         return is_object($GLOBALS['TSFE'])
             && !$this->isFrontendEditActive()
-            && TYPO3_MODE == 'FE';
+            && TYPO3_MODE === 'FE';
     }
 
     /**

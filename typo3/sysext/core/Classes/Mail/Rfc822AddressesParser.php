@@ -298,7 +298,7 @@ class Rfc822AddressesParser
         $string = $parts[0];
         $partsCounter = count($parts);
         for ($i = 0; $i < $partsCounter; $i++) {
-            if ($this->_hasUnclosedQuotes($string) || $this->_hasUnclosedBrackets($string, '<>') || $this->_hasUnclosedBrackets($string, '[]') || $this->_hasUnclosedBrackets($string, '()') || substr($string, -1) == '\\') {
+            if ($this->_hasUnclosedQuotes($string) || $this->_hasUnclosedBrackets($string, '<>') || $this->_hasUnclosedBrackets($string, '[]') || $this->_hasUnclosedBrackets($string, '()') || substr($string, -1) === '\\') {
                 if (isset($parts[$i + 1])) {
                     $string = $string . $char . $parts[$i + 1];
                 } else {
@@ -379,7 +379,7 @@ class Rfc822AddressesParser
         $parts = explode($char, $string);
         $partsCounter = count($parts);
         for ($i = 0; $i < $partsCounter; $i++) {
-            if (substr($parts[$i], -1) == '\\' || $this->_hasUnclosedQuotes($parts[$i])) {
+            if (substr($parts[$i], -1) === '\\' || $this->_hasUnclosedQuotes($parts[$i])) {
                 $num--;
             }
             if (isset($parts[$i + 1])) {
@@ -743,7 +743,7 @@ class Rfc822AddressesParser
      */
     protected function _validateDliteral($dliteral)
     {
-        return !preg_match('/(.)[][\\x0D\\\\]/', $dliteral, $matches) && $matches[1] != '\\';
+        return !preg_match('/(.)[][\\x0D\\\\]/', $dliteral, $matches) && $matches[1] !== '\\';
     }
 
     /**

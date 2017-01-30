@@ -384,7 +384,7 @@ class InlineRecordContainer extends AbstractContainer
         // Initialize:
         $cells = [];
         $additionalCells = [];
-        $isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
+        $isNewItem = substr($rec['uid'], 0, 3) === 'NEW';
         $isParentExisting = MathUtility::canBeInterpretedAsInteger($data['inlineParentUid']);
         $tcaTableCtrl = $GLOBALS['TCA'][$foreignTable]['ctrl'];
         $tcaTableCols = $GLOBALS['TCA'][$foreignTable]['columns'];

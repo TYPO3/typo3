@@ -1199,7 +1199,7 @@ class ExtensionManagementUtility
                 }
                 // Select a subtype randomly
                 // Useful to start a service by service key without knowing his subtypes - for testing purposes
-                if ($serviceSubType == '*') {
+                if ($serviceSubType === '*') {
                     $serviceSubType = key($info['serviceSubTypes']);
                 }
                 // This matches empty subtype too

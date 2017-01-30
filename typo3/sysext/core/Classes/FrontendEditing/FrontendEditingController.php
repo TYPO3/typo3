@@ -81,7 +81,7 @@ class FrontendEditingController
         // Page ID for new records, 0 if not specified
         $newRecordPid = (int)$conf['newRecordInPid'];
         if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
-            if ($table == 'pages') {
+            if ($table === 'pages') {
                 $newUid = $uid;
             } else {
                 if ($conf['newRecordFromTable']) {
@@ -166,7 +166,7 @@ class FrontendEditingController
                 unset($this->TSFE_EDIT['cmd']);
             } else {
                 $cmd = (string)$this->TSFE_EDIT['cmd'];
-                if (($cmd != 'edit' || is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close'])) && $cmd != 'new') {
+                if (($cmd !== 'edit' || is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close'])) && $cmd !== 'new') {
                     // $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sent because of .keepGoing flag.
                     return true;
                 }
@@ -186,7 +186,7 @@ class FrontendEditingController
     {
         if (is_array($this->TSFE_EDIT)) {
             $cmd = (string)$this->TSFE_EDIT['cmd'];
-            if ($cmd == 'edit' || $cmd == 'new') {
+            if ($cmd === 'edit' || $cmd === 'new') {
                 return true;
             }
         }
@@ -210,7 +210,7 @@ class FrontendEditingController
         if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
             $cmd = 'save';
         }
-        if ($cmd == 'save' || $cmd && $table && $uid && isset($GLOBALS['TCA'][$table])) {
+        if ($cmd === 'save' || $cmd && $table && $uid && isset($GLOBALS['TCA'][$table])) {
             // Hook for defining custom editing actions. Naming is incorrect, but preserves compatibility.
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
                 $_params = [];
@@ -536,7 +536,7 @@ class FrontendEditingController
             $editAccessInternals = true;
         }
         if ($editAccessInternals) {
-            if ($table == 'pages') {
+            if ($table === 'pages') {
                 // 2 = permission to edit the page
                 if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess($dataArray, 2)) {
                     $mayEdit = true;
@@ -552,7 +552,7 @@ class FrontendEditingController
                 $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
                 $allow = array_flip($types);
                 $perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $allow = $this->getAllowedEditActions($table, $conf, $dataArray['pid'], $allow);
                     // Can only display editbox if there are options in the menu
                     if (!empty($allow)) {
@@ -586,7 +586,7 @@ class FrontendEditingController
             $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
             $allow = array_flip($types);
             $perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
-            if ($table == 'pages') {
+            if ($table === 'pages') {
                 // Rootpage
                 if (count($GLOBALS['TSFE']->config['rootLine']) === 1) {
                     unset($allow['move']);

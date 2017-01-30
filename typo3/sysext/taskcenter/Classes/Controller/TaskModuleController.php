@@ -179,7 +179,7 @@ class TaskModuleController extends BaseScriptClass
     {
         $chosenTask = (string)$this->MOD_SETTINGS['function'];
         // Render the taskcenter task as default
-        if (empty($chosenTask) || $chosenTask == 'index') {
+        if (empty($chosenTask) || $chosenTask === 'index') {
             $chosenTask = 'taskcenter.tasks';
         }
         // Render the task

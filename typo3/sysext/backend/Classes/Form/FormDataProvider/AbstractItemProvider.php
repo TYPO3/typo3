@@ -819,7 +819,7 @@ abstract class AbstractItemProvider
         $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
         $flexForms = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
-            if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] == 'flex') {
+            if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] === 'flex') {
                 $flexForms[$tableField] = [];
                 foreach (array_keys($fieldConf['config']['ds']) as $flexFormKey) {
                     // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)

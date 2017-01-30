@@ -792,20 +792,20 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             }
                             break;
                     }
-                } elseif ($this->logintype == '' && $redirMethod == 'login' && $this->conf['redirectPageLogin']) {
+                } elseif ($this->logintype == '' && $redirMethod === 'login' && $this->conf['redirectPageLogin']) {
                     // If login and page not accessible
                     $this->cObj->typoLink('', [
                         'parameter' => $this->conf['redirectPageLogin'],
                         'linkAccessRestrictedPages' => true
                     ]);
                     $redirect_url[] = $this->cObj->lastTypoLinkUrl;
-                } elseif ($this->logintype == '' && $redirMethod == 'logout' && $this->conf['redirectPageLogout'] && $this->frontendController->loginUser) {
+                } elseif ($this->logintype == '' && $redirMethod === 'logout' && $this->conf['redirectPageLogout'] && $this->frontendController->loginUser) {
                     // If logout and page not accessible
                     $redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogout']);
                 } elseif ($this->logintype === 'logout') {
                     // after logout
                     // Hook for general actions after after logout has been confirmed
-                    if ($this->logintype === 'logout' && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
                         $_params = [];
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] as $_funcRef) {
                             if ($_funcRef) {

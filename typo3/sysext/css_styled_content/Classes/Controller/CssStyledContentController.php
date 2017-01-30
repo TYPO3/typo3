@@ -93,7 +93,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                 $quotedInput = '';
             }
             // Generate id prefix for accessible header
-            $headerScope = $headerPos == 'top' ? 'col' : 'row';
+            $headerScope = $headerPos === 'top' ? 'col' : 'row';
             $headerIdPrefix = $headerScope . $this->cObj->data['uid'] . '-';
             // Split into single lines (will become table-rows):
             $rows = GeneralUtility::trimExplode(LF, $content);
@@ -115,16 +115,16 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                     }
                     $cells[$a] = preg_replace('|<br */?>|i', LF, $cells[$a]);
                     $cellAttribs = $noStyles ? '' : ($a > 0 && $cols - 1 == $a ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"');
-                    if ($headerPos == 'top' && !$k || $headerPos == 'left' && !$a) {
+                    if ($headerPos === 'top' && !$k || $headerPos === 'left' && !$a) {
                         $scope = ' scope="' . $headerScope . '"';
-                        $scope .= ' id="' . $headerIdPrefix . ($headerScope == 'col' ? $a : $k) . '"';
+                        $scope .= ' id="' . $headerIdPrefix . ($headerScope === 'col' ? $a : $k) . '"';
                         $newCells[$a] = '
 							<th' . $cellAttribs . $scope . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</th>';
                     } else {
                         if (empty($headerPos)) {
                             $accessibleHeader = '';
                         } else {
-                            $accessibleHeader = ' headers="' . $headerIdPrefix . ($headerScope == 'col' ? $a : $k) . '"';
+                            $accessibleHeader = ' headers="' . $headerIdPrefix . ($headerScope === 'col' ? $a : $k) . '"';
                         }
                         $newCells[$a] = '
 							<td' . $cellAttribs . $accessibleHeader . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</td>';
@@ -144,7 +144,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                 $tableContents .= '
 					<caption>' . $caption . '</caption>';
             }
-            if ($headerPos == 'top' && $rows[0]) {
+            if ($headerPos === 'top' && $rows[0]) {
                 $tableContents .= '<thead>' . $rows[0] . '
 					</thead>';
                 unset($rows[0]);
@@ -273,7 +273,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
         }
         $renderMethod = $this->cObj->stdWrap($conf['renderMethod'], $conf['renderMethod.']);
         // Render using the default IMGTEXT code (table-based)
-        if (!$renderMethod || $renderMethod == 'table') {
+        if (!$renderMethod || $renderMethod === 'table') {
             return $this->cObj->cObjGetSingle('IMGTEXT', $conf);
         }
         $restoreRegisters = false;
@@ -534,7 +534,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                         $imgConf['file.']['m.'] = $conf['image_frames.'][$image_frames . '.'];
                     }
                 }
-                if ($image_compression && $imgConf['file'] != 'GIFBUILDER') {
+                if ($image_compression && $imgConf['file'] !== 'GIFBUILDER') {
                     if ($image_compression == 1) {
                         $tempImport = $imgConf['file.']['import'];
                         $tempImport_dot = $imgConf['file.']['import.'];

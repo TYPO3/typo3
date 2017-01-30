@@ -1001,7 +1001,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 // Assemble information about last execution
                 if (!empty($schedulerRecord['lastexecution_time'])) {
                     $lastExecution = date($dateFormat, $schedulerRecord['lastexecution_time']);
-                    if ($schedulerRecord['lastexecution_context'] == 'CLI') {
+                    if ($schedulerRecord['lastexecution_context'] === 'CLI') {
                         $context = $this->getLanguageService()->getLL('label.cron');
                     } else {
                         $context = $this->getLanguageService()->getLL('label.manual');

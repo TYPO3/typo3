@@ -31,7 +31,7 @@ class LocalDriverFilenameFilter
      */
     public static function filterFilename($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance)
     {
-        if ($itemName == 'fileA' || $itemName == 'folderA/') {
+        if ($itemName === 'fileA' || $itemName === 'folderA/') {
             return -1;
         } else {
             return true;

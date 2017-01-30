@@ -278,7 +278,7 @@ class CleanUp extends Action\AbstractAction
         $directories = dir($pathTypo3Temp);
         if (is_object($directories)) {
             while ($entry = $directories->read()) {
-                if (is_dir($pathTypo3Temp . $entry) && $entry != '..' && $entry != '.') {
+                if (is_dir($pathTypo3Temp . $entry) && $entry !== '..' && $entry !== '.') {
                     $data['subDirectories'][$entry]['name'] = $entry;
                     $data['subDirectories'][$entry]['filesNumber'] = count(GeneralUtility::getFilesInDir($pathTypo3Temp . $entry));
                     $data['subDirectories'][$entry]['selected'] = false;

@@ -334,7 +334,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // Browsing box
             if ($resultData['count']) {
                 // could we get this in the view?
-                if ($this->searchData['group'] == 'sections' && $freeIndexUid <= 0) {
+                if ($this->searchData['group'] === 'sections' && $freeIndexUid <= 0) {
                     $resultSectionsCount = count($this->resultSections);
                     $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch'), $resultSectionsCount);
                 }
@@ -382,8 +382,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
         $resultRows = $newResultRows;
         $this->resultSections = [];
-        if ($freeIndexUid <= 0 && $this->searchData['group'] == 'sections') {
-            $rl2flag = substr($this->searchData['sections'], 0, 2) == 'rl';
+        if ($freeIndexUid <= 0 && $this->searchData['group'] === 'sections') {
+            $rl2flag = substr($this->searchData['sections'], 0, 2) === 'rl';
             $sections = [];
             foreach ($resultRows as $row) {
                 $id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
@@ -657,7 +657,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             } else {
                 // Default creation / finding of icon:
                 $icon = '';
-                if ($imageType === '0' || substr($imageType, 0, 2) == '0:') {
+                if ($imageType === '0' || substr($imageType, 0, 2) === '0:') {
                     if (is_array($specRowConf['pageIcon'])) {
                         $this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
                     } else {

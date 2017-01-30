@@ -414,9 +414,9 @@ class ExtendedTemplateService extends TemplateService
         $keyArr_alpha = [];
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
-            if (substr($key, -2) != '..') {
+            if (substr($key, -2) !== '..') {
                 $key = preg_replace('/\\.$/', '', $key);
-                if (substr($key, -1) != '.') {
+                if (substr($key, -1) !== '.') {
                     if (MathUtility::canBeInterpretedAsInteger($key)) {
                         $keyArr_num[$key] = $arr[$key];
                     } else {
@@ -463,7 +463,7 @@ class ExtendedTemplateService extends TemplateService
                             $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
                         }
                         $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-                        if ($this->bType != 'const') {
+                        if ($this->bType !== 'const') {
                             $ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
                         } else {
                             $ln = '';
@@ -573,7 +573,7 @@ class ExtendedTemplateService extends TemplateService
         $keyArr = [];
         foreach ($arr as $key => $value) {
             $key = preg_replace('/\\.$/', '', $key);
-            if (substr($key, -1) != '.') {
+            if (substr($key, -1) !== '.') {
                 $keyArr[$key] = 1;
             }
         }
@@ -657,7 +657,7 @@ class ExtendedTemplateService extends TemplateService
         $keyArr = [];
         foreach ($arr as $key => $value) {
             $key = preg_replace('/\\.$/', '', $key);
-            if (substr($key, -1) != '.') {
+            if (substr($key, -1) !== '.') {
                 $keyArr[$key] = 1;
             }
         }
@@ -781,7 +781,7 @@ class ExtendedTemplateService extends TemplateService
     {
         if ($chars >= 4) {
             if (strlen($string) > $chars) {
-                if (strlen($string) > 24 && substr($string, 0, 12) == '##' . $this->Cmarker . '_B##') {
+                if (strlen($string) > 24 && substr($string, 0, 12) === '##' . $this->Cmarker . '_B##') {
                     return '##' . $this->Cmarker . '_B##' . GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3))
                         . '##' . $this->Cmarker . '_E##';
                 } else {
@@ -800,7 +800,7 @@ class ExtendedTemplateService extends TemplateService
     public function ext_lnBreakPointWrap($lineNumber, $str)
     {
         return '<a href="#" id="line-' . $lineNumber . '" onClick="return brPoint(' . $lineNumber . ','
-            . ($this->ext_lineNumberOffset_mode == 'setup' ? 1 : 0) . ');">' . $str . '</a>';
+            . ($this->ext_lineNumberOffset_mode === 'setup' ? 1 : 0) . ');">' . $str . '</a>';
     }
 
     /**
@@ -826,9 +826,9 @@ class ExtendedTemplateService extends TemplateService
             }
             $cArr[$k] = $lineNum . str_replace(' ', '&nbsp;', $v);
             $firstChar = substr(trim($v), 0, 1);
-            if ($firstChar == '[') {
+            if ($firstChar === '[') {
                 $cArr[$k] = '<strong class="text-success">' . $cArr[$k] . '</strong>';
-            } elseif ($firstChar == '/' || $firstChar == '#') {
+            } elseif ($firstChar === '/' || $firstChar === '#') {
                 if ($comments) {
                     $cArr[$k] = '<span class="text-muted">' . $cArr[$k] . '</span>';
                 } else {

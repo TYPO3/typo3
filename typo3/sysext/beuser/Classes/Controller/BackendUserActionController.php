@@ -54,9 +54,9 @@ class BackendUserActionController extends ActionController
     {
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
-        if ($this->actionMethodName == 'indexAction'
-            || $this->actionMethodName == 'onlineAction'
-            || $this->actionMethodName == 'compareAction') {
+        if ($this->actionMethodName === 'indexAction'
+            || $this->actionMethodName === 'onlineAction'
+            || $this->actionMethodName === 'compareAction') {
             $this->generateMenu();
             $this->registerDocheaderButtons();
             $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());

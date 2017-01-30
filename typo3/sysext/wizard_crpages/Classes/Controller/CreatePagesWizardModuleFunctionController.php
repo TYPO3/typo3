@@ -177,7 +177,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
         $groupLabel = '';
         foreach ($availableDoktypes as $doktypeData) {
             // if it is a group, save the group label for the children underneath
-            if ($doktypeData[1] == '--div--') {
+            if ($doktypeData[1] === '--div--') {
                 $groupLabel = $doktypeData[0];
             } else {
                 if (in_array($doktypeData[1], $allowedDoktypes)) {

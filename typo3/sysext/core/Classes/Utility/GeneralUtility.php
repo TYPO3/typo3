@@ -1443,7 +1443,7 @@ class GeneralUtility
         $attributes = [];
         foreach ($components as $key => $val) {
             // Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
-            if ($val != '=') {
+            if ($val !== '=') {
                 if ($valuemode) {
                     if ($name) {
                         $attributes[$name] = $val;
@@ -1591,7 +1591,7 @@ class GeneralUtility
         foreach ($vals as $key => $val) {
             $type = $val['type'];
             // open tag:
-            if ($type == 'open' || $type == 'complete') {
+            if ($type === 'open' || $type === 'complete') {
                 $stack[$stacktop++] = $tagi;
                 if ($depth == $stacktop) {
                     $startPoint = $key;
@@ -1605,7 +1605,7 @@ class GeneralUtility
                 }
             }
             // finish tag:
-            if ($type == 'complete' || $type == 'close') {
+            if ($type === 'complete' || $type === 'close') {
                 $oldtagi = $tagi;
                 $tagi = $stack[--$stacktop];
                 $oldtag = $oldtagi['tag'];
@@ -1622,7 +1622,7 @@ class GeneralUtility
                 unset($oldtagi);
             }
             // cdata
-            if ($type == 'cdata') {
+            if ($type === 'cdata') {
                 $tagi['values'][] = $val['value'];
             }
         }
@@ -1753,7 +1753,7 @@ class GeneralUtility
                     // Otherwise, just htmlspecialchar the stuff:
                     $content = htmlspecialchars($v);
                     $dType = gettype($v);
-                    if ($dType == 'string') {
+                    if ($dType === 'string') {
                         if ($options['useCDATA'] && $content != $v) {
                             $content = '<![CDATA[' . $v . ']]>';
                         }
@@ -1925,14 +1925,14 @@ class GeneralUtility
         foreach ($vals as $val) {
             $type = $val['type'];
             // Open tag:
-            if ($type == 'open' || $type == 'complete') {
+            if ($type === 'open' || $type === 'complete') {
                 $XMLcontent .= '<' . $val['tag'];
                 if (isset($val['attributes'])) {
                     foreach ($val['attributes'] as $k => $v) {
                         $XMLcontent .= ' ' . $k . '="' . htmlspecialchars($v) . '"';
                     }
                 }
-                if ($type == 'complete') {
+                if ($type === 'complete') {
                     if (isset($val['value'])) {
                         $XMLcontent .= '>' . htmlspecialchars($val['value']) . '</' . $val['tag'] . '>';
                     } else {
@@ -1941,16 +1941,16 @@ class GeneralUtility
                 } else {
                     $XMLcontent .= '>';
                 }
-                if ($type == 'open' && isset($val['value'])) {
+                if ($type === 'open' && isset($val['value'])) {
                     $XMLcontent .= htmlspecialchars($val['value']);
                 }
             }
             // Finish tag:
-            if ($type == 'close') {
+            if ($type === 'close') {
                 $XMLcontent .= '</' . $val['tag'] . '>';
             }
             // Cdata
-            if ($type == 'cdata') {
+            if ($type === 'cdata') {
                 $XMLcontent .= htmlspecialchars($val['value']);
             }
         }
@@ -2345,7 +2345,7 @@ class GeneralUtility
             if (!is_link($path) && is_dir($path)) {
                 if ($removeNonEmpty == true && ($handle = @opendir($path))) {
                     while ($OK && false !== ($file = readdir($handle))) {
-                        if ($file == '.' || $file == '..') {
+                        if ($file === '.' || $file === '..') {
                             continue;
                         }
                         $OK = static::rmdir($path . '/' . $file, $removeNonEmpty);
@@ -2418,7 +2418,7 @@ class GeneralUtility
                 $dir = scandir($path);
                 $dirs = [];
                 foreach ($dir as $entry) {
-                    if (is_dir($path . '/' . $entry) && $entry != '..' && $entry != '.') {
+                    if (is_dir($path . '/' . $entry) && $entry !== '..' && $entry !== '.') {
                         $dirs[] = $entry;
                     }
                 }
@@ -2676,7 +2676,7 @@ class GeneralUtility
         $path = self::resolveBackPath(self::dirname(PATH_thisScript) . '/' . $lookupFile[0]);
 
         $doNothing = false;
-        if (TYPO3_MODE == 'FE') {
+        if (TYPO3_MODE === 'FE') {
             $mode = strtolower($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename']);
             if ($mode === 'embed') {
                 $mode = true;
@@ -3004,7 +3004,7 @@ class GeneralUtility
                 } elseif (defined('PATH_thisScript') && defined('PATH_site')) {
                     $lPath = PathUtility::stripPathSitePrefix(dirname(PATH_thisScript)) . '/';
                     $siteUrl = substr($url, 0, -strlen($lPath));
-                    if (substr($siteUrl, -1) != '/') {
+                    if (substr($siteUrl, -1) !== '/') {
                         $siteUrl .= '/';
                     }
                     $retVal = $siteUrl;
@@ -3018,7 +3018,7 @@ class GeneralUtility
                 break;
             case 'TYPO3_SSL':
                 $proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL']);
-                if ($proxySSL == '*') {
+                if ($proxySSL === '*') {
                     $proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
                 }
                 if (self::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL)) {
@@ -4275,8 +4275,8 @@ class GeneralUtility
         // Init TYPO3 logging
         foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
             list($type, $destination) = explode(',', $log, 3);
-            if ($type == 'syslog') {
-                if (TYPO3_OS == 'WIN') {
+            if ($type === 'syslog') {
+                if (TYPO3_OS === 'WIN') {
                     $facility = LOG_USER;
                 } else {
                     $facility = constant('LOG_' . strtoupper($destination));
@@ -4333,14 +4333,14 @@ class GeneralUtility
             }
             $msgLine = ' - ' . $extKey . ': ' . $msg;
             // Write message to a file
-            if ($type == 'file') {
+            if ($type === 'file') {
                 $file = fopen($destination, 'a');
                 if ($file) {
                     fwrite($file, date(($dateFormat . ' ' . $timeFormat)) . $msgLine . LF);
                     fclose($file);
                     self::fixPermissions($destination);
                 }
-            } elseif ($type == 'mail') {
+            } elseif ($type === 'mail') {
                 list($to, $from) = explode('/', $destination);
                 if (!self::validEmail($from)) {
                     $from = MailUtility::getSystemFrom();
@@ -4349,9 +4349,9 @@ class GeneralUtility
                 $mail = self::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
                 $mail->setTo($to)->setFrom($from)->setSubject('Warning - error in TYPO3 installation')->setBody('Host: ' . $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF . 'Extension: ' . $extKey . LF . 'Severity: ' . $severity . LF . LF . $msg);
                 $mail->send();
-            } elseif ($type == 'error_log') {
+            } elseif ($type === 'error_log') {
                 error_log($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
-            } elseif ($type == 'syslog') {
+            } elseif ($type === 'syslog') {
                 $priority = [LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERR, LOG_CRIT];
                 syslog($priority[(int)$severity], $msgLine);
             }

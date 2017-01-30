@@ -403,7 +403,7 @@ abstract class AbstractUserAuthentication
         // Internal var 'id' is set
         $this->id = $id;
         // If fallback to get mode....
-        if ($mode == 'get' && $this->getFallBack && $this->get_name) {
+        if ($mode === 'get' && $this->getFallBack && $this->get_name) {
             $this->get_URL_ID = '&' . $this->get_name . '=' . $id;
         }
         // Make certain that NO user is set initially
@@ -506,7 +506,7 @@ abstract class AbstractUserAuthentication
             $cookieDomain = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'];
         }
         if ($cookieDomain) {
-            if ($cookieDomain[0] == '/') {
+            if ($cookieDomain[0] === '/') {
                 $match = [];
                 $matchCnt = @preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if ($matchCnt === false) {
@@ -622,7 +622,7 @@ abstract class AbstractUserAuthentication
             }
             // Refuse login for _CLI users, if not processing a CLI request type
             // (although we shouldn't be here in case of a CLI request type)
-            if (strtoupper(substr($loginData['uname'], 0, 5)) == '_CLI_' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+            if (strtoupper(substr($loginData['uname'], 0, 5)) === '_CLI_' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                 throw new \RuntimeException('TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!', 1270853931);
             }
         }
@@ -1296,7 +1296,7 @@ abstract class AbstractUserAuthentication
      */
     public function getModuleData($module, $type = '')
     {
-        if ($type != 'ses' || (isset($this->uc['moduleSessionID'][$module]) && $this->uc['moduleSessionID'][$module] == $this->id)) {
+        if ($type !== 'ses' || (isset($this->uc['moduleSessionID'][$module]) && $this->uc['moduleSessionID'][$module] == $this->id)) {
             return $this->uc['moduleData'][$module];
         }
         return null;

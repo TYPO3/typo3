@@ -568,7 +568,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($thumbsCol) {
             $selectFields[] = $thumbsCol;
         }
-        if ($table == 'pages') {
+        if ($table === 'pages') {
             $selectFields[] = 'module';
             $selectFields[] = 'extendToSubpages';
             $selectFields[] = 'nav_hide';
@@ -956,21 +956,21 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     // It's a translated record with a language parent
                     $localizationMarkerClass = ' localization';
                 }
-            } elseif ($fCol == 'pid') {
+            } elseif ($fCol === 'pid') {
                 $theData[$fCol] = $row[$fCol];
-            } elseif ($fCol == '_PATH_') {
+            } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
-            } elseif ($fCol == '_REF_') {
+            } elseif ($fCol === '_REF_') {
                 $theData[$fCol] = $this->createReferenceHtml($table, $row['uid']);
-            } elseif ($fCol == '_CONTROL_') {
+            } elseif ($fCol === '_CONTROL_') {
                 $theData[$fCol] = $this->makeControl($table, $row);
-            } elseif ($fCol == '_CLIPBOARD_') {
+            } elseif ($fCol === '_CLIPBOARD_') {
                 $theData[$fCol] = $this->makeClip($table, $row);
-            } elseif ($fCol == '_LOCALIZATION_') {
+            } elseif ($fCol === '_LOCALIZATION_') {
                 list($lC1, $lC2) = $this->makeLocalizationPanel($table, $row);
                 $theData[$fCol] = $lC1;
                 $theData[$fCol . 'b'] = '<div class="btn-group">' . $lC2 . '</div>';
-            } elseif ($fCol == '_LOCALIZATION_b') {
+            } elseif ($fCol === '_LOCALIZATION_b') {
                 // deliberately empty
             } else {
                 $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
@@ -1058,7 +1058,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         // Traverse the fields:
         foreach ($this->fieldArray as $fCol) {
             // Calculate users permissions to edit records in the table:
-            $permsEdit = $this->calcPerms & ($table == 'pages' ? 2 : 16) && $this->overlayEditLockPermissions($table);
+            $permsEdit = $this->calcPerms & ($table === 'pages' ? 2 : 16) && $this->overlayEditLockPermissions($table);
             switch ((string)$fCol) {
                 case '_PATH_':
                     // Path
@@ -1098,7 +1098,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             . '</a>';
                     }
                     // If the numeric clipboard pads are enabled, display the control icons for that:
-                    if ($this->clipObj->current != 'normal') {
+                    if ($this->clipObj->current !== 'normal') {
                         // The "select" link:
                         $spriteIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
                         $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB', '', $lang->getLL('clip_selectMarked'));
@@ -1173,14 +1173,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
                                     . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
-                            } elseif ($table == 'pages' && $this->newWizards) {
+                            } elseif ($table === 'pages' && $this->newWizards) {
                                 $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')];
                                 $href = BackendUtility::getModuleUrl('db_new', $parameters);
                                 $icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">'
                                     . $spriteIcon->render() . '</a>';
                             } else {
                                 $params = '&edit[' . $table . '][' . $this->id . ']=new';
-                                if ($table == 'pages_language_overlay') {
+                                if ($table === 'pages_language_overlay') {
                                     $params .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRow['doktype'];
                                 }
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
@@ -1417,7 +1417,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         ];
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = 0;
-        if ($table == 'pages') {
+        if ($table === 'pages') {
             $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
         }
         $permsEdit = $table === 'pages'
@@ -1428,7 +1428,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
-        if ($table == 'pages' || $table == 'tt_content') {
+        if ($table === 'pages' || $table === 'tt_content') {
             $viewAction = '<a class="btn btn-default" href="#" onclick="'
                 . htmlspecialchars(
                     BackendUtility::viewOnClick(
@@ -1464,7 +1464,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
             $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
             $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
-            $icon = ($table == 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
+            $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
             $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
             $this->addActionToCellGroup($cells, $moveAction, 'move');
         }
@@ -1505,7 +1505,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
                     if ($this->showNewRecLink($table)) {
                         $params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
-                        $icon = ($table == 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+                        $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
                         if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
                             $titleLabel .= ($table === 'pages' ? 'Page' : 'Record');
@@ -1554,8 +1554,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 if (!$permsEdit || $this->isRecordCurrentBackendUser($table, $row)) {
                     $hideAction = $this->spaceIcon;
                 } else {
-                    $hideTitle = htmlspecialchars($this->getLanguageService()->getLL('hide' . ($table == 'pages' ? 'Page' : '')));
-                    $unhideTitle = htmlspecialchars($this->getLanguageService()->getLL('unHide' . ($table == 'pages' ? 'Page' : '')));
+                    $hideTitle = htmlspecialchars($this->getLanguageService()->getLL('hide' . ($table === 'pages' ? 'Page' : '')));
+                    $unhideTitle = htmlspecialchars($this->getLanguageService()->getLL('unHide' . ($table === 'pages' ? 'Page' : '')));
                     if ($row[$hiddenField]) {
                         $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
                         $hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
@@ -1613,7 +1613,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
             $this->addActionToCellGroup($cells, $deleteAction, 'delete');
             // "Levels" links: Moving pages into new levels...
-            if ($permsEdit && $table == 'pages' && !$this->searchLevels) {
+            if ($permsEdit && $table === 'pages' && !$this->searchLevels) {
                 // Up (Paste as the page right after the current parent page)
                 if ($this->calcPerms & Permission::PAGE_NEW) {
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
@@ -1720,7 +1720,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $cells = [];
         $cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
         //enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
-        $isL10nOverlay = $this->localizationView && $table != 'pages_language_overlay' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        $isL10nOverlay = $this->localizationView && $table !== 'pages_language_overlay' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         // Return blank, if disabled:
         // Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
         // For the "Normal" pad:
@@ -1746,7 +1746,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     . $copyIcon->render() . '</a>';
 
                 // Check permission to cut page or content
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
                     $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
                 } else {
@@ -1755,7 +1755,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
                 // If the listed table is 'pages' we have to request the permission settings for each page:
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     if ($permsEdit) {
                         $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), ['returnUrl' => ''])) . ');')
@@ -1812,7 +1812,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         }
         // Now, looking for elements in general:
         $elFromTable = $this->clipObj->elFromTable('');
-        if ($table == 'pages' && !empty($elFromTable)) {
+        if ($table === 'pages' && !empty($elFromTable)) {
             $cells['pasteInto'] = '<a class="btn btn-default t3js-modal-trigger"'
                 . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid'])) . '"'
                 . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
@@ -2055,7 +2055,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     public function clipNumPane()
     {
-        return in_array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current != 'normal';
+        return in_array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current !== 'normal';
     }
 
     /**
@@ -2071,11 +2071,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
     public function addSortLink($code, $field, $table)
     {
         // Certain circumstances just return string right away (no links):
-        if ($field == '_CONTROL_' || $field == '_LOCALIZATION_' || $field == '_CLIPBOARD_' || $field == '_REF_' || $this->disableSingleTableView) {
+        if ($field === '_CONTROL_' || $field === '_LOCALIZATION_' || $field === '_CLIPBOARD_' || $field === '_REF_' || $this->disableSingleTableView) {
             return $code;
         }
         // If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
-        if ($field == '_PATH_') {
+        if ($field === '_PATH_') {
             $field = 'pid';
         }
         //	 Create the sort link:

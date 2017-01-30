@@ -293,7 +293,7 @@ class AdminPanelView
         // which must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
         $query .= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="" />';
         foreach (GeneralUtility::_GET() as $key => $value) {
-            if ($key != 'TSFE_ADMIN_PANEL') {
+            if ($key !== 'TSFE_ADMIN_PANEL') {
                 if (is_array($value)) {
                     $query .= $this->getHiddenFields($key, $value);
                 } else {

@@ -799,12 +799,12 @@ class IndexSearchRepository
                 $expressionBuilder->in('ISEC.rl0', GeneralUtility::intExplode(',', $this->searchRootPageIdList, true))
             );
         }
-        if (substr($this->sections, 0, 4) == 'rl1_') {
+        if (substr($this->sections, 0, 4) === 'rl1_') {
             $whereClause->add(
                 $expressionBuilder->in('ISEC.rl1', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );
             $match = true;
-        } elseif (substr($this->sections, 0, 4) == 'rl2_') {
+        } elseif (substr($this->sections, 0, 4) === 'rl2_') {
             $whereClause->add(
                 $expressionBuilder->in('ISEC.rl2', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );

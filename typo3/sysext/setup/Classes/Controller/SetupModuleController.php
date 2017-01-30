@@ -821,7 +821,7 @@ class SetupModuleController extends AbstractModule
                     return $accessObject->accessLevelCheck($config);
                 }
             }
-        } elseif ($access == 'admin') {
+        } elseif ($access === 'admin') {
             return $this->isAdmin;
         }
 

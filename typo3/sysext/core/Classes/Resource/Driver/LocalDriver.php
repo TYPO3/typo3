@@ -982,7 +982,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         $identifierMap = [];
         $identifierMap[$sourceFolderIdentifier] = $targetFolderIdentifier;
         foreach ($filesAndFolders as $oldItem) {
-            if ($oldItem['type'] == 'dir') {
+            if ($oldItem['type'] === 'dir') {
                 $oldIdentifier = $oldItem['identifier'];
                 $newIdentifier = $this->canonicalizeAndCheckFolderIdentifier(
                     str_replace($sourceFolderIdentifier, $targetFolderIdentifier, $oldItem['identifier'])

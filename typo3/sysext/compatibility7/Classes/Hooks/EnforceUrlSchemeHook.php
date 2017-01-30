@@ -71,9 +71,9 @@ class EnforceUrlSchemeHook implements TypolinkModifyLinkConfigForPageLinksHookIn
         if (isset($parentObject->page['url_scheme']) && $parentObject->page['url_scheme'] > 0) {
             $newUrl = '';
             $requestUrlScheme = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
-            if ((int)$parentObject->page['url_scheme'] === HttpUtility::SCHEME_HTTP && $requestUrlScheme == 'https') {
+            if ((int)$parentObject->page['url_scheme'] === HttpUtility::SCHEME_HTTP && $requestUrlScheme === 'https') {
                 $newUrl = 'http://' . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 8);
-            } elseif ((int)$parentObject->page['url_scheme'] === HttpUtility::SCHEME_HTTPS && $requestUrlScheme == 'http') {
+            } elseif ((int)$parentObject->page['url_scheme'] === HttpUtility::SCHEME_HTTPS && $requestUrlScheme === 'http') {
                 $newUrl = 'https://' . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 7);
             }
             if ($newUrl !== '') {

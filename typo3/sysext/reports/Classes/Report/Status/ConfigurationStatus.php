@@ -153,7 +153,7 @@ class ConfigurationStatus implements StatusProviderInterface
         if (function_exists('memcache_connect') && is_array($memcachedServers)) {
             foreach ($memcachedServers as $testServer) {
                 $configuredServer = $testServer;
-                if (substr($testServer, 0, 7) == 'unix://') {
+                if (substr($testServer, 0, 7) === 'unix://') {
                     $host = $testServer;
                     $port = 0;
                 } else {

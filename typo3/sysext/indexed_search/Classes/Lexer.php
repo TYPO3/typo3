@@ -134,7 +134,7 @@ class Lexer
         in the same manner, and since the set of characters is huge so the
         extra matches are not significant.(Hint taken from ZOPEs chinese user group)[Kasper: As far as I can see this will only work well with or-searches!]
          */
-        if ($cType == 'cjk') {
+        if ($cType === 'cjk') {
             // Find total string length:
             $strlen = mb_strlen($theWord, 'utf-8');
             // Traverse string length and add words as pairs of two chars:
@@ -207,8 +207,8 @@ class Lexer
                     // We are in a sequence of words
                     if (
                         !$cType
-                        || $cType_prev == 'cjk' && ($cType === 'num' || $cType === 'alpha')
-                        || $cType == 'cjk' && ($cType_prev === 'num' || $cType_prev === 'alpha')
+                        || $cType_prev === 'cjk' && ($cType === 'num' || $cType === 'alpha')
+                        || $cType === 'cjk' && ($cType_prev === 'num' || $cType_prev === 'alpha')
                     ) {
                         // Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
                         if (!in_array($cp, $this->lexerConf['printjoins'])) {

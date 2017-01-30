@@ -360,7 +360,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             foreach ($this->fieldArray as $field) {
                 if ($editIdList
                     && isset($GLOBALS['TCA']['pages']['columns'][$field])
-                    && $field != 'uid'
+                    && $field !== 'uid'
                     && !$this->pages_noEditColumns
                 ) {
                     $iTitle = sprintf(
@@ -393,7 +393,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $theData[$field] = '&nbsp;<strong>ID:</strong>';
                         break;
                     default:
-                        if (substr($field, 0, 6) == 'table_') {
+                        if (substr($field, 0, 6) === 'table_') {
                             $f2 = substr($field, 6);
                             if ($GLOBALS['TCA'][$f2]) {
                                 $theData[$field] = '&nbsp;' .
@@ -1357,7 +1357,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     }
                     break;
                 default:
-                    if (substr($field, 0, 6) == 'table_') {
+                    if (substr($field, 0, 6) === 'table_') {
                         $f2 = substr($field, 6);
                         if ($GLOBALS['TCA'][$f2]) {
                             $c = $this->numberOfRecords($f2, $row['uid']);

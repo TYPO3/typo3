@@ -64,7 +64,7 @@ class RecordsContentObject extends AbstractContentObject
             // Add tables which have a configuration (note that this may create duplicate entries)
             if (is_array($conf['conf.'])) {
                 foreach ($conf['conf.'] as $key => $value) {
-                    if (substr($key, -1) != '.' && !in_array($key, $tablesArray)) {
+                    if (substr($key, -1) !== '.' && !in_array($key, $tablesArray)) {
                         $tablesArray[] = $key;
                     }
                 }

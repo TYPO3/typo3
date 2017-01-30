@@ -168,7 +168,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
                 $assigns['printFields'] = $printFields;
             }
             $BE_USER_modOptions = BackendUtility::getModTSconfig(0, 'mod.' . $this->pObj->MCONF['name']);
-            if ($BE_USER_modOptions['properties']['constantEditor.']['example'] != 'top') {
+            if ($BE_USER_modOptions['properties']['constantEditor.']['example'] !== 'top') {
                 $assigns['helpConfig'] = $this->getHelpConfig();
             }
             // Rendering of the output via fluid

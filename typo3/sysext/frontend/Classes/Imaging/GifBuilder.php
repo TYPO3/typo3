@@ -465,17 +465,17 @@ class GifBuilder extends GraphicalFunctions
                             }
                             break;
                         case 'OUTLINE':
-                            if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                            if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
                                 $this->makeOutline($this->im, $conf, $this->workArea, $txtConf);
                             }
                             break;
                         case 'EMBOSS':
-                            if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                            if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
                                 $this->makeEmboss($this->im, $conf, $this->workArea, $txtConf);
                             }
                             break;
                         case 'SHADOW':
-                            if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                            if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
                                 $this->makeShadow($this->im, $conf, $this->workArea, $txtConf);
                             }
                             break;
@@ -752,11 +752,11 @@ class GifBuilder extends GraphicalFunctions
                 $objParts = explode('.', substr($theVal, 1, -1));
                 $theVal = 0;
                 if (isset($this->objBB[$objParts[0]])) {
-                    if ($objParts[1] == 'w') {
+                    if ($objParts[1] === 'w') {
                         $theVal = $this->objBB[$objParts[0]][0];
-                    } elseif ($objParts[1] == 'h') {
+                    } elseif ($objParts[1] === 'h') {
                         $theVal = $this->objBB[$objParts[0]][1];
-                    } elseif ($objParts[1] == 'lineHeight') {
+                    } elseif ($objParts[1] === 'lineHeight') {
                         $theVal = $this->objBB[$objParts[0]][2]['lineHeight'];
                     }
                     $theVal = (int)$theVal;
@@ -766,15 +766,15 @@ class GifBuilder extends GraphicalFunctions
             } else {
                 $theVal = 0;
             }
-            if ($sign == '-') {
+            if ($sign === '-') {
                 $calculatedValue -= $theVal;
-            } elseif ($sign == '+') {
+            } elseif ($sign === '+') {
                 $calculatedValue += $theVal;
-            } elseif ($sign == '/' && $theVal) {
+            } elseif ($sign === '/' && $theVal) {
                 $calculatedValue = $calculatedValue / $theVal;
-            } elseif ($sign == '*') {
+            } elseif ($sign === '*') {
                 $calculatedValue = $calculatedValue * $theVal;
-            } elseif ($sign == '%' && $theVal) {
+            } elseif ($sign === '%' && $theVal) {
                 $calculatedValue %= $theVal;
             }
         }

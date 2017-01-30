@@ -224,12 +224,12 @@ class SpellCheckingController
         if (GeneralUtility::_POST('pspell_charset')) {
             $this->charset = trim(GeneralUtility::_POST('pspell_charset'));
         }
-        if (strtolower($this->charset) == 'iso-8859-1') {
+        if (strtolower($this->charset) === 'iso-8859-1') {
             $this->parserCharset = strtolower($this->charset);
         }
         // In some configurations, Aspell uses 'iso8859-1' instead of 'iso-8859-1'
         $this->aspellEncoding = $this->parserCharset;
-        if ($this->parserCharset == 'iso-8859-1' && strstr($this->defaultAspellEncoding, '8859-1')) {
+        if ($this->parserCharset === 'iso-8859-1' && strstr($this->defaultAspellEncoding, '8859-1')) {
             $this->aspellEncoding = $this->defaultAspellEncoding;
         }
         // However, we are going to work only in the parser charset
@@ -242,7 +242,7 @@ class SpellCheckingController
         $this->setPersonalDictionaryPath();
         $this->fixPersonalDictionaryCharacterSet();
         $cmd = GeneralUtility::_POST('cmd');
-        if ($cmd == 'learn') {
+        if ($cmd === 'learn') {
             // Only availble for BE_USERS, die silently if someone has gotten here by accident
             if (TYPO3_MODE !== 'BE' || !is_object($GLOBALS['BE_USER'])) {
                 die('');
@@ -305,7 +305,7 @@ class SpellCheckingController
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . substr($this->dictionary, 0, 2) . '" lang="' . substr($this->dictionary, 0, 2) . '">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=' . $this->parserCharset . '" />
-<link rel="stylesheet" type="text/css" media="all" href="' . (TYPO3_MODE == 'BE' ? '../' : '') . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . '/Resources/Public/Css/Skin/Plugins/spell-checker-iframe.css" />
+<link rel="stylesheet" type="text/css" media="all" href="' . (TYPO3_MODE === 'BE' ? '../' : '') . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . '/Resources/Public/Css/Skin/Plugins/spell-checker-iframe.css" />
 <script type="text/javascript">
 /*<![CDATA[*/
 <!--
@@ -433,7 +433,7 @@ var selectedDictionary = "' . $this->dictionary . '";
     protected function setPersonalDictionaryPath()
     {
         $this->personalDictionaryPath = '';
-        if (GeneralUtility::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE' && is_object($GLOBALS['BE_USER'])) {
+        if (GeneralUtility::_POST('enablePersonalDicts') === 'true' && TYPO3_MODE === 'BE' && is_object($GLOBALS['BE_USER'])) {
             if ($GLOBALS['BE_USER']->user['uid']) {
                 $personalDictionaryFolderName = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
                 // Check for pre-FAL personal dictionary folder
@@ -626,7 +626,7 @@ var selectedDictionary = "' . $this->dictionary . '";
                         . ' 2>&1';
                     $AspellAnswer = shell_exec($AspellCommand);
                     $AspellResultLines = GeneralUtility::trimExplode(LF, $AspellAnswer, true);
-                    if (substr($AspellResultLines[0], 0, 6) == 'Error:') {
+                    if (substr($AspellResultLines[0], 0, 6) === 'Error:') {
                         echo '{' . $AspellAnswer . '}';
                     }
                     GeneralUtility::unlink_tempfile($tmpFileName);
@@ -651,7 +651,7 @@ var selectedDictionary = "' . $this->dictionary . '";
                             unset($suggestions);
                         }
                         if (!in_array($word, $incurrent)) {
-                            $stringText = preg_replace('/\\b' . $word . '\\b/' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '<span class="htmlarea-spellcheck-error">' . $word . '</span>', $stringText);
+                            $stringText = preg_replace('/\\b' . $word . '\\b/' . ($this->parserCharset === 'utf-8' ? 'u' : ''), '<span class="htmlarea-spellcheck-error">' . $word . '</span>', $stringText);
                             $incurrent[] = $word;
                         }
                     }

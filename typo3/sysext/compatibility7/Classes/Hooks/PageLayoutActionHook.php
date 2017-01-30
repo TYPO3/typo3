@@ -146,8 +146,8 @@ class PageLayoutActionHook
                 ];
                 $moveButton = $buttonBar->makeLinkButton()
                     ->setHref(BackendUtility::getModuleUrl('move_element', $urlParameters))
-                    ->setTitle($lang->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')))
-                    ->setIcon($iconFactory->getIcon('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move', Icon::SIZE_SMALL));
+                    ->setTitle($lang->getLL('move_' . ($this->eRParts[0] === 'tt_content' ? 'record' : 'page')))
+                    ->setIcon($iconFactory->getIcon('actions-' . ($this->eRParts[0] === 'tt_content' ? 'document' : 'page') . '-move', Icon::SIZE_SMALL));
                 $buttonBar->addButton($moveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
         }
@@ -411,7 +411,7 @@ class PageLayoutActionHook
         // Set the edit_record value for internal use in this function:
         $edit_record = $this->controller->edit_record;
         // If a command to edit all records in a column is issue, then select all those elements, and redirect to FormEngine
-        if (substr($edit_record, 0, 9) == '_EDIT_COL') {
+        if (substr($edit_record, 0, 9) === '_EDIT_COL') {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
             if ($this->controller->MOD_SETTINGS['tt_content_showHidden']) {
                 $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -585,10 +585,10 @@ class PageLayoutActionHook
                 }
 
                 // Add hidden fields:
-                if ($uidVal == 'new') {
+                if ($uidVal === 'new') {
                     $panel .= '<input type="hidden" name="data[' . $tableName . '][' . $row['uid'] . '][pid]" value="' . $row['pid'] . '" />';
                 }
-                $redirect = ($uidVal == 'new' ? BackendUtility::getModuleUrl(
+                $redirect = ($uidVal === 'new' ? BackendUtility::getModuleUrl(
                     $this->moduleName,
                     ['id' => $this->controller->id, 'new_unique_uid' => $new_unique_uid, 'returnUrl' => $this->returnUrl]
                 ) : $this->R_URI);

@@ -472,7 +472,7 @@ class RelationHandler
     public function sortList($sortby)
     {
         // Sort directly without fetching addional data
-        if ($sortby == 'uid') {
+        if ($sortby === 'uid') {
             usort(
                 $this->itemArray,
                 function ($a, $b) {
@@ -589,7 +589,7 @@ class RelationHandler
                 // If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
                 $theTable = $row['tablenames'] ?: $this->firstTable;
             }
-            if (($row[$uidForeign_field] || $theTable == 'pages') && $theTable && isset($this->tableArray[$theTable])) {
+            if (($row[$uidForeign_field] || $theTable === 'pages') && $theTable && isset($this->tableArray[$theTable])) {
                 $this->itemArray[$key]['id'] = $row[$uidForeign_field];
                 $this->itemArray[$key]['table'] = $theTable;
                 $this->tableArray[$theTable][] = $row[$uidForeign_field];
@@ -694,7 +694,7 @@ class RelationHandler
             // For each item, insert it:
             foreach ($this->itemArray as $val) {
                 $c++;
-                if ($prep || $val['table'] == '_NO_TABLE') {
+                if ($prep || $val['table'] === '_NO_TABLE') {
                     // Insert current table if needed
                     if ($this->MM_is_foreign) {
                         $tablename = $this->currentTable;
@@ -1193,7 +1193,7 @@ class RelationHandler
             $prep = $tableC > 1 || $prependTableName;
             // Traverse the array of items:
             foreach ($this->itemArray as $val) {
-                $valueArray[] = ($prep && $val['table'] != '_NO_TABLE' ? $val['table'] . '_' : '') . $val['id'];
+                $valueArray[] = ($prep && $val['table'] !== '_NO_TABLE' ? $val['table'] . '_' : '') . $val['id'];
             }
         }
         // Return the array

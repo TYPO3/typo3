@@ -565,7 +565,7 @@ class AbstractPlugin
         // If this has a value the "previous" button is always visible (will be forced if "showFirstLast" is set)
         $alwaysPrev = $showFirstLast ? 1 : $this->pi_alwaysPrev;
         if (isset($this->internal['pagefloat'])) {
-            if (strtoupper($this->internal['pagefloat']) == 'CENTER') {
+            if (strtoupper($this->internal['pagefloat']) === 'CENTER') {
                 $pagefloat = ceil(($maxPages - 1) / 2);
             } else {
                 // pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right

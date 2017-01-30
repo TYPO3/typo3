@@ -134,7 +134,7 @@ class SelectFont extends RteHtmlAreaApi
         }
         $languageService = $this->getLanguageService();
         // Initializing the items array
-        $languageKey = $buttonId == 'fontstyle' ? 'Default font' : 'Default size';
+        $languageKey = $buttonId === 'fontstyle' ? 'Default font' : 'Default size';
         $items = [
             'none' => [
                 $languageService->sL(
@@ -144,7 +144,7 @@ class SelectFont extends RteHtmlAreaApi
             ],
         ];
         // Inserting and localizing default items
-        if ($hideItems != '*') {
+        if ($hideItems !== '*') {
             $index = 0;
             foreach ($this->defaultFont[$buttonId] as $name => $value) {
                 if (!GeneralUtility::inList($hideItems, strval(($index + 1)))) {
@@ -155,8 +155,8 @@ class SelectFont extends RteHtmlAreaApi
             }
         }
         // Adding configured items
-        if (is_array($this->RTEProperties[$buttonId == 'fontstyle' ? 'fonts.' : 'fontSizes.'])) {
-            foreach ($this->RTEProperties[$buttonId == 'fontstyle' ? 'fonts.' : 'fontSizes.'] as $name => $conf) {
+        if (is_array($this->RTEProperties[$buttonId === 'fontstyle' ? 'fonts.' : 'fontSizes.'])) {
+            foreach ($this->RTEProperties[$buttonId === 'fontstyle' ? 'fonts.' : 'fontSizes.'] as $name => $conf) {
                 $name = substr($name, 0, -1);
                 if (in_array($name, $addItems)) {
                     $label = $this->getPageConfigLabel($conf['name']);

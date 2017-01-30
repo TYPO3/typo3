@@ -211,7 +211,7 @@ class RemoteServer extends AbstractHandler
                         $versionRecord['uid']
                     );
 
-                    if ($configuration['type'] == 'group' && $configuration['internal_type'] == 'file') {
+                    if ($configuration['type'] === 'group' && $configuration['internal_type'] === 'file') {
                         $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
                         $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
                         $diffReturnArray[] = [

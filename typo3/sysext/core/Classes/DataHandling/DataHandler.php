@@ -1234,7 +1234,7 @@ class DataHandler
                     $newVersion_placeholderFieldArray = $this->overrideFieldArray($table, $newVersion_placeholderFieldArray);
                 }
                 // Setting system fields
-                if ($status == 'new') {
+                if ($status === 'new') {
                     if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
                         if ($createNewVersion) {
@@ -1270,7 +1270,7 @@ class DataHandler
                 // Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
                 // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already and files could have been uploaded that are now "lost"
                 if (is_array($fieldArray)) {
-                    if ($status == 'new') {
+                    if ($status === 'new') {
                         if ($table === 'pages') {
                             // for new pages always a refresh is needed
                             $this->pagetreeNeedsRefresh = true;
@@ -1475,7 +1475,7 @@ class DataHandler
                 case 'perms_group':
                 case 'perms_everybody':
                     // Permissions can be edited by the owner or the administrator
-                    if ($table == 'pages' && ($this->admin || $status == 'new' || $this->pageInfo($id, 'perms_userid') == $this->userid)) {
+                    if ($table === 'pages' && ($this->admin || $status === 'new' || $this->pageInfo($id, 'perms_userid') == $this->userid)) {
                         $value = (int)$fieldValue;
                         switch ($field) {
                             case 'perms_userid':
@@ -1573,7 +1573,7 @@ class DataHandler
                 }
                 return $res;
             }
-            if ($status == 'update') {
+            if ($status === 'update') {
                 // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
                 $onlyAllowedTables = isset($GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables']) ? $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] : $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
                 if ($onlyAllowedTables) {
@@ -1946,7 +1946,7 @@ class DataHandler
             $valueArray = array_unique($valueArray);
         }
         // If an exclusive key is found, discard all others:
-        if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['exclusiveKeys']) {
+        if ($tcaFieldConf['type'] === 'select' && $tcaFieldConf['exclusiveKeys']) {
             $exclusiveKeys = GeneralUtility::trimExplode(',', $tcaFieldConf['exclusiveKeys']);
             foreach ($valueArray as $index => $key) {
                 if (in_array($key, $exclusiveKeys, true)) {
@@ -1959,7 +1959,7 @@ class DataHandler
         // NOTE!!! Must check max-items of files before the later check because that check would just leave out file names if there are too many!!
         $valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
         // Checking for select / authMode, removing elements from $valueArray if any of them is not allowed!
-        if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['authMode']) {
+        if ($tcaFieldConf['type'] === 'select' && $tcaFieldConf['authMode']) {
             $preCount = count($valueArray);
             foreach ($valueArray as $index => $key) {
                 if (!$this->BE_USER->checkAuthMode($table, $field, $key, $tcaFieldConf['authMode'])) {
@@ -1972,7 +1972,7 @@ class DataHandler
             }
         }
         // For group types:
-        if ($tcaFieldConf['type'] == 'group') {
+        if ($tcaFieldConf['type'] === 'group') {
             switch ($tcaFieldConf['internal_type']) {
                 case 'file_reference':
                 case 'file':
@@ -2079,7 +2079,7 @@ class DataHandler
             $this->fileFunc->setFileExtensionPermissions($tcaFieldConf['allowed'], $tcaFieldConf['disallowed'] ?: '*');
         }
         // If there is an upload folder defined:
-        if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] == 'file') {
+        if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] === 'file') {
             $currentFilesForHistory = null;
             // If filehandling should NOT be bypassed, do processing:
             if (!$this->bypassFileHandling) {
@@ -2088,7 +2088,7 @@ class DataHandler
                 // Get destrination path:
                 $dest = $this->destPathFromUploadFolder($tcaFieldConf['uploadfolder']);
                 // If we are updating:
-                if ($status == 'update') {
+                if ($status === 'update') {
                     // Traverse the input values and convert to absolute filenames in case the update happens to an autoVersionized record.
                     // Background: This is a horrible workaround! The problem is that when a record is auto-versionized the files of the record get copied and therefore get new names which is overridden with the names from the original record in the incoming data meaning both lost files and double-references!
                     // The only solution I could come up with (except removing support for managing files when autoversioning) was to convert all relative files to absolute names so they are copied again (and existing files deleted). This should keep references intact but means that some files are copied, then deleted after being copied _again_.
@@ -2225,7 +2225,7 @@ class DataHandler
                     // Explode files
                     $dbAnalysis->itemArray[]['id'] = $theFile;
                 }
-                if ($status == 'update') {
+                if ($status === 'update') {
                     $dbAnalysis->writeMM($tcaFieldConf['MM'], $id, 0);
                     $newFiles = implode(',', $dbAnalysis->getValueArray());
                     list(, , $recFieldName) = explode(':', $recFID);
@@ -2427,7 +2427,7 @@ class DataHandler
         }
 
         foreach ($actionCMDs as $key => $value) {
-            if ($key == '_ACTION') {
+            if ($key === '_ACTION') {
                 // First, check if there are "commands":
                 if (current($actionCMDs[$key]) === '') {
                     continue;
@@ -2438,7 +2438,7 @@ class DataHandler
                 foreach ($actionCMDs[$key] as $idx => $order) {
                     // Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost
                     // files unless we act on this delete operation by traversing and deleting files that were referred to.
-                    if ($order != 'DELETE') {
+                    if ($order !== 'DELETE') {
                         $newValueArray[$idx] = $valueArray[$idx];
                     }
                     unset($valueArray[$idx]);
@@ -2848,7 +2848,7 @@ class DataHandler
         } else {
             $tables = $tcaFieldConf['foreign_table'];
         }
-        $prep = $type == 'group' ? $tcaFieldConf['prepend_tname'] : '';
+        $prep = $type === 'group' ? $tcaFieldConf['prepend_tname'] : '';
         $newRelations = implode(',', $valueArray);
         /** @var $dbAnalysis RelationHandler */
         $dbAnalysis = $this->createRelationHandlerInstance();
@@ -2858,7 +2858,7 @@ class DataHandler
             // convert submitted items to use version ids instead of live ids
             // (only required for MM relations in a workspace context)
             $dbAnalysis->convertItemArray();
-            if ($status == 'update') {
+            if ($status === 'update') {
                 /** @var $oldRelations_dbAnalysis RelationHandler */
                 $oldRelations_dbAnalysis = $this->createRelationHandlerInstance();
                 $oldRelations_dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
@@ -2962,7 +2962,7 @@ class DataHandler
         // For each DS element:
         foreach ($DSelements as $key => $dsConf) {
             // Array/Section:
-            if ($DSelements[$key]['type'] == 'array') {
+            if ($DSelements[$key]['type'] === 'array') {
                 if (!is_array($dataValues[$key]['el'])) {
                     continue;
                 }
@@ -3019,7 +3019,7 @@ class DataHandler
                     }
                     // Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
                     // We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
-                    if (substr($vKey, -9) != '.vDEFbase') {
+                    if (substr($vKey, -9) !== '.vDEFbase') {
                         if ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
                             // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
                             if (isset($dataValues[$key]['vDEF'])) {
@@ -3062,7 +3062,7 @@ class DataHandler
         $dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
         // If the localizationMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
         $localizationMode = BackendUtility::getInlineLocalizationMode($table, $tcaFieldConf);
-        if ($localizationMode == 'keep' && $status == 'update') {
+        if ($localizationMode === 'keep' && $status === 'update') {
             // Fetch the current record and determine the original record:
             $row = BackendUtility::getRecordWSOL($table, $id);
             if (is_array($row)) {
@@ -3085,7 +3085,7 @@ class DataHandler
             $dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
             $newValue = $keepTranslation ? 0 : $dbAnalysis->countItems(false);
         } else {
-            if ($this->getInlineFieldType($tcaFieldConf) == 'mm') {
+            if ($this->getInlineFieldType($tcaFieldConf) === 'mm') {
                 // In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
                 $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
                 $newValue = $keepTranslation ? 0 : $valueArray[0];
@@ -3305,7 +3305,7 @@ class DataHandler
             return null;
         }
 
-        $fullLanguageCheckNeeded = $table != 'pages';
+        $fullLanguageCheckNeeded = $table !== 'pages';
         //Used to check language and general editing rights
         if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded)) {
             if ($this->enableLogging) {
@@ -3348,7 +3348,7 @@ class DataHandler
                 // "pid" is hardcoded of course:
                 // isset() won't work here, since values can be NULL in each of the arrays
                 // except setDefaultOnCopyArray, since we exploded that from a string
-                if ($field == 'pid') {
+                if ($field === 'pid') {
                     $value = $destPid;
                 } elseif (array_key_exists($field, $overrideValues)) {
                     // Override value...
@@ -3731,13 +3731,13 @@ class DataHandler
         // Get the localization mode for the current (parent) record (keep|select):
         $localizationMode = BackendUtility::getInlineLocalizationMode($table, $field);
         // Register if there are references to take care of or MM is used on an inline field (no change to value):
-        if ($this->isReferenceField($conf) || $inlineSubType == 'mm') {
+        if ($this->isReferenceField($conf) || $inlineSubType === 'mm') {
             $value = $this->copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode, $inlineSubType);
         } elseif ($inlineSubType !== false) {
             $value = $this->copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions, $localizationMode, $inlineSubType);
         }
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
-        if ($conf['type'] == 'flex') {
+        if ($conf['type'] === 'flex') {
             // Get current value array:
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
@@ -3773,8 +3773,8 @@ class DataHandler
      */
     protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode, $inlineSubType)
     {
-        $allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
-        $prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
+        $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
+        $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
         $mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
         $localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
         $localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
@@ -3835,8 +3835,8 @@ class DataHandler
                                                 array $workspaceOptions, $localizationMode, $inlineSubType)
     {
         // Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
-        if ($language > 0 && $localizationMode == 'keep') {
-            $value = $inlineSubType == 'field' ? 0 : '';
+        if ($language > 0 && $localizationMode === 'keep') {
+            $value = $inlineSubType === 'field' ? 0 : '';
         } else {
             // Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
             /** @var $dbAnalysis RelationHandler */
@@ -3888,7 +3888,7 @@ class DataHandler
                     }
                 }
                 // If the current field is set on a page record, update the pid of related child records:
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $this->registerDBPids[$v['table']][$v['id']] = $uid;
                 } elseif (isset($this->registerDBPids[$table][$uid])) {
                     $this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
@@ -3945,7 +3945,7 @@ class DataHandler
     public function copyRecord_procFilesRefs($conf, $uid, $value)
     {
         // Prepend absolute paths to files:
-        if ($conf['type'] != 'group' || ($conf['internal_type'] != 'file' && $conf['internal_type'] != 'file_reference')) {
+        if ($conf['type'] !== 'group' || ($conf['internal_type'] !== 'file' && $conf['internal_type'] !== 'file_reference')) {
             return $value;
         }
 
@@ -3964,7 +3964,7 @@ class DataHandler
             $theFileValues = GeneralUtility::trimExplode(',', $value, true);
         }
         // Traverse this array of files:
-        $uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
+        $uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
         $dest = $this->destPathFromUploadFolder($uploadFolder);
         $newValue = [];
         foreach ($theFileValues as $file) {
@@ -4221,21 +4221,21 @@ class DataHandler
         $resolvedPid = $this->resolvePid($table, $destPid);
         // Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
         // If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
-        if ($table != 'pages' || $resolvedPid == $moveRec['pid']) {
+        if ($table !== 'pages' || $resolvedPid == $moveRec['pid']) {
             // Edit rights for the record...
             $mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
         } else {
             $mayMoveAccess = $this->doesRecordExist($table, $uid, 'delete');
         }
         // Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
-        if ($table != 'pages' || $resolvedPid != $moveRec['pid']) {
+        if ($table !== 'pages' || $resolvedPid != $moveRec['pid']) {
             // Insert rights for the record...
             $mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, 4);
         } else {
             $mayInsertAccess = $this->checkRecordUpdateAccess($table, $uid);
         }
         // Checking if there is anything else disallowing moving the record by checking if editing is allowed
-        $fullLanguageCheckNeeded = $table != 'pages';
+        $fullLanguageCheckNeeded = $table !== 'pages';
         $mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded);
         // If moving is allowed, begin the processing:
         if (!$mayEditAccess) {
@@ -4313,7 +4313,7 @@ class DataHandler
         }
         // Insert as first element on page (where uid = $destPid)
         if ($destPid >= 0) {
-            if ($table != 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
+            if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
                 // Clear cache before moving
                 list($parentUid) = BackendUtility::getTSCpid($table, $uid, '');
                 $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
@@ -4375,7 +4375,7 @@ class DataHandler
                 $destPid = $sortInfo['pid'];
                 // If not an array, there was an error (which is already logged)
                 if (is_array($sortInfo)) {
-                    if ($table != 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
+                    if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
                         // clear cache before moving
                         $this->registerRecordIdForPageCacheClearing($table, $uid);
                         // We now update the pid and sortnumber
@@ -4462,13 +4462,13 @@ class DataHandler
      */
     public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf)
     {
-        if ($conf['type'] == 'inline') {
+        if ($conf['type'] === 'inline') {
             $foreign_table = $conf['foreign_table'];
             $moveChildrenWithParent = !isset($conf['behaviour']['disableMovingChildrenWithParent']) || !$conf['behaviour']['disableMovingChildrenWithParent'];
             if ($foreign_table && $moveChildrenWithParent) {
                 $inlineType = $this->getInlineFieldType($conf);
-                if ($inlineType == 'list' || $inlineType == 'field') {
-                    if ($table == 'pages') {
+                if ($inlineType === 'list' || $inlineType === 'field') {
+                    if ($table === 'pages') {
                         // If the inline elements are related to a page record,
                         // make sure they reside at that page and not at its parent
                         $destPid = $uid;
@@ -4651,8 +4651,8 @@ class DataHandler
         foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
             $translateToMsg = '';
             // Check if we are just prefixing:
-            if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
-                if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && (string)$row[$fN] !== '') {
+            if ($fCfg['l10n_mode'] === 'prefixLangTitle') {
+                if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
                     list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
                     $TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
                     if (!empty($TSConfig['translateToMessage'])) {
@@ -4794,7 +4794,7 @@ class DataHandler
         }
 
         $removeArray = [];
-        $mmTable = $inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
+        $mmTable = $inlineSubType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
         // Fetch children from original language parent:
         /** @var $dbAnalysisOriginal RelationHandler */
         $dbAnalysisOriginal = $this->createRelationHandlerInstance();
@@ -4854,12 +4854,12 @@ class DataHandler
         }
         $updateFields = [];
         // Handle, reorder and store relations:
-        if ($inlineSubType == 'list') {
+        if ($inlineSubType === 'list') {
             $updateFields = [$field => $value];
-        } elseif ($inlineSubType == 'field') {
+        } elseif ($inlineSubType === 'field') {
             $dbAnalysisCurrent->writeForeignField($config, $id);
             $updateFields = [$field => $dbAnalysisCurrent->countItems(false)];
-        } elseif ($inlineSubType == 'mm') {
+        } elseif ($inlineSubType === 'mm') {
             $dbAnalysisCurrent->writeMM($config['MM'], $id);
             $updateFields = [$field => $dbAnalysisCurrent->countItems(false)];
         }
@@ -4913,7 +4913,7 @@ class DataHandler
      */
     public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false)
     {
-        if ($table == 'pages') {
+        if ($table === 'pages') {
             $this->deletePages($uid, $noRecordCheck, $forceHardDelete);
         } else {
             $this->deleteVersionsForRecord($table, $uid, $forceHardDelete);
@@ -4935,7 +4935,7 @@ class DataHandler
         if (is_array($versions)) {
             foreach ($versions as $verRec) {
                 if (!$verRec['_CURRENT_VERSION']) {
-                    if ($table == 'pages') {
+                    if ($table === 'pages') {
                         $this->deletePages($verRec['uid'], true, $forceHardDelete);
                     } else {
                         $this->deleteRecord($table, $verRec['uid'], true, $forceHardDelete);
@@ -5207,7 +5207,7 @@ class DataHandler
         $uid = (int)$uid;
         if ($uid) {
             foreach ($GLOBALS['TCA'] as $table => $_) {
-                if ($table != 'pages') {
+                if ($table !== 'pages') {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($table);
 
@@ -5412,11 +5412,11 @@ class DataHandler
      */
     public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = false)
     {
-        if ($conf['type'] == 'inline') {
+        if ($conf['type'] === 'inline') {
             $foreign_table = $conf['foreign_table'];
             if ($foreign_table) {
                 $inlineType = $this->getInlineFieldType($conf);
-                if ($inlineType == 'list' || $inlineType == 'field') {
+                if ($inlineType === 'list' || $inlineType === 'field') {
                     /** @var RelationHandler $dbAnalysis */
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
@@ -5441,7 +5441,7 @@ class DataHandler
                 }
             }
         } elseif ($this->isReferenceField($conf)) {
-            $allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
+            $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             $dbAnalysis = $this->createRelationHandlerInstance();
             $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
             foreach ($dbAnalysis->itemArray as $v) {
@@ -5631,8 +5631,8 @@ class DataHandler
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fConf) {
             $conf = $fConf['config'];
             if ($this->isReferenceField($conf)) {
-                $allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
-                $prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
+                $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
+                $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
                 if ($conf['MM']) {
                     /** @var $dbAnalysis RelationHandler */
                     $dbAnalysis = $this->createRelationHandlerInstance();
@@ -5647,7 +5647,7 @@ class DataHandler
                         $this->version_remapMMForVersionSwap_reg[$swapWith][$field] = [$dbAnalysis, $conf['MM'], $prependName];
                     }
                 }
-            } elseif ($conf['type'] == 'flex') {
+            } elseif ($conf['type'] === 'flex') {
                 // Current record
                 $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
                     $fConf,
@@ -5695,8 +5695,8 @@ class DataHandler
         // Extract parameters:
         list($table, $uid, $field) = $pParams;
         if ($this->isReferenceField($dsConf)) {
-            $allowedTables = $dsConf['type'] == 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'];
-            $prependName = $dsConf['type'] == 'group' ? $dsConf['prepend_tname'] : '';
+            $allowedTables = $dsConf['type'] === 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'];
+            $prependName = $dsConf['type'] === 'group' ? $dsConf['prepend_tname'] : '';
             if ($dsConf['MM']) {
                 /** @var $dbAnalysis RelationHandler */
                 $dbAnalysis = $this->createRelationHandlerInstance();
@@ -5787,7 +5787,7 @@ class DataHandler
                                 }
                                 break;
                             case 'flex':
-                                if ($value == 'FlexForm_reference') {
+                                if ($value === 'FlexForm_reference') {
                                     // This will fetch the new row for the element
                                     $origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*');
                                     if (is_array($origRecordRow)) {
@@ -5868,14 +5868,14 @@ class DataHandler
         // Will be set TRUE if an upgrade should be done...
         $set = false;
         // Allowed tables for references.
-        $allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
+        $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
         // Table name to prepend the UID
-        $prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
+        $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
         // Which tables that should possibly not be remapped
         $dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], true);
         // Convert value to list of references:
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->registerNonTableValues = $conf['type'] == 'select' && $conf['allowNonIdValues'];
+        $dbAnalysis->registerNonTableValues = $conf['type'] === 'select' && $conf['allowNonIdValues'];
         $dbAnalysis->start($value, $allowedTables, $conf['MM'], $MM_localUid, $table, $conf);
         // Traverse those references and map IDs:
         foreach ($dbAnalysis->itemArray as $k => $v) {
@@ -5933,7 +5933,7 @@ class DataHandler
         $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
         if ($conf['foreign_table']) {
             $inlineType = $this->getInlineFieldType($conf);
-            if ($inlineType == 'mm') {
+            if ($inlineType === 'mm') {
                 $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
             } elseif ($inlineType !== false) {
                 /** @var $dbAnalysis RelationHandler */
@@ -5950,12 +5950,12 @@ class DataHandler
                 }
 
                 // Update child records if using pointer fields ('foreign_field'):
-                if ($inlineType == 'field') {
+                if ($inlineType === 'field') {
                     $dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
                 }
                 $thePidToUpdate = null;
                 // If the current field is set on a page record, update the pid of related child records:
-                if ($table == 'pages') {
+                if ($table === 'pages') {
                     $thePidToUpdate = $theUidToUpdate;
                 } elseif (isset($this->registerDBPids[$table][$uid])) {
                     $thePidToUpdate = $this->registerDBPids[$table][$uid];
@@ -6433,7 +6433,7 @@ class DataHandler
         }
         // Processing the incoming $perms (from possible string to integer that can be AND'ed)
         if (!MathUtility::canBeInterpretedAsInteger($perms)) {
-            if ($table != 'pages') {
+            if ($table !== 'pages') {
                 switch ($perms) {
                     case 'edit':
 
@@ -6459,7 +6459,7 @@ class DataHandler
         // For all tables: Check if record exists:
         $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
         if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id) || $this->admin)) {
-            if ($table != 'pages') {
+            if ($table !== 'pages') {
                 // Find record without checking page
                 // @todo: Thist should probably check for editlock
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -6770,7 +6770,7 @@ class DataHandler
      */
     public function getRecordProperties($table, $id, $noWSOL = false)
     {
-        $row = $table == 'pages' && !$id ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0] : $this->recordInfo($table, $id, '*');
+        $row = $table === 'pages' && !$id ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0] : $this->recordInfo($table, $id, '*');
         if (!$noWSOL) {
             BackendUtility::workspaceOL($table, $row);
         }
@@ -6808,7 +6808,7 @@ class DataHandler
      */
     public function eventPid($table, $uid, $pid)
     {
-        return $table == 'pages' ? $uid : $pid;
+        return $table === 'pages' ? $uid : $pid;
     }
 
     /*********************************************
@@ -6859,7 +6859,7 @@ class DataHandler
                     // Clear cache for relevant pages:
                     $this->registerRecordIdForPageCacheClearing($table, $id);
                     // Unset the pageCache for the id if table was page.
-                    if ($table == 'pages') {
+                    if ($table === 'pages') {
                         unset($this->pageCache[$id]);
                     }
                 } elseif ($this->enableLogging) {
@@ -7858,7 +7858,7 @@ class DataHandler
         $listArr = [];
         if (isset($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
-                if ($configArr['config']['type'] == 'group' && ($configArr['config']['internal_type'] == 'file' || $configArr['config']['internal_type'] == 'file_reference')) {
+                if ($configArr['config']['type'] === 'group' && ($configArr['config']['internal_type'] === 'file' || $configArr['config']['internal_type'] === 'file_reference')) {
                     $listArr[] = $field;
                 }
             }
@@ -7903,7 +7903,7 @@ class DataHandler
      */
     public function isReferenceField($conf)
     {
-        return $conf['type'] == 'group' && $conf['internal_type'] == 'db' || $conf['type'] == 'select' && $conf['foreign_table'];
+        return $conf['type'] === 'group' && $conf['internal_type'] === 'db' || $conf['type'] === 'select' && $conf['foreign_table'];
     }
 
     /**
@@ -8044,7 +8044,7 @@ class DataHandler
     public function extFileFunctions($table, $field, $filelist, $func)
     {
         $uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
-        if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] == 'file') {
+        if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] === 'file') {
             $uploadPath = $this->destPathFromUploadFolder($uploadFolder);
             $fileArray = explode(',', $filelist);
             foreach ($fileArray as $theFile) {

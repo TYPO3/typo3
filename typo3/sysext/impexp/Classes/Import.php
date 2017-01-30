@@ -716,7 +716,7 @@ class Import extends ImportExport
         if (is_array($this->dat['header']['records'])) {
             foreach ($this->dat['header']['records'] as $table => $recs) {
                 $this->addGeneralErrorsByTable($table);
-                if ($table != 'pages') {
+                if ($table !== 'pages') {
                     foreach ($recs as $uid => $thisRec) {
                         // PID: Set the main $pid, unless a NEW-id is found
                         $setPid = isset($this->import_mapId['pages'][$thisRec['pid']])
@@ -786,7 +786,7 @@ class Import extends ImportExport
                     foreach ($recList as $tableName => $uidList) {
                         // If $mainPid===$newPid then we are on root level and we can consider to move pages as well!
                         // (they will not be in the page tree!)
-                        if (($tableName != 'pages' || !$pagesFromTree[$pid]) && is_array($uidList)) {
+                        if (($tableName !== 'pages' || !$pagesFromTree[$pid]) && is_array($uidList)) {
                             $uidList = array_reverse(array_keys($uidList));
                             foreach ($uidList as $uid) {
                                 if ($this->dontIgnorePid($tableName, $uid)) {
@@ -872,7 +872,7 @@ class Import extends ImportExport
                 $ID = StringUtility::getUniqueId('NEW');
             }
             $this->import_newId[$table . ':' . $ID] = ['table' => $table, 'uid' => $uid];
-            if ($table == 'pages') {
+            if ($table === 'pages') {
                 $this->import_newId_pids[$uid] = $ID;
             }
             // Set main record data:
@@ -1708,7 +1708,7 @@ class Import extends ImportExport
                 $this->error('External import files for the given import source is currently not supported.');
             }
         }
-        if (strtolower($fI['extension']) == 'xml') {
+        if (strtolower($fI['extension']) === 'xml') {
             // XML:
             $xmlContent = file_get_contents($filename);
             if (strlen($xmlContent)) {

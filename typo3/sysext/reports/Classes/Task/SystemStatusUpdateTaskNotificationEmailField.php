@@ -50,7 +50,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        if ($schedulerModule->CMD == 'edit') {
+        if ($schedulerModule->CMD === 'edit') {
             $taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
             $taskInfo[$this->fieldPrefix . 'NotificationAll'] = $task->getNotificationAll();
         }

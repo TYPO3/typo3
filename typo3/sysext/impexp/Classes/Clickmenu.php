@@ -53,15 +53,15 @@ class Clickmenu
     {
         $localItems = [];
         // Show import/export on second level menu OR root level.
-        if ($backRef->cmLevel && GeneralUtility::_GP('subname') == 'moreoptions' || $table === 'pages' && $uid == 0) {
+        if ($backRef->cmLevel && GeneralUtility::_GP('subname') === 'moreoptions' || $table === 'pages' && $uid == 0) {
             $LL = $this->includeLL();
             $urlParameters = [
                 'tx_impexp' => [
                     'action' => 'export'
                 ],
-                'id' => ($table == 'pages' ? $uid : $backRef->rec['pid'])
+                'id' => ($table === 'pages' ? $uid : $backRef->rec['pid'])
             ];
-            if ($table == 'pages') {
+            if ($table === 'pages') {
                 $urlParameters['tx_impexp']['pagetree']['id'] = $uid;
                 $urlParameters['tx_impexp']['pagetree']['levels'] = 0;
                 $urlParameters['tx_impexp']['pagetree']['tables'][] = '_ALL';

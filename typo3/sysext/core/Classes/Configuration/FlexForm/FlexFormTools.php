@@ -811,7 +811,7 @@ class FlexFormTools
             foreach ($dataStruct as $key => $value) {
                 // The value of each entry must be an array.
                 if (is_array($value)) {
-                    if ($value['type'] == 'array') {
+                    if ($value['type'] === 'array') {
                         // Array (Section) traversal
                         if ($value['section']) {
                             $cc = 0;

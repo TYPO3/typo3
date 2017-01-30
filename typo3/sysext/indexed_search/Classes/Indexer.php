@@ -740,10 +740,10 @@ class Indexer
             $body = '';
             foreach ($expBody as $val) {
                 $part = explode('-->', $val, 2);
-                if (trim($part[0]) == 'begin') {
+                if (trim($part[0]) === 'begin') {
                     $body .= $part[1];
                     $prev = '';
-                } elseif (trim($part[0]) == 'end') {
+                } elseif (trim($part[0]) === 'end') {
                     $body .= $prev;
                 } else {
                     $prev = $val;
@@ -849,7 +849,7 @@ class Indexer
                 $tagAttributes = $htmlParser->get_tag_attributes($tagData, true);
                 $firstTagName = $htmlParser->getFirstTagName($tagData);
                 if (strtolower($firstTagName) === 'a') {
-                    if ($tagAttributes[0]['href'] && $tagAttributes[0]['href'][0] != '#') {
+                    if ($tagAttributes[0]['href'] && $tagAttributes[0]['href'][0] !== '#') {
                         $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
@@ -1049,7 +1049,7 @@ class Indexer
     protected function createLocalPathFromAbsoluteURL($sourcePath)
     {
         $localPath = '';
-        if ($sourcePath[0] == '/') {
+        if ($sourcePath[0] === '/') {
             $sourcePath = substr($sourcePath, 1);
             $localPath = PATH_site . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
@@ -1086,7 +1086,7 @@ class Indexer
     protected static function isRelativeURL($url)
     {
         $urlParts = @parse_url($url);
-        return $urlParts['scheme'] == '' && $urlParts['path'][0] != '/';
+        return $urlParts['scheme'] == '' && $urlParts['path'][0] !== '/';
     }
 
     /**

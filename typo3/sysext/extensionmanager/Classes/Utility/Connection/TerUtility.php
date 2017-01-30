@@ -95,7 +95,7 @@ class TerUtility
         gzuncompress($dat);
         // compare hashes ignoring any leading whitespace. See bug #0000365.
         if (ltrim($parts[0]) == md5($dat)) {
-            if ($parts[1] == 'gzcompress') {
+            if ($parts[1] === 'gzcompress') {
                 if (function_exists('gzuncompress')) {
                     $dat = gzuncompress($dat);
                 } else {
@@ -123,7 +123,7 @@ class TerUtility
     public function decodeExchangeData($stream)
     {
         $parts = explode(':', $stream, 3);
-        if ($parts[1] == 'gzcompress') {
+        if ($parts[1] === 'gzcompress') {
             if (function_exists('gzuncompress')) {
                 $parts[2] = gzuncompress($parts[2]);
             } else {

@@ -64,7 +64,7 @@ class HtmlParser
         // We skip the first element in foreach loop
         $partsSliced = array_slice($parts, 1, null, true);
         foreach ($partsSliced as $v) {
-            $isEndTag = substr($content, $pointer, 2) == '</' ? 1 : 0;
+            $isEndTag = substr($content, $pointer, 2) === '</' ? 1 : 0;
             $tagLen = strcspn(substr($content, $pointer), '>') + 1;
             // We meet a start-tag:
             if (!$isEndTag) {
@@ -256,7 +256,7 @@ class HtmlParser
         if (is_array($components)) {
             foreach ($components as $key => $val) {
                 // Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
-                if ($val != '=') {
+                if ($val !== '=') {
                     if ($valuemode) {
                         if ($name) {
                             $attributes[$name] = $deHSC ? htmlspecialchars_decode($val) : $val;
@@ -307,7 +307,7 @@ class HtmlParser
         if (preg_match_all('/("[^"]*"|\'[^\']*\'|[^\\s"\'\\=]+|\\=)/s', $tag_tmp, $matches) > 0) {
             foreach ($matches[1] as $part) {
                 $firstChar = $part[0];
-                if ($firstChar == '"' || $firstChar == '\'') {
+                if ($firstChar === '"' || $firstChar === '\'') {
                     $metaValue[] = $firstChar;
                     $value[] = substr($part, 1, -1);
                 } else {
@@ -396,7 +396,7 @@ class HtmlParser
                 $tok = substr($tok, $eocPos + 10);
                 $inCdata = false;
                 $skipTag = true;
-            } elseif (substr($tok, 0, 3) == '!--') {
+            } elseif (substr($tok, 0, 3) === '!--') {
                 if (($eocPos = strpos($tok, '-->')) === false) {
                     // Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
                     $newContent[$c++] = '<' . $tok;
@@ -425,7 +425,7 @@ class HtmlParser
                 $tagEnd = strpos($tok, '>');
                 // If there is and end-bracket...	tagEnd can't be 0 as the first character can't be a >
                 if ($tagEnd) {
-                    $endTag = $firstChar == '/' ? 1 : 0;
+                    $endTag = $firstChar === '/' ? 1 : 0;
                     $tagContent = substr($tok, $endTag, $tagEnd - $endTag);
                     $tagParts = preg_split('/\\s+/s', $tagContent, 2);
                     $tagName = strtolower($tagParts[0]);
@@ -500,7 +500,7 @@ class HtmlParser
                                             if (is_array($params['list'])) {
                                                 // For the class attribute, remove from the attribute value any class not in the list
                                                 // Classes are case sensitive
-                                                if ($attr == 'class') {
+                                                if ($attr === 'class') {
                                                     $newClasses = [];
                                                     $classes = GeneralUtility::trimExplode(' ', $tagAttrib[0][$attr], true);
                                                     foreach ($classes as $class) {
@@ -519,7 +519,7 @@ class HtmlParser
                                                     }
                                                 }
                                             }
-                                            if ($params['removeIfFalse'] && $params['removeIfFalse'] != 'blank' && !$tagAttrib[0][$attr] || $params['removeIfFalse'] == 'blank' && (string)$tagAttrib[0][$attr] === '') {
+                                            if ($params['removeIfFalse'] && $params['removeIfFalse'] !== 'blank' && !$tagAttrib[0][$attr] || $params['removeIfFalse'] === 'blank' && (string)$tagAttrib[0][$attr] === '') {
                                                 unset($tagAttrib[0][$attr]);
                                             }
                                             if ((string)$params['removeIfEquals'] !== '' && $this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']) === $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp'])) {
@@ -585,7 +585,7 @@ class HtmlParser
                                     }
                                     if ($endTag) {
                                         $correctTag = 1;
-                                        if ($tags[$tagName]['nesting'] == 'global') {
+                                        if ($tags[$tagName]['nesting'] === 'global') {
                                             $lastEl = end($tagStack);
                                             if ($tagName !== $lastEl) {
                                                 if (in_array($tagName, $tagStack)) {
@@ -606,13 +606,13 @@ class HtmlParser
                                             $setTag = 0;
                                         } else {
                                             array_pop($tagRegister[$tagName]);
-                                            if ($tags[$tagName]['nesting'] == 'global') {
+                                            if ($tags[$tagName]['nesting'] === 'global') {
                                                 array_pop($tagStack);
                                             }
                                         }
                                     } else {
                                         array_push($tagRegister[$tagName], $c);
-                                        if ($tags[$tagName]['nesting'] == 'global') {
+                                        if ($tags[$tagName]['nesting'] === 'global') {
                                             array_push($tagStack, $tagName);
                                         }
                                     }
@@ -694,7 +694,7 @@ class HtmlParser
             if ($k % 2) {
                 $params = $this->get_tag_attributes($v);
                 // Detect tag-ending so that it is re-applied correctly.
-                $tagEnd = substr($v, -2) == '/>' ? ' />' : '>';
+                $tagEnd = substr($v, -2) === '/>' ? ' />' : '>';
                 // The 'name' of the first tag
                 $firstTagName = $this->getFirstTagName($v);
                 $somethingDone = 0;

@@ -129,34 +129,34 @@ class MathUtility
         foreach ($regSliced as $k => $v) {
             $v = (float)$v;
             $sign = $reg[1][$k];
-            if ($sign == '+' || $sign == '-') {
-                $Msign == '-' ? ($number -= $buffer) : ($number += $buffer);
+            if ($sign === '+' || $sign === '-') {
+                $Msign === '-' ? ($number -= $buffer) : ($number += $buffer);
                 $Msign = $sign;
                 $buffer = $v;
             } else {
-                if ($sign == '/') {
+                if ($sign === '/') {
                     if ($v) {
                         $buffer /= $v;
                     } else {
                         $err = 'dividing by zero';
                     }
                 }
-                if ($sign == '%') {
+                if ($sign === '%') {
                     if ($v) {
                         $buffer %= $v;
                     } else {
                         $err = 'dividing by zero';
                     }
                 }
-                if ($sign == '*') {
+                if ($sign === '*') {
                     $buffer *= $v;
                 }
-                if ($sign == '^') {
+                if ($sign === '^') {
                     $buffer = pow($buffer, $v);
                 }
             }
         }
-        $number = $Msign == '-' ? ($number -= $buffer) : ($number += $buffer);
+        $number = $Msign === '-' ? ($number -= $buffer) : ($number += $buffer);
         return $err ? 'ERROR: ' . $err : $number;
     }
 

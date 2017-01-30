@@ -494,7 +494,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 							<td>' . ($ownVer > 1 ? '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', ['table' => $table, 'uid' => $subrow['uid']])) . '">' . ($ownVer - 1) . '</a>' : '') . '</td>
 							<td class="col-control">' . $this->adminLinks($table, $subrow) . '</td>
 						</tr>';
-                    if ($table == 'pages' && $c < 100) {
+                    if ($table === 'pages' && $c < 100) {
                         $sub = $this->pageSubContent($subrow['uid'], $c + 1);
                         if ($sub) {
                             $content .= '
