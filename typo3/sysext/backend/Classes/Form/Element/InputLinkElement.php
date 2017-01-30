@@ -16,9 +16,15 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\FieldWizard\DefaultLanguageDifferences;
 use TYPO3\CMS\Backend\Form\FieldWizard\OtherLanguageContent;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -123,6 +129,8 @@ class InputLinkElement extends AbstractFormElement
             'class' => implode(' ', [
                 'form-control',
                 't3js-clearable',
+                't3js-form-field-inputlink-input',
+                'hidden',
                 'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
@@ -186,12 +194,23 @@ class InputLinkElement extends AbstractFormElement
         $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
+        $linkExplanation = $this->getLinkExplanation($itemValue);
+
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
         $expansionHtml[] =      '<div class="form-wizards-element">';
-        $expansionHtml[] =          '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $expansionHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
+        $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
+        $expansionHtml[] =              '<span class="input-group-addon">' . $linkExplanation['icon'] . '</span>';
+        $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" disabled value="' . htmlspecialchars($linkExplanation['text']) . '">';
+        $expansionHtml[] =              '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        $expansionHtml[] =              '<span class="input-group-btn">';
+        $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button">';
+        $expansionHtml[] =                      $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
+        $expansionHtml[] =                  '</button>';
+        $expansionHtml[] =              '</span>';
+        $expansionHtml[] =              '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
+        $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         $expansionHtml[] =      '<div class="form-wizards-items-aside">';
         $expansionHtml[] =          '<div class="btn-group">';
@@ -200,6 +219,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         $expansionHtml[] =      '<div class="form-wizards-items-bottom">';
+        $expansionHtml[] =          $linkExplanation['additionalAttributes'];
         $expansionHtml[] =          $fieldWizardHtml;
         $expansionHtml[] =      '</div>';
         $expansionHtml[] =  '</div>';
@@ -267,6 +287,97 @@ class InputLinkElement extends AbstractFormElement
 
         $resultArray['html'] = '<div class="t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
+    }
+
+    /**
+     * @param string $itemValue
+     * @return array
+     */
+    protected function getLinkExplanation(string $itemValue): array
+    {
+        if (empty($itemValue)) {
+            return [];
+        }
+        $data = [];
+        $typolinkService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+        $linkParts = $typolinkService->decode($itemValue);
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        $linkData = $linkService->resolve($linkParts['url']);
+        switch ($linkData['type']) {
+            case LinkService::TYPE_PAGE:
+                $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
+                // Is this a real page
+                if ($pageRecord['uid']) {
+                    $data = [
+                        'text' => htmlspecialchars($pageRecord['_thePathFull']) . '[' . $pageRecord['uid'] . ']',
+                        'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render()
+                    ];
+                }
+                break;
+            case LinkService::TYPE_EMAIL:
+                $data = [
+                    'text' => htmlspecialchars($linkData['email']),
+                    'icon' => $this->iconFactory->getIcon('content-elements-mailform', Icon::SIZE_SMALL)->render()
+                ];
+                break;
+            case LinkService::TYPE_URL:
+                $data = [
+                    'text' => htmlspecialchars($linkData['url']),
+                    'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
+
+                ];
+                break;
+            case LinkService::TYPE_FILE:
+                /** @var File $file */
+                $file = $linkData['file'];
+                if ($file) {
+                    $data = [
+                        'text' => htmlspecialchars($file->getPublicUrl()),
+                        'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), Icon::SIZE_SMALL)->render()
+                    ];
+                }
+                break;
+            case LinkService::TYPE_FOLDER:
+                /** @var Folder $folder */
+                $folder = $linkData['folder'];
+                if ($folder) {
+                    $data = [
+                        'text' => htmlspecialchars($folder->getPublicUrl()),
+                        'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render()
+                    ];
+                }
+                break;
+            default:
+                $data = [
+                    'text' => htmlspecialchars('not implemented type ' . $linkData['type']),
+                    'icon' => ''
+                ];
+        }
+
+        $additionalAttributes = [];
+        unset($linkParts['url']);
+        foreach ($linkParts as $key => $value) {
+            if ($value) {
+                switch ($key) {
+                    case 'class':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:class');
+                        break;
+                    case 'title':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:title');
+                        break;
+                    case 'additionalParams':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:params');
+                        break;
+                    default:
+                        $label = $key;
+                }
+
+                $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';
+            }
+        }
+        $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
+
+        return $data;
     }
 
     /**

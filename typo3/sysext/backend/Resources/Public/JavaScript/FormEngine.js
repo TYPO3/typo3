@@ -955,6 +955,29 @@ define(['jquery',
 		FormEngine.convertTextareasEnableTab();
 		FormEngine.initializeNullNoPlaceholderCheckboxes();
 		FormEngine.initializeNullWithPlaceholderCheckboxes();
+		FormEngine.initializeInputLinkToggle();
+	};
+
+	/**
+	 * Toggle for input link explanation
+	 */
+	FormEngine.initializeInputLinkToggle = function () {
+		$(document).on('click', '.t3js-form-field-inputlink-explanation-toggle', function(e) {
+			e.preventDefault();
+
+			var $group = $(this).closest('.t3js-form-field-inputlink'),
+				$inputField = $group.find('.t3js-form-field-inputlink-input'),
+				$explanationField = $group.find('.t3js-form-field-inputlink-explanation'),
+				explanationShown;
+
+			explanationShown = !$explanationField.hasClass('hidden');
+			$explanationField.toggleClass('hidden', explanationShown);
+			$inputField.toggleClass('hidden', !explanationShown);
+			$group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
+		}).on('change', '.t3js-form-field-inputlink-input', function() {
+			var $group = $(this).closest('.t3js-form-field-inputlink');
+			$group.find('.t3js-form-field-inputlink-explanation, .t3js-form-field-inputlink-explanation-toggle').remove();
+		});
 	};
 
 	/**
