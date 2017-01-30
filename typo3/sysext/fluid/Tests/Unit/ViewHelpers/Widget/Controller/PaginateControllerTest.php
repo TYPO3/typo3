@@ -222,6 +222,25 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function prepareObjectsSliceReturnsCorrectPortionForObjectStorageAndLastPage()
+    {
+        $this->controller->_set('currentPage', 3);
+        $objects = new ObjectStorage();
+        for ($i = 0; $i <= 25; $i++) {
+            $item = new \stdClass;
+            $objects->attach($item);
+        }
+        $this->controller->_set('objects', $objects);
+        $expectedPortion = [];
+        for ($j = 20; $j <= 25; $j++) {
+            $expectedPortion[] = $objects->toArray()[$j];
+        }
+        $this->assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 20));
+    }
+
+    /**
+     * @test
+     */
     public function prepareObjectsSliceReturnsCorrectPortionForArrayAndFirstPage()
     {
         $objects = [];
