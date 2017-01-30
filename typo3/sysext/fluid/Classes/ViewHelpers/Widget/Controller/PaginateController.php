@@ -182,9 +182,10 @@ class PaginateController extends AbstractWidgetController
             return $modifiedObjects;
         } elseif ($this->objects instanceof ObjectStorage) {
             $modifiedObjects = [];
-            $endOfRange = $offset + $itemsPerPage;
+            $objectArray = $this->objects->toArray();
+            $endOfRange = min($offset + $itemsPerPage, count($objectArray));
             for ($i = $offset; $i < $endOfRange; $i++) {
-                $modifiedObjects[] = $this->objects->toArray()[$i];
+                $modifiedObjects[] = $objectArray[$i];
             }
             return $modifiedObjects;
         } elseif (is_array($this->objects)) {
