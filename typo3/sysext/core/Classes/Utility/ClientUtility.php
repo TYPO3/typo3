@@ -185,9 +185,11 @@ class ClientUtility
      *
      * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
      * @return string Code for the specific device type
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function getDeviceType($userAgent)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']:
         $getDeviceTypeHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType'];
         if (is_array($getDeviceTypeHooks)) {
