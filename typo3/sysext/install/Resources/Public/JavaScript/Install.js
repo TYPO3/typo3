@@ -732,6 +732,9 @@ $(function() {
 						$configSearch.focus();
 						break;
 				}
+			} else if (event.keyCode === 27) {
+				event.preventDefault();
+				$configSearch.val('').focus();
 			}
 		});
 	}
