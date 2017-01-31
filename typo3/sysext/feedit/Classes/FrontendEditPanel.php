@@ -298,7 +298,7 @@ class FrontendEditPanel
     {
         $width = MathUtility::forceIntegerInRange($this->backendUser->getTSConfigVal('options.feedit.popupWidth'), 690, 5000, 690);
         $height = MathUtility::forceIntegerInRange($this->backendUser->getTSConfigVal('options.feedit.popupHeight'), 500, 5000, 500);
-        $onclick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url . '&returnUrl=' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html')) . ',\'FEquickEditWindow\',\'width=' . $width . ',height=' . $height . ',status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+        $onclick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url . '&returnUrl=' . rawurlencode(PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html'))) . ',\'FEquickEditWindow\',\'width=' . $width . ',height=' . $height . ',status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
         return '<a href="#" class="btn btn-default btn-sm ' . htmlspecialchars($additionalClasses) . '" onclick="' . htmlspecialchars($onclick) . '" class="frontEndEditIconLinks">' . $string . '</a>';
     }
 

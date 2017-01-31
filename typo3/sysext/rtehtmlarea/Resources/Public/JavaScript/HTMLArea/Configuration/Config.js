@@ -57,7 +57,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				this.baseURL = document.URL;
 			}
 		}
-		if (this.baseURL && this.baseURL.match(/(.*\:\/\/.*\/)[^\/]*/)) {
+		if (this.baseURL && this.baseURL.match(/(.*\:\/\/[^?#]*\/)[^\/]*/)) {
 			this.baseURL = RegExp.$1;
 		}
 			// URL-s
