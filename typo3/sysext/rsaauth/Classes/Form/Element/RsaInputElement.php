@@ -53,17 +53,13 @@ class RsaInputElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
         $resultArray['requireJsModules'] = ['TYPO3/CMS/Rsaauth/RsaEncryptionModule'];
 
-        $itemValue = $parameterArray['itemFormElValue'];
+        $itemValue = $parameterArray['itemFormElValue'] ? '*********' : '';
         $config = $parameterArray['fieldConf']['config'];
         $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
         $width = (int)$this->formMaxWidth($size);
 
         if ($config['readOnly']) {
-            // Early return for read only fields
-            if (in_array('password', $evalList, true)) {
-                $itemValue = $itemValue ? '*********' : '';
-            }
             $html = [];
             $html[] = '<div class="t3js-formengine-field-item">';
             $html[] =   '<div class="form-wizards-wrap">';
