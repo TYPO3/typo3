@@ -87,7 +87,9 @@ class SilentConfigurationUpgradeService
         'SYS/caching/cacheConfigurations/extbase_typo3dbbackend_queries',
         // #79513
         'FE/lockHashKeyWords',
-        'BE/lockHashKeyWords'
+        'BE/lockHashKeyWords',
+        // #78835
+        'SYS/cookieHttpOnly'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

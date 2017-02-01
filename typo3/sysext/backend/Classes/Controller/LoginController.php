@@ -493,7 +493,9 @@ class LoginController
             reset($this->loginProviders);
             $loginProvider = key($this->loginProviders);
         }
-        setcookie('be_lastLoginProvider', $loginProvider, $GLOBALS['EXEC_TIME'] + 7776000); // 90 days
+        // Use the secure option when the current request is served by a secure connection:
+        $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
+        setcookie('be_lastLoginProvider', $loginProvider, $GLOBALS['EXEC_TIME'] + 7776000, null, null, $cookieSecure, true); // 90 days
         return $loginProvider;
     }
 

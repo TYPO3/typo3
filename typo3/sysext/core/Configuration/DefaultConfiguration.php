@@ -73,7 +73,6 @@ return [
         'encryptionKey' => '',
         'cookieDomain' => '',
         'cookieSecure' => 0,
-        'cookieHttpOnly' => true,
         'doNotCheckReferer' => false,
         'recursiveDomainSearch' => false,
         'trustedHostsPattern' => 'SERVER_NAME',
