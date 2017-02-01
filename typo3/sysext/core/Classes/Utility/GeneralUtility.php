@@ -1210,7 +1210,7 @@ class GeneralUtility
      *************************/
 
     /**
-     * Explodes a $string delimited by $delim and casts each item in the array to (int).
+     * Explodes a $string delimited by $delimiter and casts each item in the array to (int).
      * Corresponds to \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(), but with conversion to integers for all values.
      *
      * @param string $delimiter Delimiter string to explode with

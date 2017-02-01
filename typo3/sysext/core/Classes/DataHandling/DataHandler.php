@@ -5270,7 +5270,7 @@ class DataHandler
     }
 
     /**
-     * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
+     * Used to delete page because it will check for branch below pages and disallowed tables on the page as well.
      *
      * @param int $uid Page id
      * @param bool $force If TRUE, pages are not checked for permission.
@@ -5286,9 +5286,9 @@ class DataHandler
         }
         // Getting list of pages to delete:
         if ($force) {
-            // Returns the branch WITHOUT permission checks (0 secures that)
-            $brExist = $this->doesBranchExist('', $uid, 0, 1);
-            $res = GeneralUtility::trimExplode(',', $brExist . $uid, true);
+            // Returns the branch WITHOUT permission checks (0 secures that), so it cannot return -1
+            $pageIdsInBranch = $this->doesBranchExist('', $uid, 0, true);
+            $res = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
         } else {
             $res = $this->canDeletePage($uid);
         }
@@ -5302,7 +5302,6 @@ class DataHandler
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $res, '', FlashMessage::ERROR, true);
             /** @var $flashMessageService FlashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
             $flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
 
             if ($this->enableLogging) {
@@ -5402,52 +5401,45 @@ class DataHandler
      * Used to evaluate if a page can be deleted
      *
      * @param int $uid Page id
-     * @return array|string If array: List of page uids to traverse and delete (means OK), if string: error message.
+     * @return int[]|string If array: List of page uids to traverse and delete (means OK), if string: error message.
      */
     public function canDeletePage($uid)
     {
+        $uid = (int)$uid;
+
         // If we may at all delete this page
         if (!$this->doesRecordExist('pages', $uid, 'delete')) {
             return 'Attempt to delete page without permissions';
         }
 
+        $pageIdsInBranch = $this->doesBranchExist('', $uid, $this->pMap['delete'], true);
+
         if ($this->deleteTree) {
-            // Returns the branch
-            $brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
-            // Checks if we had permissions
-            if ($brExist == -1) {
+            if ($pageIdsInBranch === -1) {
                 return 'Attempt to delete pages in branch without permissions';
             }
 
-            if (!$this->noRecordsFromUnallowedTables($brExist . $uid)) {
-                return 'Attempt to delete records from disallowed tables';
-            }
-
-            $pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, true);
-            foreach ($pagesInBranch as $pageInBranch) {
-                if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, true)) {
-                    return 'Attempt to delete page which has prohibited localizations.';
-                }
-            }
-            return $pagesInBranch;
+            $pagesInBranch = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
         } else {
-            // returns the branch
-            $brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
-            // Checks if branch exists
-            if ($brExist != '') {
+            if ($pageIdsInBranch === -1) {
+                return 'Attempt to delete page without permissions';
+            } elseif ($pageIdsInBranch !== '') {
                 return 'Attempt to delete page which has subpages';
             }
 
-            if (!$this->noRecordsFromUnallowedTables($uid)) {
-                return 'Attempt to delete records from disallowed tables';
-            }
+            $pagesInBranch = [$uid];
+        }
 
-            if ($this->BE_USER->recordEditAccessInternals('pages', $uid, false, false, true)) {
-                return [$uid];
-            } else {
+        if (!$this->checkForRecordsFromDisallowedTables($pagesInBranch)) {
+            return 'Attempt to delete records from disallowed tables';
+        }
+
+        foreach ($pagesInBranch as $pageInBranch) {
+            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, true)) {
                 return 'Attempt to delete page which has prohibited localizations.';
             }
         }
+        return $pagesInBranch;
     }
 
     /**
@@ -6671,15 +6663,14 @@ class DataHandler
     /**
      * Checks if a whole branch of pages exists
      *
-     * Tests the branch under $pid (like doesRecordExist). It doesn't test the page with $pid as uid. Use doesRecordExist() for this purpose
-     * Returns an ID-list or "" if OK. Else -1 which means that somewhere there was no permission (eg. to delete).
-     * if $recurse is set, then the function will follow subpages. This MUST be set, if we need the idlist for deleting pages or else we get an incomplete list
+     * Tests the branch under $pid like doesRecordExist(), but it doesn't test the page with $pid as uid - use doesRecordExist() for this purpose.
+     * If $recurse is set, the function will follow subpages. This MUST be set, if we need the id-list for deleting pages or else we get an incomplete list
      *
-     * @param string $inList List of page uids, this is added to and outputted in the end
+     * @param string $inList List of page uids, this is added to and returned in the end
      * @param int $pid Page ID to select subpages from.
      * @param int $perms Perms integer to check each page record for.
      * @param bool $recurse Recursion flag: If set, it will go out through the branch.
-     * @return string List of integers in branch
+     * @return string|int List of page IDs in branch, if there are subpages, empty string if there are none or -1 if no permission
      */
     public function doesBranchExist($inList, $pid, $perms, $recurse)
     {
@@ -6701,7 +6692,7 @@ class DataHandler
                     if ($recurse) {
                         // Follow the subpages recursively...
                         $inList = $this->doesBranchExist($inList, $row['uid'], $perms, $recurse);
-                        if ($inList == -1) {
+                        if ($inList === -1) {
                             return -1;
                         }
                     }
@@ -7689,9 +7680,11 @@ class DataHandler
      *
      * @param string $input Input string
      * @return string Output string with any comma in the end removed, if any.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function rmComma($input)
     {
+        GeneralUtility::logDeprecatedFunction();
         return rtrim($input, ',');
     }
 
@@ -8229,16 +8222,28 @@ class DataHandler
      *
      * @param string $inList List of page integers
      * @return bool Return TRUE, if permission granted
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function noRecordsFromUnallowedTables($inList)
     {
-        if (strpos($inList, ',') !== false) {
-            $pids = GeneralUtility::intExplode(',', $inList, true);
-        } else {
-            $inList = trim($this->rmComma(trim($inList)));
-            $pids = [$inList];
+        GeneralUtility::logDeprecatedFunction();
+        return $this->checkForRecordsFromDisallowedTables(GeneralUtility::intExplode(',', $inList, true));
+    }
+
+    /**
+     * Check if there are records from tables on the pages to be deleted which the current user is not allowed to
+     *
+     * @param int[] $pageIds IDs of pages which should be checked
+     * @return bool Return TRUE, if permission granted
+     * @see canDeletePage()
+     */
+    protected function checkForRecordsFromDisallowedTables(array $pageIds)
+    {
+        if ($this->admin) {
+            return true;
         }
-        if ($inList && !$this->admin) {
+
+        if (!empty($pageIds)) {
             foreach ($GLOBALS['TCA'] as $table => $_) {
                 $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $query->getRestrictions()
@@ -8248,7 +8253,7 @@ class DataHandler
                     ->from($table)
                     ->where($query->expr()->in(
                         'pid',
-                        $query->createNamedParameter($pids, Connection::PARAM_INT_ARRAY)
+                        $query->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                     ))
                     ->execute()
                     ->fetchColumn(0);
