@@ -104,7 +104,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             $extensionName
         );
         $yamlSettingsFilePaths = isset($typoscriptSettings['yamlConfigurations'])
-            ? $typoscriptSettings['yamlConfigurations']
+            ? ArrayUtility::sortArrayWithIntegerKeys($typoscriptSettings['yamlConfigurations'])
             : [];
         $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))
             ->getResolvedConfiguration();
