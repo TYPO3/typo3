@@ -420,7 +420,8 @@ CREATE TABLE sys_file_reference (
 	KEY tablenames_fieldname (tablenames(32),fieldname(12)),
 	KEY deleted (deleted),
 	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign)
+	KEY uid_foreign (uid_foreign),
+	KEY combined_1 (l10n_parent, t3ver_oid, t3ver_wsid, t3ver_state, deleted)
 );
 
 
