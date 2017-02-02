@@ -48,39 +48,42 @@ class ElementsGroupCest
      */
     public function sortElementsInGroup(Admin $I)
     {
-        $select = '.typo3-TCEforms > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > fieldset:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > select:nth-child(1)';
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
+        $select = $formWizardsWrap . ' > div:nth-of-type(2) > select';
+
         $selectOption1 = 'styleguide demo user 1';
         $multiselect = ['styleguide demo user 1', 'styleguide demo user 2'];
 
         $I->amGoingTo('put "' . $selectOption1 . '" on first position');
         $I->selectOption($select, $selectOption1);
-        $I->click('.typo3-TCEforms div:nth-child(1) div:nth-child(2) div:nth-child(1) fieldset:nth-child(1) a.t3js-btn-moveoption-top');
+        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-top');
         $I->see($selectOption1, $select . ' > option:nth-child(1)');
 
         $I->amGoingTo('put "' . $selectOption1 . '" one position down / on the second position');
         $I->selectOption($select, $selectOption1);
-        $I->click('.typo3-TCEforms div:nth-child(1) div:nth-child(2) div:nth-child(1) fieldset:nth-child(1) a.t3js-btn-moveoption-down');
+        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-down');
         $I->see($selectOption1, $select . ' > option:nth-child(2)');
 
         $I->amGoingTo('put "' . $selectOption1 . '" on the last position');
         $I->selectOption($select, $selectOption1);
-        $I->click('.typo3-TCEforms div:nth-child(1) div:nth-child(2) div:nth-child(1) fieldset:nth-child(1) a.t3js-btn-moveoption-bottom');
+        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-bottom');
         $I->see($selectOption1, $select . ' > option:nth-last-child(1)');
 
         $I->amGoingTo('put "' . $selectOption1 . '" one position up / on second last position');
         $I->selectOption($select, $selectOption1);
-        $I->click('.typo3-TCEforms div:nth-child(1) div:nth-child(2) div:nth-child(1) fieldset:nth-child(1) a.t3js-btn-moveoption-up');
+        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-up');
         $I->see($selectOption1, $select . ' > option:nth-last-child(2)');
 
         $I->amGoingTo('put ' . print_r($multiselect, 1) . ' on first position');
         $I->selectOption($select, $multiselect);
-        $I->click('.typo3-TCEforms div:nth-child(1) div:nth-child(2) div:nth-child(1) fieldset:nth-child(1) a.t3js-btn-moveoption-top');
+        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-top');
         $I->see($multiselect[0], $select . ' > option:nth-child(1)');
         $I->see($multiselect[1], $select . ' > option:nth-child(2)');
 
         $I->amGoingTo('put ' . print_r($multiselect, 1) . ' one position down');
         $I->selectOption($select, $multiselect);
-        $I->click('.typo3-TCEforms div:nth-child(1) div:nth-child(2) div:nth-child(1) fieldset:nth-child(1) a.t3js-btn-moveoption-down');
+        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-down');
         $I->see($multiselect[0], $select . ' > option:nth-child(2)');
         $I->see($multiselect[1], $select . ' > option:nth-child(3)');
     }
@@ -90,8 +93,11 @@ class ElementsGroupCest
      */
     public function addARecordWithRecordBrowserGroup(Admin $I)
     {
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
+
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
-        $I->click('.typo3-TCEforms > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > fieldset:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div:nth-child(1) > a:nth-child(1)');
+        $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
         $I->switchToWindow('Typo3WinBrowser');
 
         try {
@@ -111,8 +117,11 @@ class ElementsGroupCest
      */
     public function addTwoRecordWithRecordBrowserGroup(Admin $I)
     {
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
+
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
-        $I->click('.typo3-TCEforms > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > fieldset:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div:nth-child(1) > a:nth-child(1)');
+        $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
         $I->switchToWindow('Typo3WinBrowser');
 
         $I->amGoingTo('click record + in DB-Browser');
@@ -128,16 +137,18 @@ class ElementsGroupCest
         $I->switchToWindow();
         $I->switchToIFrame('list_frame');
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 6);
-        $I->click('.btn-toolbar button.btn:nth-child(2)');
-        $I->click('li a[data-form="EditDocumentController"] span[data-identifier="actions-document-save-close"]');
     }
 
     /**
      * @param Admin $I
      */
-    public function searchForaRecordWithRecordBrowserGroup(Admin $I)
+    public function searchForARecordWithRecordBrowserGroup(Admin $I)
     {
-        $I->click('.typo3-TCEforms > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > fieldset:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div:nth-child(1) > a:nth-child(1)');
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
+
+        $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
+        $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
         $I->switchToWindow('Typo3WinBrowser');
 
         $I->amGoingTo("search record '' and limit 1 in DB-Browser");

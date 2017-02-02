@@ -76,11 +76,15 @@ class AddPageInPageModuleCest
         $I->assertContains('has-validation-error', $classString);
 
         // Add page
-        $pageTitle = $editControllerDiv . ' > div:nth-child(1) > div > div.tab-pane:nth-child(1) > fieldset:nth-child(2) > div > div:nth-child(1) > div > div.form-control-wrap > div > input';
-        $I->fillField($pageTitle, 'Testpage');
+        $pageTitleFieldset = $editControllerDiv . ' > div:nth-of-type(1) > div > div.tab-pane:nth-child(1) > fieldset:nth-child(2)';
+        $I->seeElement($pageTitleFieldset . ' > div > div.t3js-formengine-validation-marker.has-error');
+
+        $pageTitleInput = $pageTitleFieldset . ' > div > div:nth-child(1) > div > div.form-control-wrap > div.form-wizards-wrap > div.form-wizards-element > div > input';
+        $I->fillField($pageTitleInput, 'Testpage');
         $I->click($saveButton);
-        $I->waitForElement($pageTitle);
-        $I->assertEquals('Testpage', $I->grabValueFrom($pageTitle), 'Value in input field.');
+        $I->waitForElement($pageTitleInput);
+        $I->assertEquals('Testpage', $I->grabValueFrom($pageTitleInput), 'Value in input field.');
+        $I->dontSeeElement($pageTitleFieldset . ' > div > div.t3js-formengine-validation-marker.has-error');
         $I->switchToIFrame();
 
         // Check tree
