@@ -59,7 +59,7 @@ It is recommended to also grant the following privileges:
 ### PHP environment
 
 * memory_limit set to at least 64M
-* max_execution_time set to at least 30s (240s recommended)
+* max_execution_time set to at least 30 (240 seconds recommended)
 * AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
   (see FAQ below)
 
@@ -104,7 +104,7 @@ functionality:
 * PHP
   * version 7.0 or later
   * memory_limit set to at least 128M
-  * max_execution_time set to at least 240s
+  * max_execution_time set to at least 240
   * max_input_vars set to at least 1500
 
 * Additional PHP extensions:
