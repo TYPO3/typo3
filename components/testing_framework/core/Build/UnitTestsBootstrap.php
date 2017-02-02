@@ -39,6 +39,9 @@ call_user_func(function () {
     $testbase->createDirectory(PATH_site . 'typo3temp/var/transient');
     $testbase->createDirectory(PATH_site . 'uploads');
 
+    // disable TYPO3_DLOG
+    define('TYPO3_DLOG', false);
+
     // Retrieve an instance of class loader and inject to core bootstrap
     $classLoaderFilepath = __DIR__ . '/../../../../vendor/autoload.php';
     if (!file_exists($classLoaderFilepath)) {
