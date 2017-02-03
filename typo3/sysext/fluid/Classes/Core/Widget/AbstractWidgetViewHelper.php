@@ -92,6 +92,15 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
     }
 
     /**
+     * Initialize arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('customWidgetId', 'string', 'extend the widget identifier with a custom widget id',
+            false, null);
+    }
+
+    /**
      * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
      *
      * @return string the rendered ViewHelper.
@@ -208,7 +217,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
     private function initializeWidgetIdentifier()
     {
         $widgetCounter = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', 0);
-        $widgetIdentifier = '@widget_' . $widgetCounter;
+        $widgetIdentifier = '@widget_' . ($this->arguments['customWidgetId'] !== null ? $this->arguments['customWidgetId'] . '_' : '') . $widgetCounter;
         $this->viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', $widgetCounter + 1);
         $this->widgetContext->setWidgetIdentifier($widgetIdentifier);
     }
