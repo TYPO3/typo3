@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -6570,8 +6569,7 @@ class DataHandler
                 // If record found, check page as well:
                 if (is_array($output)) {
                     // Looking up the page for record:
-                    $queryBuilder = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
-                    $pageRec = $queryBuilder->select('uid')->execute()->fetch();
+                    $pageRec = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
                     // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
                     $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
                     if (is_array($pageRec) || !$output['pid'] && ($isRootLevelRestrictionIgnored || $this->admin)) {
@@ -6580,8 +6578,8 @@ class DataHandler
                 }
                 return false;
             } else {
-                $queryBuilder = $this->doesRecordExist_pageLookUp($id, $perms);
-                return $queryBuilder->count('uid')->execute()->fetchColumn(0);
+                $pageRec = $this->doesRecordExist_pageLookUp($id, $perms);
+                return is_array($pageRec);
             }
         }
         return false;
@@ -6592,16 +6590,25 @@ class DataHandler
      *
      * @param int $id Page id
      * @param int $perms Permission integer
-     * @return QueryBuilder
+     * @param string $fields List of fields (SQL CSV list) to select
+     * @return bool|array
      * @access private
      * @see doesRecordExist()
      */
-    protected function doesRecordExist_pageLookUp($id, $perms)
+    protected function doesRecordExist_pageLookUp($id, $perms, $fieldList = 'uid')
     {
+        $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . $fieldList . '_' . (string)$this->admin);
+
+        // If result is cached, return it
+        $cachedResult = $this->runtimeCache->get($cacheId);
+        if (!empty($cachedResult)) {
+            return $cachedResult;
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $queryBuilder
-            ->select('uid')
+            ->select(...GeneralUtility::trimExplode(',', $fieldList, true))
             ->from('pages')
             ->where($queryBuilder->expr()->eq(
                 'uid',
@@ -6618,7 +6625,11 @@ class DataHandler
                 $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             ));
         }
-        return $queryBuilder;
+
+        $row = $queryBuilder->execute()->fetch();
+        $this->runtimeCache->set($cacheId, $row);
+
+        return $row;
     }
 
     /**
