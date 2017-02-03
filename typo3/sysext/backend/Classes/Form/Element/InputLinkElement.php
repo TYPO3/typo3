@@ -201,14 +201,15 @@ class InputLinkElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $linkExplanation = $this->getLinkExplanation($itemValue);
+        $explanation = htmlspecialchars($linkExplanation['text']);
 
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
         $expansionHtml[] =      '<div class="form-wizards-element">';
-        $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
+        $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink" data-toggle="tooltip" data-title="' . $explanation . '">';
         $expansionHtml[] =              '<span class="input-group-addon">' . $linkExplanation['icon'] . '</span>';
-        $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" disabled value="' . htmlspecialchars($linkExplanation['text']) . '">';
+        $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" disabled value="' . $explanation . '">';
         $expansionHtml[] =              '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<span class="input-group-btn">';
         $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button">';
@@ -315,20 +316,20 @@ class InputLinkElement extends AbstractFormElement
                 // Is this a real page
                 if ($pageRecord['uid']) {
                     $data = [
-                        'text' => htmlspecialchars($pageRecord['_thePathFull']) . '[' . $pageRecord['uid'] . ']',
+                        'text' => $pageRecord['_thePathFull'] . '[' . $pageRecord['uid'] . ']',
                         'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render()
                     ];
                 }
                 break;
             case LinkService::TYPE_EMAIL:
                 $data = [
-                    'text' => htmlspecialchars($linkData['email']),
+                    'text' => $linkData['email'],
                     'icon' => $this->iconFactory->getIcon('content-elements-mailform', Icon::SIZE_SMALL)->render()
                 ];
                 break;
             case LinkService::TYPE_URL:
                 $data = [
-                    'text' => htmlspecialchars($linkData['url']),
+                    'text' => $linkData['url'],
                     'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
 
                 ];
@@ -338,7 +339,7 @@ class InputLinkElement extends AbstractFormElement
                 $file = $linkData['file'];
                 if ($file) {
                     $data = [
-                        'text' => htmlspecialchars($file->getPublicUrl()),
+                        'text' => $file->getPublicUrl(),
                         'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), Icon::SIZE_SMALL)->render()
                     ];
                 }
@@ -348,16 +349,27 @@ class InputLinkElement extends AbstractFormElement
                 $folder = $linkData['folder'];
                 if ($folder) {
                     $data = [
-                        'text' => htmlspecialchars($folder->getPublicUrl()),
+                        'text' => $folder->getPublicUrl(),
                         'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render()
                     ];
                 }
                 break;
+            case LinkService::TYPE_RECORD:
+                $table = $this->data['pageTsConfig']['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'];
+                $record = BackendUtility::getRecord($table, $linkData['uid']);
+                $recordTitle = BackendUtility::getRecordTitle($table, $record);
+                $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+                $data = [
+                    'text' => sprintf('%s [%s:%d]', $recordTitle, $tableTitle, $linkData['uid']),
+                    'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render()
+                ];
+                break;
             default:
                 $data = [
-                    'text' => htmlspecialchars('not implemented type ' . $linkData['type']),
+                    'text' => 'not implemented type ' . $linkData['type'],
                     'icon' => ''
                 ];
+                // @todo this needs a hook for being extensible for other link types. forge #79647
         }
 
         $additionalAttributes = [];

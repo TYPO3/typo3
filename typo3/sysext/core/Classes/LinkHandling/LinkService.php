@@ -31,7 +31,10 @@ class LinkService implements SingletonInterface
     const TYPE_EMAIL = 'email';
     const TYPE_FILE = 'file';
     const TYPE_FOLDER = 'folder';
+    const TYPE_RECORD = 'record';
     const TYPE_UNKNOWN = 'unknown';
+
+    // @TODO There needs to be an API to make these types extensible as the former 'typolinkLinkHandler' does not work anymore! forge #79647
 
     /**
      * All registered LinkHandlers
@@ -95,7 +98,7 @@ class LinkService implements SingletonInterface
             $urnParsed = parse_url($urn);
             $type = $urnParsed['host'];
             if (isset($urnParsed['query'])) {
-                parse_str($urnParsed['query'], $data);
+                parse_str(htmlspecialchars_decode($urnParsed['query']), $data);
             } else {
                 $data = [];
             }

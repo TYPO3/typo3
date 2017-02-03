@@ -1,0 +1,16 @@
+<div class="link-browser-section link-browser-pagetree">
+    <f:if condition="{tree}">
+        <f:then>
+            <div class="col-xs-4">
+                <h3>{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:pageTree')}</h3>
+                {tree -> f:format.raw()}
+            </div>
+            <div class="col-xs-8">
+                {recordList -> f:format.raw()}
+            </div>
+        </f:then>
+        <f:else>
+            {recordList -> f:format.raw()}
+        </f:else>
+    </f:if>
+</div>

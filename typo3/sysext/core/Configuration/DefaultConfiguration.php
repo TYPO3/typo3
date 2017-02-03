@@ -302,6 +302,7 @@ return [
             'folder' => \TYPO3\CMS\Core\LinkHandling\FolderLinkHandler::class,
             'url'    => \TYPO3\CMS\Core\LinkHandling\UrlLinkHandler::class,
             'email'  => \TYPO3\CMS\Core\LinkHandling\EmailLinkHandler::class,
+            'record' => \TYPO3\CMS\Core\LinkHandling\RecordLinkHandler::class,
         ],
         'livesearch' => [],    // Array: keywords used for commands to search for specific tables
         'isInitialInstallationInProgress' => false,        // Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.

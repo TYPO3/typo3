@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -413,6 +414,11 @@ class SoftReferenceIndex
             return $finalTagParts;
         }
 
+        if ($pU['scheme'] === 't3' && $pU['host'] === LinkService::TYPE_RECORD) {
+            $finalTagParts['LINK_TYPE'] = LinkService::TYPE_RECORD;
+            $finalTagParts['url'] = $link_param;
+        }
+
         list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
 
         // Dispatch available signal slots.
@@ -577,6 +583,16 @@ class SoftReferenceIndex
                         $content .= '#' . $tLP['type'];
                     }
                 }
+                break;
+            case LinkService::TYPE_RECORD:
+                $elements[$tokenID . ':' . $idx]['subst'] = [
+                    'type' => 'db',
+                    'recordRef' => $tLP['table'] . ':' . $tLP['uid'],
+                    'tokenID' => $tokenID,
+                    'tokenValue' => $content,
+                ];
+
+                $content = '{softref:' . $tokenID . '}';
                 break;
             default:
                 $linkHandlerFound = false;

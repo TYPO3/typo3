@@ -70,6 +70,12 @@ class LegacyLinkNotationConverter
             list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameter, 2);
             $result['type'] = strtolower(trim($linkHandlerKeyword));
             $result['url'] = $linkHandlerValue;
+            if ($result['type'] === LinkService::TYPE_RECORD) {
+                list($a['identifier'], $a['table'], $a['uid']) = explode(':', $linkHandlerValue);
+                $result['url'] = $a;
+            } else {
+                // @TODO add a hook for old typolinkLinkHandler to convert their values properly, forge #79647
+            }
         } else {
             // special handling without a scheme
             $isLocalFile = 0;
