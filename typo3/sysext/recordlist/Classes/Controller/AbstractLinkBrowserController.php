@@ -242,9 +242,11 @@ abstract class AbstractLinkBrowserController
                 isset($configuration['configuration.']) ? $configuration['configuration.'] : []
             );
 
+            $label = !empty($configuration['label']) ? $lang->sL($configuration['label']) : '';
+            $label = $label ?: $lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:error.linkHandlerTitleMissing');
             $this->linkHandlers[$identifier] = [
                 'handlerInstance' => $handler,
-                'label' => htmlspecialchars($lang->sL($configuration['label'])),
+                'label' => htmlspecialchars($label),
                 'displayBefore' => isset($configuration['displayBefore']) ? GeneralUtility::trimExplode(',', $configuration['displayBefore']) : [],
                 'displayAfter' => isset($configuration['displayAfter']) ? GeneralUtility::trimExplode(',', $configuration['displayAfter']) : [],
                 'scanBefore' => isset($configuration['scanBefore']) ? GeneralUtility::trimExplode(',', $configuration['scanBefore']) : [],
