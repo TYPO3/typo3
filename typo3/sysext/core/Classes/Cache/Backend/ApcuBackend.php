@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Cache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -145,7 +146,8 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
             $this->removeIdentifierFromAllTags($entryIdentifier);
             $this->addIdentifierToTags($entryIdentifier, $tags);
         } else {
-            throw new Cache\Exception('Could not set value.', 1232986277);
+            $errorMessage = 'Error using APCu: Could not save data in the cache.';
+            GeneralUtility::sysLog($errorMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
         }
     }
 
