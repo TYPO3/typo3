@@ -58,12 +58,10 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
      */
     public function canHandleLink(array $linkParts)
     {
-        if (!$linkParts['url']) {
+        if (!isset($linkParts['url']['url'])) {
             return false;
         }
-        if (isset($linkParts['url']['url'])) {
-            $linkParts['url'] = $linkParts['url']['url'];
-        }
+        $linkParts['url'] = $linkParts['url']['url'];
         $this->linkParts = $linkParts;
 
         return true;
