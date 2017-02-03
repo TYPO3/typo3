@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1486156389" source-language="en" datatype="plaintext" original="messages" date="2017-02-03T21:13:02Z" product-name="recordlist">
+		<header/>
+		<body>
+			<trans-unit id="error.linkHandlerTitleMissing">
+				<source>[title missing]</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

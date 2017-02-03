@@ -248,6 +248,8 @@ abstract class AbstractLinkBrowserController
                 isset($configuration['configuration.']) ? $configuration['configuration.'] : []
             );
 
+            $label = !empty($configuration['label']) ? $lang->sL($configuration['label']) : '';
+            $label = $label ?: $lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:error.linkHandlerTitleMissing');
             $this->linkHandlers[$identifier] = [
                 'handlerInstance' => $handler,
                 'label' => $lang->sL($configuration['label'], true),
