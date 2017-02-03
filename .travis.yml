@@ -57,19 +57,19 @@ before_script:
 script:
   - >
     if [[ "$UNIT_TESTS" == "yes" ]]; then
-      ./bin/phpunit -c components/testing_framework/core/Build/UnitTests.xml
+      ./bin/phpunit -c components/testing_framework/Resources/Core/Build/UnitTests.xml
     fi
 
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-      ./components/testing_framework/core/Build/Scripts/splitFunctionalTests.sh 14
-      parallel --jobs 4 -a <(seq 0 13) --gnu './bin/phpunit -c components/testing_framework/core/Build/FunctionalTests-Job-{}.xml'
+      ./components/testing_framework/Resources/Core/Build/Scripts/splitFunctionalTests.sh 14
+      parallel --jobs 4 -a <(seq 0 13) --gnu './bin/phpunit -c components/testing_framework/Resources/Core/Build/FunctionalTests-Job-{}.xml'
     fi
 
   - >
     if [[ "$JSUNIT_TESTS" == "yes" ]]; then
       cd Build && npm update -g npm && npm install && cd ..
-      ./Build/node_modules/karma/bin/karma start components/testing_framework/core/Build/Configuration/JSUnit/karma.conf.js --single-run
+      ./Build/node_modules/karma/bin/karma start components/testing_framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.js --single-run
     fi
 
   - >
