@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -63,6 +64,11 @@ abstract class AbstractTreeView
      * @var bool
      */
     public $ext_IconMode = false;
+
+    /**
+     * @var bool
+     */
+    public $ext_showPathAboveMounts = false;
 
     // If set, the id of the mounts will be added to the internal ids array
     /**
@@ -375,6 +381,7 @@ abstract class AbstractTreeView
         // Get stored tree structure AND updating it if needed according to incoming PM GET var.
         $this->initializePositionSaving();
         // Init done:
+        $lastMountPointPid = 0;
         $treeArr = [];
         // Traverse mounts:
         foreach ($this->MOUNTS as $idx => $uid) {
@@ -399,7 +406,7 @@ abstract class AbstractTreeView
                 if ($this->ext_showPathAboveMounts) {
                     $mountPointPid = $rootRec['pid'];
                     if ($lastMountPointPid !== $mountPointPid) {
-                        $title = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getMountPointPath($mountPointPid);
+                        $title = Commands::getMountPointPath($mountPointPid);
                         $this->tree[] = ['isMountPointPath' => true, 'title' => $title];
                     }
                     $lastMountPointPid = $mountPointPid;
@@ -538,7 +545,7 @@ abstract class AbstractTreeView
      * Wrapping $title in a-tags.
      *
      * @param string $title Title string
-     * @param string $row Item record
+     * @param array $row Item record
      * @param int $bank Bank pointer (which mount point number)
      * @return string
      * @access private
