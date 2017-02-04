@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 /**
  * Test case
  */
-class DatabaseEditRowTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DatabaseEditRowTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DatabaseEditRow|\PHPUnit_Framework_MockObject_MockObject

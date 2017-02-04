@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 /**
  * Test for EnumType
  */
-class EnumTypeTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class EnumTypeTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Set up the test subject

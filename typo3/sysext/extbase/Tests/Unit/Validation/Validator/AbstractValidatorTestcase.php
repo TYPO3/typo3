@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case for the Abstract Validator
  */
-abstract class AbstractValidatorTestcase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+abstract class AbstractValidatorTestcase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     protected $validatorClassName;
 

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Http\ServerRequestFactory
  */
-class ServerRequestFactoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ServerRequestFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Set up

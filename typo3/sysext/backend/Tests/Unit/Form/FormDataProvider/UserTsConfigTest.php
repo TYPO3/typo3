@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 /**
  * Test case
  */
-class UserTsConfigTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class UserTsConfigTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var UserTsConfig

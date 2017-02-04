@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 /**
  * Tests for \TYPO3\CMS\Backend\Tests\Unit\Controller\File\FileController
  */
-class FileControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FileControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Backend\Controller\File\FileController|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

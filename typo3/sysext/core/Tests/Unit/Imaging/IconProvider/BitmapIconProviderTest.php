@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider
  */
-class BitmapIconProviderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class BitmapIconProviderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider

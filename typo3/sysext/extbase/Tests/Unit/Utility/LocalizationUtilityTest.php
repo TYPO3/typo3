@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Test case
  */
-class LocalizationUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class LocalizationUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Instance of configurationManager, injected to subject

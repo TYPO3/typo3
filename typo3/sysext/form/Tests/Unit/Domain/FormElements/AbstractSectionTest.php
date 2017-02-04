@@ -21,7 +21,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection;
 /**
  * Test case
  */
-class AbstractSectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractSectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

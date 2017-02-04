@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
  */
-class RootlineUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class RootlineUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var RootlineUtility|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject

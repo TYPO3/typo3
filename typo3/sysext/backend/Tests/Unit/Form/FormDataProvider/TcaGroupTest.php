@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class TcaGroupTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TcaGroupTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaGroup

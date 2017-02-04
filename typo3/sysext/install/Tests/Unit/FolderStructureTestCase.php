@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Test case
  */
-abstract class FolderStructureTestCase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+abstract class FolderStructureTestCase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Create a random directory in the virtual file system and return the path.

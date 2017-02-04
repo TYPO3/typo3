@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Class PageLayoutControllerTest
  */
-class PageLayoutControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PageLayoutControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

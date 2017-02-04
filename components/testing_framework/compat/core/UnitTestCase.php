@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Tests;
 /**
  * @deprecated since TYPO3 8, will be removed in TYPO3 9
  */
-abstract class UnitTestCase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+abstract class UnitTestCase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 }

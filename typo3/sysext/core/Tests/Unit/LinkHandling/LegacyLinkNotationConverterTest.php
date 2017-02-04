@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-class LegacyLinkNotationConverterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class LegacyLinkNotationConverterTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page

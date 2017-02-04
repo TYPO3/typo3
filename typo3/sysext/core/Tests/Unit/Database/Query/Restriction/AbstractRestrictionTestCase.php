@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class AbstractRestrictionTestCase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractRestrictionTestCase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;

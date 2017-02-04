@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class AbstractViewHelperTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractViewHelperTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 /**
  * Test case
  */
-class WorkspaceRepositoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class WorkspaceRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

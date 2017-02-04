@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\Dimension
  */
-class DimensionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DimensionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\Dimension

@@ -54,7 +54,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  */
-class ContentObjectRendererTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ContentObjectRendererTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

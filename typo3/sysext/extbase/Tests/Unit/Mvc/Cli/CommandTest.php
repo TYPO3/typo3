@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
 /**
  * Test case
  */
-class CommandTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CommandTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Cli\Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

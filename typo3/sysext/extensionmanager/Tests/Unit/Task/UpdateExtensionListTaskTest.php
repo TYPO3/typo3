@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
  * Test case
  *
  */
-class UpdateExtensionListTaskTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class UpdateExtensionListTaskTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\UnitTestCase;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case

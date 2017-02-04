@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem;
 /**
  * Test case
  */
-class TcaColumnsProcessShowitemTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TcaColumnsProcessShowitemTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaColumnsProcessShowitem

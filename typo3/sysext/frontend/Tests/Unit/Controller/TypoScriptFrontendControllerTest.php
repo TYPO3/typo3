@@ -21,7 +21,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Testcase for TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
  */
-class TypoScriptFrontendControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TypoScriptFrontendControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|TypoScriptFrontendController

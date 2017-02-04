@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Basic test case for the \TYPO3\CMS\Core\Resource\File tests
  */
-abstract class BaseTestCase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+abstract class BaseTestCase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string

@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\UnitTestCase;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
+use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**

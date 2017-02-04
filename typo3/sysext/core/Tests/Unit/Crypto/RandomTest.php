@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 /**
  * Test case
  */
-class RandomTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class RandomTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

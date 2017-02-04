@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * Testcase for the default package manager
  *
  */
-class PackageManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PackageManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $packageManager

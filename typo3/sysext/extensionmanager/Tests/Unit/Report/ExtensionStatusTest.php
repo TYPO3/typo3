@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
 /**
  * Test case
  */
-class ExtensionStatusTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ExtensionStatusTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

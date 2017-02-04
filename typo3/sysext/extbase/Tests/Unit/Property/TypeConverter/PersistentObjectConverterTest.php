@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjec
 /**
  * Test case
  */
-class PersistentObjectConverterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PersistentObjectConverterTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface|\PHPUnit_Framework_MockObject_MockObject

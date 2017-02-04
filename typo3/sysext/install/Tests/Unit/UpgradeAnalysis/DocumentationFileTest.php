@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 
-class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

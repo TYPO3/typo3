@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class RenderingContextTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class RenderingContextTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Parsing state

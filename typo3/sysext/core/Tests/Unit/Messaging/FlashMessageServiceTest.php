@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 /**
  * Test case
  */
-class FlashMessageServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FlashMessageServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Messaging\FlashMessageService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

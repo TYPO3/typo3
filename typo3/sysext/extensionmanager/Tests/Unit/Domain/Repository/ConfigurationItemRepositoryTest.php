@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  * Tests for ConfigurationItemRepository
  *
  */
-class ConfigurationItemRepositoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ConfigurationItemRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject

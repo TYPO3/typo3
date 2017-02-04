@@ -25,7 +25,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 /**
  * Test case
  */
-class FieldProviderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FieldProviderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

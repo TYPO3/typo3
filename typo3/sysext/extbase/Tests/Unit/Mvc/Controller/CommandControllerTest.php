@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 /**
  * Test case
  */
-class CommandControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CommandControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\CommandController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Cache\Backend\ApcBackend;
  *
  * This file is a backport from FLOW3
  */
-class ApcBackendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ApcBackendTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Sets up this testcase

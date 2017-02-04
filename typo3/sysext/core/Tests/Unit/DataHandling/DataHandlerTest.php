@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  */
 
 use Prophecy\Argument;
-use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -23,11 +22,12 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case
  */
-class DataHandlerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DataHandlerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

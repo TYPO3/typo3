@@ -19,7 +19,7 @@ use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
 /**
  * Class LegacyNamespaceExpressionNodeTest
  */
-class LegacyNamespaceExpressionNodeTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class LegacyNamespaceExpressionNodeTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

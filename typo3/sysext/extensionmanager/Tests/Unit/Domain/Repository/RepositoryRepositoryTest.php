@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  * Test case
  *
  */
-class RepositoryRepositoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class RepositoryRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

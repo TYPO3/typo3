@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case
  */
-class CollectionValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CollectionValidatorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string

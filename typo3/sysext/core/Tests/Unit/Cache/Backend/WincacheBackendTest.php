@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Cache\Backend\WincacheBackend;
 /**
  * Testcase for the WinCache cache backend
  */
-class WincacheBackendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class WincacheBackendTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Sets up this testcase

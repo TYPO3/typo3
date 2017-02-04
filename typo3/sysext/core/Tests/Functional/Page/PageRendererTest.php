@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Page;
 /**
  * Test case
  */
-class PageRendererTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class PageRendererTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @test

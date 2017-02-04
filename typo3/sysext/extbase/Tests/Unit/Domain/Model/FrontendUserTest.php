@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class FrontendUserTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FrontendUserTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser

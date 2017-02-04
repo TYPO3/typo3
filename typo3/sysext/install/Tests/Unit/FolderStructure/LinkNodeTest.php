@@ -18,7 +18,7 @@ use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 /**
  * Test case
  */
-class LinkNodeTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class LinkNodeTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 /**
  * Test case
  */
-class InlineStackProcessorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class InlineStackProcessorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

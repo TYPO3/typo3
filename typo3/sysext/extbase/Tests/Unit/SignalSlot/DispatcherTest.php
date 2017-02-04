@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\SlotMethodDoesNotExistFixtu
 /**
  * Test case
  */
-class DispatcherTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DispatcherTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

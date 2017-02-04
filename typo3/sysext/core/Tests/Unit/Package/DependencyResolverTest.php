@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 /**
  * Test case
  */
-class DependencyResolverTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DependencyResolverTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

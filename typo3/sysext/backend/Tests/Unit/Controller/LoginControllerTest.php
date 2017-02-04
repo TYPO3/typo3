@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
 /**
  * Class LoginControllerTest
  */
-class LoginControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class LoginControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var LoginController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

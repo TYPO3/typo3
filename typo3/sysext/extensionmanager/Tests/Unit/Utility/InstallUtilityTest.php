@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 /**
  * Test case
  */
-class InstallUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class InstallUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string

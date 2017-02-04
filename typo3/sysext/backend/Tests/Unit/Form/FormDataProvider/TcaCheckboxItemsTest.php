@@ -26,7 +26,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class TcaCheckboxItemsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TcaCheckboxItemsTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaCheckboxItems

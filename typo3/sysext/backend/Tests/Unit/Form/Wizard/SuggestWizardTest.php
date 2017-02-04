@@ -20,7 +20,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Test case
  */
-class SuggestWizardTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class SuggestWizardTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -31,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Test case
  */
-class StandaloneViewTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class StandaloneViewTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

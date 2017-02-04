@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class CachingFrameworkGarbageCollectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CachingFrameworkGarbageCollectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array

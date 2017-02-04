@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Service;
 /**
  * Test case
  */
-class CoreUpdateServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CoreUpdateServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

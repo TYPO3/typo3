@@ -13,4 +13,4 @@ extensions:
   enabled:
     - Codeception\Extension\RunFailed
     - Codeception\Extension\Recorder
-    - TYPO3\Components\TestingFramework\Core\AcceptanceCoreEnvironment
+    - TYPO3\Components\TestingFramework\Core\Acceptance\AcceptanceCoreEnvironment

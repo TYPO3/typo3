@@ -24,7 +24,7 @@ use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 /**
  * Testcase
  */
-class FluidTemplateContentObjectTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FluidTemplateContentObjectTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

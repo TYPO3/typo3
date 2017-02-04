@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer;
 /**
  * Class VimeoRendererTest
  */
-class VimeoRendererTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class VimeoRendererTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var VimeoRenderer|\PHPUnit_Framework_MockObject_MockObject

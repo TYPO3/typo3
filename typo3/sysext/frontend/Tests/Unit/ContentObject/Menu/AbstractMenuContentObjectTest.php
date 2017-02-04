@@ -21,7 +21,7 @@ use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
  * Test case
  *
  */
-class AbstractMenuContentObjectTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractMenuContentObjectTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject

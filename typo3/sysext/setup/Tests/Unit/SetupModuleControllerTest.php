@@ -20,7 +20,7 @@ use TYPO3\CMS\Setup\Controller\SetupModuleController;
 /**
  * Class SetupModuleControllerTest
  */
-class SetupModuleControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class SetupModuleControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

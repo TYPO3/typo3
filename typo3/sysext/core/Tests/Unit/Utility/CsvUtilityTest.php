@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\CsvUtility;
 /**
  * Test cases of CsvUtility
  */
-class CsvUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CsvUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @return array

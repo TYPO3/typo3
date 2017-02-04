@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\DebugUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\DebugUtility
  */
-class DebugUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DebugUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     protected function tearDown()
     {

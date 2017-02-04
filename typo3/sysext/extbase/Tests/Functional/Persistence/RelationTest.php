@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-class RelationTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class RelationTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Blog

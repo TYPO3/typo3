@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 /**
  * Test case
  */
-class ConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject

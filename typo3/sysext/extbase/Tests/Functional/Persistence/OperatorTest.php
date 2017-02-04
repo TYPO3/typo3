@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
-class OperatorTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class OperatorTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository

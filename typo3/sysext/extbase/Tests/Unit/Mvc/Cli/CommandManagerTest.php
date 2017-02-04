@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException;
 /**
  * Test case
  */
-class CommandManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CommandManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

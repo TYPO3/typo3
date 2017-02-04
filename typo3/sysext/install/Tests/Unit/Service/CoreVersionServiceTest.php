@@ -20,7 +20,7 @@ use TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException;
 /**
  * Test case
  */
-class CoreVersionServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CoreVersionServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

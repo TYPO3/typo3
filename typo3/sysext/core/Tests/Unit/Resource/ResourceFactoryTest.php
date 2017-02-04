@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 /**
  * Testcase for the factory of FAL
  */
-class ResourceFactoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ResourceFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * Update from TER controller test
  *
  */
-class UploadExtensionFileControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class UploadExtensionFileControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @return array The test data for getExtensionFromZipFileExtractsExtensionKey

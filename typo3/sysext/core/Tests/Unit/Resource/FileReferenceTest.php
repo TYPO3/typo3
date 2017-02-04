@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * Testcase for the file class of the TYPO3 FAL
  *
  */
-class FileReferenceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FileReferenceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

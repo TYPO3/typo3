@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class CountTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class CountTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var int number of all records

@@ -50,7 +50,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class FlexFormToolsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FlexFormToolsTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

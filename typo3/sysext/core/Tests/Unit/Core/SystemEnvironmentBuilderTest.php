@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 /**
  * Testcase
  */
-class SystemEnvironmentBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class SystemEnvironmentBuilderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

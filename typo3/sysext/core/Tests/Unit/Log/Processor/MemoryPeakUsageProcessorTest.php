@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 /**
  * Test case
  */
-class MemoryPeakUsageProcessorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class MemoryPeakUsageProcessorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

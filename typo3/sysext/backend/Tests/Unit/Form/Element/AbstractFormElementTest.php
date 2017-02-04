@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 /**
  * Test case
  */
-class AbstractFormElementTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractFormElementTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @return array

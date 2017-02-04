@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  *
  * @see According functional test case
  */
-class PageRendererTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PageRendererTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 /**
  * Test case
  */
-class ConjunctionValidatorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ConjunctionValidatorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

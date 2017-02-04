@@ -19,7 +19,7 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
 /**
  * Test case
  */
-class TemplatePathsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TemplatePathsTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @return array

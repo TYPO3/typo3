@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderTwoInterface;
 /**
  * Test case
  */
-class PropertyMapperTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PropertyMapperTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     protected $mockConfigurationBuilder;
 

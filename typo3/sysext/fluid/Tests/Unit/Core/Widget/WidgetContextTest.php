@@ -18,7 +18,7 @@ use TYPO3\CMS\Fluid\Core\Widget\WidgetContext;
 /**
  * Test case
  */
-class WidgetContextTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class WidgetContextTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext

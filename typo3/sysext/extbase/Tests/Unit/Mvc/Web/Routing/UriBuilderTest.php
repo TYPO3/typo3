@@ -32,7 +32,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Test case
  */
-class UriBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class UriBuilderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var ConfigurationManagerInterface

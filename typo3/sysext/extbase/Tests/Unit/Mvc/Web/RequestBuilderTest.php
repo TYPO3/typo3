@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 /**
  * Test case
  */
-class RequestBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class RequestBuilderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

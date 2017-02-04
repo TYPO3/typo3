@@ -19,7 +19,7 @@ use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
 /**
  * Test case
  */
-class RootNodeTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class RootNodeTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

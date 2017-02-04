@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 /**
  * Test case
  */
-class DebuggerUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DebuggerUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

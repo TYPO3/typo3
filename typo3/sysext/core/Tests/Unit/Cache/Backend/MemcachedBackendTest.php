@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
  *
  * This file is a backport from FLOW3
  */
-class MemcachedBackendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class MemcachedBackendTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Sets up this testcase

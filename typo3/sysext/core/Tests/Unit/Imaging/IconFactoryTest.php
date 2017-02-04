@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\File;
 /**
  * TestCase for \TYPO3\CMS\Core\Imaging\IconFactory
  */
-class IconFactoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class IconFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconFactory

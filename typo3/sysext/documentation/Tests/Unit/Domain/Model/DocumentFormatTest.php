@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Documentation\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class DocumentFormatTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DocumentFormatTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat

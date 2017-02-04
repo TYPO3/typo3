@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *
  * This file is a backport from FLOW3
  */
-class TransientMemoryBackendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TransientMemoryBackendTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
  */
-class CategoryCollectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CategoryCollectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

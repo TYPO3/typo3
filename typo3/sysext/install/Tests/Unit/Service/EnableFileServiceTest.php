@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Test case
  */
-class EnableFileServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class EnableFileServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data provider

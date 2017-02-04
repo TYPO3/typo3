@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 /**
  * Testcase for BlowfishSalt
  */
-class BlowfishSaltTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class BlowfishSaltTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Keeps instance of object to test.

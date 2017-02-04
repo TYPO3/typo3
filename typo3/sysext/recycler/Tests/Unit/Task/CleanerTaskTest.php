@@ -28,7 +28,7 @@ use TYPO3\CMS\Recycler\Task\CleanerTask;
 /**
  * Testcase
  */
-class CleanerTaskTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CleanerTaskTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask

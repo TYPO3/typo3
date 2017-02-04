@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\SimpleLockStrategy
  */
-class SimpleLockStrategyTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class SimpleLockStrategyTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Core;
 /**
  * Test case
  */
-class BootstrapTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class BootstrapTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders;
 /**
  * Test case
  */
-class TcaColumnsProcessPlaceholdersTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TcaColumnsProcessPlaceholdersTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaColumnsProcessPlaceholders

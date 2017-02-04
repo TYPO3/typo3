@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
-class CategoryVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class CategoryVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected static $categoryFields = [
         'title',

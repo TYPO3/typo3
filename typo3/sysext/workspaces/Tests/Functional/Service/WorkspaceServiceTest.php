@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 /**
  * Workspace service test
  */
-class WorkspaceServiceTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class WorkspaceServiceTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['version', 'workspaces'];
 

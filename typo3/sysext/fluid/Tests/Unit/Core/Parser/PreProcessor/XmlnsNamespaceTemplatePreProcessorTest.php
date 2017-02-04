@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
 /**
  * Class XmlnsNamespaceTemplatePreProcessorTest
  */
-class XmlnsNamespaceTemplatePreProcessorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class XmlnsNamespaceTemplatePreProcessorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @param string $source

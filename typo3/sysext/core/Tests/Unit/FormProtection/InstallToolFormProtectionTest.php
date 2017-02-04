@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 /**
  * Testcase
  */
-class InstallToolFormProtectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class InstallToolFormProtectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

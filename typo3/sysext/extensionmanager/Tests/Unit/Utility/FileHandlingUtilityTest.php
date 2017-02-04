@@ -19,7 +19,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * Testcase
  *
  */
-class FileHandlingUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FileHandlingUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array List of created fake extensions to be deleted in tearDown() again

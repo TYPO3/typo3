@@ -19,7 +19,7 @@ use TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList;
 /**
  * Test case
  */
-class AbstractDatabaseRecordListTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractDatabaseRecordListTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

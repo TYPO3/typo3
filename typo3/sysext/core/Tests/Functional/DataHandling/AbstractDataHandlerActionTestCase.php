@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for the DataHandler
  */
-abstract class AbstractDataHandlerActionTestCase extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+abstract class AbstractDataHandlerActionTestCase extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     const VALUE_BackendUserId = 1;
 

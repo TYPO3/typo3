@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Registry;
 /**
  * Test case
  */
-class RegistryTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class RegistryTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
 
     /**

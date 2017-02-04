@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class QueryBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class QueryBuilderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var Connection|\Prophecy\Prophecy\ObjectProphecy

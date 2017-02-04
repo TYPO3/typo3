@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 /**
  * Test case
  */
-class AbstractConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class AbstractConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

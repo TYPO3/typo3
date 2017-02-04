@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Charset;
 /**
  * Testcase for \TYPO3\CMS\Core\Charset\CharsetConverter
  */
-class CharsetConverterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CharsetConverterTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Charset\CharsetConverter

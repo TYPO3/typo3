@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 /**
  * Test case
  */
-class PageRepositoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PageRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

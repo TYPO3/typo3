@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Package\PackageInterface;
 /**
  * Testcase for the ClassLoadingInformationGenerator class
  */
-class ClassLoadingInformationGeneratorTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ClassLoadingInformationGeneratorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

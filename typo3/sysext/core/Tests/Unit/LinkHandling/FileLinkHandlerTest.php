@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-class FileLinkHandlerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FileLinkHandlerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

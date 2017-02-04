@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Test case
  */
-class PaginateControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class PaginateControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Query

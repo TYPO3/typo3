@@ -19,7 +19,7 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 /**
  * Test case
  */
-class TypoLinkCodecServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TypoLinkCodecServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TypoLinkCodecService

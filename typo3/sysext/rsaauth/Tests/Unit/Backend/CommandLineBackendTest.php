@@ -19,7 +19,7 @@ use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
 /**
  * Test case.
  */
-class CommandLineBackendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CommandLineBackendTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var CommandLineBackend

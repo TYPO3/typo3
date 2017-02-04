@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 /**
  * Test case
  */
-class WidgetRequestTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class WidgetRequestTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

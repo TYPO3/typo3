@@ -19,7 +19,7 @@ use TYPO3\CMS\Install\Status\Exception;
 /**
  * Tests for the custom json view class
  */
-class JsonViewTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class JsonViewTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

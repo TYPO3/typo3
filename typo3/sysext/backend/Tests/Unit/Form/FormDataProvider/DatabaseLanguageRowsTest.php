@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class DatabaseLanguageRowsTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class DatabaseLanguageRowsTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DatabaseLanguageRows|\PHPUnit_Framework_MockObject_MockObject

@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
 /**
  * Test case
  */
-class FrontendConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FrontendConfigurationManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject

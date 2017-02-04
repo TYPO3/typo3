@@ -28,7 +28,7 @@ use TYPO3\CMS\Form\Service\TranslationService;
 /**
  * Test case
  */
-class FormManagerControllerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FormManagerControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

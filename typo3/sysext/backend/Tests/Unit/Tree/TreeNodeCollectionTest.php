@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\TreeNodeCollection.
  */
-class TreeNodeCollectionTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TreeNodeCollectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

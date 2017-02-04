@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
  *
  * This file is a backport from FLOW3
  */
-class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -23,7 +23,7 @@ use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 /**
  * Test case
  */
-class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject

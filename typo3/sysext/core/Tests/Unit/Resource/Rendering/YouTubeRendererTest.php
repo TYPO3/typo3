@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class YouTubeRendererTest
  */
-class YouTubeRendererTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class YouTubeRendererTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var YouTubeRenderer|\PHPUnit_Framework_MockObject_MockObject

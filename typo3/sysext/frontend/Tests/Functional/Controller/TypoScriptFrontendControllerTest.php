@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Test case
  */
-class TypoScriptFrontendControllerTest extends \TYPO3\Components\TestingFramework\Core\FunctionalTestCase
+class TypoScriptFrontendControllerTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var TypoScriptFrontendController

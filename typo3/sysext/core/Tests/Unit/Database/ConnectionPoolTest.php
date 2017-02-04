@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 /**
  * Test case
  */
-class ConnectionPoolTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ConnectionPoolTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

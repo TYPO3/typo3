@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  *
  * This file is a backport from FLOW3
  */
-class VariableFrontendTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class VariableFrontendTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

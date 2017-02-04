@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * TestCase for \TYPO3\CMS\Core\Imaging\IconRegistry
  */
-class IconRegistryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class IconRegistryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconRegistry

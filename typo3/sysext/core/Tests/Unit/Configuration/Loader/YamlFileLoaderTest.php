@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 /**
  * Test case for the yaml file loader class
  */
-class YamlFileLoaderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class YamlFileLoaderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Generic method to check if the load method returns an array from a YAML file
@@ -91,7 +91,6 @@ betterthanbefore: 2
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);
     }
-
 
     /**
      * Method checking for placeholders

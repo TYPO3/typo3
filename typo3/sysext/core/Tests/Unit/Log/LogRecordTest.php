@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Log\LogRecord;
 /**
  * Test case
  */
-class LogRecordTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class LogRecordTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Returns a \TYPO3\CMS\Core\Log\LogRecord

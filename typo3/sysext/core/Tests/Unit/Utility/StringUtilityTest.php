@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\StringUtility
  */
-class StringUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class StringUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data provider for endsWithReturnsTrueForMatchingFirstPart

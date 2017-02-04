@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 /**
  * Tests for CreateColumnDefinitionItem
  */
-class ColumnDefinitionItemTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ColumnDefinitionItemTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

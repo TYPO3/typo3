@@ -20,7 +20,7 @@ use TYPO3\Components\TestingFramework\Core\FileStreamWrapper;
 /**
  * Test case for \TYPO3\CMS\Core\Tests\Unit\FileStreamWrapper
  */
-class FileStreamWrapperTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FileStreamWrapperTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

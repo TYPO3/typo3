@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * Test case
  */
-class ArrayUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ArrayUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     ///////////////////////
     // Tests concerning filterByValueRecursive

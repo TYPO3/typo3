@@ -20,7 +20,7 @@ use org\bovigo\vfs\vfsStreamWrapper;
 /**
  * Test case
  */
-class FileWriterTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FileWriterTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string

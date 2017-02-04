@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 /**
  * Test case
  */
-class HistoryEntryRepositoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class HistoryEntryRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface

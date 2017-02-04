@@ -35,7 +35,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class BackendUtilityTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class BackendUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     ///////////////////////////////////////
     // Tests concerning calcAge

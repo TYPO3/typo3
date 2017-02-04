@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\SemaphoreLockStrategy
  */
-class SemaphoreLockStrategyTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class SemaphoreLockStrategyTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Set up the tests

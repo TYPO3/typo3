@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca;
 /**
  * InlineOverrideChildTca Test file
  */
-class InlineOverrrideChildTcaTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class InlineOverrrideChildTcaTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var InlineOverrideChildTca

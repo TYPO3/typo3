@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Base test class for testing view helpers
  */
-abstract class ViewHelperBaseTestcase extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+abstract class ViewHelperBaseTestcase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var ViewHelperVariableContainer|ObjectProphecy

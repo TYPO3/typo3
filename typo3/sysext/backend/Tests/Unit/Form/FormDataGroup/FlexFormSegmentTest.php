@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class FlexFormSegmentTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class FlexFormSegmentTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var FlexFormSegment

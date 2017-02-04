@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Tests for TableBuilder
  */
-class TableBuilderTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class TableBuilderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var Table

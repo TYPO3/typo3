@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException;
 /**
  * Test case
  */
-class ClassInfoFactoryTest extends \TYPO3\Components\TestingFramework\Core\UnitTestCase
+class ClassInfoFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory
