@@ -921,9 +921,9 @@ define(['jquery',
 			// depending on whether checkbox is checked or not
 			var $checkbox = $(this).find('input[type="checkbox"]');
 			if ($checkbox.attr('checked')) {
-				$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').toggle();
+				$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').hide();
 			} else {
-				$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').toggle();
+				$(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').hide();
 			}
 		});
 	};
