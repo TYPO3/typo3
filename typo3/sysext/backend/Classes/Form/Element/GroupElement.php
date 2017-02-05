@@ -210,17 +210,17 @@ class GroupElement extends AbstractFormElement
                     1485206970
                 );
             }
-            if (isset($data['flexFormSheetName'])) {
-                $flexFormSheetName = $data['flexFormSheetName'];
+            if (isset($this->data['flexFormSheetName'])) {
+                $flexFormSheetName = $this->data['flexFormSheetName'];
             }
-            if (isset($data['flexFormFieldName'])) {
-                $flexFormFieldName = $data['flexFormFieldName'];
+            if (isset($this->data['flexFormFieldName'])) {
+                $flexFormFieldName = $this->data['flexFormFieldName'];
             }
-            if (isset($data['flexFormContainerName'])) {
-                $flexFormContainerName = $data['flexFormContainerName'];
+            if (isset($this->data['flexFormContainerName'])) {
+                $flexFormContainerName = $this->data['flexFormContainerName'];
             }
-            if (isset($data['flexFormContainerFieldName'])) {
-                $flexFormContainerFieldName = $data['flexFormContainerFieldName'];
+            if (isset($this->data['flexFormContainerFieldName'])) {
+                $flexFormContainerFieldName = $this->data['flexFormContainerFieldName'];
             }
         }
         // Get minimum characters for suggest from TCA and override by TsConfig
