@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
+use TYPO3\Components\TestingFramework\Core\Testbase;
 
 /**
  * This codeception extension creates a full TYPO3 instance within
@@ -155,7 +156,6 @@ class AcceptanceCoreEnvironment extends Extension
      * create a database and create database schema.
      *
      * @param SuiteEvent $suiteEvent
-     * @throws Exception
      */
     public function bootstrapTypo3Environment(SuiteEvent $suiteEvent)
     {
