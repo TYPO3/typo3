@@ -6076,6 +6076,7 @@ class DataHandler
         // Processes the remap stack:
         if (is_array($this->remapStack)) {
             $remapFlexForms = [];
+            $hookPayload = [];
 
             foreach ($this->remapStack as $remapAction) {
                 // If no position index for the arguments was set, skip this remap action:
@@ -6151,24 +6152,41 @@ class DataHandler
 
                     $remapFlexForms[$flexFormId][$flexFormPath] = $newValue;
                 }
-                // Process waiting Hook: processDatamap_afterDatabaseOperations:
+
+                // Collect elements that shall trigger processDatamap_afterDatabaseOperations
                 if (isset($this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'])) {
                     $hookArgs = $this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'];
-                    // Update field with remapped data:
-                    $hookArgs['fieldArray'][$field] = $newValue;
-                    // Process waiting hook objects:
-                    $hookObjectsArr = $hookArgs['hookObjectsArr'];
-                    foreach ($hookObjectsArr as $hookObj) {
-                        if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
-                            $hookObj->processDatamap_afterDatabaseOperations($hookArgs['status'], $table, $rawId, $hookArgs['fieldArray'], $this);
-                        }
+                    if (!isset($hookPayload[$table][$rawId])) {
+                        $hookPayload[$table][$rawId] = [
+                            'status' => $hookArgs['status'],
+                            'fieldArray' => $hookArgs['fieldArray'],
+                            'hookObjects' => $hookArgs['hookObjectsArr'],
+                        ];
                     }
+                    $hookPayload[$table][$rawId]['fieldArray'][$field] = $newValue;
                 }
             }
 
             if ($remapFlexForms) {
                 foreach ($remapFlexForms as $flexFormId => $modifications) {
                     $this->updateFlexFormData($flexFormId, $modifications);
+                }
+            }
+
+            foreach ($hookPayload as $tableName => $rawIdPayload) {
+                foreach ($rawIdPayload as $rawId => $payload) {
+                    foreach ($payload['hookObjects'] as $hookObject) {
+                        if (!method_exists($hookObject, 'processDatamap_afterDatabaseOperations')) {
+                            continue;
+                        }
+                        $hookObject->processDatamap_afterDatabaseOperations(
+                            $payload['status'],
+                            $tableName,
+                            $rawId,
+                            $payload['fieldArray'],
+                            $this
+                        );
+                    }
                 }
             }
         }

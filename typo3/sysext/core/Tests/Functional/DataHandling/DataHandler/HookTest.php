@@ -204,13 +204,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
                     'fieldArray' => [
                         'header' => 'Testing #1',
                         self::FIELD_ContentHotel => 1,
-                    ],
-                ],
-                // @todo Fix the double invocation for this tt_content record
-                [
-                    'table' => self::TABLE_Content,
-                    'fieldArray' => [
-                        'header' => 'Testing #1',
                         self::FIELD_Categories => 1,
                     ],
                 ],
