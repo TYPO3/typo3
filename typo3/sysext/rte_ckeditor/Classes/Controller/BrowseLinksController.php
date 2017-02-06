@@ -530,7 +530,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getCurrentPageId()
     {
-        return (int)$this->editorDetails['uid'];
+        return (int)$this->editorDetails['pid'];
     }
 
     /**
