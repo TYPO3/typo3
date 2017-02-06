@@ -1,17 +1,15 @@
 .. include:: ../../Includes.txt
 
-========================================================
-Breaking: #78477 - Refactoring of FlashMessage rendering
-========================================================
+===================================================================
+Breaking: #78477 - Remove method FlashMessage->getMessageAsMarkup()
+===================================================================
 
 See :issue:`78477`
 
 Description
 ===========
 
-The following method has been removed:
-
-* :php:`FlashMessage->getMessageAsMarkup()`
+The method :php:`FlashMessage->getMessageAsMarkup()` has been removed.
 
 Impact
 ======

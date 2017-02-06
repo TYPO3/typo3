@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-===========================================================
-Breaking: #77934 - RemoveSelectKeyFromContentElementPreview
-===========================================================
+=========================================================================
+Breaking: #77934 - Remove field `select_key` from content element preview
+=========================================================================
 
 See :issue:`77934`
 
@@ -15,18 +15,18 @@ The value of the field `select_key` has been shown in the preview of a content e
 Impact
 ======
 
-The preview of this field is not available anymore
+The preview of this field is not available anymore.
 
 
 Affected Installations
 ======================
 
-Every installation or 3rd party extension which uses the field
+Every installation or third party extension which uses the field.
 
 
 Migration
 =========
 
-No migration available
+No migration available.
 
 .. index:: Backend
