@@ -155,7 +155,9 @@ class TcaMigration
                             if (!empty($wizardConfig['params']['format'])) {
                                 $newTca[$table]['columns'][$fieldName]['config']['format'] = $wizardConfig['params']['format'];
                             }
-                            $this->messages[] = 'Migrated t3editor wizard in TCA of table "' . $table . '" field "' . $fieldName . '" to a renderType definition.';
+                            $this->messages[] = 'The t3editor wizard using \'type\' = \'text\' has been migrated to a \'renderType\' = \'t3editor\' definition.'
+                            . 'It has been migrated from TCA "' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'t3editor\']"'
+                            . 'to "' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'renderType\'] = \'t3editor\'"';
                         }
                     }
                     // If no wizard is left after migration, unset the whole sub array
@@ -170,7 +172,7 @@ class TcaMigration
 
     /**
      * Remove "style pointer", the 5th parameter from "types" "showitem" configuration.
-     * Move "specConf", 4th parameter from "tyes" "showitem" to "types" "columnsOverrides.
+     * Move "specConf", 4th parameter from "types" "showitem" to "types" "columnsOverrides".
      *
      * @param array $tca Incoming TCA
      * @return array Modified TCA
@@ -232,7 +234,9 @@ class TcaMigration
                     }
                     $newFieldString = implode(';', $fieldArray);
                     if ($newFieldString !== $fieldString) {
-                        $this->messages[] = 'Changed showitem string of TCA table "' . $table . '" type "' . $typeName . '" due to changed field "' . $fieldName . '".';
+                        $this->messages[] = 'The 4th parameter \'specConf\' of the field \'showitem\' with fieldName = \'' . $fieldArray['fieldName'] . '\' has been migrated, from TCA table "'
+                            . $table . '[\'types\'][\'' . $typeName . '\'][\'showitem\']"' . 'to "'
+                            . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'' . $fieldArray['fieldName'] . '\'][\'defaultExtras\']".';
                     }
                     if (!empty($newFieldString)) {
                         $newFieldStrings[] = $newFieldString;
@@ -305,8 +309,10 @@ class TcaMigration
                                                 if (!empty($wizardConfig['params']['format'])) {
                                                     $newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldName]['config']['format'] = $wizardConfig['params']['format'];
                                                 }
-                                                $this->messages[] = 'Migrated t3editor wizard in TCA of table "' . $table . '" field "' . $fieldName
-                                                    . '" to a renderType definition with columnsOverrides in type "' . $typeName . '".';
+                                                $this->messages[] = 'The t3editor wizard using \'type\' = \'text\', with the "enableByTypeConfig" wizard set to 1,'
+                                                . 'has been migrated to the \'renderType\' = \'t3editor\' definition.'
+                                                . 'It has been migrated from TCA "' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'t3editor\']"'
+                                                . 'to "' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'renderType\'] = \'t3editor\'"';
                                             } else {
                                                 // Some other enabled wizard
                                                 $newEnabledWizardsArray[] = $enabledWizardName;
@@ -380,9 +386,11 @@ class TcaMigration
                             $fieldString = $fieldArray['fieldName'];
                         }
                         $paletteString = '--palette--;;' . $fieldArray['paletteName'];
-                        $this->messages[] = 'Migrated TCA table "' . $table . '" showitem field of type "' . $typeName . '": Moved additional palette'
-                            . ' with name "' . $fieldArray['paletteName'] . '" as 3rd argument of field "' . $fieldArray['fieldName']
-                            . '" to an own palette. The result of this part is: "' . $fieldString . ', ' . $paletteString . '"';
+                        $this->messages[] = 'Migrated \'showitem\' field from TCA table '
+                            . $table . '[\'types\'][\'' . $typeName . '\']" : Moved additional palette'
+                            . ' with name "' . $table . '[\'types\'][\'' . $typeName . '\'][\'' . $fieldArray['paletteName'] . '\']" as 3rd argument of field "'
+                            . $table . '[\'types\'][\'' . $typeName . '\'][\'' . $fieldArray['fieldName'] . '\']"'
+                            . 'to an own palette. The result of this part is: "' . $fieldString . ', ' . $paletteString . '"';
                         $newFieldStrings[] = $fieldString;
                         $newFieldStrings[] = $paletteString;
                     } else {
@@ -439,7 +447,11 @@ class TcaMigration
                         foreach ($wizardConfig as $option => $value) {
                             if ($option === 'icon' && in_array($value, $oldFileNames, true)) {
                                 $newTca[$table]['columns'][$fieldName]['config']['wizards'][$wizardName]['icon'] = $newFileLocations[$value];
-                                $this->messages[] = 'Migrated icon path of wizard "' . $wizardName . '" in field "' . $fieldName . '" from TCA table "' . $table . '". New path is: ' . $newFileLocations[$value];
+                                $this->messages[] = 'The icon path of wizard "' . $wizardName
+                                    . '" from TCA table "'
+                                    . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\'][\'icon\']"'
+                                    . 'has been migrated to '
+                                    . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\'][\'icon\']" = \'' . $newFileLocations[$value] . '\'.';
                             }
                         }
                     }
@@ -513,7 +525,7 @@ class TcaMigration
             foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
                 if (isset($fieldConfig['config']['iconsInOptionTags'])) {
                     unset($fieldConfig['config']['iconsInOptionTags']);
-                    $this->messages[] = 'Configuration option "iconsInOptionTags" was removed from field "' . $fieldName . '" in TCA table "' . $table . '"';
+                    $this->messages[] = 'Configuration option \'iconsInOptionTags\' was removed from field "' . $fieldName . '" in TCA table "' . $table . '[\'config\']"';
                 }
             }
         }
@@ -576,8 +588,9 @@ class TcaMigration
                     continue;
                 }
 
-                $tableColumnInfo = 'table "' . $table . '" and column "' . $columnName . '"';
-                $this->messages[] = 'Using select fields without the "renderType" setting is deprecated in ' . $tableColumnInfo;
+                $tableColumnInfo = 'table "' . $table . '[\'columns\'][\'' . $columnName . '\']"';
+                $this->messages[] = 'Using the \'type\' = \'select\' field in "' . $table . '[\'columns\'][\'' . $columnName . '\'][\'config\'][\'type\'] = \'select\'" without the "renderType" setting in "'
+                    . $table . '[\'columns\'][\'' . $columnName . '\'][\'config\'][\'renderType\']" is deprecated.';
 
                 $columnConfig = &$columnDefinition['config'];
                 if (!empty($columnConfig['renderMode'])) {
@@ -627,7 +640,9 @@ class TcaMigration
                     continue;
                 }
                 if (array_key_exists('noIconsBelowSelect', $fieldConfig['config'])) {
-                    $this->messages[] = 'The "noIconsBelowSelect" setting for select fields was removed. Please define the setting "showIconTable" for table "' . $table . '" and field "' . $fieldName . '"';
+                    $this->messages[] = 'The "noIconsBelowSelect" setting for select fields in table "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']" was removed. Please define the setting "showIconTable" in table "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'showIconTable\']"';
                     if (!$fieldConfig['config']['noIconsBelowSelect']) {
                         // If old setting was explicitly false, enable icon table if not defined yet
                         if (!array_key_exists('showIconTable', $fieldConfig['config'])) {
@@ -637,11 +652,15 @@ class TcaMigration
                     unset($fieldConfig['config']['noIconsBelowSelect']);
                 }
                 if (array_key_exists('suppress_icons', $fieldConfig['config'])) {
-                    $this->messages[] = 'The "suppress_icons" setting for select fields was removed. Please define the setting "showIconTable" for table "' . $table . '" and field "' . $fieldName . '"';
+                    $this->messages[] = 'The "suppress_icons" setting for select fields in table "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']" was removed. Please define the setting "showIconTable" for table "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'showIconTable\']"';
                     unset($fieldConfig['config']['suppress_icons']);
                 }
                 if (array_key_exists('foreign_table_loadIcons', $fieldConfig['config'])) {
-                    $this->messages[] = 'The "foreign_table_loadIcons" setting for select fields was removed. Please define the setting "showIconTable" for table "' . $table . '" and field "' . $fieldName . '"';
+                    $this->messages[] = 'The "foreign_table_loadIcons" setting for select fields in table "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']" was removed. Please define the setting "showIconTable" for table "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'showIconTable\']"';
                     unset($fieldConfig['config']['foreign_table_loadIcons']);
                 }
             }
@@ -671,7 +690,10 @@ class TcaMigration
                     if (empty($fieldConfig['config']['wizards']['link']['module']['urlParameters'])) {
                         unset($fieldConfig['config']['wizards']['link']['module']['urlParameters']);
                     }
-                    $this->messages[] = 'Reference to "wizard_element_browser" was migrated to new "wizard_link" for field "' . $fieldName . '" in TCA table "' . $table . '"';
+                    $this->messages[] = 'Reference to "wizard_element_browser" was migrated from"'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'link\'][\'module\'][\'name\'] === \'wizard_element_browser\'"'
+                        . 'to new "wizard_link", "'
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'link\'][\'module\'][\'name\'] = \'wizard_link\' "';
                 }
             }
         }
@@ -705,9 +727,9 @@ class TcaMigration
                     }
                     if ($isRichtextField) {
                         unset($fieldConfig['defaultExtras']);
-                        $this->messages[] = 'rte configuration via \'defaultExtras\' options are deprecated. String "' . $originalValue . '" in TCA'
+                        $this->messages[] = 'RTE configuration via \'defaultExtras\' options are deprecated. String "' . $originalValue . '" in TCA'
                             . ' ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'defaultExtras\'] was changed to'
-                            . ' options in [\'config\']';
+                            . ' options in ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']';
                     }
                 }
             }
@@ -735,12 +757,9 @@ class TcaMigration
                         }
                         if ($isRichtextField) {
                             unset($fieldConfig['defaultExtras']);
-                            $this->messages[] = 'rte configuration via \'defaultExtras\' options are deprecated.. String "'
-                                . $originalValue . '" in TCA'
-                                . ' ' . $table . '[\'types\'][\'' . $typeName
-                                . '\'][\'columnsOverrides\'][\'' . $fieldName
-                                . '\'][\'defaultExtras\']' .
-                                ' was changed to config options.';
+                            $this->messages[] = 'RTE configuration via \'defaultExtras\' options are deprecated. String "' . $originalValue . '" in TCA'
+                                . ' ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'' . $fieldName . '\'][\'defaultExtras\']' .
+                                ' was changed to options in ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']';
                         }
                     }
                 }
@@ -1053,9 +1072,9 @@ class TcaMigration
                                                 unset($newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldName]['defaultExtras']);
                                                 $newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldName]['config']['wizards'][$enabledWizardName] = $wizardConfig;
                                                 unset($newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldName]['config']['wizards'][$enabledWizardName]['enableByTypeConfig']);
-                                                $this->messages[] = 'The wizard with "enableByTypeConfig" set to 1 '
-                                                . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                                . ' has been migrated to '
+                                                $this->messages[] = 'The wizard with "enableByTypeConfig" set to 1 has been migrated to \'columnsOverrides\'.'
+                                                    . ' It has been migrated from "'
+                                                . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']" to '
                                                 . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\'].';
                                             }
                                         }
@@ -1107,7 +1126,7 @@ class TcaMigration
                                         $fieldConfig['config']['renderType'] = 'colorpicker';
                                         $this->messages[] = 'The color-picker wizard using \'colorbox\' is deprecated'
                                             . ' in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
-                                            . '[\'wizards\'][\'' . $wizardName . '\'] and is changed to ' . $table
+                                            . '[\'wizards\'][\'' . $wizardName . '\'] and was changed to ' . $table
                                             . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] = \'colorpicker\'';
                                     }
                                 }
@@ -1126,10 +1145,10 @@ class TcaMigration
                                                     unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
                                                     $typeArray['columnsOverrides'][$fieldName]['config']['type'] = 'input';
                                                     $typeArray['columnsOverrides'][$fieldName]['config']['renderType'] = 'colorpicker';
-                                                    $this->messages[] = 'The color-picker wizard in columnsOverrides using \'colorbox\' has been migrated'
-                                                        . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                        . '[\'wizards\'][\'' . $wizardName . '\'][\'type\'] = \'colorbox\' to ' . $table
-                                                        . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'colorpicker\'';
+                                                    $this->messages[] = 'The color-picker wizard in columnsOverrides using \'colorbox\' has been migrated to a \'rendertype\' = \'colorpicker\'.'
+                                                        . ' It has been migrated from TCA "' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                        . '[\'wizards\'][\'' . $wizardName . '\'][\'type\'] = \'colorbox\'"" to "' . $table
+                                                        . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'colorpicker\'"';
                                                 }
                                             }
                                             if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -1328,10 +1347,10 @@ class TcaMigration
                                             = $wizardConfig['params']['allowedExtensions'];
                                     }
                                     unset($fieldConfig['config']['wizards'][$wizardName]);
-                                    $this->messages[] = 'The link wizard in TCA '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                        . ' has been migrated to \'renderType\' => \'inputLink \', in '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'].';
+                                    $this->messages[] = 'The link wizard has been migrated to a \'renderType\' => \'inputLink \'. '
+                                        . 'It has been migrated from TCA table "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']" to "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] = \'inputLink\'".';
                                 }
                             }
                         }
@@ -1371,10 +1390,10 @@ class TcaMigration
                                                         = $wizard['params']['allowedExtensions'];
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
-                                                $this->messages[] = 'The link wizard in columnsOverrides using \'type\' = \'popup\' has been migrated'
-                                                    . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                    . '[\'wizards\'][\'' . $wizardName . '\'] to ' . $table
-                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'inputLink\'';
+                                                $this->messages[] = 'The link wizard in columnsOverrides using \'type\' = \'popup\' has been migrated to a \'renderType\' = \'inputLink\'.'
+                                                    . ' It has been migrated from TCA "' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                    . '[\'wizards\'][\'' . $wizardName . '\']" to "' . $table
+                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'inputLink\'"';
                                             }
                                         }
                                         if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -1425,10 +1444,10 @@ class TcaMigration
                                             = $wizardConfig['JSopenParams'];
                                     }
                                     unset($fieldConfig['config']['wizards'][$wizardName]);
-                                    $this->messages[] = 'The edit wizard in TCA '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                        . ' has been migrated to a \'fieldControl\' element, in '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'].';
+                                    $this->messages[] = 'The edit wizard in TCA  has been migrated to a \'fieldControl\' = \'editPopup\' element.'
+                                        . ' It has been migrated from TCA "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']" to "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldControl\']=\'editPopup\'".';
                                 }
                             }
                         }
@@ -1457,10 +1476,11 @@ class TcaMigration
                                                         = $wizard['JSopenParams'];
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
-                                                $this->messages[] = 'The edit wizard in columnsOverrides using \'type\' = \'popup\' has been migrated'
-                                                    . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                    . '[\'wizards\'][\'' . $wizardName . '\'] to a \'fieldControl\' element, in '
-                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                $this->messages[] = 'The edit wizard in columnsOverrides using \'type\' = \'popup\' has been migrated to a \'fieldControl\' = \'editPopup\' element.'
+                                                    . ' It has been migrated from TCA "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                    . '[\'wizards\'][\'' . $wizardName . '\']" , to "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'fieldControl\']=\'editPopup\'".';
                                             }
                                         }
                                         if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -1519,10 +1539,10 @@ class TcaMigration
                                             = $wizardConfig['params']['setValue'];
                                     }
                                     unset($fieldConfig['config']['wizards'][$wizardName]);
-                                    $this->messages[] = 'The add wizard in TCA '
+                                    $this->messages[] = 'The add wizard in TCA has been migrated to a \'fieldControl\' = \'addRecord\' element.'
                                         . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                        . ' has been migrated to a \'fieldControl\' element, in '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'].';
+                                        . ' It has been migrated from TCA "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldControl\']=\'addRecord\'.';
                                 }
                             }
                         }
@@ -1559,10 +1579,11 @@ class TcaMigration
                                                         = $wizard['params']['setValue'];
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
-                                                $this->messages[] = 'The add wizard in columnsOverrides using \'type\' = \'script\' has been migrated'
-                                                    . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                    . '[\'wizards\'][\'' . $wizardName . '\'] to a \'fieldControl\' element, in '
-                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                $this->messages[] = 'The add wizard in columnsOverrides using \'type\' = \'script\' has been migrated to a \'fieldControl\' = \'addRecord\' element.'
+                                                    . ' It has been migrated from TCA "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                    . '[\'wizards\'][\'' . $wizardName . '\']"  to "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'fieldControl\'=\'addRecord\'".';
                                             }
                                         }
                                         if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -1617,10 +1638,11 @@ class TcaMigration
                                             = $wizardConfig['params']['pid'];
                                     }
                                     unset($fieldConfig['config']['wizards'][$wizardName]);
-                                    $this->messages[] = 'The list wizard in TCA '
+                                    $this->messages[] = 'The list wizard in TCA has been migrated to a \'fieldControl\' = \'listModule\' element.'
+                                        . ' It has been migrated from TCA "'
                                         . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                        . ' has been migrated to a \'fieldControl\' element, in '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'].';
+                                        . '" to "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldControl\'=\'listModule\'".';
                                 }
                             }
                         }
@@ -1653,10 +1675,11 @@ class TcaMigration
                                                         = $wizard['params']['pid'];
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
-                                                $this->messages[] = 'The list wizard in columnsOverrides using \'type\' = \'script\' has been migrated'
-                                                    . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                    . '[\'wizards\'][\'' . $wizardName . '\'] to a \'fieldControl\' element, in '
-                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                $this->messages[] = 'The list wizard in columnsOverrides using \'type\' = \'script\' has been migrated to a \'fieldControl\' = \'listModule\' element.'
+                                                    . ' It has been migrated from TCA "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                    . '[\'wizards\'][\'' . $wizardName . '\']" to "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'fieldControl\'=\'listModule\'".';
                                             }
                                         }
                                         if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -1799,10 +1822,11 @@ class TcaMigration
                                             = $wizardConfig['params']['numNewRows'];
                                     }
                                     unset($fieldConfig['config']['wizards'][$wizardName]);
-                                    $this->messages[] = 'The table wizard in TCA '
+                                    $this->messages[] = 'The table wizard in TCA has been migrated to a \'renderType\' = \'textTable\'.'
+                                        . ' It has been migrated from TCA "'
                                         . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                        . ' has been migrated to a \'renderType\' = \'textTable\' in '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'].';
+                                        . '" to "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'renderType\'] = \'textTable\'".';
                                 }
                             }
                         }
@@ -1837,10 +1861,11 @@ class TcaMigration
                                                         = $wizard['params']['numNewRows'];
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
-                                                $this->messages[] = 'The table wizard in columnsOverrides using \'type\' = \'script\' has been migrated'
-                                                    . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                    . '[\'wizards\'][\'' . $wizardName . '\'] to a \'renderType\' = \'textTable\' in '
-                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                $this->messages[] = 'The table wizard in columnsOverrides using \'type\' = \'script\' has been migrated to a \'renderType\' = \'textTable\'.'
+                                                    . ' It has been migrated from TCA "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                    . '[\'wizards\'][\'' . $wizardName . '\']"  to "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'textTable\'".';
                                             }
                                         }
                                         if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -1888,10 +1913,11 @@ class TcaMigration
                                         $fieldConfig['config']['fieldControl']['fullScreenRichtext']['options']['title'] = $wizardConfig['title'];
                                     }
                                     unset($fieldConfig['config']['wizards'][$wizardName]);
-                                    $this->messages[] = 'The RTE fullscreen wizard in TCA '
+                                    $this->messages[] = 'The RTE fullscreen wizard in TCA has been migrated to a \'fieldControl\' = \'fullScreenRichtext\'.'
+                                        . ' It has been migrated from TCA "'
                                         . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                        . ' has been migrated to a \'fieldControl\' in '
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'].';
+                                        . '" to "'
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldControl\']=\'fullScreenRichtext\'".';
                                 } elseif (isset($wizardConfig['type'])
                                     && $wizardConfig['type'] === 'script'
                                     && isset($wizardConfig['module']['name'])
@@ -1914,10 +1940,11 @@ class TcaMigration
                                                         $typeArray['columnsOverrides'][$fieldName]['config']['fieldControl']['fullScreenRichtext']['options']['title']
                                                             = $wizardConfig['title'];
                                                     }
-                                                    $this->messages[] = 'The RTE fullscreen wizard in TCA '
+                                                    $this->messages[] = 'The RTE fullscreen wizard in TCA has been migrated to a \'fieldControl\' = \'fullScreenRichtext\'.'
+                                                        . ' It has been migrated from TCA "'
                                                         . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']'
-                                                        . ' has been migrated to a \'fieldControl\' in '
-                                                        . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                        . '" to "'
+                                                        . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'fieldControl\']=\'fullScreenRichtext\'';
                                                 }
                                             }
                                         }
@@ -1948,10 +1975,11 @@ class TcaMigration
                                                         = $wizard['title'];
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
-                                                $this->messages[] = 'The RTE fullscreen wizard in columnsOverrides using \'type\' = \'script\' has been migrated'
-                                                    . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
-                                                    . '[\'wizards\'][\'' . $wizardName . '\'] to a \'fieldControl\' in '
-                                                    . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                $this->messages[] = 'The RTE fullscreen wizard in columnsOverrides using \'type\' = \'script\' has been migrated to a \'fieldControl\' = \'fullScreenRichtext\'.'
+                                                    . ' It has been migrated from TCA "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
+                                                    . '[\'wizards\'][\'' . $wizardName . '\']" to "'
+                                                    . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'fieldControl\']=\'fullScreenRichtext\'".';
                                             }
                                         }
                                         if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
@@ -2026,12 +2054,12 @@ class TcaMigration
                                                     $this->messages[] = 'The suggest wizard options in columnsOverrides have been migrated'
                                                         . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
                                                         . '[\'wizards\'][\'' . $wizardName . '\'] to \'suggestOptions\' in '
-                                                        . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                        . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
                                                 } else {
                                                     $this->messages[] = 'The suggest wizard in columnsOverrides has been migrated'
                                                         . ' from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']'
                                                         . '[\'wizards\'][\'' . $wizardName . '\'] to \'hideSuggest\' => false in '
-                                                        . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
+                                                        . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'hideSuggest\']';
                                                 }
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
                                             }
@@ -2065,24 +2093,24 @@ class TcaMigration
                     if ($fieldConfig['config']['type'] === 'group') {
                         if (isset($fieldConfig['config']['selectedListStyle'])) {
                             unset($fieldConfig['config']['selectedListStyle']);
-                            $this->messages[] = 'The type=group option \'selectedListStyle\' is obsolete and has been dropped'
+                            $this->messages[] = 'The \'type\' = \'group\' option \'selectedListStyle\' is obsolete and has been dropped'
                                 . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']';
                         }
                         if (isset($fieldConfig['config']['show_thumbs'])) {
                             if ((bool)$fieldConfig['config']['show_thumbs'] === false && $fieldConfig['config']['internal_type'] === 'db') {
                                 $fieldConfig['config']['fieldWizard']['recordsOverview']['disabled'] = true;
-                                $this->messages[] = 'The type=group option \'show_thumbs\' = false is obsolete'
+                                $this->messages[] = 'The \'type\' = \'group\' option \'show_thumbs\' = false is obsolete'
                                     . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                     . ' and has been migrated to'
-                                    . ' [\'config\'][\'fieldWizard\'][\'recordsOverview\'][\'disabled\'] = true';
+                                    . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldWizard\'][\'recordsOverview\'][\'disabled\'] = true';
                             } elseif ((bool)$fieldConfig['config']['show_thumbs'] === false && $fieldConfig['config']['internal_type'] === 'file') {
                                 $fieldConfig['config']['fieldWizard']['fileThumbnails']['disabled'] = true;
-                                $this->messages[] = 'The type=group option \'show_thumbs\' = false is obsolete'
+                                $this->messages[] = 'The \'type\' = \'group\' option \'show_thumbs\' = false is obsolete'
                                     . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                     . ' and has been migrated to'
-                                    . ' [\'config\'][\'fieldWizard\'][\'fileThumbnails\'][\'disabled\'] = true';
+                                    . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldWizard\'][\'fileThumbnails\'][\'disabled\'] = true';
                             } else {
-                                $this->messages[] = 'The type=group option \'show_thumbs\' is obsolete and has been dropped'
+                                $this->messages[] = 'The \'type\' = \'group\' option \'show_thumbs\' is obsolete and has been dropped'
                                     . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']';
                             }
                             unset($fieldConfig['config']['show_thumbs']);
@@ -2092,28 +2120,28 @@ class TcaMigration
                             foreach ($controls as $control) {
                                 if ($control === 'browser') {
                                     $fieldConfig['config']['fieldControl']['elementBrowser']['disabled'] = true;
-                                    $this->messages[] = 'The type=group option \'disable_controls\' = \'browser\''
+                                    $this->messages[] = 'The \'type\' = \'group\' option \'disable_controls\' = \'browser\''
                                        . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                        . ' and has been migrated to'
-                                       . ' [\'config\'][\'fieldControl\'][\'elementBrowser\'][\'disabled\'] = true';
+                                       . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldControl\'][\'elementBrowser\'][\'disabled\'] = true';
                                 } elseif ($control === 'delete') {
-                                    $this->messages[] = 'The type=group option \'disable_controls\' = \'delete\''
+                                    $this->messages[] = 'The \'type\' = \'group\' option \'disable_controls\' = \'delete\''
                                        . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                        . ' and has been migrated to'
-                                       . ' [\'config\'][\'hideDeleteIcon\'] = true';
+                                       . $table . '[\'columns\'][\' . $fieldName . \'][\'config\'][\'hideDeleteIcon\'] = true';
                                     $fieldConfig['config']['hideDeleteIcon'] = true;
                                 } elseif ($control === 'allowedTables') {
                                     $fieldConfig['config']['fieldWizard']['tableList']['disabled'] = true;
-                                    $this->messages[] = 'The type=group option \'disable_controls\' = \'allowedTables\''
+                                    $this->messages[] = 'The \'type\' = \'group\' option \'disable_controls\' = \'allowedTables\''
                                        . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                        . ' and has been migrated to'
-                                       . ' [\'config\'][\'fieldWizard\'][\'tableList\'][\'disabled\'] = true';
+                                       . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldWizard\'][\'tableList\'][\'disabled\'] = true';
                                 } elseif ($control === 'upload') {
                                     $fieldConfig['config']['fieldWizard']['fileUpload']['disabled'] = true;
-                                    $this->messages[] = 'The type=group option \'disable_controls\' = \'upload\''
+                                    $this->messages[] = 'The \'type\' = \'group\' option \'disable_controls\' = \'upload\''
                                        . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                        . ' and has been migrated to'
-                                       . ' [\'config\'][\'fieldWizard\'][\'fileUpload\'][\'disabled\'] = true';
+                                       . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'fieldWizard\'][\'fileUpload\'][\'disabled\'] = true';
                                 }
                             }
                             unset($fieldConfig['config']['disable_controls']);
@@ -2144,12 +2172,12 @@ class TcaMigration
                         if (isset($fieldConfig['config']['showIconTable'])) {
                             if ((bool)$fieldConfig['config']['showIconTable'] === true) {
                                 $fieldConfig['config']['fieldWizard']['selectIcons']['disabled'] = false;
-                                $this->messages[] = 'The type=select option \'showIconTable\' = true is obsolete'
+                                $this->messages[] = 'The \'type\' = \'select\' option \'showIconTable\' = true is obsolete'
                                     . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                     . ' and has been migrated to'
                                     . ' [\'config\'][\'fieldWizard\'][\'selectIcons\'][\'disabled\'] = false';
                             } else {
-                                $this->messages[] = 'The type=group option \'showIconTable\' = false is obsolete'
+                                $this->messages[] = 'The \'type\' = \'group\' option \'showIconTable\' = false is obsolete'
                                     . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                     . ' and has been removed.';
                             }
@@ -2157,7 +2185,7 @@ class TcaMigration
                         }
                         if (isset($fieldConfig['config']['selicon_cols'])) {
                             unset($fieldConfig['config']['selicon_cols']);
-                            $this->messages[] = 'The type=group option \'selicon_cols\' = false is obsolete'
+                            $this->messages[] = 'The \'type\' = \'group\' option \'selicon_cols\' = false is obsolete'
                                 . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
                                 . ' and has been removed.';
                         }
