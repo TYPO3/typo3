@@ -12,14 +12,21 @@
 ##########################
 
 COUNTER=0
+DRYRUN=""
+
+if [ "$1" = "dryrun" ]
+then
+    DRYRUN="--dry-run"
+fi
 
 for FILE in $(git diff-tree --no-commit-id --name-only -r HEAD | grep '.php$'); do
     if [ -e $FILE ]
     then
         ./bin/php-cs-fixer fix $FILE \
-            -v \
+            -v $DRYRUN \
             --config=Build/.php_cs
-        if [ "$?" = "1" ]
+
+        if [ "$?" -gt "0" ]
         then
             COUNTER=$((COUNTER+1))
         fi
