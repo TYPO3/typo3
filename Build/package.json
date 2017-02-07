@@ -43,6 +43,6 @@
     "requirejs": "^2.2.0",
     "tagsort": "1.4.0",
     "tslint": "^3.15.1",
-    "typescript": "^2.0.3"
+    "typescript": "^2.2.0"
   }
 }

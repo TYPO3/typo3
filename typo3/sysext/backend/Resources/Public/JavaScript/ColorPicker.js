@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", 'jquery', "TYPO3/CMS/Core/Contrib/jquery.minicolors"], function (require, exports, $) {
+define(["require", "exports", "jquery", "TYPO3/CMS/Core/Contrib/jquery.minicolors"], function (require, exports, $) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/ColorPicker
