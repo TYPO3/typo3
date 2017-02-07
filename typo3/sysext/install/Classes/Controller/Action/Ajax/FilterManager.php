@@ -37,7 +37,7 @@ class FilterManager extends AbstractAjaxAction
         $files = [];
         foreach ($ignoredFiles as $filePath) {
             $file = current($documentationFileService->getListEntry($filePath));
-            $files[] = $file['headline'];
+            $files[$file['headline']] = $file['filepath'];
         }
         $this->view->assign('files', $files);
         return $this->view->render();

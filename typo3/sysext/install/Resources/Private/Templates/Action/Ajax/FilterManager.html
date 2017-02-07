@@ -1,14 +1,14 @@
 <div class="t3js-response">
-    <f:for each="{files}" as="file">
+    <f:for each="{files}" as="filepath" key="headline">
         <div class="panel-group" role="tablist" aria-multiselectable="false">
 
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab">
-                    <input type="checkbox" class="t3js-upgradeanalysis-restore pull-left" data-filepath="{file}"
+                    <input type="checkbox" class="t3js-upgradeanalysis-restore pull-left" data-filepath="{filepath}"
                            title="restore this document"/>
                     <h3 class="panel-title">
                             <strong>
-                                {file}</strong>
+                                {headline}</strong>
                     </h3>
                 </div>
             </div>
