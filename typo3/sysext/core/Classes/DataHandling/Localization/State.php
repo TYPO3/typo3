@@ -66,12 +66,12 @@ class State
      */
     public static function isApplicable(string $tableName)
     {
-        return (
+        return
             static::hasColumns($tableName)
             && static::hasLanguageFieldName($tableName)
             && static::hasTranslationParentFieldName($tableName)
             && count(static::getFieldNames($tableName)) > 0
-        );
+        ;
     }
 
     /**
@@ -80,10 +80,10 @@ class State
      */
     protected static function hasColumns(string $tableName)
     {
-        return (
+        return
             !empty($GLOBALS['TCA'][$tableName]['columns'])
             && is_array($GLOBALS['TCA'][$tableName]['columns'])
-        );
+        ;
     }
 
     /**
@@ -113,7 +113,7 @@ class State
         return array_keys(
             array_filter(
                 $GLOBALS['TCA'][$tableName]['columns'],
-                function(array $fieldConfiguration) {
+                function (array $fieldConfiguration) {
                     return !empty(
                         $fieldConfiguration['config']
                             ['behaviour']['allowLanguageSynchronization']
@@ -142,7 +142,7 @@ class State
      * @param string $tableName
      * @param array $states
      */
-    public function __construct(string $tableName, array $states = array())
+    public function __construct(string $tableName, array $states = [])
     {
         $this->tableName = $tableName;
         $this->states = $states;
@@ -237,7 +237,7 @@ class State
      */
     public function getState(string $fieldName)
     {
-        return ($this->states[$fieldName] ?? null);
+        return $this->states[$fieldName] ?? null;
     }
 
     /**
@@ -256,7 +256,7 @@ class State
         }
         return array_filter(
             $fieldNames,
-            function($fieldName) use ($desiredState) {
+            function ($fieldName) use ($desiredState) {
                 return $this->states[$fieldName] === $desiredState;
             }
         );

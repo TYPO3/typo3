@@ -301,7 +301,7 @@ class ElementsBasicCest
      */
     public function checkThatBrowserSideValidationWorks_EvalDate(Admin $I, Formhandler $formhandler)
     {
-        $this->skip("Instable Test is skipped due to repeated failure");
+        $this->skip('Instable Test is skipped due to repeated failure');
         //@todo fix this test
 
         $this->waitForFormReady($I);
@@ -418,7 +418,7 @@ class ElementsBasicCest
 
     public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(Admin $I, Formhandler $formhandler)
     {
-        $this->skip("Instable Test is skipped due to repeated failure");
+        $this->skip('Instable Test is skipped due to repeated failure');
         //@todo fix this test
         $this->waitForFormReady($I);
         $testData = [
@@ -498,9 +498,9 @@ class ElementsBasicCest
 
     public function checkThatValidationWorks_evalTimesec(Admin $I, Formhandler $formhandler)
     {
-        $this->skip("Instable Test is skipped due to repeated failure");
+        $this->skip('Instable Test is skipped due to repeated failure');
         //@todo fix this test
-        
+
         $this->waitForFormReady($I);
         $testData = [
             'input_18 eval=timesec' => [

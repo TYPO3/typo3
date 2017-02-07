@@ -45,7 +45,6 @@ class Avatar
      */
     public function render(array $backendUser = null, int $size = 32, bool $showIcon = false)
     {
-
         if (!is_array($backendUser)) {
             $backendUser = $this->getBackendUser()->user;
         }
@@ -58,7 +57,6 @@ class Avatar
         $avatar = static::getCache()->get($cacheId);
 
         if (!$avatar) {
-
             $this->validateSortAndInitiateAvatarProviders();
             $view = $this->getFluidTemplateObject();
 

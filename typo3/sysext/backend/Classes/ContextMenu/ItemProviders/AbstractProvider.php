@@ -221,5 +221,4 @@ class AbstractProvider implements ProviderInterface
     {
         return '';
     }
-
 }

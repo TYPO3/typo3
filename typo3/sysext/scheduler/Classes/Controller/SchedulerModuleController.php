@@ -993,7 +993,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 }
                 $table[] = '<tr class="taskGroup" data-task-group-id="' . $taskIndex . '"><td colspan="8">' . $groupText . '</td><td style="text-align:right;">' . $collapseExpandIcons . '</td></tr>';
             } else {
-                if (sizeof($temporaryResult) > 1) {
+                if (count($temporaryResult) > 1) {
                     $table[] = '<tr class="taskGroup" data-task-group-id="0"><td colspan="8"><strong>' . htmlspecialchars($this->getLanguageService()->getLL('label.noGroup')) . '</strong></td><td style="text-align:right;">' . $collapseExpandIcons . '</td></tr>';
                 }
             }

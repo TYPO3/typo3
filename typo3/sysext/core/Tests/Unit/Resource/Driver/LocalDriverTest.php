@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
-use TYPO3\Components\TestingFramework\Core\FileStreamWrapper;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\Components\TestingFramework\Core\FileStreamWrapper;
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS

@@ -411,7 +411,7 @@ class DataMapItem
      */
     public function findDependencies(string $scope)
     {
-        return ($this->dependencies[$scope] ?? []);
+        return $this->dependencies[$scope] ?? [];
     }
 
     /**

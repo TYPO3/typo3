@@ -181,7 +181,6 @@ class FolderTreeView extends AbstractTreeView
             if (!$folderObject instanceof InaccessibleFolder) {
                 $tableName = $this->getTableNameForClickMenu($folderObject);
                 $theFolderIcon = BackendUtility::wrapClickMenuOnIcon($icon, $tableName, $folderObject->getCombinedIdentifier(), 'tree');
-
             }
         } elseif ($this->ext_IconMode === 'titlelink') {
             $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ',' . $this->bank . ');';

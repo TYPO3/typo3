@@ -261,7 +261,8 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
      * @param  File|Folder $fileOrFolderInClipBoard
      * @return bool
      */
-    protected function isFoldersAreInTheSameRoot($fileOrFolderInClipBoard): bool {
+    protected function isFoldersAreInTheSameRoot($fileOrFolderInClipBoard): bool
+    {
         return (!$fileOrFolderInClipBoard instanceof Folder)
             || (
                 $this->record->getStorage()->getRootLevelFolder()->getCombinedIdentifier()

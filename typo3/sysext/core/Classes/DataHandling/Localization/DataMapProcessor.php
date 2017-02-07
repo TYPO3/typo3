@@ -130,10 +130,8 @@ class DataMapProcessor
             $this->filterNumericIds(array_keys($idValues))
         );
 
-        foreach ($idValues as $id => $values)
-        {
+        foreach ($idValues as $id => $values) {
             $recordValues = $translationValues[$id] ?? [];
-//            $values['l10n_state'] = json_decode($values['l10n_state'], true) ?? [];
             $item = DataMapItem::build(
                 $tableName,
                 $id,
@@ -643,7 +641,6 @@ class DataMapProcessor
         return $dependentIdMap;
     }
 
-
     /**
      * Fetch all elements that depend on given record id's in their parent or source field
      *
@@ -712,7 +709,7 @@ class DataMapProcessor
     {
         return array_filter(
             $this->items,
-            function(DataMapItem $item) use ($type) {
+            function (DataMapItem $item) use ($type) {
                 return $item->getType() === $type;
             }
         );
@@ -729,7 +726,7 @@ class DataMapProcessor
     {
         return array_filter(
             $ids,
-            function($id) use ($numeric) {
+            function ($id) use ($numeric) {
                 return MathUtility::canBeInterpretedAsInteger($id) === $numeric;
             }
         );
@@ -744,7 +741,7 @@ class DataMapProcessor
     protected function mapRelationItemId(array $relationItems)
     {
         return array_map(
-            function(array $relationItem) {
+            function (array $relationItem) {
                 return (string)$relationItem['id'];
             },
             $relationItems
@@ -830,7 +827,7 @@ class DataMapProcessor
 
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 
-        return (
+        return
             $configuration['type'] === 'group'
                 && ($configuration['internal_type'] ?? null) === 'db'
                 && !empty($configuration['allowed'])
@@ -841,7 +838,7 @@ class DataMapProcessor
                     || ($configuration['special'] ?? null) === 'languages'
                 )
             || $this->isInlineRelationField($tableName, $fieldName)
-        );
+        ;
     }
 
     /**
@@ -859,11 +856,11 @@ class DataMapProcessor
 
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 
-        return (
+        return
             $configuration['type'] === 'inline'
             && !empty($configuration['foreign_table'])
             && !empty($GLOBALS['TCA'][$configuration['foreign_table']])
-        );
+        ;
     }
 
     /**
@@ -875,11 +872,11 @@ class DataMapProcessor
      */
     protected function isApplicable(string $tableName): bool
     {
-        return (
+        return
             State::isApplicable($tableName)
             || BackendUtility::isTableLocalizable($tableName)
                 && count($this->getLocalizationModeExcludeFieldNames($tableName)) > 0
-        );
+        ;
     }
 
     /**

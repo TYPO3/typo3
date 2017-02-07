@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\PageViewHelper;
+use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test-case for Link\PageViewHelper

@@ -54,6 +54,6 @@ class DatabaseSchemaService
             $sqlString[] = implode(LF, $tableSchemas);
         }
 
-        return array('sqlString' => $sqlString);
+        return ['sqlString' => $sqlString];
     }
 }

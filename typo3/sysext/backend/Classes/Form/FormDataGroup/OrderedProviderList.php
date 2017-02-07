@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Form\FormDataGroup;
 
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Calls provider with dependencies specified given by setter
