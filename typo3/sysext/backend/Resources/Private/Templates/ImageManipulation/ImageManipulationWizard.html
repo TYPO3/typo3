@@ -1,74 +1,20 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
 	xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
 
-	<f:section name="Element">
-		<div class="media">
-			<f:if condition="{isAllowedFileExtension}">
-				<f:then>
-					<div class="media-left">
-						<f:for each="{config.cropVariants}" as="cropVariant">
-							<div class="t3js-image-manipulation-preview media-object" data-preview-width="150" data-preview-height="200" data-crop-variant-id="{cropVariant.id}">
-								<f:image image="{image}" crop="{formEngine.field.value}" cropVariant="{cropVariant.id}" maxWidth="150" maxHeight="200" class="thumbnail thumbnail-status" additionalAttributes="{data-crop-variant: '{cropVariant -> f:format.json()}', data-crop-variant-id: cropVariant.id}" />
-							</div>
-						</f:for>
-					</div>
-					<div class="media-body">
-						<input type="hidden" id="{formEngine.field.id}" name="{formEngine.field.name}" value="{formEngine.field.value}" data-formengine-validation-rules="{formEngine.validation}" />
-						<button class="btn btn-default t3js-image-manipulation-trigger"
-										data-url="{wizardUri}"
-										data-preview-url="{previewUrl}"
-										data-severity="notice"
-										data-modal-title="{f:render(section: 'ModalTitle', arguments: _all)}"
-										data-image-uid="{image.uid}"
-										data-crop-variants="{config.cropVariants -> f:format.json()}"
-										data-file-field="{config.file_field}"
-										data-field="{formEngine.field.id}">
-							<span class="t3-icon fa fa-crop"></span><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.open-editor" />
-						</button>
-						<f:if condition="{crop}" >
-							<div class="table-fit-block table-spacer-wrap">
-								<table class="table table-no-borders t3js-image-manipulation-info">
-									<tr>
-										<td><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-width" /></td>
-										<td class="t3js-image-manipulation-info-crop-width">{crop.width}px</td>
-									</tr>
-									<tr>
-										<td><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-height" /></td>
-										<td class="t3js-image-manipulation-info-crop-height">{crop.height}px</td>
-									</tr>
-								</table>
-							</div>
-						</f:if>
-					</div>
-				</f:then>
-				<f:else>
-					<div class="media-body">
-					<p><em>
-						<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message" />
-						<br/>
-						{config.allowedExtensions -> f:format.case(mode: 'upper')}
-					</em></p>
-					</div>
-				</f:else>
-			</f:if>
-		</div>
-	</f:section>
-	<f:section name="Cropper">
+	<f:section name="Main">
 		<f:if condition="{image.properties.width}">
 			<f:then>
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
 					</button>
 					<h4 class="modal-title">
-						{f:render(section: 'ModalTitle', arguments: _all)}
+						{f:render(partial: 'ModalTitle', section:'Main', arguments: _all)}
 					</h4>
 				</div>
 				<div class="cropper modal-panel">
 					<div class="modal-panel-body">
-						<div class="cropper-image-container">
-							<img id="t3js-crop-image" class="cropper-image-container-image"
-									 src="{f:uri.image(image:image, maxWidth:'1000', maxHeight: '700')}"
-									 data-original-width="{image.properties.width}" data-original-height="{image.properties.height}"/>
+						<div id="t3js-crop-image-container" class="cropper-image-container">
+							<f:image image="{image}" id="t3js-crop-image" class="cropper-image-container-image" additionalAttributes="{data-original-width: image.properties.width, data-original-height: image.properties.height}" />
 						</div>
 					</div>
 					<div class="modal-panel-sidebar modal-panel-sidebar-right">
@@ -174,10 +120,5 @@
 				</div>
 			</f:else>
 		</f:if>
-	</f:section>
-	<f:section name="ModalTitle">
-		{f:translate(id: 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.image-manipulation')}
-		: {f:if(condition:image.properties.title, then:image.properties.title, else:image.name)}
-		({image.properties.width} × {image.properties.height})
 	</f:section>
 </html>

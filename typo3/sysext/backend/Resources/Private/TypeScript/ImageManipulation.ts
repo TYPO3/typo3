@@ -150,6 +150,8 @@ class ImageManipulation {
   private aspectRatioTrigger: JQuery;
   private cropperCanvas: JQuery;
   private cropInfo: JQuery;
+  private cropImageContainerSelector: string = '#t3js-crop-image-container';
+  private cropImageSelector: string = '#t3js-crop-image';
   private coverAreaSelector: string = '.t3js-cropper-cover-area';
   private cropInfoSelector: string = '.t3js-cropper-info-crop';
   private focusAreaSelector: string = '#t3js-cropper-focus-area';
@@ -173,6 +175,7 @@ class ImageManipulation {
     viewMode: 1,
     zoomable: false,
   };
+  private resizeTimeout: number = 450;
 
   constructor() {
     // Silence is golden
@@ -204,10 +207,12 @@ class ImageManipulation {
   }
 
   /**
-   * Initialize the cropper modal
+   * @method initializeCropperModal
+   * @desc Initialize the cropper modal and dispatch the cropper init
+   * @private
    */
   private initializeCropperModal(): void {
-    const image: JQuery = this.currentModal.find('#t3js-crop-image');
+    const image: JQuery = this.currentModal.find(this.cropImageSelector);
     ImagesLoaded(image, (): void => {
       const modal: JQuery = this.currentModal.find('.modal-dialog');
       modal.css({marginLeft: 'auto', marginRight: 'auto'});
@@ -219,6 +224,11 @@ class ImageManipulation {
     });
   }
 
+  /**
+   * @method show
+   * @desc Load the image and setup the modal UI
+   * @private
+   */
   private show(): void {
     const modalTitle: string = this.trigger.data('modalTitle');
     const imageUri: string = this.trigger.data('url');
@@ -236,10 +246,20 @@ class ImageManipulation {
       '.modal-content'
     );
     this.currentModal.addClass('modal-dark');
+    this.currentModal.on('hide.bs.modal', (e: JQueryEventObject): void => {
+      this.destroy();
+    });
+    // Do not dismiss the modal when clicking beside it to avoid data loss
+    this.currentModal.data('bs.modal').options.backdrop = 'static';
   }
 
+  /**
+   * @method init
+   * @desc Initializes the cropper UI and sets up all the event indings for the UI
+   * @private
+   */
   private init(): void {
-    const image: JQuery = this.currentModal.find('#t3js-crop-image');
+    const image: JQuery = this.currentModal.find(this.cropImageSelector);
     const imageHeight: number = $(image).height();
     const imageWidth: number = $(image).width();
     const data: string = this.trigger.attr('data-crop-variants');
@@ -251,7 +271,7 @@ class ImageManipulation {
     // If we have data already set we assume an internal reinit eg. after resizing
     this.data = $.isEmptyObject(this.data) ? JSON.parse(data) : this.data;
     // Initialize our class members
-    this.currentModal.find('.cropper-image-container').css({height: imageHeight, width: imageWidth});
+    this.currentModal.find(this.cropImageContainerSelector).css({height: imageHeight, width: imageWidth});
     this.cropVariantTriggers = this.currentModal.find('.t3js-crop-variant-trigger');
     this.activeCropVariantTrigger = this.currentModal.find('.t3js-crop-variant-trigger.is-active');
     this.cropInfo = this.currentModal.find(this.cropInfoSelector);
@@ -266,7 +286,7 @@ class ImageManipulation {
     /**
      * Assign EventListener to cropVariantTriggers
      */
-    this.cropVariantTriggers.on('click', (e: JQueryEventObject): void => {
+    this.cropVariantTriggers.off('click').on('click', (e: JQueryEventObject): void => {
 
       /**
        * Is the current cropVariantTrigger is active, bail out.
@@ -291,12 +311,12 @@ class ImageManipulation {
     /**
      * Assign EventListener to aspectRatioTrigger
      */
-    this.aspectRatioTrigger.on('click', (e: JQueryEventObject): void => {
+    this.aspectRatioTrigger.off('click').on('click', (e: JQueryEventObject): void => {
       const ratioId: string = $(e.currentTarget).attr('data-option');
       const temp: CropVariant = $.extend(true, {}, this.currentCropVariant);
       const ratio: Ratio = temp.allowedAspectRatios[ratioId];
-      this.updateAspectRatio(ratio);
-      // Set data explicitly or updateAspectRatio upscales the crop
+      this.setAspectRatio(ratio);
+      // Set data explicitly or setAspectRatio upscales the crop
       this.setCropArea(temp.cropArea);
       this.currentCropVariant = $.extend(true, {}, temp, {selectedRatio: ratioId});
       this.update(this.currentCropVariant);
@@ -305,7 +325,7 @@ class ImageManipulation {
     /**
      * Assign EventListener to saveButton
      */
-    this.saveButton.on('click', (): void => {
+    this.saveButton.off('click').on('click', (): void => {
       this.save(this.data);
     });
 
@@ -313,7 +333,7 @@ class ImageManipulation {
      * Assign EventListener to previewButton if preview url exists
      */
     if (this.trigger.attr('data-preview-url')) {
-      this.previewButton.on('click', (): void => {
+      this.previewButton.off('click').on('click', (): void => {
         this.openPreview(this.data);
       });
     } else {
@@ -323,14 +343,14 @@ class ImageManipulation {
     /**
      * Assign EventListener to dismissButton
      */
-    this.dismissButton.on('click', (): void => {
-      this.destroy();
+    this.dismissButton.off('click').on('click', (): void => {
+      this.currentModal.modal('hide');
     });
 
     /**
      * Assign EventListener to resetButton
      */
-    this.resetButton.on('click', (e: JQueryEventObject): void => {
+    this.resetButton.off('click').on('click', (e: JQueryEventObject): void => {
       const imageData: CropperImageData = this.cropper.cropper('getImageData');
       const resetCropVariantString: string = $(e.currentTarget).attr('data-crop-variant');
       e.preventDefault();
@@ -367,12 +387,30 @@ class ImageManipulation {
     }));
   }
 
+  /**
+   * @method cropBuiltHandler
+   * @desc Internal cropper handler. Called when the cropper has been instantiated
+   * @private
+   */
   private cropBuiltHandler = (): void => {
     const imageData: CropperImageData = this.cropper.cropper('getImageData');
+
+    // Iterate over the crop variants and set up their respective preview
+    this.cropVariantTriggers.each((index: number, elem: Element): void => {
+      const cropVariantId: string = $(elem).attr('data-crop-variant-id');
+      const cropArea: Area = this.convertRelativeToAbsoluteCropArea(
+        this.data[cropVariantId].cropArea,
+        imageData
+      );
+      const variant: CropVariant = $.extend(true, {}, this.data[cropVariantId], {cropArea});
+      this.updatePreviewThumbnail(variant, $(elem));
+    });
+
     this.currentCropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(
       this.currentCropVariant.cropArea,
       imageData
     );
+    // Can't use .t3js-* as selector because it is an extraneous selector
     this.cropBox = this.currentModal.find('.cropper-crop-box');
 
     this.setCropArea(this.currentCropVariant.cropArea);
@@ -394,14 +432,20 @@ class ImageManipulation {
     }
 
     if (this.currentCropVariant.selectedRatio) {
-      this.updateAspectRatio(this.currentCropVariant.allowedAspectRatios[this.currentCropVariant.selectedRatio]);
-      // Set data explicitly or updateAspectRatio up-scales the crop
+      this.setAspectRatio(this.currentCropVariant.allowedAspectRatios[this.currentCropVariant.selectedRatio]);
+      // Set data explicitly or setAspectRatio up-scales the crop
       this.setCropArea(this.currentCropVariant.cropArea);
       this.currentModal.find(`[data-option='${this.currentCropVariant.selectedRatio}']`).addClass('active');
     }
+
     this.cropperCanvas.addClass('is-visible');
   };
 
+  /**
+   * @method cropMoveHandler
+   * @desc Internal cropper handler. Called when the cropping area is moving
+   * @private
+   */
   private cropMoveHandler = (e: CropperEvent): void => {
     this.currentCropVariant.cropArea = $.extend(true, this.currentCropVariant.cropArea, {
       height: Math.floor(e.height),
@@ -409,11 +453,16 @@ class ImageManipulation {
       x: Math.floor(e.x),
       y: Math.floor(e.y),
     });
-    this.updatePreviewThumbnail(this.currentCropVariant);
+    this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
     this.updateCropVariantData(this.currentCropVariant);
     this.cropInfo.text(`${this.currentCropVariant.cropArea.width}×${this.currentCropVariant.cropArea.height} px`);
   };
 
+  /**
+   * @method cropStartHandler
+   * @desc Internal cropper handler. Called when the cropping starts moving
+   * @private
+   */
   private cropStartHandler = (): void => {
     if (this.currentCropVariant.focusArea) {
       this.focusArea.draggable('option', 'disabled', true);
@@ -422,7 +471,9 @@ class ImageManipulation {
   };
 
   /**
-   *
+   * @method cropEndHandler
+   * @desc Internal cropper handler. Called when the cropping ends moving
+   * @private
    */
   private cropEndHandler = (): void => {
     if (this.currentCropVariant.focusArea) {
@@ -444,7 +495,7 @@ class ImageManipulation {
     /**
      * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
      */
-    this.updateAspectRatio(selectedRatio);
+    this.setAspectRatio(selectedRatio);
     this.setCropArea(temp.cropArea);
     this.currentCropVariant = $.extend(true, {}, temp, cropVariant);
     this.cropBox.find(this.coverAreaSelector).remove();
@@ -470,13 +521,14 @@ class ImageManipulation {
       // Init or reinit focusArea
       this.initCoverAreas(this.cropBox, this.currentCropVariant.coverAreas);
     }
-    this.updatePreviewThumbnail(this.currentCropVariant);
+    this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
   }
 
   /**
    * @method initFocusArea
    * @desc Initializes the focus area inside a container and registers the resizable and draggable interfaces to it
-   * @param container: JQuery
+   * @param {JQuery} container
+   * @private
    */
   private initFocusArea(container: JQuery): void {
     this.focusArea = $('<div id="t3js-cropper-focus-area" class="cropper-focus-area"></div>');
@@ -494,7 +546,7 @@ class ImageManipulation {
 
           focusArea.x = (fLeft - left) / container.width();
           focusArea.y = (fTop - top) / container.height();
-          this.updatePreviewThumbnail(this.currentCropVariant);
+          this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
           if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
             this.focusArea.addClass('has-nodrop');
           } else {
@@ -541,7 +593,7 @@ class ImageManipulation {
           focusArea.width = this.focusArea.width() / container.width();
           focusArea.x = (fLeft - left) / container.width();
           focusArea.y = (fTop - top) / container.height();
-          this.updatePreviewThumbnail(this.currentCropVariant);
+          this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
 
           if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
             this.focusArea.addClass('has-nodrop');
@@ -597,16 +649,18 @@ class ImageManipulation {
   /**
    * @method updatePreviewThumbnail
    * @desc Sync the croping (and focus area) to the preview thumbnail
-   * @param {CropVariant} cropVariant
+   * @param {CropVariant} cropVariant - The crop variant to preview in the thumbnail
+   * @param {JQuery} cropVariantTrigger - The crop variant element containing the thumbnail
+   * @private
    */
-  private updatePreviewThumbnail(cropVariant: CropVariant): void {
+  private updatePreviewThumbnail(cropVariant: CropVariant, cropVariantTrigger: JQuery): void {
     let styles: any;
     const cropperPreviewThumbnailCrop: JQuery =
-      this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-area');
+      cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-area');
     const cropperPreviewThumbnailImage: JQuery =
-      this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-image');
+      cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-image');
     const cropperPreviewThumbnailFocus: JQuery =
-      this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-focus-area');
+      cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-focus-area');
     const imageData: CropperImageData = this.cropper.cropper('getImageData');
 
     // Update the position/dimension of the crop area in the preview
@@ -657,7 +711,7 @@ class ImageManipulation {
       width: ImageManipulation.toCssPercent(focusArea.width),
     });
     this.currentCropVariant.focusArea = focusArea;
-    this.updatePreviewThumbnail(this.currentCropVariant);
+    this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
     this.updateCropVariantData(this.currentCropVariant);
   }
 
@@ -665,6 +719,7 @@ class ImageManipulation {
    * @method updateCropVariantData
    * @desc Immutably updates the currently selected cropVariant data
    * @param {CropVariant} currentCropVariant - The cropVariant to immutably save
+   * @private
    */
   private updateCropVariantData(currentCropVariant: CropVariant): void {
     const imageData: CropperImageData = this.cropper.cropper('getImageData');
@@ -673,26 +728,37 @@ class ImageManipulation {
   }
 
   /**
-   * @method updateAspectRatio
-   * @desc Updates the aspect ratio in the cropper
-   * @param {ratio} ratio ratio set in the cropper
+   * @method setAspectRatio
+   * @desc Sets the cropper to a specific ratio
+   * @param {ratio} ratio - The ratio value to apply
+   * @private
    */
-  private updateAspectRatio(ratio: Ratio): void {
+  private setAspectRatio(ratio: Ratio): void {
     this.cropper.cropper('setAspectRatio', ratio.value);
   }
 
   /**
    * @method setCropArea
-   * @desc Updates the crop area in the cropper. The cropper will respect the selected ratio
-   * @param {cropArea} cropArea ratio set in the cropper
+   * @desc Sets the cropper to a specific crop area
+   * @param {cropArea} cropArea - The crop area to apply
+   * @private
    */
   private setCropArea(cropArea: Area): void {
-    this.cropper.cropper('setData', {
-      height: cropArea.height,
-      width: cropArea.width,
-      x: cropArea.x,
-      y: cropArea.y,
-    });
+    const currentRatio: Ratio = this.currentCropVariant.allowedAspectRatios[this.currentCropVariant.selectedRatio];
+    if (currentRatio.value === 0) {
+      this.cropper.cropper('setData', {
+        height: cropArea.height,
+        width: cropArea.width,
+        x: cropArea.x,
+        y: cropArea.y,
+      });
+    } else {
+      this.cropper.cropper('setData', {
+        height: cropArea.height,
+        x: cropArea.x,
+        y: cropArea.y,
+      });
+    }
   }
 
   /**
@@ -716,9 +782,11 @@ class ImageManipulation {
   }
 
   /**
-   * @param cropArea
-   * @param imageData
-   * @return {{height: number, width: number, x: number, y: number}}
+   * @method convertAbsoluteToRelativeCropArea
+   * @desc Converts a crop area from absolute pixel-based into relative length values
+   * @param {Area} cropArea - The crop area to convert from
+   * @param {CropperImageData} imageData - The image data
+   * @return {Area}
    */
   private convertAbsoluteToRelativeCropArea(cropArea: Area, imageData: CropperImageData): Area {
     const {height, width, x, y}: Area = cropArea;
@@ -731,8 +799,10 @@ class ImageManipulation {
   }
 
   /**
-   * @param cropArea
-   * @param imageData
+   * @method convertRelativeToAbsoluteCropArea
+   * @desc Converts a crop area from relative into absolute pixel-based length values
+   * @param {Area} cropArea - The crop area to convert from
+   * @param {CropperImageData} imageData - The image data
    * @return {{height: number, width: number, x: number, y: number}}
    */
   private convertRelativeToAbsoluteCropArea(cropArea: Area, imageData: CropperImageData): Area {
@@ -745,9 +815,16 @@ class ImageManipulation {
     };
   }
 
-  private setPreviewImage(data: Object): void {
+  /**
+   * @method setPreviewImages
+   * @desc Updates the preview images in the editing section with the respective crop variants
+   * @param {Object} data - The internal crop variants state
+   */
+  private setPreviewImages(data: Object): void {
     let $image: any = this.cropper;
     let imageData: CropperImageData = $image.cropper('getImageData');
+
+    // Iterate over the crop variants and set up their respective preview
     Object.keys(data).forEach((cropVariantId: string) => {
       const cropVariant: CropVariant = data[cropVariantId];
       const cropData: Area = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
@@ -795,7 +872,7 @@ class ImageManipulation {
 
   /**
    * @method openPreview
-   * @desc open a preview
+   * @desc Opens a preview view with the crop variants
    * @param {object} data - The whole data object containing all the cropVariants
    * @private
    */
@@ -816,9 +893,9 @@ class ImageManipulation {
     const cropVariants: string = ImageManipulation.serializeCropVariants(data);
     const hiddenField: JQuery = $(`#${this.trigger.attr('data-field')}`);
     this.trigger.attr('data-crop-variants', JSON.stringify(data));
-    this.setPreviewImage(data);
+    this.setPreviewImages(data);
     hiddenField.val(cropVariants);
-    this.destroy();
+    this.currentModal.modal('hide');
   }
 
   /**
@@ -828,19 +905,26 @@ class ImageManipulation {
    */
   private destroy(): void {
     if (this.currentModal) {
-      this.currentModal.modal('hide');
       this.cropper.cropper('destroy');
+      this.cropper = null;
       this.currentModal = null;
+      this.data = null;
     }
   }
 
+  /**
+   * @method resizeEnd
+   * @desc Calls a function when the cropper has been resized
+   * @param {Function} fn - The function to call on resize completion
+   * @private
+   */
   private resizeEnd(fn: Function): void {
     let timer: number;
     $(window).on('resize', (): void => {
       clearTimeout(timer);
       timer = setTimeout((): void => {
         fn();
-      }, 450);
+      }, this.resizeTimeout);
     });
   }
 }

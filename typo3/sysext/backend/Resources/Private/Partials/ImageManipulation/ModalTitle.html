@@ -1,0 +1,9 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
+	<f:section name="Main">
+		<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.image-manipulation" />
+		: <f:if condition="{image.properties.title}"><f:then>{image.properties.title} &mdash; {image.name}</f:then><f:else>{image.name}</f:else></f:if>
+		({image.properties.width} × {image.properties.height})
+	</f:section>
+
+</html>

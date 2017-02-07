@@ -79,4 +79,20 @@ class Ratio
             'value' => $this->value,
         ];
     }
+
+    /**
+     * @return float
+     */
+    public function getRatioValue(): float
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFree(): bool
+    {
+        return $this->value === 0.0;
+    }
 }

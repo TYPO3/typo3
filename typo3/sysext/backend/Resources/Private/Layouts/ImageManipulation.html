@@ -1,0 +1,16 @@
+<div class="t3js-formengine-field-item">
+  {fieldInformation -> f:format.raw()}
+  <div class="form-wizards-wrap">
+      <div class="form-wizards-element">
+          <f:render section="Main" />
+      </div>
+     <div class="form-wizards-items-aside">
+         <div class="btn-group">
+             {fieldControl -> f:format.raw()}
+         </div>
+     </div>
+      <div class="form-wizards-items-bottom">
+          {fieldWizard -> f:format.raw()}
+      </div>
+  </div>
+</div>

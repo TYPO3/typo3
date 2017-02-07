@@ -20,6 +20,8 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
     var ImageManipulation = (function () {
         function ImageManipulation() {
             var _this = this;
+            this.cropImageContainerSelector = '#t3js-crop-image-container';
+            this.cropImageSelector = '#t3js-crop-image';
             this.coverAreaSelector = '.t3js-cropper-cover-area';
             this.cropInfoSelector = '.t3js-cropper-info-crop';
             this.focusAreaSelector = '#t3js-cropper-focus-area';
@@ -38,9 +40,23 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 viewMode: 1,
                 zoomable: false,
             };
+            this.resizeTimeout = 450;
+            /**
+             * @method cropBuiltHandler
+             * @desc Internal cropper handler. Called when the cropper has been instantiated
+             * @private
+             */
             this.cropBuiltHandler = function () {
                 var imageData = _this.cropper.cropper('getImageData');
+                // Iterate over the crop variants and set up their respective preview
+                _this.cropVariantTriggers.each(function (index, elem) {
+                    var cropVariantId = $(elem).attr('data-crop-variant-id');
+                    var cropArea = _this.convertRelativeToAbsoluteCropArea(_this.data[cropVariantId].cropArea, imageData);
+                    var variant = $.extend(true, {}, _this.data[cropVariantId], { cropArea: cropArea });
+                    _this.updatePreviewThumbnail(variant, $(elem));
+                });
                 _this.currentCropVariant.cropArea = _this.convertRelativeToAbsoluteCropArea(_this.currentCropVariant.cropArea, imageData);
+                // Can't use .t3js-* as selector because it is an extraneous selector
                 _this.cropBox = _this.currentModal.find('.cropper-crop-box');
                 _this.setCropArea(_this.currentCropVariant.cropArea);
                 // Check if new cropVariant has coverAreas
@@ -59,13 +75,18 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                     _this.scaleAndMoveFocusArea(_this.currentCropVariant.focusArea);
                 }
                 if (_this.currentCropVariant.selectedRatio) {
-                    _this.updateAspectRatio(_this.currentCropVariant.allowedAspectRatios[_this.currentCropVariant.selectedRatio]);
-                    // Set data explicitly or updateAspectRatio up-scales the crop
+                    _this.setAspectRatio(_this.currentCropVariant.allowedAspectRatios[_this.currentCropVariant.selectedRatio]);
+                    // Set data explicitly or setAspectRatio up-scales the crop
                     _this.setCropArea(_this.currentCropVariant.cropArea);
                     _this.currentModal.find("[data-option='" + _this.currentCropVariant.selectedRatio + "']").addClass('active');
                 }
                 _this.cropperCanvas.addClass('is-visible');
             };
+            /**
+             * @method cropMoveHandler
+             * @desc Internal cropper handler. Called when the cropping area is moving
+             * @private
+             */
             this.cropMoveHandler = function (e) {
                 _this.currentCropVariant.cropArea = $.extend(true, _this.currentCropVariant.cropArea, {
                     height: Math.floor(e.height),
@@ -73,10 +94,15 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                     x: Math.floor(e.x),
                     y: Math.floor(e.y),
                 });
-                _this.updatePreviewThumbnail(_this.currentCropVariant);
+                _this.updatePreviewThumbnail(_this.currentCropVariant, _this.activeCropVariantTrigger);
                 _this.updateCropVariantData(_this.currentCropVariant);
                 _this.cropInfo.text(_this.currentCropVariant.cropArea.width + "\u00D7" + _this.currentCropVariant.cropArea.height + " px");
             };
+            /**
+             * @method cropStartHandler
+             * @desc Internal cropper handler. Called when the cropping starts moving
+             * @private
+             */
             this.cropStartHandler = function () {
                 if (_this.currentCropVariant.focusArea) {
                     _this.focusArea.draggable('option', 'disabled', true);
@@ -84,7 +110,9 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 }
             };
             /**
-             *
+             * @method cropEndHandler
+             * @desc Internal cropper handler. Called when the cropping ends moving
+             * @private
              */
             this.cropEndHandler = function () {
                 if (_this.currentCropVariant.focusArea) {
@@ -168,11 +196,13 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             $('.t3js-image-manipulation-trigger').off('click').click(triggerHandler);
         };
         /**
-         * Initialize the cropper modal
+         * @method initializeCropperModal
+         * @desc Initialize the cropper modal and dispatch the cropper init
+         * @private
          */
         ImageManipulation.prototype.initializeCropperModal = function () {
             var _this = this;
-            var image = this.currentModal.find('#t3js-crop-image');
+            var image = this.currentModal.find(this.cropImageSelector);
             ImagesLoaded(image, function () {
                 var modal = _this.currentModal.find('.modal-dialog');
                 modal.css({ marginLeft: 'auto', marginRight: 'auto' });
@@ -183,7 +213,13 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 }, 100);
             });
         };
+        /**
+         * @method show
+         * @desc Load the image and setup the modal UI
+         * @private
+         */
         ImageManipulation.prototype.show = function () {
+            var _this = this;
             var modalTitle = this.trigger.data('modalTitle');
             var imageUri = this.trigger.data('url');
             var initCropperModal = this.initializeCropperModal.bind(this);
@@ -192,10 +228,20 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
              */
             this.currentModal = Modal.loadUrl(modalTitle, Severity.notice, [], imageUri, initCropperModal, '.modal-content');
             this.currentModal.addClass('modal-dark');
+            this.currentModal.on('hide.bs.modal', function (e) {
+                _this.destroy();
+            });
+            // Do not dismiss the modal when clicking beside it to avoid data loss
+            this.currentModal.data('bs.modal').options.backdrop = 'static';
         };
+        /**
+         * @method init
+         * @desc Initializes the cropper UI and sets up all the event indings for the UI
+         * @private
+         */
         ImageManipulation.prototype.init = function () {
             var _this = this;
-            var image = this.currentModal.find('#t3js-crop-image');
+            var image = this.currentModal.find(this.cropImageSelector);
             var imageHeight = $(image).height();
             var imageWidth = $(image).width();
             var data = this.trigger.attr('data-crop-variants');
@@ -205,7 +251,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             // If we have data already set we assume an internal reinit eg. after resizing
             this.data = $.isEmptyObject(this.data) ? JSON.parse(data) : this.data;
             // Initialize our class members
-            this.currentModal.find('.cropper-image-container').css({ height: imageHeight, width: imageWidth });
+            this.currentModal.find(this.cropImageContainerSelector).css({ height: imageHeight, width: imageWidth });
             this.cropVariantTriggers = this.currentModal.find('.t3js-crop-variant-trigger');
             this.activeCropVariantTrigger = this.currentModal.find('.t3js-crop-variant-trigger.is-active');
             this.cropInfo = this.currentModal.find(this.cropInfoSelector);
@@ -219,7 +265,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             /**
              * Assign EventListener to cropVariantTriggers
              */
-            this.cropVariantTriggers.on('click', function (e) {
+            this.cropVariantTriggers.off('click').on('click', function (e) {
                 /**
                  * Is the current cropVariantTrigger is active, bail out.
                  * Bootstrap doesn't provide this functionality when collapsing the Collaps panels
@@ -241,12 +287,12 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             /**
              * Assign EventListener to aspectRatioTrigger
              */
-            this.aspectRatioTrigger.on('click', function (e) {
+            this.aspectRatioTrigger.off('click').on('click', function (e) {
                 var ratioId = $(e.currentTarget).attr('data-option');
                 var temp = $.extend(true, {}, _this.currentCropVariant);
                 var ratio = temp.allowedAspectRatios[ratioId];
-                _this.updateAspectRatio(ratio);
-                // Set data explicitly or updateAspectRatio upscales the crop
+                _this.setAspectRatio(ratio);
+                // Set data explicitly or setAspectRatio upscales the crop
                 _this.setCropArea(temp.cropArea);
                 _this.currentCropVariant = $.extend(true, {}, temp, { selectedRatio: ratioId });
                 _this.update(_this.currentCropVariant);
@@ -254,14 +300,14 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             /**
              * Assign EventListener to saveButton
              */
-            this.saveButton.on('click', function () {
+            this.saveButton.off('click').on('click', function () {
                 _this.save(_this.data);
             });
             /**
              * Assign EventListener to previewButton if preview url exists
              */
             if (this.trigger.attr('data-preview-url')) {
-                this.previewButton.on('click', function () {
+                this.previewButton.off('click').on('click', function () {
                     _this.openPreview(_this.data);
                 });
             }
@@ -271,13 +317,13 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             /**
              * Assign EventListener to dismissButton
              */
-            this.dismissButton.on('click', function () {
-                _this.destroy();
+            this.dismissButton.off('click').on('click', function () {
+                _this.currentModal.modal('hide');
             });
             /**
              * Assign EventListener to resetButton
              */
-            this.resetButton.on('click', function (e) {
+            this.resetButton.off('click').on('click', function (e) {
                 var imageData = _this.cropper.cropper('getImageData');
                 var resetCropVariantString = $(e.currentTarget).attr('data-crop-variant');
                 e.preventDefault();
@@ -324,7 +370,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             /**
              * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
              */
-            this.updateAspectRatio(selectedRatio);
+            this.setAspectRatio(selectedRatio);
             this.setCropArea(temp.cropArea);
             this.currentCropVariant = $.extend(true, {}, temp, cropVariant);
             this.cropBox.find(this.coverAreaSelector).remove();
@@ -347,12 +393,13 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 // Init or reinit focusArea
                 this.initCoverAreas(this.cropBox, this.currentCropVariant.coverAreas);
             }
-            this.updatePreviewThumbnail(this.currentCropVariant);
+            this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
         };
         /**
          * @method initFocusArea
          * @desc Initializes the focus area inside a container and registers the resizable and draggable interfaces to it
-         * @param container: JQuery
+         * @param {JQuery} container
+         * @private
          */
         ImageManipulation.prototype.initFocusArea = function (container) {
             var _this = this;
@@ -370,7 +417,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                     var _c = _this.currentCropVariant, focusArea = _c.focusArea, coverAreas = _c.coverAreas;
                     focusArea.x = (fLeft - left) / container.width();
                     focusArea.y = (fTop - top) / container.height();
-                    _this.updatePreviewThumbnail(_this.currentCropVariant);
+                    _this.updatePreviewThumbnail(_this.currentCropVariant, _this.activeCropVariantTrigger);
                     if (_this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
                         _this.focusArea.addClass('has-nodrop');
                     }
@@ -414,7 +461,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                     focusArea.width = _this.focusArea.width() / container.width();
                     focusArea.x = (fLeft - left) / container.width();
                     focusArea.y = (fTop - top) / container.height();
-                    _this.updatePreviewThumbnail(_this.currentCropVariant);
+                    _this.updatePreviewThumbnail(_this.currentCropVariant, _this.activeCropVariantTrigger);
                     if (_this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
                         _this.focusArea.addClass('has-nodrop');
                     }
@@ -465,13 +512,15 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
         /**
          * @method updatePreviewThumbnail
          * @desc Sync the croping (and focus area) to the preview thumbnail
-         * @param {CropVariant} cropVariant
+         * @param {CropVariant} cropVariant - The crop variant to preview in the thumbnail
+         * @param {JQuery} cropVariantTrigger - The crop variant element containing the thumbnail
+         * @private
          */
-        ImageManipulation.prototype.updatePreviewThumbnail = function (cropVariant) {
+        ImageManipulation.prototype.updatePreviewThumbnail = function (cropVariant, cropVariantTrigger) {
             var styles;
-            var cropperPreviewThumbnailCrop = this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-area');
-            var cropperPreviewThumbnailImage = this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-image');
-            var cropperPreviewThumbnailFocus = this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-focus-area');
+            var cropperPreviewThumbnailCrop = cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-area');
+            var cropperPreviewThumbnailImage = cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-image');
+            var cropperPreviewThumbnailFocus = cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-focus-area');
             var imageData = this.cropper.cropper('getImageData');
             // Update the position/dimension of the crop area in the preview
             cropperPreviewThumbnailCrop.css({
@@ -517,13 +566,14 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 width: ImageManipulation.toCssPercent(focusArea.width),
             });
             this.currentCropVariant.focusArea = focusArea;
-            this.updatePreviewThumbnail(this.currentCropVariant);
+            this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
             this.updateCropVariantData(this.currentCropVariant);
         };
         /**
          * @method updateCropVariantData
          * @desc Immutably updates the currently selected cropVariant data
          * @param {CropVariant} currentCropVariant - The cropVariant to immutably save
+         * @private
          */
         ImageManipulation.prototype.updateCropVariantData = function (currentCropVariant) {
             var imageData = this.cropper.cropper('getImageData');
@@ -531,25 +581,37 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             this.data[currentCropVariant.id] = $.extend(true, {}, currentCropVariant, { cropArea: absoluteCropArea });
         };
         /**
-         * @method updateAspectRatio
-         * @desc Updates the aspect ratio in the cropper
-         * @param {ratio} ratio ratio set in the cropper
+         * @method setAspectRatio
+         * @desc Sets the cropper to a specific ratio
+         * @param {ratio} ratio - The ratio value to apply
+         * @private
          */
-        ImageManipulation.prototype.updateAspectRatio = function (ratio) {
+        ImageManipulation.prototype.setAspectRatio = function (ratio) {
             this.cropper.cropper('setAspectRatio', ratio.value);
         };
         /**
          * @method setCropArea
-         * @desc Updates the crop area in the cropper. The cropper will respect the selected ratio
-         * @param {cropArea} cropArea ratio set in the cropper
+         * @desc Sets the cropper to a specific crop area
+         * @param {cropArea} cropArea - The crop area to apply
+         * @private
          */
         ImageManipulation.prototype.setCropArea = function (cropArea) {
-            this.cropper.cropper('setData', {
-                height: cropArea.height,
-                width: cropArea.width,
-                x: cropArea.x,
-                y: cropArea.y,
-            });
+            var currentRatio = this.currentCropVariant.allowedAspectRatios[this.currentCropVariant.selectedRatio];
+            if (currentRatio.value === 0) {
+                this.cropper.cropper('setData', {
+                    height: cropArea.height,
+                    width: cropArea.width,
+                    x: cropArea.x,
+                    y: cropArea.y,
+                });
+            }
+            else {
+                this.cropper.cropper('setData', {
+                    height: cropArea.height,
+                    x: cropArea.x,
+                    y: cropArea.y,
+                });
+            }
         };
         /**
          * @method checkFocusAndCoverAreas
@@ -571,9 +633,11 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             });
         };
         /**
-         * @param cropArea
-         * @param imageData
-         * @return {{height: number, width: number, x: number, y: number}}
+         * @method convertAbsoluteToRelativeCropArea
+         * @desc Converts a crop area from absolute pixel-based into relative length values
+         * @param {Area} cropArea - The crop area to convert from
+         * @param {CropperImageData} imageData - The image data
+         * @return {Area}
          */
         ImageManipulation.prototype.convertAbsoluteToRelativeCropArea = function (cropArea, imageData) {
             var height = cropArea.height, width = cropArea.width, x = cropArea.x, y = cropArea.y;
@@ -585,8 +649,10 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             };
         };
         /**
-         * @param cropArea
-         * @param imageData
+         * @method convertRelativeToAbsoluteCropArea
+         * @desc Converts a crop area from relative into absolute pixel-based length values
+         * @param {Area} cropArea - The crop area to convert from
+         * @param {CropperImageData} imageData - The image data
          * @return {{height: number, width: number, x: number, y: number}}
          */
         ImageManipulation.prototype.convertRelativeToAbsoluteCropArea = function (cropArea, imageData) {
@@ -598,10 +664,16 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 y: y * imageData.naturalHeight,
             };
         };
-        ImageManipulation.prototype.setPreviewImage = function (data) {
+        /**
+         * @method setPreviewImages
+         * @desc Updates the preview images in the editing section with the respective crop variants
+         * @param {Object} data - The internal crop variants state
+         */
+        ImageManipulation.prototype.setPreviewImages = function (data) {
             var _this = this;
             var $image = this.cropper;
             var imageData = $image.cropper('getImageData');
+            // Iterate over the crop variants and set up their respective preview
             Object.keys(data).forEach(function (cropVariantId) {
                 var cropVariant = data[cropVariantId];
                 var cropData = _this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
@@ -643,7 +715,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
         ;
         /**
          * @method openPreview
-         * @desc open a preview
+         * @desc Opens a preview view with the crop variants
          * @param {object} data - The whole data object containing all the cropVariants
          * @private
          */
@@ -663,9 +735,9 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             var cropVariants = ImageManipulation.serializeCropVariants(data);
             var hiddenField = $("#" + this.trigger.attr('data-field'));
             this.trigger.attr('data-crop-variants', JSON.stringify(data));
-            this.setPreviewImage(data);
+            this.setPreviewImages(data);
             hiddenField.val(cropVariants);
-            this.destroy();
+            this.currentModal.modal('hide');
         };
         /**
          * @method destroy
@@ -674,18 +746,26 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
          */
         ImageManipulation.prototype.destroy = function () {
             if (this.currentModal) {
-                this.currentModal.modal('hide');
                 this.cropper.cropper('destroy');
+                this.cropper = null;
                 this.currentModal = null;
+                this.data = null;
             }
         };
+        /**
+         * @method resizeEnd
+         * @desc Calls a function when the cropper has been resized
+         * @param {Function} fn - The function to call on resize completion
+         * @private
+         */
         ImageManipulation.prototype.resizeEnd = function (fn) {
+            var _this = this;
             var timer;
             $(window).on('resize', function () {
                 clearTimeout(timer);
                 timer = setTimeout(function () {
                     fn();
-                }, 450);
+                }, _this.resizeTimeout);
             });
         };
         return ImageManipulation;

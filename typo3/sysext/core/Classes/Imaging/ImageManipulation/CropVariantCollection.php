@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Imaging\ImageManipulation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\FileInterface;
+
 class CropVariantCollection
 {
     /**
@@ -38,17 +40,17 @@ class CropVariantCollection
      */
     public static function create(string $jsonString, array $tcaConfig = []): CropVariantCollection
     {
-        if (empty($jsonString) && empty($tcaConfig)) {
+        $persistedCollectionConfig = empty($jsonString) ? [] : json_decode($jsonString, true);
+        if (empty($persistedCollectionConfig) && empty($tcaConfig)) {
             return self::createEmpty();
-        }
-        $persistedCollectionConfig = json_decode($jsonString, true);
-        if (!is_array($persistedCollectionConfig)) {
-            $persistedCollectionConfig = [];
         }
         try {
             if ($tcaConfig === []) {
-                $tcaConfig = $persistedCollectionConfig;
+                $tcaConfig = (array)$persistedCollectionConfig;
             } else {
+                if (!is_array($persistedCollectionConfig)) {
+                    $persistedCollectionConfig = [];
+                }
                 // Merge selected areas with crop tool configuration
                 reset($persistedCollectionConfig);
                 foreach ($tcaConfig as $id => &$cropVariantConfig) {
@@ -89,6 +91,34 @@ class CropVariantCollection
             $cropVariantsAsArray[$id] = $cropVariant->asArray();
         }
         return $cropVariantsAsArray;
+    }
+
+    /**
+     * @param FileInterface $file
+     * @return CropVariantCollection
+     */
+    public function applyRatioRestrictionToSelectedCropArea(FileInterface $file): CropVariantCollection
+    {
+        $newCollection = clone $this;
+        foreach ($this->cropVariants as $id => $cropVariant) {
+            $newCollection->cropVariants[$id] = $cropVariant->applyRatioRestrictionToSelectedCropArea($file);
+        }
+        return $newCollection;
+    }
+
+    public function __toString()
+    {
+        $filterNonPersistentKeys = function ($key) {
+            if (in_array($key, ['id', 'title', 'allowedAspectRatios', 'coverAreas'], true)) {
+                return false;
+            }
+            return true;
+        };
+        $cropVariantsAsArray = [];
+        foreach ($this->cropVariants as $id => $cropVariant) {
+            $cropVariantsAsArray[$id] = array_filter($cropVariant->asArray(), $filterNonPersistentKeys, ARRAY_FILTER_USE_KEY);
+        }
+        return json_encode($cropVariantsAsArray);
     }
 
     /**

@@ -40,7 +40,9 @@ class ImageManipulationWizard
     {
         if (!$templateView) {
             $templateView = GeneralUtility::makeInstance(StandaloneView::class);
-            $templateView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ImageManipulation/ImageCropping.html'));
+            $templateView->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts/')]);
+            $templateView->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ImageManipulation/')]);
+            $templateView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ImageManipulation/ImageManipulationWizard.html'));
         }
         $this->templateView = $templateView;
     }
@@ -68,7 +70,7 @@ class ImageManipulationWizard
                 'image' => $image,
                 'cropVariants' => $queryParams['cropVariants']
             ];
-            $content = $this->templateView->renderSection('Cropper', $viewData);
+            $content = $this->templateView->renderSection('Main', $viewData);
             $response->getBody()->write($content);
 
             return $response;

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Imaging\ImageManipulation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\FileInterface;
+
 class CropVariant
 {
     /**
@@ -76,8 +78,12 @@ class CropVariant
         $this->cropArea = $cropArea;
         if ($allowedAspectRatios) {
             $this->setAllowedAspectRatios(...$allowedAspectRatios);
+            if ($selectedRatio && isset($this->allowedAspectRatios[$selectedRatio])) {
+                $this->selectedRatio = $selectedRatio;
+            } else {
+                $this->selectedRatio = current($this->allowedAspectRatios)->getId();
+            }
         }
-        $this->selectedRatio = $selectedRatio;
         $this->focusArea = $focusArea;
         if ($coverAreas !== null) {
             $this->setCoverAreas(...$coverAreas);
@@ -156,6 +162,22 @@ class CropVariant
     public function getFocusArea()
     {
         return $this->focusArea;
+    }
+
+    /**
+     * @param FileInterface $file
+     * @return CropVariant
+     */
+    public function applyRatioRestrictionToSelectedCropArea(FileInterface $file): CropVariant
+    {
+        if (!$this->selectedRatio) {
+            return $this;
+        }
+        $newVariant = clone $this;
+        $newArea = $this->cropArea->makeAbsoluteBasedOnFile($file);
+        $newArea = $newArea->applyRatioRestriction($this->allowedAspectRatios[$this->selectedRatio]);
+        $newVariant->cropArea = $newArea->makeRelativeBasedOnFile($file);
+        return $newVariant;
     }
 
     /**

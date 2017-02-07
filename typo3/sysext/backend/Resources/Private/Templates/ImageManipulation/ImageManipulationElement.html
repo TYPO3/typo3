@@ -1,0 +1,61 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
+	<f:layout name="ImageManipulation" />
+
+	<f:section name="Main">
+		<div class="media">
+			<f:if condition="{isAllowedFileExtension}">
+				<f:then>
+					<div class="media-left">
+						<f:for each="{config.cropVariants}" as="cropVariant">
+							<div class="t3js-image-manipulation-preview media-object" data-preview-width="150" data-preview-height="200" data-crop-variant-id="{cropVariant.id}">
+								<f:image image="{image}" crop="{formEngine.field.value}" cropVariant="{cropVariant.id}" maxWidth="150" maxHeight="200" class="thumbnail thumbnail-status" additionalAttributes="{data-crop-variant: '{cropVariant -> f:format.json()}', data-crop-variant-id: cropVariant.id}" />
+							</div>
+						</f:for>
+					</div>
+					<f:if condition="{config.readOnly}">
+						<f:else>
+							<div class="media-body">
+								<input type="hidden" id="{formEngine.field.id}" name="{formEngine.field.name}" value="{formEngine.field.value}" data-formengine-validation-rules="{formEngine.validation}" />
+								<button class="btn btn-default t3js-image-manipulation-trigger"
+												data-url="{wizardUri}"
+												data-preview-url="{previewUrl}"
+												data-severity="notice"
+												data-modal-title="{f:render(partial: 'ModalTitle', section:'Main', arguments: _all)}"
+												data-image-uid="{image.uid}"
+												data-crop-variants="{config.cropVariants -> f:format.json()}"
+												data-file-field="{config.file_field}"
+												data-field="{formEngine.field.id}">
+									<span class="t3-icon fa fa-crop"></span><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.open-editor" />
+								</button>
+								<f:if condition="{crop}" >
+									<div class="table-fit-block table-spacer-wrap">
+										<table class="table table-no-borders t3js-image-manipulation-info">
+											<tr>
+												<td><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-width" /></td>
+												<td class="t3js-image-manipulation-info-crop-width">{crop.width}px</td>
+											</tr>
+											<tr>
+												<td><f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop-height" /></td>
+												<td class="t3js-image-manipulation-info-crop-height">{crop.height}px</td>
+											</tr>
+										</table>
+									</div>
+								</f:if>
+							</div>
+						</f:else>
+					</f:if>
+				</f:then>
+				<f:else>
+					<div class="media-body">
+					<p><em>
+						<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message" />
+						<br/>
+						{config.allowedExtensions -> f:format.case(mode: 'upper')}
+					</em></p>
+					</div>
+				</f:else>
+			</f:if>
+		</div>
+	</f:section>
+</html>

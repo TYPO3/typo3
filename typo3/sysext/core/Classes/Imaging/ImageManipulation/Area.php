@@ -137,6 +137,27 @@ class Area
     }
 
     /**
+     * @param Ratio $ratio
+     * @return Area
+     */
+    public function applyRatioRestriction(Ratio $ratio): Area
+    {
+        if ($ratio->isFree()) {
+            return $this;
+        }
+        $expectedRatio = $ratio->getRatioValue();
+        $newArea = clone $this;
+        if ($newArea->height * $expectedRatio > $newArea->width) {
+            $newArea->height = $newArea->width / $expectedRatio;
+            $newArea->y += ($this->height - $newArea->height) / 2;
+        } else {
+            $newArea->width = $newArea->height * $expectedRatio;
+            $newArea->x += ($this->width - $newArea->width) / 2;
+        }
+        return $newArea;
+    }
+
+    /**
      * @return bool
      */
     public function isEmpty()
