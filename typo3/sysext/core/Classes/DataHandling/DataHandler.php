@@ -6858,6 +6858,9 @@ class DataHandler
                         $newRow = [];
                         if ($this->checkStoredRecords) {
                             $newRow = $this->checkStoredRecord($table, $id, $fieldArray, 2);
+                        } else {
+                            $newRow = $fieldArray;
+                            $newRow['uid'] = $id;
                         }
                         // Set log entry:
                         $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
@@ -6941,9 +6944,14 @@ class DataHandler
                         $this->substNEWwithIDs_table[$NEW_id] = $table;
                     }
                     $newRow = [];
-                    // Checking the record is properly saved and writing to log
-                    if ($this->enableLogging && $this->checkStoredRecords) {
-                        $newRow = $this->checkStoredRecord($table, $id, $fieldArray, 1);
+                    if ($this->enableLogging) {
+                        // Checking the record is properly saved if configured
+                        if ($this->checkStoredRecords) {
+                            $newRow = $this->checkStoredRecord($table, $id, $fieldArray, 1);
+                        } else {
+                            $newRow = $fieldArray;
+                            $newRow['uid'] = $id;
+                        }
                     }
                     // Update reference index:
                     $this->updateRefIndex($table, $id);
