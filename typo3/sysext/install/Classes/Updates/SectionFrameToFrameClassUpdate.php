@@ -39,6 +39,12 @@ class SectionFrameToFrameClassUpdate extends AbstractUpdate
         if ($this->isWizardDone()) {
             return false;
         }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $tableColumns = $connection->getSchemaManager()->listTableColumns('tt_content');
+        // Only proceed if section_frame field still exists
+        if (!isset($tableColumns['section_frame'])) {
+            return false;
+        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $elementCount = $queryBuilder->count('uid')
