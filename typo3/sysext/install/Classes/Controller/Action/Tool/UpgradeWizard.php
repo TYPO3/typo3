@@ -179,6 +179,10 @@ class UpgradeWizard extends Action\AbstractAction
         $rowUpdatersDoneClassNames = GeneralUtility::makeInstance(Registry::class)->get('installUpdateRows', 'rowUpdatersDone', []);
         $rowUpdatersDone = [];
         foreach ($rowUpdatersDoneClassNames as $rowUpdaterClassName) {
+            // Silently skip non existing DatabaseRowsUpdateWizard's
+            if (!class_exists($rowUpdaterClassName)) {
+                continue;
+            }
             /** @var RowUpdaterInterface $rowUpdater */
             $rowUpdater = GeneralUtility::makeInstance($rowUpdaterClassName);
             if (!$rowUpdater instanceof RowUpdaterInterface) {
