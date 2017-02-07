@@ -97,7 +97,46 @@
 	}
 }
 
+/**
+ * Cropper modal component styles
+ */
 .modal-image-manipulation {
+	width: 90vw;
+	height: 90vh;
+	.modal-panel {
+		display: flex;
+		max-height: 80vh;
+		overflow: visible;
+	}
+	.modal-panel-body {
+		background-image: data-uri("../Images/cropper-background.png");
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.modal-panel .modal-panel-body {
+		max-height: 100%;
+		width: 100% !important;
+	}
+
+	.modal-panel .modal-panel-sidebar {
+		min-width: 300px;
+		max-height: 100%;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.modal-panel .modal-panel-sidebar-right {
+		background-color: #212424;
+		position: relative;
+	}
+
+	.modal-panel .modal-footer {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		width: 100%;
+	}
 	.modal-body {
 		.col-lg-12 {
 			padding-right: 450px;
@@ -129,7 +168,7 @@
 		color: #FFF;
 	}
 	.modal-footer {
-		border-top: none;
+		border-top: 1px solid #000000;
 	}
 }
 

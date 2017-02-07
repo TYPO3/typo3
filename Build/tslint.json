@@ -4,6 +4,7 @@
 	"rules": {
 		"interface-name": false,
 		"no-console": false,
+		"no-namespace": [false, "allow-declarations"],
 		"quotemark": [true, "single", "avoid-escape"],
 		"typedef": [true, "call-signature", "arrow-call-signature", "arrow-parameter", "property-declaration", "variable-declaration", "parameter", "member-variable-declaration"]
 	}

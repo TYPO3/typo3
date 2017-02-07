@@ -10,315 +10,685 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Backend/ImageManipulation
- * Contains all logic for the image crop GUI
- */
-define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function ($, Modal, Severity) {
-
-	/**
-	 *
-	 * @type {{margin: number, currentModal: null, cropperSelector: string, $trigger: null}}
-	 * @exports TYPO3/CMS/Backend/ImageManipulation
-	 */
-	var ImageManipulation = {
-		margin: 20,
-		currentModal: null,
-		cropperSelector: '.t3js-cropper-image-container > img',
-		$trigger: null
-	};
-
-	/**
-	 * Initialize triggers
-	 */
-	ImageManipulation.initializeTrigger = function() {
-		var $triggers = $('.t3js-image-manipulation-trigger');
-		// Remove existing bind function
-		$triggers.off('click', ImageManipulation.buttonClick);
-		// Bind new function
-		$triggers.on('click', ImageManipulation.buttonClick);
-	};
-
-	/**
-	 * Functions that should be bind to the trigger button
-	 *
-	 * @param {Event} e click event
-	 */
-	ImageManipulation.buttonClick = function(e) {
-		e.preventDefault();
-		// Prevent double trigger
-		if (ImageManipulation.$trigger !== $(this)) {
-			ImageManipulation.$trigger = $(this);
-			ImageManipulation.show();
-		}
-	};
-
-	/**
-	 * Open modal with image to crop
-	 */
-	ImageManipulation.show = function() {
-		ImageManipulation.currentModal = Modal.loadUrl(
-			ImageManipulation.$trigger.data('image-name'),
-			Severity.notice,
-			[],
-			ImageManipulation.$trigger.data('url'),
-			ImageManipulation.initializeCropperModal,
-			'.modal-content'
-		);
-		ImageManipulation.currentModal.addClass('modal-dark');
-	};
-
-	/**
-	 * Initialize the cropper modal
-	 */
-	ImageManipulation.initializeCropperModal = function() {
-		top.require(['cropper', 'imagesloaded'], function(cropperJs, imagesLoaded) {
-			var $image = ImageManipulation.getCropper();
-
-			// wait until image is loaded
-			imagesLoaded($image, function() {
-				var $modal = ImageManipulation.currentModal.find('.modal-dialog');
-				var $modalContent = $modal.find('.modal-content');
-				var $modalPanelSidebar = $modal.find('.modal-panel-sidebar');
-				var $modalPanelBody = $modal.find('.modal-panel-body');
-				// Let modal auto-fill width
-				$modal.css({width:'auto', marginLeft: ImageManipulation.margin, marginRight: ImageManipulation.margin})
-					  .addClass('modal-image-manipulation modal-resize');
-
-				$modalContent.addClass('cropper-bg');
-
-				// Determine available height
-				var height = $(window).height()
-						- (ImageManipulation.margin * 4);
-				$image.css({maxHeight: height});
-
-				// Wait a few microseconds before calculating available width (DOM isn't always updated direct)
-				setTimeout(function() {
-					$modalPanelBody.css({width: $modalContent.innerWidth() - $modalPanelSidebar.outerWidth() - (ImageManipulation.margin * 2)});
-
-					setTimeout(function() {
-						// Shrink modal when possible (the set left/right margin + width auto above makes it fill 100%)
-						var minWidth = Math.max(500, $image.outerWidth() + $modalPanelSidebar.outerWidth() + (ImageManipulation.margin * 2));
-						var width = $modal.width() > minWidth ? minWidth : $modal.width();
-						$modal.width(width);
-						$modalPanelBody.width(width - $modalPanelSidebar.outerWidth() - (ImageManipulation.margin * 4));
-
-						var modalBodyMinHeight = $modalContent.height() -
-							($modalPanelSidebar.find('.modal-header').outerHeight() + $modalPanelSidebar.find('.modal-body-footer').outerHeight());
-						$modalPanelSidebar.find('.modal-body').css('min-height', modalBodyMinHeight);
-
-						// Center modal horizontal
-						$modal.css({marginLeft: 'auto', marginRight: 'auto'});
-
-						// Center modal vertical
-						Modal.center();
-
-						// Wait a few microseconds to let the modal resize
-						setTimeout(ImageManipulation.initializeCropper, 100);
-					}, 100);
-
-				}, 100);
-			});
-
-		});
-	};
-
-	/**
-	 * Initialize cropper
-	 */
-	ImageManipulation.initializeCropper = function() {
-		var $image = ImageManipulation.getCropper(), cropData;
-
-		// Give img-container same dimensions as the image
-		ImageManipulation.currentModal.find('.t3js-cropper-image-container').
-		css({width: $image.width(), height: $image.height()});
-
-		var $trigger = ImageManipulation.$trigger;
-		var jsonString = $trigger.parent().find('#' + $trigger.data('field')).val();
-		if (jsonString.length) {
-			cropData = JSON.parse(jsonString);
-		}
-
-		var $infoX = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-x');
-		var $infoY = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-y');
-		var $infoWidth = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-width');
-		var $infoHeight = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-height');
-
-		$image.cropper({
-			autoCropArea: 0.5,
-			strict: false,
-			zoomable: ImageManipulation.currentModal.find('.t3js-setting-zoom').length > 0,
-			built: function() {
-				if (cropData) {
-					// Dimensions CropBox need to be the real visible dimensions
-					var ratio = $image.cropper('getImageData').width / $image.data('original-width');
-					var cropBox = {};
-					cropBox.left = cropData.x * ratio;
-					cropBox.top = cropData.y * ratio;
-					cropBox.width = cropData.width * ratio;
-					cropBox.height = cropData.height * ratio;
-					$image.cropper('setCropBoxData', cropBox);
-				}
-			},
-			crop: function (data) {
-				var ratio = $image.cropper('getImageData').naturalWidth / $image.data('original-width');
-				$infoX.text(Math.round(data.x / ratio) + 'px');
-				$infoY.text(Math.round(data.y / ratio) + 'px');
-				$infoWidth.text(Math.round(data.width / ratio) + 'px');
-				$infoHeight.text(Math.round(data.height / ratio) + 'px');
-			}
-		});
-
-		// Destroy cropper when modal is closed
-		ImageManipulation.currentModal.on('hidden.bs.modal', function() {
-			$image.cropper('destroy');
-		});
-
-		ImageManipulation.initializeCroppingActions();
-	};
-
-	/**
-	 * Get image to be cropped
-	 *
-	 * @returns {Object} jQuery object
-	 */
-	ImageManipulation.getCropper = function() {
-		return ImageManipulation.currentModal.find(ImageManipulation.cropperSelector);
-	};
-
-	/**
-	 * Bind buttons from cropper tool panel
-	 */
-	ImageManipulation.initializeCroppingActions = function() {
-		ImageManipulation.currentModal.find('[data-method]').click(function(e) {
-			e.preventDefault();
-			var method = $(this).data('method');
-			var options = $(this).data('option') || {};
-			if (typeof ImageManipulation[method] === 'function') {
-				ImageManipulation[method](options);
-			}
-		});
-	};
-
-	/**
-	 * Change the aspect ratio of the crop box
-	 *
-	 * @param {Number} aspectRatio
-	 */
-	ImageManipulation.setAspectRatio = function(aspectRatio) {
-		var $cropper = ImageManipulation.getCropper();
-		$cropper.cropper('setAspectRatio', aspectRatio);
-	};
-
-	/**
-	 * Set zoom ratio
-	 *
-	 * Zoom in: requires a positive number (ratio > 0)
-	 * Zoom out: requires a negative number (ratio < 0)
-	 *
-	 * @param {Number} ratio
-	 */
-	ImageManipulation.zoom = function(ratio) {
-		var $cropper = ImageManipulation.getCropper();
-		$cropper.cropper('zoom', ratio);
-	};
-
-	/**
-	 * Save crop values in form and close modal
-	 */
-	ImageManipulation.save = function() {
-		var $image = ImageManipulation.getCropper();
-		var $trigger = ImageManipulation.$trigger;
-		var formFieldId = $trigger.data('field');
-		var $formField = $trigger.parent().find('#' + formFieldId);
-		var $formGroup = $formField.closest('.form-group');
-		var cropData = $image.cropper('getData');
-		var newValue = '';
-		$formGroup.addClass('has-change');
-		if (cropData.width > 0 && cropData.height > 0) {
-			var ratio = $image.cropper('getImageData').naturalWidth / $image.data('original-width');
-			cropData.x = cropData.x / ratio;
-			cropData.y = cropData.y / ratio;
-			cropData.width = cropData.width / ratio;
-			cropData.height = cropData.height / ratio;
-			newValue = JSON.stringify(cropData);
-			$formGroup.find('.t3js-image-manipulation-info').removeClass('hide');
-			$formGroup.find('.t3js-image-manipulation-info-crop-x').text(Math.round(cropData.x) + 'px');
-			$formGroup.find('.t3js-image-manipulation-info-crop-y').text(Math.round(cropData.y) + 'px');
-			$formGroup.find('.t3js-image-manipulation-info-crop-width').text(Math.round(cropData.width) + 'px');
-			$formGroup.find('.t3js-image-manipulation-info-crop-height').text(Math.round(cropData.height) + 'px');
-			$formGroup.find('.t3js-image-manipulation-preview').removeClass('hide');
-			ImageManipulation.setPreviewImage();
-		} else {
-			$formGroup.find('.t3js-image-manipulation-info').addClass('hide');
-			$formGroup.find('.t3js-image-manipulation-preview').addClass('hide');
-		}
-		$formField.val(newValue);
-		$formField.trigger('change');
-		ImageManipulation.dismiss();
-	};
-
-	/**
-	 * Reset crop selection
-	 */
-	ImageManipulation.reset = function() {
-		var $image = ImageManipulation.getCropper();
-		$image.cropper('clear');
-	};
-
-	/**
-	 * Close the current open modal
-	 */
-	ImageManipulation.dismiss = function() {
-		if (ImageManipulation.currentModal) {
-			ImageManipulation.currentModal.modal('hide');
-			ImageManipulation.currentModal = null;
-		}
-	};
-
-	/**
-	 * Set preview image
-	 */
-	ImageManipulation.setPreviewImage = function() {
-		var $preview = ImageManipulation.$trigger.closest('.form-group').find('.t3js-image-manipulation-preview');
-		if ($preview.length === 0) {
-			return;
-		}
-		var $image = ImageManipulation.getCropper();
-		var imageData = $image.cropper('getImageData');
-		var cropData = $image.cropper('getData');
-		var previewWidth = $preview.data('preview-width');
-		var previewHeight = $preview.data('preview-height');
-
-		// Adjust aspect ratio of preview width/height
-		var aspectRatio = cropData.width / cropData.height;
-		var tmpHeight = previewWidth / aspectRatio;
-		if (tmpHeight > previewHeight) {
-			previewWidth = previewHeight * aspectRatio;
-		} else {
-			previewHeight = tmpHeight;
-		}
-		// preview should never be up-scaled
-		if (previewWidth > cropData.width) {
-			previewWidth = cropData.width;
-			previewHeight = cropData.height;
-		}
-
-		var ratio = previewWidth / cropData.width;
-
-		var $viewBox = $('<div />').html('<img src="' + $image.attr('src') + '">');
-		$viewBox.addClass('cropper-preview-container');
-		$preview.empty().append($viewBox);
-		$viewBox.wrap('<span class="thumbnail thumbnail-status"></span>');
-
-		$viewBox.width(previewWidth).height(previewHeight).find('img').css({
-			width: imageData.naturalWidth * ratio,
-			height: imageData.naturalHeight * ratio,
-			left: -cropData.x * ratio,
-			top: -cropData.y * ratio
-		});
-	};
-
-	return ImageManipulation;
+define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity", "jquery", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, ImagesLoaded, Modal, Severity, $) {
+    "use strict";
+    /**
+     * Module: TYPO3/CMS/Backend/ImageManipulation
+     * Contains all logic for the image crop GUI including setting focusAreas
+     * @exports TYPO3/CMS/Backend/ImageManipulation
+     */
+    var ImageManipulation = (function () {
+        function ImageManipulation() {
+            var _this = this;
+            this.coverAreaSelector = '.t3js-cropper-cover-area';
+            this.cropInfoSelector = '.t3js-cropper-info-crop';
+            this.focusAreaSelector = '#t3js-cropper-focus-area';
+            this.defaultFocusArea = {
+                height: 1 / 3,
+                width: 1 / 3,
+                x: 0,
+                y: 0,
+            };
+            this.defaultOpts = {
+                autoCrop: true,
+                autoCropArea: '0.7',
+                dragMode: 'crop',
+                guides: true,
+                responsive: true,
+                viewMode: 1,
+                zoomable: false,
+            };
+            this.cropBuiltHandler = function () {
+                var imageData = _this.cropper.cropper('getImageData');
+                _this.currentCropVariant.cropArea = _this.convertRelativeToAbsoluteCropArea(_this.currentCropVariant.cropArea, imageData);
+                _this.cropBox = _this.currentModal.find('.cropper-crop-box');
+                _this.setCropArea(_this.currentCropVariant.cropArea);
+                // Check if new cropVariant has coverAreas
+                if (_this.currentCropVariant.coverAreas) {
+                    // Init or reinit focusArea
+                    _this.initCoverAreas(_this.cropBox, _this.currentCropVariant.coverAreas);
+                }
+                // Check if new cropVariant has focusArea
+                if (_this.currentCropVariant.focusArea) {
+                    // Init or reinit focusArea
+                    if (ImageManipulation.isEmptyArea(_this.currentCropVariant.focusArea)) {
+                        // If an empty focusArea is set initialise it with the default
+                        _this.currentCropVariant.focusArea = $.extend(true, {}, _this.defaultFocusArea);
+                    }
+                    _this.initFocusArea(_this.cropBox);
+                    _this.scaleAndMoveFocusArea(_this.currentCropVariant.focusArea);
+                }
+                if (_this.currentCropVariant.selectedRatio) {
+                    _this.updateAspectRatio(_this.currentCropVariant.allowedAspectRatios[_this.currentCropVariant.selectedRatio]);
+                    // Set data explicitly or updateAspectRatio up-scales the crop
+                    _this.setCropArea(_this.currentCropVariant.cropArea);
+                    _this.currentModal.find("[data-option='" + _this.currentCropVariant.selectedRatio + "']").addClass('active');
+                }
+                _this.cropperCanvas.addClass('is-visible');
+            };
+            this.cropMoveHandler = function (e) {
+                _this.currentCropVariant.cropArea = $.extend(true, _this.currentCropVariant.cropArea, {
+                    height: Math.floor(e.height),
+                    width: Math.floor(e.width),
+                    x: Math.floor(e.x),
+                    y: Math.floor(e.y),
+                });
+                _this.updatePreviewThumbnail(_this.currentCropVariant);
+                _this.updateCropVariantData(_this.currentCropVariant);
+                _this.cropInfo.text(_this.currentCropVariant.cropArea.width + "\u00D7" + _this.currentCropVariant.cropArea.height + " px");
+            };
+            this.cropStartHandler = function () {
+                if (_this.currentCropVariant.focusArea) {
+                    _this.focusArea.draggable('option', 'disabled', true);
+                    _this.focusArea.resizable('option', 'disabled', true);
+                }
+            };
+            /**
+             *
+             */
+            this.cropEndHandler = function () {
+                if (_this.currentCropVariant.focusArea) {
+                    _this.focusArea.draggable('option', 'disabled', false);
+                    _this.focusArea.resizable('option', 'disabled', false);
+                }
+            };
+            // Silence is golden
+            $(window).resize(function () {
+                if (_this.cropper) {
+                    _this.cropper.cropper('destroy');
+                }
+            });
+            this.resizeEnd(function () {
+                if (_this.cropper) {
+                    _this.init();
+                }
+            });
+        }
+        /**
+         * @method isCropAreaEmpty
+         * @desc Checks if an area is set or pristine
+         * @param {Area} area - The area to check
+         * @return {boolean}
+         * @static
+         */
+        ImageManipulation.isEmptyArea = function (area) {
+            return $.isEmptyObject(area);
+        };
+        /**
+         * @method wait
+         * @desc window.setTimeout shim
+         * @param {Function} fn - The function to execute
+         * @param {number} ms - The time in [ms] to wait until execution
+         * @return {boolean}
+         * @public
+         * @static
+         */
+        ImageManipulation.wait = function (fn, ms) {
+            window.setTimeout(fn, ms);
+        };
+        /**
+         * @method toCssPercent
+         * @desc Takes a number, and converts it to CSS percentage length
+         * @param {number} num - The number to convert
+         * @return {string}
+         * @public
+         * @static
+         */
+        ImageManipulation.toCssPercent = function (num) {
+            return num * 100 + "%";
+        };
+        /**
+         * @method serializeCropVariants
+         * @desc Serializes crop variants for persistence or preview
+         * @param {Object} cropVariants
+         * @returns string
+         */
+        ImageManipulation.serializeCropVariants = function (cropVariants) {
+            var omitUnused = function (key, value) {
+                return (key === 'id'
+                    || key === 'title'
+                    || key === 'allowedAspectRatios'
+                    || key === 'coverAreas') ? undefined : value;
+            };
+            return JSON.stringify(cropVariants, omitUnused);
+        };
+        /**
+         * @method initializeTrigger
+         * @desc Assign a handler to .t3js-image-manipulation-trigger.
+         *       Show the modal and kick-off image manipulation
+         * @public
+         */
+        ImageManipulation.prototype.initializeTrigger = function () {
+            var _this = this;
+            var triggerHandler = function (e) {
+                e.preventDefault();
+                _this.trigger = $(e.currentTarget);
+                _this.show();
+            };
+            $('.t3js-image-manipulation-trigger').off('click').click(triggerHandler);
+        };
+        /**
+         * Initialize the cropper modal
+         */
+        ImageManipulation.prototype.initializeCropperModal = function () {
+            var _this = this;
+            var image = this.currentModal.find('#t3js-crop-image');
+            ImagesLoaded(image, function () {
+                var modal = _this.currentModal.find('.modal-dialog');
+                modal.css({ marginLeft: 'auto', marginRight: 'auto' });
+                modal.addClass('modal-image-manipulation modal-resize');
+                Modal.center();
+                setTimeout(function () {
+                    _this.init();
+                }, 100);
+            });
+        };
+        ImageManipulation.prototype.show = function () {
+            var modalTitle = this.trigger.data('modalTitle');
+            var imageUri = this.trigger.data('url');
+            var initCropperModal = this.initializeCropperModal.bind(this);
+            /**
+             * Open modal with image to crop
+             */
+            this.currentModal = Modal.loadUrl(modalTitle, Severity.notice, [], imageUri, initCropperModal, '.modal-content');
+            this.currentModal.addClass('modal-dark');
+        };
+        ImageManipulation.prototype.init = function () {
+            var _this = this;
+            var image = this.currentModal.find('#t3js-crop-image');
+            var imageHeight = $(image).height();
+            var imageWidth = $(image).width();
+            var data = this.trigger.attr('data-crop-variants');
+            if (!data) {
+                throw new TypeError('ImageManipulation: No cropVariants data found for image');
+            }
+            // If we have data already set we assume an internal reinit eg. after resizing
+            this.data = $.isEmptyObject(this.data) ? JSON.parse(data) : this.data;
+            // Initialize our class members
+            this.currentModal.find('.cropper-image-container').css({ height: imageHeight, width: imageWidth });
+            this.cropVariantTriggers = this.currentModal.find('.t3js-crop-variant-trigger');
+            this.activeCropVariantTrigger = this.currentModal.find('.t3js-crop-variant-trigger.is-active');
+            this.cropInfo = this.currentModal.find(this.cropInfoSelector);
+            this.saveButton = this.currentModal.find('[data-method=save]');
+            this.previewButton = this.currentModal.find('[data-method=preview]');
+            this.dismissButton = this.currentModal.find('[data-method=dismiss]');
+            this.resetButton = this.currentModal.find('[data-method=reset]');
+            this.cropperCanvas = this.currentModal.find('#js-crop-canvas');
+            this.aspectRatioTrigger = this.currentModal.find('[data-method=setAspectRatio]');
+            this.currentCropVariant = this.data[this.activeCropVariantTrigger.attr('data-crop-variant-id')];
+            /**
+             * Assign EventListener to cropVariantTriggers
+             */
+            this.cropVariantTriggers.on('click', function (e) {
+                /**
+                 * Is the current cropVariantTrigger is active, bail out.
+                 * Bootstrap doesn't provide this functionality when collapsing the Collaps panels
+                 */
+                if ($(e.currentTarget).hasClass('is-active')) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return;
+                }
+                _this.activeCropVariantTrigger.removeClass('is-active');
+                $(e.currentTarget).addClass('is-active');
+                _this.activeCropVariantTrigger = $(e.currentTarget);
+                var cropVariant = _this.data[_this.activeCropVariantTrigger.attr('data-crop-variant-id')];
+                var imageData = _this.cropper.cropper('getImageData');
+                cropVariant.cropArea = _this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
+                _this.currentCropVariant = $.extend(true, {}, cropVariant);
+                _this.update(cropVariant);
+            });
+            /**
+             * Assign EventListener to aspectRatioTrigger
+             */
+            this.aspectRatioTrigger.on('click', function (e) {
+                var ratioId = $(e.currentTarget).attr('data-option');
+                var temp = $.extend(true, {}, _this.currentCropVariant);
+                var ratio = temp.allowedAspectRatios[ratioId];
+                _this.updateAspectRatio(ratio);
+                // Set data explicitly or updateAspectRatio upscales the crop
+                _this.setCropArea(temp.cropArea);
+                _this.currentCropVariant = $.extend(true, {}, temp, { selectedRatio: ratioId });
+                _this.update(_this.currentCropVariant);
+            });
+            /**
+             * Assign EventListener to saveButton
+             */
+            this.saveButton.on('click', function () {
+                _this.save(_this.data);
+            });
+            /**
+             * Assign EventListener to previewButton if preview url exists
+             */
+            if (this.trigger.attr('data-preview-url')) {
+                this.previewButton.on('click', function () {
+                    _this.openPreview(_this.data);
+                });
+            }
+            else {
+                this.previewButton.hide();
+            }
+            /**
+             * Assign EventListener to dismissButton
+             */
+            this.dismissButton.on('click', function () {
+                _this.destroy();
+            });
+            /**
+             * Assign EventListener to resetButton
+             */
+            this.resetButton.on('click', function (e) {
+                var imageData = _this.cropper.cropper('getImageData');
+                var resetCropVariantString = $(e.currentTarget).attr('data-crop-variant');
+                e.preventDefault();
+                e.stopPropagation();
+                if (!resetCropVariantString) {
+                    throw new TypeError('TYPO3 Cropper: No cropVariant data attribute found on reset element.');
+                }
+                var resetCropVariant = JSON.parse(resetCropVariantString);
+                var absoluteCropArea = _this.convertRelativeToAbsoluteCropArea(resetCropVariant.cropArea, imageData);
+                _this.currentCropVariant = $.extend(true, {}, resetCropVariant, { cropArea: absoluteCropArea });
+                _this.update(_this.currentCropVariant);
+            });
+            // If we start without an cropArea, maximize the cropper
+            if (ImageManipulation.isEmptyArea(this.currentCropVariant.cropArea)) {
+                this.defaultOpts = $.extend({
+                    autoCropArea: 1,
+                }, this.defaultOpts);
+            }
+            /**
+             * Initialise the cropper
+             *
+             * Note: We use the extraneous jQuery object here, as CropperJS won't work inside the <iframe>
+             * The top.require is now inlined @see ImageManipulationElemen.php:143
+             * TODO: Find a better solution for cross iframe communications
+             */
+            this.cropper = top.TYPO3.jQuery(image).cropper($.extend(this.defaultOpts, {
+                built: this.cropBuiltHandler,
+                crop: this.cropMoveHandler,
+                cropend: this.cropEndHandler,
+                cropstart: this.cropStartHandler,
+                data: this.currentCropVariant.cropArea,
+            }));
+        };
+        /**
+         * @method update
+         * @desc Update current cropArea position and size when changing cropVariants
+         * @param {CropVariant} cropVariant - The new cropVariant to update the UI with
+         */
+        ImageManipulation.prototype.update = function (cropVariant) {
+            var temp = $.extend(true, {}, cropVariant);
+            var selectedRatio = cropVariant.allowedAspectRatios[cropVariant.selectedRatio];
+            this.currentModal.find('[data-option]').removeClass('active');
+            this.currentModal.find("[data-option=\"" + cropVariant.selectedRatio + "\"]").addClass('active');
+            /**
+             * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
+             */
+            this.updateAspectRatio(selectedRatio);
+            this.setCropArea(temp.cropArea);
+            this.currentCropVariant = $.extend(true, {}, temp, cropVariant);
+            this.cropBox.find(this.coverAreaSelector).remove();
+            // If the current container has a focus area element, deregister and cleanup prior to initialization
+            if (this.cropBox.has(this.focusAreaSelector).length) {
+                this.focusArea.resizable('destroy').draggable('destroy');
+                this.focusArea.remove();
+            }
+            // Check if new cropVariant has focusArea
+            if (cropVariant.focusArea) {
+                // Init or reinit focusArea
+                if (ImageManipulation.isEmptyArea(cropVariant.focusArea)) {
+                    this.currentCropVariant.focusArea = $.extend(true, {}, this.defaultFocusArea);
+                }
+                this.initFocusArea(this.cropBox);
+                this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
+            }
+            // Check if new cropVariant has coverAreas
+            if (cropVariant.coverAreas) {
+                // Init or reinit focusArea
+                this.initCoverAreas(this.cropBox, this.currentCropVariant.coverAreas);
+            }
+            this.updatePreviewThumbnail(this.currentCropVariant);
+        };
+        /**
+         * @method initFocusArea
+         * @desc Initializes the focus area inside a container and registers the resizable and draggable interfaces to it
+         * @param container: JQuery
+         */
+        ImageManipulation.prototype.initFocusArea = function (container) {
+            var _this = this;
+            this.focusArea = $('<div id="t3js-cropper-focus-area" class="cropper-focus-area"></div>');
+            container.append(this.focusArea);
+            this.focusArea
+                .draggable({
+                containment: container,
+                create: function () {
+                    _this.scaleAndMoveFocusArea(_this.currentCropVariant.focusArea);
+                },
+                drag: function () {
+                    var _a = container.offset(), left = _a.left, top = _a.top;
+                    var _b = _this.focusArea.offset(), fLeft = _b.left, fTop = _b.top;
+                    var _c = _this.currentCropVariant, focusArea = _c.focusArea, coverAreas = _c.coverAreas;
+                    focusArea.x = (fLeft - left) / container.width();
+                    focusArea.y = (fTop - top) / container.height();
+                    _this.updatePreviewThumbnail(_this.currentCropVariant);
+                    if (_this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+                        _this.focusArea.addClass('has-nodrop');
+                    }
+                    else {
+                        _this.focusArea.removeClass('has-nodrop');
+                    }
+                },
+                revert: function () {
+                    var revertDelay = 250;
+                    var _a = container.offset(), left = _a.left, top = _a.top;
+                    var _b = _this.focusArea.offset(), fLeft = _b.left, fTop = _b.top;
+                    var _c = _this.currentCropVariant, focusArea = _c.focusArea, coverAreas = _c.coverAreas;
+                    if (_this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+                        _this.focusArea.removeClass('has-nodrop');
+                        ImageManipulation.wait(function () {
+                            focusArea.x = (fLeft - left) / container.width();
+                            focusArea.y = (fTop - top) / container.height();
+                            _this.updateCropVariantData(_this.currentCropVariant);
+                        }, revertDelay);
+                        return true;
+                    }
+                },
+                revertDuration: 200,
+                stop: function () {
+                    var _a = container.offset(), left = _a.left, top = _a.top;
+                    var _b = _this.focusArea.offset(), fLeft = _b.left, fTop = _b.top;
+                    var focusArea = _this.currentCropVariant.focusArea;
+                    focusArea.x = (fLeft - left) / container.width();
+                    focusArea.y = (fTop - top) / container.height();
+                    _this.scaleAndMoveFocusArea(focusArea);
+                },
+            })
+                .resizable({
+                containment: container,
+                handles: 'all',
+                resize: function () {
+                    var _a = container.offset(), left = _a.left, top = _a.top;
+                    var _b = _this.focusArea.offset(), fLeft = _b.left, fTop = _b.top;
+                    var _c = _this.currentCropVariant, focusArea = _c.focusArea, coverAreas = _c.coverAreas;
+                    focusArea.height = _this.focusArea.height() / container.height();
+                    focusArea.width = _this.focusArea.width() / container.width();
+                    focusArea.x = (fLeft - left) / container.width();
+                    focusArea.y = (fTop - top) / container.height();
+                    _this.updatePreviewThumbnail(_this.currentCropVariant);
+                    if (_this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+                        _this.focusArea.addClass('has-nodrop');
+                    }
+                    else {
+                        _this.focusArea.removeClass('has-nodrop');
+                    }
+                },
+                stop: function (event, ui) {
+                    var revertDelay = 250;
+                    var _a = container.offset(), left = _a.left, top = _a.top;
+                    var _b = _this.focusArea.offset(), fLeft = _b.left, fTop = _b.top;
+                    var _c = _this.currentCropVariant, focusArea = _c.focusArea, coverAreas = _c.coverAreas;
+                    if (_this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+                        ui.element.animate($.extend(ui.originalPosition, ui.originalSize), revertDelay, function () {
+                            focusArea.height = _this.focusArea.height() / container.height();
+                            focusArea.height = _this.focusArea.height() / container.height();
+                            focusArea.width = _this.focusArea.width() / container.width();
+                            focusArea.x = (fLeft - left) / container.width();
+                            focusArea.y = (fTop - top) / container.height();
+                            _this.scaleAndMoveFocusArea(focusArea);
+                            _this.focusArea.removeClass('has-nodrop');
+                        });
+                    }
+                    else {
+                        _this.scaleAndMoveFocusArea(focusArea);
+                    }
+                },
+            });
+        };
+        /**
+         * @method initCoverAreas
+         * @desc Initialise cover areas inside the cropper container
+         * @param {JQuery} container - The container element to append the cover areas
+         * @param {Array<Area>} coverAreas - An array of areas to construxt the cover area elements from
+         */
+        ImageManipulation.prototype.initCoverAreas = function (container, coverAreas) {
+            coverAreas.forEach(function (coverArea) {
+                var coverAreaCanvas = $('<div class="t3js-cropper-cover-area"></div>');
+                container.append(coverAreaCanvas);
+                coverAreaCanvas.css({
+                    height: ImageManipulation.toCssPercent(coverArea.height),
+                    left: ImageManipulation.toCssPercent(coverArea.x),
+                    top: ImageManipulation.toCssPercent(coverArea.y),
+                    width: ImageManipulation.toCssPercent(coverArea.width),
+                });
+            });
+        };
+        /**
+         * @method updatePreviewThumbnail
+         * @desc Sync the croping (and focus area) to the preview thumbnail
+         * @param {CropVariant} cropVariant
+         */
+        ImageManipulation.prototype.updatePreviewThumbnail = function (cropVariant) {
+            var styles;
+            var cropperPreviewThumbnailCrop = this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-area');
+            var cropperPreviewThumbnailImage = this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-image');
+            var cropperPreviewThumbnailFocus = this.activeCropVariantTrigger.find('.t3js-cropper-preview-thumbnail-focus-area');
+            var imageData = this.cropper.cropper('getImageData');
+            // Update the position/dimension of the crop area in the preview
+            cropperPreviewThumbnailCrop.css({
+                height: ImageManipulation.toCssPercent(cropVariant.cropArea.height / imageData.naturalHeight),
+                left: ImageManipulation.toCssPercent(cropVariant.cropArea.x / imageData.naturalWidth),
+                top: ImageManipulation.toCssPercent(cropVariant.cropArea.y / imageData.naturalHeight),
+                width: ImageManipulation.toCssPercent(cropVariant.cropArea.width / imageData.naturalWidth),
+            });
+            // Show and update focusArea in the preview only if we really have one configured
+            if (cropVariant.focusArea) {
+                cropperPreviewThumbnailFocus.css({
+                    height: ImageManipulation.toCssPercent(cropVariant.focusArea.height),
+                    left: ImageManipulation.toCssPercent(cropVariant.focusArea.x),
+                    top: ImageManipulation.toCssPercent(cropVariant.focusArea.y),
+                    width: ImageManipulation.toCssPercent(cropVariant.focusArea.width),
+                });
+            }
+            // Destruct the preview container's CSS properties
+            styles = cropperPreviewThumbnailCrop.css([
+                'width', 'height', 'left', 'top',
+            ]);
+            /**
+             * Apply negative margins on the previewThumbnailImage to make the illusion of an offset
+             */
+            cropperPreviewThumbnailImage.css({
+                height: parseFloat(styles.height) * (1 / (cropVariant.cropArea.height / imageData.naturalHeight)) + "px",
+                margin: -1 * parseFloat(styles.left) + "px",
+                marginTop: -1 * parseFloat(styles.top) + "px",
+                width: parseFloat(styles.width) * (1 / (cropVariant.cropArea.width / imageData.naturalWidth)) + "px",
+            });
+        };
+        /**
+         * @method scaleAndMoveFocusArea
+         * @desc Calculation logic for moving the focus area given the
+         *       specified constrains of a crop and an optional cover area
+         * @param {Area} focusArea - The translation data
+         */
+        ImageManipulation.prototype.scaleAndMoveFocusArea = function (focusArea) {
+            this.focusArea.css({
+                height: ImageManipulation.toCssPercent(focusArea.height),
+                left: ImageManipulation.toCssPercent(focusArea.x),
+                top: ImageManipulation.toCssPercent(focusArea.y),
+                width: ImageManipulation.toCssPercent(focusArea.width),
+            });
+            this.currentCropVariant.focusArea = focusArea;
+            this.updatePreviewThumbnail(this.currentCropVariant);
+            this.updateCropVariantData(this.currentCropVariant);
+        };
+        /**
+         * @method updateCropVariantData
+         * @desc Immutably updates the currently selected cropVariant data
+         * @param {CropVariant} currentCropVariant - The cropVariant to immutably save
+         */
+        ImageManipulation.prototype.updateCropVariantData = function (currentCropVariant) {
+            var imageData = this.cropper.cropper('getImageData');
+            var absoluteCropArea = this.convertAbsoluteToRelativeCropArea(currentCropVariant.cropArea, imageData);
+            this.data[currentCropVariant.id] = $.extend(true, {}, currentCropVariant, { cropArea: absoluteCropArea });
+        };
+        /**
+         * @method updateAspectRatio
+         * @desc Updates the aspect ratio in the cropper
+         * @param {ratio} ratio ratio set in the cropper
+         */
+        ImageManipulation.prototype.updateAspectRatio = function (ratio) {
+            this.cropper.cropper('setAspectRatio', ratio.value);
+        };
+        /**
+         * @method setCropArea
+         * @desc Updates the crop area in the cropper. The cropper will respect the selected ratio
+         * @param {cropArea} cropArea ratio set in the cropper
+         */
+        ImageManipulation.prototype.setCropArea = function (cropArea) {
+            this.cropper.cropper('setData', {
+                height: cropArea.height,
+                width: cropArea.width,
+                x: cropArea.x,
+                y: cropArea.y,
+            });
+        };
+        /**
+         * @method checkFocusAndCoverAreas
+         * @desc Checks is one focus area and one or more cover areas overlap
+         * @param focusArea
+         * @param coverAreas
+         * @return {boolean}
+         */
+        ImageManipulation.prototype.checkFocusAndCoverAreasCollision = function (focusArea, coverAreas) {
+            return coverAreas
+                .some(function (coverArea) {
+                // noinspection OverlyComplexBooleanExpressionJS
+                if (focusArea.x < coverArea.x + coverArea.width &&
+                    focusArea.x + focusArea.width > coverArea.x &&
+                    focusArea.y < coverArea.y + coverArea.height &&
+                    focusArea.height + focusArea.y > coverArea.y) {
+                    return true;
+                }
+            });
+        };
+        /**
+         * @param cropArea
+         * @param imageData
+         * @return {{height: number, width: number, x: number, y: number}}
+         */
+        ImageManipulation.prototype.convertAbsoluteToRelativeCropArea = function (cropArea, imageData) {
+            var height = cropArea.height, width = cropArea.width, x = cropArea.x, y = cropArea.y;
+            return {
+                height: height / imageData.naturalHeight,
+                width: width / imageData.naturalWidth,
+                x: x / imageData.naturalWidth,
+                y: y / imageData.naturalHeight,
+            };
+        };
+        /**
+         * @param cropArea
+         * @param imageData
+         * @return {{height: number, width: number, x: number, y: number}}
+         */
+        ImageManipulation.prototype.convertRelativeToAbsoluteCropArea = function (cropArea, imageData) {
+            var height = cropArea.height, width = cropArea.width, x = cropArea.x, y = cropArea.y;
+            return {
+                height: height * imageData.naturalHeight,
+                width: width * imageData.naturalWidth,
+                x: x * imageData.naturalWidth,
+                y: y * imageData.naturalHeight,
+            };
+        };
+        ImageManipulation.prototype.setPreviewImage = function (data) {
+            var _this = this;
+            var $image = this.cropper;
+            var imageData = $image.cropper('getImageData');
+            Object.keys(data).forEach(function (cropVariantId) {
+                var cropVariant = data[cropVariantId];
+                var cropData = _this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
+                var $preview = _this.trigger
+                    .closest('.form-group')
+                    .find(".t3js-image-manipulation-preview[data-crop-variant-id=\"" + cropVariantId + "\"]");
+                if ($preview.length === 0) {
+                    return;
+                }
+                var previewWidth = $preview.data('preview-width');
+                var previewHeight = $preview.data('preview-height');
+                // Adjust aspect ratio of preview width/height
+                var aspectRatio = cropData.width / cropData.height;
+                var tmpHeight = previewWidth / aspectRatio;
+                if (tmpHeight > previewHeight) {
+                    previewWidth = previewHeight * aspectRatio;
+                }
+                else {
+                    previewHeight = tmpHeight;
+                }
+                // preview should never be up-scaled
+                if (previewWidth > cropData.width) {
+                    previewWidth = cropData.width;
+                    previewHeight = cropData.height;
+                }
+                var ratio = previewWidth / cropData.width;
+                var $viewBox = $('<div />').html('<img src="' + $image.attr('src') + '">');
+                $viewBox.addClass('cropper-preview-container');
+                $preview.empty().append($viewBox);
+                $viewBox.wrap('<span class="thumbnail thumbnail-status"></span>');
+                $viewBox.width(previewWidth).height(previewHeight).find('img').css({
+                    height: imageData.naturalHeight * ratio,
+                    left: -cropData.x * ratio,
+                    top: -cropData.y * ratio,
+                    width: imageData.naturalWidth * ratio,
+                });
+            });
+        };
+        ;
+        /**
+         * @method openPreview
+         * @desc open a preview
+         * @param {object} data - The whole data object containing all the cropVariants
+         * @private
+         */
+        ImageManipulation.prototype.openPreview = function (data) {
+            var cropVariants = ImageManipulation.serializeCropVariants(data);
+            var previewUrl = this.trigger.attr('data-preview-url');
+            previewUrl = previewUrl + '&cropVariants=' + encodeURIComponent(cropVariants);
+            window.open(previewUrl, 'TYPO3ImageManipulationPreview');
+        };
+        /**
+         * @method save
+         * @desc Saves the edited cropVariants to a hidden field
+         * @param {object} data - The whole data object containing all the cropVariants
+         * @private
+         */
+        ImageManipulation.prototype.save = function (data) {
+            var cropVariants = ImageManipulation.serializeCropVariants(data);
+            var hiddenField = $("#" + this.trigger.attr('data-field'));
+            this.trigger.attr('data-crop-variants', JSON.stringify(data));
+            this.setPreviewImage(data);
+            hiddenField.val(cropVariants);
+            this.destroy();
+        };
+        /**
+         * @method destroy
+         * @desc Destroy the ImageManipulation including cropper and alike
+         * @private
+         */
+        ImageManipulation.prototype.destroy = function () {
+            if (this.currentModal) {
+                this.currentModal.modal('hide');
+                this.cropper.cropper('destroy');
+                this.currentModal = null;
+            }
+        };
+        ImageManipulation.prototype.resizeEnd = function (fn) {
+            var timer;
+            $(window).on('resize', function () {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    fn();
+                }, 450);
+            });
+        };
+        return ImageManipulation;
+    }());
+    return new ImageManipulation();
 });

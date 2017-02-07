@@ -320,8 +320,7 @@ th {
 :root .fa-rotate-270,
 :root .fa-flip-horizontal,
 :root .fa-flip-vertical {
-  -webkit-filter: none;
-          filter: none;
+  filter: none;
 }
 .fa-stack {
   position: relative;
@@ -8903,13 +8902,14 @@ div.dropdown-menu {
 }
 /*!
  * Datetimepicker for Bootstrap 3
- * version : 4.17.42
+ * version : 4.17.45
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 .bootstrap-datetimepicker-widget {
   list-style: none;
 }
 .bootstrap-datetimepicker-widget.dropdown-menu {
+  display: block;
   margin: 2px 0;
   padding: 4px;
   width: 19em;
@@ -9655,21 +9655,380 @@ iframe,
 .collapse.in {
   height: auto;
 }
-.cropper-line {
-  background-color: #FFFFFF;
+.cropper {
+  /**
+	 * Style overrides for CropperJS CSS and additional styles to make cropper look like expected
+	 *
+	 * 1. Fixes hidden drag/resize handles for cropper
+	 * 2. Fixes containment on the jQuery UI resizeable
+	 * 3. Offset cropper lines and handles to inside of container
+	 */
 }
-.cropper-point {
-  background-color: #FFFFFF;
+.cropper .cropper-line {
+  background-color: transparent;
 }
-.cropper-point.point-se:before {
-  background-color: #FFFFFF;
+.cropper .cropper-dashed {
+  border: 1px dashed #ff8700;
 }
-.cropper-view-box {
-  outline: 1px dashed #6699ff;
-  outline-color: #ffffff;
+.cropper .cropper-point {
+  background-color: #ff8700;
 }
-.cropper-bg {
+.cropper .cropper-point.point-nw {
+  left: 0;
+  /* 3 */
+  top: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-w {
+  left: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-sw {
+  left: 0;
+  /* 3 */
+  bottom: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-ne {
+  right: 0;
+  /* 3 */
+  top: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-e {
+  right: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-se {
+  right: 0;
+  /* 3 */
+  bottom: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-se:before {
+  background-color: #fff;
+}
+.cropper .cropper-point.point-n {
+  top: 0;
+  /* 3 */
+}
+.cropper .cropper-point.point-s {
+  bottom: 0;
+  /* 3 */
+}
+.cropper .cropper-view-box {
+  outline: 1px dashed #ff8700;
+}
+.cropper .cropper-bg {
   background-image: url("../Images/cropper-background.png");
+}
+.cropper .cropper-image-container {
+  height: 100% !important;
+  width: 100% !important;
+  max-width: 1000px !important;
+}
+.cropper .ratio-buttons .btn.btn-default {
+  margin-bottom: 5px;
+}
+.cropper .panel-group {
+  position: relative;
+  margin: -15px;
+}
+.cropper .panel-group [aria-expanded=true] {
+  border-left: 2px solid #ff8700;
+  position: relative;
+}
+.cropper .panel-group [aria-expanded=true]:before {
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  margin-top: -10px;
+  content: " ";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #ff8700 transparent transparent;
+}
+.cropper .panel-group [aria-expanded=true][data-toggle=collapse] {
+  background-color: #333;
+}
+.cropper .panel-group [aria-expanded=false] {
+  border-left: 2px solid #444;
+  position: relative;
+}
+.cropper .panel-group table,
+.cropper .panel-group label {
+  color: #fff;
+}
+.cropper .panel-collapse.collapse {
+  background-color: #2c2c2c !important;
+  border-left: 2px solid #ff8700;
+}
+.cropper .panel-heading {
+  padding: 0;
+}
+.cropper .panel-heading .panel-title > [data-crop-variant] {
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px 15px;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+}
+.cropper .panel-heading .panel-title > a {
+  text-decoration: none !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 13px;
+}
+.cropper .panel-default > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #333;
+}
+.cropper .panel-group,
+.cropper .panel-default .panel-heading,
+.cropper .panel {
+  background: #222222;
+  border: none;
+  color: #fff;
+}
+.cropper .btn-secondary,
+.cropper .open .dropdown-toggle.btn-secondary {
+  color: #fff;
+  background-color: #777;
+  border-color: #555;
+}
+.cropper .btn-secondary:hover,
+.cropper .btn-secondary:focus,
+.cropper .btn-secondary:active,
+.cropper .btn-secondary.active {
+  color: #fff;
+  background-color: #888;
+  border-color: #444;
+}
+.cropper .cropper-container.cropper-bg {
+  overflow: visible;
+  /* 1 */
+}
+.cropper .cropper-crop-box {
+  overflow: hidden;
+  /* 2 */
+}
+.cropper .cropper-crop-box:after {
+  background-color: #ff8700;
+  content: "Cropped area";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 10px;
+  color: black;
+  height: 16px;
+  width: 100%;
+  max-width: 80px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cropper .cropper-line.line-w {
+  left: 0;
+  /* 3 */
+}
+.cropper .cropper-line.line-e {
+  right: 0;
+  /* 3 */
+}
+.cropper .cropper-line.line-n {
+  top: 0;
+  /* 3 */
+}
+.cropper .cropper-line.line-s {
+  bottom: 0;
+  /* 3 */
+}
+.cropper .ui-resizable-handle.ui-resizable-n,
+.cropper .ui-resizable-handle.ui-resizable-s,
+.cropper .ui-resizable-handle.ui-resizable-e,
+.cropper .ui-resizable-handle.ui-resizable-w {
+  border-color: transparent;
+  transform: none;
+}
+.cropper .ui-resizable-handle.ui-resizable-e,
+.cropper .ui-resizable-handle.ui-resizable-w {
+  width: 6px;
+}
+.cropper .ui-resizable-handle.ui-resizable-n,
+.cropper .ui-resizable-handle.ui-resizable-s {
+  height: 6px;
+}
+.cropper .ui-resizable-handle.ui-resizable-e {
+  right: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-w {
+  left: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-n {
+  top: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-s {
+  bottom: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-sw,
+.cropper .ui-resizable-handle.ui-resizable-se,
+.cropper .ui-resizable-handle.ui-resizable-ne,
+.cropper .ui-resizable-handle.ui-resizable-nw {
+  transform: none;
+  background-color: #ccc;
+  height: 6px;
+  width: 6px;
+}
+.cropper .ui-resizable-handle.ui-resizable-nw {
+  top: 0;
+  left: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-ne {
+  top: 0;
+  right: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-se {
+  bottom: 0;
+  right: 0;
+}
+.cropper .ui-resizable-handle.ui-resizable-sw {
+  bottom: 0;
+  left: 0;
+}
+.cropper .t3js-ratio-buttons {
+  margin-bottom: 10px;
+}
+.cropper .t3js-ratio-buttons .btn:not(.active) .fa {
+  display: none;
+}
+.cropper .cropper-focus-area {
+  cursor: move;
+  height: 200px;
+  width: 200px;
+  background-color: rgba(215, 187, 0, 0.5);
+  position: absolute;
+  z-index: 999999;
+  opacity: 1;
+  overflow: hidden;
+  transition: background-color 300ms;
+}
+.cropper .cropper-focus-area.has-nodrop,
+.cropper .cropper-focus-area.has-nodrop:hover {
+  background-color: rgba(211, 35, 46, 0.6) !important;
+  transition: background-color 300ms;
+}
+.cropper .cropper-focus-area:hover,
+.cropper .cropper-focus-area:focus {
+  background-color: rgba(215, 187, 0, 0.7);
+}
+.cropper .cropper-focus-area:after {
+  background-color: rgba(255, 255, 255, 0.95);
+  content: "Focus";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 10px;
+  color: black;
+  height: 16px;
+  width: 100%;
+  max-width: 44px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px 0 8px;
+  /* Additional 4px on left due to resize handle on focus area */
+  pointer-events: none;
+  overflow: hidden;
+}
+.cropper .t3js-cropper-cover-area {
+  background: url("../Images/cropper-background-cover-area.svg");
+  pointer-events: none;
+  cursor: not-allowed;
+  position: absolute;
+  opacity: 1;
+  z-index: 99999;
+}
+.cropper .t3js-cropper-cover-area:after {
+  background-color: rgba(255, 255, 255, 0.95);
+  content: "Cover area";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 10px;
+  color: black;
+  height: 16px;
+  width: 100%;
+  max-width: 80px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cropper .cropper-preview-thumbnail {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  max-width: 100px;
+  max-height: 100px;
+  overflow: hidden;
+}
+.cropper .cropper-preview-thumbnail:after {
+  background-color: rgba(0, 0, 0, 0.5);
+  content: " ";
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: 9;
+}
+.cropper .cropper-preview-thumbnail.wide {
+  width: 100px;
+  height: auto;
+}
+.cropper .cropper-preview-thumbnail.tall {
+  width: auto;
+  height: 80px;
+}
+.cropper .cropper-preview-thumbnail-image {
+  left: 0;
+  top: 0;
+}
+.cropper .wide .cropper-preview-thumbnail-image {
+  width: 100%;
+  height: auto;
+}
+.cropper .tall .cropper-preview-thumbnail-image {
+  width: auto;
+  height: 100%;
+}
+.cropper .cropper-preview-thumbnail-crop-area {
+  border: 1px solid #ff8700;
+  position: absolute;
+  z-index: 10;
+  overflow: hidden;
+}
+.cropper .cropper-preview-thumbnail-focus-area {
+  background-color: rgba(215, 187, 0, 0.7);
+  position: absolute;
+  z-index: 11;
+}
+:root .cropper-preview-thumbnail-crop-image {
+  image-orientation: 0deg;
+  display: block;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 0;
+  max-height: none;
 }
 .cropper-preview-container {
   overflow: hidden;
@@ -9679,13 +10038,10 @@ iframe,
   display: block;
   position: absolute;
   width: 100%;
-  min-width: 0!important;
-  min-height: 0!important;
-  max-width: none!important;
-  max-height: none!important;
-}
-.ratio-buttons .btn.btn-default {
-  margin-bottom: 5px;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
 }
 .typo3-csh-inline {
   padding: 4px;
@@ -10135,6 +10491,48 @@ div#contentMenu1 {
   transition-duration: 0.35s;
   transition-timing-function: ease;
 }
+/**
+ * Cropper modal component styles
+ */
+.modal-image-manipulation {
+  width: 90vw;
+  height: 90vh;
+}
+.modal-image-manipulation .modal-panel {
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 80vh;
+  overflow: visible;
+}
+.modal-image-manipulation .modal-panel-body {
+  background-image: url("../Images/cropper-background.png");
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+}
+.modal-image-manipulation .modal-panel .modal-panel-body {
+  max-height: 100%;
+  width: 100% !important;
+}
+.modal-image-manipulation .modal-panel .modal-panel-sidebar {
+  min-width: 300px;
+  max-height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-image-manipulation .modal-panel .modal-panel-sidebar-right {
+  background-color: #212424;
+  position: relative;
+}
+.modal-image-manipulation .modal-panel .modal-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
 .modal-image-manipulation .modal-body .col-lg-12 {
   padding-right: 450px;
 }
@@ -10163,7 +10561,7 @@ div#contentMenu1 {
   color: #FFF;
 }
 .modal.modal-dark .modal-footer {
-  border-top: none;
+  border-top: 1px solid #000000;
 }
 .modal-panel .modal-panel-body {
   float: left;
