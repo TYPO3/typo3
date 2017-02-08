@@ -13489,7 +13489,7 @@ textarea.formengine-textarea {
   max-width: 300px;
 }
 .t3-page-column > h2 {
-  margin: 0;
+  margin-top: 0;
 }
 .t3-page-column-header-icons {
   transition: opacity 0.15s ease-in;
