@@ -56,19 +56,17 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 			$.ajax({
 				url: TYPO3.settings.ajaxUrls['link_browser_encodetypolink'],
 				data: attributeValues,
-				method: 'GET',
-				async: false, // todo: check if we can use promises
-				success: function(data) {
-					if (data.typoLink) {
-						field.value = data.typoLink;
-						if (typeof field.onchange === 'function') {
-							field.onchange();
-						}
-
-						FormEngineLinkBrowserAdapter.updateFunctions();
-
-						close();
+				method: 'GET'
+			}).done(function(data) {
+				if (data.typoLink) {
+					$('#' + field.id, parent.opener.document).val(data.typoLink);
+					if (typeof field.onchange === 'function') {
+						field.onchange();
 					}
+
+					FormEngineLinkBrowserAdapter.updateFunctions();
+
+					close();
 				}
 			});
 		}

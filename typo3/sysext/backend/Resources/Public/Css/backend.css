@@ -11746,6 +11746,9 @@ table.typo3-TCEforms-select-checkbox {
 .typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
   white-space: nowrap;
 }
+.form-field-inputlink-explanation {
+  background: #eee;
+}
 .t3-form-original-language {
   background-color: #dadada;
   border: 1px solid #c0c0c0;

@@ -202,17 +202,18 @@ class InputLinkElement extends AbstractFormElement
 
         $linkExplanation = $this->getLinkExplanation($itemValue ?: '');
         $explanation = htmlspecialchars($linkExplanation['text']);
+        $toggleButtonTitle = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
 
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
         $expansionHtml[] =      '<div class="form-wizards-element">';
-        $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink" data-toggle="tooltip" data-title="' . $explanation . '">';
+        $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
         $expansionHtml[] =              '<span class="input-group-addon">' . $linkExplanation['icon'] . '</span>';
-        $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" disabled value="' . $explanation . '">';
+        $expansionHtml[] =              '<div class="form-control form-field-inputlink-explanation t3js-form-field-inputlink-explanation" data-toggle="tooltip" data-title="' . $explanation . '">' . $explanation . '</div>';
         $expansionHtml[] =              '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<span class="input-group-btn">';
-        $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button">';
+        $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
         $expansionHtml[] =                      $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
         $expansionHtml[] =                  '</button>';
         $expansionHtml[] =              '</span>';

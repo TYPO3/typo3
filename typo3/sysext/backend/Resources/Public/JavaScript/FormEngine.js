@@ -1004,21 +1004,51 @@ define(['jquery',
 	 * Toggle for input link explanation
 	 */
 	FormEngine.initializeInputLinkToggle = function() {
-		$(document).on('click', '.t3js-form-field-inputlink-explanation-toggle', function(e) {
+		var toggleClass = '.t3js-form-field-inputlink-explanation-toggle',
+			inputFieldClass = '.t3js-form-field-inputlink-input',
+			explanationClass = '.t3js-form-field-inputlink-explanation';
+
+		// if empty, show input field
+		$(explanationClass).filter(function () {
+			return !$.trim($(this).html());
+		}).each(function () {
+			var $group = $(this).closest('.t3js-form-field-inputlink'),
+				$inputField = $group.find(inputFieldClass),
+				$explanationField = $group.find(explanationClass),
+				explanationShown;
+			explanationShown = !$explanationField.hasClass('hidden');
+			$explanationField.toggleClass('hidden', explanationShown);
+			$inputField.toggleClass('hidden', !explanationShown);
+			$group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
+		});
+
+		$(document).on('click', toggleClass, function (e) {
 			e.preventDefault();
 
 			var $group = $(this).closest('.t3js-form-field-inputlink'),
-				$inputField = $group.find('.t3js-form-field-inputlink-input'),
-				$explanationField = $group.find('.t3js-form-field-inputlink-explanation'),
+				$inputField = $group.find(inputFieldClass),
+				$explanationField = $group.find(explanationClass),
 				explanationShown;
 
 			explanationShown = !$explanationField.hasClass('hidden');
 			$explanationField.toggleClass('hidden', explanationShown);
 			$inputField.toggleClass('hidden', !explanationShown);
 			$group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
-		}).on('change', '.t3js-form-field-inputlink-input', function() {
-			var $group = $(this).closest('.t3js-form-field-inputlink');
-			$group.find('.t3js-form-field-inputlink-explanation, .t3js-form-field-inputlink-explanation-toggle').remove();
+		});
+
+		$(inputFieldClass).on('change', function () {
+			var $group = $(this).closest('.t3js-form-field-inputlink'),
+				$inputField = $group.find(inputFieldClass),
+				$explanationField = $group.find(explanationClass),
+				explanationShown;
+
+			if (!$explanationField.hasClass('hidden')) {
+
+				explanationShown = !$explanationField.hasClass('hidden');
+				$explanationField.toggleClass('hidden', explanationShown);
+				$inputField.toggleClass('hidden', !explanationShown);
+				$group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
+			}
 		});
 	};
 
