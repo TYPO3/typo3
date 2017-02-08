@@ -238,6 +238,13 @@ page {
 	stdWrap.postUserFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
 
+[globalVar = LIT:postgresql = {$databasePlatform}]
+page.10.20.select.where = "colPos" = 0
+page.10.20.renderObj.20.select.where.wrap = "parenttable" = 'tt_content' AND "parentid" = |
+page.10.20.renderObj.20.renderObj.10.select.where.wrap = "parenttable" = 'tx_irretutorial_1nff_hotel' AND "parentid" = |
+page.10.20.renderObj.20.renderObj.10.renderObj.10.select.where.wrap = "parenttable" = 'tx_irretutorial_1nff_offer' AND "parentid" = |
+[end]
+
 [globalVar = GP:L = 1]
 config.sys_language_uid = 1
 [end]

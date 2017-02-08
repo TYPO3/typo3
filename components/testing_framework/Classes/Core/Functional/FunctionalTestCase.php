@@ -14,6 +14,7 @@ namespace TYPO3\Components\TestingFramework\Core\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -349,6 +350,11 @@ abstract class FunctionalTestCase extends BaseTestCase
             $this->fail('Cannot set up frontend root page "' . $pageId . '"');
         }
 
+        $databasePlatform = 'mysql';
+        if ($connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+            $databasePlatform = 'postgresql';
+        }
+
         $connection->update(
             'pages',
             ['is_siteroot' => 1],
@@ -358,6 +364,7 @@ abstract class FunctionalTestCase extends BaseTestCase
         $templateFields = [
             'pid' => $pageId,
             'title' => '',
+            'constants' => 'databasePlatform = ' . $databasePlatform . LF,
             'config' => '',
             'clear' => 3,
             'root' => 1,
