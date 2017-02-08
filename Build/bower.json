@@ -46,6 +46,6 @@
     "matchHeight": "matchheight#^0.7.0",
     "jquery-minicolors": "^2.2.4",
     "d3": "^4.5.0",
-    "ckeditor": "^4.6.1"
+    "ckeditor": "^4.6.2"
   }
 }
