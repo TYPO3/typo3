@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
@@ -70,6 +72,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('additionalConfig', 'string', 'This array can hold additional configuration that is passed though to the Renderer object', false, []);
         $this->registerArgument('width', 'string', 'This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('height', 'string', 'This can be a numeric value representing the fixed height in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
+        $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
     }
 
     /**
@@ -116,11 +119,13 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
      */
     protected function renderImage(FileInterface $image, $width, $height)
     {
-        $crop = $image instanceof FileReference ? $image->getProperty('crop') : null;
+        $cropVariant = $this->arguments['cropVariant'] ?: 'default';
+        $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';
+        $cropVariantCollection = CropVariantCollection::create((string)$cropString);
         $processingInstructions = [
             'width' => $width,
             'height' => $height,
-            'crop' => $crop,
+            'crop' => $cropVariantCollection->getCropArea($cropVariant)->makeAbsoluteBasedOnFile($image),
         ];
         $imageService = $this->getImageService();
         $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
