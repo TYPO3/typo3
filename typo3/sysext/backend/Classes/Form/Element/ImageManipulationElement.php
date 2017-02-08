@@ -50,6 +50,10 @@ class ImageManipulationElement extends AbstractFormElement
                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
                         'value' => 16 / 9
                     ],
+                    '3:2' => [
+                        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.3_2',
+                        'value' => 3 / 2
+                    ],
                     '4:3' => [
                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
                         'value' => 4 / 3

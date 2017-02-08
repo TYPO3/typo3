@@ -297,6 +297,9 @@
 			<trans-unit id="imwizard.ratio.16_9">
 				<source>16:9</source>
 			</trans-unit>
+			<trans-unit id="imwizard.ratio.3_2">
+				<source>3:2</source>
+			</trans-unit>
 			<trans-unit id="imwizard.ratio.4_3">
 				<source>4:3</source>
 			</trans-unit>
