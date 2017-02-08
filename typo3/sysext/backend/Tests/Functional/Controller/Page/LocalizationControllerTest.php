@@ -99,9 +99,10 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                     )
                 )
             )
+            ->orderBy('uid')
             ->execute()
             ->fetchAll();
-        $this->assertSame($expectedResults, $results);
+        $this->assertEquals($expectedResults, $results);
     }
 
     /**
@@ -157,9 +158,10 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                     )
                 )
             )
+            ->orderBy('uid')
             ->execute()
             ->fetchAll();
-        $this->assertSame($expectedResults, $results);
+        $this->assertEquals($expectedResults, $results);
     }
 
     /**
@@ -213,9 +215,10 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                     )
                 )
             )
+            ->orderBy('uid')
             ->execute()
             ->fetchAll();
-        $this->assertSame($expectedResults, $results);
+        $this->assertEquals($expectedResults, $results);
     }
 
     /**
@@ -271,9 +274,10 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                     )
                 )
             )
+            ->orderBy('uid')
             ->execute()
             ->fetchAll();
-        $this->assertSame($expectedResults, $results);
+        $this->assertEquals($expectedResults, $results);
     }
 
     /**
@@ -358,9 +362,10 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                         $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                     )
                 )
-            )->orderBy('sorting', 'ASC')
+            )
+            ->orderBy('sorting', 'ASC')
             ->execute()
             ->fetchAll();
-        $this->assertSame($expectedResults, $results);
+        $this->assertEquals($expectedResults, $results);
     }
 }
