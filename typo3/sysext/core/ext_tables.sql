@@ -619,7 +619,8 @@ CREATE TABLE sys_log (
 	KEY event (userid,event_pid),
 	KEY recuidIdx (recuid,uid),
 	KEY user_auth (type,action,tstamp),
-	KEY request (request_id)
+	KEY request (request_id),
+	KEY combined_1 (tstamp, type, userid)
 ) ENGINE=InnoDB;
 
 #
