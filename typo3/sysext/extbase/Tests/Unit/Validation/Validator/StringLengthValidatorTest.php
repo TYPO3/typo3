@@ -268,8 +268,11 @@ class StringLengthValidatorTest extends \TYPO3\Components\TestingFramework\Core\
      */
     public function validateRegardsMultibyteStringsCorrectly()
     {
-        //		$this->validatorOptions(array('maximum' => 8));
-//		$this->assertFalse($this->validator->validate('überlang')->hasErrors());
-        $this->markTestSkipped('Validator needs to be adjusted regarding multibyte char lengths.');
+        $options = ['minimum' => 0, 'maximum' => 8];
+        $validator = $this->getMockBuilder($this->validatorClassName)
+            ->setMethods(['dummy'])
+            ->setConstructorArgs([$options])
+            ->getMock();
+        $this->assertFalse($validator->validate('überlang')->hasErrors());
     }
 }
