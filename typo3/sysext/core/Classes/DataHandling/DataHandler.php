@@ -3535,6 +3535,7 @@ class DataHandler
                     if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
                         $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby'], 'DESC');
                     }
+                    $queryBuilder->addOrderBy('uid');
                     try {
                         $result = $queryBuilder->execute();
                         $rows = [];
@@ -7005,6 +7006,14 @@ class DataHandler
                             }
                         } else {
                             if ((string)$value !== (string)$row[$key]) {
+                                // The is_numeric check catches cases where we want to store a float/double value
+                                // and database returns the field as a string with the least required amount of
+                                // significant digits, i.e. "0.00" being saved and "0" being read back.
+                                if (is_numeric($value) && is_numeric($row[$key])) {
+                                    if ((double)$value === (double)$row[$key]) {
+                                        continue;
+                                    }
+                                }
                                 $errors[] = $key;
                             }
                         }
@@ -7146,13 +7155,13 @@ class DataHandler
                         $row = $movePlaceholder;
                     }
                     // If the record should be inserted after itself, keep the current sorting information:
-                    if ($row['uid'] == $uid) {
+                    if ((int)$row['uid'] === (int)$uid) {
                         $sortNumber = $row[$sortRow];
                     } else {
                         $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
                         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
 
-                        $subResult = $queryBuilder
+                        $subResults = $queryBuilder
                             ->select($sortRow, 'pid', 'uid')
                             ->from($table)
                             ->where(
@@ -7167,14 +7176,13 @@ class DataHandler
                             )
                             ->orderBy($sortRow, 'ASC')
                             ->setMaxResults(2)
-                            ->execute();
+                            ->execute()
+                            ->fetchAll();
                         // Fetches the next record in order to calculate the in-between sortNumber
                         // There was a record afterwards
-                        if ($subResult->rowCount() === 2) {
-                            // Forward to the second result...
-                            $subResult->fetch();
-                            // There was a record afterwards
-                            $subrow = $subResult->fetch();
+                        if (count($subResults) === 2) {
+                            // There was a record afterwards, fetch that
+                            $subrow = array_pop($subResults);
                             // The sortNumber is found in between these values
                             $sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2);
                             // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
@@ -7220,7 +7228,8 @@ class DataHandler
             $returnVal = 0;
             $intervals = $this->sortIntervals;
             $i = $intervals * 2;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+            $queryBuilder = $connection->createQueryBuilder();
             $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
 
             $result = $queryBuilder
@@ -7228,13 +7237,12 @@ class DataHandler
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
                 ->orderBy($sortRow, 'ASC')
+                ->addOrderBy('uid', 'ASC')
                 ->execute();
             while ($row = $result->fetch()) {
                 $uid = (int)$row['uid'];
                 if ($uid) {
-                    GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getConnectionForTable($table)
-                        ->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
+                    $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
                     // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
                     if ($uid == $return_SortNumber_After_This_Uid) {
                         $i = $i + $intervals;

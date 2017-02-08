@@ -46,7 +46,8 @@ class SpecialLanguagesTest extends AbstractDataHandlerActionTestCase
             ->getQueryBuilderForTable('be_groups')
             ->select('allowed_languages')
             ->from('be_groups')
-            ->where('uid=1')
+            ->orderBy('uid', 'DESC')
+            ->setMaxResults(1)
             ->execute();
         $this->assertEquals($expected, $statement->fetchColumn(0));
     }

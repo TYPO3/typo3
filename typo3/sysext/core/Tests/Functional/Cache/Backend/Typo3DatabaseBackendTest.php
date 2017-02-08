@@ -393,9 +393,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     {
         $subject = $this->getSubjectObject();
 
-        $this->assertSame(['idA' => 'idA'], $subject->findIdentifiersByTag('tagA'));
-        $this->assertSame(['idA' => 'idA', 'idB' => 'idB'], $subject->findIdentifiersByTag('tagB'));
-        $this->assertSame(['idB' => 'idB', 'idC' => 'idC'], $subject->findIdentifiersByTag('tagC'));
+        $this->assertEquals(['idA' => 'idA'], $subject->findIdentifiersByTag('tagA'));
+        $this->assertEquals(['idA' => 'idA', 'idB' => 'idB'], $subject->findIdentifiersByTag('tagB'));
+        $this->assertEquals(['idB' => 'idB', 'idC' => 'idC'], $subject->findIdentifiersByTag('tagC'));
     }
 
     /**

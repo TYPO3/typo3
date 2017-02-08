@@ -1,3 +1,3 @@
 CREATE TABLE a_test_table (
-	uid BIGINT(11) NOT NULL AUTO_INCREMENT,
+	title VARCHAR(100) DEFAULT 'Title',
 );

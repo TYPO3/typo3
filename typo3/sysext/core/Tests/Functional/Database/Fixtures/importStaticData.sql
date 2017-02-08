@@ -4,5 +4,5 @@ CREATE TABLE another_test_table (
 	title VARCHAR(50) DEFAULT ''          NOT NULL
 );
 
-INSERT INTO a_test_table VALUES (NULL, 0, 0, 0, 0);
-INSERT INTO `a_test_table` VALUES (NULL, 1, 1, 1, 1);
+INSERT INTO a_test_table VALUES (NULL, 0, 0, 0, 0, 'foo');
+INSERT INTO `a_test_table` VALUES (NULL, 1, 1, 1, 1, 'bar');

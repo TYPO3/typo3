@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Testbase;
 
 /**
  * Functional test for the DataHandler
@@ -114,15 +115,15 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
         $dataSet = DataSet::read($fileName, true);
 
         foreach ($dataSet->getTableNames() as $tableName) {
+            $connection = $this->getConnectionPool()->getConnectionForTable($tableName);
             foreach ($dataSet->getElements($tableName) as $element) {
-                $connection = $this->getConnectionPool()
-                    ->getConnectionForTable($tableName);
                 try {
                     $connection->insert($tableName, $element);
                 } catch (DBALException $e) {
                     $this->fail('SQL Error for table "' . $tableName . '": ' . LF . $e->getMessage());
                 }
             }
+            Testbase::resetTableSequences($connection, $tableName);
         }
     }
 

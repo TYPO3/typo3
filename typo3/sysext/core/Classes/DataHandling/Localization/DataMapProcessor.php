@@ -685,6 +685,7 @@ class DataMapProcessor
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, $this->backendUser->workspace, false));
 
         $zeroParameter = $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT);
+        $ids = array_filter($ids, [MathUtility::class, 'canBeInterpretedAsInteger']);
         $idsParameter = $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY);
 
         $predicates = [
