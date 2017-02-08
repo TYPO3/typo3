@@ -2521,7 +2521,7 @@ class IconRegistry implements SingletonInterface
         'extensions-scheduler-run-task-cron' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
-                'name' => 'play-circle-o',
+                'name' => 'clock-o',
             ]
         ],
         'extensions-workspaces-generatepreviewlink' => [
