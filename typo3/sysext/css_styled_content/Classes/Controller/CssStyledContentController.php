@@ -756,9 +756,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                         $allRows .= $this->cObj->stdWrap($thisRow, $conf['imageRowStdWrap.']);
                     }
                 }
-                if ($separateRows) {
-                    $thisImages .= $allRows;
-                }
+                $thisImages .= $allRows;
                 $images .= $thisImages;
             }
             // Add the global caption, if not split
