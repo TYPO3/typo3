@@ -48,6 +48,7 @@ $finder = PhpCsFixer\Finder::create()
 //  - Ensure Concatenation to have at least one whitespace around
 //  - Remove trailing whitespace at the end of blank lines.
 return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
         'no_leading_import_slash' => true,
