@@ -235,7 +235,13 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 			this.dragConfig = {ddGroup: this.ddGroup};
 			this.enableDragAndDrop();
 		}
-
+		this.on('contextmenu', function(node, event) {
+			require(['TYPO3/CMS/Backend/ContextMenu'], function(ContextMenu) {
+				var parameters = 'context=tree&table=pages&uid=' + node.attributes.nodeData.id;
+				ContextMenu.record = {table: 'pages', uid: node.attributes.nodeData.id};
+				ContextMenu.fetch(parameters);
+			});
+		});
 		TYPO3.Components.PageTree.Tree.superclass.initComponent.apply(this, arguments);
 	},
 
