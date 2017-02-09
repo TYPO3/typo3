@@ -38,7 +38,7 @@ class LinkPopup extends AbstractNode
 
         $parameterArray = $this->data['parameterArray'];
         $itemName = $parameterArray['itemFormElName'];
-        $windowOpenParameters = $options['windowOpenParameters'] ?? 'height=800,width=600,status=0,menubar=0,scrollbars=1';
+        $windowOpenParameters = $options['windowOpenParameters'] ?? 'height=800,width=1000,status=0,menubar=0,scrollbars=1';
 
         $linkBrowserArguments = [];
         if (isset($options['blindLinkOptions'])) {
