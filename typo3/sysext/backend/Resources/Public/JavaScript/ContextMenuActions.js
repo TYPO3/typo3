@@ -66,26 +66,27 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
     ContextMenuActions.newPageWizard = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1'
+            top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1&returnUrl=' + ContextMenuActions.getReturnUrl()
         );
     };
 
     ContextMenuActions.newContentWizard = function (table, uid) {
         var $wizardUrl = $(this).data('new-wizard-url');
         if ($wizardUrl) {
+            $wizardUrl += '&returnUrl='+ ContextMenuActions.getReturnUrl();
             top.TYPO3.Backend.ContentContainer.setUrl($wizardUrl);
         }
     };
 
     ContextMenuActions.newRecord = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl='+ ContextMenuActions.getReturnUrl()
+            top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl()
         );
     };
 
     ContextMenuActions.openHistoryPopUp = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid
+            top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl()
         );
     };
 
