@@ -137,7 +137,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                         $newCells[$a] = '<td' . $accessibleHeader . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</td>';
                     }
                 }
-                $rows[$k] = '<tr' . $rowAttribs . '>' . implode('', $newCells) . '</tr>';
+                $rows[$k] = '<tr>' . implode('', $newCells) . '</tr>';
             }
             $addTbody = 0;
             $tableContents = '';
