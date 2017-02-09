@@ -321,6 +321,11 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 80,
+                'valuePicker' => [
+                    'items' => [
+                        [ 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', '_blank' ],
+                    ],
+                ],
                 'eval' => 'trim'
             ]
         ],
