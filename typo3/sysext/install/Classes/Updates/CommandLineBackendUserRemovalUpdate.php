@@ -63,10 +63,10 @@ class CommandLineBackendUserRemovalUpdate extends AbstractUpdate
      * Performs the database update to set all be_users starting with _CLI_* to deleted
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $usersFound = $this->getUnneededCommandLineUsers();
         foreach ($usersFound as $userUid => $username) {
@@ -84,7 +84,7 @@ class CommandLineBackendUserRemovalUpdate extends AbstractUpdate
                 ->execute();
             $databaseQueries[] = $queryBuilder->getSQL();
         }
-        $customMessages[] = '<p>The following backend users have been deleted:</p><ul><li>' . implode('</li><li>', $usersFound) . '</li></ul>';
+        $customMessage = '<p>The following backend users have been deleted:</p><ul><li>' . implode('</li><li>', $usersFound) . '</li></ul>';
         $this->markWizardAsDone();
         return true;
     }
