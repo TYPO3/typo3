@@ -40,7 +40,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
     {
         $result = false;
 
-        $pages = $this->getPagesWithDeprecatedRteProperties($customMessages);
+        $pages = $this->getPagesWithDeprecatedRteProperties($customMessage);
         $pagesCount = count($pages);
         $description = '<p>The RTE "acronym" button is deprecated and replaced by the "abbreviation" button since TYPO3 CMS 7.0.</p>' . LF . '<p>Page TSconfig currently includes the string "acronym" on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
         if ($pagesCount) {
@@ -75,41 +75,41 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
      * Performs the update itself
      *
      * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
-     * @param string $customMessages Pointer to output custom messages
+     * @param string $customMessage Pointer to output custom message
      * @return bool TRUE if update succeeded, FALSE otherwise
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessage)
     {
-        $customMessages = '';
-        $pages = $this->getPagesWithDeprecatedRteProperties($customMessages);
-        if (empty($customMessages)) {
+        $customMessage = '';
+        $pages = $this->getPagesWithDeprecatedRteProperties($customMessage);
+        if (empty($customMessage)) {
             $pagesCount = count($pages);
             if ($pagesCount) {
                 $updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
                 if (!empty($updateablePages)) {
-                    $this->updatePages($updateablePages, $dbQueries, $customMessages);
+                    $this->updatePages($updateablePages, $dbQueries, $customMessage);
                     // If the update was successful
-                    if (empty($customMessages)) {
+                    if (empty($customMessage)) {
                         if (count($updateablePages) !== $pagesCount) {
-                            $customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
+                            $customMessage = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
                         }
                     }
                 } else {
-                    $customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. These properties will have to be replaced manually.';
+                    $customMessage = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. These properties will have to be replaced manually.';
                 }
             }
         }
         $this->markWizardAsDone();
-        return empty($customMessages);
+        return empty($customMessage);
     }
 
     /**
      * Gets the pages with deprecated RTE properties in TSconfig column
      *
-     * @param string $customMessages Pointer to output custom messages
+     * @param string $customMessage Pointer to output custom message
      * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
      */
-    protected function getPagesWithDeprecatedRteProperties(&$customMessages)
+    protected function getPagesWithDeprecatedRteProperties(&$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
@@ -136,7 +136,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
                 ->execute()
                 ->fetchAll();
         } catch (DBALException $e) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
+            $customMessage = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
         }
 
         return [];
@@ -166,9 +166,9 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
      *
      * @param array $pages Page records to update, fetched by getTemplates() and filtered by
      * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
-     * @param string $customMessages Pointer to output custom messages
+     * @param string $customMessage Pointer to output custom message
      */
-    protected function updatePages($pages, &$dbQueries, &$customMessages)
+    protected function updatePages($pages, &$dbQueries, &$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         foreach ($pages as $page) {
@@ -183,7 +183,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
                     ->set('TSconfig', $page['TSconfig'])
                     ->execute();
             } catch (DBALException $e) {
-                $customMessages .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;
+                $customMessage .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;
             }
             $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
         }

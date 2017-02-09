@@ -88,12 +88,12 @@ class MediaceExtractionUpdate extends AbstractDownloadExtensionUpdate
      * Performs the database update if media CTypes are available.
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
-        $updateSuccessful = $this->installExtension($this->extensionKey, $customMessages);
+        $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
         if ($updateSuccessful) {
             $this->markWizardAsDone();
         }

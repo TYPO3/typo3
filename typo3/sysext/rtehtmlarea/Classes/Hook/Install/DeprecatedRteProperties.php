@@ -162,49 +162,49 @@ class DeprecatedRteProperties extends AbstractUpdate
      * Performs the update itself
      *
      * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
-     * @param string $customMessages Pointer to output custom messages
+     * @param string $customMessage Pointer to output custom messages
      * @return bool TRUE if update succeeded, FALSE otherwise
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessage)
     {
-        $customMessages = '';
-        $pages = $this->getPagesWithDeprecatedRteProperties($customMessages);
-        if (empty($customMessages)) {
+        $customMessage = '';
+        $pages = $this->getPagesWithDeprecatedRteProperties($customMessage);
+        if (empty($customMessage)) {
             $pagesCount = count($pages);
             if ($pagesCount) {
                 $updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
                 if (!empty($updateablePages)) {
-                    $this->updatePages($updateablePages, $dbQueries, $customMessages);
+                    $this->updatePages($updateablePages, $dbQueries, $customMessage);
                     // If the update was successful
-                    if (empty($customMessages)) {
+                    if (empty($customMessage)) {
                         // If all pages were updated, we query again to check if any deprecated properties are still present.
                         if (count($updateablePages) === $pagesCount) {
-                            $pagesAfter = $this->getPagesWithDeprecatedRteProperties($customMessages);
-                            if (empty($customMessages)) {
+                            $pagesAfter = $this->getPagesWithDeprecatedRteProperties($customMessage);
+                            if (empty($customMessage)) {
                                 if (!empty($pagesAfter)) {
-                                    $customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
+                                    $customMessage = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
                                 }
                             }
                         } else {
-                            $customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
+                            $customMessage = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
                         }
                     }
                 } else {
-                    $customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. These properties will have to be replaced manually.';
+                    $customMessage = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. These properties will have to be replaced manually.';
                 }
             }
         }
         $this->markWizardAsDone();
-        return empty($customMessages);
+        return empty($customMessage);
     }
 
     /**
      * Gets the pages with deprecated RTE properties in TSconfig column
      *
-     * @param string $customMessages Pointer to output custom messages
+     * @param string $customMessage Pointer to output custom message
      * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
      */
-    protected function getPagesWithDeprecatedRteProperties(&$customMessages)
+    protected function getPagesWithDeprecatedRteProperties(&$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
@@ -261,7 +261,7 @@ class DeprecatedRteProperties extends AbstractUpdate
                 ->execute()
                 ->fetchAll();
         } catch (DBALException $e) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
+            $customMessage = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
         }
 
         return [];
@@ -293,9 +293,9 @@ class DeprecatedRteProperties extends AbstractUpdate
      *
      * @param array $pages Page records to update, fetched by getTemplates() and filtered by
      * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
-     * @param string $customMessages Pointer to output custom messages
+     * @param string $customMessage Pointer to output custom message
      */
-    protected function updatePages($pages, &$dbQueries, &$customMessages)
+    protected function updatePages($pages, &$dbQueries, &$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         foreach ($pages as $page) {
@@ -310,7 +310,7 @@ class DeprecatedRteProperties extends AbstractUpdate
                     ->set('TSconfig', $page['TSconfig'])
                     ->execute();
             } catch (DBALException $e) {
-                $customMessages .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;
+                $customMessage .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;
             }
             $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
         }

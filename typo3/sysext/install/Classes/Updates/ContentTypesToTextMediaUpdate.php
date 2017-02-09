@@ -76,10 +76,10 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
      * Performs the database update if old CTypes are available
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $ttContentConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $falConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_reference');

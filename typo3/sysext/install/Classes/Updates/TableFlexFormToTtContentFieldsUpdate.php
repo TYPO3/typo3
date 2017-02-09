@@ -63,10 +63,10 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
      * Performs the database update if CType 'table' still has content in pi_flexform
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();

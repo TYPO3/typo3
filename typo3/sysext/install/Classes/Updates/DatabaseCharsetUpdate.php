@@ -61,12 +61,12 @@ class DatabaseCharsetUpdate extends AbstractUpdate
      * Performs the accordant updates.
      *
      * @param array &$dbQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool Whether everything went smoothly or not
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessage)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
@@ -75,7 +75,7 @@ class DatabaseCharsetUpdate extends AbstractUpdate
         try {
             $connection->exec($sql);
         } catch (DBALException $e) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
+            $customMessage = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
             return false;
         }
         $dbQueries[] = $sql;

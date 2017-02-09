@@ -168,10 +168,10 @@ abstract class AbstractUpdate
      * Performs the accordant updates.
      *
      * @param array &$dbQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool Whether everything went smoothly or not
      */
-    abstract public function performUpdate(array &$dbQueries, &$customMessages);
+    abstract public function performUpdate(array &$dbQueries, &$customMessage);
 
     /**
      * This method can be called to install extensions following all proper processes

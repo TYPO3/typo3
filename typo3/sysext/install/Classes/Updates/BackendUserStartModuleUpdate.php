@@ -62,10 +62,10 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
      * "help_aboutmodules" or "help_AboutmodulesAboutmodules"
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $statement = $queryBuilder->select('uid', 'uc')->from('be_users')->execute();

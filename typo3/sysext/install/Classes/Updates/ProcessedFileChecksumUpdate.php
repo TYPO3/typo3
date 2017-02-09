@@ -82,10 +82,10 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate
      * Performs the update
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
         $factory = GeneralUtility::makeInstance(ResourceFactory::class);

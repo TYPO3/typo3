@@ -94,10 +94,10 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
      * Fetch and enable ext:adodb and ext:dbal
      *
      * @param array $databaseQueries Queries done in this update
-     * @param mixed $customMessages Custom messages
+     * @param string $customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $requestParams = GeneralUtility::_GP('install');
         if (!isset($requestParams['values']['TYPO3\CMS\Install\Updates\DbalAndAdodbExtractionUpdate']['install'])) {
@@ -107,8 +107,8 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
 
         if ($install === 1) {
             // user decided to install extensions, install and mark wizard as done
-            $adodbSuccessful = $this->installExtension('adodb', $customMessages);
-            $dbalSuccessful = $this->installExtension('dbal', $customMessages);
+            $adodbSuccessful = $this->installExtension('adodb', $customMessage);
+            $dbalSuccessful = $this->installExtension('dbal', $customMessage);
             if ($adodbSuccessful && $dbalSuccessful) {
                 $this->markWizardAsDone();
                 return true;

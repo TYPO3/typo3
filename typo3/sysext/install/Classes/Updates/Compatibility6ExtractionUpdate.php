@@ -94,10 +94,10 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
      * Performs the update if EXT:compatibility6 should be installed.
      *
      * @param array $databaseQueries Queries done in this update
-     * @param mixed $customMessages Custom messages
+     * @param string $customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $requestParams = GeneralUtility::_GP('install');
         if (!isset($requestParams['values']['compatibility6Extension']['install'])) {
@@ -107,7 +107,7 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
 
         if ($install === 1) {
             // user decided to install extension, install and mark wizard as done
-            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessages);
+            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
             if ($updateSuccessful) {
                 $this->markWizardAsDone();
                 return true;

@@ -51,10 +51,10 @@ class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
      * Performs the database update if shortcuts are available
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_be_shortcuts');
         $statement = $connection->select(['uid', 'url'], 'sys_be_shortcuts', []);

@@ -47,10 +47,10 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
      * (e.g. installing in extList, respecting priority, etc.)
      *
      * @param string $extensionKey
-     * @param mixed $customMessages
+     * @param string $customMessage
      * @return bool whether the installation worked or not
      */
-    protected function installExtension($extensionKey, &$customMessages)
+    protected function installExtension($extensionKey, &$customMessage)
     {
         $updateSuccessful = true;
         /** @var $objectManager ObjectManager */
@@ -69,17 +69,17 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
             $extensionDetails = $this->getExtensionDetails($extensionKey);
             if (empty($extensionDetails)) {
                 $updateSuccessful = false;
-                $customMessages .= 'No version information for extension ' . $extensionKey . ' found. Can not install the extension.';
+                $customMessage .= 'No version information for extension ' . $extensionKey . ' found. Can not install the extension.';
             }
             $t3xContent = $this->fetchExtension($extensionKey, $extensionDetails['versionString']);
             if (empty($t3xContent)) {
                 $updateSuccessful = false;
-                $customMessages .= 'The extension ' . $extensionKey . ' could not be downloaded.';
+                $customMessage .= 'The extension ' . $extensionKey . ' could not be downloaded.';
             }
             $t3xExtracted = $extensionTerUtility->decodeExchangeData($t3xContent);
             if (empty($t3xExtracted) || !is_array($t3xExtracted) || empty($t3xExtracted['extKey'])) {
                 $updateSuccessful = false;
-                $customMessages .= 'The extension ' . $extensionKey . ' could not be extracted.';
+                $customMessage .= 'The extension ' . $extensionKey . ' could not be extracted.';
             }
 
             /** @var $extensionFileHandlingUtility FileHandlingUtility */

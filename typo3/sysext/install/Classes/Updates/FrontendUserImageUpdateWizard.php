@@ -136,12 +136,12 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
      * Performs the database update.
      *
      * @param array &$dbQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
-     *
+     * @param string &$customMessage Custom message
      * @return bool TRUE on success, FALSE on error
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessage)
     {
+        $customMessage = '';
         try {
             $this->init();
 
@@ -153,7 +153,7 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
                 $limit = $this->recordOffset[$this->table] . ',' . self::RECORDS_PER_QUERY;
                 $records = $this->getRecordsFromTable($limit, $dbQueries);
                 foreach ($records as $record) {
-                    $this->migrateField($record, $customMessages, $dbQueries);
+                    $this->migrateField($record, $customMessage, $dbQueries);
                 }
                 $this->registry->set($this->registryNamespace, 'recordOffset', $this->recordOffset);
             } while (count($records) === self::RECORDS_PER_QUERY);
@@ -161,10 +161,10 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
             $this->markWizardAsDone();
             $this->registry->remove($this->registryNamespace, 'recordOffset');
         } catch (\Exception $e) {
-            $customMessages .= PHP_EOL . $e->getMessage();
+            $customMessage .= PHP_EOL . $e->getMessage();
         }
 
-        return empty($customMessages);
+        return empty($customMessage);
     }
 
     /**
@@ -221,12 +221,12 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
      * Migrates a single field.
      *
      * @param array $row
-     * @param string $customMessages
+     * @param string $customMessage
      * @param array $dbQueries
      *
      * @throws \Exception
      */
-    protected function migrateField($row, &$customMessages, &$dbQueries)
+    protected function migrateField($row, &$customMessage, &$dbQueries)
     {
         $fieldItems = GeneralUtility::trimExplode(',', $row[$this->fieldToMigrate], true);
         if (empty($fieldItems) || is_numeric($row[$this->fieldToMigrate])) {
@@ -302,7 +302,7 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
                     $format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
                     $message = sprintf($format, $this->sourcePath . $item, $this->table,
                         $row['uid'], $this->fieldToMigrate);
-                    $customMessages .= PHP_EOL . $message;
+                    $customMessage .= PHP_EOL . $message;
                     continue;
                 }
             }

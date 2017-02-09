@@ -110,18 +110,10 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
      * Performs the database update.
      *
      * @param array &$dbQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool TRUE on success, FALSE on error
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function performUpdate(array &$dbQueries, &$customMessages): bool
+    public function performUpdate(array &$dbQueries, &$customMessage): bool
     {
         $statements = $this->getDatabaseDefinition();
         $result = $this->schemaMigrationService->install($statements, true);
@@ -132,7 +124,7 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         // Only keep error messages
         $result = array_filter($result);
 
-        $customMessages = implode(
+        $customMessage = implode(
             LF,
             array_map(
                 function (string $message) {

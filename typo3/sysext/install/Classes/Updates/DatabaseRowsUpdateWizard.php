@@ -90,12 +90,12 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
      * Performs the configuration update.
      *
      * @param array &$databaseQueries Queries done in this update - not filled for this updater
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Exception
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
 

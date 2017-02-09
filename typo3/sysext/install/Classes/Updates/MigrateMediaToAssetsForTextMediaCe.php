@@ -68,10 +68,10 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
      * Performs the database update if old mediafile references are available
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tt_content');
@@ -104,7 +104,7 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
             try {
                 $queryBuilder->execute();
             } catch (DBALException $e) {
-                $customMessages = 'MySQL-Error: ' . $queryBuilder->getConnection()->errorInfo();
+                $customMessage = 'MySQL-Error: ' . $queryBuilder->getConnection()->errorInfo();
                 return false;
             }
 
@@ -130,7 +130,7 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
             try {
                 $queryBuilder->execute();
             } catch (DBALException $e) {
-                $customMessages = 'MySQL-Error: ' . $queryBuilder->getConnection()->errorInfo();
+                $customMessage = 'MySQL-Error: ' . $queryBuilder->getConnection()->errorInfo();
                 // if the second query is not successful but the first was we'll have
                 // to get back to a consistent state by rolling back the first query.
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

@@ -115,19 +115,10 @@ class ExtensionManagerTables extends AbstractUpdate
      * Performs the database update.
      *
      * @param array &$dbQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool Whether it worked (TRUE) or not (FALSE)
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
-     * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \InvalidArgumentException
-     * @throws \BadFunctionCallException
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessage)
     {
         $result = true;
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
@@ -150,7 +141,7 @@ class ExtensionManagerTables extends AbstractUpdate
             $dbQueries[] = $statement;
             if ($errorMessage) {
                 $result = false;
-                $customMessages .= '<br /><br />SQL-ERROR: ' . htmlspecialchars($errorMessage);
+                $customMessage .= '<br /><br />SQL-ERROR: ' . htmlspecialchars($errorMessage);
             }
         }
 

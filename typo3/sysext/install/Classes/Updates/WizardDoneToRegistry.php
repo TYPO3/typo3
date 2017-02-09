@@ -55,10 +55,10 @@ class WizardDoneToRegistry extends AbstractUpdate
      * Performs the accordant updates.
      *
      * @param array &$dbQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool Whether everything went smoothly or not
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessage)
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $registry = GeneralUtility::makeInstance(Registry::class);

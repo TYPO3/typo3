@@ -81,10 +81,10 @@ class FilesReplacePermissionUpdate extends AbstractUpdate
      * Performs the accordant updates.
      *
      * @param array &$databaseQueries Queries done in this update
-     * @param mixed &$customMessages Custom messages
+     * @param string &$customMessage Custom message
      * @return bool Whether everything went smoothly or not
      */
-    public function performUpdate(array &$databaseQueries, &$customMessages)
+    public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         foreach ($this->tablesToProcess as $table) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
