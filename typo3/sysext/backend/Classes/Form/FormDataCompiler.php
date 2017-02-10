@@ -296,6 +296,12 @@ class FormDataCompiler
             // of FormEngine to add runtime data. Containers and elements add data here which is given to
             // sub-containers, elements, controls and wizards.
             'renderData' => [],
+
+            // A place for non-core, additional, custom data providers to add data. If a data provider needs to add
+            // additional data to the data array that doesn't fit elsewhere, it can place it here to use it in the
+            // render part again. Data in here should be namespaced in a way that it does not collide with other
+            // data providers adding further data here. Using the extension key as array key could be a good idea.
+            'customData' => [],
         ];
     }
 }
