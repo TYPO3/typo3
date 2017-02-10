@@ -100,7 +100,7 @@ class RichTextElement extends AbstractFormElement
         ];
 
         $html = [];
-        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';

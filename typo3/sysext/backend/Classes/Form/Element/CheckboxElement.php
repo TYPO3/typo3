@@ -136,7 +136,7 @@ class CheckboxElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
-        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         if (!$disabled) {
             $html[] = $fieldInformationHtml;
         }

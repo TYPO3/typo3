@@ -68,7 +68,7 @@ class NoneElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $html = [];
-        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';

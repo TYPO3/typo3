@@ -65,9 +65,17 @@
 		max-width: 1000px !important;
 	}
 
+	// Custom styles for cropper radio buttons
 	.ratio-buttons {
-		.btn.btn-default {
-			margin-bottom: 5px;
+		margin-bottom: 10px;
+
+		.btn {
+			&.btn-default {
+				margin-bottom: 5px;
+			}
+			&:not(.active) .fa {
+				display: none;
+			}
 		}
 	}
 
@@ -281,16 +289,6 @@
 		}
 	}
 
-	// Custom styles for cropper radio buttons
-	.t3js-ratio-buttons {
-		margin-bottom: 10px;
-
-		.btn:not(.active) .fa {
-			display: none;
-		}
-	}
-
-
 	// Cropper UI-specific styles
 	.cropper-focus-area {
 		cursor: move;
@@ -333,7 +331,7 @@
 		}
 	}
 
-	.t3js-cropper-cover-area {
+	.cropper-cover-area {
 		background: url("../Images/cropper-background-cover-area.svg");
 		pointer-events: none;
 		cursor: not-allowed;

@@ -452,7 +452,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
          */
         ImageManipulation.prototype.initCoverAreas = function (container, coverAreas) {
             coverAreas.forEach(function (coverArea) {
-                var coverAreaCanvas = $('<div class="t3js-cropper-cover-area"></div>');
+                var coverAreaCanvas = $('<div class="cropper-cover-area t3js-cropper-cover-area"></div>');
                 container.append(coverAreaCanvas);
                 coverAreaCanvas.css({
                     height: ImageManipulation.toCssPercent(coverArea.height),

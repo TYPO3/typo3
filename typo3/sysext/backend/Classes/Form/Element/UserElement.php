@@ -45,7 +45,7 @@ class UserElement extends AbstractFormElement
         if (!isset($parameterArray['fieldCong']['config']['noTableWrapping'])
             || (bool)$parameterArray['fieldCong']['config']['noTableWrapping'] === false
         ) {
-            $html = '<div class="t3js-formengine-field-item">' . $html . '</div>';
+            $html = '<div class="formengine-field-item t3js-formengine-field-item">' . $html . '</div>';
         }
         $resultArray['html'] = $html;
         return $resultArray;

@@ -9727,8 +9727,14 @@ iframe,
   width: 100% !important;
   max-width: 1000px !important;
 }
+.cropper .ratio-buttons {
+  margin-bottom: 10px;
+}
 .cropper .ratio-buttons .btn.btn-default {
   margin-bottom: 5px;
+}
+.cropper .ratio-buttons .btn:not(.active) .fa {
+  display: none;
 }
 .cropper .panel-group {
   position: relative;
@@ -9900,12 +9906,6 @@ iframe,
   bottom: 0;
   left: 0;
 }
-.cropper .t3js-ratio-buttons {
-  margin-bottom: 10px;
-}
-.cropper .t3js-ratio-buttons .btn:not(.active) .fa {
-  display: none;
-}
 .cropper .cropper-focus-area {
   cursor: move;
   height: 200px;
@@ -9944,7 +9944,7 @@ iframe,
   pointer-events: none;
   overflow: hidden;
 }
-.cropper .t3js-cropper-cover-area {
+.cropper .cropper-cover-area {
   background: url("../Images/cropper-background-cover-area.svg");
   pointer-events: none;
   cursor: not-allowed;
@@ -9952,7 +9952,7 @@ iframe,
   opacity: 1;
   z-index: 99999;
 }
-.cropper .t3js-cropper-cover-area:after {
+.cropper .cropper-cover-area:after {
   background-color: rgba(255, 255, 255, 0.95);
   content: "Cover area";
   position: absolute;
@@ -11804,10 +11804,10 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .t3-form-field-disable {
   display: none;
 }
-.t3js-formengine-field-item.disabled {
+.formengine-field-item.disabled {
   position: relative;
 }
-.t3js-formengine-field-item.disabled .t3-form-field-disable {
+.formengine-field-item.disabled .t3-form-field-disable {
   z-index: 8000;
   background: #fafafa;
   display: block;

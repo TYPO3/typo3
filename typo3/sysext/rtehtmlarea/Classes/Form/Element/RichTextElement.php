@@ -336,7 +336,7 @@ class RichTextElement extends AbstractFormElement
             $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
             $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldWizardResult, false);
 
-            $result[] = '<div class="t3js-formengine-field-item">';
+            $result[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $result[] =     '<div class="form-control-wrap">';
             $result[] =         '<div class="form-wizards-wrap">';
             $result[] =             '<div class="form-wizards-element">';

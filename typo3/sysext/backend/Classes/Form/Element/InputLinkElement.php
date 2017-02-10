@@ -94,7 +94,7 @@ class InputLinkElement extends AbstractFormElement
         if ($config['readOnly']) {
             // Early return for read only fields
             $html = [];
-            $html[] = '<div class="t3js-formengine-field-item">';
+            $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -292,7 +292,7 @@ class InputLinkElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['html'] = '<div class="t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
+        $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
     }
 

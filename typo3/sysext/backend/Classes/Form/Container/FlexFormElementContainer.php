@@ -144,7 +144,7 @@ class FlexFormElementContainer extends AbstractContainer
                 $html[] =        '<label class="t3js-formengine-label">';
                 $html[] =            BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
                 $html[] =        '</label>';
-                $html[] =        '<div class="t3js-formengine-field-item">';
+                $html[] =        '<div class="formengine-field-item t3js-formengine-field-item">';
                 $html[] =            $childResult['html'];
                 $html[] =        '</div>';
                 $html[] =    '</div>';

@@ -583,7 +583,7 @@ class ImageManipulation {
    */
   private initCoverAreas(container: JQuery, coverAreas: Area[]): void {
     coverAreas.forEach((coverArea: Area): void => {
-      let coverAreaCanvas: JQuery = $('<div class="t3js-cropper-cover-area"></div>');
+      let coverAreaCanvas: JQuery = $('<div class="cropper-cover-area t3js-cropper-cover-area"></div>');
       container.append(coverAreaCanvas);
       coverAreaCanvas.css({
         height: ImageManipulation.toCssPercent(coverArea.height),

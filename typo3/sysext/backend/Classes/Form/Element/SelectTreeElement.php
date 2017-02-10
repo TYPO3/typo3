@@ -110,7 +110,7 @@ class SelectTreeElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $html = [];
-        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         if (!$readOnly) {
             $html[] = $fieldInformationHtml;
         }

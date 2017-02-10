@@ -159,7 +159,7 @@ class T3editorElement extends AbstractFormElement
         $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldWizardResult, false);
 
         $html = [];
-        $html[] = '<div class="t3js-formengine-field-item">';
+        $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
