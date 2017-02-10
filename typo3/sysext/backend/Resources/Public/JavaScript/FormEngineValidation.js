@@ -21,7 +21,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 	/**
 	 * The main FormEngineValidation object
 	 *
-	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, dateTimeSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, refDate: Date, USmode: number, passwordDummy: string}}
+	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, dateTimeSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, refDate: Date, USmode: number, ISOmode: number, passwordDummy: string}}
 	 * @exports TYPO3/CMS/Backend/FormEngineValidation
 	 */
 	var FormEngineValidation = {
@@ -36,7 +36,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 		lastDate: 0,
 		lastTime: 0,
 		refDate: new Date(),
-		USmode: 0,
 		passwordDummy: '********'
 	};
 
@@ -74,7 +73,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 		FormEngineValidation.lastDate = FormEngineValidation.getDate(today);
 		FormEngineValidation.lastTime = 0;
 		FormEngineValidation.refDate = today;
-		FormEngineValidation.USmode = 0;
 	};
 
 	/**
@@ -104,7 +102,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 	FormEngineValidation.setUsMode = function(mode) {
 		FormEngineValidation.USmode = mode;
 	};
-
+	FormEngineValidation.setISOMode = function(mode) {
+		FormEngineValidation.ISOmode = mode;
+	};
 	/**
 	 * Initialize field by name
 	 *
@@ -159,6 +159,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 					var date = moment(value).utc();
 					if (FormEngineValidation.USmode) {
 						theString = date.format('MM-DD-YYYY');
+					} else if (FormEngineValidation.ISOmode) {
+						theString = date.format('YYYY-MM-DD');
 					} else {
 						theString = date.format('DD-MM-YYYY');
 					}
@@ -170,6 +172,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 					theTime = new Date(parsedInt * 1000);
 					if (FormEngineValidation.USmode) {
 						theString = (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate() + '-' + this.getYear(theTime);
+					} else if (FormEngineValidation.ISOmode) {
+						theString = this.getYear(theTime) + '-' + (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate();
 					} else {
 						theString = theTime.getUTCDate() + '-' + (theTime.getUTCMonth() + 1) + '-' + this.getYear(theTime);
 					}
@@ -179,7 +183,11 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 				if (value.toString().indexOf('-') <= 0 && !parseInt(value)) {
 					return '';
 				}
-				theString = FormEngineValidation.formatValue('time', value, config) + ' ' + FormEngineValidation.formatValue('date', value, config);
+				if (FormEngineValidation.ISOmode) {
+						theString = FormEngineValidation.formatValue('date', value, config) + ' ' + FormEngineValidation.formatValue('time', value, config);
+			  } else {
+						theString = FormEngineValidation.formatValue('time', value, config) + ' ' + FormEngineValidation.formatValue('date', value, config);
+		    }
 				break;
 			case 'time':
 			case 'timesec':
@@ -669,13 +677,25 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 			default:
 				var index = value.indexOf(' ');
 				if (index != -1) {
-					var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
-					// set refDate so that evalFunc_input on time will work with correct DST information
-					FormEngineValidation.refDate = new Date(dateVal * 1000);
-					FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0,index), value.substr(0, 1), 'time');
+					if (FormEngineValidation.ISOmode) {
+						var dateVal = FormEngineValidation.parseDate(value.substr(0, index), value.substr(0, 1));
+						// set refDate so that evalFunc_input on time will work with correct DST information
+						FormEngineValidation.refDate = new Date(dateVal * 1000);
+						FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(index,value.length), value.substr(0, 1), 'time');
+
+			    } else {
+						var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
+						// set refDate so that evalFunc_input on time will work with correct DST information
+						FormEngineValidation.refDate = new Date(dateVal * 1000);
+						FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0,index), value.substr(0, 1), 'time');
+		      }
 				} else {
 					// only date, no time
-					FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
+					if (FormEngineValidation.ISOmode) {
+						FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(value.length-1, value.length));
+			    } else {
+						FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
+		      }
 				}
 		}
 		FormEngineValidation.lastTime += add * 24 * 60 * 60;
@@ -713,15 +733,17 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 				if (values.valPol[index]) {
 					add = FormEngineValidation.pol(values.valPol[index], FormEngineValidation.parseInt(values.values[index]));
 				}
-				if (values.values[1] && values.values[1].length > 2) {
+		    var isoMode = FormEngineValidation.ISOmode ? 3 : 1;
+		    var isoModeYear = FormEngineValidation.ISOmode ? 1 : 3;
+
+				if (values.values[isoMode] && values.values[isoMode].length > 2) {
 					if (values.valPol[2]) {
 						add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
 					}
-					var temp = values.values[1];
+					var temp = values.values[isoMode];
 					values = FormEngineValidation.splitSingle(temp);
 				}
-
-				var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
+				var year = (values.values[isoModeYear]) ? FormEngineValidation.parseInt(values.values[isoModeYear]) : FormEngineValidation.getYear(today);
 				if ((year >= 0 && year < 38) || (year >= 70 && year < 100) || (year >= 1902 && year < 2038)) {
 					if (year < 100) {
 						year = (year < 38) ? year += 2000 : year += 1900;
@@ -731,7 +753,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 				}
 				var usMode = FormEngineValidation.USmode ? 1 : 2;
 				var month = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCMonth() + 1;
-				usMode = FormEngineValidation.USmode ? 2 : 1;
+				usMode = FormEngineValidation.ISOmode ? 3 : 1;
+				//usMode = FormEngineValidation.USmode ? 2 : 1;
+
 				var day = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCDate();
 
 				var theTime = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
@@ -840,7 +864,11 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 				if (values.valPol[2]) {
 					add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
 				}
-				var year = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
+				if (FormEngineValidation.ISOmode) {
+						var year = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
+			  } else {
+						var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
+		    }
 				if ((year >= 0 && year < 38) || (year >= 70 && year<100) || (year >= 1902 && year < 2038)) {
 					if (year < 100) {
 						year = (year < 38) ? year += 2000 : year += 1900;
