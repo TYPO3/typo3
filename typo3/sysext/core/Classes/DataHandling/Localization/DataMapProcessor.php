@@ -567,6 +567,10 @@ class DataMapProcessor
             $tableName = 'pages_language_overlay';
         }
 
+        if (!BackendUtility::isTableLocalizable($tableName)) {
+            return [];
+        }
+
         $fieldNames = [
             'uid' => 'uid',
             'l10n_state' => 'l10n_state',
@@ -611,6 +615,10 @@ class DataMapProcessor
     {
         if ($tableName === 'pages') {
             $tableName = 'pages_language_overlay';
+        }
+
+        if (!BackendUtility::isTableLocalizable($tableName)) {
+            return [];
         }
 
         $fieldNames = [
