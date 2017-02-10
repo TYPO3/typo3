@@ -200,7 +200,7 @@ class InputLinkElement extends AbstractFormElement
         $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
-        $linkExplanation = $this->getLinkExplanation($itemValue);
+        $linkExplanation = $this->getLinkExplanation($itemValue ?: '');
         $explanation = htmlspecialchars($linkExplanation['text']);
 
         $expansionHtml = [];
