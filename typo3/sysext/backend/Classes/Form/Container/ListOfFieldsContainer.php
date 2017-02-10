@@ -50,18 +50,26 @@ class ListOfFieldsContainer extends AbstractContainer
 
         $finalFieldsList = [];
         foreach ($fieldListToRender as $fieldName) {
-            $found = false;
             foreach ($fieldsByShowitem as $fieldByShowitem) {
                 $fieldByShowitemArray = $this->explodeSingleFieldShowItemConfiguration($fieldByShowitem);
                 if ($fieldByShowitemArray['fieldName'] === $fieldName) {
-                    $found = true;
                     $finalFieldsList[] = implode(';', $fieldByShowitemArray);
                     break;
                 }
-            }
-            if (!$found) {
-                // @todo: Field is shown even if it is not in type showitem list? Will be shown if field is in a palette.
-                $finalFieldsList[] = $fieldName;
+                if ($fieldByShowitemArray['fieldName'] === '--palette--'
+                    && isset($this->data['processedTca']['palettes'][$fieldByShowitemArray['paletteName']]['showitem'])
+                    && is_string($this->data['processedTca']['palettes'][$fieldByShowitemArray['paletteName']]['showitem'])
+                ) {
+                    $paletteName = $fieldByShowitemArray['paletteName'];
+                    $paletteFields = GeneralUtility::trimExplode(',', $this->data['processedTca']['palettes'][$paletteName]['showitem'], true);
+                    foreach ($paletteFields as $paletteField) {
+                        $paletteFieldArray = $this->explodeSingleFieldShowItemConfiguration($paletteField);
+                        if ($paletteFieldArray['fieldName'] === $fieldName) {
+                            $finalFieldsList[] = implode(';', $paletteFieldArray);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
