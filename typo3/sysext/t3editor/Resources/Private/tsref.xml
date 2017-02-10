@@ -400,6 +400,10 @@ Useful if you run a template with special content at - say &type=95 - but still 
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="frontend_editing" type="boolean">
+			<description><![CDATA[If set, then frontend editing is enabled (requires EXT:frontend_editing being installed).]]></description>
+			<default><![CDATA[false]]></default>
+		</property>
 		<property name="ftu" type="boolean">
 			<description><![CDATA[If set, the "&ftu=...." GET-fallback identification is inserted.
 "&ftu=[hash]" is always inserted in the links on the first page a user hits. If it turns out in the next hit that the user has cookies enabled, this variable is not set anymore as the cookies does the job. If no cookies is accepted the "ftu" remains set for all links on the site and thereby we can still track the user.
