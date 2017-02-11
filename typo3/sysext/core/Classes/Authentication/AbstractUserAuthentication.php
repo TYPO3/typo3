@@ -873,10 +873,6 @@ abstract class AbstractUserAuthentication
         // Update session record with new ID
         $oldSessionId = $this->id;
         $this->id = $this->createSessionId();
-        $existingSessionRecord['ses_anonymous'] = (int)$anonymous;
-        if ($anonymous) {
-            $existingSessionRecord['ses_userid'] = 0;
-        }
         $updatedSession = $this->getSessionBackend()->set($this->id, $existingSessionRecord);
         $this->sessionData = unserialize($updatedSession['ses_data']);
         // Merge new session data into user/session array

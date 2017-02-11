@@ -484,6 +484,13 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected function regenerateSessionId(array $existingSessionRecord = [], bool $anonymous = false)
     {
+        if (empty($existingSessionRecord)) {
+            $existingSessionRecord = $this->getSessionBackend()->get($this->id);
+        }
+        $existingSessionRecord['ses_anonymous'] = (int)$anonymous;
+        if ($anonymous) {
+            $existingSessionRecord['ses_userid'] = 0;
+        }
         parent::regenerateSessionId($existingSessionRecord, $anonymous);
         // We force the cookie to be set later in the authentication process
         $this->dontSetCookie = false;
