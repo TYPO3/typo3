@@ -73,9 +73,9 @@ class DocumentationFile
         $versionDirectories = scandir($path);
 
         $fileInfo = pathinfo($path);
-        $absolutePath = $fileInfo['dirname'] . DIRECTORY_SEPARATOR . $fileInfo['basename'];
+        $absolutePath = strtr($fileInfo['dirname'], '\\', '/') . '/' . $fileInfo['basename'];
         foreach ($versionDirectories as $version) {
-            $directory = $absolutePath . DIRECTORY_SEPARATOR . $version;
+            $directory = $absolutePath . '/' . $version;
             $documentationFiles += $this->getDocumentationFilesForVersion($directory, $version);
         }
         $this->tagsTotal = $this->collectTagTotal($documentationFiles);
@@ -227,12 +227,12 @@ class DocumentationFile
         $documentationFiles = [];
         if ($this->isRelevantDirectory($docDirectory, $version)) {
             $documentationFiles[$version] = [];
-            $absolutePath = dirname($docDirectory) . DIRECTORY_SEPARATOR . $version;
+            $absolutePath = strtr(dirname($docDirectory), '\\', '/') . '/' . $version;
             $rstFiles = scandir($docDirectory);
             foreach ($rstFiles as $file) {
                 $fileInfo = pathinfo($file);
                 if ($this->isRelevantFile($fileInfo)) {
-                    $filePath = $absolutePath . DIRECTORY_SEPARATOR . $fileInfo['basename'];
+                    $filePath = $absolutePath . '/' . $fileInfo['basename'];
                     $documentationFiles[$version] += $this->getListEntry($filePath);
                 }
             }
