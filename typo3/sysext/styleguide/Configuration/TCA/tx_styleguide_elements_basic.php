@@ -15,6 +15,7 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -84,7 +85,7 @@ return [
         'l10n_parent' => [
             'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'label' => 'Translation parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -99,6 +100,24 @@ return [
                 'default' => 0
             ]
         ],
+        'l10n_source' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'Translation source',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'tx_styleguide_elements_basic',
+                'foreign_table_where' => 'AND tx_styleguide_elements_basic.pid=###CURRENT_PID### AND tx_styleguide_elements_basic.uid!=###THIS_UID###',
+                'default' => 0
+            ]
+        ],
 
 
         'input_1' => [
@@ -106,6 +125,9 @@ return [
             'label' => 'input_1',
             'config' => [
                 'type' => 'input',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ]
             ],
         ],
         'input_2' => [
@@ -1243,6 +1265,8 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
+                --div--;meta,
+                    disable, starttime, endtime, l10n_parent, l10n_source,
                 --div--;input,
                     input_1, input_2, input_3, input_4, input_5, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
