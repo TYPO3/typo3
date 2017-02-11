@@ -23,6 +23,13 @@ use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RedisSessionBackendTest extends UnitTestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists(\Redis::class)) {
+            $this->markTestSkipped('Redis class needs to be available to test RedisSessionBackend');
+        }
+    }
+
     /**
      * @test
      */
