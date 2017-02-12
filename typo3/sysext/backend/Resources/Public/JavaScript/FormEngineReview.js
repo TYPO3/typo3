@@ -48,9 +48,11 @@ define(["require", "exports", "TYPO3/CMS/Backend/FormEngineValidation", "jquery"
                     $toggleButton.removeClass('hidden');
                     // Bootstrap has no official API to update the content of a popover w/o destroying it
                     var $popover = $toggleButton.data('bs.popover');
-                    $popover.options.content = $list_1.wrapAll('<div>').parent().html();
-                    $popover.setContent();
-                    $popover.$tip.addClass($popover.options.placement);
+                    if ($popover) {
+                        $popover.options.content = $list_1.wrapAll('<div>').parent().html();
+                        $popover.setContent();
+                        $popover.$tip.addClass($popover.options.placement);
+                    }
                 }
                 else {
                     $toggleButton.addClass('hidden').popover('hide');

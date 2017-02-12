@@ -50,23 +50,16 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 		FormEngineValidation.initializeInputFields().promise().done(function () {
 			// Bind to field changes
 			$(document).on('change', FormEngineValidation.rulesSelector, function() {
-				// we need to wait, because the update of the select fields needs some time
-				window.setTimeout(function() {
-					FormEngineValidation.validate();
-				}, 500);
+				FormEngineValidation.validate();
 				var $paletteField = $(this).closest('.t3js-formengine-palette-field');
 				$paletteField.addClass('has-change');
 			});
 
-			// Bind to datepicker change event, but wait some milliseconds, because the init is not so fast
-			window.setTimeout(function() {
-				//noinspection JSUnusedLocalSymbols
-				$(document).on('dp.change', FormEngineValidation.dateTimeSelector, function(event) {
-					FormEngineValidation.validate();
-					var $paletteField = $(this).closest('.t3js-formengine-palette-field');
-					$paletteField.addClass('has-change');
-				});
-			}, 500);
+			$(document).on('dp.change', FormEngineValidation.dateTimeSelector, function(event) {
+				FormEngineValidation.validate();
+				var $paletteField = $(this).closest('.t3js-formengine-palette-field');
+				$paletteField.addClass('has-change');
+			});
 		});
 
 		var today = new Date();
@@ -75,6 +68,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 		FormEngineValidation.lastTime = 0;
 		FormEngineValidation.refDate = today;
 		FormEngineValidation.USmode = 0;
+		FormEngineValidation.validate();
 	};
 
 	/**
@@ -1041,13 +1035,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 	};
 
 	FormEngineValidation.registerReady = function() {
-		$(function() {
-			FormEngineValidation.initialize();
-			// Start first validation after one second, because all fields are initial empty (typo3form.fieldSet)
-			window.setTimeout(function() {
-				FormEngineValidation.validate();
-			}, 1000);
-		});
+		FormEngineValidation.initialize();
 	};
 
 	FormEngine.Validation = FormEngineValidation;
