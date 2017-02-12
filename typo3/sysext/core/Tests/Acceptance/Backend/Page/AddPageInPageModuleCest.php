@@ -46,11 +46,18 @@ class AddPageInPageModuleCest
         $typo3NavigationContainer = '.scaffold-content-navigation-component';
         $I->waitForElement($typo3NavigationContainer);
         $rootNode = 'a.x-tree-node-anchor > span';
-        $rootNodeIcon = '#extdd-1 > span.t3js-icon.icon.icon-size-small.icon-state-default.icon-apps-pagetree-root';
-        $contextMenuNew = '#typo3-pagetree-contextmenu > ul > li.x-menu-list-item:nth-of-type(2) > a > span.x-menu-item-text';
+        $rootNodeIcon = '#extdd-1 .icon-apps-pagetree-root';
+        $rootNodeContextMenuMore = '#contentMenu0 a.list-group-item-submenu';
+        //create new wizard
+        $contextMenuNew = '#contentMenu1 .list-group-item[data-callback-action=newPageWizard]';
+
         $I->waitForElement($rootNode);
         $I->click($rootNodeIcon);
-        $I->waitForElement($contextMenuNew);
+        $I->waitForElementVisible($rootNodeContextMenuMore);
+
+        $I->wait(1);
+        $I->click($rootNodeContextMenuMore);
+        $I->waitForElementVisible($contextMenuNew);
         $I->click($contextMenuNew);
 
         // Switch to content frame
@@ -93,18 +100,14 @@ class AddPageInPageModuleCest
         $I->assertEquals('Testpage', $I->grabTextFrom($pageInTree), 'Value in tree.');
 
         // And delete page from tree
-        $pageInTreeIcon = '#typo3-pagetree-tree > div > div > ul > div > li > ul > li > div > span.t3js-icon.icon.icon-size-small.icon-state-default.icon-apps-pagetree-page-default';
-        $pageActions = '#typo3-pagetree-contextmenu > ul > li:nth-child(8) > a > span.x-menu-item-text';
-        $delete = '#typo3-pagetree-contextmenu-sub1 > ul > li:nth-child(6) > a > span.x-menu-item-text';
+        $pageInTreeIcon = '#typo3-pagetree-tree .icon-apps-pagetree-page-default';
+        $delete = '#contentMenu0 .list-group-item[data-callback-action=deleteRecord]';
         $I->click($pageInTreeIcon);
-        $I->waitForElement('#typo3-pagetree-contextmenu');
-        $I->waitForElement($pageActions);
-        $I->moveMouseOver($pageActions);
-        $I->waitForElement('#typo3-pagetree-contextmenu-sub1');
+        $I->waitForElement($delete);
         $I->click($delete);
-        $yesButtonPopup = '#main > div.x-window.x-window-plain.x-window-dlg > div.x-window-bwrap > div.x-window-bl > div > div > div > div.x-panel-fbar.x-small-editor.x-toolbar-layout-ct > table > tbody > tr > td.x-toolbar-left > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td.x-btn-mc > em > button';
-        $I->waitForElement($yesButtonPopup);
-        $I->click($yesButtonPopup);
+        $yesButtonInPopup = '.modal-dialog button[name=delete]';
+        $I->waitForElement($yesButtonInPopup);
+        $I->click($yesButtonInPopup);
         $I->wait(2);
         $I->cantSee('Testpage');
     }

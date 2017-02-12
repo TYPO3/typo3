@@ -63,7 +63,7 @@ class TasksCest
     public function canRunTask(Admin $I)
     {
         // run the task
-        $I->click('//a[contains(@title, "Run task")]');
+        $I->click('a[data-original-title="Run task"]');
         $I->waitForText('Executed: System Status Update');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -75,7 +75,7 @@ class TasksCest
      */
     public function canEditTask(Admin $I)
     {
-        $I->click('//a[contains(@title, "Edit")]');
+        $I->click('//a[contains(@data-original-title, "Edit")]');
         $I->waitForText('Edit task');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
@@ -92,11 +92,11 @@ class TasksCest
     public function canEnableAndDisableTask(Admin $I)
     {
         $I->wantTo('See a enable button for a task');
-        $I->click('//a[contains(@title, "Enable")]', '#tx_scheduler_form');
+        $I->click('//a[contains(@data-original-title, "Enable")]', '#tx_scheduler_form');
         $I->dontSeeElement('.tx_scheduler_mod1 .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
-        $I->click('//a[contains(@title, "Disable")]');
+        $I->click('//a[contains(@data-original-title, "Disable")]');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
     }
@@ -109,13 +109,13 @@ class TasksCest
     public function canDeleteTask(Admin $I, ModalDialog $modalDialog)
     {
         $I->wantTo('See a delete button for a task');
-        $I->seeElement('//a[contains(@title, "Delete")]');
-        $I->click('//a[contains(@title, "Delete")]');
+        $I->seeElement('//a[contains(@data-original-title, "Delete")]');
+        $I->click('//a[contains(@data-original-title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
         $modalDialog->clickButtonInDialog('Cancel');
         $I->switchToIFrame('list_frame');
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
-        $I->click('//a[contains(@title, "Delete")]');
+        $I->click('//a[contains(@data-original-title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
         $I->switchToIFrame('list_frame');
         $I->see('The task was successfully deleted.');
