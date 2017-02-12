@@ -953,11 +953,9 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (!empty($tableDefinition['ctrl']['requestUpdate'])) {
                 $fields = GeneralUtility::trimExplode(',', $tableDefinition['ctrl']['requestUpdate']);
-                $migratedFields = [];
                 foreach ($fields as $field) {
                     if (isset($tableDefinition['columns'][$field])) {
                         $tableDefinition['columns'][$field]['onChange'] = 'reload';
-                        $migratedFields[] = $field;
                     }
                 }
                 $this->messages[] = 'The TCA setting [\'ctrl\'][\'requestUpdate\'] was removed from '
@@ -2172,7 +2170,7 @@ class TcaMigration
     }
 
     /**
-     * Migrate imageManipulation "ratio" config to new "cropVraiant" config
+     * Migrate imageManipulation "ratio" config to new "cropVariant" config
      *
      * @param array $tca
      * @return array
