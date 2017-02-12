@@ -164,6 +164,23 @@ class State
     }
 
     /**
+     * Updates field names having a particular state to a target state.
+     *
+     * @param string $currentState
+     * @param string $targetState
+     */
+    public function updateStates(string $currentState, string $targetState)
+    {
+        $states = [];
+        foreach ($this->filterFieldNames($currentState) as $fieldName) {
+            $states[$fieldName] = $targetState;
+        }
+        if (!empty($states)) {
+            $this->update($states);
+        }
+    }
+
+    /**
      * @return string|null
      */
     public function export()

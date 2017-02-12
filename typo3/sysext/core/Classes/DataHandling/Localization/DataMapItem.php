@@ -312,13 +312,7 @@ class DataMapItem
     public function getState(): State
     {
         if ($this->state === null && !$this->isParentType()) {
-            $this->state = State::fromJSON(
-                $this->tableName,
-                $this->persistedValues['l10n_state'] ?? null
-            );
-            $this->state->update(
-                $this->suggestedValues['l10n_state'] ?? []
-            );
+            $this->state = $this->buildState();
         }
         return $this->state;
     }
@@ -426,5 +420,39 @@ class DataMapItem
         $scopes[] = static::SCOPE_PARENT;
         $scopes[] = static::SCOPE_EXCLUDE;
         return $scopes;
+    }
+
+    /**
+     * @return null|State
+     */
+    protected function buildState()
+    {
+        // build from persisted states
+        if (!$this->isNew()) {
+            $state = State::fromJSON(
+                $this->tableName,
+                $this->persistedValues['l10n_state'] ?? null
+            );
+        // use provided states for a new and copied element
+        } elseif (is_string($this->suggestedValues['l10n_state'] ?? null)) {
+            $state = State::fromJSON(
+                $this->tableName,
+                $this->suggestedValues['l10n_state']
+            );
+        // provide the default states
+        } else {
+            $state = State::create($this->tableName);
+        }
+        // switch "custom" to "source" state for 2nd level translations
+        if ($this->isNew() && $this->isGrandChildType()) {
+            $state->updateStates(State::STATE_CUSTOM, State::STATE_SOURCE);
+        }
+        // apply any provided updates to the states
+        if (is_array($this->suggestedValues['l10n_state'] ?? null)) {
+            $state->update(
+                $this->suggestedValues['l10n_state'] ?? []
+            );
+        }
+        return $state;
     }
 }

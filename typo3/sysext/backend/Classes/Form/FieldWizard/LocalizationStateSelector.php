@@ -53,7 +53,7 @@ class LocalizationStateSelector extends AbstractNode
 
         $sourceLanguageTitle = '';
         $fieldValueInParentRow = '';
-        $fieldValueInSourceRow = '';
+        $fieldValueInSourceRow = null;
         if ($l10nParentFieldName && $this->data['databaseRow'][$l10nParentFieldName] > 0) {
             if ($l10nSourceFieldName && $this->data['databaseRow'][$l10nSourceFieldName] > 0) {
                 $languageField = $this->data['processedTca']['ctrl']['languageField'] ?? null;
@@ -111,7 +111,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =           $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.defaultLanguageValue');
         $html[] =       '</label>';
         $html[] =   '</div>';
-        if ($fieldValueInSourceRow) {
+        if ($fieldValueInSourceRow !== null) {
             $html[] = '<div class="radio radio-inline">';
             $html[] =   '<label>';
             $html[] =       '<input';

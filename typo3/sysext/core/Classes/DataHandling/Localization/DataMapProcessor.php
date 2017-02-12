@@ -92,8 +92,10 @@ class DataMapProcessor
         foreach ($this->dataMap as $tableName => $idValues) {
             $this->collectItems($tableName, $idValues);
         }
-        $this->sanitize();
-        $this->enrich();
+        if (!empty($this->items)) {
+            $this->sanitize();
+            $this->enrich();
+        }
         return $this->dataMap;
     }
 
@@ -488,10 +490,10 @@ class DataMapProcessor
             $localDataHandler->process_cmdmap();
             // update copied or localized ids
             foreach ($createAncestorIds as $createAncestorId) {
-                if (empty($localDataHandler->copyMappingArray[$foreignTableName][$createAncestorId])) {
+                if (empty($localDataHandler->copyMappingArray_merged[$foreignTableName][$createAncestorId])) {
                     throw new \RuntimeException('Child record was not processed', 1486233164);
                 }
-                $newLocalizationId = $localDataHandler->copyMappingArray[$foreignTableName][$createAncestorId];
+                $newLocalizationId = $localDataHandler->copyMappingArray_merged[$foreignTableName][$createAncestorId];
                 $newLocalizationId = $localDataHandler->getAutoVersionId($foreignTableName, $newLocalizationId) ?? $newLocalizationId;
                 $desiredLocalizationIdMap[$createAncestorId] = $newLocalizationId;
             }
@@ -597,6 +599,7 @@ class DataMapProcessor
                 $dependencyMap[$dependentItem->getParent()][State::STATE_PARENT][] = $dependentItem;
             }
             if ($dependentItem->isGrandChildType()) {
+                $dependencyMap[$dependentItem->getParent()][State::STATE_PARENT][] = $dependentItem;
                 $dependencyMap[$dependentItem->getSource()][State::STATE_SOURCE][] = $dependentItem;
             }
         }
@@ -665,20 +668,21 @@ class DataMapProcessor
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
+        $zeroParameter = $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT);
+        $idsParameter = $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY);
+
         $predicates = [
             $queryBuilder->expr()->in(
                 $fieldNames['parent'],
-                $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                $idsParameter
             )
         ];
 
         if (!empty($fieldNames['source'])) {
-            $predicates = [
-                $queryBuilder->expr()->in(
-                    $fieldNames['source'],
-                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                )
-            ];
+            $predicates[] = $queryBuilder->expr()->in(
+                $fieldNames['source'],
+                $idsParameter
+            );
         }
 
         $statement = $queryBuilder
@@ -688,12 +692,12 @@ class DataMapProcessor
                 // must be any kind of localization
                 $queryBuilder->expr()->gt(
                     $fieldNames['language'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $zeroParameter
                 ),
                 // must be in connected mode
                 $queryBuilder->expr()->gt(
                     $fieldNames['parent'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $zeroParameter
                 ),
                 // any parent or source pointers
                 $queryBuilder->expr()->orX(...$predicates)
