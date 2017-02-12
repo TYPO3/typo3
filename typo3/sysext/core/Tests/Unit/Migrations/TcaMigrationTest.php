@@ -2336,6 +2336,119 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
+    public function migrateInlineLocalizationModeDataProvider()
+    {
+        return [
+            'remove counter-productive localizationMode=keep' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'behaviour' => [
+                                        'localizationMode' => 'keep',
+                                        'allowLanguageSynchronization' => true,
+                                    ],
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'keep deprecated localizationMode=keep' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'behaviour' => [
+                                        'localizationMode' => 'keep',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'behaviour' => [
+                                        'localizationMode' => 'keep',
+                                    ],
+                                ]
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'keep deprecated localizationMode=select' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'behaviour' => [
+                                        'localizationMode' => 'select',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'behaviour' => [
+                                        'localizationMode' => 'select',
+                                    ],
+                                ]
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     * @test
+     * @dataProvider migrateInlineLocalizationModeDataProvider
+     */
+    public function migrateInlineLocalizationMode(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+        $this->assertNotEmpty($subject->getMessages());
+    }
+
+    /**
+     * @return array
+     */
     public function migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider()
     {
         return [

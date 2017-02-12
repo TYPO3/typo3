@@ -67,6 +67,7 @@ class TcaMigration
         $tca = $this->migrateTranslationTable($tca);
         $tca = $this->migrateL10nModeDefinitions($tca);
         $tca = $this->migratePageLocalizationDefinitions($tca);
+        $tca = $this->migrateInlineLocalizationMode($tca);
         $tca = $this->migrateRequestUpdate($tca);
         $tca = $this->migrateInputDateTimeToRenderType($tca);
         $tca = $this->migrateWizardEnableByTypeConfigToColumnsOverrides($tca);
@@ -1041,6 +1042,47 @@ class TcaMigration
             }
         }
 
+        return $tca;
+    }
+
+    /**
+     * Removes "localizationMode" set to "keep" if used in combination with
+     * "allowLanguageSynchronization" - in general "localizationMode" is
+     * deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9.
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateInlineLocalizationMode(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? null) !== 'inline') {
+                    continue;
+                }
+
+                $inlineLocalizationMode = ($fieldConfig['config']['behaviour']['localizationMode'] ?? null);
+                if ($inlineLocalizationMode === null) {
+                    continue;
+                }
+
+                $allowLanguageSynchronization = ($fieldConfig['config']['behaviour']['allowLanguageSynchronization'] ?? null);
+                if ($inlineLocalizationMode === 'keep' && $allowLanguageSynchronization) {
+                    unset($fieldConfig['config']['behaviour']['localizationMode']);
+                    $this->messages[] = 'The TCA setting \'localizationMode\' is counter-productive '
+                        . ' if being used in combination with \'allowLanguageSynchronization\' and '
+                        . ' thus has been removed from TCA for ' . $table . '[\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'behaviour\'][\'localizationMode\']';
+                } else {
+                    $this->messages[] = 'The TCA setting \'localizationMode\' is deprecated '
+                        . ' and should be removed from TCA for ' . $table . '[\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'behaviour\'][\'localizationMode\']';
+                }
+            }
+        }
         return $tca;
     }
 

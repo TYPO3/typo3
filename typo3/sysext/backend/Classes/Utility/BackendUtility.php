@@ -668,6 +668,7 @@ class BackendUtility
      * @param string $table The name of the table to lookup in TCA
      * @param mixed $fieldOrConfig The fieldname (string) or the configuration of the field to check (array)
      * @return mixed If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, FALSE is returned
+     * @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9, migrate to l10n_mode or allowLanguageSynchronization
      */
     public static function getInlineLocalizationMode($table, $fieldOrConfig)
     {

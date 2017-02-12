@@ -145,6 +145,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         if ($result['defaultLanguageRow'] === null) {
             // Currently handled parent is a localized row if a former provider added the "default" row
             // If handled record is not localized, set localizationMode to 'none' and return
+            // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
             $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = 'none';
             return $result;
         }
@@ -190,6 +191,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             }
         }
 
+        // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
         $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = $mode;
         return $result;
     }

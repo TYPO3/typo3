@@ -137,6 +137,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         //           ** Localized child overlay exists but default language row does not - this dangling child is a data inconsistency
 
         // Mode was prepared by TcaInlineConfiguration provider
+        // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
         $mode = $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'];
         if ($mode === 'none') {
             $connectedUids = [];
