@@ -18,17 +18,29 @@ namespace TYPO3\CMS\Install\Updates\RowUpdater;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
+use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Install\Service\LoadTcaService;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Migrate values for database records having columns
- * using "l10n_mode" set to "mergeIfNotBlank".
- *
- * @todo: This needs a review and finish
+ * using "l10n_mode" set to "mergeIfNotBlank" or "exclude".
  */
 class L10nModeUpdater implements RowUpdaterInterface
 {
+    /**
+     * @var array Full, migrated TCA as prepared by upgrade wizard controller
+     */
+    protected $migratedTca;
+
+    /**
+     * @var array Full, but NOT migrated TCA
+     */
+    protected $notMigratedTca;
+
     /**
      * List of tables with information about to migrate fields.
      * Created during hasPotentialUpdateForTable(), used in updateTableRow()
@@ -36,6 +48,18 @@ class L10nModeUpdater implements RowUpdaterInterface
      * @var array
      */
     protected $payload = [];
+
+    /**
+     * Prepare non-migrated TCA to be used in 'hasPotentialUpdateForTable' step
+     */
+    public function __construct()
+    {
+        $this->migratedTca = $GLOBALS['TCA'];
+        $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
+        $loadTcaService->loadExtensionTablesWithoutMigration();
+        $this->notMigratedTca = $GLOBALS['TCA'];
+        $GLOBALS['TCA'] = $this->migratedTca;
+    }
 
     /**
      * Get title
@@ -56,13 +80,10 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     public function hasPotentialUpdateForTable(string $tableName): bool
     {
-        $result = false;
-        $payload = $this->getL10nModePayloadForTable($tableName);
-        if (count($payload) !== 0) {
-            $this->payload[$tableName] = $payload;
-            $result = true;
-        }
-        return $result;
+        $GLOBALS['TCA'] = $this->notMigratedTca;
+        $this->payload[$tableName] = $this->getL10nModePayloadForTable($tableName);
+        $GLOBALS['TCA'] = $this->migratedTca;
+        return !empty($this->payload[$tableName]['localizations']);
     }
 
     /**
@@ -74,18 +95,11 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     public function updateTableRow(string $tableName, array $inputRow): array
     {
-        $tablePayload = $this->payload[$tableName];
+        $currentId = $inputRow['uid'];
 
-        $uid = $inputRow['uid'];
-        if (empty($tablePayload['localizations'][$uid])) {
+        if (empty($this->payload[$tableName]['localizations'][$currentId])) {
             return $inputRow;
         }
-
-        $source = $tablePayload['localizations'][$uid];
-
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $fakeAdminUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-        $fakeAdminUser->user = ['admin' => 1];
 
         // disable DataHandler hooks for processing this update
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php'])) {
@@ -93,90 +107,98 @@ class L10nModeUpdater implements RowUpdaterInterface
             unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']);
         }
 
-        $fields = $tablePayload['fields'];
-        $fieldNames = array_keys($fields);
-        $fieldTypes = $tablePayload['fieldTypes'];
-        $sourceFieldName = $tablePayload['sourceFieldName'];
-
-        $sourceTableName = $tableName;
-        if ($tableName === 'pages_language_overlay') {
-            $sourceTableName = 'pages';
+        if (empty($GLOBALS['LANG'])) {
+            $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
         }
-        $sourceRow = $this->getRow($sourceTableName, $source);
+        if (!empty($GLOBALS['BE_USER'])) {
+            $adminUser = $GLOBALS['BE_USER'];
+        }
+        // the admin user is required to defined workspace state when working with DataHandler
+        $fakeAdminUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
+        $fakeAdminUser->user = ['uid' => 0, 'username' => '_migration_', 'admin' => 1];
+        $fakeAdminUser->workspace = ($inputRow['t3ver_wsid'] ?? 0);
+        $GLOBALS['BE_USER'] = $fakeAdminUser;
 
-        $updateValues = [];
-        $l10nState = [];
+        $tablePayload = $this->payload[$tableName];
+        $parentId = $tablePayload['localizations'][$currentId];
+        $parentTableName = ($tableName === 'pages_language_overlay' ? 'pages' : $tableName);
 
-        $row = $this->getRow($tableName, $uid);
-        foreach ($row as $fieldName => $fieldValue) {
-            if (!in_array($fieldName, $fieldNames)) {
-                continue;
+        $liveId = $currentId;
+        if (!empty($inputRow['t3ver_wsid'])
+            && !empty($inputRow['t3ver_oid'])
+            && !VersionState::cast($inputRow['t3ver_state'])
+                ->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
+            $liveId = $inputRow['t3ver_oid'];
+        }
+
+        $dataMap = [];
+
+        // simulate modifying a parent record to trigger dependent updates
+        if (in_array('exclude', $tablePayload['fieldModes'])) {
+            $parentRecord = $this->getRow($parentTableName, $parentId);
+            foreach ($tablePayload['fieldModes'] as $fieldName => $fieldMode) {
+                if ($fieldMode !== 'exclude') {
+                    continue;
+                }
+                $dataMap[$parentTableName][$parentId][$fieldName] = $parentRecord[$fieldName];
+            }
+            $dataMap = DataMapProcessor::instance($dataMap, $fakeAdminUser)->process();
+            unset($dataMap[$parentTableName][$parentId]);
+            if (empty($dataMap[$parentTableName])) {
+                unset($dataMap[$parentTableName]);
+            }
+        }
+
+        // define localization states and thus trigger updates later
+        if (State::isApplicable($tableName)) {
+            $stateUpdates = [];
+            foreach ($tablePayload['fieldModes'] as $fieldName => $fieldMode) {
+                if ($fieldMode !== 'mergeIfNotBlank') {
+                    continue;
+                }
+                if (!empty($inputRow[$fieldName])) {
+                    $stateUpdates[$fieldName] = State::STATE_CUSTOM;
+                } else {
+                    $stateUpdates[$fieldName] = State::STATE_PARENT;
+                }
             }
 
-            $l10nState[$fieldName] = 'custom';
-
-            if (
-                // default
-                empty($fieldTypes[$fieldName])
-                && trim((string)$fieldValue) === ''
-                // group types (basically as comma seprated values)
-                || $fieldTypes[$fieldName] === 'group'
-                && (
-                    $fieldValue === ''
-                    || $fieldValue === null
-                    || (string)$fieldValue === '0'
-                )
-            ) {
-                $updateValues[$fieldName] = $sourceRow[$fieldName];
-                $l10nState[$fieldName] = 'parent';
-            }
-            // inline types, but only file references
-            if (
-                !empty($fieldTypes[$fieldName])
-                && $fieldTypes[$fieldName] === 'inline/FAL'
-            ) {
-                $parentId = (!empty($row['t3ver_oid']) ? $row['t3ver_oid'] : $source);
-                $commandMap = [
-                    $sourceTableName => [
-                        $parentId => [
-                            'inlineLocalizeSynchronize' => [
-                                'action' => 'localize',
-                                'language' => $row[$sourceFieldName],
-                                'field' => $fieldName,
-                            ]
+            $languageState = State::create($tableName);
+            $languageState->update($stateUpdates);
+            // only consider field names that still used mergeIfNotBlank
+            $modifiedFieldNames = array_intersect(
+                array_keys($tablePayload['fieldModes']),
+                $languageState->getModifiedFieldNames()
+            );
+            if (!empty($modifiedFieldNames)) {
+                $dataMap = [
+                    $tableName => [
+                        $liveId => [
+                            'l10n_state' => $languageState->toArray()
                         ]
                     ]
                 ];
-                $fakeAdminUser->workspace = $row['t3ver_wsid'];
-                $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                $dataHandler->start([], $commandMap, $fakeAdminUser);
-                $dataHandler->process_cmdmap();
-                $l10nState[$fieldName] = 'parent';
             }
         }
 
-        $updateValues['l10n_state'] = json_encode($l10nState);
-
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-        foreach ($updateValues as $updateFieldName => $updateValue) {
-            $queryBuilder->set($updateFieldName, $updateValue);
+        if (empty($dataMap)) {
+            return $inputRow;
         }
 
-        $queryBuilder
-            ->update($tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
-        $databaseQueries[] = $queryBuilder->getSQL();
+        // let DataHandler process all updates, $inputRow won't change
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
+        $dataHandler->start($dataMap, [], $fakeAdminUser);
+        $dataHandler->process_datamap();
 
         if (!empty($dataHandlerHooks)) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php'] = $dataHandlerHooks;
         }
+        if (!empty($adminUser)) {
+            $GLOBALS['BE_USER'] = $adminUser;
+        }
 
+        // the unchanged(!) state as submitted
         return $inputRow;
     }
 
@@ -195,30 +217,27 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     protected function getL10nModePayloadForTable(string $tableName): array
     {
-        $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
-        $loadTcaService->loadExtensionTablesWithoutMigration();
         if (!is_array($GLOBALS['TCA'][$tableName])) {
             throw new \RuntimeException(
                 'Globals TCA of given table name must exist',
                 1484176136
             );
         }
-        $tableDefinition = $GLOBALS['TCA'][$tableName];
 
-        $payload = [];
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $tableDefinition = $GLOBALS['TCA'][$tableName];
+        $languageFieldName = ($tableDefinition['ctrl']['languageField'] ?? null);
+        $parentFieldName = ($tableDefinition['ctrl']['transOrigPointerField'] ?? null);
 
         if (
             empty($tableDefinition['columns'])
             || !is_array($tableDefinition['columns'])
-            || empty($tableDefinition['ctrl']['languageField'])
-            || empty($tableDefinition['ctrl']['transOrigPointerField'])
+            || empty($languageFieldName)
+            || empty($parentFieldName)
         ) {
-            return $payload;
+            return [];
         }
 
-        $fields = [];
-        $fieldTypes = [];
+        $fieldModes = [];
         foreach ($tableDefinition['columns'] as $fieldName => $fieldConfiguration) {
             if (
                 empty($fieldConfiguration['l10n_mode'])
@@ -230,71 +249,77 @@ class L10nModeUpdater implements RowUpdaterInterface
                 $fieldConfiguration['l10n_mode'] === 'exclude'
                 || $fieldConfiguration['l10n_mode'] === 'mergeIfNotBlank'
             ) {
-                $fields[$fieldName] = $fieldConfiguration;
+                $fieldModes[$fieldName] = $fieldConfiguration['l10n_mode'];
             }
         }
 
-        if (empty($fields)) {
-            return $payload;
+        if (empty($fieldModes)) {
+            return [];
         }
 
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->from($tableName);
 
-        foreach ($fields as $fieldName => $fieldConfiguration) {
-            if (empty($fieldConfiguration['config']['type'])) {
-                continue;
-            }
+        $parentFieldName = $tableDefinition['ctrl']['transOrigPointerField'];
+        $selectFieldNames = ['uid', $parentFieldName];
 
-            if ($fieldConfiguration['config']['type'] === 'group') {
-                $fieldTypes[$fieldName] = 'group';
-            }
-            if (
-                $fieldConfiguration['config']['type'] === 'inline'
-                && !empty($fieldConfiguration['config']['foreign_field'])
-                && $fieldConfiguration['config']['foreign_field'] === 'uid_foreign'
-                && !empty($fieldConfiguration['config']['foreign_table'])
-                && $fieldConfiguration['config']['foreign_table'] === 'sys_file_reference'
-            ) {
-                $fieldTypes[$fieldName] = 'inline/FAL';
-            }
-        }
-
-        $sourceFieldName = $tableDefinition['ctrl']['transOrigPointerField'];
-        $selectFieldNames = ['uid', $sourceFieldName];
+        $predicates = [
+            $queryBuilder->expr()->gt(
+                $tableDefinition['ctrl']['languageField'],
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->gt(
+                $parentFieldName,
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            )
+        ];
 
         if (!empty($tableDefinition['ctrl']['versioningWS'])) {
             $selectFieldNames = array_merge(
                 $selectFieldNames,
-                ['t3ver_wsid', 't3ver_oid']
+                ['t3ver_wsid', 't3ver_oid', 't3ver_state']
+            );
+            $predicates[] = $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(
+                        VersionState::NEW_PLACEHOLDER_VERSION,
+                        \PDO::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(
+                        VersionState::DEFAULT_STATE,
+                        \PDO::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(
+                        VersionState::MOVE_POINTER,
+                        \PDO::PARAM_INT
+                    )
+                )
             );
         }
 
         $statement = $queryBuilder
             ->select(...$selectFieldNames)
-            ->andWhere(
-                $queryBuilder->expr()->gt(
-                    $tableDefinition['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->gt(
-                    $sourceFieldName,
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                )
-            )
+            ->andWhere(...$predicates)
             ->execute();
 
-        foreach ($statement as $row) {
-            $source = $row[$sourceFieldName];
-            $payload['sources'][$source][] = $row['uid'];
-            $payload['localizations'][$row['uid']] = $source;
-        }
+        $payload = [];
 
-        if (!empty($payload['sources'])) {
-            $payload['fields'] = $fields;
-            $payload['fieldTypes'] = $fieldTypes;
-            $payload['sourceFieldName'] = $sourceFieldName;
+        foreach ($statement as $row) {
+            $translationId = $row['uid'];
+            $parentId = $row[$parentFieldName];
+            $payload['localizations'][$translationId] = $parentId;
+        }
+        if (!empty($payload['localizations'])) {
+            $payload['fieldModes'] = $fieldModes;
         }
 
         return $payload;

@@ -49,7 +49,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
      * @var array Single classes that may update rows
      */
     protected $rowUpdater = [
-//        L10nModeUpdater::class,
+        L10nModeUpdater::class,
         ImageCropUpdater::class,
     ];
 

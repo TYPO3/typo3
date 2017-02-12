@@ -192,6 +192,14 @@ class State
     }
 
     /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->states ?? [];
+    }
+
+    /**
      * @return string[]
      */
     public function getModifiedFieldNames()
