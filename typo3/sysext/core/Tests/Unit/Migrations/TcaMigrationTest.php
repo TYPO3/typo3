@@ -2138,7 +2138,7 @@ class TcaMigrationTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
      * @param array $givenConfig
      * @param array $expectedConfig
      * @test
-     * @dataProvider migrateTranslationTableDataProvider
+     * @dataProvider migrateL10nModeDefinitionsDataProvider
      */
     public function migrateL10nModeDefinitions(array $givenConfig, array $expectedConfig)
     {
