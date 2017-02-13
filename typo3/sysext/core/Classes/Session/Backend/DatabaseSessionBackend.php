@@ -136,7 +136,11 @@ class DatabaseSessionBackend implements SessionBackendInterface
                 ['ses_data' => \PDO::PARAM_LOB]
             );
         } catch (DBALException $e) {
-            throw new SessionNotCreatedException('Session could not be written to database', 1481895005, $e);
+            throw new SessionNotCreatedException(
+                'Session could not be written to database Reason: ' . $e->getMessage(),
+                1481895005,
+                $e
+            );
         }
 
         return $sessionData;
@@ -167,7 +171,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
             );
         } catch (DBALException $e) {
             throw new SessionNotUpdatedException(
-                'Session with id ' . $sessionId . ' could not be updated',
+                'Session with id ' . $sessionId . ' could not be updated. Reason: ' . $e->getMessage(),
                 1481889220,
                 $e
             );
