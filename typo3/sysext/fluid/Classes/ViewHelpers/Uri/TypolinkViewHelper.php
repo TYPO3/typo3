@@ -38,7 +38,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * </code>
  *
  * <code title="Full parameter usage">
- * <f:uri.typolink parameter="{link}" additionalParams="&u=b" useCacheHash="TRUE" />
+ * <f:uri.typolink parameter="{link}" additionalParams="&u=b" useCacheHash="true" />
  * </code>
  * <output>
  * index.php?id=19&X=y&u=b

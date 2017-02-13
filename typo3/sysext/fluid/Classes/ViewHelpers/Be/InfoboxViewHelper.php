@@ -43,7 +43,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * </code>
  *
  * <code title="All options">
- * <f:be.infobox title="Message title" message="your box content" state="-2" iconName="check" disableIcon="TRUE" />
+ * <f:be.infobox title="Message title" message="your box content" state="-2" iconName="check" disableIcon="true" />
  * </code>
  */
 class InfoboxViewHelper extends AbstractViewHelper
