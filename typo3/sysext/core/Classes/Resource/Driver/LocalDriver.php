@@ -372,22 +372,25 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             // go on to the next iterator item now as we might skip this one early
             $iterator->next();
 
-            if (
+            try {
+                if (
                 !$this->applyFilterMethodsToDirectoryItem(
                     $filterMethods,
                     $iteratorItem['name'],
                     $iteratorItem['identifier'],
                     $this->getParentFolderIdentifierOfIdentifier($iteratorItem['identifier'])
                 )
-            ) {
-                continue;
-            }
+                ) {
+                    continue;
+                }
 
-            $items[$iteratorItem['identifier']] = $iteratorItem['identifier'];
-            // Decrement item counter to make sure we only return $numberOfItems
-            // we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
-            // item here
-            --$c;
+                $items[$iteratorItem['identifier']] = $iteratorItem['identifier'];
+                // Decrement item counter to make sure we only return $numberOfItems
+                // we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
+                // item here
+                --$c;
+            } catch (Exception\InvalidPathException $e) {
+            }
         }
         return $items;
     }
