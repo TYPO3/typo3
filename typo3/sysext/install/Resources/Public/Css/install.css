@@ -8290,11 +8290,7 @@ div.dropdown-menu {
 .module-docheader .module-docheader-bar .form-group {
   vertical-align: top;
   margin: 0;
-}
-@media (min-width: 768px) {
-  .module-docheader .module-docheader-bar .form-group {
-    display: inline-block;
-  }
+  display: inline-block;
 }
 .module-docheader .module-docheader-bar .form-group .form-control {
   vertical-align: top;
