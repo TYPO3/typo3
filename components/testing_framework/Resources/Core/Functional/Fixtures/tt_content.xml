@@ -3,6 +3,7 @@
     <tt_content>
         <uid>1</uid>
         <pid>1</pid>
+        <CType>header</CType>
         <header>Test content</header>
         <deleted>0</deleted>
         <t3ver_oid>0</t3ver_oid>

@@ -8,6 +8,7 @@
         <title>Dansk</title>
         <flag>dk</flag>
         <static_lang_isocode>0</static_lang_isocode>
+        <language_isocode>dk</language_isocode>
     </sys_language>
     <sys_language>
         <uid>2</uid>
@@ -17,5 +18,6 @@
         <title>Deutsch</title>
         <flag>de</flag>
         <static_lang_isocode>0</static_lang_isocode>
+        <language_isocode>de</language_isocode>
     </sys_language>
 </dataset>
