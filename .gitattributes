@@ -5,6 +5,7 @@
 /Build/ export-ignore
 /dynamicReturnTypeMeta.json export-ignore
 /typo3/sysext/*/Tests/ export-ignore
+/components/testing_framework/ export-ignore
 
 # Enforce checkout with linux lf consistent over all plattforms
 *.html text eol=lf
