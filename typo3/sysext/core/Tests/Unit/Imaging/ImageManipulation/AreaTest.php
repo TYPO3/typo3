@@ -85,7 +85,7 @@ class AreaTest extends UnitTestCase
      */
     public function applyRatioDoesNothingForFreeRatio()
     {
-        $area = new Area(...[0.1, 0.1, 0.2, 0.4]);
+        $area = new Area(0.1, 0.1, 0.2, 0.4);
         $ratioFixture = new Ratio('dummy', 'dummy', 0.0);
         $croppedArea = $area->applyRatioRestriction($ratioFixture);
         $this->assertSame($area, $croppedArea);
