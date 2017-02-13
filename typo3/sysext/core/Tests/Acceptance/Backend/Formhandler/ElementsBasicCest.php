@@ -48,7 +48,7 @@ class ElementsBasicCest
      * @param Admin $I
      * @param Formhandler $formhandler
      */
-    public function checkThatBrowserSideValidationsWorkAndSaveRecord(Admin $I, Formhandler $formhandler)
+    public function checkThatBrowserSideValidationsWorksForTextAndSaveRecord(Admin $I, Formhandler $formhandler)
     {
         $this->waitForFormReady($I);
 
@@ -88,6 +88,70 @@ class ElementsBasicCest
                 ),
 
             ],
+            'input_10 eval=is_in, is_in=abc123' => [
+                new FormHandlerElementTestDataObject(
+                    'abcd1234',
+                    'abc123'
+                ),
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3',
+                    'a3'
+                )
+            ],
+            'input_11 eval=lower' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3!',
+                    'kasper typo3!'
+                )
+            ],
+            'input_13 eval=nospace' => [
+                new FormHandlerElementTestDataObject(
+                    ' Kasper TYPO3! ',
+                    'KasperTYPO3!'
+                )
+            ],
+            'input_16 eval=password' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper',
+                    '********',
+                    'Kasper'
+                ),
+            ],
+            'input_19 eval=trim' => [
+                new FormHandlerElementTestDataObject(
+                    ' Kasper ',
+                    'Kasper'
+                ),
+                new FormHandlerElementTestDataObject(
+                    ' Kasper TYPO3 ',
+                    'Kasper TYPO3'
+                ),
+            ],
+            'input_23 eval=upper' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3!',
+                    'KASPER TYPO3!'
+                )
+            ],
+        ];
+        foreach ($fieldTests as $fieldLabel => $testData) {
+            $formhandler->fillSeeSaveAndClearInputField(
+                $fieldLabel,
+                $testData
+            );
+        }
+    }
+
+    /**
+     * @param Admin $I
+     * @param Formhandler $formhandler
+     */
+    public function checkThatBrowserSideValidationsWorkForNumericAndSaveRecord(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+
+        $fieldTests = [
+
             'input_8 eval=double2' => [
                 new FormHandlerElementTestDataObject(
                     '12.335',
@@ -138,43 +202,6 @@ class ElementsBasicCest
                     '3'
                 )
             ],
-            'input_10 eval=is_in, is_in=abc123' => [
-                new FormHandlerElementTestDataObject(
-                    'abcd1234',
-                    'abc123'
-                ),
-                new FormHandlerElementTestDataObject(
-                    'Kasper TYPO3',
-                    'a3'
-                )
-            ],
-            'input_11 eval=lower' => [
-                new FormHandlerElementTestDataObject(
-                    'Kasper TYPO3!',
-                    'kasper typo3!'
-                )
-            ],
-            'input_12 eval=md5' => [
-                new FormHandlerElementTestDataObject(
-                    'Kasper TYPO3!',
-                    '748469dd64911af8df8f9a3dcb2c9378',
-                    '748469dd64911af8df8f9a3dcb2c9378'
-                ),
-                new FormHandlerElementTestDataObject(
-                    ' Kasper TYPO3! ',
-                    '792a085606250c47d6ebb8c98804d5b0',
-                    '792a085606250c47d6ebb8c98804d5b0',
-                    '792a085606250c47d6ebb8c98804d5b0',
-                    false,
-                    'Check that whitespaces are not trimmed.'
-                )
-            ],
-            'input_13 eval=nospace' => [
-                new FormHandlerElementTestDataObject(
-                    ' Kasper TYPO3! ',
-                    'KasperTYPO3!'
-                )
-            ],
             'input_15 eval=num' => [
                 new FormHandlerElementTestDataObject(
                     '12.335',
@@ -193,29 +220,26 @@ class ElementsBasicCest
                     '3'
                 ),
             ],
-            'input_16 eval=password' => [
-                new FormHandlerElementTestDataObject(
-                    'Kasper',
-                    '********',
-                    'Kasper'
-                ),
-            ],
-            'input_19 eval=trim' => [
-                new FormHandlerElementTestDataObject(
-                    ' Kasper ',
-                    'Kasper'
-                ),
-                new FormHandlerElementTestDataObject(
-                    ' Kasper TYPO3 ',
-                    'Kasper TYPO3'
-                ),
-            ],
-            'input_23 eval=upper' => [
-                new FormHandlerElementTestDataObject(
-                    'Kasper TYPO3!',
-                    'KASPER TYPO3!'
-                )
-            ],
+        ];
+
+        foreach ($fieldTests as $fieldLabel => $testData) {
+            $formhandler->fillSeeSaveAndClearInputField(
+                $fieldLabel,
+                $testData
+            );
+        }
+    }
+
+    /**
+     * @param Admin $I
+     * @param Formhandler $formhandler
+     */
+    public function checkThatBrowserSideValidationsWorkForRangeAndSaveRecord(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+
+        $fieldTests = [
+
             'input_25 eval=int, default=0, range lower=-2, range upper=2' => [
                 new FormHandlerElementTestDataObject(
                     'Kasper TYPO3',
@@ -248,6 +272,40 @@ class ElementsBasicCest
                     '-3',
                     true,
                     'Expecting a modal with error on trying to save.'
+                )
+            ],
+        ];
+
+        foreach ($fieldTests as $fieldLabel => $testData) {
+            $formhandler->fillSeeSaveAndClearInputField(
+                $fieldLabel,
+                $testData
+            );
+        }
+    }
+
+    /**
+     * @param Admin $I
+     * @param Formhandler $formhandler
+     */
+    public function checkThatBrowserSideValidationsWorkForMd5AndSaveRecord(Admin $I, Formhandler $formhandler)
+    {
+        $this->waitForFormReady($I);
+
+        $fieldTests = [
+            'input_12 eval=md5' => [
+                new FormHandlerElementTestDataObject(
+                    'Kasper TYPO3!',
+                    '748469dd64911af8df8f9a3dcb2c9378',
+                    '748469dd64911af8df8f9a3dcb2c9378'
+                ),
+                new FormHandlerElementTestDataObject(
+                    ' Kasper TYPO3! ',
+                    '792a085606250c47d6ebb8c98804d5b0',
+                    '792a085606250c47d6ebb8c98804d5b0',
+                    '792a085606250c47d6ebb8c98804d5b0',
+                    false,
+                    'Check that whitespaces are not trimmed.'
                 )
             ],
         ];
