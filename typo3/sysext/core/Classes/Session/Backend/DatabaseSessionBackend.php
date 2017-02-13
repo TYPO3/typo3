@@ -137,7 +137,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
             );
         } catch (DBALException $e) {
             throw new SessionNotCreatedException(
-                'Session could not be written to database Reason: ' . $e->getMessage(),
+                'Session could not be written to database: ' . $e->getMessage(),
                 1481895005,
                 $e
             );
@@ -171,7 +171,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
             );
         } catch (DBALException $e) {
             throw new SessionNotUpdatedException(
-                'Session with id ' . $sessionId . ' could not be updated. Reason: ' . $e->getMessage(),
+                'Session with id ' . $sessionId . ' could not be updated: ' . $e->getMessage(),
                 1481889220,
                 $e
             );
