@@ -226,7 +226,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($taskUid)) {
             $result = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('tx_scheduler_task')
-                ->delete('tx_scheduler_task', ['uid' => $taskUid]);
+                ->update('tx_scheduler_task', ['deleted' => 1], ['uid' => $taskUid]);
         } else {
             $result = false;
         }
@@ -384,30 +384,28 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function fetchTasksWithCondition($where, $includeDisabledTasks = false)
     {
+        $tasks = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_scheduler_task');
 
-        $constraints = [];
-        $tasks = [];
+        $queryBuilder
+            ->select('serialized_task_object')
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
 
         if (!$includeDisabledTasks) {
-            $constraints[] = $queryBuilder->expr()->eq(
-                'disable',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('disable', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
-        } else {
-            $constraints[] = '1=1';
         }
 
         if (!empty($where)) {
-            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($where);
+            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
         }
 
-        $result = $queryBuilder->select('serialized_task_object')
-            ->from('tx_scheduler_task')
-            ->where(...$constraints)
-            ->execute();
-
+        $result = $queryBuilder->execute();
         while ($row = $result->fetch()) {
             /** @var Task\AbstractTask $task */
             $task = unserialize($row['serialized_task_object']);

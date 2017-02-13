@@ -430,17 +430,11 @@ class SchedulerModuleController
                 }
             }
         } catch (\UnexpectedValueException $e) {
-            // The task could not be unserialized properly, simply delete the database record
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task');
-            $result = $queryBuilder->delete('tx_scheduler_task')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($this->submittedData['uid'], \PDO::PARAM_INT)
-                    )
-                )
-                ->execute();
-
+            // The task could not be unserialized properly, simply update the database record
+            $taskUid = (int)$this->submittedData['uid'];
+            $result = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_scheduler_task')
+                ->update('tx_scheduler_task', ['deleted' => 1], ['uid' => $taskUid]);
             if ($result) {
                 $this->addMessage($this->getLanguageService()->getLL('msg.deleteSuccess'));
             } else {
@@ -919,6 +913,9 @@ class SchedulerModuleController
                 'tx_scheduler_task_group',
                 'g',
                 $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
+            )
+            ->where(
+                $queryBuilder->expr()->eq('t.deleted', 0)
             )
             ->orderBy('g.sorting')
             ->execute();
