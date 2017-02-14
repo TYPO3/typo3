@@ -10,12 +10,12 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'TYPO3 CMS Team',
     'author_email' => '',
     'author_company' => '',
-    'version' => '8.6.0',
+    'version' => '8.7.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.6.0-8.6.99',
-            'backend' => '8.6.0-8.6.99',
-            'indexed_search' => '8.6.0-8.6.99',
+            'typo3' => '8.7.0-8.7.99',
+            'backend' => '8.7.0-8.7.99',
+            'indexed_search' => '8.7.0-8.7.99',
         ],
         'conflicts' => [
             'compatibility6' => '0.0.0',
