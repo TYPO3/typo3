@@ -1132,9 +1132,9 @@ class TcaMigration
                                                         . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'colorpicker\'';
                                                 }
                                             }
-                                        }
-                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                            if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                                unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                            }
                                         }
                                     }
                                 }
@@ -1206,9 +1206,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'valuePicker\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1271,9 +1271,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'slider\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1377,9 +1377,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\'][\'renderType\'] = \'inputLink\'';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1463,9 +1463,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1565,9 +1565,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1659,9 +1659,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1843,9 +1843,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -1954,9 +1954,9 @@ class TcaMigration
                                                     . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'config\']';
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
@@ -2036,9 +2036,9 @@ class TcaMigration
                                                 unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards'][$wizardName]);
                                             }
                                         }
-                                    }
-                                    if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
-                                        unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        if (empty($typeArray['columnsOverrides'][$fieldName]['config']['wizards'])) {
+                                            unset($typeArray['columnsOverrides'][$fieldName]['config']['wizards']);
+                                        }
                                     }
                                 }
                             }
