@@ -21,7 +21,7 @@ editor:
       - { name: editing, groups: [ spellchecker ] }
       - { name: insert, groups: [ insert ] }
       - { name: tools, groups: [ table, specialchar ] }
-      - { name: document, groups: [ source, document ] }
+      - { name: document, groups: [ mode ] }
 
     justifyClasses:
       - align-left
