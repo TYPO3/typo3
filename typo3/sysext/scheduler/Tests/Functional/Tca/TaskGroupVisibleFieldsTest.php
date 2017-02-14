@@ -20,8 +20,14 @@ use TYPO3\CMS\Lang\LanguageService;
 
 class TaskGroupVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
     protected $coreExtensionsToLoad = ['scheduler'];
 
+    /**
+     * @var array
+     */
     protected static $taskGroupFields = [
         'hidden',
         'groupName',

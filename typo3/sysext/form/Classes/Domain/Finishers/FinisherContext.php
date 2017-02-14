@@ -63,6 +63,7 @@ class FinisherContext
 
     /**
      * @param FormRuntime $formRuntime
+     * @param ControllerContext $controllerContext
      * @internal
      */
     public function __construct(FormRuntime $formRuntime, ControllerContext $controllerContext)

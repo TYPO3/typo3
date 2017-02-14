@@ -118,7 +118,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @param DependencyResolver
+     * @param DependencyResolver $dependencyResolver
      */
     public function injectDependencyResolver(DependencyResolver $dependencyResolver)
     {

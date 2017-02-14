@@ -413,7 +413,7 @@ class Connection extends \Doctrine\DBAL\Connection
      * are not required / and only the table name is passed through.
      *
      * @param string|null $tableName
-     * @param string|null $fieldName
+     * @param string $fieldName
      * @return string
      */
     public function lastInsertId($tableName = null, string $fieldName = 'uid'): string

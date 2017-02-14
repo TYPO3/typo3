@@ -83,7 +83,7 @@ class ArrayFormFactory extends AbstractFormFactory
      * Add form elements to the $parentRenderable
      *
      * @param array $nestedRenderableConfiguration
-     * @param CompositeRenderableInterface CompositeRenderableInterface $parentRenderable
+     * @param CompositeRenderableInterface $parentRenderable
      * @return mixed
      * @throws IdentifierNotValidException
      * @throws UnknownCompositRenderableException

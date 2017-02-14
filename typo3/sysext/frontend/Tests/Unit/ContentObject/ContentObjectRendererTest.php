@@ -820,7 +820,7 @@ class ContentObjectRendererTest extends \TYPO3\Components\TestingFramework\Core\
      *  - Otherwise rounds like round() and decimals can be applied.
      *  - Always returns float.
      *
-     * @param float $expected The expected output.
+     * @param float $expect The expected output.
      * @param mixed $content The given content.
      * @param array $conf The given configuration of 'round.'.
      * @return void

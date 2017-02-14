@@ -44,7 +44,7 @@ return [
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020),
-                    'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, (int)date('m') - 1, (int)date('d'), (int)date('Y'))
                 ]
             ]
         ],

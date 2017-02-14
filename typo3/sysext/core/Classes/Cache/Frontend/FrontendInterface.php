@@ -117,7 +117,7 @@ interface FrontendInterface
     /**
      * Removes all cache entries of this cache which are tagged by any of the specified tags.
      *
-     * @param string[] $tag List of tags
+     * @param string[] $tags List of tags
      * @return void
      * @api
      */

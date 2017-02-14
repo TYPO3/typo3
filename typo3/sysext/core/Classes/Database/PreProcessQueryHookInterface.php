@@ -39,7 +39,7 @@ interface PreProcessQueryHookInterface
      *
      * @param string $table Database table name
      * @param array $fieldsValues Field values as key => value pairs
-     * @param string/array $noQuoteFields List/array of keys NOT to quote
+     * @param string|array $noQuoteFields List/array of keys NOT to quote
      * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
      * @return void
      */
@@ -53,7 +53,7 @@ interface PreProcessQueryHookInterface
      * @param string $table Database table name
      * @param array $fields Field names
      * @param array $rows Table rows
-     * @param string/array $noQuoteFields List/array of keys NOT to quote
+     * @param string|array $noQuoteFields List/array of keys NOT to quote
      * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
      * @return void
      */
@@ -65,7 +65,7 @@ interface PreProcessQueryHookInterface
      * @param string $table Database table name
      * @param string $where WHERE clause
      * @param array $fieldsValues Field values as key => value pairs
-     * @param string/array $noQuoteFields List/array of keys NOT to quote
+     * @param string|array $noQuoteFields List/array of keys NOT to quote
      * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
      * @return void
      */

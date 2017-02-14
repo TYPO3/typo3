@@ -46,9 +46,9 @@ class CronCommand
     /**
      * Constructor
      *
-     * @api
      * @param string $cronCommand The cron command can hold any combination documented as valid
      * @param bool|int $timestamp Optional start time, used in unit tests
+     * @api
      */
     public function __construct($cronCommand, $timestamp = false)
     {

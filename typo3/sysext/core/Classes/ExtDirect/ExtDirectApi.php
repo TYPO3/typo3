@@ -87,7 +87,7 @@ class ExtDirectApi
      * Generates the API that is configured inside the ExtDirect configuration
      * array "$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']".
      *
-     * @param array $filerNamespace Namespace that should be loaded like array('TYPO3.Backend')
+     * @param array $filterNamespaces Namespace that should be loaded like array('TYPO3.Backend')
      * @return array Javascript API configuration
      */
     protected function generateAPI(array $filterNamespaces)

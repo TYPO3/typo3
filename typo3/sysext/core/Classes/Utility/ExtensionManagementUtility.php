@@ -825,7 +825,6 @@ class ExtensionManagementUtility
      * Adds an ExtJS module (main or sub) to the backend interface
      * FOR USE IN ext_tables.php FILES
      *
-     * @static
      * @param string $extensionName
      * @param string $mainModuleName Is the main module key
      * @param string $subModuleName Is the submodule key, if blank a plain main module is generated
@@ -1027,7 +1026,6 @@ class ExtensionManagementUtility
      * This also tracks which content was added by extensions (in TYPO3_CONF_VARS_extensionAdded)
      * so that they cannot be editted again through the Install Tool.
      *
-     * @static
      * @param string $group The group ('FE', 'BE', 'SYS' ...)
      * @param string $key The key of this setting within the group
      * @param string $content The text to add (include leading "\n" in case of multi-line entries)

@@ -28,6 +28,9 @@ class MandatoryConstructorArgument
      */
     public $argumentTestClass;
 
+    /**
+     * @var array
+     */
     public $allArguments;
 
     /**

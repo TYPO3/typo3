@@ -46,6 +46,9 @@ class ResourceCompressor
      */
     protected $gzipCompressionLevel = -1;
 
+    /**
+     * @var string
+     */
     protected $htaccessTemplate = '<FilesMatch "\\.(js|css)(\\.gzip)?$">
 	<IfModule mod_expires.c>
 		ExpiresActive on

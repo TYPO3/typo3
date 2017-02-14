@@ -28,7 +28,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
     protected $workspaceService = null;
 
     /**
-     * @abstract
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
      * @param int $mountPoint
      * @param int $level
@@ -44,7 +43,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
     }
 
     /**
-     * @abstract
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
      * @param string $searchFilter
      * @param int $mountPoint
@@ -60,7 +58,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
     }
 
     /**
-     * @abstract
      * @param string $searchFilter
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
      * @return void

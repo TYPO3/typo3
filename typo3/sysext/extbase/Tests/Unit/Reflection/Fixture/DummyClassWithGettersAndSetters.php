@@ -21,22 +21,49 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class DummyClassWithGettersAndSetters
 {
+    /**
+     * @var mixed
+     */
     protected $property;
 
+    /**
+     * @var mixed
+     */
     protected $anotherProperty;
 
+    /**
+     * @var mixed
+     */
     protected $property2;
 
+    /**
+     * @var bool
+     */
     protected $booleanProperty = true;
 
+    /**
+     * @var mixed
+     */
     protected $protectedProperty;
 
+    /**
+     * @var string
+     */
     protected $unexposedProperty = 'unexposed';
 
+    /**
+     * @var mixed
+     */
     public $publicProperty;
 
+    /**
+     * @var int
+     */
     public $publicProperty2 = 42;
 
+    /**
+     * @var bool
+     */
     protected $anotherBooleanProperty = true;
 
     /**

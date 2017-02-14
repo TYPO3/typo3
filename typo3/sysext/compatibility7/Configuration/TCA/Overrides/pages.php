@@ -29,5 +29,5 @@ defined('TYPO3_MODE') or die();
     ]
 ]);
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('pages', 3, 'url_scheme', 'after:cache_tags');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('pages', '3', 'url_scheme', 'after:cache_tags');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('pages', 'links', '--linebreak--, url_scheme;LLL:EXT:compatibility7/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme_formlabel', 'after:target');

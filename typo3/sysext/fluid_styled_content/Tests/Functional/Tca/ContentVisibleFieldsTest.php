@@ -20,8 +20,14 @@ use TYPO3\CMS\Lang\LanguageService;
 
 class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
     protected $coreExtensionsToLoad = ['fluid_styled_content'];
 
+    /**
+     * @var array
+     */
     protected static $contentFields = [
         'CType',
         'colPos',

@@ -21,6 +21,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase
 {
+    /**
+     * @var array
+     */
     protected $pathsToLinkInTestInstance = [
             'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
     ];

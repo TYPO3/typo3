@@ -90,6 +90,7 @@ class EditImageHandler implements LinkHandlerInterface, LinkParameterProviderInt
      * Disallow this handler if no image is there to edit
      *
      * @param array $allowedItems
+     * @param array $linkParts
      * @return array
      */
     public function modifyAllowedItems($allowedItems, $linkParts)

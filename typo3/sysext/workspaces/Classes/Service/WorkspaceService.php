@@ -728,7 +728,6 @@ class WorkspaceService implements SingletonInterface
     /**
      * Generates a view link for a page.
      *
-     * @static
      * @param string $table Table to be used
      * @param int $uid Uid of the version(!) record
      * @param array $liveRecord Optional live record data

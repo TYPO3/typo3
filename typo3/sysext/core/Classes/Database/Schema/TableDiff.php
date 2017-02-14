@@ -46,7 +46,7 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
      * @param array $tableOptions
      * @return \TYPO3\CMS\Core\Database\Schema\TableDiff
      */
-    public function setTableOptions(array $tableOptions): self
+    public function setTableOptions(array $tableOptions): TableDiff
     {
         $this->tableOptions = $tableOptions;
 

@@ -43,10 +43,10 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Generates the content for the ext_emconf.php file
      * Sets dependencies from TER data if any
      *
-     * @internal
      * @param array $extensionData
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension Extension object from TER data
      * @return string
+     * @internal
      */
     public function constructEmConf(array $extensionData, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = null)
     {

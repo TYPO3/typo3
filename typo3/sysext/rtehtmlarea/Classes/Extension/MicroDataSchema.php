@@ -100,7 +100,7 @@ class MicroDataSchema extends RteHtmlAreaApi
      * Convert the xml rdf schema into an array
      *
      * @param string $string XML rdf schema to convert into an array
-     * @param array	$schema: reference to the array to be filled
+     * @param array	$schema reference to the array to be filled
      * @return void
      */
     protected function parseSchema($string, &$schema)

@@ -240,7 +240,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * returns a new standalone view, shorthand function
      *
      * @param string $extensionName
-     * @param string $controllerExtensionname
+     * @param string $controllerExtensionName
      * @param string $templateName
      * @return StandaloneView
      */

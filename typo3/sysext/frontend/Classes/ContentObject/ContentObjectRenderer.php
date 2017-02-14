@@ -536,9 +536,9 @@ class ContentObjectRenderer
      * This method is private API, please use configuration
      * $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] to add new content objects
      *
-     * @internal
      * @param string $className
      * @param string $contentObjectName
+     * @internal
      */
     public function registerContentObjectClass($className, $contentObjectName)
     {
@@ -2819,7 +2819,6 @@ class ContentObjectRenderer
      * according to the doctype
      *
      * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for br.
      * @return string The processed input value
      */
     public function stdWrap_br($content = '')

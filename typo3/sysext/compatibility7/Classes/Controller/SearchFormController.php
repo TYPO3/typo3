@@ -51,6 +51,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public $join_pages = 0;
 
+    /**
+     * @var int
+     */
     public $defaultResultNumber = 10;
 
     /**
@@ -150,6 +153,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public $templateCode = '';
 
+    /**
+     * @var string
+     */
     public $hiddenFieldList = 'ext, type, defOp, media, order, group, lang, desc, results';
 
     /**
@@ -164,6 +170,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public $enableMetaphoneSearch = false;
 
+    /**
+     * @var bool
+     */
     public $storeMetaphoneInfoAsWords;
 
     /**

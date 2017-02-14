@@ -65,7 +65,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     }
 
     /**
-     * @param string
+     * @param string $dbMountPoints
      * @return void
      */
     public function setDbMountPoints($dbMountPoints)

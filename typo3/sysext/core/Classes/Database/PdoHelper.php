@@ -27,7 +27,7 @@ class PdoHelper
      * be given as "field"(xyz) - no space between double quote and parenthesis -
      * so they can be removed automatically.
      *
-     * @param PDO $databaseHandle
+     * @param \PDO $databaseHandle
      * @param string $pdoDriver
      * @param string $pathAndFilename
      * @return void

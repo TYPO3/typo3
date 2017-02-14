@@ -105,8 +105,6 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 
     /**
      * Register found files in extension array if extension was found
-     *
-     * @param void
      */
     protected function initializeExtensionFiles()
     {

@@ -20,8 +20,14 @@ use TYPO3\CMS\Lang\LanguageService;
 
 class WorkspaceStageVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
     protected $coreExtensionsToLoad = ['workspaces'];
 
+    /**
+     * @var array
+     */
     protected static $workspaceStageFields = [
         'title',
         'responsible_persons',

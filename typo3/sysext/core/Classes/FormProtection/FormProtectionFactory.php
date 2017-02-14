@@ -67,7 +67,7 @@ class FormProtectionFactory
      * @param string $classNameOrType Name of a form protection class, or one
      *                                of the pre-defined form protection types:
      *                                frontend, backend, installtool
-     * @param mixed $constructorArguments Arguments for the class-constructor
+     * @param array<int, mixed> $constructorArguments Arguments for the class-constructor
      * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection the requested instance
      */
     public static function get($classNameOrType = 'default', ...$constructorArguments)
@@ -179,7 +179,7 @@ class FormProtectionFactory
      * and stores it internally.
      *
      * @param array $className
-     * @param mixed $constructorArguments
+     * @param array<int, mixed> $constructorArguments
      * @throws \InvalidArgumentException
      * @return AbstractFormProtection
      */

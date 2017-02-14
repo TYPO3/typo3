@@ -28,6 +28,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  */
 class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
 {
+    /**
+     * @var string
+     */
     protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\TextValidator::class;
 
     public function setup()

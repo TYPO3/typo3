@@ -20,8 +20,14 @@ use TYPO3\CMS\Lang\LanguageService;
 
 class NoteVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
     protected $coreExtensionsToLoad = ['sys_note'];
 
+    /**
+     * @var array
+     */
     protected static $noteFields = [
         'category',
         'personal',

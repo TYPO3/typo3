@@ -67,7 +67,7 @@ class RenderViewHelper extends AbstractViewHelper
 
     /**
      * @param array $arguments
-     * @param callable|\Closure $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
      * @public

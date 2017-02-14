@@ -243,7 +243,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
      * parameters. The syntax is the same as for sprintf()
      *
      * @param string $message Message to output
-     * @param string $params
+     * @param array<int, mixed> $params
      * @return void
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
      */

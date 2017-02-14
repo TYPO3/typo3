@@ -111,7 +111,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      * Method is invoked when parser accesses end tag of an element.
      *
      * @param resource $parser parser resource
-     * @param string $elementName: element name at parser's current position
+     * @param string $elementName Element name at parser's current position
      * @return void
      */
     protected function endElement($parser, $elementName)
@@ -133,7 +133,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      * Method is invoked when parser accesses any character other than elements.
      *
      * @param resource $parser parser resource
-     * @param string $data: an element's value
+     * @param string $data An element's value
      * @return void
      */
     protected function characterData($parser, $data)

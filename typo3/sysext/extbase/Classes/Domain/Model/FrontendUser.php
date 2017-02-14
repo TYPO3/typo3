@@ -124,9 +124,9 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Constructs a new Front-End User
      *
-     * @api
      * @param string $username
      * @param string $password
+     * @api
      */
     public function __construct($username = '', $password = '')
     {

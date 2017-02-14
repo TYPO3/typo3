@@ -39,7 +39,7 @@ class MagicImageService
     /**
      * Creates a magic image
      *
-     * @param Resource\File $imageFileObject: the original image file
+     * @param Resource\File $imageFileObject the original image file
      * @param array $fileConfiguration (width, height)
      * @return Resource\ProcessedFile
      */

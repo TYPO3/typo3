@@ -42,7 +42,7 @@ class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 
     /**
      * @param array $arguments
-     * @param callable|\Closure $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
      * @api

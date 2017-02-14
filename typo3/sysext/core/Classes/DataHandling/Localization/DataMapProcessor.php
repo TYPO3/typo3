@@ -672,7 +672,7 @@ class DataMapProcessor
      *
      * @param string $tableName
      * @param array $ids
-     * @param array|null $fieldNames
+     * @param array $fieldNames
      * @return array
      */
     protected function fetchDependentElements(string $tableName, array $ids, array $fieldNames)
@@ -793,7 +793,7 @@ class DataMapProcessor
      *
      * @param DataMapItem $item
      * @param string $scope
-     * @param null|bool $modified
+     * @param bool $modified
      * @return string[]
      */
     protected function getFieldNamesForItemScope(

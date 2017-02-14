@@ -112,7 +112,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     /**
      * Get menu entries for all eligible records
      *
-     * @param $documents
+     * @param array $documents
      * @return array
      */
     protected function getMenuEntries(array $documents) : array

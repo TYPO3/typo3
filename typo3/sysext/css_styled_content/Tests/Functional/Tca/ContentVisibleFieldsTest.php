@@ -20,8 +20,14 @@ use TYPO3\CMS\Lang\LanguageService;
 
 class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
     protected $coreExtensionsToLoad = ['css_styled_content'];
 
+    /**
+     * @var array
+     */
     protected static $commonContentFields = [
         'CType',
         'colPos',
@@ -38,6 +44,9 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
         'categories',
     ];
 
+    /**
+     * @var array
+     */
     protected static $headerFields = [
         'header',
         'header_layout',
@@ -46,6 +55,9 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
         'header_link',
     ];
 
+    /**
+     * @var array
+     */
     protected static $imageFields = [
         'image',
         'image_zoom',
@@ -56,6 +68,9 @@ class ContentVisibleFieldsTest extends \TYPO3\Components\TestingFramework\Core\F
         'imagecols',
     ];
 
+    /**
+     * @var array
+     */
     protected static $contentFieldsByType = [
         'header' => [
             'additionalFields' => ['subheader'],

@@ -11,8 +11,14 @@ class t3lib_object_tests_singleton implements \TYPO3\CMS\Core\SingletonInterface
  */
 class t3lib_object_tests_a
 {
+    /**
+     * @var \t3lib_object_tests_b
+     */
     public $b;
 
+    /**
+     * @var \t3lib_object_tests_c
+     */
     public $c;
 
     /**
@@ -31,10 +37,19 @@ class t3lib_object_tests_a
  */
 class t3lib_object_tests_amixed_array
 {
+    /**
+     * @var \t3lib_object_tests_b
+     */
     public $b;
 
+    /**
+     * @var \t3lib_object_tests_c
+     */
     public $c;
 
+    /**
+     * @var array
+     */
     public $myvalue;
 
     /**
@@ -55,10 +70,19 @@ class t3lib_object_tests_amixed_array
  */
 class t3lib_object_tests_amixed_null
 {
+    /**
+     * @var \t3lib_object_tests_b
+     */
     public $b;
 
+    /**
+     * @var \t3lib_object_tests_c
+     */
     public $c;
 
+    /**
+     * @var mixed|null
+     */
     public $myvalue;
 
     /**
@@ -79,10 +103,19 @@ class t3lib_object_tests_amixed_null
  */
 class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\SingletonInterface
 {
+    /**
+     * @var \t3lib_object_tests_b
+     */
     public $b;
 
+    /**
+     * @var \t3lib_object_tests_c
+     */
     public $c;
 
+    /**
+     * @var array
+     */
     public $myvalue;
 
     /**
@@ -103,6 +136,9 @@ class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\Singl
  */
 class t3lib_object_tests_b implements \TYPO3\CMS\Core\SingletonInterface
 {
+    /**
+     * @var \t3lib_object_tests_c
+     */
     public $c;
 
     /**
@@ -233,8 +269,14 @@ class t3lib_object_tests_cyclic2WithSetterDependency
  */
 class t3lib_object_tests_injectmethods
 {
+    /**
+     * @var \t3lib_object_tests_b
+     */
     public $b;
 
+    /**
+     * @var \t3lib_object_tests_b_child
+     */
     public $bchild;
 
     /**
@@ -260,6 +302,9 @@ class t3lib_object_tests_injectmethods
  */
 class t3lib_object_tests_injectsettings
 {
+    /**
+     * @var array
+     */
     public $settings;
 
     /**
@@ -276,6 +321,9 @@ class t3lib_object_tests_injectsettings
  */
 class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\SingletonInterface
 {
+    /**
+     * @var \t3lib_object_tests_resolveablecyclic2
+     */
     public $o2;
 
     /**
@@ -292,8 +340,14 @@ class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\Singleton
  */
 class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\SingletonInterface
 {
+    /**
+     * @var \t3lib_object_tests_resolveablecyclic1
+     */
     public $o1;
 
+    /**
+     * @var \t3lib_object_tests_resolveablecyclic3
+     */
     public $o3;
 
     /**
@@ -318,6 +372,9 @@ class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\Singleton
  */
 class t3lib_object_tests_resolveablecyclic3 implements \TYPO3\CMS\Core\SingletonInterface
 {
+    /**
+     * @var \t3lib_object_tests_resolveablecyclic1
+     */
     public $o1;
 
     /**

@@ -368,7 +368,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * This method sets the configuration for a 1:1 relation based on
      * the $TCA column configuration
      *
-     * @param string|ColumnMap $columnMap The column map
+     * @param ColumnMap $columnMap The column map
      * @param string $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
@@ -390,7 +390,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * This method sets the configuration for a 1:n relation based on
      * the $TCA column configuration
      *
-     * @param string|ColumnMap $columnMap The column map
+     * @param ColumnMap $columnMap The column map
      * @param string $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
@@ -412,7 +412,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * This method sets the configuration for a m:n relation based on
      * the $TCA column configuration
      *
-     * @param string|ColumnMap $columnMap The column map
+     * @param ColumnMap $columnMap The column map
      * @param string $columnConfiguration The column configuration from $TCA
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
      * @return ColumnMap

@@ -77,7 +77,7 @@ class Result
      * Injects the parent result and propagates the
      * cached error states upwards
      *
-     * @param \TYPO3\CMS\Extbase\Error\Error $parent
+     * @param Result $parent
      * @return void
      */
     public function setParent(Result $parent)

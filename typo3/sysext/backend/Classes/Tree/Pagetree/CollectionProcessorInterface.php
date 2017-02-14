@@ -22,7 +22,6 @@ interface CollectionProcessorInterface
     /**
      * Post process the subelement collection of a specific node
      *
-     * @abstract
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
      * @param int $mountPoint
      * @param int $level
@@ -34,7 +33,6 @@ interface CollectionProcessorInterface
     /**
      * Post process the subelement collection of a specific node-filter combination
      *
-     * @abstract
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
      * @param string $searchFilter
      * @param int $mountPoint
@@ -46,7 +44,6 @@ interface CollectionProcessorInterface
     /**
      * Post process the collection of tree mounts
      *
-     * @abstract
      * @param string $searchFilter
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
      * @return void

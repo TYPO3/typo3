@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
  */
 class ConcreteBackendFixture extends AbstractBackend
 {
+    /**
+     * @var string
+     */
     protected $someOption;
 
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)

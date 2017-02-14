@@ -99,7 +99,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
      * Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
      *
      * @param int $pageId The uid of the current page
-     * @param int $template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
+     * @param int $template_uid The uid of the template record to be rendered (only if more than one template on the current page)
      * @return bool Returns TRUE if a template record was found, otherwise FALSE
      */
     public function initialize_editor($pageId, $template_uid = 0)

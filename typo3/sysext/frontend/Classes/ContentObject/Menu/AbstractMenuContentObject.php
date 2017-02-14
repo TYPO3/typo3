@@ -2299,10 +2299,9 @@ abstract class AbstractMenuContentObject
      * Set the parentMenuArr and key to provide the parentMenu informations to the
      * subMenu, special fur IProcFunc and itemArrayProcFunc user functions.
      *
-     * @internal
-     *
      * @param array $menuArr
      * @param int $menuItemKey
+     * @internal
      */
     public function setParentMenu(array $menuArr = [], $menuItemKey)
     {

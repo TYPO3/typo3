@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 */
 class FrontendFixture implements FrontendInterface
 {
+    /**
+     * @var string
+     */
     protected $identifier;
 
     public function __construct($identifier)

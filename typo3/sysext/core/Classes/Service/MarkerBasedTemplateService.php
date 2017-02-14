@@ -248,8 +248,6 @@ class MarkerBasedTemplateService
      * value, which in its turn contains the elements of the sub-subparts.
      * Empty arrays for Subparts will cause the subtemplate to be cleared.
      *
-     * @static
-     *
      * @param string $content The content stream, typically HTML template content.
      * @param array $markersAndSubparts The array of single markers and subpart contents.
      * @param string $wrap A wrap value - [part1] | [part2] - for the markers before substitution.

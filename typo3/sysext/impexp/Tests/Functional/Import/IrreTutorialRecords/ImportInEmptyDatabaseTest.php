@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import\IrreTutorialRecords;
  */
 class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
 {
+    /**
+     * @var string
+     */
     protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/IrreTutorialRecords/DataSet/Assertion/';
 
     /**

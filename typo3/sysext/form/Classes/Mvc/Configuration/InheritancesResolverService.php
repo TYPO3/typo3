@@ -94,7 +94,7 @@ class InheritancesResolverService
      * Set the reference configuration which is used to get untouched
      * values which can be merged into the touched configuration.
      *
-     * @param array
+     * @param array $referenceConfiguration
      * @return InheritancesResolverService
      */
     public function setReferenceConfiguration(array $referenceConfiguration)

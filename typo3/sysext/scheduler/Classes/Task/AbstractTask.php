@@ -237,7 +237,7 @@ abstract class AbstractTask
     /**
      * This method is used to set the task group (uid) of the task
      *
-     * @param int $timestamp Uid of task group
+     * @param int $taskGroup Uid of task group
      * @return void
      */
     public function setTaskGroup($taskGroup)

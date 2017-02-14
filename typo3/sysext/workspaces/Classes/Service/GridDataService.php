@@ -621,7 +621,7 @@ class GridDataService
      * Emits a signal to be handled by any registered slots.
      *
      * @param string $signalName Name of the signal
-     * @param mixed $arguments
+     * @param array<int, mixed> $arguments
      * @return array
      */
     protected function emitSignal($signalName, ...$arguments)

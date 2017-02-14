@@ -244,7 +244,7 @@ class CacheManager implements SingletonInterface
     /**
      * Flushes entries tagged by any of the specified tags in all registered caches.
      *
-     * @param string[] $tag Tags to search for
+     * @param string[] $tags Tags to search for
      * @return void
      * @api
      */

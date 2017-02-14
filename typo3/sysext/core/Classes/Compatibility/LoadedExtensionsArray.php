@@ -37,7 +37,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
     protected $iteratorPosition;
 
     /**
-     * @param \TYPO3\CMS\Core\Package\PackageManager
+     * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
      */
     public function __construct(\TYPO3\CMS\Core\Package\PackageManager $packageManager)
     {

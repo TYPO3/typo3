@@ -129,13 +129,25 @@ class SpellCheckingController
      */
     public $filePrefix = 'rtehtmlarea_';
 
-    // Pre-FAL backward compatibility
+    /**
+     * Pre-FAL backward compatibility
+     *
+     * @var string
+     */
     protected $uploadFolder = 'uploads/tx_rtehtmlarea/';
 
-    // Path to main dictionary
+    /**
+     * Path to main dictionary
+     *
+     * @var string
+     */
     protected $mainDictionaryPath;
 
-    // Path to personal dictionary
+    /**
+     * Path to personal dictionary
+     *
+     * @var string
+     */
     protected $personalDictionaryPath;
 
     /**
