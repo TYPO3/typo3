@@ -51,12 +51,6 @@ class InitializeProcessedTca implements FormDataProviderInterface
             );
         }
 
-        // Usually, all columns fields have a 'type'. This position would be a good place to
-        // loop and throw an exception if a type is missing. Unfortunately, type is missing
-        // for some internal fields like "hidden". So a bootstrap migration needs to be
-        // created first to enforce this rule here. Some sanitation in data providers below
-        // could be saved this way.
-
         return $result;
     }
 }
