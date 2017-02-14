@@ -58,7 +58,7 @@ class Ratio
                 $areas[] = new self(
                     $id,
                     $ratioConfig['title'],
-                    $ratioConfig['value']
+                    (float)$ratioConfig['value']
                 );
             }
         } catch (\Throwable $throwable) {

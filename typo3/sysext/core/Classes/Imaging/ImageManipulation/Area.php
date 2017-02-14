@@ -62,10 +62,10 @@ class Area
     {
         try {
             return new self(
-                $config['x'],
-                $config['y'],
-                $config['width'],
-                $config['height']
+                (float)$config['x'],
+                (float)$config['y'],
+                (float)$config['width'],
+                (float)$config['height']
             );
         } catch (\Throwable $throwable) {
             throw new InvalidConfigurationException(sprintf('Invalid type for area property given: %s', $throwable->getMessage()), 1485279226, $throwable);
