@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Template;
 
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Compatibility7\View\VersionView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -596,9 +595,9 @@ class ModuleTemplate
             /**
              * For Code Completion
              *
-             * @var $versionGuiObj VersionView
+             * @var $versionGuiObj \TYPO3\CMS\Compatibility7\View\VersionView
              */
-            $versionGuiObj = GeneralUtility::makeInstance(VersionView::class);
+            $versionGuiObj = GeneralUtility::makeInstance(\TYPO3\CMS\Compatibility7\View\VersionView::class);
             return $versionGuiObj->getVersionSelector($id, $noAction);
         }
         return '';

@@ -90,7 +90,6 @@
 		"typo3/cms-beuser": "self.version",
 		"typo3/cms-context-help": "self.version",
 		"typo3/cms-core": "self.version",
-		"typo3/cms-compatibility7": "self.version",
 		"typo3/cms-cshmanual": "self.version",
 		"typo3/cms-css-styled-content": "self.version",
 		"typo3/cms-documentation": "self.version",
