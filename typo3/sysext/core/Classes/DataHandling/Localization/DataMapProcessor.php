@@ -38,6 +38,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * the data-map directly, which ensures proper history entries as a side-effect.
  * For inline relational record editing, this processor either triggers the copy
  * or localize actions by instantiation a new local DataHandler instance.
+ *
+ * Namings in this class:
+ * + forTableName, forId always refers to dependencies data is provided *for*
+ * + fromTableName, fromId always refers to ancestors data is retrieved *from*
  */
 class DataMapProcessor
 {
@@ -108,28 +112,37 @@ class DataMapProcessor
      */
     protected function collectItems(string $tableName, array $idValues)
     {
-        if (!$this->isApplicable($tableName)) {
+        $forTableName = $tableName;
+        if ($forTableName === 'pages') {
+            $forTableName = 'pages_language_overlay';
+        }
+
+        if (!$this->isApplicable($forTableName)) {
             return;
         }
 
         $fieldNames = [
             'uid' => 'uid',
             'l10n_state' => 'l10n_state',
-            'language' => $GLOBALS['TCA'][$tableName]['ctrl']['languageField'],
-            'parent' => $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'],
+            'language' => $GLOBALS['TCA'][$forTableName]['ctrl']['languageField'],
+            'parent' => $GLOBALS['TCA'][$forTableName]['ctrl']['transOrigPointerField'],
         ];
-        if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['translationSource'])) {
-            $fieldNames['source'] = $GLOBALS['TCA'][$tableName]['ctrl']['translationSource'];
+        if (!empty($GLOBALS['TCA'][$forTableName]['ctrl']['translationSource'])) {
+            $fieldNames['source'] = $GLOBALS['TCA'][$forTableName]['ctrl']['translationSource'];
         }
 
-        $translationValues = $this->fetchTranslationValues(
-            $tableName,
-            $fieldNames,
-            $this->filterNumericIds(array_keys($idValues))
-        );
+        $translationValues = [];
+        // Fetching parent/source pointer values does not make sense for pages
+        if ($tableName !== 'pages') {
+            $translationValues = $this->fetchTranslationValues(
+                $tableName,
+                $fieldNames,
+                $this->filterNumericIds(array_keys($idValues))
+            );
+        }
 
         $dependencies = $this->fetchDependencies(
-            $tableName,
+            $forTableName,
             $this->filterNumericIds(array_keys($idValues))
         );
 
@@ -559,7 +572,7 @@ class DataMapProcessor
     }
 
     /**
-     * Create arary of dependent records
+     * Fetches translation dependencies for a given parent/source record ids.
      *
      * @param string $tableName
      * @param array $ids
